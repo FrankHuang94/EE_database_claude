@@ -4919,3 +4919,74 @@ R&D % = R&D ÷ revenue.
 - **Gonugondla, Sakr, Dbouk and Shanbhag, arXiv:2012.13645** [Established: peer-reviewed line of work]: the accuracy of in-memory computing is fundamentally limited by the compute SNR of its analog core, which energy, area and voltage swing bound.
 - **Kavishwar and Shanbhag, arXiv:2507.09776 (2025)** [Established: preprint]: AIMC energy efficiency is limited by column ADC energy; CSNR-optimal ADC design reduces ADC precision by 3 bits for a 256-dimensional binary dot product while achieving 6 dB higher CSNR than prior methods.
 - **Sources:** [d-Matrix](https://d-matrix.ai/pdf/d-Matrix-Corsair-Product-Brief-FINAL.pdf); [IBM NorthPole](https://research.ibm.com/blog/northpole-ibm-ai-chip); [Sze et al.](https://www.rle.mit.edu/eems/wp-content/uploads/2020/09/2020_sscs_dnn.pdf); [Gonugondla et al.](https://arxiv.org/abs/2012.13645); [Kavishwar and Shanbhag](https://arxiv.org/abs/2507.09776). Checked Nov 2026.
+
+## R-493 · Indirection units of enterprise QLC SSDs (Course 23 audit)
+
+*Read on 25 Nov 2026 by a research subagent (documents opened).*
+
+- **Solidigm, D5-P5336 product brief** [Established as vendor specification]: specification table, "Indirection Unit … 16 KB".
+- **StorageReview, Intel D5-P5316 review, 30 Dec 2021** [Established as reported]: "the drive's larger indirection unit (IU) of 64KB".
+- **Sources:** [Solidigm D5-P5336 brief](https://www.solidigm.com/content/dam/solidigm/en/site/products/technology/p5336-product-brief/documents/solidigm-d5-p5336-product-brief.pdf); [StorageReview](https://www.storagereview.com/review/intel-p5316-series-ssd-review-15-36tb). Checked Nov 2026.
+
+## R-494 · Micron HBM4 and HBM4E base dies (Course 23 audit)
+
+*Read on 25 Nov 2026 by a research subagent (documents opened).*
+
+- **Micron Technology, Form 10-K for fiscal 2026, filed 9 Oct 2026** [Established: company filing]: "Our HBM4 uses advanced … CMOS … on the base logic die and DRAM core dies, which are designed and manufactured in-house."
+- **Tom's Hardware, 25 Sep 2025** [Established as reported]: Micron "will partner with TSMC to manufacture the base logic die for its next-generation HBM4E", for standard and custom dies, targeted for 2027.
+- **Sources:** [Micron 10-K](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm); [Tom's Hardware](https://www.tomshardware.com/micron-hands-tsmc-the-keys-to-hbm4e). The earlier R-475 reading that Micron's HBM4 samples used TSMC-made base dies is superseded. Checked Nov 2026.
+
+## R-495 · GDDR7 cards: rates and capacities (Course 23 audit)
+
+*Read on 25 Nov 2026 by a research subagent (documents opened).*
+
+- **NVIDIA RTX Blackwell GPU architecture whitepaper v1.1 (May 2025)** [Established as vendor specification]: "The GeForce RTX 5090 ships with 28 Gbps GDDR7 memory and delivers 1.792 TB/sec … the GeForce RTX 5080 ships with 30 Gbps GDDR7 memory, delivering 960 GB/sec"; 512-bit and 256-bit interfaces.
+- **NVIDIA RTX PRO 6000 Blackwell Workstation Edition product page and data sheet (Jun 2026)** [Established as vendor specification]: "96 GB GDDR7 with ECC", "Memory Interface 512-bit", "1792 GB/s".
+- **Sources:** [whitepaper](https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf); [RTX PRO 6000](https://www.nvidia.com/en-us/products/workstations/professional-desktop-gpus/rtx-pro-6000/). Checked Nov 2026.
+
+## R-496 · SK hynix stack thinning and bonding heat claims (Course 23 audit)
+
+*Read on 25 Nov 2026 by a research subagent (documents opened).*
+
+- **SK hynix newsroom, 26 Sep 2024** [Established: company release]: for 12-high HBM3E, "the company made each DRAM chip 40% thinner than before and stacked vertically using TSV technology."
+- **SK hynix newsroom, 30 Jul 2024** [Industry estimate: vendor claim]: MR-MUF uses "EMC which has stronger heat dissipation qualities than NCF" and up to four times as many thermal dummy bumps as TC-NCF. A "twice the thermal conductivity" figure appears only in TrendForce's 7 Jun 2024 report, attributed to SK hynix. ServeTheHome's account of SK hynix's Hot Chips 2026 talk (R-476) says TC-NCF has the lower thermal resistance, so the comparison is **[Contested]**.
+- **Sources:** [12-high HBM3E release](https://news.skhynix.com/en/sk-hynix-begins-volume-production-of-the-world-first-12-layer-hbm3e/); [MR-MUF article](https://news.skhynix.com/en/rulebreaker-revolutions-mr-muf-unlocks-hbm-heat-control/); [TrendForce](https://www.trendforce.com/news/2024/06/07/news-the-hbm4-battle-begins-memory-stacking-challenges-remain-hybrid-bonding-as-the-key-breakthrough/). Checked Nov 2026.
+
+## R-497 · DDR5 speed bins in JESD79-5C (Course 23 audit)
+
+*Read on 25 Nov 2026 by a research subagent (JEDEC release as reprinted).*
+
+- **JEDEC press release on JESD79-5C, 17 Apr 2024, reprinted by Design & Reuse** [Established: standards body]: "Expansion of timing parameters definition from 6800 Mbps to 8800 Mbps."
+- **Sources:** [Design & Reuse](https://us.design-reuse.com/news/56080/jedec-jesd79-5c-ddr5-sdram-standard.html); jedec.org served an access block and was not retried. Checked Nov 2026.
+
+## R-498 · SOT-MRAM and VCMA-MRAM status (Course 23 audit)
+
+*Read on 25 Nov 2026 by a research subagent (documents or abstracts opened).*
+
+- **imec, IEDM 2025 paper record (Dec 2025)** [Established: conference paper]: SOT-MRAM results on a "4kb characterization array".
+- **MRAM-Info, 31 Jan 2026** [Industry estimate: trade press]: Truth Memory showed an 8 Mb SOT-MRAM demonstrator chip on a 110 nm process.
+- **J. Appl. Phys. review (2024) and Advances in Physics: X review (2025), abstracts** [Established: reviews]: cite remaining "challenges in VCMA" for practical memory and list SOT and voltage control as emerging topics.
+- No high-volume SOT or VCMA product announcement was found; "still research and early development" rests on that absence. **Sources:** [imec record](https://zenodo.org/records/18451467); [MRAM-Info](https://www.mram-info.com/truth-memory-corporation-developed-worlds-first-8mb-sot-mram-chip-using-110-nm-process); [OpenAlex JAP](https://api.openalex.org/works/doi:10.1063/5.0201648); [OpenAlex AP:X](https://api.openalex.org/works/doi:10.1080/23746149.2025.2557918). Checked Nov 2026.
+
+## R-499 · IBM HERMES PCM chip operating modes (Course 23 audit)
+
+*Read on 25 Nov 2026 by a research subagent (full text on arXiv).*
+
+- **Le Gallo et al., Nature Electronics 6, 680–693 (Aug 2023); arXiv 2212.02872 ("the IBM HERMES Project Chip")** [Established: peer-reviewed]: "pulse-width modulated (PWM) read voltage pulses … digitized by an array of 256 time-based current-ADCs"; inputs "8 bit (1 ns/LSB)"; "256 (1 per row)" ADCs per core, each giving "two 12-bit unsigned integers"; "in the four-phase (high-precision) or one-phase (low-precision) operational read mode, the chip can achieve a maximum throughput of 16.1 or 63.1 tera-operations per second at an energy efficiency of 2.48 or 9.76 tera-operations per second per watt"; "all experiments in this work were performed using the higher precision 4-phase mode".
+- **Sources:** [Nature Electronics](https://www.nature.com/articles/s41928-023-01010-1); [arXiv](https://arxiv.org/pdf/2212.02872). Checked Nov 2026.
+
+## R-500 · DDR4 16 Gb refresh cycle time (Course 23 audit)
+
+*Read on 25 Nov 2026 by a research subagent (data sheets opened).*
+
+- **Samsung 8 Gb DDR4 C-die data sheet, Rev 1.5, Apr 2017** [Established as vendor specification]: tRFC1(min) 350 ns for 8 Gb and 550 ns for 16 Gb in its speed table.
+- **Micron 16 Gb DDR4 data sheet, Rev H, Aug 2021** (R-465) [Established as vendor specification]: 350 ns for its 16 Gb die. The original JESD79-4 (2012) lists 16 Gb as "TBD"; the Intel support article returned "Access Denied" and was not used.
+- **Sources:** [Samsung](https://download.semiconductor.samsung.com/resources/user-manual/x16%20only_8G_C_DDR4_Samsung_Spec_Rev1.5_Apr.17.pdf); [Micron](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/8827/16gb-ddr4-sdram.pdf). Checked Nov 2026.
+
+## R-501 · Rubin HBM4 bandwidth revision (Course 23 audit)
+
+*Read on 25 Nov 2026 by a research subagent (pages opened).*
+
+- **NVIDIA Vera Rubin NVL72 page** [Established as vendor specification]: "288 GB HBM4 | 19.2 TB/s" per GPU.
+- **ServeTheHome, 1 Nov 2026** [Established as reported]: NVIDIA revised Rubin's HBM4 bandwidth from 22 TB/s (8 × 2,048 bits at 10.75 Gb/s) to 19.2 TB/s (9.375 Gb/s), a 12.8% cut. NVIDIA's developer blog of 5 Jan 2026 gave 22 TB/s, and its HGX page still listed 22 TB/s per GPU when read.
+- **Sources:** [Vera Rubin NVL72](https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/); [ServeTheHome](https://www.servethehome.com/nvidia-updates-rubin-gpu-specs-as-first-production-hardware-arrives/); [NVIDIA HGX](https://www.nvidia.com/en-us/data-center/hgx/). Checked Nov 2026.

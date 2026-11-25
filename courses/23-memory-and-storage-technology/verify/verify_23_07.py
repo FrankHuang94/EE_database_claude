@@ -110,7 +110,9 @@ v.check("Ex 23-07.1c", 28e9 / b6 * 100)
 pay6 = b6 * 236 / 256
 v.check("Ex 23-07.1d", pay6 / 1e9)
 v.check("Ex 23-07.1e", 28e9 / pay6 * 100)
-v.check("Txt 23-07.e", (1 - 28e9 / pay6) * 100)
+v.check("Ex 23-07.1g", pay6 * 512 / 528 / 1e9)
+v.check("Ex 23-07.1h", 28e9 / (pay6 * 512 / 528) * 100)
+v.check("Ex 23-07.1g1", pay6 * 256 / 272 / 1e9)
 v.check("Ex 23-07.1f", 16 * 2400e6 * 8 / 8 / 1e9)
 
 # ---------------------------------------------------------------- Example 23-07.2
@@ -127,6 +129,12 @@ v.check("Ex 23-07.2f", units16 * 4 / 1e9)
 v.assert_true("61.44 TB at 16 KiB fits 32-bit entries", units16 < (1 << 32))
 v.check("Ex 23-07.2g", (1 << 32) * 16384 / 1e12)
 v.check("Ex 23-07.2h", 16384 // 4096)
+v.check("Txt 23-07.i", 61.44 * 1.07)
+v.check("Txt 23-07.j", 61.44 * 1.28)
+v.assert_true("65.7 TB raw fits 32-bit reach at 16 KiB; 78.6 TB does not", 61.44e12 * 1.07 < (1 << 32) * 16384 < 61.44e12 * 1.28)
+v.check("Txt 23-07.k", units * 5 / 1e9)
+v.check("Txt 23-07.l", next(m for m in range(2, 30) if 8192 + m * 40 <= 2 ** m - 1))
+v.check("Txt 23-07.m", next(m for m in range(2, 30) if 16384 + m * 40 <= 2 ** m - 1))
 
 # ---------------------------------------------------------------- Example 23-07.3
 for ident, op in (("a", 0.07), ("b", 0.28)):
@@ -173,6 +181,11 @@ for ident, p in (("c", 1e-3), ("d", 3e-3), ("e", 4e-3)):
     v.check(f"Ex 23-07.5{ident}0", n5 * p)
     v.check(f"Ex 23-07.5{ident}", math.exp(log_binom_sf(40, n5, p)))
 v.check("Ex 23-07.5f", 1 / math.exp(log_binom_sf(40, n5, 3e-3)))
+pf5 = math.exp(log_binom_sf(40, n5, 1e-3))
+v.check("Txt 23-07.p", 40 + 1)
+v.check("Txt 23-07.n", 41 * pf5 / 8192)
+v.check("Txt 23-07.o", pf5 / (41 * pf5 / 8192))
+v.assert_true("UBER at 1e-3 meets the 1e-16 enterprise target", 41 * pf5 / 8192 < 1e-16)
 v.check("Txt 23-07.f", math.log10(1e-3 / 1e-15))
 
 # ---------------------------------------------------------------- Example 23-07.6

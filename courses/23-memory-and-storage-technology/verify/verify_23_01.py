@@ -316,4 +316,29 @@ sb4, sf4, _ = layer_count(**M4, context=CTX, batch=big)
 v.check("Lab 23-01.d", sf4 / sb4)
 v.check("Lab 23-01.e", 75_000 * 64 / 1.2e-6 / 1e12)
 
+# ---------------------------------------------------------------- audit additions
+v.check("Txt 23-01.o", 2.24 + 0.3 + 1.21)
+v.check("Txt 23-01.p", 3.92)
+v.check("Txt 23-01.q", 3.92 - (2.24 + 0.3 + 1.21))
+v.check("Txt 23-01.r", 3 / 2)
+_P, _L, _d, _k = 70e9, 80, 64 * 128, 2 * 80 * 8 * 128 * 1
+
+
+def _limit(n):
+    return (2 * _P + 4 * _L * _d * n) / (_k * n)
+
+
+v.check("Txt 23-01.s", _limit(512))
+v.check("Txt 23-01.t", _limit(1024))
+v.check("Txt 23-01.u", optimize.brentq(lambda n: _limit(n) - 625, 100, 1e5))
+v.check("Txt 23-01.v", 20 / 15)
+v.check("Txt 23-01.w", 288 * 2 ** 30 / 1e9)
+v.check("Txt 23-01.w1", 288 * 2 ** 30 / 1e9)
+v.check("Txt 23-01.x", 300e9 / 2 ** 30)
+v.check("Txt 23-01.y", (288 * 2 ** 30 - 300e9) / 1e9)
+v.check("Txt 23-01.z", _k * 32768 / 1e9)
+v.check("Txt 23-01.za", _k * 32768 / 2 ** 30)
+v.check("Txt 23-01.zb", (288 * 2 ** 30 - 70e9) // (_k * 32768))
+v.check("Txt 23-01.zc", (2 ** 30 / 1e9 - 1) * 100)
+
 sys.exit(v.finish())

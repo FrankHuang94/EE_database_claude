@@ -4,7 +4,7 @@ Chapter: [23-08](../chapters/23-08-emerging-memories.md) · Worked solutions: [2
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
 
-**Conventions.** A year is 365.25 days. MRAM attempt frequency $f_0 = 10^9$ s⁻¹, and $\Delta = E_b/k_BT$ with a temperature-independent barrier unless stated. Temperatures in kelvin are °C + 273.15. 1 Mb = 2²⁰ bits. Values marked "assumed" are illustrative. Problems marked *(lab)* can be checked with `labs/23-08-lab/emem.py`.
+**Conventions.** A year is 365.25 days. MRAM attempt frequency $f_0 = 10^9$ s⁻¹, and $\Delta = E_b/kT$ with a temperature-independent barrier unless stated. Temperatures in kelvin are °C + 273.15. 1 Mib = 2²⁰ bits. Values marked "assumed" are illustrative. Problems marked *(lab)* can be checked with `labs/23-08-lab/emem.py`.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 
@@ -18,11 +18,11 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 23-08.2 [A]
 
-**One bit and many.** *(lab)* A cell has $\Delta$ = 50 at its operating temperature. Find (a) its mean retention time in seconds and (b) in years. (c) How many thermal flips does a 64 Mb array expect in 10 years?
+**One bit and many.** *(lab)* A cell has $\Delta$ = 50 at its operating temperature. Find (a) its mean retention time in seconds and (b) in years. (c) How many thermal flips does a 64 Mib array expect in 10 years?
 
 ### Problem 23-08.3 [B]
 
-**Hot retention.** A cell has $\Delta$ = 75 at 25 °C. Find (a) its $\Delta$ at 125 °C and (b) the $\Delta$ a 16 Mb array needs for at most one expected flip in 10 years. (c) How many flips does the array expect in 10 years at 125 °C, and does it meet the target?
+**Hot retention.** A cell has $\Delta$ = 75 at 25 °C. Find (a) its $\Delta$ at 125 °C and (b) the $\Delta$ a 16 Mib array needs for at most one expected flip in 10 years. (c) How many flips does the array expect in 10 years at 125 °C, and does it meet the target?
 
 ### Problem 23-08.4 [B]
 
@@ -54,7 +54,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 23-08.11 [B]
 
-**Embedded array area.** A 4 MiB (32 Mb) embedded MRAM uses a 50 $F^2$ cell at 28 nm with 50% array efficiency (assumed). Find (a) the cell area, (b) the total cell area and (c) the macro area. (d) What macro area would SRAM with a 0.127 µm² cell (assumed) and the same efficiency need?
+**Embedded array area.** A 4 MiB (32 Mib) embedded MRAM uses a 50 $F^2$ cell at 28 nm with 50% array efficiency (assumed). Find (a) the cell area, (b) the total cell area and (c) the macro area. (d) What macro area would SRAM with a 0.127 µm² cell (assumed) and the same efficiency need?
 
 ### Problem 23-08.12 [C]
 
@@ -64,6 +64,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Write-energy budget.** An edge AI device rewrites 1 MiB of weights per second in nonvolatile memory. Find (a) the bits written per second and the write power at (b) 0.7 pJ/bit (MRAM, Table 1), (c) 4 pJ/bit (Example 23-08.4's PCM RESET) and (d) 100 pJ/bit (NOR flash, Table 1). Which technologies fit a 50 µW memory budget?
 
+### Problem 23-08.14 [C]
+
+**Deriving the STT write current, and read disturb.** (a) The free layer of a perpendicular MTJ has moment $m = M_sV$, anisotropy field $H_k$ and barrier $E_b = \mu_0M_sH_kV/2$. Its angular momentum is $m/\gamma$; while it precesses at $\omega = \gamma\mu_0H_k$, Gilbert damping $\alpha$ removes angular momentum at the rate $\alpha\omega m/\gamma$. Each electron of the write current delivers $\hbar/2$ of spin angular momentum with efficiency $\eta$. Show that switching begins at $I_{c0} = (4q\alpha/\hbar\eta)E_b$, and check the units. Take $\hbar = 1.0546 \times 10^{-34}$ J·s and $k = 1.381 \times 10^{-23}$ J/K, and find (b) $I_{c0}$ per unit of $\Delta$ at 300 K for $\alpha$ = 0.008 and $\eta$ = 0.6 (assumed), and (c) $I_{c0}$ for $\Delta$ = 50. A read current $I$ lowers the barrier to $\Delta(1 - I/I_{c0})$. For a 5 ns read at 30% of $I_{c0}$, find (d) the effective barrier and the flip probability per read, and (e) the expected number of reads per flip. (f) What is the largest read current, as a fraction of $I_{c0}$, that keeps the flip probability per 5 ns read at or below $10^{-18}$?
+
 ---
 
 ## Objective coverage
@@ -71,7 +75,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Objective | Problems |
 |---|---|
 | 1. Storage mechanisms | 7, 9 |
-| 2. MRAM read, stability and write | 1, 2, 3, 4 |
+| 2. MRAM read, stability and write | 1, 2, 3, 4, 14 |
 | 3. PCM thermal model and drift | 5, 6 |
 | 4. ReRAM quanta and FeRAM charge | 7, 8, 9 |
 | 5. Comparing technologies | 10, 11, 13 |

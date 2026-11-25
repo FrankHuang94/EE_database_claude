@@ -29,7 +29,7 @@ Simulate an SRAM cell's read and write contests with and without assists, then u
 2. Draw 20,000 random cells and count failures. Compare with $Q(\delta^*/\sigma)$.
 3. Repeat with −50 mV and −100 mV bitlines. Find the negative bitline that covers a 6σ (150 mV) mismatch.
 
-**Part 3 · Vmin against array size** (notebook). Plot Example 23-02.3's $V_{min}$ from 1 Kib to 1 Gib for σ_VT of 25 mV and 20.4 mV.
+**Part 3 · Vmin against array size** (notebook). Plot Example 23-02.3's $V_{min}$ from 1 Kib to 1 Gib for σ_VTH of 25 mV and 20.4 mV.
 
 **Part 4 · Bitline length** (notebook). Sweep cells per bitline from 64 to 1024 with Example 23-02.6's model and plot density and bitline time.
 

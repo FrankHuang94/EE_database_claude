@@ -27,8 +27,9 @@ sys.path.insert(0, str(HERE.parents[2] / "tools"))
 from eeverify import Verifier  # noqa: E402
 
 v = Verifier.from_files("23-exam", ROOT / "exam" / "solutions.md")
-QE = 1.602176634e-19
-KB_EV = 8.617333262e-5
+# The exam states q and k to four figures; its answers use those values.
+QE = 1.602e-19
+KB_EV = 8.617e-5
 YEAR = 365.25 * 86400
 
 
@@ -213,18 +214,37 @@ v.check("X23.7c4", A7)
 tbw = 17.2 * 3000 / A7
 v.check("X23.7c2", tbw)
 v.check("X23.7c3", tbw / (15.36 * 1825))
+
+
+def dwpd(user):
+    return 17.2 * 3000 / (1 / (1 - u_iter(17.2 / user)) * user * 1825)
+
+
+u1 = optimize.brentq(lambda s: dwpd(s) - 1, 8, 17)
+v.check("X23.7c5", u1)
+v.check("X23.7c6", (17.2 / u1 - 1) * 100)
+v.check("X23.7c7", 1 / (1 - u_iter(17.2 / u1)))
+v.check("X23.7c8", (1 - u1 / 15.36) * 100)
+v.check("X23.7c9", dwpd(u1) / dwpd(15.36))
 v.check("X23.7d", 3.2e6 * 90e-6)
 v.check("X23.7d1", 3.2e6 * 4096 / 1e9)
 v.check("X23.7d2", 1 / 90e-6)
 
 # ---------------------------------------------------------------- Q8
-n8 = 8192 + 13 * 48
-v.check("X23.8a", 13 * 48)
+n8 = 8192 + 14 * 48
+v.check("X23.8a", 14 * 48)
 v.check("X23.8a1", n8)
 v.check("X23.8a2", n8 * 2e-3)
 v.check("X23.8a3", tail_sum(48, n8, 2e-3))
 lam = n8 * 2e-3
 v.check("X23.8a4", 1 - sum(math.exp(-lam) * lam ** k / math.factorial(k) for k in range(49)))
+v.check("X23.8a5", 2 ** 14 - 1)
+v.check("X23.8a6", 2 ** 13 - 1)
+v.assert_true("GF(2^13) is too short and GF(2^14) long enough", 8192 > 2 ** 13 - 1 and n8 <= 2 ** 14 - 1)
+t_ok = next(t for t in range(48, 120) if tail_sum(t, 8192 + 14 * t, 2e-3) <= 1e-15)
+v.check("X23.8a7", tail_sum(60, 8192 + 14 * 60, 2e-3))
+v.check("X23.8a8", t_ok)
+v.check("X23.8a9", tail_sum(t_ok, 8192 + 14 * t_ok, 2e-3))
 r8 = 16 / 18.5
 v.check("X23.8b", r8)
 v.check("X23.8b1", cap(0.01))

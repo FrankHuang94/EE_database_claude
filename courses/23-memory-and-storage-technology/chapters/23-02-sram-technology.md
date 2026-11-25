@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 23-02 · SRAM Technology
 
 | | |
@@ -30,7 +30,7 @@ Every processor's caches, register files and buffers are SRAM: six transistors p
 
 An SRAM cell is two inverters in a loop, each holding the other in place, plus two access switches to the bitlines (19-08). Think of it as two people leaning against each other back to back: stable, but only as long as neither is pushed too hard. Reading opens a door to the bitline, which pushes on the side storing 0; the cell must not topple. Writing pushes through the same door on purpose and must topple it. The access transistor therefore has to be weak enough not to upset a read and strong enough to force a write.
 
-Variation makes it harder. No two transistors are identical: each has a slightly different threshold voltage because of the random number and position of dopant atoms and the roughness of its edges. In a 64 MiB cache with half a billion cells, the worst cell sits more than six standard deviations from the average. Lowering the supply shrinks every margin, so the worst cell sets how low the voltage can go. **Assist circuits** tilt the contest at the moment it matters: weaken the door during a read, strengthen it during a write.
+Variation makes it harder. No two transistors are identical: each has a slightly different threshold voltage because of the random number and position of dopant atoms and the roughness of its edges. In a 64 MiB cache with half a billion cells, the worst cell typically sits about 5.9 standard deviations from the average, and a 99% yield needs every cell to have 6.6 standard deviations of margin. Lowering the supply shrinks every margin, so the worst cell sets how low the voltage can go. **Assist circuits** tilt the contest at the moment it matters: weaken the door during a read, strengthen it during a write.
 
 Where the analogy breaks down: the cell's "push" is not a fixed force but a current that depends on the very voltages it changes, so the outcome is set by where the transistors' currents balance (§3.4–3.5).
 
@@ -62,7 +62,7 @@ where $n_x$ and $n_y$ are integers set by the cell's topology. Unlike a logic ce
 
 **Why FinFET SRAM stalled.** In a FinFET, a transistor's width comes in whole fins. The cell's strength ratios (19-08), pass gate against pull-down for reads and pull-up against pass gate for writes, can only be integers. The densest cell uses one fin for every device. A faster, more stable cell uses two fins for the pass gates and pull-downs and one for the pull-ups [1], at the cost of more tracks. In the last FinFET nodes, gate and fin pitches barely moved, because shrinking them further raised resistance and variation more than it saved area. TSMC's N3 bitcell was 0.0199 µm², only about 5% smaller than N5's 0.021 µm², and N3E returned to 0.021 µm² [3].
 
-**What nanosheets change.** A nanosheet (gate-all-around) transistor is a stack of horizontal silicon ribbons wrapped by the gate, and the ribbon width can be set device by device. A pull-down and pass gate that needed two fins can be one narrower stack that still carries more current, because the stacked sheets have more total channel width [1]. Ratios no longer have to be integers. Intel reported up to 23% less cell area, and a high-current cell whose pull-down is wider than its pass gate for a lower minimum voltage [1]. TSMC kept the 0.021 µm² cell at N2 and spent nanosheets' gains elsewhere (§3.2).
+**What nanosheets change.** A nanosheet (gate-all-around) transistor is a stack of horizontal silicon ribbons wrapped by the gate, and the ribbon width can be set device by device. A pull-down and pass gate that needed two fins can be one narrower stack that still carries more current, because the stacked sheets have more total channel width [1]. Ratios no longer have to be integers. Intel reported a density gain of up to 23% [1], and a high-current cell whose pull-down is wider than its pass gate for a lower minimum voltage [1]. TSMC kept the 0.021 µm² cell at N2 and spent nanosheets' gains elsewhere (§3.2).
 
 ### 3.2 Cell density versus macro density
 
@@ -88,17 +88,17 @@ $$
 t_{BL} = \frac{(N c_{cell} + C_{fix})\,\Delta V}{I_{cell}} ,
 $$
 
-where $c_{cell}$ is the capacitance each cell adds to the bitline and $C_{fix}$ the sense amplifier's and wiring's. Doubling $N$ nearly doubles the time unless the cell current rises. Nanosheets' extra drive current is what let TSMC pay for the longer bitline (Example 23-02.6). The same tradeoff explains why the densest macros are not the fastest. Synopsys matched 38.1 Mb/mm² on a 3 nm FinFET process, but at 2.3 GHz, against 4.2 GHz for TSMC's fastest N2 SRAM and 5.6 GHz for Intel's [1].
+where $c_{cell}$ is the capacitance each cell adds to the bitline and $C_{fix}$ the sense amplifier's and wiring's. Doubling $N$ nearly doubles the time unless the cell current rises. TSMC paired its longer bitline with nanosheet transistors, whose tunable widths and extra drive can supply the extra cell current (Example 23-02.6) [1]. The same tradeoff explains why the densest macros are not the fastest. Synopsys matched 38.1 Mb/mm² on a 3 nm FinFET process, but at 2.3 GHz, against 4.2 GHz for TSMC's fastest N2 SRAM and 5.6 GHz for Intel's [1].
 
 ### 3.3 Variation, sigma and minimum voltage
 
 **Mismatch.** Each transistor's threshold voltage deviates randomly from its nominal value. Pelgrom's law (20-11) gives the standard deviation as
 
 $$
-\sigma_{V_T} = \frac{A_{VT}}{\sqrt{WL}} ,
+\sigma_{V_{TH}} = \frac{A_{VT}}{\sqrt{WL}} ,
 $$
 
-where $W$ and $L$ are the gate's effective width and length and $A_{VT}$ (mV·µm) is a process constant [5]. Bitcell transistors are the smallest on the chip, so their mismatch is the largest.
+where $W$ and $L$ are the gate's effective width and length and $A_{VT}$ (mV·µm) is a process constant [5]. Here $A_{VT}$ is quoted per device. 20-11, like Pelgrom's original paper, defines it for the threshold *difference* of a matched pair, which is $\sqrt2$ times larger: Example 23-02.3's 1.0 mV·µm per device corresponds to a pair coefficient of 1.41 mV·µm. Check which convention a data sheet uses before comparing. Bitcell transistors are the smallest on the chip, so their mismatch is the largest.
 
 **How many sigmas.** A cell fails when a margin (read stability, writability or read current), which is a random variable with mean $\mu$ and standard deviation $\sigma$, falls below zero. 19-08 showed that an array of $N$ independent cells works with probability $P = e^{-NQ(\mu/\sigma)}$, where $Q$ is the normal tail. Solving for the margin needed to reach a yield $Y$ without repair,
 
@@ -108,10 +108,10 @@ $$
 
 $k$ grows only slowly with $N$, because the normal tail falls so fast: about 6.0 for a 1 MiB array and 6.6 for 64 MiB at 99% yield (Example 23-02.3). Redundant rows and columns and error-correcting codes (17-08) let a few cells fail, which lowers the $k$ each cell needs.
 
-**Vmin.** Margins shrink as the supply falls. Over the range of interest, model a margin's mean as linear in the supply, $\mu(V) = s\,(V - V_0)$, where $s$ is its slope and $V_0$ the voltage at which it vanishes. Model its spread as proportional to the threshold mismatch, $\sigma = g\,\sigma_{V_T}$, where $g$ is the margin's sensitivity. Requiring $\mu \ge k\sigma$ gives the minimum operating voltage
+**Vmin.** Margins shrink as the supply falls. Over the range of interest, model a margin's mean as linear in the supply, $\mu(V) = s\,(V - V_0)$, where $s$ is its slope and $V_0$ the voltage at which it vanishes. Model its spread as proportional to the threshold mismatch, $\sigma = g\,\sigma_{V_{TH}}$, where $g$ is the margin's sensitivity. Requiring $\mu \ge k\sigma$ gives the minimum operating voltage
 
 $$
-V_{min} = V_0 + \frac{k\,g\,\sigma_{V_T}}{s} .
+V_{min} = V_0 + \frac{k\,g\,\sigma_{V_{TH}}}{s} .
 $$
 
 Three levers lower $V_{min}$: smaller mismatch (bigger devices, nanosheets' better uniformity [1]), a smaller $k$ (repair and ECC), and assists that raise the margin's slope or its value at a given supply. The SRAM's $V_{min}$ is often higher than logic's, which is why many chips give SRAM arrays their own supply rail. In a **dual-rail** design the bitcells run on a higher, steadier rail while the periphery scales down with the logic. Synopsys' 3 nm design runs its cells from 540 mV to 1.4 V and its periphery as low as 380 mV [1].
@@ -164,11 +164,13 @@ The retention voltage must stay above the **data-retention voltage**, below whic
 
 ### 3.7 New devices and new integration
 
-- **Nanosheets** give free device widths and better uniformity (§3.1, §3.3). TSMC spent them on longer bitlines; Intel on a smaller high-current cell [1]. TSMC described N2's SRAM density as an 11% gain over N3, after N3 had managed only 6% over its predecessor [2].
+- **Nanosheets** give free device widths and better uniformity (§3.1, §3.3). TSMC spent them on longer bitlines; Intel on a smaller high-current cell [1]. TSMC described N2's SRAM density as an 11% gain over N3, after N3 had managed only 6% over its predecessor [2]; its ISSCC macro paper quotes 12% [1]. Such small differences usually reflect what is counted (bitcell array or full macro) and the reference point.
 - **Backside power** moves the power grid under the transistors. Intel found it would *grow* the bitcell by 10% if used inside the array, so it uses it only in the periphery and at the array's edge [1].
 - **Stacked transistors (CFET)** put the n-type device on top of the p-type one, which could finally shrink $n_y$ (§3.1). TSMC's A14 paper, due at IEDM in December 2026, reportedly claims a high-density cell under 0.017 µm², the first real cell shrink since N5 [4].
 - **3D stacking** puts SRAM on its own die, bonded face to face with the logic die. The logic die is then free of most of its cache, and each die can use the process that suits it.
 - **Other memories** compete for the last level: embedded DRAM is denser but must be refreshed, and MRAM is non-volatile and dense but slower to write (23-08).
+
+> **Going deeper — soft errors.** An alpha particle from packaging materials, or a secondary particle from a cosmic-ray neutron, leaves a trail of charge in the silicon. If a storage node collects more than its *critical charge*, the cell flips with no damage to the device: a **soft error**. Smaller cells store less charge but also present a smaller target, so the error rate per bit has changed less with scaling than the shrinking node charge suggests. A single strike can upset several neighbouring cells (a **multi-bit upset**). Arrays therefore *interleave* columns, placing physically adjacent cells in different ECC words, so that one strike causes at most one error per word, which single-error-correcting ECC (17-08) then fixes. Periodic scrubbing rewrites corrected data before a second error accumulates.
 
 ## 4. Worked examples
 
@@ -204,12 +206,12 @@ The retention voltage must stay above the **data-retention voltage**, below whic
 
 ### Example 23-02.3 · How many sigmas, and how low a voltage (tier B)
 
-**Setup.** (a, b) Find the margin, in standard deviations, a 1 MiB (8 Mib = 2²³ bits) and a 64 MiB (2²⁹ bits) array need for 99% yield without repair. A cell transistor has $A_{VT}$ = 1.0 mV·µm, $L$ = 16 nm and an effective width of 100 nm for one fin or 150 nm for a nanosheet stack (all assumed): find (c) σ_VT for the fin and (d) for the nanosheet. A margin has slope $s$ = 0.2 V/V, vanishes at $V_0$ = 0.25 V and has σ = 0.6 σ_VT (assumed). Find $V_{min}$ for (e) 1 MiB of fins, (f) 64 MiB of fins and (g) 64 MiB of nanosheets.
+**Setup.** (a, b) Find the margin, in standard deviations, a 1 MiB (8 Mib = 2²³ bits) and a 64 MiB (2²⁹ bits) array need for 99% yield without repair. A cell transistor has $A_{VT}$ = 1.0 mV·µm, $L$ = 16 nm and an effective width of 100 nm for one fin or 150 nm for a nanosheet stack (all assumed): find (c) σ_VTH for the fin and (d) for the nanosheet. A margin has slope $s$ = 0.2 V/V, vanishes at $V_0$ = 0.25 V and has σ = 0.6 σ_VTH (assumed). Find $V_{min}$ for (e) 1 MiB of fins, (f) 64 MiB of fins and (g) 64 MiB of nanosheets.
 
 **Solution.**
 
 - (a) $Q(k) = -\ln 0.99/2^{23}$, so $k$ = **5.97**; (b) for $2^{29}$ bits, **6.61**.
-- (c) $\sigma_{V_T} = 1.0/\sqrt{0.10 \times 0.016}$ = **25.0** mV; (d) $1.0/\sqrt{0.15 \times 0.016}$ = **20.4** mV.
+- (c) $\sigma_{V_{TH}} = 1.0/\sqrt{0.10 \times 0.016}$ = **25.0** mV; (d) $1.0/\sqrt{0.15 \times 0.016}$ = **20.4** mV.
 - (e) $V_{min} = 0.25 + 5.97 \times 0.6 \times 0.025/0.2$ = **0.698** V; (f) with $k$ = 6.61, **0.746** V; (g) with 20.4 mV, **0.655** V.
 
 **Units check.** mV·µm/µm = mV; V + (V/V)⁻¹ × V = V. ✓
@@ -228,7 +230,7 @@ The retention voltage must stay above the **data-retention voltage**, below whic
 
 **Units check.** A/V² × V² = A. ✓
 
-**Sanity check.** A 100 mV underdrive cuts the disturbance by 39% but the read current by 35%. The bitline takes about 1.5 times as long to develop its signal, so designers apply underdrive only as far as stability demands. The lab confirms all four values in ngspice.
+**Sanity check.** Even without underdrive the read is stable: 0.117 V is well below the other inverter's switching threshold, about $V_{DD}/2$ = 0.35 V for a symmetric inverter. A 100 mV underdrive cuts the disturbance by 39% but the read current by 35%. The bitline takes about 1.5 times as long to develop its signal, so designers apply underdrive only as far as stability demands. The lab confirms all four values in ngspice.
 
 ### Example 23-02.5 · Negative-bitline write assist (tier C)
 
@@ -255,9 +257,9 @@ The retention voltage must stay above the **data-retention voltage**, below whic
 - (c) $0.021 + 1.0/512 + 0.0012$ = **0.02415** µm²; (d) **41.4** Mb/mm²; (e) **8.1** %.
 - (f) $(256 \times 0.1 + 5)\ \text{fF} \times 0.1\ \text{V}/20\ \mu\text{A}$ = **153** ps; (g) $(51.2 + 5) \times 0.1/20$ = **281** ps; (h) **1.84**.
 
-**Units check.** fF × V/µA = ns × 10⁻³ = ps. ✓
+**Units check.** fF × V/µA = 10⁻¹⁵ C/10⁻⁶ A = 10⁻⁹ s, so ns; 0.153 ns = 153 ps. ✓
 
-**Sanity check.** The gain matches the "close to 10 percent" TSMC reported [1], and the speed cost is nearly a doubling. To read as fast with twice the cells, the cell current must rise by the same 1.84 times, which is what nanosheets' extra drive provided.
+**Sanity check.** The gain matches the "close to 10 percent" TSMC reported [1], and the speed cost is nearly a doubling. To read as fast with twice the cells, the cell current must rise by the same 1.84 times, which is the kind of gain nanosheets' extra drive must supply.
 
 ### Example 23-02.7 · Leakage and retention (tier B)
 
@@ -270,7 +272,7 @@ The retention voltage must stay above the **data-retention voltage**, below whic
 
 **Units check.** bits × A = A; A × V = W. ✓
 
-**Sanity check.** A few milliwatts is negligible in a server but dominates a wearable's standby budget, where the SRAM's retention mode may be the largest always-on load. The voltage drop saves more than its own ratio (1.56) because leakage falls exponentially.
+**Sanity check.** A few milliwatts is negligible in a server. A wearable's SoC holds a few megabytes, not 64 MiB, but at about 3.3 µW per MiB in retention here its SRAM can still be the largest always-on load. The voltage drop saves more than its own ratio (1.56) because leakage falls exponentially.
 
 <!-- answer-key -->
 
@@ -287,8 +289,8 @@ The retention voltage must stay above the **data-retention voltage**, below whic
 | Ex 23-02.2c | effective area shrink | 1.29 | |
 | Ex 23-02.3a | sigma needed, 1 MiB | 5.97 | |
 | Ex 23-02.3b | sigma needed, 64 MiB | 6.61 | |
-| Ex 23-02.3c | σ_VT, one fin | 25.0 | mV |
-| Ex 23-02.3d | σ_VT, nanosheet | 20.4 | mV |
+| Ex 23-02.3c | σ_VTH, one fin | 25.0 | mV |
+| Ex 23-02.3d | σ_VTH, nanosheet | 20.4 | mV |
 | Ex 23-02.3e | Vmin, 1 MiB, fins | 0.698 | V |
 | Ex 23-02.3f | Vmin, 64 MiB, fins | 0.746 | V |
 | Ex 23-02.3g | Vmin, 64 MiB, nanosheets | 0.655 | V |
@@ -329,6 +331,13 @@ The retention voltage must stay above the **data-retention voltage**, below whic
 | Txt 23-02.l | retention saving, rounded (§3.6) | 9 | |
 | Txt 23-02.m | 2²⁰-bit Mb efficiency increase (Ex 23-02.1) | 4.9 | % |
 | Txt 23-02.n | extra sigma from 1 MiB to 64 MiB (Q3) | 0.65 | |
+| Txt 23-02.o | expected worst of 2^29 normal draws | 5.9 | |
+| Txt 23-02.p | 99% yield margin for 64 MiB | 6.6 | |
+| Txt 23-02.q | pair coefficient for 1.0 mV um per device | 1.41 | mV·µm |
+| Txt 23-02.r | retention power per MiB | 3.3 | µW |
+| Txt 23-02.s | symmetric inverter threshold at 0.7 V | 0.35 | V |
+| Txt 23-02.t | Intel cell-area reduction, 0.024 to 0.021 | 12.5 | % |
+| Txt 23-02.u | half a billion cells, 2^29 | 5.4e8 | |
 
 ## 5. Simulate it
 
@@ -345,7 +354,7 @@ The notebook runs a Monte Carlo of write failures against the negative-bitline v
 **Predict, then run:**
 
 1. *Predict* $V_M$, the three written-node voltages and the two read-disturb voltages, then run `ngspice -b assist.cir`.
-2. In the notebook, draw 20,000 random cells with σ_VT = 25 mV on the pass gate and pull-up and count write failures with no assist. *Predict* first: is the failure rate closer to 10⁻² or 10⁻⁶? Repeat with −50 mV and −100 mV of bitline.
+2. In the notebook, draw 20,000 random cells, each with one combined mismatch δ of σ = 25 mV between the pass gate and pull-up, and count write failures with no assist. *Predict* first: is the failure rate closer to 10⁻¹ or 10⁻⁶? Repeat with −50 mV and −100 mV of bitline.
 3. Plot $V_{min}$ against array size. *Predict* how much 1,024 times more bits costs.
 4. Sweep cells per bitline from 64 to 1024. *Predict* where the density gain flattens.
 
@@ -376,7 +385,7 @@ The notebook runs a Monte Carlo of write failures against the negative-bitline v
 | Bitline length (TSMC) | 256 cells, extended to 512 at N2 for "close to 10 percent" density | [1] |
 | Next shrink (reported, Dec 2026 paper) | A14 HD cell under 0.017 µm² | [4] |
 | Sigma for a large array | about 6 to 7 (Example 23-02.3) | §3.3 |
-| Read disturb, equal pass gate and pull-down | $(V_{DD} - V_T)(1 - 1/\sqrt2)$ | §3.4 |
+| Read disturb, equal pass gate and pull-down | $(V_{DD} - V_{TN})(1 - 1/\sqrt2)$ | §3.4 |
 | Dual-rail ranges (Synopsys 3 nm) | cells 540 mV–1.4 V; periphery to 380 mV | [1] |
 
 ## 8. Common mistakes
@@ -392,7 +401,7 @@ The notebook runs a Monte Carlo of write failures against the negative-bitline v
 
 **State of the art (as of Nov 2026).**
 
-- *Density* [Established as reported]. At ISSCC 2025, Intel 18A and TSMC N2 each reported a 38.1 Mb/mm² macro with a 0.021 µm² cell, a gain of up to 23% for Intel and 12% for TSMC [1]. TSMC attributed much of its gain to doubling bitline length to 512 cells [1].
+- *Density* [Established as reported]. At ISSCC 2025, Intel 18A and TSMC N2 each reported a 38.1 Mb/mm² macro with a 0.021 µm² cell, a density gain of up to 23% for Intel and 12% for TSMC [1] (Intel's cell area itself fell from 0.024 to 0.021 µm², 12.5%). TSMC attributed much of its gain to doubling bitline length to 512 cells [1].
 - *The stall* [Established as reported]. TSMC's high-density cell has been 0.021 µm² since N5. N3 reached 0.0199 µm², but N3E went back to 0.021 µm² [3].
 - *Next* [Industry estimate]. TSMC's A14 paper at IEDM 2026 reportedly claims a cell under 0.017 µm² [4]. That is a test-structure upper bound from an abstract; re-check the paper after 14 Dec 2026.
 - *Low voltage* [Established as reported]. Nanosheets' better uniformity and Intel's wider pull-down improve Vmin [1]. Dual-rail designs let the periphery scale down to 380 mV in Synopsys' 3 nm design [1].

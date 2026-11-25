@@ -26,7 +26,7 @@ Solve an HBM stack's one-dimensional thermal network with a circuit simulator, u
 
 **Part 2 · Stack height and gap conductivity** (notebook). Sweep the layer count from 4 to 20 for gap conductivities of 1.5 and 3 W/m·K and for hybrid bonding. Find the largest layer count that keeps the base rise at or below 10 K with 1.5 W/m·K gaps, and the gap conductivity that would let a 16-high stack match a 12-high stack's rise.
 
-**Part 3 · Bandwidth and capacity** (notebook). Tabulate bandwidth and capacity for each generation and vendor pin rate in Example 23-05.1, and the stacks needed for 1 TB of memory at 20 TB/s.
+**Part 3 · Bandwidth and capacity** (notebook). Tabulate bandwidth and capacity for each generation and vendor pin rate in Example 23-05.1, and the stacks needed for 1 TB of memory at 20 TB/s (treat both the 1 TB and the stacks' 36 GB as decimal, as vendor marketing does).
 
 ## Expected results
 
@@ -36,11 +36,14 @@ Solve an HBM stack's one-dimensional thermal network with a circuit simulator, u
 |---|---|---|---|
 | Lab 23-05.a | largest layer count with base rise ≤ 10 K (1.5 W/m·K gaps) | 12 | |
 | Lab 23-05.b | gap conductivity for 16 layers to match 12 | 2.29 | W/m·K |
-| Lab 23-05.c | 36 GB HBM4 stacks for 1 TB | 28 | |
+| Lab 23-05.c | 36 GB HBM4 stacks for 1 TB, both decimal | 28 | |
+| Lab 23-05.e | rise growth, 12 to 16 layers | 1.51 | |
+| Lab 23-05.f | linear-law growth, 12 to 16 layers | 1.33 | |
+| Lab 23-05.g | square-law growth, 12 to 16 layers | 1.78 | |
 | Lab 23-05.d | stacks for 20 TB/s at 2.048 TB/s each | 10 | |
 
 - Part 1: the base rises within 0.1% of the closed form; the rising-transition energy within 0.5% of $CV^2$ = 0.208 pJ, and unchanged when the driver resistance doubles.
-- Part 2: with gaps the rise grows roughly as the square of the layer count; with hybrid bonding it stays below 1 K.
+- Part 2: with gaps the rise grows faster than linearly with the layer count (from 12 to 16 layers it grows 1.51 times, between the 1.33 of a linear law and the 1.78 of a square law, because the base die's term is linear and the core dies' term quadratic); with hybrid bonding it stays below 1 K.
 
 ## Discussion
 

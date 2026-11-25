@@ -116,6 +116,24 @@ The error depends on the column's total conductance, which depends on the data: 
 
 Unless its ADCs are far beyond the chapter's assumed figure, the claim needs something else: lower effective precision than "8-bit" suggests, fewer conversions per MAC (multibit inputs, larger arrays, analog accumulation across bits), or a measurement boundary that leaves out the ADCs. Ask which.
 
+### Solution 23-09.14
+
+(a) The ideal output is $y_0 = \sum_iw_ix_i$. With independent zero-mean weights, the cross terms vanish, so $E[y_0^2] = \sum_iE[w_i^2]E[x_i^2] = Ms_w^2s_x^2$. The error is $e = \sum_in_ix_i$, with $n_i$ the absolute weight error of standard deviation $\sigma_{FS}cs_w$, so $E[e^2] = Mc^2\sigma_{FS}^2s_w^2s_x^2$. Therefore
+
+$$
+\text{SNR}_a = \frac{E[y_0^2]}{E[e^2]} = \frac{1}{c^2\sigma_{FS}^2} .
+$$
+
+The relative-error model gives $1/\sigma^2$: an error fixed relative to full scale costs a factor $c^2$, because most weights are much smaller than full scale but carry the same absolute error.
+
+(b) $1/(9 \times 10^{-4})$ = **1111**, or **30.46** dB; ENOB $= (30.46 - 1.76)/6.02$ = **4.77** bits.
+
+(c) The relative model gives 40.0 dB, so the penalty is $20\log_{10}3$ = **9.54** dB, about 1.6 bits.
+
+(d) Six bits need $6.02 \times 6 + 1.76$ = **37.88** dB, an SNR of **6138**, so $\sigma_{FS} = 1/(3\sqrt{6138})$ = **0.425** %.
+
+Matching to a few tenths of a percent of full scale is hard for resistive devices, which is why analog chips program iteratively with verify, and why a weight distribution with long tails (a large crest factor) is expensive in analog.
+
 ---
 
 ## Answer key
@@ -174,3 +192,11 @@ Unless its ADCs are far beyond the chapter's assumed figure, the claim needs som
 | 23-09.13c | required FoM | 0.31 | fJ |
 | 23-09.13c1 | required FoM, exact | 0.3125 | fJ |
 | 23-09.13d | improvement needed | 16 | |
+| 23-09.14b0 | SNR ratio | 1111 | |
+| 23-09.14b1 | SNR | 30.46 | dB |
+| 23-09.14b | effective bits | 4.77 | bits |
+| 23-09.14c | penalty against relative model | 9.54 | dB |
+| 23-09.14c1 | penalty in bits | 1.6 | bits |
+| 23-09.14d0 | SNR for 6 bits | 37.88 | dB |
+| 23-09.14d1 | SNR ratio for 6 bits | 6138 | |
+| 23-09.14d | full-scale sigma for 6 bits | 0.425 | % |

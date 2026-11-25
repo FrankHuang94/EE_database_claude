@@ -22,11 +22,11 @@ A larger coupling capacitance means fewer volts per electron, so each level need
 
 (a) $\alpha_G = 18/(18 + 12)$ = **0.6**.
 
-(b) $V_{T0}/\alpha_G = 0.9/0.6$ = **1.5** V. The control gate must supply more than the node's own threshold, because only 60% of its voltage reaches the node.
+(b) $V_{TH0}/\alpha_G = 0.9/0.6$ = **1.5** V. The control gate must supply more than the node's own threshold, because only 60% of its voltage reaches the node.
 
 (c) $160 \times 1.602 \times 10^{-19}/18 \times 10^{-18}$ = **1.42** V; (d) $1.5 + 1.424$ = **2.92** V.
 
-The shift depends only on $C_{CG}$, not on $C_{other}$ (§3.1): $\Delta V_T = -Q/C_{CG}$.
+The shift depends only on $C_{CG}$, not on $C_{other}$ (§3.1): $\Delta V_{TH} = -Q/C_{CG}$.
 
 ### Solution 23-06.3
 
@@ -48,7 +48,7 @@ $$
 \alpha_G V_{pgm,k} + \frac{Q_k}{C_T} = \alpha_G V_{pgm,k+1} + \frac{Q_{k+1}}{C_T} ,
 $$
 
-so $Q_{k+1} - Q_k = -\alpha_G C_T (V_{pgm,k+1} - V_{pgm,k}) = -C_{CG}\,\Delta V_{pgm}$, using $\alpha_G C_T = C_{CG}$. The charge added is $C_{CG}\Delta V_{pgm}$ in magnitude (electrons, so negative), and the threshold shift is $\Delta V_T = -\Delta Q/C_{CG} = \Delta V_{pgm}$.
+so $Q_{k+1} - Q_k = -\alpha_G C_T (V_{pgm,k+1} - V_{pgm,k}) = -C_{CG}\,\Delta V_{pgm}$, using $\alpha_G C_T = C_{CG}$. The charge added is $C_{CG}\Delta V_{pgm}$ in magnitude (electrons, so negative), and the threshold shift is $\Delta V_{TH} = -\Delta Q/C_{CG} = \Delta V_{pgm}$.
 
 (b) $16 \times 10^{-18} \times 0.3/1.602 \times 10^{-19}$ = **30.0** electrons.
 
@@ -144,13 +144,13 @@ The design choices are: hold σ below 0.0869 V at end of life (smaller program s
 
 ### Solution 23-06.14
 
-(a) $6 \times 16{,}384/2.5\ \text{ms}$ = **39.3** MB/s; (b) $39.32/600$ = **6.55** %.
+(a) $6 \times 16{,}384/2.5\ \text{ms}$ = **39.3** MB/s; (b) $39.32/4800$ = **0.819** %.
 
-(c) $600/39.32$ = 15.3, so **16** dies.
+(c) $4800/39.32$ = 122.1, so **123** dies. No channel carries that many; an SSD instead spreads writes over many channels and dies, and accepts that writes, not the interface, set its sustained write speed.
 
 (d) $30/(400 \times 3)$ = **0.025** Gb/mm² per layer-bit; (e) $1 - 0.025/0.02831$ = **11.7** % lower.
 
-The interface speed says how fast data crosses the pins, not how fast the die writes. The 400-layer TLC die is less dense per layer than the 332-layer die: more layers do not mean better lateral design.
+The quoted 4.8 Gb/s is the per-pin interface speed: it says how fast data crosses the pins, not how fast the die writes. The 400-layer TLC die is less dense per layer than the 332-layer die: more layers do not mean better lateral design.
 
 ---
 
@@ -256,8 +256,8 @@ The interface speed says how fast data crosses the pins, not how fast the die wr
 | 23-06.13f1 | margin at the limit, 4 s.f. | 2.302 | |
 | 23-06.14a | sustained write throughput | 39.3 | MB/s |
 | 23-06.14a1 | sustained write throughput, 4 s.f. | 39.32 | MB/s |
-| 23-06.14b | share of interface | 6.55 | % |
-| 23-06.14c0 | dies, unrounded | 15.3 | |
-| 23-06.14c | dies per channel | 16 | |
+| 23-06.14b | share of interface | 0.819 | % |
+| 23-06.14c0 | dies, unrounded | 122.1 | |
+| 23-06.14c | dies per channel | 123 | |
 | 23-06.14d | density per layer-bit | 0.025 | Gb/mm² |
 | 23-06.14e | shortfall | 11.7 | % |

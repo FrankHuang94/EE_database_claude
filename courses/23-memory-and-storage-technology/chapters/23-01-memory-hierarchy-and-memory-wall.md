@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 23-01 · The Memory Hierarchy and the Memory Wall
 
 | | |
@@ -15,13 +15,13 @@
 2. Derive the energy of moving a bit on a wire from $CV^2$, and convert between energy per bit, bandwidth and power.
 3. Compute an interface's bandwidth from its width and pin rate, and the data in flight it needs from Little's law.
 4. Quantify the memory wall as the growth of a machine's ridge point, using published compute and bandwidth trends.
-5. Derive the arithmetic intensity, capacity limit, step time and memory energy of transformer decoding with a KV cache, and show why decoding stays memory-bound at any batch size.
+5. Derive the arithmetic intensity, capacity limit, step time and memory energy of transformer decoding with a KV cache, and show why decode attention is always memory-bound and long-context decoding stays memory-bound at any batch size.
 
 ## 1. Big picture
 
-A processor can only compute on data that is next to it, and almost none of its data is. Each level of the memory hierarchy (registers, SRAM caches, DRAM, flash, and disks or the network) trades capacity against speed, and each level is built from a different device in a different process. In 2026 the bottleneck in most of the computing that matters commercially is not arithmetic but moving data: across a die, off a die to DRAM, and between chips. A 45 nm study found that reading 32 bits from DRAM cost about 173 times as much energy as a 32-bit floating-point multiply [1], and the gap has not closed since. Peak accelerator compute has grown faster than memory bandwidth for twenty years [9]. That is the **memory wall**, and AI inference has hit it hard.
+A processor can only compute on data that is next to it, and almost none of its data is. Each level of the memory hierarchy (registers, SRAM caches, DRAM, flash, and disks or the network) trades capacity against speed, and each level is built from a different device in a different process. In 2026 the bottleneck in most of the computing that matters commercially is not arithmetic but moving data: across a die, off a die to DRAM, and between chips. A 45 nm study found that reading 32 bits from DRAM cost about 173 times as much energy as a 32-bit floating-point multiply [1]. Wires have not shrunk in energy the way arithmetic has, so the gap remains large. Peak accelerator compute has grown faster than memory bandwidth for twenty years [9]. That is the **memory wall**, and AI inference has hit it hard.
 
-- **Accelerators:** HBM stacks set an AI GPU's bandwidth, much of its cost and a large share of its power. One study measured about 35% of an H200's 700 W in its HBM3E [4].
+- **Accelerators:** HBM stacks set an AI GPU's bandwidth, much of its cost and a large share of its power. One study measured up to about 35% of an H200's 700 W in its HBM3E, as reported by the GPU's own power telemetry under a read-intensive microbenchmark [4].
 - **Inference economics:** generating each token of a large language model reads every weight and the whole key–value cache once, so tokens per second per GPU are set by bytes per second, not FLOPS (§3.7).
 - **CPUs and SoCs:** DRAM latency has barely moved in two decades [11], so cores hide it with caches and many outstanding requests (§3.5).
 - **Wearables and IoT:** the energy of a memory access often exceeds that of the computation it feeds. Keeping data in local SRAM is the main lever for battery life.
@@ -84,11 +84,12 @@ For random data, each bit is independently 0 or 1, so $p_{01} = \tfrac12 \cdot \
 
 **Off-chip links.** A wire leaving the package is a transmission line. It must be terminated in its characteristic impedance (about 50 Ω) to avoid reflections (21-02). A terminated driver passes a current $I$ through the termination for the whole bit time $T_b$, not just at transitions. Its energy per bit is about $V_{DD}IT_b$, and it draws static power whenever the link is active, even if no useful data flows. Horowitz put DRAM I/O at "over 20pJ/bit", with static power on top [1]. Wide, short, low-swing interfaces such as HBM's interposer wires exist to escape this. In the HBM2 analysis below, the I/O is the smallest part of the energy.
 
-**Inside the DRAM.** O'Connor et al. modelled an HBM2 access at about 3.9 pJ/bit and split it three ways [3]:
+**Inside the DRAM.** O'Connor et al. modelled an HBM2 access at about 3.9 pJ/bit [3]. Three main parts total 3.75 pJ/bit, and ECC overhead brings the total to 3.92:
 
 - moving data across the DRAM die to its through-silicon vias: 2.24 pJ/bit;
 - the interposer I/O: 0.3 pJ/bit;
-- row activation: 1.21 pJ/bit on average.
+- row activation: 1.21 pJ/bit on average;
+- ECC overhead: about 0.17 pJ/bit.
 
 The surprise is that the DRAM's own internal wires cost the most. Activation is the other lesson. Opening a row senses and restores every bit in it, typically a kilobyte, whether one byte or all of them are then read. The activation energy per *useful* bit is
 
@@ -110,7 +111,7 @@ $$
 
 Units: B/s × bit/B × J/bit = W. Read in reverse, a power budget caps bandwidth: $BW_{max} = P_{budget}/(8E_b)$. O'Connor et al. framed the HBM decision this way [3]. A 300 W GPU card could spend about 20%, 60 W, on DRAM, which caps GDDR5 at 14.0 pJ/bit to about 536 GB/s but lets HBM2 at 3.9 pJ/bit reach about 1.92 TB/s (Example 23-01.3). The energy per bit, not the pin count, decided which memory a high-bandwidth GPU could use.
 
-Measured systems include everything the model leaves out: refresh, standby currents, clocking and controller activity. Olgun et al. measured an H200's HBM3E at up to 248 W while it sustained 4.52 TB/s, 94% of its 4.8 TB/s peak [4]. Dividing power by delivered bits gives an *all-in* 6.86 pJ/bit. That is not a contradiction of the 3.9 pJ/bit model: the two count different things. An all-in figure is the one that sets the power supply and the cooling.
+Measured systems include everything the model leaves out: refresh, standby currents, clocking and controller activity. Olgun et al. measured an H200's HBM3E at up to 248 W (from the GPU's own power reporting) while a read-intensive microbenchmark sustained 4.52 TB/s, 94% of its 4.8 TB/s peak [4]. Dividing power by delivered bits gives an *all-in* 6.86 pJ/bit. That is not a contradiction of the 3.9 pJ/bit model: the two count different things. An all-in figure is the one that sets the power supply and the cooling.
 
 ### 3.4 Bandwidth from pins and wires
 
@@ -126,7 +127,7 @@ HBM takes the more-pins route. It places DRAM stacks millimetres from the proces
 
 ### 3.5 Latency, concurrency and Little's law
 
-Latency is how long one access takes. Bandwidth is how many bytes arrive per second when many accesses overlap. They are linked by Little's law (14-09): in any stable system, the average number of items inside equals their arrival rate times the average time each spends inside, $L = \lambda W$. For memory, the data that must be in flight to sustain a bandwidth is
+Latency is how long one access takes. Bandwidth is how many bytes arrive per second when many accesses overlap. They are linked by Little's law (14-09): in any stable system, the average number of items inside equals their arrival rate times the average time each spends inside, $N = \lambda R$. For memory, the data that must be in flight to sustain a bandwidth is
 
 $$
 D_{flight} = BW \times t_{lat} .
@@ -134,9 +135,9 @@ $$
 
 Units: B/s × s = B. A memory system cannot deliver its bandwidth unless the processor keeps that much data requested and not yet returned. Divided by the request size, this gives the number of requests that must be outstanding.
 
-> **Going deeper — why Little's law holds.** Plot the number of requests in flight, $n(t)$, against time over a long interval $T$. The area under the curve, $\int_0^T n\,dt$, can be counted two ways: as the average occupancy times $T$, or as the sum of every request's time in flight. The second is the number of requests, $\lambda T$, times their average latency $W$. Equating the two, $\bar n\,T = \lambda T\,W$, so $\bar n = \lambda W$. Nothing about the arrival process or service order was assumed, which is why the law applies to DRAM queues, store buffers and networks alike.
+> **Going deeper — why Little's law holds.** Plot the number of requests in flight, $n(t)$, against time over a long interval $T$. The area under the curve, $\int_0^T n\,dt$, can be counted two ways: as the average occupancy times $T$, or as the sum of every request's time in flight. The second is the number of requests, $\lambda T$, times their average latency $R$. Equating the two, $\bar n\,T = \lambda T\,R$, so $\bar n = \lambda R$. Nothing about the arrival process or service order was assumed, which is why the law applies to DRAM queues, store buffers and networks alike.
 
-The law explains why GPUs keep tens of thousands of threads resident: an accelerator streaming 8 TB/s with an assumed 600 ns loaded latency needs about 4.8 MB in flight, some 75,000 64-byte requests (Example 23-01.5). It also explains why DRAM latency matters even to bandwidth-bound work. Lee et al. found that over an 11-year span in which DRAM cost per bit fell 16-fold, the row-activation and row-cycle times (tRCD and tRC) improved by only 30.5% and 26.3% [11]. The cause is physics: the long, heavily loaded bitlines that sensing must swing (23-03). A current desktop CPU sees "just over 70 ns" to DRAM [12], about what a CPU saw a decade earlier.
+The law explains why GPUs keep tens of thousands of threads resident: an accelerator streaming 8 TB/s with an assumed 600 ns loaded latency needs about 4.8 MB in flight, some 75,000 64-byte requests (Example 23-01.5). It also explains why DRAM latency matters even to bandwidth-bound work. Lee et al. found that over an 11-year span in which DRAM cost per bit fell 16-fold, the row-activation and row-cycle times (tRCD and tRC) improved by only 30.5% and 26.3% [11]. The cause is physics: the long, heavily loaded bitlines that sensing must swing (23-03). A current desktop CPU sees "just over 70 ns" to DRAM [12]; DRAM latency has improved far more slowly than bandwidth.
 
 ### 3.6 The memory wall
 
@@ -146,9 +147,9 @@ $$
 t_{avg} = h\,t_c + (1 - h)\,t_m .
 $$
 
-If processor speed (and with it $t_c$, measured in cycles of a faster clock) improves faster than DRAM's $t_m$, then however close $h$ gets to 1, the second term eventually dominates and performance tracks memory, not logic.
+Measured in processor cycles, $t_c$ stays about one cycle while $t_m$ grows every year that clock rates outpace DRAM latency. However close $h$ gets to 1, the second term eventually dominates, and performance tracks memory, not logic.
 
-Today the wall is mostly about bandwidth. Recall the **ridge point** of the roofline (14-15): peak compute divided by memory bandwidth, the arithmetic intensity (FLOP per byte) a kernel needs to keep the arithmetic busy. If peak FLOPS grow by a factor $r_F$ every two years and bandwidth by $r_B$, the ridge point grows by $r_F/r_B$ every two years. Gholami et al. fitted 20 years of server hardware at $r_F$ = 3.0 and $r_B$ = 1.6 per two years for DRAM (1.4 for interconnect) [9]. The ridge therefore grows about 1.9 times every two years, roughly 23 times a decade (Example 23-01.6). Each generation, a kernel must reuse each byte about twice as often just to stay compute-bound. Lower-precision formats raise the quoted ridge further. NVIDIA quotes Blackwell Ultra's dense NVFP4 rate at three times its dense FP8 rate (15 against 5 PF) at the same bandwidth [5], so its ridge triples. A kernel keeps its place relative to the ridge only if its data shrinks to 4 bits too.
+Today the wall is mostly about bandwidth. Recall the **ridge point** of the roofline (14-15): peak compute divided by memory bandwidth, the arithmetic intensity (FLOP per byte) a kernel needs to keep the arithmetic busy. If peak FLOPS grow by a factor $r_F$ every two years and bandwidth by $r_B$, the ridge point grows by $r_F/r_B$ every two years. Gholami et al. fitted 20 years of server hardware at $r_F$ = 3.0 and $r_B$ = 1.6 per two years for DRAM (1.4 for interconnect) [9]. The ridge therefore grows about 1.9 times every two years, roughly 23 times a decade (Example 23-01.6). Each generation, a kernel must reuse each byte about twice as often just to stay compute-bound. Lower-precision formats raise the quoted ridge further. NVIDIA quotes Blackwell Ultra's dense NVFP4 rate at three times its dense FP8 rate (15 against 5 PF) at the same bandwidth [5], so its ridge triples. Shrinking a kernel's data from 8 to 4 bits only doubles its intensity, recovering two thirds of that tripling: even a fully 4-bit kernel falls 1.5 times further below the ridge. Only where the FP4 rate is exactly twice the FP8 rate (Blackwell, Rubin) does a kernel that shrinks its data keep its place.
 
 > **Math refresher — compound growth.** A quantity growing by a factor $r$ every two years grows by $r^{t/2}$ in $t$ years. Its doubling time is $2\ln 2/\ln r$ years. Ratios of exponentials are exponentials: $r_F^{t/2}/r_B^{t/2} = (r_F/r_B)^{t/2}$.
 
@@ -188,6 +189,8 @@ $$
 \lim_{B\to\infty} I(B) = \frac{2P + 4Ldn}{kn} .
 $$
 
+The limit is $2P/(kn) + 4Ld/k$: its weight term shrinks as the context grows. In Example 23-01.7's model it is 1,685 FLOP/B at 512 tokens and 850 at 1,024, both above that example's 625 FLOP/B ridge, and it crosses the ridge near 1,400 tokens. So large batches of *short* sequences can become compute-bound; long-context decoding cannot.
+
 Unlike the weights, each sequence's KV cache is read once per step and serves only that sequence, so batching cannot amortize it. The attention part alone has intensity
 
 $$
@@ -196,7 +199,7 @@ $$
 
 which depends on neither batch size nor context length. With 8 query heads sharing each KV head and 1-byte KV entries it is 16 FLOP/B, far below any modern ridge point. Decode attention is memory-bound by construction. The only levers are fewer or smaller KV entries (grouped-query attention, quantized KV caches) or more bandwidth.
 
-**Capacity.** The KV cache also fills memory. With capacity $M$, the largest batch that fits is
+**Capacity.** The KV cache also fills memory. (Capacities in this chapter's calculations take 1 GB = 10⁹ bytes. Vendor HBM capacities are binary, so a "288 GB" GPU holds 288 GiB, about 7% more.) With capacity $M$, the largest batch that fits is
 
 $$
 B_{max} = \left\lfloor \frac{M - W}{kn} \right\rfloor ,
@@ -265,7 +268,7 @@ The memory energy per generated token is $8(W + Bkn)E_b/B$. Example 23-01.7 work
 
 **Units check.** W ÷ (J/bit) = bit/s; ÷ 8 = B/s. ✓
 
-**Sanity check.** The modelled and all-in figures differ by almost two times, and the gap is the background power a real memory draws whatever it moves. Both lead to the same conclusion: at terabytes per second, every picojoule per bit is tens of watts, so memory energy, not pin count, is now the binding constraint.
+**Sanity check.** The modelled and all-in figures differ by almost two times. The gap reflects background power a real memory draws whatever it moves, but also a newer memory generation (HBM3E against HBM2), an activation-heavy access pattern and a different measurement scope. Both lead to the same conclusion: at terabytes per second, every picojoule per bit is tens of watts, so memory energy, not pin count, is now the binding constraint.
 
 ### Example 23-01.4 · Bandwidth from pins (tier A)
 
@@ -328,7 +331,7 @@ The memory energy per generated token is $8(W + Bkn)E_b/B$. Example 23-01.7 work
 
 **Units check.** layers × heads × dimension × B = B; FLOP/B. ✓
 
-**Sanity check.** The ridge is 625 FLOP/B, and no batch can lift this workload past 42. Here the KV cache, not the weights, is three quarters of the traffic (214.7 of 284.7 GB). The levers are a smaller cache (fewer KV heads, 4-bit entries), shorter contexts or more bandwidth. Faster arithmetic would change nothing.
+**Sanity check.** The ridge is 625 FLOP/B, and no batch can lift this workload past 42. Each sequence's cache is exactly 5 GiB ($163\,840 \times 2^{15} = 5 \times 2^{30}$ B). This example reads 288 GB as decimal; the vendor's 288 GiB (309.2 × 10⁹ B) would fit **44** sequences, without changing the conclusion. Here the KV cache, not the weights, is three quarters of the traffic (214.7 of 284.7 GB). The levers are a smaller cache (fewer KV heads, 4-bit entries), shorter contexts or more bandwidth. Faster arithmetic would change nothing.
 
 ### Example 23-01.8 · Memory energy per token (tier B)
 
@@ -423,6 +426,22 @@ The memory energy per generated token is $8(W + Bkn)E_b/B$. Example 23-01.7 work
 | Txt 23-01.l | GPU-to-CPU requests in flight (Ex 23-01.5) | 714 | |
 | Txt 23-01.m | H100-to-Rubin FP8 ridge growth (Ex 23-01.6) | 1.5 | |
 | Txt 23-01.n | Blackwell Ultra NVFP4-to-FP8 rate ratio (§3.6) | 3 | |
+| Txt 23-01.o | HBM2 main parts, sum | 3.75 | pJ/bit |
+| Txt 23-01.p | HBM2 total with ECC | 3.92 | pJ/bit |
+| Txt 23-01.q | HBM2 ECC overhead | 0.17 | pJ/bit |
+| Txt 23-01.r | 4-bit kernel's further fall below the tripled ridge | 1.5 | |
+| Txt 23-01.s | intensity limit at 512 tokens | 1685 | FLOP/B |
+| Txt 23-01.t | intensity limit at 1,024 tokens | 850 | FLOP/B |
+| Txt 23-01.u | context where the limit meets the 625 FLOP/B ridge | 1.4e3 | tokens |
+| Txt 23-01.v | Blackwell Ultra NVFP4 sparse-to-dense ratio | 1.33 | |
+| Txt 23-01.w | 288 GiB in bytes | 309 | 10⁹ B |
+| Txt 23-01.w1 | 288 GiB in bytes, 4 s.f. | 309.2 | 10⁹ B |
+| Txt 23-01.x | 300 billion FP8 weights in GiB | 279 | GiB |
+| Txt 23-01.y | room left beside 300 B FP8 weights | 9 | GB |
+| Txt 23-01.z | KV cache per 32,768-token sequence, 2 s.f. | 5.4 | GB |
+| Txt 23-01.za | KV cache per sequence in GiB | 5 | GiB |
+| Txt 23-01.zb | sequences that fit in 288 GiB | 44 | |
+| Txt 23-01.zc | binary over decimal capacity | 7 | % |
 
 ## 5. Simulate it
 
@@ -474,7 +493,7 @@ The lab is [labs/23-01-lab/](../labs/23-01-lab/README.md). `memwall.py` collects
 - **Counting only the weights in decode traffic.** At long context the KV cache dominates (Example 23-01.7), and it does not amortize over the batch.
 - **Mixing modelled and all-in energy per bit.** A model's 3.9 pJ/bit and a measurement's 6.86 pJ/bit count different things; say which.
 - **Charging $\tfrac12CV^2$ per transition.** The supply delivers $CV^2$ on each rising edge. Half is stored, then dissipated on the falling edge.
-- **Comparing ridge points across formats.** A dense FP8 ridge and a sparse FP4 ridge differ by a factor of about four for format and two for sparsity. Compare like with like.
+- **Comparing ridge points across formats.** A dense FP8 ridge and a sparse FP4 ridge differ by about four times in all: on Blackwell Ultra, three for format (5 to 15 PF) and 1.33 for sparsity (15 to 20 PF) [5]. Compare like with like.
 - **Treating latency and bandwidth as independent.** By Little's law, a latency increase under load lowers delivered bandwidth unless more requests are put in flight.
 - **Assuming a capacity number means a model fits.** Capacity must also hold the KV cache, activations and runtime overhead (§9).
 
@@ -495,7 +514,7 @@ The lab is [labs/23-01-lab/](../labs/23-01-lab/README.md). `memwall.py` collects
 **Marketing vs Reality.**
 
 - *"8 TB/s."* That is peak: pins times rate. A well-tuned read stream sustained 94% on H200 [4]; real kernels with writes and scattered access get less. Ask for achieved bandwidth on the buyer's workload.
-- *"300B+ parameter models without memory offloading"* [5]. 288 GB holds 300 billion parameters only below one byte each, that is at FP4 or FP6. At FP8 the weights alone exceed the memory, and any model also needs room for its KV cache.
+- *"300B+ parameter models without memory offloading"* [5]. Vendor HBM capacities are binary, so "288 GB" is 288 GiB, about 309 × 10⁹ bytes. At FP8, 300 billion weights (279 GiB) just fit, leaving about 9 GB, less than two of Example 23-01.7's 5.4 GB long-context KV caches. In practice the claim needs FP4 or FP6 weights.
 - *Sparse versus dense FLOPS.* Rubin's 50 PF NVFP4 inference figure is a sparse specification; the dense training figure is 35 PF [7]. Ridge-point and utilization claims must say which.
 - *"Compute-in-memory removes the memory wall."* It moves some arithmetic to the data, but the analog or digital arrays still have to load weights, handle precision and talk to the rest of the system (23-09). Ask what fraction of the workload's bytes it actually avoids moving.
 
@@ -561,7 +580,7 @@ Fewer KV heads ($n_{kv} < n_q$) shrink the KV cache per token in proportion, and
 
 <details><summary>Answer</summary>
 
-The quoted FLOPS rise (two to three times for NVIDIA's dense FP4 against FP8 [5]) while the bandwidth stays the same, so the ridge rises by the same factor. A kernel keeps its place only if its data really shrinks to 4 bits; otherwise it falls further below the ridge.
+The quoted FLOPS rise (two to three times for NVIDIA's dense FP4 against FP8 [5]) while the bandwidth stays the same, so the ridge rises by the same factor. A kernel whose data shrinks to 4 bits doubles its intensity, so it keeps its place only where the FP4 rate is twice the FP8 rate (Blackwell, Rubin); on Blackwell Ultra, where the rate triples, it still loses ground. A kernel that keeps 8-bit data falls further still.
 
 </details>
 
@@ -569,7 +588,7 @@ The quoted FLOPS rise (two to three times for NVIDIA's dense FP4 against FP8 [5]
 
 <details><summary>Answer</summary>
 
-The all-in measurement, at the workload's utilization. It includes background, refresh and standby currents and the effect of real access patterns. The model is for comparing architectures.
+The all-in measurement, at the workload's utilization, ideally repeated on the workload itself. It includes background, refresh and standby currents and the effect of real access patterns, but it was taken on one read-intensive benchmark with the GPU's own telemetry and on a newer memory generation, so it is not a universal constant. The model is for comparing architectures.
 
 </details>
 

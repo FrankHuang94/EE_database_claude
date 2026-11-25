@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 23-05 · HBM in Depth
 
 | | |
@@ -22,7 +22,7 @@
 
 An AI accelerator's speed on large models is set by memory bandwidth (23-01), and the pins at a processor's edge are scarce (23-04). High Bandwidth Memory solves both by stacking 8 to 16 DRAM dies on a logic base die, joining them with thousands of vertical through-silicon vias (TSVs), and placing the stack millimetres from the processor on a silicon interposer. There it can use 1,024 or 2,048 data wires, each running at a modest rate with no termination. One HBM4 stack moves 2 to 3 TB/s [2], [4], more than a whole server socket of DDR5. HBM is also the most complex product in the memory industry: it needs thinner dies, new bonding steps, a logic process for the base die and a share of scarce advanced-packaging capacity. Its economics now shape the whole DRAM market.
 
-- **AI accelerators:** every leading training and inference GPU uses HBM. NVIDIA's Blackwell Ultra carries 288 GB in eight 12-high stacks [10]; Rubin carries 288 GB of HBM4 at 19.2 TB/s [11].
+- **AI accelerators:** every leading training and inference GPU uses HBM. NVIDIA's Blackwell Ultra carries 288 GB in eight 12-high stacks [10]; Rubin carries 288 GB of HBM4 at 19.2 TB/s [11], revised down from the 22 TB/s NVIDIA quoted earlier in 2026 [22].
 - **DRAM economics:** HBM takes several times more wafer area per bit than ordinary DRAM (Example 23-05.7), so its demand tightens supply and lifts prices for all DRAM [14].
 - **Packaging:** each accelerator needs an interposer from capacity-limited lines such as TSMC's CoWoS [15].
 - **Competition:** stack height, bonding method, base-die process and pin rate are where SK hynix, Samsung and Micron now differentiate (§9).
@@ -68,7 +68,7 @@ The many channels matter as much as the width. Each pseudo-channel is an indepen
 
 ### 3.2 Why short, unterminated wires save energy
 
-DDR and GDDR lines are long enough to need termination (23-04 §3.3), so they burn static current for every bit at one of the two levels. An HBM data wire runs a few millimetres across the interposer. Its round-trip delay is short compared with the bit time, so the wire behaves as a lumped capacitance $C$ and needs no termination. Charging it from 0 to $V$ draws $CV^2$ from the supply, whatever the driver's resistance (23-01). With random data, a 0-to-1 transition happens on a quarter of the bits, so
+DDR and GDDR lines are long enough to need termination (23-04 §3.3), so they burn static current for every bit at one of the two levels. An HBM data wire runs a few millimetres across the interposer. Its round trip is not negligible: in oxide ($\varepsilon_r$ = 3.9) a 5 mm wire takes about 66 ps there and back, against a 100 ps bit at 10 Gb/s. What saves it is resistance. Interposer wires are narrow and thin, so they behave as damped, distributed RC lines whose reflections die out within the bit, and they need no termination. For energy, the wire, bumps and pads act as one lumped capacitance $C$. Charging it from 0 to $V$ draws $CV^2$ from the supply, whatever the driver's resistance (23-01). With random data, a 0-to-1 transition happens on a quarter of the bits, so
 
 $$
 E_{bit} = \tfrac14 CV^2 .
@@ -90,7 +90,7 @@ $$
 
 for a TSV of length $L$. Units: F/m × m = F. ✓ The silicon around the liner depletes under bias and adds a series capacitance, so this oxide value is an upper bound. The TSV's resistance is that of a copper cylinder, $R = \rho L/(\pi a^2)$.
 
-For a TSV a few micrometres across and a few tens of micrometres long, $C$ is about a hundred femtofarads, $R$ tens of milliohms and $RC$ a few femtoseconds (Example 23-05.4). Electrically, a TSV is a short, slightly capacitive wire. The real costs are physical. Each TSV needs a **keep-out zone** where no transistors can sit, because the copper's thermal-expansion mismatch strains the nearby silicon and shifts transistor characteristics. And every die in the stack must carry every TSV path to the dies above it. SK hynix's HBM4 has over 20,000 TSVs and 16,148 base micro-bumps on a 12.8 × 11 mm footprint [9], so TSVs take a noticeable share of each core die (Example 23-05.4).
+For a TSV a few micrometres across and a few tens of micrometres long, $C$ is about a hundred femtofarads, $R$ tens of milliohms and $RC$ a few femtoseconds (Example 23-05.4). Its RC delay is negligible, but its capacitance is not. A signal bused up through a stack drives the TSV of every die it passes, so a 12-high stack adds over a picofarad of load per signal, comparable to the whole interposer path (Example 23-05.4). That is one reason vendors work on the TSV network. The other costs are physical. Each TSV needs a **keep-out zone** where no transistors can sit, because the copper's thermal-expansion mismatch strains the nearby silicon and shifts transistor characteristics. And every die in the stack must carry every TSV path to the dies above it. SK hynix's HBM4 has over 20,000 TSVs and 16,148 base micro-bumps on a 12.8 × 11 mm footprint (the same report also gives 12.4 × 11 mm) [9], so TSVs take a noticeable share of each core die (Example 23-05.4).
 
 ### 3.4 The height budget
 
@@ -102,7 +102,7 @@ $$
 
 which each core die shares with its bond gap. Going from 12 to 16 layers in the same height cuts every layer by a quarter, so dies must be thinned to a few tens of micrometres (Example 23-05.5). SK hynix's 12-high HBM3E added four layers to its 8-high stack "while keeping the same thickness" [6]. For its 16-high HBM3E it cut "chip thickness, gap height, and bump pitch roughly in half" [9]. Thin dies warp, crack and are hard to handle, so each step in stack height is a manufacturing problem first.
 
-**Bonding methods.** Dies are joined by microbumps and filled between with an insulating material, either by thermo-compression with non-conductive film (TC-NCF) or by mass reflow with molded underfill (MR-MUF). TC-NCF has lower thermal resistance but is sensitive to warpage; MR-MUF handles thin, warped dies better at the cost of higher thermal resistance [9]. **Hybrid bonding** joins copper pads and oxide directly, with no bumps or gap, at pitches below 18 µm. SK hynix positions it as the path to stacks of 20 or more dies [9].
+**Bonding methods.** Dies are joined by microbumps and filled between with an insulating material, either by thermo-compression with non-conductive film (TC-NCF) or by mass reflow with molded underfill (MR-MUF). Which conducts heat better is **[Contested]**: ServeTheHome's account of SK hynix's Hot Chips 2026 talk says TC-NCF has the lower thermal resistance [9], while SK hynix's own newsroom says MR-MUF's molded underfill has "stronger heat dissipation qualities than NCF" and carries up to four times as many thermal dummy bumps [20]. Both agree that TC-NCF is sensitive to warpage and that MR-MUF handles thin, warped dies better [9]. **Hybrid bonding** joins copper pads and oxide directly, with no bumps or gap, at pitches below 18 µm. SK hynix positions it as the path to stacks of 20 or more dies [9].
 
 ### 3.5 Heat must leave through the top
 
@@ -124,7 +124,7 @@ $$
 
 Untested dies would be ruinous: at 90% die yield a 12-high stack works only 28% of the time (Example 23-05.7). So every die is tested before stacking (known-good die), and every stack is tested again before it goes onto an interposer (known-good stacked die), because a bad stack found after assembly would scrap the expensive processor and interposer too [9]. Spare rows, columns and TSVs repair what testing finds.
 
-**Wafers per bit.** An HBM core die holds fewer bits per square millimetre than a commodity die of the same node, because of TSV areas, wider I/O and extra test and repair logic; HBM4's larger I/O count enlarges it further [13]. Stack yield losses compound this. TrendForce estimates that HBM took 18%, 22% and about 30% of DRAM wafer starts in 2025–2027, but only 8%, 9% and about 13% of DRAM bits [14]. If a fraction $w$ of wafers yields a fraction $b$ of bits, HBM's wafers per bit relative to conventional DRAM is
+**Wafers per bit.** An HBM core die holds fewer bits per square millimetre than a commodity die of the same node, because of TSV areas, wider I/O and extra test and repair logic; HBM4's larger I/O count enlarges it further [13]. Stack yield losses compound this. TrendForce estimates HBM's share of DRAM wafer starts at 18% in 2025 and forecasts 22% and about 30% for 2026 and 2027, against only 8%, 9% and about 13% of DRAM bits [14]. If a fraction $w$ of wafers yields a fraction $b$ of bits, HBM's wafers per bit relative to conventional DRAM is
 
 $$
 \frac{w/b}{(1 - w)/(1 - b)} ,
@@ -136,7 +136,13 @@ which these estimates put at about 2.5 to 2.9 (Example 23-05.7). That is the mec
 
 ### 3.7 The base die moves to a logic process
 
-Through HBM3E, the base die was made in the DRAM maker's own process and acted mainly as a pass-through: PHY, test and power distribution. For HBM4, makers are moving to logic-process base dies, which give faster, lower-power PHYs and room for customer logic. TrendForce describes SK hynix and Samsung collaborating with foundries on logic-based base dies [13]. Samsung's HBM4 pairs its 1c DRAM with its own 4 nm logic base die [4], and Micron's samples use TSMC-made base dies [8]. Customer-specific base dies ("custom HBM") would let an accelerator vendor move some memory-controller or near-memory compute functions into the stack, with the base die becoming a co-designed chiplet (23-09).
+Through HBM3E, the base die was made in the DRAM maker's own process and acted mainly as a pass-through: PHY, test and power distribution. For HBM4, makers are moving to logic-process base dies, which give faster, lower-power PHYs and room for customer logic. TrendForce describes SK hynix and Samsung collaborating with foundries on logic-based base dies [13]. Samsung's HBM4 pairs its 1c DRAM with its own 4 nm logic base die [4]. Micron's HBM4 uses a base die made in its own CMOS process, and Micron has announced TSMC-made standard and custom base dies for HBM4E, targeted for 2027 [18], [19]. Customer-specific base dies ("custom HBM") would let an accelerator vendor move some memory-controller or near-memory compute functions into the stack, with the base die becoming a co-designed chiplet (23-09).
+
+**Power, packaging and reliability.** Three system issues sit beside bandwidth:
+
+- *Power delivery.* Every core die's supply current flows up through the power TSVs and microbumps of the dies below it, so the IR drop accumulates up the stack just as heat does in §3.5, and the top dies see the lowest supply. A large share of the TSVs and bumps carry power and ground, not signals.
+- *Interposer choices.* TSMC's CoWoS-S uses a full silicon interposer. CoWoS-L embeds small silicon bridges in a larger organic redistribution interposer, so packages can exceed one interposer's size. Intel's EMIB embeds bridges in the package substrate itself. All of them aim to give the fine wiring pitch HBM needs only where the processor meets the stacks.
+- *Reliability.* HBM3 added on-die ECC inside each DRAM, and stacks carry spare rows, columns and TSVs that are repaired at test and, through post-package repair, in the field. A failed stack is bonded beside an expensive processor and cannot be replaced, so RAS features decide whether a memory fault scraps the whole module.
 
 ## 4. Worked examples
 
@@ -201,7 +207,7 @@ Through HBM3E, the base die was made in the DRAM maker's own process and acted m
 
 **Units check.** (F/m × m) = F; Ω·m × m/m² = Ω; Ω × F = s. ✓
 
-**Sanity check.** Electrically the TSV is negligible, but the keep-out zones claim almost a tenth of the die. That area, not the copper, is why an HBM die holds fewer bits than a commodity die.
+**Sanity check.** The RC is negligible, but the capacitance adds up. A signal bused through all twelve core dies of Example 23-05.5's 12-high stack, whose 41.25 µm dies carry shorter TSVs than this 50 µm one, sees $12 \times 141\ \text{fF} \times 41.25/50$ = 1.40 pF before microbumps and ESD, more than Example 23-05.3's whole 1.3 pF interposer path. At an assumed 1.0 V core-side swing that is $\tfrac14 \times 1.40\ \text{pF} \times 1.0^2$ = 0.35 pJ per bit, about 7 times Example 23-05.3's figure. Meanwhile the keep-out zones claim almost a tenth of the die. That area, not the copper, is why an HBM die holds fewer bits than a commodity die.
 
 ### Example 23-05.5 · The stack-height budget (tier B)
 
@@ -213,7 +219,7 @@ Through HBM3E, the base die was made in the DRAM maker's own process and acted m
 - (c) $615/12$ = **51.25** µm; (d) **41.25** µm.
 - (e) $615/16$ = **38.4** µm; (f) **28.4** µm.
 - (g) $1 - 28.44/41.25$ = **31.1** %.
-- (h) $8/12$ = **0.667**, a third thinner, as SK hynix did for 12-high HBM3E [6].
+- (h) $8/12$ = **0.667**: each layer keeps two-thirds of its pitch. With the 10 µm gap fixed, the die itself thins from 66.9 to 41.25 µm, by **38.3** %, close to the 40% SK hynix reported for its 12-high HBM3E dies [21].
 
 **Units check.** µm/layers = µm per layer. ✓
 
@@ -256,7 +262,7 @@ Through HBM3E, the base die was made in the DRAM maker's own process and acted m
 
 - (a) $\pi \times 300^2/(4 \times 2500) - \pi \times 300/\sqrt{5000}$ = 14.9, so **14** whole interposers.
 - (b) $14 \times 130{,}000$ = **1.82** million; (c) × 8 = **14.6** million stacks.
-- (d) **11.4** per wafer.
+- (d) **11.4**, so 11 whole interposers per wafer.
 
 **Units check.** mm²/mm² and mm/mm are counts. ✓
 
@@ -330,7 +336,17 @@ Through HBM3E, the base die was made in the DRAM maker's own process and acted m
 | Txt 23-05.b | pseudo-channels per HBM4 stack | 64 | |
 | Txt 23-05.c | gap share of layer resistance | 97 | % |
 | Txt 23-05.d | extra base rise from 4 more layers | 4.6 | K |
-| Txt 23-05.e | pitch per layer at 20 layers | 21 | µm |
+| Txt 23-05.e | die thickness at 20 layers | 21 | µm |
+| Txt 23-05.n | round trip of a 5 mm oxide wire | 66 | ps |
+| Txt 23-05.o | bit time at 10 Gb/s | 100 | ps |
+| Txt 23-05.p | TSV load of a 12-high stack | 1.40 | pF |
+| Txt 23-05.q | TSV energy per bit at 1.0 V | 0.35 | pJ |
+| Txt 23-05.r | TSV energy over interposer energy | 7 | |
+| Txt 23-05.s | Rubin bandwidth at 10.75 Gb/s | 22 | TB/s |
+| Txt 23-05.t | Rubin bandwidth at 9.375 Gb/s | 19.2 | TB/s |
+| Txt 23-05.u | Rubin bandwidth cut | 12.8 | % |
+| Txt 23-05.v | SK hynix reported die thinning | 40 | % |
+| Ex 23-05.5h1 | die thinning, 8-high to 12-high | 38.3 | % |
 | Txt 23-05.f | DDR5-style interface power, rounded | 82 | W |
 | Txt 23-05.g | wafers per bit, range low | 2.5 | |
 | Txt 23-05.h | wafers per bit, range high | 2.9 | |
@@ -394,7 +410,7 @@ The notebook sweeps stack height, gap conductivity and pin rate.
 - **Comparing pin rates across interfaces.** HBM3E's 9.6 Gb/s per pin is about a third of GDDR7's 28 Gb/s, yet one HBM3E stack (1.23 TB/s) delivers 69% of an RTX 5090's entire GDDR7 bandwidth (23-04). Compare bandwidth per stack, per package and per watt.
 - **Confusing the JEDEC rate with shipping rates.** HBM4's standard says up to 8 Gb/s; vendors ship 10–11.7 Gb/s parts and quote 13 Gb/s headroom [2], [4], [7].
 - **Treating capacity and bandwidth as independent.** More layers add capacity but not bandwidth: all layers share the stack's interface.
-- **Assuming TSVs are electrically significant.** Their RC is femtoseconds. Their area, stress and yield are what matter.
+- **Dismissing TSVs electrically.** Their RC is femtoseconds, but a stack's TSV column adds about a picofarad of load per signal, comparable to the interposer. Their area, stress and yield matter too.
 - **Ignoring heat in the stack.** The base die sits under every layer, and DRAM retention falls with temperature.
 - **Reading HBM's share of DRAM bits as its share of supply.** HBM's wafer share is two to three times its bit share.
 - **Assuming vendor "firsts" are comparable.** "Mass production", "shipping" and "samples" mean different things, and companies announce on different dates for the same milestone (§9).
@@ -418,6 +434,7 @@ The notebook sweeps stack height, gap conductivity and pin rate.
 - *"2.7× the bandwidth of HBM3E."* True per stack at 13 Gb/s (Example 23-05.1), but much of it is the doubled width, which also doubles TSVs, bumps and interposer wiring.
 - *"40% better power efficiency."* Per bit, against the previous generation, at a stated speed. Ask for pJ/bit at the pin rate the customer will run [4], [9].
 - *"64 GB stacks."* The standard allows them [2]; shipping parts are 24–36 GB, with 48 GB 16-high in qualification [4], [9].
+- *Launch bandwidth figures.* NVIDIA first quoted Rubin at 22 TB/s of HBM4 (8 × 2,048 bits at 10.75 Gb/s) and later listed 19.2 TB/s (9.375 Gb/s), a 12.8% cut, while one of its own product pages still showed 22 TB/s [11], [22]. Pin rates are set by what stacks yield in volume; treat pre-production bandwidth as a target.
 
 **Questions for engineering leaders.**
 
@@ -449,7 +466,7 @@ Bandwidth is unchanged, because the interface is the same. Capacity rises by a t
 
 <details><summary>Answer</summary>
 
-Its cost is area and process. Each TSV needs a keep-out zone free of transistors, adding up to several percent of the die (Example 23-05.4). It also needs etch, fill and thinning steps that add process cost and yield loss.
+Its cost is area and process. Each TSV needs a keep-out zone free of transistors, claiming almost a tenth of the die (Example 23-05.4). It also needs etch, fill and thinning steps that add process cost and yield loss.
 
 </details>
 
@@ -514,3 +531,8 @@ Problem set: [23-05 problems](../problems/23-05-problems.md).
 15. TrendForce, "TSMC CoWoS Supply-Demand Gap Reportedly Seen Narrowing from 20% to 10% by End-2026 as Capacity Expands," 15 Jun 2026, <https://www.trendforce.com/news/2026/06/15/news-tsmc-cowos-supply-demand-gap-reportedly-seen-narrowing-from-20-to-10-by-end-2026-as-capacity-expands>. [R-477]
 16. The Korea Times, "SK hynix pledges to return $75 bil. to shareholders," 28 Oct 2026, <https://www.koreatimes.co.kr/business/companies/20261028/sk-hynix-logs-record-q3-operating-profit-of-628-bil>. [R-477]
 17. The Register, "Samsung and Micron start shipping HBM4," 13 Feb 2026, <https://www.theregister.com/2026/02/13/samsung_and_micron_start_shipping/>. [R-475]
+18. Micron Technology, Form 10-K for fiscal 2026, filed 9 Oct 2026, <https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm>. [R-494]
+19. Tom's Hardware, "Micron hands TSMC the keys to HBM4E," 25 Sep 2025, <https://www.tomshardware.com/micron-hands-tsmc-the-keys-to-hbm4e>. [R-494]
+20. SK hynix newsroom, "[Rulebreakers' Revolutions] How MR-MUF's Heat Control Breakthrough Elevated HBM to New Heights," 30 Jul 2024, <https://news.skhynix.com/en/rulebreaker-revolutions-mr-muf-unlocks-hbm-heat-control/>. [R-496]
+21. SK hynix newsroom, "SK hynix Begins Volume Production of the World's First 12-Layer HBM3E," 26 Sep 2024, <https://news.skhynix.com/en/sk-hynix-begins-volume-production-of-the-world-first-12-layer-hbm3e/>. [R-496]
+22. ServeTheHome, "NVIDIA Updates Rubin GPU Specs as First Production Hardware Arrives," 1 Nov 2026, <https://www.servethehome.com/nvidia-updates-rubin-gpu-specs-as-first-production-hardware-arrives/>. [R-501]

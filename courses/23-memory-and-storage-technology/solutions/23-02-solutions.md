@@ -10,7 +10,7 @@ Every number is recomputed by [verify_23_02.py](../verify/verify_23_02.py).
 
 ### Solution 23-02.1
 
-(a) $1/0.0312$ = **32.1** × 10⁶ bits/mm²; (b) $1/0.024$ = **41.7** × 10⁶ bits/mm²; (c) $1 - 0.024/0.0312$ = **23.1** %. Intel 4's cell shrank in one step by about as much as TSMC's cell has shrunk from N5 to N2 (nothing).
+(a) $1/0.0312$ = **32.1** × 10⁶ bits/mm²; (b) $1/0.024$ = **41.7** × 10⁶ bits/mm²; (c) $1 - 0.024/0.0312$ = **23.1** %. Intel 4's cell shrank 23% in one step; TSMC's high-density cell has not shrunk at all from N5 to N2.
 
 ### Solution 23-02.2
 

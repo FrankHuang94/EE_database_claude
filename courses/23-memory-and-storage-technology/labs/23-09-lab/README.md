@@ -44,10 +44,16 @@ Build a small resistive crossbar in ngspice, confirm that it computes a signed m
 | Lab 23-09.h | output 1 drop in Part B | 40 | % |
 | Lab 23-09.i | SNR for 5% variation | 26 | dB |
 | Lab 23-09.j | effective bits for 5% variation | 4 | bits |
+| Lab 23-09.k | column 2 positive half with 10 kΩ sensing | 2.69 | µA |
+| Lab 23-09.l | column 2 negative half with 10 kΩ sensing | 3.71 | µA |
+| Lab 23-09.m | column 2 positive-half loss | 0.91 | µA |
+| Lab 23-09.n | column 2 negative-half loss | 0.89 | µA |
+| Lab 23-09.o | column 2 positive-half loss share | 25 | % |
+| Lab 23-09.p | column 2 negative-half loss share | 19 | % |
 
 - Part 1: Part A matches Example 23-09.2 to the printed digits. In Part B, output 1 falls by about 40%, while output 2 barely changes. The error depends on each column's total conductance, so it is data-dependent, not a simple gain error.
 - Part 2: the measured SNR lands within a few tenths of a decibel of the model's 26 dB (about 4 effective bits).
-- Part 3: the ceiling falls as the square of the bit width; at 8 bits it sits in single digits of TOPS/W for a 5 fJ per step ADC.
+- Part 3: the ceiling falls as the square of the bit width; at 8 bits it sits in single digits of TOPS/W for a 5 fJ per step ADC with bit-serial inputs and binary slices. Published chips that need fewer conversions per MAC sit above it.
 
 ## Discussion
 
@@ -55,7 +61,7 @@ Build a small resistive crossbar in ngspice, confirm that it computes a signed m
 
    <details><summary>Answer</summary>
 
-   Each column's voltage rises to $I R_s$, cutting every cell's voltage by that amount. Column 1's positive half would carry 11.6 µA ideally; with 10 kΩ sensing its voltage rises to 70.7 mV, and it loses a large share of its current. Output 2's halves carry only a few microamps each, so both lose little, and their losses nearly cancel in the difference.
+   Each column's voltage rises to $I R_s$, cutting every cell's voltage by that amount. Column 1's positive half would carry 11.6 µA ideally; with 10 kΩ sensing its voltage rises to 70.7 mV, and it loses a large share of its current. Output 2's halves lose about a quarter (3.6 to 2.69 µA) and a fifth (4.6 to 3.71 µA) of their currents, but the absolute losses happen to be nearly equal (0.91 and 0.89 µA), so they cancel in the difference. That is luck, not robustness: other data would not cancel.
 
    </details>
 

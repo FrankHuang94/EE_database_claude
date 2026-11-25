@@ -108,6 +108,12 @@ v.check("Lab 23-09.f", y2b * 1e6)
 v.check("Lab 23-09.g", sens[(0, "p")][0] * 1e3)
 v.check("Lab 23-09.h", (1 - y1b / 11e-6) * 100)
 v.check("Txt 23-09.c", (1 - y1b / 11e-6) * 100)
+for ident, key in (("k", (1, "p")), ("l", (1, "n"))):
+    v.check(f"Lab 23-09.{ident}", sens[key][1] * 1e6)
+for ident, key in (("m", (1, "p")), ("n", (1, "n"))):
+    v.check(f"Lab 23-09.{ident}", (cur[key] - sens[key][1]) * 1e6)
+for ident, key in (("o", (1, "p")), ("p", (1, "n"))):
+    v.check(f"Lab 23-09.{ident}", (1 - sens[key][1] / cur[key]) * 100)
 
 # ---------------------------------------------------------------- Example 23-09.3 and the SNR Monte Carlo
 for ident, s in (("a", 0.05), ("b", 0.01)):
@@ -173,6 +179,30 @@ v.check("Ex 23-09.8a", 63.1 * 0.3)
 v.check("Ex 23-09.8a1", 63.1 * 0.3)
 v.check("Ex 23-09.8b", 63.1 * 0.3 / p_h)
 v.check("Txt 23-09.b", 3)
+v.check("Txt 23-09.f", 20 * math.log10(3))
+v.check("Txt 23-09.g", math.ceil(math.log2(256 + 1)))
+v.check("Txt 23-09.h", 256 + 1)
+v.check("Txt 23-09.i", 9.76 / 2.48)
+
+# ---------------------------------------------------------------- Problem 23-09.14: Monte Carlo of full-scale error
+rng14 = np.random.default_rng(14)
+M14, T14 = 256, 20000
+w14 = rng14.standard_normal((T14, M14))
+x14 = rng14.standard_normal((T14, M14))
+n14 = 0.01 * 3 * rng14.standard_normal((T14, M14))
+y014 = (w14 * x14).sum(axis=1)
+e14 = (n14 * x14).sum(axis=1)
+v.assert_true("full-scale model SNR = 1/(c sigma)^2 within 5%", abs(np.mean(y014 ** 2) / np.mean(e14 ** 2) * (0.03 ** 2) - 1) < 0.05)
+snr14 = 1 / (3 * 0.01) ** 2
+v.check("23-09.14b0", snr14)
+v.check("23-09.14b1", 10 * math.log10(snr14))
+v.check("23-09.14b", enob_from(10 * math.log10(snr14)))
+v.check("23-09.14c", 40 - 10 * math.log10(snr14))
+v.check("23-09.14c1", (40 - 10 * math.log10(snr14)) / 6.02)
+need14 = 6.02 * 6 + 1.76
+v.check("23-09.14d0", need14)
+v.check("23-09.14d1", 10 ** (need14 / 10))
+v.check("23-09.14d", optimize.brentq(lambda s: enob_from(10 * math.log10(1 / (3 * s) ** 2)) - 6, 1e-4, 0.1) * 100)
 
 # ---------------------------------------------------------------- problems
 v.check("23-09.1a", column_current_loop([0.1, 0.2, 0.05], [20e-6, 10e-6, 0]) * 1e6)

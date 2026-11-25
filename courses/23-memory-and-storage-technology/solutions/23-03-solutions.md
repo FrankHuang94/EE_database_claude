@@ -116,7 +116,7 @@ A cell that must hold its charge for only 32 ms at 95 °C needs seconds of reten
 
 (d) $0.1735\ \text{nJ}/128$ = **1.36** pJ/bit.
 
-DDR5's 32 ms window and twice as many banks make bitline refresh power about double the DDR4 device of Example 23-03.7, at a similar energy per row.
+Both devices have $2^{21}$ rows (DDR4 x8: 16 × 131,072; DDR5 x8: 32 × 65,536). DDR5 refreshes them in half the time (32 ms against 64 ms), so bitline refresh power roughly doubles against Example 23-03.7, at a similar energy per row.
 
 ### Solution 23-03.11
 
@@ -156,7 +156,7 @@ A wordline 0.4 V above $V_{ARY} + V_{TH}$ fills the cell to within a millivolt i
 
 (b) $h = A/(\pi d) = 0.163\ \mu\text{m}^2/(\pi \times 25\ \text{nm})$ = **2.07** µm; (c) $2.07\ \mu\text{m}/25\ \text{nm}$ = **82.8**.
 
-(d) Both walls double the area per unit height: **1.04** µm.
+(d) As an idealized bound, coating both walls doubles the area per unit height: **1.04** µm. (A 25 nm cylinder with a 6 nm film and electrodes on each wall would leave almost no interior, so real double-walled cells need a wider opening.)
 
 (e) $\varepsilon_r = C t/(\varepsilon_0 \cdot 2\pi d h) = 6\ \text{fF} \times 6\ \text{nm}/(8.854 \times 10^{-12} \times 2\pi \times 25\ \text{nm} \times 1.0\ \mu\text{m})$ = **25.9**.
 

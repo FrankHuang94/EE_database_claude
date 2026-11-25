@@ -24,6 +24,7 @@ No circuit simulator is needed: an FTL is an algorithm, and software is its natu
 1. Predict $A$ at 7%, 14% and 28% OP from the closed form.
 2. Run `simulate_ftl` with FIFO cleaning at each OP and compare.
 3. Switch to greedy cleaning. *Predict first:* better or worse, and by how much?
+4. Rerun greedy and FIFO with `pages_per_block=512`. *Predict* whether greedy's advantage grows or shrinks.
 
 **Part 2 · Hot and cold data.** Send 90% of the writes to 10% of the LBAs at 7% OP with greedy cleaning. *Predict* whether $A$ rises or falls compared with uniform writes. Then turn on `separate_streams`, which writes hot and cold data to different open blocks, as a host using Flexible Data Placement could.
 
@@ -44,7 +45,7 @@ No circuit simulator is needed: an FTL is an algorithm, and software is its natu
 | Lab 23-07.g | ratio of tolerable raw error rates, t = 60 to t = 20 | 9 | |
 | Lab 23-07.h | parity ratio, t = 60 to t = 20 | 3 | |
 
-- Part 1: with 65,536 user pages, the simulated FIFO values land within about 1% of the closed form. Greedy cleaning gives lower write amplification, by roughly a tenth at 7% OP and only a few percent at 28%, close to Desnoyers' values.
+- Part 1: with 65,536 user pages, the simulated FIFO values land within about 1% of the closed form. Greedy cleaning gives lower write amplification with 64-page blocks, by roughly a tenth at 7% OP and only a few percent at 28%, close to Desnoyers' values for that block size. At 512 pages per block the gap shrinks to a percent or two, and for the thousands of pages in real 3D NAND blocks it nearly vanishes.
 - Part 2: the skewed workload makes greedy cleaning worse than under uniform writes, because victims keep carrying cold pages. Separating the streams lowers $A$ by roughly a fifth in the default setting. The exact values depend on the skew and the seed.
 - Part 3: tripling $t$ from 20 to 60 raises the tolerable raw error rate about ninefold, while the parity grows threefold.
 
@@ -54,7 +55,7 @@ No circuit simulator is needed: an FTL is an algorithm, and software is its natu
 
    <details><summary>Answer</summary>
 
-   Under uniform writes, every block ages the same way, so the oldest block is usually also among the emptiest. Greedy gains only from the random variation between blocks of similar age. With skewed traffic, block ages and fullness decouple, and the choice of policy matters much more.
+   Under uniform writes, every block ages the same way, so the oldest block is usually also among the emptiest. Greedy gains only from the random variation between blocks of similar age, and that variation shrinks as blocks hold more pages (the valid count of a large block averages over more pages). With skewed traffic, age and fullness decouple, but without hot/cold separation both policies suffer, because cold pages dilute every victim (Part 2).
 
    </details>
 
@@ -70,7 +71,7 @@ No circuit simulator is needed: an FTL is an algorithm, and software is its natu
 
    <details><summary>Answer</summary>
 
-   Wear leveling, which adds copies of cold data; mapping-table persistence, which adds metadata writes; read disturb and retention refresh, which rewrite data the host did not touch; multi-plane and multi-die parallelism; and TRIM. Each of these raises real write amplification above the model's, while workload locality lowers it.
+   Wear leveling, which adds copies of cold data; mapping-table persistence, which adds metadata writes; and read-disturb and retention refresh, which rewrite data the host did not touch. Each of these raises real write amplification above the model's. TRIM and workload locality lower it. Multi-die superblocks enlarge the erase unit, which pushes greedy cleaning toward FIFO's result.
 
    </details>
 

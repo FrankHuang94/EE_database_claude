@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 23-03 · DRAM Cells, Arrays and Refresh
 
 | | |
@@ -73,7 +73,7 @@ $$
 
 The factor $C_s/(C_s + C_{BL})$ is the **transfer ratio**. With $V_{pre} = V_{ARY}/2$, a stored 1 gives $+\tfrac12V_{ARY}$ times the ratio and a stored 0 gives the same magnitude negative. Units: F/F is dimensionless, so ΔV is in volts. ✓
 
-Half-$V_{ARY}$ precharge has three advantages. The 0 and 1 signals are symmetric, so one reference works for both. The reference costs nothing: after a read, one bitline of each pair sits at $V_{ARY}$ and the other at 0, and shorting them together (equalization) lands both at $V_{ARY}/2$ by the same charge-sharing argument, with no current from the supply. And the cell's dielectric sees at most $V_{ARY}/2$ if its plate is also held at $V_{ARY}/2$, which allows a thinner, higher-capacitance film.
+Half-$V_{ARY}$ precharge has two advantages. The 0 and 1 signals are symmetric, so one reference works for both. The reference costs nothing: after a read, one bitline of each pair sits at $V_{ARY}$ and the other at 0, and shorting them together (equalization) lands both at $V_{ARY}/2$ by the same charge-sharing argument, with no current from the supply. A related but separate choice is to hold the cell's plate at $V_{ARY}/2$ too. Its dielectric then sees at most $V_{ARY}/2$, whatever the bitline does, which allows a thinner, higher-capacitance film.
 
 Typical numbers make the problem plain. With $C_s$ = 8 fF and $C_{BL}$ = 40 fF (both assumed, in the range §7 gives), the transfer ratio is 1/6. A 1 V array then delivers only 83.3 mV (Example 23-03.1), from about 5 × 10⁴ electrons.
 
@@ -115,7 +115,7 @@ $$
 
 The cell approaches $V_{ARY} - V_{TH}$, and only as $1/t$. Access transistors have a high threshold (to keep leakage low, §3.7), so a stored 1 would be badly weak. Units: $k$ in A/V², $t/C_s$ in s/F = V/A, so $kt/C_s$ is 1/V, matching $1/a$. ✓
 
-**Boosted wordline.** If the wordline is driven to $V_{PP} > V_{ARY} + V_{TH}$, the transistor is in its linear region throughout and the cell reaches the full $V_{ARY}$. Micron's DDR5 data sheet lists a separate $V_{PP}$ supply of 1.8 V nominal, the "activating power supply", beside the 1.1 V $V_{DD}$ [1]. With $u = V_{ARY} - V$ the remaining shortfall and $b = V_{PP} - V_{TH} - V_{ARY} > 0$, the linear-region current $k\left[(V_{PP} - V - V_{TH})(V_{ARY} - V) - \tfrac12(V_{ARY} - V)^2\right]$ becomes $k(bu + \tfrac12u^2)$, so
+**Boosted wordline.** If the wordline is driven to $V_{PP} > V_{ARY} + V_{TH}$, the transistor is in its linear region throughout and the cell reaches the full $V_{ARY}$. Micron's DDR5 data sheet lists a separate external $V_{PP}$ supply of 1.8 V nominal, the "activating power supply", beside the 1.1 V $V_{DD}$ [1]; on-die pumps and drivers derive the boosted wordline level from it. (This analysis ignores body effect, which raises the access transistor's threshold as its source rises toward $V_{ARY}$ and is one reason the boost must be generous.) With $u = V_{ARY} - V$ the remaining shortfall and $b = V_{PP} - V_{TH} - V_{ARY} > 0$, the linear-region current $k\left[(V_{PP} - V - V_{TH})(V_{ARY} - V) - \tfrac12(V_{ARY} - V)^2\right]$ becomes $k(bu + \tfrac12u^2)$, so
 
 $$
 C_s\frac{du}{dt} = -k\left(bu + \tfrac12u^2\right) .
@@ -151,7 +151,7 @@ $$
 t_{sense} = \tau \ln\frac{V_{final}}{\Delta V} .
 $$
 
-Halving the signal costs only one extra $\tau\ln 2$: the logarithm is forgiving. The linear model is optimistic, because the latch's devices start nearly off and its supply lines take time to move; the lab's simulation of a full read takes about 1.5 times as long as this estimate. What the logarithm does not forgive is offset: if the two inverters' thresholds differ by more than ΔV, the latch resolves the wrong way. Each sense amplifier's offset is a random variable (Pelgrom's law, 20-11), and a device has tens of millions of them: a 16 Gib device with 512-cell bitlines has 2²⁵ bitlines. Using 23-02's array-sigma argument, 2²⁵ sense amplifiers at 99% yield need the worst-case signal to sit about 6.19 standard deviations of offset away from zero.
+Halving the signal costs only one extra $\tau\ln 2$: the logarithm is forgiving. The linear model is optimistic, because the latch's devices start nearly off and its supply lines take time to move; the lab's simulation of a full read takes about 1.5 times as long as this estimate. What the logarithm does not forgive is offset: if the two inverters' thresholds differ by more than ΔV, the latch resolves the wrong way. Each sense amplifier's offset is a random variable (Pelgrom's law, 20-11), and a device has tens of millions of them: a 16 Gib device with 512-cell bitlines has 2²⁵ cell-bearing bitlines and, with one sense amplifier per bitline pair, 2²⁴ sense amplifiers. Using 23-02's array-sigma argument, 2²⁴ sense amplifiers at 99% yield need the worst-case signal to sit about 6.08 standard deviations of offset away from zero.
 
 When the latch resolves, it drives one bitline to $V_{ARY}$ and the other to 0. The cell, still connected through its boosted wordline, is pulled back to full strength. The read was destructive (charge sharing left the cell at the bitline's intermediate voltage) but it ends with a **restore**. The whole row's worth of sense amplifiers now holds the row: this is the open page or row buffer. Closing the row lowers the wordline, then equalizes and precharges the bitlines for the next activation.
 
@@ -173,7 +173,7 @@ A **bank** is the unit that can have one open row. Its rows are divided into **s
 
 Micron's 16 Gb DDR5 device in its x8 version has 32 banks in 8 groups of 4, 65,536 rows per bank (row address R0–R15), 1,024 columns (C0–C9) and a 1 KB page [1]. The page is the number of columns times the data width: $2^{10} \times 8$ bits = 8,192 bits. The x16 part keeps 16 banks and a 2 KB page. Its 16 Gb DDR4 part (x8) has 16 banks in 4 groups, 131,072 rows (A[16:0]) and the same 1 KB page [2]. Counting bits confirms the organization (Example 23-03.5).
 
-**Cell area.** Today's cells occupy $6F^2$, where $F$ is the half-pitch design rule: a 3F × 2F footprint with the bitline contact shared between two cells. TechInsights measured a 15.9 nm design rule on Micron's first DDR5 node (D1z) and a 66.26 mm² die for 16 Gb [7]. Example 23-03.5 turns those into a cell area, a bit density and the fraction of the die that is cells: about 39%. The rest is sense amplifiers, wordline drivers, decoders, I/O, refresh logic and on-die ECC.
+**Cell area.** Today's cells occupy $6F^2$, where $F$ is the half-pitch design rule: a 3F × 2F footprint with the bitline contact shared between two cells. TechInsights measured a 15.9 nm design rule on Micron's first DDR5 node (D1z) and a 66.26 mm² die for 16 Gb [7]. Example 23-03.5 turns those into a cell area, a bit density and the fraction of the die that is cells: about 39%. The rest is sense amplifiers, wordline drivers, decoders, I/O, refresh logic and on-die ECC logic. (DDR5's on-die ECC also stores 8 parity bits per 128 data bits in extra cells, 6.25% more, so cells actually take about 42% of the die.)
 
 ### 3.6 Timing: activate, read, precharge
 
@@ -191,7 +191,9 @@ Three cases follow for a read arriving at a bank:
 | Row miss (closed bank) | precharged, no row open | ACT, RD | $t_{RCD} + t_{CL}$ |
 | Row conflict | a different row is open | PRE, ACT, RD | $t_{RP} + t_{RCD} + t_{CL}$ |
 
-Micron's DDR4-3200 speed bin specifies tAA = tRCD = tRP = 13.75 ns and tRAS ≥ 32 ns, so tRC = 45.75 ns [2]. Its DDR5-6400 bins specify tAA = tRCD = tRP = 16.0 ns [1]. Each of these is a few tens of nanoseconds. They are set by bitline RC and sense-amplifier physics, which have barely changed, while the data rate per pin doubled. Lee et al. found that over an 11-year span tRCD and tRC fell by only about 30% and 26% [R-462].
+Micron's DDR4-3200 speed bin specifies tAA = tRCD = tRP = 13.75 ns and tRAS ≥ 32 ns, so tRC = 45.75 ns [2]. Its DDR5-6400 bins specify tAA = tRCD = tRP = 16.0 ns [1]. Each of these is a few tens of nanoseconds. They are set by bitline RC and sense-amplifier physics, which have barely changed, while the data rate per pin doubled. Lee et al. found that over an 11-year span tRCD and tRC fell by only about 30% and 26% [17].
+
+**Activation limits.** Each activation charges thousands of bitlines at once, a sharp pulse of supply current. To cap the peak, DDR devices limit how closely activations may follow one another: $t_{RRD}$ is the minimum spacing between activates to different banks, and $t_{FAW}$ is a window in which at most four activates may occur. These limits, as much as the bank count, bound how fast a controller can open rows, and they also cap how quickly an attacker can hammer rows in many banks at once (§3.8).
 
 **Page policy.** A controller that leaves rows open (open-page) wins on hits and loses on conflicts; one that precharges after every access (closed-page) always pays $t_{RCD} + t_{CL}$. If a fraction $h$ of accesses hit and the rest conflict, the open policy wins when $h\,t_{CL} + (1 - h)(t_{RP} + t_{RCD} + t_{CL}) < t_{RCD} + t_{CL}$, that is when
 
@@ -219,11 +221,11 @@ $$
 \text{refresh overhead} = \frac{t_{RFC}}{t_{REFI}} .
 $$
 
-Micron's DDR4 data sheet lists $t_{RFC1}$ = 160, 260, 350 and 350 ns for 2, 4, 8 and 16 Gb [2]. Capacity grew eightfold while $t_{RFC}$ grew 2.19 times, because each REF refreshes more rows in parallel, which costs peak current. The overhead still rose with density, and it doubles when hot (Example 23-03.7, Figure 2). Refresh also costs energy: every row is activated and restored once per window whether or not anyone needs its data.
+Micron's DDR4 data sheet lists $t_{RFC1}$ = 160, 260, 350 and 350 ns for 2, 4, 8 and 16 Gb [2]. (Micron's 16 Gb die is unusually fast: the JEDEC-style table in Samsung's DDR4 data sheet gives 550 ns for 16 Gb [18], which would make the overhead 7.04%, or 14.1% when hot. Check each vendor's value.) Across Micron's range, capacity grew eightfold while $t_{RFC}$ grew 2.19 times, because each REF refreshes more rows in parallel, which costs peak current. The overhead still rose with density, and it doubles when hot (Example 23-03.7, Figure 2). Refresh also costs energy: every row is activated and restored once per window whether or not anyone needs its data.
 
-DDR5 adds **same-bank refresh**: a REF that refreshes one bank in each bank group while the others keep serving requests, which hides much of the overhead [1]. It also halved the refresh window relative to DDR4, because smaller cells retain charge less well.
+DDR5 adds **same-bank refresh**: a REF that refreshes one bank in each bank group while the others keep serving requests, which hides much of the overhead [1]. It also halved the refresh window relative to DDR4, to 32 ms [1].
 
-**The weak-cell tail.** Most cells retain data for seconds. Refresh is set by the rare cells that do not. If retention times are spread lognormally across cells, the number of cells failing a window $t_w$ in an $N$-bit device is $N\,\Phi\!\left(\ln(t_w/t_{50})/\sigma_{\ln}\right)$, where $t_{50}$ is the median retention and $\Phi$ the standard normal CDF. Because the tail falls steeply, halving the window removes most failures (Lab Part 3). The few thousand remaining weak cells are replaced by spare rows and columns at test, and since DDR5, by **post-package repair** and on-die ECC [1]. Retention can also vary over time in a single cell (variable retention time), which makes testing for the weakest cells hard.
+**The weak-cell tail.** Most cells retain data for seconds. Refresh is set by the rare cells that do not. If retention times are spread lognormally across cells, the number of cells failing a window $t_w$ in an $N$-bit device is $N\,\Phi\!\left(\ln(t_w/t_{50})/\sigma_{\ln}\right)$, where $t_{50}$ is the median retention and $\Phi$ the standard normal CDF. Because the tail falls steeply, halving the window removes most failures (Lab Part 3). The few thousand remaining weak cells are replaced by spare rows and columns at test, and in the field by **post-package repair** (since DDR4 [2]) and, since DDR5, masked by on-die ECC [1]. Retention can also vary over time in a single cell (variable retention time), which makes testing for the weakest cells hard.
 
 ### 3.8 Row hammer and read disturbance
 
@@ -369,7 +371,7 @@ TechInsights reports that cell capacitance has fallen below 10 fF in D1z and D1a
 
 ### Example 23-03.7 · Refresh overhead and energy (tier B)
 
-**Setup.** For the 16 Gb DDR4 device ($t_{RFC}$ = 350 ns [2]), find the refresh overhead (a) at up to 85 °C ($t_{REFI}$ = 7.8125 µs) and (b) at 85–95 °C. (c) Find it for the 2 Gb part ($t_{RFC}$ = 160 ns). With 8,192 bitlines of 40 fF swinging at 1.0 V (assumed), find (d) the energy to sense and restore one row, and (e) the refresh power for the 16 Gb x8 device (16 banks × 131,072 rows in 64 ms). Find the activation energy per useful bit (f) when a row is opened for one 16-byte burst and (g) when the whole page is read.
+**Setup.** For the 16 Gb DDR4 device ($t_{RFC}$ = 350 ns [2]), find the refresh overhead (a) at up to 85 °C ($t_{REFI}$ = 7.8125 µs) and (b) at 85–95 °C. (c) Find it for the 2 Gb part ($t_{RFC}$ = 160 ns). With 8,192 sense amplifiers, each swinging a pair of 40 fF bitlines apart at 1.0 V (assumed), find (d) the energy to sense and restore one row, and (e) the refresh power for the 16 Gb x8 device (16 banks × 131,072 rows in 64 ms). Find the activation energy per useful bit (f) when a row is opened for one 16-byte burst and (g) when the whole page is read.
 
 **Solution.**
 
@@ -396,7 +398,7 @@ TechInsights reports that cell capacitance has fallen below 10 fF in D1z and D1a
 
 **Units check.** F × V/s = A. ✓
 
-**Sanity check.** A cell that holds data for a full second at room temperature still fails when hot: the weak tail, not the typical cell, sets refresh. Halving the window cuts the failing cells by a factor of 48, and the rest are repaired with spare rows at test.
+**Sanity check.** A cell that holds data for most of a second at 45 °C still fails when hot: the weak tail, not the typical cell, sets refresh. Halving the window cuts the failing cells by a factor of 48, and the rest are repaired with spare rows at test.
 
 ### Example 23-03.9 · Row hammer arithmetic and PARA (tier C)
 
@@ -411,6 +413,8 @@ TechInsights reports that cell capacitance has fallen below 10 fF in D1z and D1a
 - (e) A 365-day year is 31,536,000 s, or $31{,}536{,}000/0.064 = 4.9275 \times 10^8$ windows, so $1.905 \times 10^{-22} \times 4.9275 \times 10^8$ = **9.39** × 10⁻¹⁴, matching [5].
 - (f) $p = 2\left(1 - P^{1/N_{th}}\right) = 2(1 - e^{-50.01/4800})$ = **0.0207**.
 - (g) For 1,000: **0.0976**.
+
+In a double-sided attack, the 4.8k counts activations of *each* of two aggressors, and the closes of both can refresh the shared victim. The victim then gets 9,600 chances, and the $p$ needed for the same protection roughly halves.
 
 **Units check.** s/s = count; probabilities dimensionless. ✓
 
@@ -501,7 +505,12 @@ TechInsights reports that cell capacitance has fallen below 10 fF in D1z and D1a
 | Txt 23-03.c | DDR4-3200 tRC | 45.75 | ns |
 | Txt 23-03.d | DDR4 tRFC growth, 2 Gb to 16 Gb | 2.19 | |
 | Txt 23-03.e | page-policy break-even hit rate | 0.50 | |
-| Txt 23-03.f | sigma for 2²⁵ sense amplifiers | 6.19 | |
+| Txt 23-03.f | sigma for 2²⁴ sense amplifiers | 6.08 | |
+| Txt 23-03.f1 | ECC-inclusive cell share of the die | 42 | % |
+| Txt 23-03.f2 | parity overhead, 8 per 128 | 6.25 | % |
+| Txt 23-03.f3 | victim chances in a double-sided attack | 9600 | |
+| Txt 23-03.f4 | refresh overhead at 550 ns | 7.04 | % |
+| Txt 23-03.f5 | refresh overhead at 550 ns, hot | 14.1 | % |
 | Txt 23-03.g | electrode area for 8 fF | 0.217 | µm² |
 | Txt 23-03.h | electrode area over cell footprint | 143 | |
 | Txt 23-03.i | pillar height, 30 nm diameter | 2.30 | µm |
@@ -629,7 +638,7 @@ Charge sharing leaves the cell at the bitline's voltage, a few tens of millivolt
 
 <details><summary>Answer</summary>
 
-It makes the 0 and 1 signals symmetric about one reference. It costs no supply energy, because equalizing a bitline at $V_{ARY}$ with its partner at 0 lands both at $V_{ARY}/2$. And it halves the field across a cell dielectric whose plate is at $V_{ARY}/2$.
+It makes the 0 and 1 signals symmetric about one reference. It costs no supply energy, because equalizing a bitline at $V_{ARY}$ with its partner at 0 lands both at $V_{ARY}/2$. (Holding the cell *plate* at $V_{ARY}/2$, a separate choice, is what halves the field across the cell dielectric.)
 
 </details>
 
@@ -718,3 +727,5 @@ Problem set: [23-03 problems](../problems/23-03-problems.md).
 14. TrendForce, "Micron Reportedly Rules Out 4F² DRAM Scaling, Backs 6F² and 3D DRAM in Next-Gen Memory Roadmap," 22 Oct 2026, <https://www.trendforce.com/news/2026/10/22/news-micron-reportedly-rules-out-4f%C2%B2-dram-scaling-backs-6f%C2%B2-and-3d-dram-in-next-gen-memory-roadmap/>. [R-469]
 15. TrendForce, "SK hynix Eyes EUV-Driven 6F² Scaling, Keeps 4F² and 3D DRAM in Play as Micron Holds Back," 28 Oct 2026, <https://www.trendforce.com/news/2026/10/28/news-sk-hynix-eyes-euv-driven-6f%C2%B2-scaling-keeps-4f%C2%B2-and-3d-dram-in-play-as-micron-holds-back/>. [R-469]
 16. TrendForce, "Samsung Reportedly Produces Sub-10nm 10a DRAM Working Die Using 4F Square, VCT, Targets 2028 Production," 24 Apr 2026, <https://www.trendforce.com/news/2026/04/24/news-samsung-reportedly-produces-sub-10nm-10a-dram-working-die-using-4f-square-and-vct-targets-2028-production/>. [R-469]
+17. D. Lee et al., "Tiered-Latency DRAM: A Low Latency and Low Cost DRAM Architecture," *HPCA*, 2013, pp. 615–626, doi:10.1109/HPCA.2013.6522354; retrospective arXiv:1805.03048. [R-462]
+18. Samsung Electronics, 8Gb C-die DDR4 SDRAM data sheet, Rev. 1.5, Apr 2017 (tRFC1 table), <https://download.semiconductor.samsung.com/resources/user-manual/x16%20only_8G_C_DDR4_Samsung_Spec_Rev1.5_Apr.17.pdf>. [R-500]

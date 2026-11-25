@@ -119,6 +119,20 @@ v.check("Ex 23-08.4e0", pset * 1e6)
 v.check("Ex 23-08.4e", math.sqrt(pset / 2e3) * 1e6)
 v.check("Ex 23-08.4f", pset * 150e-9 * 1e12)
 v.check("Txt 23-08.b", 150 / 50)
+HB = constants.hbar
+QE = constants.e
+
+
+def ic0_per_delta(alpha, eta, temp):
+    """Angular-momentum balance: eta*hbar*I/(2q) = alpha*mu0*Hk*Ms*V = 2*alpha*E_b."""
+    return optimize.brentq(lambda i: eta * HB * i / (2 * QE) - 2 * alpha * KB * temp, 0, 1)
+
+
+v.check("Txt 23-08.c", ic0_per_delta(0.01, 0.5, 300) * 1e6)
+v.check("Txt 23-08.h", 40 * 1.0)
+v.check("Txt 23-08.d", 40 * (1 - 25 / 40))
+v.check("Txt 23-08.e", -math.expm1(-F0 * 10e-9 * math.exp(-15)))
+v.check("Txt 23-08.f", optimize.brentq(lambda a: ic0_per_delta(a, 0.5, 300) - 1e-6, 1e-4, 1))
 
 # ---------------------------------------------------------------- Example 23-08.5
 for ident, t in (("a", 3600), ("b", 86400), ("c", 10 * YEAR)):
@@ -238,6 +252,7 @@ v.check("23-08.11e", cells / 0.5 / sram)
 v.check("23-08.12a", 16 * 1024 / 9.75)
 v.check("23-08.12c", 26 * 33)
 v.check("23-08.12b", 16 * 1024 / 9.75 / (26 * 33))
+v.check("23-08.12d", 16 * 1024 / 9.75 / 66.26)
 
 b13 = 8 * 2 ** 20
 v.check("23-08.13a", b13)
@@ -246,6 +261,24 @@ v.check("23-08.13b", b13 * 0.7e-12 * 1e6)
 v.check("23-08.13c", b13 * 4e-12 * 1e6)
 v.check("23-08.13d", b13 * 100e-12 * 1e6)
 v.check("23-08.13e", b13 * 100e-12 / 50e-6)
+
+# ---------------------------------------------------------------- Problem 23-08.14 (stated constants)
+hb14, k14, q14 = 1.0546e-34, 1.381e-23, 1.602e-19
+kt14 = k14 * 300
+v.check("23-08.14b1", kt14)
+per14 = 4 * q14 * 0.008 * kt14 / (hb14 * 0.6)
+v.check("23-08.14b", per14 * 1e6)
+v.check("23-08.14c", 50 * per14 * 1e6)
+de14 = 50 * (1 - 0.3)
+v.check("23-08.14d0", de14)
+p14 = -math.expm1(-F0 * 5e-9 * math.exp(-de14))
+v.check("23-08.14d", p14)
+v.check("23-08.14e", 1 / p14)
+v.assert_true("3.17e14 reads is about ten years at one read per microsecond", 9 < 1 / p14 * 1e-6 / YEAR < 11)
+dn14 = optimize.brentq(lambda d: F0 * 5e-9 * math.exp(-d) - 1e-18, 1, 100)
+v.check("23-08.14f0", dn14)
+v.check("23-08.14f", (1 - dn14 / 50) * 100)
+v.check("23-08.14g", 30 * (1 - 0.3))
 
 # ---------------------------------------------------------------- lab
 v.check("Lab 23-08.a", pcm_peak(p4, rth4, 2e-9, 50e-9))

@@ -50,7 +50,7 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_23_exa
 
 (a) $16 \times 16/8$ = **32** bytes per access; $8.0 \times 10^9 \times 16/8$ = **16** GB/s.
 
-(b) $I = 1.1/(40 + 48)$ = **12.5** mA; $V_{low} = 1.1 - 12.5\ \text{mA} \times 48$ = **0.5** V; power while low $1.1 \times 12.5\ \text{mA}$ = **13.75** mW. At 8 Gb/s with half the bits low, $13.75\ \text{mW}/8 \times 10^9 \times 0.5$ = **0.859** pJ/bit.
+(b) $I = 1.1/(40 + 48)$ = **12.5** mA; $V_{low} = 1.1 - 12.5\ \text{mA} \times 48$ = **0.5** V; power while low $1.1 \times 12.5\ \text{mA}$ = **13.75** mW. At 8 Gb/s with half the bits low, $13.75\ \text{mW} \times 0.5/(8 \times 10^9\ \text{s}^{-1})$ = **0.859** pJ/bit.
 
 (c) $\Gamma_L = (60 - 40)/(60 + 40)$ = **0.2**; $\Gamma_S = (30 - 40)/(30 + 40)$ = **−0.143**. The launched wave is $1 \times 40/70$ = **0.571** V. First arrival: $0.5714 \times 1.2$ = **0.686** V. Second: $0.6857 + 0.5714 \times 0.2 \times (-0.1429) \times 1.2$ = **0.666** V. Final: $60/90$ = **0.667** V.
 
@@ -68,13 +68,13 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_23_exa
 
 ### Solution 6
 
-(a) $q/18\ \text{aF}$ = **8.90** mV per electron; QLC spacing $5.8/15$ = **0.387** V, or $0.3867/8.901\ \text{mV}$ = **43.4** electrons.
+(a) $q/18\ \text{aF}$ = **8.90** mV per electron; QLC spacing $5.8/15$ = **0.387** V, or $0.3867/8.900\ \text{mV}$ = **43.4** electrons.
 
 (b) $(4.2 + 1.8)/0.2$ = **30** pulses; $30 \times 22$ = **660** µs.
 
 (c) $k = 0.3867/0.14$ = **2.76**; RBER $= \tfrac{2 \times 15}{16 \times 4}Q(2.762)$ = **1.35** × 10⁻³.
 
-(d) $AF = \exp[(1.0/8.617 \times 10^{-5})(1/313.15 - 1/398.15)]$ = **2728**; one year (8,766 h) is $8766/2728$ = **3.21** h.
+(d) $AF = \exp[(1.0/8.617 \times 10^{-5})(1/313.15 - 1/398.15)]$ = **2729**; one year (8,766 h) is $8766/2729$ = **3.21** h.
 
 ### Solution 7
 
@@ -82,19 +82,19 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_23_exa
 
 (b) At α = 1.12, iterating $u = e^{-1.12(1 - u)}$ gives $u$ = **0.794** and $A$ = **4.85**. At α = 1.25, $A$ = **2.69**.
 
-(c) $OP = 17.2/15.36 - 1$ = **11.98** %; $A$ = **4.85**; $TBW = 17.2 \times 3000/4.853$ = **10632** TB; $DWPD = 10632/(15.36 \times 1825)$ = **0.379**.
+(c) $OP = 17.2/15.36 - 1$ = **11.98** %; $A$ = **4.85**; $TBW = 17.2 \times 3000/4.853$ = **10632** TB; $DWPD = 10632/(15.36 \times 1825)$ = **0.379** (DWPD uses 365-day years). For 1 DWPD, solve $17.2 \times 3000/[A(17.2/U)\,U \times 1825] = 1$ for the user capacity: $U$ = **12.9** TB, an OP of **33.5** %, where $A$ = **2.19**. Giving up 16% of the user capacity raises the rating **2.64** times.
 
-(d) $3.2 \times 10^6 \times 90\ \mu\text{s}$ = **288** commands; $3.2 \times 10^6 \times 4096$ = **13.1** GB/s; $1/90\ \mu\text{s}$ = **11111** IOPS.
+(d) $3.2 \times 10^6 \times 90\ \mu\text{s}$ = **288** commands; $3.2 \times 10^6 \times 4096$ = **13.1** GB/s; $1/90\ \mu\text{s}$ = **11111** IOPS, if the latency stays 90 µs (an idle drive is usually faster).
 
 ### Solution 8
 
-(a) Parity $13 \times 48$ = **624** bits; $n = 8192 + 624$ = **8816**; mean $8816 \times 0.002$ = **17.6**. The binomial tail $P(X > 48)$ = **6.16** × 10⁻¹⁰. (A Poisson approximation with λ = 17.6 gives **6.51** × 10⁻¹⁰, close enough for a design decision.)
+(a) Parity $14 \times 48$ = **672** bits; $n = 8192 + 672$ = **8864**, within the field's limit $2^{14} - 1$ = 16,383; mean $8864 \times 0.002$ = **17.7**. The binomial tail $P(X > 48)$ = **7.33** × 10⁻¹⁰. A Poisson approximation with λ = 17.7 gives **7.74** × 10⁻¹⁰; either earns full credit. (GF(2¹³) would not do: its codewords are at most 8,191 bits, shorter than the data.) Raising $t$ one step at a time, with $n = 8192 + 14t$: $t$ = 60 gives 1.66 × 10⁻¹⁵ and $t$ = **61** gives **5.12** × 10⁻¹⁶, so 61 is needed.
 
 (b) Rate $16/18.5$ = **0.865**; $1 - H(0.01)$ = **0.919**; solving $1 - H(p) = 0.865$ gives $p$ = **1.89** %.
 
 (c) $25 \times 0.03/0.9$ = **0.833** J; $C = 2 \times 0.8333/(36^2 - 12^2)$ = **1.45** mF.
 
-(d) Rereading at shifted references tells the decoder which bits are unreliable; LDPC decoding uses that soft information to correct far more errors than a hard decoder at the same code rate (and, information-theoretically, raises the channel's capacity). The cost is latency: each soft level adds reads and decoding, so a worn drive's tail latency grows.
+(d) Rereading at shifted references tells the decoder which bits are unreliable; LDPC decoding uses that soft information to correct far more errors than a hard decoder at the same code rate, and lets the code work beyond the hard-decision limit $1 - H(p)$ of (b). The cost is latency: each soft level adds reads and decoding, so a worn drive's tail latency grows.
 
 ### Solution 9
 
@@ -126,11 +126,11 @@ $$
 
 Transfer ratio $7/42$ = **0.167**; signal $0.525 \times 0.1667$ = **87.5** mV.
 
-(b) During pulse $k$, $V_{FG} = \alpha_GV_{pgm,k} + Q_k/C_T$ with $\alpha_G = C_{CG}/C_T$. If every pulse ends at the same $V_{FG}^*$, equating pulses $k$ and $k + 1$ gives $Q_{k+1} - Q_k = -\alpha_GC_T\Delta V_{pgm} = -C_{CG}\Delta V_{pgm}$, so $\Delta V_T = -\Delta Q/C_{CG} = \Delta V_{pgm}$. Electrons per pulse: $18\ \text{aF} \times 0.25/q$ = **28.1**.
+(b) Charge on the isolated storage node is conserved: $C_{CG}(V_{FG} - V_{CG}) + C_{other}V_{FG} = Q$ with the channel at 0 V, so $V_{FG} = \alpha_GV_{CG} + Q/C_T$ with $\alpha_G = C_{CG}/C_T$ and $C_T = C_{CG} + C_{other}$. The transistor conducts when $V_{FG}$ reaches its internal threshold $V_{T0}$, so the control-gate threshold is $V_T = V_{T0}/\alpha_G - Q/C_{CG}$, and a charge change $\Delta Q$ shifts it by $-\Delta Q/C_{CG}$. During pulse $k$, $V_{FG} = \alpha_GV_{pgm,k} + Q_k/C_T$. If every pulse ends at the same $V_{FG}^*$, equating pulses $k$ and $k + 1$ gives $Q_{k+1} - Q_k = -\alpha_GC_T\Delta V_{pgm} = -C_{CG}\Delta V_{pgm}$, so $\Delta V_T = -\Delta Q/C_{CG} = \Delta V_{pgm}$. Electrons per pulse: $18\ \text{aF} \times 0.25/q$ = **28.1**.
 
 (c) A page written at the log's head survives until the log wraps: all $T$ physical pages are written once, of which $(1 - u)T$ are host writes. Each overwrites the page's LBA with probability $1/U$, so the page survives with probability $(1 - 1/U)^{(1 - u)T} \approx e^{-\alpha(1 - u)}$, which is the victim's valid fraction $u$. Cleaning a victim frees $(1 - u)$ of a block for host data while the flash writes the whole block, so $A = 1/(1 - u)$. At α = 1.2: $u$ = **0.686**, $A$ = **3.19**; check $e^{-1.2 \times 0.3137}$ = **0.686**. ✓
 
-(d) $y = \sum_i p_i(1 + \epsilon_i)$ has error $e = \sum_ip_i\epsilon_i$ with variance $\sigma^2\sum_ip_i^2$. For zero-mean uncorrelated $p_i$, $E[y^2] = \sum_iE[p_i^2]$, so $\text{SNR} = 1/\sigma^2$ = **28.0** dB. For equal positive $p_i = p$, the signal is $M^2p^2$ and the error variance $M\sigma^2p^2$, so $\text{SNR} = M/\sigma^2$ = **49.0** dB.
+(d) The realized output is $y = \sum_i p_i(1 + \epsilon_i)$, the ideal output $s = \sum_ip_i$ and the error $e = \sum_ip_i\epsilon_i$. With the $\epsilon_i$ zero-mean, of variance $\sigma^2$, independent of each other and of the $p_i$, $E[e^2] = \sigma^2\sum_iE[p_i^2]$. For zero-mean uncorrelated $p_i$, $E[s^2] = \sum_iE[p_i^2]$, so $\text{SNR} = E[s^2]/E[e^2] = 1/\sigma^2$ = **28.0** dB. For equal positive $p_i = p$, the signal is $M^2p^2$ and the error variance $M\sigma^2p^2$, so $\text{SNR} = M/\sigma^2$ = **49.0** dB.
 
 ### Solution 12
 
@@ -147,7 +147,9 @@ Transfer ratio $7/42$ = **0.167**; signal $0.525 \times 0.1667$ = **87.5** mV.
 3. *"How does throughput scale with batch and context length, given 128 GB?"* Strong: measured tokens per second at batches up to the 17 sequences of (c), and KV-cache handling.
 4. *"What software and model coverage exist?"* Strong: a compiler or runtime with named models, and which operators fall back to the host.
 
-Rubric: (a)–(c) 3 points each for the numbers; (d) 1 point for the numbers and 2 for at least three well-posed questions with strong answers.
+Other strong questions are equally acceptable, for example: whether the 614 GB/s is internal bank bandwidth available only to PIM-offloaded operators or bandwidth the host can also use (against the 76.8 GB/s pins); the energy and cost per token, since the pitch claims a cost advantage; and where the KV cache lives and how its traffic is served.
+
+Rubric: (a)–(c) 3 points each for the numbers. (d) 1 point for the two numbers; 2 points for the questions, ½ each for up to four well-posed questions whose strong answer names specific evidence (a measured profile, a benchmark or a curve). Accept any question that tests a specific claim in the pitch.
 
 ---
 
@@ -220,13 +222,13 @@ Rubric: (a)–(c) 3 points each for the numbers; (d) 1 point for the numbers and
 | X23.6a1 | QLC spacing | 0.387 | V |
 | X23.6a2 | electrons per level | 43.4 | |
 | X23.6a3 | QLC spacing, 4 s.f. | 0.3867 | V |
-| X23.6a4 | shift per electron, 4 s.f. | 8.901 | mV |
+| X23.6a4 | shift per electron, 4 s.f. | 8.900 | mV |
 | X23.6b | pulses | 30 | |
 | X23.6b1 | program time | 660 | µs |
 | X23.6c | margin | 2.76 | |
 | X23.6c1 | margin, 4 s.f. | 2.762 | |
 | X23.6c2 | RBER | 1.35e-3 | |
-| X23.6d | acceleration factor | 2728 | |
+| X23.6d | acceleration factor | 2729 | |
 | X23.6d1 | bake time | 3.21 | h |
 | X23.6d2 | hours in a year | 8766 | h |
 | X23.7a | mapping table, 4 KiB | 15.0 | GB |
@@ -239,14 +241,24 @@ Rubric: (a)–(c) 3 points each for the numbers; (d) 1 point for the numbers and
 | X23.7c2 | TBW | 10632 | TB |
 | X23.7c3 | DWPD | 0.379 | |
 | X23.7c4 | write amplification, 4 s.f. | 4.853 | |
+| X23.7c5 | user capacity for 1 DWPD | 12.9 | TB |
+| X23.7c6 | OP for 1 DWPD | 33.5 | % |
+| X23.7c7 | write amplification at that OP | 2.19 | |
+| X23.7c8 | capacity given up | 16 | % |
+| X23.7c9 | rating gain | 2.64 | |
 | X23.7d | commands in flight | 288 | |
 | X23.7d1 | data rate | 13.1 | GB/s |
 | X23.7d2 | IOPS at queue depth 1 | 11111 | |
-| X23.8a | parity bits | 624 | |
-| X23.8a1 | codeword length | 8816 | |
-| X23.8a2 | mean errors | 17.6 | |
-| X23.8a3 | failure probability | 6.16e-10 | |
-| X23.8a4 | Poisson approximation | 6.51e-10 | |
+| X23.8a | parity bits | 672 | |
+| X23.8a1 | codeword length | 8864 | |
+| X23.8a2 | mean errors | 17.7 | |
+| X23.8a3 | failure probability | 7.33e-10 | |
+| X23.8a4 | Poisson approximation | 7.74e-10 | |
+| X23.8a5 | field length limit | 16383 | |
+| X23.8a6 | GF(2^13) length limit | 8191 | |
+| X23.8a7 | failure probability at t = 60 | 1.66e-15 | |
+| X23.8a8 | correction capability for 1e-15 | 61 | |
+| X23.8a9 | failure probability at t = 61 | 5.12e-16 | |
 | X23.8b | code rate | 0.865 | |
 | X23.8b1 | capacity at 1% | 0.919 | |
 | X23.8b2 | hard-decision limit | 1.89 | % |

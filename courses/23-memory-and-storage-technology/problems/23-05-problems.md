@@ -46,7 +46,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 23-05.9 [C]
 
-**Which dies run hot?** *(lab)* In Example 23-05.6's 16-high stack (1.5 W/m·K gaps), the lid holds the top die at 75 °C. Derive the temperature of each die, and find (a) the base die's temperature, (b) the temperature of core die 5 (counting from the bottom), (c) that of core die 6 and (d) how many core dies run above 85 °C, where DRAM refresh doubles.
+**Which dies run hot?** *(lab)* In Example 23-05.6's 16-high stack (1.5 W/m·K gaps), the lid holds the top die at 74 °C. Derive the temperature of each die, and find (a) the base die's temperature, (b) the temperature of core die 4 (counting from the bottom), (c) that of core die 5 and (d) how many core dies run above 85 °C, where DRAM refresh doubles.
 
 ### Problem 23-05.10 [B]
 
@@ -54,7 +54,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 23-05.11 [B]
 
-**Wafers per bit.** HBM takes 25% of a maker's wafers but yields 10% of its bits (assumed). Find (a) HBM's wafers per bit relative to conventional DRAM. If HBM dies hold 1.5 times fewer bits per area and stacks yield 90% (assumed), (b) what factor do these two explain, and (c) what factor remains?
+**Wafers per bit.** HBM takes 25% of a maker's wafers but yields 10% of its bits (assumed). Find (a) HBM's wafers per bit relative to conventional DRAM. If HBM dies hold two-thirds as many bits per area and stacks yield 90% (assumed), (b) what factor do these two explain, and (c) what factor remains?
 
 ### Problem 23-05.12 [C]
 

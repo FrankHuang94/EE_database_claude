@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 23-06 · NAND Flash and 3D NAND
 
 | | |
@@ -20,16 +20,16 @@
 
 ## 1. Big picture
 
-NAND flash stores data as charge trapped next to a transistor's channel. It keeps that charge for years with no power, packs several bits into each cell, and is built in stacks of hundreds of layers. It is the cheapest fast storage there is, and every phone, laptop SSD and data-center flash array runs on it. Its costs are equally distinctive. Writes are slow and done page by page, erases only in whole blocks, and every write wears the cell a little. Each extra bit per cell halves the margin between levels. The controller (23-07) spends much of its effort hiding these facts.
+NAND flash stores data as charge trapped next to a transistor's channel. It keeps that charge for years with no power, packs several bits into each cell, and is built in stacks of hundreds of layers. It is the cheapest fast storage there is, and every phone, laptop SSD and data-center flash array runs on it. Its costs are equally distinctive. Writes are slow and done page by page, erases only in whole blocks, and every write wears the cell a little. Each extra bit per cell more than halves the margin between levels. The controller (23-07) spends much of its effort hiding these facts.
 
 - **AI and the data center:** high-capacity QLC SSDs feed training data and store checkpoints, and the five largest listed NAND suppliers' combined revenue rose 77% in one quarter of 2026 on AI-server demand [8].
 - **Phones and PCs:** UFS and NVMe flash sets app-launch times and capacity tiers.
-- **The layer race:** suppliers compete on layer count, bit density and interface speed, with production stacks of 218 to 332 layers by 2026 [2], [3], [5].
+- **The layer race:** suppliers compete on layer count, bit density and interface speed, with stacks of 218 to 332 layers in production or sampling by 2026 [2], [3], [5].
 - **Manufacturing:** 3D NAND is an etch-and-deposition problem more than a lithography one. Its key step is drilling channel holes through hundreds of layers (§3.5).
 
 ## 2. Intuition first
 
-Picture a transistor with an extra, insulated bucket between its gate and its channel: the **floating gate** (or, in today's cells, a **charge-trap** layer of silicon nitride). Electrons put in the bucket stay there because they are surrounded by insulator. Their negative charge partly cancels the gate's attraction for the channel, so the transistor needs a higher gate voltage to turn on: its threshold voltage $V_T$ rises. Reading means asking, "Does the transistor conduct at this gate voltage?" A single question distinguishes two levels (one bit). Three questions at different voltages distinguish four levels (two bits), and fifteen questions distinguish sixteen (four bits).
+Picture a transistor with an extra, insulated bucket between its gate and its channel: the **floating gate** (or, in today's cells, a **charge-trap** layer of silicon nitride). Electrons put in the bucket stay there because they are surrounded by insulator. Their negative charge partly cancels the gate's attraction for the channel, so the transistor needs a higher gate voltage to turn on: its threshold voltage $V_{TH}$ rises. Reading means asking, "Does the transistor conduct at this gate voltage?" A single question distinguishes two levels (one bit). Three questions at different voltages distinguish four levels (two bits), and fifteen questions distinguish sixteen (four bits).
 
 Filling the bucket is the strange part. The insulator is too thick for electrons to cross at normal voltages, so programming applies about 15–20 V to the gate. That bends the oxide's energy barrier until electrons **tunnel** through it quantum-mechanically (04-10). The tunneling current depends extremely steeply on the field, so the cell almost regulates itself: once enough charge has arrived to weaken the field, tunneling nearly stops.
 
@@ -46,13 +46,13 @@ V_{FG} = \frac{C_{CG}V_{CG} + Q}{C_{CG} + C_{other}} = \alpha_G V_{CG} + \frac{Q
 \qquad \alpha_G = \frac{C_{CG}}{C_T},\quad C_T = C_{CG} + C_{other},
 $$
 
-with the channel, source and drain at 0 V, where $Q$ is the stored charge and $\alpha_G$ the **gate coupling ratio**. The transistor turns on when $V_{FG}$ reaches its own threshold $V_{T0}$. The control-gate voltage needed is then
+with the channel, source and drain at 0 V, where $Q$ is the stored charge and $\alpha_G$ the **gate coupling ratio**. The transistor turns on when $V_{FG}$ reaches its own threshold $V_{TH0}$. The control-gate voltage needed is then
 
 $$
-V_T = \frac{V_{T0} - Q/C_T}{\alpha_G} = \frac{V_{T0}}{\alpha_G} - \frac{Q}{C_{CG}} .
+V_{TH} = \frac{V_{TH0} - Q/C_T}{\alpha_G} = \frac{V_{TH0}}{\alpha_G} - \frac{Q}{C_{CG}} .
 $$
 
-Stored electrons ($Q < 0$) raise the threshold by $\Delta V_T = -Q/C_{CG}$. One electron shifts it by $q/C_{CG}$. With $C_{CG}$ around 16 aF (assumed), that is 10 mV per electron, about a hundred electrons per volt (Example 23-06.1). Units: C/F = V. ✓
+Stored electrons ($Q < 0$) raise the threshold by $\Delta V_{TH} = -Q/C_{CG}$. One electron shifts it by $q/C_{CG}$. With $C_{CG}$ around 16 aF (assumed), that is 10 mV per electron, about a hundred electrons per volt (Example 23-06.1). Units: C/F = V. ✓
 
 ### 3.2 Programming by tunneling, and why ISPP works
 
@@ -62,11 +62,11 @@ $$
 J = A E^2 \exp\left(-\frac{B}{E}\right),
 $$
 
-where $A$ and $B$ depend on the barrier height and the electron's effective mass. With the representative constants of Example 23-06.2, raising the field from 12 to 14.5 MV/cm multiplies $J$ about 42-fold, and from 10 to 14.5 MV/cm about 2,900-fold, because the exponential dominates. Erasing reverses the field (high voltage on the substrate, gates at 0 V) and pulls electrons out.
+where $A$ and $B$ depend on the barrier height and the electron's effective mass. With the representative constants of Example 23-06.2, raising the field from 12 to 14.5 MV/cm multiplies $J$ about 42-fold, and from 10 to 14.5 MV/cm about 2,900-fold, because the exponential dominates. Erasing reverses the field. Planar floating-gate cells were erased by a high voltage on the substrate, with the gates at 0 V, which pulled electrons out through the oxide. A 3D charge-trap string has no substrate under each cell. It is erased instead by generating holes at its select transistors through gate-induced drain leakage (GIDL), and the high erase voltage drives those holes into the trap layer, where they cancel the stored electrons.
 
-**Incremental step pulse programming (ISPP).** A NAND page is programmed with a staircase of gate pulses, each $\Delta V_{pgm}$ higher than the last, with a **verify** read between pulses. Cells that have reached their target are inhibited from further pulses. The key property, derived here, is that in steady state each pulse raises $V_T$ by exactly $\Delta V_{pgm}$.
+**Incremental step pulse programming (ISPP).** A NAND page is programmed with a staircase of gate pulses, each $\Delta V_{pgm}$ higher than the last, with a **verify** read between pulses. Cells that have reached their target are inhibited from further pulses. The key property, derived here, is that in steady state each pulse raises $V_{TH}$ by exactly $\Delta V_{pgm}$.
 
-Because $J$ is so steep, each pulse effectively runs until the oxide field falls to the value at which tunneling stalls, $E^*$. The pulse ends with $V_{FG} \approx E^* t_{ox}$, the same value every time. From §3.1, $V_{FG} = \alpha_GV_{CG} + Q/C_T$ during the pulse. For two successive pulses $k$ and $k + 1$, that gives
+Because $J$ is so steep, each pulse effectively runs until the oxide field falls to the value at which tunneling stalls, $E^*$. The pulse ends with $V_{FG} \approx E^* t_{ox}$, the same value every time. (More precisely: equal-length pulses map the field at the end of one pulse, raised by the next step, to the field at the end of the next. Because $J$ is so steep, that map is strongly contracting, so the end-of-pulse field converges to a fixed point $E^*$ within a few pulses. The first pulse, starting from an uncharged cell, moves the threshold much more.) From §3.1, $V_{FG} = \alpha_GV_{CG} + Q/C_T$ during the pulse. For two successive pulses $k$ and $k + 1$, that gives
 
 $$
 \alpha_G V_{pgm,k} + \frac{Q_k}{C_T} = \alpha_G V_{pgm,k+1} + \frac{Q_{k+1}}{C_T}
@@ -74,7 +74,7 @@ $$
 Q_{k+1} - Q_k = -\alpha_G C_T\,\Delta V_{pgm} = -C_{CG}\,\Delta V_{pgm} .
 $$
 
-The threshold change is therefore $\Delta V_T = -(Q_{k+1} - Q_k)/C_{CG} = \Delta V_{pgm}$, whatever the cell's coupling ratio, oxide thickness or tunneling constants. Cells with different parameters all end up moving in lockstep with the staircase, so the final threshold distribution is about one step wide. A smaller step gives tighter distributions, which more bits per cell need, at the cost of more pulses and longer program time (Example 23-06.3). The lab confirms the property in a circuit simulator with a Fowler–Nordheim current source.
+The threshold change is therefore $\Delta V_{TH} = -(Q_{k+1} - Q_k)/C_{CG} = \Delta V_{pgm}$, whatever the cell's coupling ratio, oxide thickness or tunneling constants. Cells with different parameters all end up moving in lockstep with the staircase. The **verify-inhibit** step sets the final width: each cell is inhibited at the first verify that finds it above its target, so it overshoots the target by between 0 and $\Delta V_{pgm}$, and the programmed distribution is about one step wide. A smaller step gives tighter distributions, which more bits per cell need, at the cost of more pulses and longer program time (Example 23-06.3). The lab confirms the property in a circuit simulator with a Fowler–Nordheim current source.
 
 ### 3.3 More bits per cell
 
@@ -98,9 +98,11 @@ Going from TLC to QLC shrinks $d$ from $W/7$ to $W/15$, to 0.467 of its TLC valu
 
 NAND connects cells in series: a **string** of tens to hundreds of cells shares one bitline contact at the top and a source line at the bottom. That eliminates a contact per cell, the main reason NAND is so dense. Reading a cell means turning on every other cell in the string with a pass voltage $V_{pass}$ well above any programmed threshold, applying a read voltage $V_{read}$ to the selected wordline, and sensing whether the string conducts.
 
-- A **page** is the set of cells on one wordline (across all bitlines) that are programmed and read together: typically 16 KB of data per plane, plus spare bytes for ECC.
+- A **page** is the set of cells that are programmed and read together: in planar NAND, one wordline across all bitlines; in 3D NAND, the cells of one wordline in one string-select row. Typically 16 KB of data per plane, plus spare bytes for ECC.
 - A **block** is all the strings sharing a set of wordlines, hundreds to thousands of pages. Erase works only on whole blocks, because it biases the shared substrate or channel.
 - A **plane** is an independent array with its own page buffer. A die with several planes operates them in parallel.
+
+**Programming one page on a shared wordline.** Every string in the block shares the wordline, so the program pulse reaches cells that must not change. They are protected by **self-boosting**. Their bitlines are raised so that the string's select transistor turns off and the channel floats. As the wordlines rise, the floating channel is capacitively boosted toward the program voltage, leaving too little field across the tunnel oxide for tunneling. Only strings whose bitlines are held at 0 V keep their channels grounded and are programmed. Reading uses the bitlines the other way: each bitline's sense amplifier precharges it and detects whether the string, with the selected cell at $V_{read}$, discharges it within a fixed time.
 
 Because pages cannot be overwritten in place and erase is block-wide, a controller must write new data to fresh pages, remap addresses and later reclaim blocks by moving their valid pages: garbage collection (23-07).
 
@@ -116,7 +118,7 @@ $$
 
 where $A_{col}$ is the die area per vertical string, including the share of staircases (the stepped wordline contacts at the array's edges), slits and periphery. Comparing published densities per layer and per bit reveals the lateral improvements makers achieve beyond layer count (Example 23-06.5).
 
-**The etch problem.** Each layer is a few tens of nanometres thick, so a 300-layer stack is over 10 µm tall, and the hole must stay round and straight to the bottom. The taller the hole relative to its diameter, the harder that is, so makers build stacks in **decks**: etch through one stack of layers, fill, build the next deck on top and connect them. Samsung's V9 uses a "double-stack structure" and credits its channel-hole etching for drilling the whole double stack at once [1]; SK hynix's 321-layer NAND uses three decks ("3 plugs") [3].
+**The etch problem.** Each layer is a few tens of nanometres thick, so a 300-layer stack is over 10 µm tall, and the hole must stay round and straight to the bottom. The taller the hole relative to its diameter, the harder that is, so makers build stacks in **decks**: etch through one stack of layers, fill, build the next deck on top and connect them. Samsung's V9 uses a "double-stack structure", and Samsung credits its channel-hole etching with "simultaneous drilling of the industry's highest cell layer count in a double-stack structure" [1]; SK hynix's 321-layer NAND uses three decks ("3 plugs") [3].
 
 **Where the periphery goes.** The CMOS that drives the array (page buffers, decoders, charge pumps, I/O) once sat beside the array. Makers moved it under the array, and now increasingly build it on a separate wafer bonded face to face to the array wafer. Kioxia calls this CMOS directly Bonded to Array (CBA). It avoids exposing the CMOS to the array's high-temperature steps, so the logic can be faster [4]. Kioxia credits CBA, with its On-Pitch Select Gate Drain technology, for BiCS10's 4.8 Gb/s interface [5].
 
@@ -168,7 +170,7 @@ A die's write throughput is the data per program operation divided by the progra
 
 **Units check.** F/m × m²/m = F; V/m; A/V² × V²/m² = A/m². ✓
 
-**Sanity check.** A hundred electrons arrive in tens of nanoseconds at the start of a pulse, but each one lowers the field, and the current collapses exponentially. In the lab's pulse train, the field at the end of the 30th 10 µs pulse has fallen to 10.1 MV/cm, close to the 8–10 MV/cm programming fields quoted in [04-10](../../04-physics-for-ee/chapters/04-10-intro-quantum-mechanics.md). That self-limiting behaviour is what ISPP exploits.
+**Sanity check.** A hundred electrons arrive in tens of nanoseconds at the start of a pulse, but each one lowers the field, and the current collapses exponentially. In the lab's pulse train, the field at the end of the 30th 10 µs pulse has fallen to 10.1 MV/cm, close to the 8–10 MV/cm programming fields quoted in [04-10](../../04-physics-for-ee/chapters/04-10-intro-quantum-mechanics.md). That self-limiting behaviour is what ISPP exploits. The 14.5 MV/cm at the start of a pulse is near the oxide's breakdown range, which is one reason the staircase starts low and climbs, rather than applying the final voltage at once.
 
 ### Example 23-06.3 · Programming with ISPP (tier B)
 
@@ -197,7 +199,7 @@ A die's write throughput is the data per program operation divided by the progra
 
 **Units check.** Ratios of volts; error rates dimensionless. ✓
 
-**Sanity check.** With the same σ, TLC is nearly error-free while QLC needs ECC that corrects a raw rate of order 10⁻⁴, and more after wear. SLC's and MLC's error rates here are negligible: their margins are 50 and 16.7 sigma.
+**Sanity check.** With the same σ, TLC is nearly error-free while QLC needs ECC that corrects a raw rate of order 10⁻⁴, and more after wear. The σ here is illustrative and Gaussian. Real TLC and QLC distributions are wider, with non-Gaussian tails from retention loss, disturb and noise, so both need strong error correction as they wear, which is why 23-07's LDPC is universal. SLC's and MLC's error rates here are negligible: their margins are 50 and 16.7 sigma.
 
 ### Example 23-06.5 · Density and the channel hole (tier B)
 
@@ -329,6 +331,7 @@ A die's write throughput is the data per program operation divided by the progra
 | Txt 23-06.d | 2Q26 implied total NAND revenue | 78.7 | $B |
 | Txt 23-06.e | top-five share | 87.5 | % |
 | Txt 23-06.f | hours in a year | 8760 | h |
+| Txt 23-06.g | interface over QLC die write rate, Problem 23-06.14 | 122 | |
 
 ## 5. Simulate it
 
@@ -341,7 +344,7 @@ The lab is [labs/23-06-lab/](../labs/23-06-lab/README.md). `nand.py` holds the c
 **Predict, then run:**
 
 1. *Predict* the threshold rise per pulse after the first few pulses. Run `ngspice -b ispp.cir` and compare the 29th and 30th steps.
-2. Change the tunnel oxide to 6 nm in the netlist (it appears in two places). *Predict* what happens to the first step and to the steady-state step.
+2. Change the tunnel oxide to 6 nm in the netlist (three edits: `tox`, `ctox` and the `dvt` line, as the lab handout lists). *Predict* what happens to the first step and to the steady-state step.
 3. In the notebook, plot the raw bit error rate of SLC to QLC against σ (Figure 2), and find the σ at which QLC's raw error rate reaches 10⁻³.
 4. Simulate 100,000 QLC cells with Gaussian levels and count misreads. Compare with the formula.
 
@@ -400,7 +403,7 @@ The lab is [labs/23-06-lab/](../labs/23-06-lab/README.md). `nand.py` holds the c
 
 - *"Industry's highest layer count."* Layer counts are defined differently by each vendor, and density per mm² is the comparable metric (Example 23-06.5).
 - *"59% higher bit density."* Against the vendor's own previous generation, often with more layers and lateral shrink combined [5].
-- *"4.8 Gb/s interface."* That is the pin rate. A die's sustained write throughput is set by program time and planes, about two orders of magnitude lower (Example 23-06.8).
+- *"4.8 Gb/s interface."* That is the pin rate. A die's sustained write throughput is set by program time and planes, one to two orders of magnitude lower: 37 times for Example 23-06.8's TLC die and 122 times for Problem 23-06.14's QLC die.
 - *"QLC is as reliable as TLC."* Only with stronger ECC, lower drive-write ratings and suitable workloads (Examples 23-06.4 and 23-06.7).
 
 **Questions for engineering leaders.**
@@ -417,15 +420,15 @@ The lab is [labs/23-06-lab/](../labs/23-06-lab/README.md). `nand.py` holds the c
 
 <details><summary>Answer</summary>
 
-Its negative charge cancels part of the control gate's coupling to the storage node, so the gate needs more voltage to bring the node to the transistor's own threshold. Each electron raises $V_T$ by $q/C_{CG}$, about 10 mV for 16 aF (§3.1).
+Its negative charge cancels part of the control gate's coupling to the storage node, so the gate needs more voltage to bring the node to the transistor's own threshold. Each electron raises $V_{TH}$ by $q/C_{CG}$, about 10 mV for 16 aF (§3.1).
 
 </details>
 
-**Q2.** Why does ISPP raise $V_T$ by one step per pulse, whatever the cell's parameters?
+**Q2.** Why does ISPP raise $V_{TH}$ by one step per pulse, whatever the cell's parameters?
 
 <details><summary>Answer</summary>
 
-The tunneling current is so steep in field that each pulse effectively ends at the same storage-node voltage. Raising the gate by $\Delta V_{pgm}$ therefore adds exactly $C_{CG}\Delta V_{pgm}$ of charge, which shifts $V_T$ by $\Delta V_{pgm}$ (§3.2).
+The tunneling current is so steep in field that each pulse effectively ends at the same storage-node voltage. Raising the gate by $\Delta V_{pgm}$ therefore adds exactly $C_{CG}\Delta V_{pgm}$ of charge, which shifts $V_{TH}$ by $\Delta V_{pgm}$ (§3.2).
 
 </details>
 
@@ -465,7 +468,7 @@ Problem set: [23-06 problems](../problems/23-06-problems.md).
 
 ## 11. Key terms
 
-[Floating gate](../../../reference/glossary.md#floating-gate) · [Charge-trap flash](../../../reference/glossary.md#charge-trap-flash) · [Gate coupling ratio](../../../reference/glossary.md#gate-coupling-ratio) · [Fowler–Nordheim tunneling](../../../reference/glossary.md#fowler-nordheim-tunneling) · [Incremental step pulse programming (ISPP)](../../../reference/glossary.md#incremental-step-pulse-programming-ispp) · [Multi-level cell (MLC, TLC, QLC)](../../../reference/glossary.md#multi-level-cell-mlc-tlc-qlc) · [Raw bit error rate (RBER)](../../../reference/glossary.md#raw-bit-error-rate-rber) · [NAND string](../../../reference/glossary.md#nand-string) · [Page and block (NAND)](../../../reference/glossary.md#page-and-block-nand) · [3D NAND](../../../reference/glossary.md#3d-nand) · [Channel hole](../../../reference/glossary.md#channel-hole) · [CMOS bonded to array (CBA)](../../../reference/glossary.md#cmos-bonded-to-array-cba) · [P/E cycle endurance](../../../reference/glossary.md#p-e-cycle-endurance) · [Arrhenius model](../../../reference/glossary.md#arrhenius-model)
+[Floating gate](../../../reference/glossary.md#floating-gate) · [Charge-trap flash](../../../reference/glossary.md#charge-trap-flash) · [Gate coupling ratio](../../../reference/glossary.md#gate-coupling-ratio) · [Fowler–Nordheim tunneling](../../../reference/glossary.md#fowler-nordheim-tunneling) · [Incremental step pulse programming (ISPP)](../../../reference/glossary.md#incremental-step-pulse-programming-ispp) · [Multi-level cell (MLC, TLC, QLC)](../../../reference/glossary.md#multi-level-cell-mlc-tlc-qlc) · [Raw bit error rate (RBER)](../../../reference/glossary.md#raw-bit-error-rate-rber) · [NAND string](../../../reference/glossary.md#nand-string) · [Page and block (NAND)](../../../reference/glossary.md#page-and-block-nand) · [3D NAND](../../../reference/glossary.md#3d-nand) · [Channel hole](../../../reference/glossary.md#channel-hole) · [CMOS bonded to array (CBA)](../../../reference/glossary.md#cmos-bonded-to-array-cba) · [P/E cycle endurance](../../../reference/glossary.md#p-e-cycle-endurance) · [Arrhenius model](../../../reference/glossary.md#arrhenius-model) · [Self-boosting (NAND program inhibit)](../../../reference/glossary.md#self-boosting-nand-program-inhibit)
 
 ## 12. Connections
 

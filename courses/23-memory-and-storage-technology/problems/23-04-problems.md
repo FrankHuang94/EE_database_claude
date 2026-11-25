@@ -4,7 +4,7 @@ Chapter: [23-04](../chapters/23-04-dram-interfaces.md) · Worked solutions: [23-
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
 
-**Conventions.** Bandwidths are peak values, in 10⁹ bytes per second. "MT/s" is transfers per second per pin. Values marked "assumed" are illustrative; data-sheet values cite the chapter's sources. Problems marked *(lab)* can be checked with `labs/23-04-lab/ddrio.py`.
+**Conventions.** Bandwidths are peak values, in 10⁹ bytes per second. Take $c$ = 3.00 × 10⁸ m/s. "MT/s" is transfers per second per pin. Values marked "assumed" are illustrative; data-sheet values cite the chapter's sources. Problems marked *(lab)* can be checked with `labs/23-04-lab/ddrio.py`.
 
 Suggested approach: do all [A] and [B] problems before looking at any solution. Attempt each [C] problem for at least 20 minutes before reading its solution.
 
@@ -22,7 +22,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 23-04.3 [A]
 
-**Bits in flight.** Find the UI at (a) 8800 MT/s and (b) 28 Gb/s. With 6.67 ps/mm of trace delay, how far does a signal travel in one UI at (c) 8800 MT/s and (d) 28 Gb/s?
+**Bits in flight.** Find (a) the UI at 8800 MT/s and (b) the symbol interval of 28 Gb/s GDDR7, which carries 1.5 bits per PAM3 symbol. With 6.67 ps/mm of trace delay, how far does a signal travel in one interval at (c) 8800 MT/s and (d) 28 Gb/s?
 
 ### Problem 23-04.4 [B]
 

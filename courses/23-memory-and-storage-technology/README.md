@@ -27,15 +27,15 @@ The technologies that hold data: SRAM, DRAM and its interfaces (DDR, LPDDR, GDDR
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [23-01 · The Memory Hierarchy and the Memory Wall](chapters/23-01-memory-hierarchy-and-memory-wall.md) | 4 | ✅ verified | [problems](problems/23-01-problems.md) · [solutions](solutions/23-01-solutions.md) · [lab](labs/23-01-lab/README.md) · [verify](verify/verify_23_01.py) |
-| [23-02 · SRAM Technology](chapters/23-02-sram-technology.md) | 4 | ✅ verified | [problems](problems/23-02-problems.md) · [solutions](solutions/23-02-solutions.md) · [lab](labs/23-02-lab/README.md) · [verify](verify/verify_23_02.py) |
-| [23-03 · DRAM Cells, Arrays and Refresh](chapters/23-03-dram-cells-arrays-refresh.md) | 7 | ✅ verified | [problems](problems/23-03-problems.md) · [solutions](solutions/23-03-solutions.md) · [lab](labs/23-03-lab/README.md) · [verify](verify/verify_23_03.py) |
-| [23-04 · DRAM Interfaces: DDR, LPDDR and GDDR](chapters/23-04-dram-interfaces.md) | 6 | ✅ verified | [problems](problems/23-04-problems.md) · [solutions](solutions/23-04-solutions.md) · [lab](labs/23-04-lab/README.md) · [verify](verify/verify_23_04.py) |
-| [23-05 · HBM in Depth](chapters/23-05-hbm-in-depth.md) | 7 | ✅ verified | [problems](problems/23-05-problems.md) · [solutions](solutions/23-05-solutions.md) · [lab](labs/23-05-lab/README.md) · [verify](verify/verify_23_05.py) |
-| [23-06 · NAND Flash and 3D NAND](chapters/23-06-nand-flash-and-3d-nand.md) | 7 | ✅ verified | [problems](problems/23-06-problems.md) · [solutions](solutions/23-06-solutions.md) · [lab](labs/23-06-lab/README.md) · [verify](verify/verify_23_06.py) |
-| [23-07 · SSD Controllers and Storage Systems](chapters/23-07-ssd-controllers.md) | 5 | ✅ verified | [problems](problems/23-07-problems.md) · [solutions](solutions/23-07-solutions.md) · [lab](labs/23-07-lab/README.md) · [verify](verify/verify_23_07.py) |
-| [23-08 · Emerging Memories: MRAM, ReRAM, PCM, FeRAM](chapters/23-08-emerging-memories.md) | 5 | ✅ verified | [problems](problems/23-08-problems.md) · [solutions](solutions/23-08-solutions.md) · [lab](labs/23-08-lab/README.md) · [verify](verify/verify_23_08.py) |
-| [23-09 · Compute-in-Memory and Near-Memory Computing](chapters/23-09-compute-in-memory.md) | 5 | ✅ verified | [problems](problems/23-09-problems.md) · [solutions](solutions/23-09-solutions.md) · [lab](labs/23-09-lab/README.md) · [verify](verify/verify_23_09.py) |
+| [23-01 · The Memory Hierarchy and the Memory Wall](chapters/23-01-memory-hierarchy-and-memory-wall.md) | 4 | 🏁 reviewed | [problems](problems/23-01-problems.md) · [solutions](solutions/23-01-solutions.md) · [lab](labs/23-01-lab/README.md) · [verify](verify/verify_23_01.py) |
+| [23-02 · SRAM Technology](chapters/23-02-sram-technology.md) | 4 | 🏁 reviewed | [problems](problems/23-02-problems.md) · [solutions](solutions/23-02-solutions.md) · [lab](labs/23-02-lab/README.md) · [verify](verify/verify_23_02.py) |
+| [23-03 · DRAM Cells, Arrays and Refresh](chapters/23-03-dram-cells-arrays-refresh.md) | 7 | 🏁 reviewed | [problems](problems/23-03-problems.md) · [solutions](solutions/23-03-solutions.md) · [lab](labs/23-03-lab/README.md) · [verify](verify/verify_23_03.py) |
+| [23-04 · DRAM Interfaces: DDR, LPDDR and GDDR](chapters/23-04-dram-interfaces.md) | 6 | 🏁 reviewed | [problems](problems/23-04-problems.md) · [solutions](solutions/23-04-solutions.md) · [lab](labs/23-04-lab/README.md) · [verify](verify/verify_23_04.py) |
+| [23-05 · HBM in Depth](chapters/23-05-hbm-in-depth.md) | 7 | 🏁 reviewed | [problems](problems/23-05-problems.md) · [solutions](solutions/23-05-solutions.md) · [lab](labs/23-05-lab/README.md) · [verify](verify/verify_23_05.py) |
+| [23-06 · NAND Flash and 3D NAND](chapters/23-06-nand-flash-and-3d-nand.md) | 7 | 🏁 reviewed | [problems](problems/23-06-problems.md) · [solutions](solutions/23-06-solutions.md) · [lab](labs/23-06-lab/README.md) · [verify](verify/verify_23_06.py) |
+| [23-07 · SSD Controllers and Storage Systems](chapters/23-07-ssd-controllers.md) | 5 | 🏁 reviewed | [problems](problems/23-07-problems.md) · [solutions](solutions/23-07-solutions.md) · [lab](labs/23-07-lab/README.md) · [verify](verify/verify_23_07.py) |
+| [23-08 · Emerging Memories: MRAM, ReRAM, PCM, FeRAM](chapters/23-08-emerging-memories.md) | 5 | 🏁 reviewed | [problems](problems/23-08-problems.md) · [solutions](solutions/23-08-solutions.md) · [lab](labs/23-08-lab/README.md) · [verify](verify/verify_23_08.py) |
+| [23-09 · Compute-in-Memory and Near-Memory Computing](chapters/23-09-compute-in-memory.md) | 5 | 🏁 reviewed | [problems](problems/23-09-problems.md) · [solutions](solutions/23-09-solutions.md) · [lab](labs/23-09-lab/README.md) · [verify](verify/verify_23_09.py) |
 
 **Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/23-memory-and-storage-technology.csv) · [Equation sheet](../../reference/equation-sheets/23-memory-and-storage-technology.md)
 
@@ -45,11 +45,11 @@ Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 
 
 ## Course notes
 
-**How to approach this course.** Course 23 is planned at about 53 hours: the chapters' own estimates add to 50, plus 3 hours of review and the exam. Course 14 gave you caches and the memory hierarchy as an architect sees them; Course 19 the CMOS circuits inside them; Course 09 the transistor and its leakage; Course 04 tunneling and dielectrics; and Course 17 coding and capacity. This course opens the boxes: how each memory stores a bit, what it costs to move one, and why AI systems are now designed around memory rather than arithmetic.
+**How to approach this course.** Course 23 is planned at about 53 hours: the chapters' own estimates add to 50, plus about 3 hours of review; allow a further 4.5 hours for the exam. Course 14 gave you caches and the memory hierarchy as an architect sees them; Course 19 the CMOS circuits inside them; Course 09 the transistor and its leakage; Course 04 tunneling and dielectrics; Course 13 transmission lines and reflections; Course 20 data converters and matching; Course 03 Gaussian tails; and Course 17 coding and capacity. This course opens the boxes: how each memory stores a bit, what it costs to move one, and why AI systems are now designed around memory rather than arithmetic.
 
 The nine chapters fall into four blocks:
 
-- **The memory wall (23-01).** Energy per bit as the real limit on bandwidth, Little's law, the roofline and why LLM decoding is memory-bound.
+- **The memory wall (23-01).** Energy per bit as the real limit on bandwidth, Little's law, the roofline and why long-context LLM decoding is memory-bound.
 - **Volatile memories (23-02 to 23-05).** SRAM's stalled bitcell, sigma margins and assists; the DRAM cell, sense amplifier, timing, refresh and row hammer; DDR, LPDDR and GDDR interfaces, termination, reflections, equalization and PAM; HBM's width, interposer, TSVs, heat, yield and packaging.
 - **Storage (23-06 and 23-07).** Flash physics, ISPP, multi-level error rates, 3D NAND and retention; the SSD controller's FTL, write amplification, ECC, queues and power-loss protection.
 - **Beyond (23-08 and 23-09).** MRAM, PCM, ReRAM and FeRAM, and where they win; compute-in-memory and processing-in-memory, and how to test their claims.
@@ -64,7 +64,7 @@ Work at least the [A] and [B] problems of every chapter. The labs are of two kin
 - moving a bit costs far more than computing on it; energy per bit, not pin count, caps bandwidth; bandwidth times latency is the data that must be in flight; below the ridge point, faster arithmetic changes nothing (23-01);
 - SRAM is limited by variation: large arrays need about 6σ of margin, assists trade one failure for another, and the bitcell has stopped shrinking with logic (23-02);
 - a DRAM read is charge sharing amplified by a latch; bitline length is set by the signal; the boosted wordline exists because NMOS passes only $V_{WL} - V_{TH}$; refresh and row hammer grow as cells shrink (23-03);
-- an interface is a transmission line: termination costs static current, reflections and ISI shrink the eye, DFE removes post-cursors, and PAM pays an eye penalty to halve the symbol rate (23-04);
+- an interface is a transmission line: termination costs static current, reflections and ISI shrink the eye, DFE removes post-cursors, and PAM pays an eye penalty for a lower symbol rate (23-04);
 - HBM is wide and slow over short unterminated wires; heat and yield, not bandwidth, limit stack height; packaging capacity limits supply (23-05);
 - a flash cell stores tens of electrons per level; ISPP steps the threshold exactly; each extra bit per cell costs orders of magnitude of raw error rate; retention is thermally activated (23-06);
 - an SSD is a remapping machine: over-provisioning buys write amplification and endurance, ECC fails over a cliff and cannot beat capacity, and IOPS are queue depth over latency (23-07);

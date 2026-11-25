@@ -1,6 +1,6 @@
 # Course 23 · Final Exam (Memory and Storage Technology)
 
-**Time limit:** 270 minutes, best taken in two sittings of about 135 minutes: Questions 1–6, then Questions 7–12.
+**Time limit:** 270 minutes, best taken in two sittings of about 135 minutes: Questions 1–7, then Questions 8–12.
 **Allowed:** a scientific calculator and the [Course 23 equation sheet](../../../reference/equation-sheets/23-memory-and-storage-technology.md) printed without its chapter links. No notes, no Python and no simulator.
 
 **Instructions.**
@@ -13,8 +13,8 @@
 
 **Conventions.** These follow the chapters.
 
-- Bandwidths and capacities are decimal (1 GB = 10⁹ bytes) unless written GiB or KiB; a year is 365.25 days; $q = 1.602 \times 10^{-19}$ C and $k = 8.617 \times 10^{-5}$ eV/K.
-- $Q(x)$ is the Gaussian tail probability. Write-amplification questions use the FIFO model $u = e^{-\alpha(1 - u)}$, $A = 1/(1 - u)$, with $\alpha = 1 + OP$ and OP relative to user capacity; you may solve the fixed point by iteration.
+- Bandwidths and capacities are decimal (1 GB = 10⁹ bytes, 1 Mb = 10⁶ bits) unless written GiB, Mib or KiB; a year is 365.25 days, except in DWPD ratings, which use the industry's 365-day years; $q = 1.602 \times 10^{-19}$ C and $k = 8.617 \times 10^{-5}$ eV/K.
+- $Q(x)$ is the Gaussian tail probability; for $x \gtrsim 3$, $Q(x) \approx e^{-x^2/2}/(x\sqrt{2\pi})$, which you may invert by trial. A binomial or Poisson tail's terms fall by a factor of about $\lambda/k$ each, so you may sum them as a near-geometric series. Write-amplification questions use the FIFO model $u = e^{-\alpha(1 - u)}$, $A = 1/(1 - u)$, with $\alpha = 1 + OP$ and OP relative to user capacity; you may solve the fixed point by iteration.
 - An MRAM bit flips at $f_0e^{-\Delta}$ with $f_0 = 10^9$ s⁻¹ and $\Delta \propto 1/T$. A multiply-accumulate counts as two operations.
 
 ---
@@ -58,24 +58,24 @@
 **7 [B] · SSD controllers.** (23-07)
 (a) Find the mapping table of a 15.36 TB drive with 4 KiB units and 4-byte entries, and with 16 KiB units.
 (b) Under random writes, find the victim valid fraction and the write amplification at 12% OP, and the write amplification at 25% OP.
-(c) The drive has 17.2 TB of raw TLC rated for 3,000 cycles. Find its OP, the worst-case write amplification, its host TBW and its DWPD over 5 years.
-(d) It serves 3.2 million random 4 KiB reads per second at 90 µs average latency. Find the commands in flight, the data rate, and the IOPS at queue depth 1.
+(c) The drive has 17.2 TB of raw TLC rated for 3,000 cycles. Find its OP, the worst-case write amplification, its host TBW and its DWPD over 5 years. For the same raw flash, what user capacity, and what OP, would give 1 DWPD?
+(d) It serves 3.2 million random 4 KiB reads per second at 90 µs average latency. Find the commands in flight, the data rate, and the IOPS at queue depth 1 if the latency stays 90 µs.
 
 **8 [B] · ECC and power-loss protection.** (23-07)
-(a) A BCH code over GF(2¹³) corrects 48 errors in 1 KiB of data. Find the parity bits, the codeword length, the mean error count and the failure probability at a raw error rate of 2 × 10⁻³ (you may use a Poisson approximation, but state it).
+(a) A BCH code over GF(2¹⁴) corrects 48 errors in 1 KiB of data. Find the parity bits, the codeword length, the mean error count and the failure probability at a raw error rate of 2 × 10⁻³ (you may use a Poisson approximation, but state it). What correction capability $t$ (with the same field) would bring the failure probability to 10⁻¹⁵ or below?
 (b) A page holds 16 KiB of data with 2.5 KiB of spare. Find the code rate, the hard-decision capacity at a 1% raw error rate and the highest raw error rate any hard-decision code at this rate could tolerate.
 (c) Power-loss protection must supply 25 W for 30 ms through a 90%-efficient converter, from 36 V down to 12 V. Find the energy drawn from the bank and the capacitance.
 (d) Explain in two or three sentences why soft-decision LDPC decoding helps a worn drive, and what it costs.
 
 **9 [B] · Emerging memories.** (23-08)
 (a) An MTJ has $R_P$ = 5 kΩ and a TMR of 120%, read at 0.12 V through 2.5 kΩ. Find $R_{AP}$, both read currents and the effective contrast.
-(b) A 128 Mb (2²⁷-bit) MRAM array must hold data for 10 years with at most one expected flip. Find the required Δ at operating temperature, and the 25 °C Δ needed to meet it at 105 °C.
-(c) A PCM cell conducts with 1.6 kΩ and is reset by 250 µA for 40 ns. Find the power, the thermal resistance that gives a 620 K rise, the RESET energy, and the time to cool from 620 K to 140 K if τ = 1.5 ns.
+(b) A 128 Mib (2²⁷-bit) MRAM array must hold data for 10 years with at most one expected flip. Find the required Δ at operating temperature, and the 25 °C Δ needed to meet it at 105 °C.
+(c) A PCM cell conducts with 1.6 kΩ and is reset by 250 µA for 40 ns. Find the power, the thermal resistance that gives a 620 K rise, the RESET energy, and the time to cool from a 620 K rise to a 140 K rise if τ = 1.5 ns.
 (d) With a drift exponent of 0.08 from $t_0$ = 1 s, find the drift factor after one year and the time to drift by 1.5×.
 
 **10 [B] · Compute-in-memory.** (23-09)
 (a) Inputs (0.5, 1.5, 1) drive three rows at 0.1 V per unit. Signed weights (2, −1), (−1, 3), (1, 1) (one row per input, two outputs) are stored as conductance pairs with 8 µS per unit and $G_{min}$ = 0.5 µS. Find the four column currents and the two differential outputs, and check them against the exact products.
-(b) With 3% independent relative device variation, find the compute SNR and the effective bits.
+(b) With 3% independent relative device variation and zero-mean, uncorrelated products, find the compute SNR and the effective bits.
 (c) A 256-row array uses 8-bit ADCs at 3 fJ per conversion step, with bit-serial inputs and bit-sliced weights at 4 × 4 bits. Find the ADC energy per MAC and the TOPS/W ceiling.
 (d) PIM accelerates 70% of a workload's run time 6×. Find the overall speedup, and the fraction that would have to be accelerated for 2.5×.
 
@@ -87,7 +87,7 @@
 
 **12 [C] · Diligence: a PIM inference card.** (23-01, 23-09)
 A start-up pitches an inference card built from eight LPDDR5X-PIM packages: "Each package delivers 614 GB/s, so the card has 4.9 TB/s. A 70-billion-parameter model in 4-bit weights decodes at 140 tokens per second per user, matching an HBM GPU at a fraction of the memory cost, and with 128 GB we serve long contexts."
-(a) Find the card's effective bandwidth, the model's size, the bandwidth-bound tokens per second at batch 1, and the same bound with ordinary LPDDR5X-9600 (76.8 GB/s per 64-bit package).
+(a) Find the card's effective bandwidth, the model's size, the bandwidth-bound tokens per second at batch 1, and the same bound with ordinary LPDDR5X-9600 (76.8 GB/s per 64-bit package). Read the weights once per token and ignore KV-cache traffic.
 (b) If PIM accelerates 80% of the baseline run time 8×, find the realistic speedup and tokens per second.
 (c) The model has 80 layers and 8 KV heads of dimension 128 with an 8-bit KV cache. Find the KV bytes per token, the cache for one 32,768-token sequence, and how many such sequences fit beside the weights in 128 GB.
 (d) Find the batch-1 bound of an 8 TB/s HBM GPU on the same model and its ratio to (b). List four questions you would ask the start-up's chief architect, with what a strong answer contains.

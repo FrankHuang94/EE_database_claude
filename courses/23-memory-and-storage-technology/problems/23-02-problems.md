@@ -46,7 +46,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 23-02.9 [B]
 
-**Vmin with and without ECC.** A margin has slope 0.25 V/V, vanishes at 0.2 V and has σ = 0.5 σ_VT, with σ_VT = 22 mV (assumed). For a 32 MiB array (2²⁸ bits) at 99% yield, find (a) the sigma needed and (b) Vmin. (c) ECC relaxes the per-cell requirement to 4.5σ (assumed): what is Vmin then? (d) How much Vmin does ECC save?
+**Vmin with and without ECC.** A margin has slope 0.25 V/V, vanishes at 0.2 V and has σ = 0.5 σ_VTH, with σ_VTH = 22 mV (assumed). For a 32 MiB array (2²⁸ bits) at 99% yield, find (a) the sigma needed and (b) Vmin. (c) ECC relaxes the per-cell requirement to 4.5σ (assumed): what is Vmin then? (d) How much Vmin does ECC save?
 
 ### Problem 23-02.10 [B]
 
@@ -58,7 +58,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 23-02.12 [C]
 
-**What repair buys.** A 128 MiB cache (2³⁰ bits) must work with 99% probability. (a, b) Without repair, what sigma does each cell need, and what Vmin results with Example 23-02.3's margin model (σ_VT = 25 mV)? Spare rows and columns can now replace up to 100 failing cells, so the array works if the number of failures, a Poisson variable with mean $\lambda = Np$, is at most 100. Find (c) the largest λ allowed, (d) the sigma then needed, (e) the new Vmin, (f) the Vmin saved and (g) the sigma saved.
+**What repair buys.** A 128 MiB cache (2³⁰ bits) must work with 99% probability. (a, b) Without repair, what sigma does each cell need, and what Vmin results with Example 23-02.3's margin model (σ_VTH = 25 mV)? Spare rows and columns can now replace up to 100 failing cells, so the array works if the number of failures, a Poisson variable with mean $\lambda = Np$, is at most 100. Find (c) the largest λ allowed, (d) the sigma then needed, (e) the new Vmin, (f) the Vmin saved and (g) the sigma saved.
 
 ---
 

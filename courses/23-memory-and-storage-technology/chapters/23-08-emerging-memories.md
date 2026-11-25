@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 23-08 · Emerging Memories: MRAM, ReRAM, PCM, FeRAM
 
 | | |
@@ -57,7 +57,7 @@ A read applies a small voltage across the MTJ in series with its access transist
 **Retention: the thermal stability factor.** The free layer's two states are separated by an energy barrier $E_b$, set by its magnetic anisotropy and volume. Thermal fluctuations attempt to cross it at an attempt frequency $f_0$ of about $10^9$ s⁻¹, so a single bit flips at the rate
 
 $$
-r = f_0\, e^{-\Delta}, \qquad \Delta = \frac{E_b}{k_B T} ,
+r = f_0\, e^{-\Delta}, \qquad \Delta = \frac{E_b}{k T} ,
 $$
 
 the Néel–Arrhenius law, the same thermal activation as 23-06's retention. $\Delta$ is the **thermal stability factor**. An array of $N$ bits held for time $t$ expects $N t f_0 e^{-\Delta}$ flips. Requiring at most one,
@@ -66,15 +66,31 @@ $$
 \Delta \geq \ln\left(N t f_0\right) .
 $$
 
-Because $\Delta = E_b/k_BT$ falls as temperature rises, a cell must have a larger room-temperature $\Delta$ to hold data at 85 °C or 150 °C (Example 23-08.2). The logarithm is what makes MRAM practical: a million times more bits or time costs only $\ln 10^6 \approx 14$ more units of $\Delta$.
+Because $\Delta = E_b/kT$ falls as temperature rises, a cell must have a larger room-temperature $\Delta$ to hold data at 85 °C or 150 °C (Example 23-08.2). The logarithm is what makes MRAM practical: a million times more bits or time costs only $\ln 10^6 \approx 14$ more units of $\Delta$.
 
-**Writing: spin-transfer torque.** In **STT-MRAM**, a current passed through the MTJ becomes spin-polarized by the reference layer and exerts a torque on the free layer. Above a critical current $I_{c0}$, the free layer switches. To first order $I_{c0}$ is proportional to $E_b$, hence to $\Delta$: the barrier that makes data stable is the same barrier the write current must overcome. A stable, flash-replacement MRAM therefore needs more write current and energy than a less stable, cache-like MRAM that accepts shorter retention and refreshes or corrects errors (Example 23-08.3). The write energy is $E = V I t$, of order a picojoule. Writing is also stochastic: a pulse slightly above $I_{c0}$ switches most cells but not all, so designs use margin, verify or ECC.
+**Writing: spin-transfer torque.** In **STT-MRAM**, a current passed through the MTJ becomes spin-polarized by the reference layer and exerts a torque on the free layer. Above a critical current $I_{c0}$, the free layer switches.
 
-> **Going deeper — SOT and VCMA.** Spin-orbit-torque (SOT) MRAM writes through a separate heavy-metal line under the MTJ, so the write current does not pass through the tunnel barrier. That improves endurance and speed at the cost of a three-terminal cell. Voltage-controlled magnetic anisotropy (VCMA) lowers the barrier with an electric field during writing. Both are research and early-development topics in 2026.
+An angular-momentum balance gives $I_{c0}$. Treat the free layer as one macroscopic magnet (the *macrospin* model) with moment $m = M_sV$, where $M_s$ is its saturation magnetization (A/m) and $V$ its volume. Its angular momentum is $m/\gamma$, with $\gamma$ the gyromagnetic ratio (rad s⁻¹ T⁻¹). Disturbed from its easy axis, it precesses at $\omega = \gamma\mu_0H_k$, where $H_k$ is the anisotropy field (A/m). Gilbert damping, of dimensionless strength $\alpha$, drains angular momentum at the rate $\alpha\omega m/\gamma = \alpha\mu_0H_kM_sV$ and pulls it back. Each electron of the current $I$ carries $\hbar/2$ of spin angular momentum, delivered with efficiency $\eta$, so the current supplies $\eta(\hbar/2)(I/q)$ per second. Switching begins when supply beats damping:
+
+$$
+\eta\frac{\hbar}{2}\frac{I_{c0}}{q} = \alpha\mu_0H_kM_sV
+\quad\Longrightarrow\quad
+I_{c0} = \frac{2q\alpha}{\hbar\eta}\mu_0H_kM_sV = \frac{4q\alpha}{\hbar\eta}E_b = \frac{4q\alpha kT}{\hbar\eta}\Delta ,
+$$
+
+using the perpendicular free layer's barrier $E_b = \mu_0M_sH_kV/2$. Units: C/(J·s) × J = A. ✓ With $\alpha$ = 0.01 and $\eta$ = 0.5 (assumed, typical orders) at 300 K this is about 0.50 µA per unit of $\Delta$. The barrier that makes data stable is the same barrier the write current must overcome. ($I_{c0} \propto \Delta$ holds at a fixed temperature; at a fixed $E_b$, $I_{c0}$ is set by the barrier, not by $\Delta$.) A stable, flash-replacement MRAM therefore needs more write current and energy than a less stable, cache-like MRAM that accepts shorter retention and refreshes or corrects errors (Example 23-08.3). The write energy is $E = V I t$, of order a picojoule. Writing is also stochastic: a pulse slightly above $I_{c0}$ switches most cells but not all, so designs use margin, verify or ECC.
+
+**Read disturb.** The read current flows through the same junction, so it also pushes on the free layer. A current $I$ below $I_{c0}$ lowers the effective barrier to about $\Delta(1 - I/I_{c0})$. For a cache-like cell with $\Delta$ = 40 and $I_{c0}$ = 40 µA (Example 23-08.3), Example 23-08.1's 25 µA read leaves an effective barrier of 15, and a 10 ns read then flips the cell with probability $f_0te^{-15}$ ≈ 3.1 × 10⁻⁶: far too often. Reads must therefore use a small fraction of $I_{c0}$, which caps the read current and so the sensing margin. TMR also falls as the read bias rises, so a higher read voltage buys less signal than Ohm's law suggests. Read margin, read disturb and write energy are one coupled design problem.
+
+**Endurance.** Every write passes current through a tunnel barrier about a nanometre thick, at a substantial fraction of a volt. Repeated stress slowly creates defects until the MgO breaks down, and that sets MRAM's endurance. Device demonstrations at low write stress reach 10¹⁶ cycles (Table 1), but a product must guarantee every bit at worst-case temperature and write margin. Embedded products are therefore rated at far fewer cycles, $10^6$ in the TSMC/NXP automotive part of §9.
+
+> **Going deeper — SOT and VCMA.** Spin-orbit-torque (SOT) MRAM writes through a separate heavy-metal line under the MTJ, so the write current does not pass through the tunnel barrier. That improves endurance and speed at the cost of a three-terminal cell. Voltage-controlled magnetic anisotropy (VCMA) lowers the barrier with an electric field during writing. As of Nov 2026 neither had reached a high-volume product: imec reported SOT-MRAM results on a 4 kb characterization array at IEDM 2025, a start-up showed an 8 Mb SOT-MRAM demonstrator, and reviews still list VCMA's practical challenges [13], [14].
 
 ### 3.3 PCM: switching by heat
 
 **The cell.** A phase-change cell is a small volume of chalcogenide in series with a narrow **heater** electrode and an access device. Its crystalline (SET) state has low resistance and its amorphous (RESET) state a resistance higher by orders of magnitude.
+
+**Threshold switching.** A RESET cell's amorphous resistance is megohms, too high to pass a heating current at a low voltage. Above a *threshold voltage*, the amorphous chalcogenide switches electronically into a conducting state without changing phase (threshold switching), and its resistance collapses. Programming current then flows whichever state the cell started in, so during a programming pulse both states conduct through a similar, low on-resistance. A read stays below the threshold voltage, so it sees the stored resistance.
 
 **A thermal model.** Treat the active region as a thermal capacitance $C_{th}$ (J/K) connected to the surroundings through a thermal resistance $R_{th}$ (K/W). A current $I$ through the cell's resistance $R$ dissipates $P = I^2R$, and the temperature rise $\Delta T$ obeys
 
@@ -103,10 +119,12 @@ with a drift exponent $\nu$ of order 0.1 for common chalcogenides (an assumed, r
 In a **ReRAM** cell, typically a transition-metal oxide between two electrodes, a first high-voltage **forming** step creates a conductive filament of oxygen vacancies or metal atoms. Afterwards, a **SET** voltage reconnects the filament (low-resistance state, LRS) and an opposite **RESET** voltage ruptures it near one electrode (high-resistance state, HRS). The filament's narrowest point may be only a few atoms wide, and there conduction is quantized: a single-atom constriction conducts about one **conductance quantum**,
 
 $$
-G_0 = \frac{2e^2}{h} \approx 77.5\ \mu\text{S}, \qquad \frac{1}{G_0} \approx 12.9\ \text{k}\Omega .
+G_0 = \frac{2q^2}{h} \approx 77.5\ \mu\text{S}, \qquad \frac{1}{G_0} \approx 12.9\ \text{k}\Omega .
 $$
 
 An LRS of a few kilohms therefore corresponds to a constriction a few atoms across (Example 23-08.6). This explains ReRAM's main weakness: adding or removing a handful of atoms changes the resistance by a large fraction, so resistances vary from cycle to cycle and cell to cell. Its strengths are a simple two-terminal stack in the back-end metal layers, low switching voltage and a large resistance window.
+
+**Selectors and sneak paths.** A two-terminal cell can sit at every crossing of a wordline and a bitline, with no transistor, in a *cross-point* array 4F² per bit per layer. Without a transistor, though, current from the selected row leaks through unselected cells along paths that loop back through other rows and columns (*sneak paths*), and it swamps the selected cell's signal. Each cell therefore needs a series **selector**, a two-terminal device that conducts only above a threshold. Arrays are biased so the selected cell sees the full voltage while half-selected cells see only half. Intel and Micron's 3D XPoint stacked a PCM cell on an ovonic threshold switch (OTS) selector, and the selector's leakage and threshold variation limit how large such arrays can be.
 
 ### 3.5 FeRAM and FeFET: polarization
 
@@ -114,7 +132,7 @@ A **ferroelectric** has a spontaneous electric polarization $P$ (charge per area
 
 **FeRAM (1T1C).** The cell is a DRAM-like transistor and capacitor with a ferroelectric dielectric. Reading drives the capacitor toward one polarization: if the cell held the other state, the reversal dumps $2P_rA$ onto the bitline, producing a voltage of about $2P_rA/C_{BL}$, as in DRAM charge sharing (23-03). The read is **destructive**, so the cell is rewritten afterwards. Unlike DRAM, the state survives without refresh. Classic FeRAM used perovskites such as PZT that are hard to integrate and scale. The discovery of ferroelectricity in thin, CMOS-compatible doped hafnium oxide revived the field: Micron's 32 Gb NVDRAM research chip uses a 5.7 nm ferroelectric capacitor [5].
 
-**FeFET (1T).** Putting the ferroelectric in a transistor's gate stack makes the polarization shift the threshold voltage, as stored charge does in flash (23-06). To first order, the **memory window** is about $2E_ct_{FE}$ for a ferroelectric of thickness $t_{FE}$ (Example 23-08.7). The read is nondestructive and the cell is as small as a single transistor, but endurance and the thin-film physics of the window remain active research.
+**FeFET (1T).** Putting the ferroelectric in a transistor's gate stack makes the polarization shift the threshold voltage, as stored charge does in flash (23-06). The **memory window** follows from the coercive field. The polarization reverses when the field across the ferroelectric reaches $\pm E_c$, a voltage $\pm E_ct_{FE}$ for a film of thickness $t_{FE}$. Each remanent state therefore shifts the gate voltage at which the ferroelectric carries no net field by $E_ct_{FE}$, in opposite directions, so the transistor's threshold, measured from the gate, differs between the states by about $2E_ct_{FE}$ (Example 23-08.7). Real windows are smaller: depolarization fields and charge trapping at the interface eat into it. The read is nondestructive and the cell is as small as a single transistor, but endurance and the thin-film physics of the window remain active research.
 
 ### 3.6 Comparing the technologies
 
@@ -123,15 +141,15 @@ Table 1 collects the best values that named companies have demonstrated for each
 | Metric | FeRAM | PCM | ReRAM | STT-MRAM | NOR flash | DRAM | SRAM |
 |---|---|---|---|---|---|---|---|
 | Endurance (cycles) | 10¹⁵ | >10⁷ | 10¹² | 10¹⁶ | 10⁴–10⁶ | 10¹⁶ | 10¹⁶ |
-| Retention without power | 121 years at 85 °C | >10 years at 150 °C | 10 years at 105 °C | 20 years at 150 °C | >10 years | 100 µs | none |
+| Retention without power | 121 years at 85 °C | >10 years at 150 °C | 10 years at 105 °C | 20 years at 150 °C | >10 years | 100 µs* | none |
 | Write speed | 2 ns | ≤20 ns | 5/1 ns set/reset | 1.5 ns | 0.1–1 ms | ~10 ns | ~1 ns |
 | Read speed | 2 ns | ≤30 ns | <5 ns | 4 ns | ~10 ns | ~10 ns | ~1 ns |
 | Switching voltage | 0.5 V | <3 V | <1–1.5 V | 0.8–2.0 V | >5 V | <1 V | <1 V |
-| Cell write energy | <100 fJ (projected) | 2.63 / 1.5–9 pJ set/reset | 5 fJ | 0.7 pJ | ~100 pJ | ~10 fJ | ~fJ |
+| Cell write energy | <100 fJ (projected) | <2.63 / 1.5–9 pJ set/reset | 5 fJ | 0.7 pJ | ~100 pJ | ~10 fJ | ~fJ |
 
-*Table 1. Top industry-demonstrated metrics, as collected by Hellenbrand, Teck and MacManus-Driscoll (2024), Table 2 [1]. Each entry is attributed in the source to a specific company or collaboration.*
+*Table 1. Top industry-demonstrated metrics, as collected by Hellenbrand, Teck and MacManus-Driscoll (2024), Table 2 [1]. Each entry is attributed in the source to a specific company or collaboration. \*The source lists 100 µs for DRAM; JEDEC parts guarantee retention over the 64 ms (32 ms when hot) refresh window, and typical cells hold data for seconds (23-03).*
 
-Read across the rows and the tradeoffs appear. MRAM and FeRAM have DRAM-like endurance; PCM and ReRAM sit between flash and DRAM. PCM's write energy, set by heating, is the highest of the four. All four write at far lower voltage and energy than NOR flash. Density is the gap that the table does not show: emerging memories are built at logic-like cell sizes in a single layer, while NAND stacks hundreds of layers (Example 23-08.8). That is why none of them competes with NAND on cost per bit, and why their natural market is embedded memory, where the comparison is with embedded flash and SRAM.
+Read across the rows and the tradeoffs appear. MRAM and FeRAM have DRAM-like endurance in device demonstrations (products are rated lower, §3.2); PCM and ReRAM sit between flash and DRAM. PCM's write energy, set by heating, is the highest of the four. All four write at far lower voltage and energy than NOR flash. Density is the gap that the table does not show: emerging memories are built at logic-like cell sizes in a single layer, while NAND stacks hundreds of layers (Example 23-08.8). That is why none of them competes with NAND on cost per bit, and why their natural market is embedded memory, where the comparison is with embedded flash and SRAM.
 
 ## 4. Worked examples
 
@@ -151,7 +169,7 @@ Read across the rows and the tradeoffs appear. MRAM and FeRAM have DRAM-like end
 
 ### Example 23-08.2 · Thermal stability for retention (tier B)
 
-**Setup.** A 32 Mb (2²⁵-bit) MRAM array must keep data for 10 years with at most one expected thermal flip. Take $f_0 = 10^9$ s⁻¹ and a year of 365.25 days. Find (a) $N t f_0$ and (b) the required $\Delta$ at the operating temperature. Assuming a temperature-independent barrier, what room-temperature (25 °C) $\Delta$ does the cell need to meet (b) at (c) 85 °C and (d) 150 °C?
+**Setup.** A 32 Mib (2²⁵-bit) MRAM array must keep data for 10 years with at most one expected thermal flip. Take $f_0 = 10^9$ s⁻¹ and a year of 365.25 days. Find (a) $N t f_0$ and (b) the required $\Delta$ at the operating temperature. Assuming a temperature-independent barrier, what room-temperature (25 °C) $\Delta$ does the cell need to meet (b) at (c) 85 °C and (d) 150 °C?
 
 **Solution.**
 
@@ -165,7 +183,7 @@ Read across the rows and the tradeoffs appear. MRAM and FeRAM have DRAM-like end
 
 ### Example 23-08.3 · Stability against write energy (tier B)
 
-**Setup.** Assume $I_{c0}$ = 1 µA per unit of $\Delta$, a write current of 1.5 $I_{c0}$, and 20 ns pulses at 0.5 V. For (a) $\Delta$ = 60 and (b) $\Delta$ = 40, find the write current and energy. For $\Delta$ = 40, find (c) one bit's mean retention time in years and (d) the mean time to the first flip in a 1 Mb (2²⁰-bit) array.
+**Setup.** Assume $I_{c0}$ = 1 µA per unit of $\Delta$, a write current of 1.5 $I_{c0}$, and 20 ns pulses at 0.5 V. For (a) $\Delta$ = 60 and (b) $\Delta$ = 40, find the write current and energy. For $\Delta$ = 40, find (c) one bit's mean retention time in years and (d) the mean time to the first flip in a 1 Mib (2²⁰-bit) array.
 
 **Solution.**
 
@@ -176,7 +194,7 @@ Read across the rows and the tradeoffs appear. MRAM and FeRAM have DRAM-like end
 
 **Units check.** V × A × s = J. ✓
 
-**Sanity check.** Cutting $\Delta$ by a third cuts the write energy by a third, but a 1 Mb array then loses a bit every few minutes. That is acceptable for a cache with ECC and scrubbing, not for code storage. The 0.9 pJ is the same order as the 0.7 pJ in Table 1 [1].
+**Sanity check.** Cutting $\Delta$ by a third cuts the write energy by a third, but a 1 Mib array then loses a bit every few minutes. That is acceptable for a cache with ECC and scrubbing, not for code storage. The 0.9 pJ is the same order as the 0.7 pJ in Table 1 [1]. The assumed 1 µA per unit of $\Delta$ corresponds, in §3.2's macrospin formula with $\eta$ = 0.5, to a damping of about 0.02.
 
 ### Example 23-08.4 · Melting and quenching a PCM cell (tier B)
 
@@ -192,7 +210,7 @@ Read across the rows and the tradeoffs appear. MRAM and FeRAM have DRAM-like end
 
 **Units check.** A² × Ω = W; K/W × W = K. ✓
 
-**Sanity check.** A few nanoseconds of cooling is far shorter than crystallization takes, so the melt freezes amorphous. The SET pulse uses more energy than RESET despite its lower current, because it is three times longer. Both are a few picojoules, consistent with Table 1's 1.5–9 pJ [1], and far more than MRAM's write.
+**Sanity check.** A few nanoseconds of cooling is far shorter than crystallization takes, so the melt freezes amorphous. The SET pulse uses more energy than RESET despite its lower current, because it is three times longer. RESET's 4.0 pJ lies within Table 1's 1.5–9 pJ RESET range [1]; this example's long SET pulse (6.0 pJ) is above the best demonstrated SET energy of under 2.63 pJ. Both are far more than MRAM's write. The 2 kΩ is the threshold-switched on-resistance during programming (§3.3), not the stored resistance.
 
 ### Example 23-08.5 · Resistance drift (tier B)
 
@@ -205,7 +223,7 @@ Read across the rows and the tradeoffs appear. MRAM and FeRAM have DRAM-like end
 
 **Units check.** A ratio of times raised to a power is dimensionless. ✓
 
-**Sanity check.** Within about 17 minutes an intermediate level has drifted to where its neighbour was. Multi-level PCM therefore needs drift-tolerant reading (references that track time, or ratios between cells), and most products store one bit per cell.
+**Sanity check.** Within about 17 minutes an intermediate level has drifted by a full level spacing against fixed read references. The neighbouring levels drift too, at different rates (the crystalline level hardly at all), and $\nu$ varies from cell to cell, so the levels both move and spread. Multi-level PCM therefore needs drift-tolerant reading (references that track time, or ratios between cells), and most products store one bit per cell.
 
 ### Example 23-08.6 · How many atoms is a filament? (tier A)
 
@@ -213,7 +231,7 @@ Read across the rows and the tradeoffs appear. MRAM and FeRAM have DRAM-like end
 
 **Solution.**
 
-- (a) $2e^2/h$ = **77.5** µS; (b) $1/G_0$ = **12.9** kΩ.
+- (a) $2q^2/h$ = **77.5** µS; (b) $1/G_0$ = **12.9** kΩ.
 - (c) $12.906/3$ = **4.30** quanta.
 - (d) $0.2/3\ \text{k}\Omega$ = **66.7** µA; (e) $0.2/100\ \text{k}\Omega$ = **2.0** µA; (f) **33.3**.
 
@@ -305,6 +323,11 @@ Read across the rows and the tradeoffs appear. MRAM and FeRAM have DRAM-like end
 | Ex 23-08.8d | revenue ratio | 4653 | |
 | Txt 23-08.a | Delta cost of a millionfold more bits or time | 14 | |
 | Txt 23-08.b | SET-to-RESET pulse-length ratio | 3 | |
+| Txt 23-08.c | critical current per unit Delta, alpha 0.01, eta 0.5, 300 K | 0.50 | µA |
+| Txt 23-08.d | effective barrier during a 25 µA read | 15 | |
+| Txt 23-08.e | flip probability of a 10 ns read | 3.1e-6 | |
+| Txt 23-08.f | damping implied by 1 µA per unit Delta | 0.02 | |
+| Txt 23-08.h | critical current at Delta 40 | 40 | µA |
 
 ## 5. Simulate it
 
@@ -363,7 +386,7 @@ The lab is [labs/23-08-lab/](../labs/23-08-lab/README.md). `emem.py` holds the c
 
 **State of the art (as of Nov 2026).**
 
-- *Embedded MRAM* [Established]. NXP and TSMC announced on 16 May 2023 the first automotive embedded MRAM in 16 nm FinFET, citing one-million-cycle endurance, solder-reflow support and 20-year retention at 150 °C, and claiming that MRAM updates 20 MB of code in about 3 seconds where flash takes about a minute; product samples were scheduled for early 2025 [3]. In 2020 TSMC said 22 nm eMRAM was ready for production and was taking MRAM to 16 nm [2].
+- *Embedded MRAM* [Established]. NXP and TSMC announced on 16 May 2023 the first automotive embedded MRAM in 16 nm FinFET, citing one-million-cycle endurance, solder-reflow support and 20-year retention at 150 °C; product samples were scheduled for early 2025 [3]. *[Industry estimate: vendor claim]* NXP also claims that MRAM updates 20 MB of code in about 3 seconds where flash takes about a minute [3]. In 2020 TSMC said 22 nm eMRAM was ready for production and was taking MRAM to 16 nm [2].
 - *Embedded ReRAM* [Established]. TSMC said in 2020 that it had brought both ReRAM and MRAM into production at 40 nm and 22 nm, quoting 10-year retention at 125 °C and 10,000 cycles for ReRAM, with Infineon an adopter [2]. Weebit Nano reported a ReRAM license to Texas Instruments and JEDEC-based qualification at DB HiTek in early 2026 [11].
 - *Embedded PCM* [Established for 28 nm; xMemory production announced]. ST describes its embedded PCM as the first 28 nm eNVM qualified for automotive. In April 2025 it said that Stellar MCUs with "xMemory", based on its PCM, would start production later in 2025, and that PCM made at 18 nm and 28 nm gives twice the memory density of other technologies [4].
 - *Standalone MRAM* [Established]. Everspin's 1 Gb STT-MRAM on a 28 nm GlobalFoundries process was analysed by TechInsights in 2021 [9]. Everspin reported $14.8 million of fourth-quarter 2025 revenue and a goal of $100 million annual revenue within three to five years [10].
@@ -375,7 +398,7 @@ The lab is [labs/23-08-lab/](../labs/23-08-lab/README.md). `emem.py` holds the c
 **Marketing vs Reality.**
 
 - *"Universal memory: as fast as DRAM, as dense as NAND, nonvolatile."* No technology does all three; Table 1's best values come from different devices [1], and density lags NAND by thousands of times (Example 23-08.8).
-- *"Unlimited endurance."* MRAM's endurance is very high but finite, and a stable cell needs more write energy (Example 23-08.3).
+- *"Unlimited endurance."* MRAM's endurance is very high but finite: barrier breakdown limits it, and a product rating (10⁶ cycles for the TSMC/NXP part [3]) sits far below device demonstrations. A stable cell also needs more write energy (Example 23-08.3).
 - *"20-year retention."* At a specified temperature and for a specified array size; check both, and the failure criterion.
 - *"Replaces DRAM."* 3D XPoint shows that a technically working memory can fail commercially if it cannot beat incumbents on cost or open a new use [7], [8].
 
@@ -441,7 +464,7 @@ Problem set: [23-08 problems](../problems/23-08-problems.md).
 
 ## 11. Key terms
 
-[Magnetic tunnel junction](../../../reference/glossary.md#magnetic-tunnel-junction) · [Tunnel magnetoresistance (TMR)](../../../reference/glossary.md#tunnel-magnetoresistance-tmr) · [Thermal stability factor](../../../reference/glossary.md#thermal-stability-factor) · [Spin-transfer torque (STT)](../../../reference/glossary.md#spin-transfer-torque-stt) · [Phase-change memory (PCM)](../../../reference/glossary.md#phase-change-memory-pcm) · [Resistance drift](../../../reference/glossary.md#resistance-drift) · [Resistive RAM (ReRAM)](../../../reference/glossary.md#resistive-ram-reram) · [Conductance quantum](../../../reference/glossary.md#conductance-quantum) · [Ferroelectric RAM (FeRAM)](../../../reference/glossary.md#ferroelectric-ram-feram) · [Ferroelectric FET (FeFET)](../../../reference/glossary.md#ferroelectric-fet-fefet) · [Remanent polarization](../../../reference/glossary.md#remanent-polarization) · [Embedded nonvolatile memory (eNVM)](../../../reference/glossary.md#embedded-nonvolatile-memory-envm) · [Storage-class memory](../../../reference/glossary.md#storage-class-memory)
+[Magnetic tunnel junction](../../../reference/glossary.md#magnetic-tunnel-junction) · [Tunnel magnetoresistance (TMR)](../../../reference/glossary.md#tunnel-magnetoresistance-tmr) · [Thermal stability factor](../../../reference/glossary.md#thermal-stability-factor) · [Spin-transfer torque (STT)](../../../reference/glossary.md#spin-transfer-torque-stt) · [Phase-change memory (PCM)](../../../reference/glossary.md#phase-change-memory-pcm) · [Resistance drift](../../../reference/glossary.md#resistance-drift) · [Resistive RAM (ReRAM)](../../../reference/glossary.md#resistive-ram-reram) · [Conductance quantum](../../../reference/glossary.md#conductance-quantum) · [Ferroelectric RAM (FeRAM)](../../../reference/glossary.md#ferroelectric-ram-feram) · [Ferroelectric FET (FeFET)](../../../reference/glossary.md#ferroelectric-fet-fefet) · [Remanent polarization](../../../reference/glossary.md#remanent-polarization) · [Embedded nonvolatile memory (eNVM)](../../../reference/glossary.md#embedded-nonvolatile-memory-envm) · [Storage-class memory](../../../reference/glossary.md#storage-class-memory) · [Threshold switching](../../../reference/glossary.md#threshold-switching) · [Selector (memory)](../../../reference/glossary.md#selector-memory) · [Sneak path](../../../reference/glossary.md#sneak-path)
 
 ## 12. Connections
 
@@ -469,3 +492,5 @@ Problem set: [23-08 problems](../problems/23-08-problems.md).
 10. The Motley Fool, "Everspin (MRAM) Q4 2025 Earnings Call Transcript," 4 Mar 2026, <https://www.fool.com/earnings/call-transcripts/2026/03/04/everspin-mram-q4-2025-earnings-call-transcript>. [R-489]
 11. "Weebit Nano Signs Largest Customer to Date – Technology Qualified at DB HiTek," StorageNewsletter, 3 Feb 2026, <https://www.storagenewsletter.com/2026/02/03/weebit-nano-signs-largest-customer-to-date-technology-qualified-at-db-hitek/>. [R-486]
 12. C. Mellor, "FMC gets FERAM cash to kill Optane's ghost," Blocks & Files, 14 Nov 2025, <https://www.blocksandfiles.com/ai-ml/2025/11/14/fmc-gets-feram-cash-to-kill-optanes-ghost/1704708>. [R-487]
+13. imec, SOT-MRAM paper at IEDM 2025 (4 kb characterization array), record <https://zenodo.org/records/18451467>; and MRAM-Info, "Truth Memory Corporation developed the world's first 8Mb SOT-MRAM chip," 31 Jan 2026, <https://www.mram-info.com/truth-memory-corporation-developed-worlds-first-8mb-sot-mram-chip-using-110-nm-process>. [R-498]
+14. Review abstracts on VCMA and spintronic memory: J. Appl. Phys. (2024), doi:10.1063/5.0201648; Advances in Physics: X (2025), doi:10.1080/23746149.2025.2557918. [R-498]

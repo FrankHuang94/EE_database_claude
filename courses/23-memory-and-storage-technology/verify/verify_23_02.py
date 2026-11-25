@@ -281,4 +281,14 @@ v.check("Lab 23-02.e", q_tail(d50 / 0.025))
 v.check("Lab 23-02.f", 1e3 * optimize.brentq(lambda vb: write_bal(VDD, K, KPU, 0.45, 0.15, vb) - vm5, -0.6, 0.0,
                                              xtol=1e-9))
 
+# ---------------------------------------------------------------- audit additions
+from scipy.stats import norm as _norm  # noqa: E402
+v.check("Txt 23-02.o", _norm.isf(2.0 ** -29))
+v.check("Txt 23-02.p", _norm.isf(-math.log(0.99) / 2 ** 29))
+v.check("Txt 23-02.q", 1.0 * math.sqrt(2))
+v.check("Txt 23-02.r", 0.214e-3 / 64 * 1e6)
+v.check("Txt 23-02.s", 0.7 / 2)
+v.check("Txt 23-02.t", (1 - 0.021 / 0.024) * 100)
+v.check("Txt 23-02.u", 2 ** 29)
+
 sys.exit(v.finish())

@@ -9862,3 +9862,35 @@
   definition: "The fraction of an accelerator's processing elements doing useful work on a given model; delivered throughput is peak operations per element × elements × utilization, so peak TOPS overstates real performance."
   chapter: "23-09"
   see_also: [TOPS/W]
+- term: Bank group
+  definition: "A set of DRAM banks that share column circuitry; consecutive column commands to different groups can issue every tCCD_S, to the same group only every longer tCCD_L, so the pin rate can rise without speeding up every core."
+  chapter: "23-04"
+  see_also: [DRAM bank, Burst length]
+- term: Self-boosting (NAND program inhibit)
+  definition: "Protecting cells that share a programmed wordline: their bitlines are raised so the string floats, and its channel is capacitively boosted toward the program voltage, leaving too little field for tunneling."
+  chapter: "23-06"
+  see_also: [Incremental step pulse programming (ISPP), NAND string]
+- term: Threshold switching
+  definition: "The electronic (not structural) switch of an amorphous chalcogenide into a conducting state above a threshold voltage, which lets a high-resistance PCM cell pass programming current."
+  chapter: "23-08"
+  see_also: [Phase-change memory (PCM), Selector (memory)]
+- term: Selector (memory)
+  definition: "A two-terminal device in series with each cell of a cross-point array that conducts only above a threshold, blocking sneak-path currents through half-selected cells; 3D XPoint used an ovonic threshold switch."
+  chapter: "23-08"
+  see_also: [Sneak path, Threshold switching]
+- term: Sneak path
+  definition: "A parasitic current path through unselected cells of a transistor-less cross-point array that swamps the selected cell's signal unless each cell has a selector."
+  chapter: "23-08"
+  see_also: [Selector (memory)]
+- term: Uncorrectable bit error rate (UBER)
+  definition: "Wrong bits delivered to the host per bit read after error correction; for a k-bit codeword correcting t errors it is about (t + 1)P_fail/k, with JEDEC targets of 1e-15 (client) and 1e-16 (enterprise)."
+  chapter: "23-07"
+  see_also: [Write amplification factor (WAF)]
+- term: DRAM-less SSD
+  definition: "An SSD that caches only part of its mapping table in on-chip SRAM, keeping the rest in flash (or in host memory through NVMe's Host Memory Buffer), at the cost of extra flash reads on table misses."
+  chapter: "23-07"
+  see_also: [Write amplification factor (WAF)]
+- term: Program suspend
+  definition: "A NAND feature that pauses a long program or erase so the controller can serve waiting reads, trading write throughput for read tail latency."
+  chapter: "23-07"
+  see_also: [Garbage collection (SSD)]

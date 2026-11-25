@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 23-04 · DRAM Interfaces: DDR, LPDDR and GDDR
 
 | | |
@@ -24,7 +24,7 @@ A DRAM die's core runs at a few hundred megahertz, set by the bitline and sense-
 
 - **Servers:** DDR5 DIMMs carry terabytes per socket; multiplexed-rank DIMMs (MRDIMMs) raise bandwidth without faster DRAM cores [12].
 - **Phones, laptops and some AI servers:** LPDDR5X soldered beside or on the processor package trades capacity flexibility for energy. NVIDIA's Grace CPU uses it in a data-center chip [11].
-- **Graphics and inference cards:** GDDR7 reaches 28 Gb/s per pin on shipping cards and has moved to three-level signaling [5], [8].
+- **Graphics and inference cards:** GDDR7 reaches 28–30 Gb/s per pin on shipping cards and has moved to three-level signaling [5], [8], [14].
 - **Cost:** pins, package balls and board layers cost money, so bandwidth per pin and per millimetre of chip edge matter as much as bandwidth itself (23-01).
 
 ## 2. Intuition first
@@ -51,6 +51,8 @@ Micron's data sheets give an 8n prefetch for DDR4, 16n for DDR5 and 16n or 32n f
 
 The **burst length** (BL) is the number of transfers one column command produces. To use the whole prefetch it equals $n$: BL8 for DDR4 and BL16 for DDR5. A channel of $W$ data bits therefore moves $W \cdot BL/8$ bytes per access, the **access granularity**. DDR4's 64-bit channel with BL8 moves 64 bytes, one processor cache line. Had DDR5 kept a 64-bit channel with BL16, every access would move 128 bytes, half of it often unwanted. DDR5 modules therefore have **two independent 32-bit subchannels**; each uses BL16 for a 64-byte payload [3]. Two subchannels also double the number of independent requests a module can serve at once. LPDDR5X's 16-bit channels give 32 bytes at BL16 or 64 at BL32 [4].
 
+**Bank groups.** The core column rate above is a cross-group rate. DDR4 and DDR5 divide the banks into **bank groups** that share some column circuitry. Column commands to *different* groups can issue every $t_{CCD\_S}$, one burst apart. Commands to the *same* group must wait the longer $t_{CCD\_L}$, because each group's core runs slower than the pins. DDR4 introduced bank groups precisely so that the pin rate could rise without speeding up every core. Controllers therefore interleave accesses across groups, and a stream that keeps hitting one group gets less than the peak bandwidth.
+
 ### 3.2 Bandwidth and pins
 
 Peak bandwidth is the transfer rate times the bits per transfer:
@@ -69,7 +71,7 @@ $$
 \Gamma = \frac{R - Z_0}{R + Z_0}
 $$
 
-reflects. The echo returns to the source, partly reflects again with $\Gamma_S = (R_s - Z_0)/(R_s + Z_0)$, and so on. The far-end voltage therefore steps toward its final value, overshooting or undershooting at each round trip of $2T_d$. If the line's round trip is short compared with the signal's rise time, the echoes blur into a smooth settle and nobody notices. If the round trip spans several bits, each echo lands on a later bit as interference. At 6400 MT/s, a unit interval (UI) is 156.25 ps, while a 50 mm trace has a one-way delay of about 334 ps, so DRAM buses must be terminated (Example 23-04.5).
+reflects. The echo returns to the source, partly reflects again with $\Gamma_S = (R_s - Z_0)/(R_s + Z_0)$, and so on. The far-end voltage therefore steps toward its final value, overshooting or undershooting at each round trip of $2T_d$, where $T_d$ is the line's one-way delay. If the line's round trip is short compared with the signal's rise time, the echoes blur into a smooth settle and nobody notices. If the round trip spans several bits, each echo lands on a later bit as interference. At 6400 MT/s, a unit interval (UI) is 156.25 ps, while a 50 mm trace has a one-way delay of about 334 ps, so DRAM buses must be terminated (Example 23-04.5).
 
 DRAMs terminate on the die (**on-die termination**, ODT), with resistances programmable per rank and per operation. Micron's DDR4 parts offer 34 to 240 Ω of nominal termination and 34 or 48 Ω drivers [2]. DDR5 extended programmable ODT to the clock, chip-select and command/address pins as well [3].
 
@@ -98,13 +100,15 @@ against 4 without DBI: an 18.3% cut in termination energy. DBI also caps the num
 
 ### 3.5 Timing at gigabits per second
 
-At 6400 MT/s the data eye is 156.25 ps wide before any jitter or noise, and every source of skew eats into it. The biggest is routing topology. On a DIMM, data lines run point to point from the controller to each DRAM, but the clock and command/address signals run in a **fly-by** chain past all the DRAMs in turn [3]. The clock therefore reaches the last DRAM of a rank hundreds of picoseconds, several UIs, after the first (Example 23-04.6). The controller must compensate by launching each byte's data strobe with its own delay. It measures those delays at power-up by **training**:
+At 6400 MT/s the data eye is 156.25 ps wide before any jitter or noise, and every source of skew eats into it. The biggest is routing topology. On a DIMM, each byte's data lines are routed directly to that byte's DRAMs, but the clock and command/address signals run in a **fly-by** chain past all the DRAMs in turn [3]. The clock therefore reaches the last DRAM of a rank hundreds of picoseconds, several UIs, after the first (Example 23-04.6). The controller must compensate by launching each byte's data strobe with its own delay. It measures those delays at power-up by **training**:
 
 - **Write leveling:** the DRAM samples the arriving clock with the data strobe and reports the result on a data pin; the controller sweeps the strobe delay until the edges align [2].
 - **Read training and $V_{REF}$ training:** the controller reads known patterns and centres its sampling point and reference voltage in each data eye.
 - **Command/address and chip-select training:** new in DDR5, these align the command bus to the clock without risking invalid commands [3].
 
 Training results drift with temperature and voltage, so controllers retrain periodically. Every picosecond of uncorrected skew is margin lost.
+
+> **Going deeper — calibration and protection features.** Several features keep these links working across process, voltage and temperature. *ZQ calibration:* each DRAM has a precision external 240 Ω resistor, and it periodically recalibrates its drivers and terminations against it; that is why DDR drive and ODT settings are fractions of 240 Ω (240/7 = 34 Ω, 240/5 = 48 Ω). *Write clocks:* LPDDR5 adds a separate, faster write clock (WCK) for the data, so the command clock can stay slow. *Link error detection:* DDR4 and DDR5 can append a CRC to write bursts so the DRAM flags corrupted transfers for retry. *Inside the DIMM:* DDR5 adds on-die ECC in each DRAM (23-03) and moves voltage regulation onto the module with a power-management IC (22-08).
 
 ### 3.6 Intersymbol interference and decision-feedback equalization
 
@@ -114,7 +118,7 @@ $$
 h_0 = 1 - a,\qquad h_k = (1 - a)\,a^k\ \ (k \ge 1),\qquad \sum_{k \ge 1} h_k = a .
 $$
 
-With symbols of ±1, the received sample for the current bit is $h_0x_0 + \sum_k h_kx_{-k}$. The worst case for a 1 has every earlier bit at −1, so the eye's half-opening, as a fraction of the full swing, is
+With symbols of ±1, the received sample for the current bit is $h_0x_0 + \sum_k h_kx_{-k}$. The worst case for a 1 has every earlier bit at −1, so the eye's vertical opening, as a fraction of the full swing (equivalently, its half-opening relative to the symbol amplitude), is
 
 $$
 \text{eye} = h_0 - \sum_{k \ge 1} |h_k| = 1 - 2a .
@@ -136,13 +140,13 @@ $$
 
 For a gently sloped channel NRZ wins; for a steep one PAM wins, and PAM3 crosses over before PAM4 does (Example 23-04.8). Real decisions also weigh the receiver's noise and its circuits' speed: a slower symbol clock is easier to build, which is part of GDDR7's case [6].
 
-> **Going deeper — why a first-order channel never favours PAM.** For the RC channel of §3.6, the eye of PAM-$M$ is $(1 - a)/(M - 1) - a$ with $a = e^{-T_{sym}/\tau}$. Longer symbols shrink $a$, but only exponentially in $T_{sym}/\tau$, while the $1/(M - 1)$ factor is a fixed loss. Work through Lab Part 3 and you will find NRZ ahead of PAM3 and PAM4 at every τ where any eye is open; Problem 23-04.14 proves it. Real channels add skin-effect and dielectric losses that grow with $\sqrt f$ and $f$, plus reflections, so their loss at high frequency is far steeper than an RC's.
+> **Going deeper — why a first-order channel never favours PAM.** For the RC channel of §3.6, the eye of PAM-$M$ is $(1 - a)/(M - 1) - a$ with $a = e^{-T_{sym}/\tau}$. Longer symbols shrink $a$, but PAM-$M$ lengthens them only by the factor $\log_2M$, while the $1/(M - 1)$ factor cuts the opening by a fixed ratio; Problem 23-04.14 factors the comparison and shows the fixed loss always wins. Work through Lab Part 3 and you will find NRZ ahead of PAM3 and PAM4 at every τ where any eye is open; Problem 23-04.14 proves it. Real channels add skin-effect and dielectric losses that grow with $\sqrt f$ and $f$, plus reflections, so their loss at high frequency is far steeper than an RC's.
 
 ### 3.8 The families compared
 
 | | DDR5 | LPDDR5X | GDDR7 |
 |---|---|---|---|
-| Pin rate (top bin, Nov 2026) | 7200 MT/s in Micron's Rev D bins; 8800 MT/s MRDIMMs [1], [12] | 9600 MT/s (Micron), 10.7 Gb/s (Samsung) [4], [9] | 28 Gb/s shipping [8]; 192 GB/s per device in the standard [5] |
+| Pin rate (top bin, Nov 2026) | 7200 MT/s in Micron's Rev D bins; JESD79-5C defines bins to 8800 MT/s [15]; 8800 MT/s MRDIMMs [1], [12] | 9600 MT/s (Micron), 10.7 Gb/s (Samsung) [4], [9] | 28–30 Gb/s shipping [8], [14]; 192 GB/s per device in the standard [5] |
 | Channel | Two 32-bit subchannels per DIMM [3] | x16 channels, two per die [4] | Four independent channels per device [5] |
 | Prefetch / burst | 16n, BL16 [1], [3] | 16n or 32n, BL16 or BL32 [4] | — |
 | Signaling | POD, $V_{DDQ}$ = 1.1 V [1] | LVSTL, $V_{DDQ}$ = 0.5 V [4] | PAM3 [5] |
@@ -153,7 +157,7 @@ For a gently sloped channel NRZ wins; for a steep one PAM wins, and PAM3 crosses
 
 **LPDDR** sits millimetres from the processor, usually soldered or in the same package, with no sockets and short point-to-point routes. That allows the low-swing LVSTL I/O and aggressive power states. The price is fixed capacity per package and no field upgrades.
 
-**GDDR** is soldered in a ring around a GPU, one device per 32-bit slice of the bus, which allows the highest pin rates. The price is capacity: a 512-bit card with 32 GB is about as large as GDDR systems get [7].
+**GDDR** is soldered in a ring around a GPU, one device per 32-bit slice of the bus, which allows the highest pin rates. The price is capacity. Consumer cards top out near 32 GB (the RTX 5090 [7]); NVIDIA's RTX PRO 6000 workstation card reaches 96 GB of GDDR7 on a 512-bit bus at 1,792 GB/s [14], still a third of one 288 GB HBM GPU (23-05).
 
 **HBM** stacks DRAM dies on the processor's package with thousands of slow pins (23-05).
 
@@ -217,7 +221,7 @@ For a gently sloped channel NRZ wins; for a steep one PAM wins, and PAM3 crosses
 
 **Units check.** As in Example 23-04.3. ✓
 
-**Sanity check.** The factor comes from $(1.1/0.5)^2$ = 4.84 in power and a 1.5 times shorter UI. NVIDIA's claim that Grace's LPDDR5X uses one-eighth the power per GB/s of an eight-channel DDR5 design [11] is a system comparison (DRAM core, buffers and controller included), so the similar factor here is a coincidence, not a confirmation.
+**Sanity check.** The factor is $(1.1/0.5)^2$ = 4.84 from the supply, $80/74$ = 1.08 from the higher total resistance, and 1.5 from the shorter UI: $4.84 \times 1.081 \times 1.5$ = 7.85. NVIDIA's claim that Grace's LPDDR5X uses one-eighth the power per GB/s of an eight-channel DDR5 design [11] is a system comparison (DRAM core, buffers and controller included), so the similar factor here is a coincidence, not a confirmation.
 
 ### Example 23-04.5 · Reflections on a DRAM line (tier B)
 
@@ -250,7 +254,7 @@ For a gently sloped channel NRZ wins; for a steep one PAM wins, and PAM3 crosses
 
 **Units check.** s/m × 10⁻³ m/mm = s/mm. ✓
 
-**Sanity check.** The skew is several bits, and a millimetre of length mismatch spends the whole budget. No layout can match lengths that well across a module, so the controller measures each byte's delay (write leveling) and corrects it in silicon.
+**Sanity check.** The skew is several bits, and it is deliberate: fly-by routing is what keeps the clock and command bus clean. Cancelling 700 ps with extra data-line length would need $700/6.67$ = 105 mm of serpentine on the bytes nearest the controller. The skew also depends on the motherboard route and the slot, and the silicon and package delays drift with voltage and temperature. So the controller measures each byte's delay (write leveling) and corrects it in silicon.
 
 ### Example 23-04.7 · Intersymbol interference and DFE (tier C)
 
@@ -282,7 +286,7 @@ For a gently sloped channel NRZ wins; for a steep one PAM wins, and PAM3 crosses
 
 **Units check.** dB/(dB/GHz) = GHz; amplitudes are ratios. ✓
 
-**Sanity check.** At 1 dB/GHz all three crossovers have passed, so PAM4 has the tallest eye, but only by 6% over PAM3. Below about 0.75 dB/GHz NRZ wins outright. GDDR7's choice of PAM3 trades a little eye height on very lossy channels for a simpler encoder and more margin against noise [6].
+**Sanity check.** At 1 dB/GHz all three crossovers have passed, so PAM4 has the tallest eye, but only by 6% over PAM3. Below about 0.75 dB/GHz NRZ wins outright. GDDR7's choice of PAM3 gives the tallest eye between about 0.75 and 0.88 dB/GHz, has fewer levels to keep linear than PAM4, and needs only a simple 3-bit-to-2-symbol encoder [6].
 
 <!-- answer-key -->
 
@@ -333,15 +337,15 @@ For a gently sloped channel NRZ wins; for a steep one PAM wins, and PAM3 crosses
 | Ex 23-04.5a | launched wave | 0.541 | V |
 | Ex 23-04.5a1 | launched wave, 4 s.f. | 0.5405 | V |
 | Ex 23-04.5b | source reflection coefficient | -0.0811 | |
-| Ex 23-04.5bL | load reflection coefficient, 120 Ω | 0.5 | |
-| Ex 23-04.5c | far end, first arrival, 120 Ω | 0.811 | V |
-| Ex 23-04.5c1 | wave reflected from the far end | 0.2703 | V |
-| Ex 23-04.5c2 | wave re-reflected at the source | -0.0219 | V |
-| Ex 23-04.5c3 | second far-end increment | -0.0329 | V |
-| Ex 23-04.5d | far end, second arrival, 120 Ω | 0.778 | V |
-| Ex 23-04.5e | far end, final, 120 Ω | 0.779 | V |
-| Ex 23-04.5f | far end, first arrival, open | 1.081 | V |
-| Ex 23-04.5g | far end, second arrival, open | 0.993 | V |
+| Ex 23-04.5c | load reflection coefficient, 120 Ω | 0.5 | |
+| Ex 23-04.5d | far end, first arrival, 120 Ω | 0.811 | V |
+| Ex 23-04.5e1 | wave reflected from the far end | 0.2703 | V |
+| Ex 23-04.5e2 | wave re-reflected at the source | -0.0219 | V |
+| Ex 23-04.5e3 | second far-end increment | -0.0329 | V |
+| Ex 23-04.5e | far end, second arrival, 120 Ω | 0.778 | V |
+| Ex 23-04.5f | far end, final, 120 Ω | 0.779 | V |
+| Ex 23-04.5g | far end, first arrival, open | 1.081 | V |
+| Ex 23-04.5h | far end, second arrival, open | 0.993 | V |
 | Ex 23-04.6a | delay per millimetre | 6.67 | ps/mm |
 | Ex 23-04.6a1 | speed of light | 3.00e8 | m/s |
 | Ex 23-04.6b0 | fly-by length | 105 | mm |
@@ -385,6 +389,14 @@ For a gently sloped channel NRZ wins; for a steep one PAM wins, and PAM3 crosses
 | Txt 23-04.j | one-tap share of the full-DFE gain | 0.76 | |
 | Txt 23-04.k | raw LPDDR6 channel bandwidth at 14,400 MT/s | 43.2 | GB/s |
 | Txt 23-04.l | Grace memory energy per bit | 4.0 | pJ/bit |
+| Txt 23-04.m | supply factor, POD over LVSTL | 4.84 | |
+| Txt 23-04.n | resistance factor, 80/74 | 1.081 | |
+| Txt 23-04.n1 | resistance factor, 3 s.f. | 1.08 | |
+| Txt 23-04.o | serpentine to cancel 700 ps | 105 | mm |
+| Txt 23-04.o1 | serpentine to cancel 700 ps, in cm | 10 | cm |
+| Txt 23-04.p | 240/7 driver | 34 | Ω |
+| Txt 23-04.q | 240/5 driver | 48 | Ω |
+| Txt 23-04.r | ZQ reference resistor | 240 | Ω |
 
 ## 5. Simulate it
 
@@ -434,7 +446,7 @@ The notebook enumerates DBI codes, simulates eyes for NRZ, PAM3 and PAM4 through
 | I/O supply | DDR4 1.2 V POD; DDR5 1.1 V POD; LPDDR5X 0.5 V LVSTL | [1], [2], [4] |
 | Termination and driver | tens of ohms (DDR4: 34–240 Ω ODT, 34 or 48 Ω drivers) | [2] |
 | Trace delay | about 6–7 ps/mm on FR-4-class boards | Example 23-04.6 (assumed permittivity) |
-| Top pin rates (as of Nov 2026) | DDR5 MRDIMM 8800 MT/s; LPDDR5X 10.7 Gb/s; GDDR7 28 Gb/s shipping | [9], [8], [12] |
+| Top pin rates (as of Nov 2026) | DDR5 MRDIMM 8800 MT/s (JEDEC bins to 8800); LPDDR5X 10.7 Gb/s; GDDR7 28–30 Gb/s shipping | [9], [8], [12], [14], [15] |
 | Peak bandwidth | DDR5-6400 DIMM 51.2 GB/s; LPDDR5X x16 channel 19.2 GB/s; RTX 5090 1.79 TB/s | Example 23-04.2 |
 | PAM eye penalty | PAM3 6.02 dB; PAM4 9.54 dB | §3.7 |
 
@@ -454,7 +466,7 @@ The notebook enumerates DBI codes, simulates eyes for NRZ, PAM3 and PAM4 through
 
 - *DDR5* [Established for data sheets; Industry estimate for vendor claims]. Micron's 16 Gb die bins run to DDR5-7200 (advance) [1]. MRDIMMs reach 8800 MT/s on the host bus by interleaving two ranks. Micron and Intel claim up to 40% lower loaded latency than a DDR5-6400 RDIMM, and the next generation targets 12,800 MT/s [12].
 - *LPDDR5X and LPDDR6* [Established for announcements; Industry estimate for rates]. Samsung announced 10.7 Gb/s LPDDR5X on 17 Apr 2024 [9]. JEDEC published LPDDR6 (JESD209-6) in Jul 2025. Reporting gives 10,667–14,400 MT/s and 28.5–38.4 GB/s per 24-bit channel, split into two 12-bit subchannels, with a 32-byte minimum granularity and per-row activation counting [10]. The reported bandwidth is below the raw 24 bits × rate (43.2 GB/s at 14,400 MT/s), consistent with part of each burst carrying metadata; this has not been checked against the standard.
-- *GDDR7* [Established]. JESD239 (5 Mar 2024) is the first JEDEC DRAM standard with PAM signaling, with up to 192 GB/s per device, four channels instead of GDDR6's two, and on-die ECC [5]. NVIDIA's RTX 5090 uses 32 GB on a 512-bit bus [7] at 28 Gb/s per pin [8].
+- *GDDR7* [Established]. JESD239 (5 Mar 2024) is the first JEDEC DRAM standard with PAM signaling, with up to 192 GB/s per device, four channels instead of GDDR6's two, and on-die ECC [5]. NVIDIA's RTX 5090 uses 32 GB on a 512-bit bus [7] at 28 Gb/s per pin [8]; the RTX 5080 runs its 256-bit bus at 30 Gb/s (960 GB/s), and the RTX PRO 6000 workstation card carries 96 GB on 512 bits [14].
 - *LPDDR in the data center* [Industry estimate: vendor comparison]. NVIDIA says Grace's LPDDR5X "provides up to 53% more bandwidth at one-eighth the power per gigabyte per second" than an eight-channel DDR5 design, at similar cost [11]. Its tuning guide instead quotes up to 500 GB/s in about 16 W, "one fifth the power of 12 channels of conventional DDR5 memory" [13]. Taken at face value, 16 W for 500 GB/s is 4.0 pJ/bit for the whole memory subsystem.
 
 **Why it matters commercially.** The interface decides the memory bill of materials and much of a platform's power budget. A server CPU's channel count and DIMM speed set its bandwidth per core. A phone's LPDDR generation sets its standby battery drain. A GPU's GDDR or HBM choice sets both its bandwidth and its capacity ceiling. For an investor or acquirer, interface IP (controllers and PHYs), module buffer chips (RCDs and data buffers for MRDIMMs) and test and training expertise are distinct businesses from the DRAM die itself.
@@ -463,7 +475,7 @@ The notebook enumerates DBI codes, simulates eyes for NRZ, PAM3 and PAM4 through
 
 - *"DDR5-8800."* For MRDIMMs that is the host bus. Each rank runs at half the rate [12], so latency to a single rank does not improve.
 - *"One-eighth the power."* Check the baseline: per GB/s or total, against how many DDR5 channels, and with which parts of the subsystem. NVIDIA's own tuning guide states the comparison differently, as one fifth of the power of 12 DDR5 channels [13].
-- *"192 GB/s per device."* That is the standard's ceiling at 48 Gb/s per pin (Example 23-04.2). Shipping parts run slower: 28 Gb/s on the RTX 5090 [8].
+- *"192 GB/s per device."* That is the standard's ceiling at 48 Gb/s per pin (Example 23-04.2). Shipping parts run slower: 28 Gb/s on the RTX 5090 [8] and 30 Gb/s on the RTX 5080 [14].
 - *"PAM3 is better than PAM4."* Each wins on different channels (Example 23-04.8). PAM3's real advantages are noise margin and simpler circuits [6].
 
 **Questions for engineering leaders.**
@@ -512,7 +524,7 @@ A route's round-trip delay spans several bits, so unabsorbed reflections land on
 
 <details><summary>Answer</summary>
 
-It corrects the fly-by clock's different arrival time at each DRAM relative to its directly routed data strobe. The skew is several UIs (Example 23-04.6), and a 5% UI budget is about a millimetre of trace, far tighter than any module can be length-matched across all its routes.
+It corrects the fly-by clock's different arrival time at each DRAM relative to its directly routed data strobe. The skew is deliberate and large, several UIs (Example 23-04.6). Cancelling it in layout would need about 10 cm of extra trace on the nearest bytes, it varies with the board and slot, and it drifts with silicon and package delay over voltage and temperature. Only a measurement at power-up, repeated as conditions change, tracks all of that.
 
 </details>
 
@@ -536,7 +548,7 @@ Problem set: [23-04 problems](../problems/23-04-problems.md).
 
 ## 11. Key terms
 
-[Prefetch (DRAM)](../../../reference/glossary.md#prefetch-dram) · [Burst length](../../../reference/glossary.md#burst-length) · [Access granularity](../../../reference/glossary.md#access-granularity) · [DDR5 subchannel](../../../reference/glossary.md#ddr5-subchannel) · [On-die termination (ODT)](../../../reference/glossary.md#on-die-termination-odt) · [Pseudo-open-drain (POD) I/O](../../../reference/glossary.md#pseudo-open-drain-pod-i-o) · [Low-voltage-swing terminated logic (LVSTL)](../../../reference/glossary.md#low-voltage-swing-terminated-logic-lvstl) · [Data bus inversion (DBI)](../../../reference/glossary.md#data-bus-inversion-dbi) · [Fly-by topology](../../../reference/glossary.md#fly-by-topology) · [Write leveling](../../../reference/glossary.md#write-leveling) · [PAM3](../../../reference/glossary.md#pam3) · [MRDIMM](../../../reference/glossary.md#mrdimm) · [Reflection coefficient](../../../reference/glossary.md#reflection-coefficient) · [Decision-feedback equalizer (DFE)](../../../reference/glossary.md#decision-feedback-equalizer-dfe) · [PAM4](../../../reference/glossary.md#pam4)
+[Prefetch (DRAM)](../../../reference/glossary.md#prefetch-dram) · [Burst length](../../../reference/glossary.md#burst-length) · [Access granularity](../../../reference/glossary.md#access-granularity) · [DDR5 subchannel](../../../reference/glossary.md#ddr5-subchannel) · [On-die termination (ODT)](../../../reference/glossary.md#on-die-termination-odt) · [Pseudo-open-drain (POD) I/O](../../../reference/glossary.md#pseudo-open-drain-pod-i-o) · [Low-voltage-swing terminated logic (LVSTL)](../../../reference/glossary.md#low-voltage-swing-terminated-logic-lvstl) · [Data bus inversion (DBI)](../../../reference/glossary.md#data-bus-inversion-dbi) · [Fly-by topology](../../../reference/glossary.md#fly-by-topology) · [Write leveling](../../../reference/glossary.md#write-leveling) · [PAM3](../../../reference/glossary.md#pam3) · [MRDIMM](../../../reference/glossary.md#mrdimm) · [Reflection coefficient](../../../reference/glossary.md#reflection-coefficient) · [Decision-feedback equalizer (DFE)](../../../reference/glossary.md#decision-feedback-equalizer-dfe) · [PAM4](../../../reference/glossary.md#pam4) · [Bank group](../../../reference/glossary.md#bank-group)
 
 ## 12. Connections
 
@@ -566,3 +578,5 @@ Problem set: [23-04 problems](../problems/23-04-problems.md).
 11. J. Evans et al., "NVIDIA Grace CPU Superchip Architecture In Depth," NVIDIA Technical Blog, 20 Jan 2023, <https://developer.nvidia.com/blog/nvidia-grace-cpu-superchip-architecture-in-depth>. [R-473]
 12. A. Shilov, "Micron unveils MRDIMMs for Intel Xeon 6: Up to 256GB DDR5-8800 modules," Tom's Hardware, 19 Jul 2024, <https://www.tomshardware.com/desktops/servers/micron-unveils-mrdimms-for-intel-xeon-6-up-to-256gb-ddr5-8800-modules>. [R-472]
 13. NVIDIA, "Grace Performance Tuning Guide" (online documentation, read Nov 2026), <https://docs.nvidia.com/dccpu/grace-perf-tuning-guide/index.html>. [R-473]
+14. NVIDIA, RTX Blackwell GPU Architecture whitepaper v1.1, May 2025, <https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf>; and RTX PRO 6000 Blackwell product page (read Nov 2026), <https://www.nvidia.com/en-us/products/workstations/professional-desktop-gpus/rtx-pro-6000/>. [R-495]
+15. JEDEC, press release on JESD79-5C, 17 Apr 2024, as reprinted by Design & Reuse, <https://us.design-reuse.com/news/56080/jedec-jesd79-5c-ddr5-sdram-standard.html>. [R-497]

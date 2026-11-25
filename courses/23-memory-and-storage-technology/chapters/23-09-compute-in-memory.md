@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 23-09 · Compute-in-Memory and Near-Memory Computing
 
 | | |
@@ -71,19 +71,27 @@ a full matrix-vector product in one read. Units: V × S = A. ✓
 
 ### 3.3 Precision: compute SNR and effective bits
 
-Suppose each product term $w_ix_i$ is realized with a random relative error $\epsilon_i$ of standard deviation $\sigma$ (device-to-device conductance variation, read noise or drift), independent between cells. The column output is
+Suppose each product term $w_ix_i$ is realized with a random relative error $\epsilon_i$ of standard deviation $\sigma$ (device-to-device conductance variation or read noise), zero-mean and independent between cells and of the data. The ideal output $y_0$, the realized output $y$ and the error $e$ are
 
 $$
-y = \sum_i w_ix_i(1 + \epsilon_i), \qquad \text{error } e = \sum_i w_ix_i\epsilon_i .
+y_0 = \sum_i w_ix_i, \qquad y = \sum_i w_ix_i(1 + \epsilon_i) = y_0 + e, \qquad e = \sum_i w_ix_i\epsilon_i .
 $$
 
-The error variance is $\sigma^2\sum_i(w_ix_i)^2$. For a typical neural-network layer the products have zero mean and are uncorrelated, so the signal power is $E[y^2] = \sum_i E[(w_ix_i)^2]$ as well. Their ratio is the **compute SNR**:
+The error power is $E[e^2] = \sigma^2\sum_iE[(w_ix_i)^2]$. For a typical neural-network layer the products have zero mean and are uncorrelated, so the signal power is $E[y_0^2] = \sum_i E[(w_ix_i)^2]$ as well. Their ratio is the **compute SNR**:
 
 $$
-\text{SNR}_a = \frac{E[y^2]}{E[e^2]} = \frac{1}{\sigma^2} .
+\text{SNR}_a = \frac{E[y_0^2]}{E[e^2]} = \frac{1}{\sigma^2} .
 $$
 
-Adding more rows does not help: signal and error grow together. Precision is set by the devices. Expressed as an ADC-style **effective number of bits**, $\text{ENOB} = (\text{SNR}_{dB} - 1.76)/6.02$ (20-06), a 5% device variation gives about 4 effective bits, and 1% about 6 (Example 23-09.3). This is why analog CIM chips quote "8-bit inputs and outputs" while their effective computational precision is lower, and why accuracy must be demonstrated on real networks [4]. Gonugondla et al. formalize this: an analog in-memory computer's accuracy is fundamentally limited by the compute SNR of its analog core, which energy, area and voltage swing bound from above [10].
+Adding more rows does not help: signal and error grow together. Precision is set by the devices. Expressed as an ADC-style **effective number of bits**, $\text{ENOB} = (\text{SNR}_{dB} - 1.76)/6.02$ (20-06), a 5% device variation gives about 4 effective bits, and 1% about 6 (Example 23-09.3). This is why analog CIM chips quote "8-bit inputs and outputs" while their effective computational precision is lower, and why accuracy must be demonstrated on real networks [4].
+
+Three caveats make these figures a best case:
+
+- **Drift is a different kind of error.** PCM drift (23-08) moves every conductance the same way over time. That correlated, one-directional change acts mainly as a gain error, which chips largely remove with a global correction. Only the spread of drift rates between cells adds to $\sigma$.
+- **Error relative to full scale.** Device papers often quote programming error relative to the full-scale conductance $G_{max}$, not to each weight. Small weights then carry the same absolute error as large ones. The SNR falls by the square of the weights' crest factor (full scale over RMS weight): about 9.5 dB for Gaussian weights mapped at ±3 standard deviations (Problem 23-09.14).
+- **The ENOB formula assumes a full-scale sine wave.** A Gaussian-like column sum needs headroom against clipping, so the same SNR buys fewer usable bits.
+
+Read "1% gives 6 bits" as an upper bound. Gonugondla et al. formalize this: an analog in-memory computer's accuracy is fundamentally limited by the compute SNR of its analog core, which energy, area and voltage swing bound from above [10].
 
 > **Going deeper — when SNR grows with rows.** If all products are positive and equal, the signal grows as $M^2$ and the error variance as $M$, so the SNR grows with the number of rows. Real layers have both signs and mostly cancel, so the zero-mean estimate is the useful one.
 
@@ -95,13 +103,13 @@ $$
 B = \log_2\!\left[M(2^{b_x} - 1)(2^{b_w} - 1) + 1\right]
 $$
 
-bits: 8 bits for 256 rows of binary products. A converter's energy per conversion is roughly $\text{FoM}_W \times 2^B$ by the Walden figure of merit, and grows as $4^B$ once thermal noise dominates (20-06). With bit-serial inputs and bit-sliced weights, one 8-bit × 8-bit MAC needs $b_x b_w = 64$ binary partial products, each sharing a conversion with the other rows. The ADC energy per MAC is then
+bits: about 8 for 256 rows of binary products (257 levels, so 9 bits exactly). A converter's energy per conversion is roughly $\text{FoM}_W \times 2^B$ by the Walden figure of merit, and grows as $4^B$ once thermal noise dominates (20-06). With bit-serial inputs and bit-sliced weights, one 8-bit × 8-bit MAC needs $b_x b_w = 64$ binary partial products, each sharing a conversion with the other rows. The ADC energy per MAC is then
 
 $$
 E_{ADC/MAC} = \frac{\text{FoM}_W\,2^B\,b_xb_w}{M} ,
 $$
 
-which with plausible numbers caps the whole macro at single-digit TOPS/W at 8-bit precision, before any array, driver or digital energy (Example 23-09.4). Lowering precision raises the ceiling quadratically ($b_xb_w$), which is why headline TOPS/W figures are often quoted at 4 bits or below. Kavishwar and Shanbhag describe ADC energy as the factor limiting analog in-memory efficiency, and show that choosing ADC precision against compute SNR, rather than worst-case quantization noise, can save about 3 bits for a 256-row binary dot product [11].
+which, for bit-serial inputs, binary-sliced weights, 256 rows and full-resolution 8-bit conversions at 5 fJ per step, caps the macro at single-digit TOPS/W at 8-bit precision, before any array, driver or digital energy (Example 23-09.4). Each assumption can be relaxed. Multi-level analog weights, inputs applied in one step as voltages or pulse widths, longer columns and reduced-precision ADCs all cut the conversions per MAC, and that is how published chips exceed this ceiling (Example 23-09.7, Problem 23-09.13). IBM's HERMES-project chip, for example, applies 8-bit inputs as pulse widths and stores weights as analog PCM conductances, so each output line's ADC converts once per matrix-vector multiply in its fast mode, or four times in its high-precision mode [4], [14]. Lowering precision raises the ceiling quadratically ($b_xb_w$), which is why headline TOPS/W figures are often quoted at 4 bits or below. Kavishwar and Shanbhag describe ADC energy as the factor limiting analog in-memory efficiency, and show that choosing ADC precision against compute SNR, rather than worst-case quantization noise, can save about 3 bits for a 256-row binary dot product [11].
 
 **Design responses** include sharing ADCs across columns (time multiplexing), using fewer bits than exact and accepting the noise, charge-domain summation on capacitors whose matching is better than resistors' [6], and digital CIM, which has no ADCs at all.
 
@@ -117,7 +125,7 @@ $$
 \text{speedup} = \frac{1}{(1 - f) + f/S} .
 $$
 
-Samsung reported a 3.01× tokens-per-second gain for LPDDR5X-PIM, well below its 8× bandwidth gain [2]. Amdahl's law says that implies about three quarters of the run time was accelerated (Example 23-09.6). PIM also needs software that maps operations onto memory banks, and DRAM processes make slow, area-expensive logic, so only simple operations fit.
+Samsung reported a 3.01× tokens-per-second gain for LPDDR5X-PIM, well below its 8× bandwidth gain [2]. Amdahl's law says that at least about three quarters of the run time must have been accelerated (Example 23-09.6): 8× is the most the accelerated part could gain, and any smaller gain would need a larger accelerated fraction to reach 3.01×. PIM also needs software that maps operations onto memory banks, and DRAM processes make slow, area-expensive logic, so only simple operations fit.
 
 > **Going deeper — a general-purpose PIM system.** UPMEM's DRAM modules put small general-purpose processors beside DRAM banks. Gómez-Luna et al. characterized the first publicly available real-world PIM architecture and released a 16-workload benchmark suite, PrIM, spanning linear algebra, databases, graph processing, neural networks and bioinformatics [3].
 
@@ -130,7 +138,7 @@ Samsung reported a 3.01× tokens-per-second gain for LPDDR5X-PIM, well below its
 - **Boundary.** A macro, a chip, a card and a system have very different power: ADCs, digital logic, I/O, memory, power conversion and cooling are added at each step outward.
 - **Accuracy, latency, cost and flexibility** must be reported alongside.
 
-Example 23-09.7 recomputes several published figures at different boundaries. The spread is large: one start-up's chip-level 150 TOPS/W [12] becomes 24 TOPS/W at its card's rated power [6].
+Example 23-09.7 recomputes several published figures at different boundaries. The spread is large: one start-up's chip-level 150 TOPS/W claim [12] becomes 24 TOPS/W at its card's rated power [6]. That gap mixes the boundary with a possibly different precision and operating point, because the card's precision is not stated.
 
 ## 4. Worked examples
 
@@ -195,7 +203,7 @@ are stored as conductance pairs with $g$ = 10 µS per unit and $G_{min}$ = 1 µS
 
 **Units check.** J per step × steps = J; ops/J = ops/s per W. ✓
 
-**Sanity check.** The ADC alone caps an 8-bit analog macro in this example at about 6 TOPS/W, before drivers, arrays and digital logic. Halving the precision quadruples the ceiling, which is why low-precision figures dominate headlines.
+**Sanity check.** With bit-serial inputs and binary slices, the ADC alone caps an 8-bit analog macro in this example at about 6 TOPS/W, before drivers, arrays and digital logic. Chips that convert once per multi-bit product escape this particular ceiling. Halving the precision quadruples the ceiling, which is why low-precision figures dominate headlines.
 
 ### Example 23-09.5 · Bank-level PIM (tier B)
 
@@ -212,7 +220,7 @@ are stored as conductance pairs with $g$ = 10 µS per unit and $G_{min}$ = 1 µS
 
 ### Example 23-09.6 · Roofline and Amdahl (tier B)
 
-**Setup.** A 7-billion-parameter model with 8-bit weights (7 GB) is decoded one token at a time. Find the bandwidth-bound token rate at (a) 76.8 GB/s and (b) 614 GB/s. (c) Samsung reported a 3.01× tokens-per-second gain with LPDDR5X-PIM [2]; if PIM accelerates a fraction $f$ of the run time by 8×, what $f$ does this imply? (d) Samsung also reported a 2.28× model-run-time gain; what $f$ does that imply?
+**Setup.** A 7-billion-parameter model with 8-bit weights (7 GB) is decoded one token at a time. Find the bandwidth-bound token rate at (a) 76.8 GB/s and (b) 614 GB/s. (c) Samsung reported a 3.01× tokens-per-second gain with LPDDR5X-PIM [2]. If PIM accelerates a fraction $f$ of the run time by at most 8×, what is the smallest $f$ consistent with this? (d) Samsung also reported a 2.28× model-run-time gain; what is the smallest $f$ for that?
 
 **Solution.**
 
@@ -222,7 +230,7 @@ are stored as conductance pairs with $g$ = 10 µS per unit and $G_{min}$ = 1 µS
 
 **Units check.** (GB/s)/(GB/token) = tokens/s. ✓
 
-**Sanity check.** An 8× bandwidth gain gives at most 8× on purely memory-bound work. Everything else (attention over the cache, sampling, host overheads, compute phases) is untouched, so the measured gains imply that 24% to 36% of the run time was not accelerated.
+**Sanity check.** An 8× bandwidth gain gives at most 8× on purely memory-bound work. Everything else (attention over the cache, sampling, host overheads, compute phases) is untouched, so the measured gains imply that at most 24% to 36% of the run time was not accelerated.
 
 ### Example 23-09.7 · TOPS/W at different boundaries (tier B)
 
@@ -230,7 +238,7 @@ are stored as conductance pairs with $g$ = 10 µS per unit and $G_{min}$ = 1 µS
 
 **Solution.**
 
-- (a) $200/8.25$ = **24.2** TOPS/W; (b) $150/24.24$ = **6.19** times lower.
+- (a) $200/8.25$ = **24.2** TOPS/W; (b) $150/24.24$ = **6.19** times lower. The card's precision and operating point are not stated, so not all of this gap is the boundary.
 - (c) $2400/600$ = **4.0** TOPS/W.
 - (d) $63.1/9.76$ = **6.47** W.
 
@@ -240,7 +248,7 @@ are stored as conductance pairs with $g$ = 10 µS per unit and $G_{min}$ = 1 µS
 
 ### Example 23-09.8 · Utilization (tier B)
 
-**Setup.** IBM's chip delivers 63.1 TOPS at peak [4]. If a network keeps only 30% of its arrays busy (assumed) and the power stays at the 6.47 W of Example 23-09.7, find (a) the delivered throughput and (b) the effective TOPS/W.
+**Setup.** IBM's chip delivers 63.1 TOPS at peak in its fast one-phase mode [4]. If a network keeps only 30% of its arrays busy (assumed) and the power stays at the 6.47 W of Example 23-09.7, find (a) the delivered throughput and (b) the effective TOPS/W.
 
 **Solution.**
 
@@ -306,6 +314,10 @@ are stored as conductance pairs with $g$ = 10 µS per unit and $G_{min}$ = 1 µS
 | Txt 23-09.c | sense-resistor error in the lab | 40 | % |
 | Txt 23-09.d | effective bits at 5% and 1% variation | 4 | bits |
 | Txt 23-09.e | effective bits at 1% variation, rounded | 6 | bits |
+| Txt 23-09.f | SNR penalty for crest factor 3 | 9.5 | dB |
+| Txt 23-09.g | exact ADC bits for 256 binary rows, rounded up | 9 | bits |
+| Txt 23-09.h | levels of a 256-row binary sum | 257 | |
+| Txt 23-09.i | fast-mode over high-precision-mode efficiency, IBM | 3.9 | |
 
 ## 5. Simulate it
 
@@ -320,11 +332,11 @@ The lab is [labs/23-09-lab/](../labs/23-09-lab/README.md). `cim.py` holds the ch
 1. *Predict* the four column currents and the two differential outputs. Run `ngspice -b crossbar.cir` and compare Part A.
 2. *Predict* whether resistive column sensing (Part B) makes the outputs larger or smaller, and by how much for output 1.
 3. In the notebook, simulate a 256-row array with random signed weights and 5% conductance variation, and compare the measured SNR with $1/\sigma^2$.
-4. Plot the ADC-limited TOPS/W ceiling against precision and figure of merit (Figure 3), and place Example 23-09.7's published figures on it.
+4. Plot the ADC-limited TOPS/W ceiling against precision and figure of merit (Figure 3), and place Example 23-09.7's published figures on it. *Predict* first which will sit above the bit-serial ceiling, and why (§3.4).
 
 ![ADC-limited TOPS/W ceiling against weight and input precision for 256-row arrays at three ADC figures of merit, falling as the square of the bit count](../../../assets/figures/23-09/adc-ceiling.svg)
 
-*Figure 3. The ADC alone sets a ceiling on analog CIM efficiency that falls steeply with precision.*
+*Figure 3. With bit-serial inputs and binary-sliced weights, the ADC alone sets a ceiling on analog CIM efficiency that falls steeply with precision.*
 
 ## 6. Engineering tradeoffs
 
@@ -346,7 +358,7 @@ The lab is [labs/23-09-lab/](../labs/23-09-lab/README.md). `cim.py` holds the ch
 | Effective bits from device variation | about 4 at 5%, 6 at 1% | Example 23-09.3 |
 | HBM-PIM (2021) | 1.2 TFLOPS FP16 per 6 GB stack | [1] |
 | LPDDR5X-PIM (Hot Chips 2026) | 614 GB/s vs 76.8 GB/s; 3.01× tokens/s | [2] |
-| IBM HERMES (PCM, 14 nm) | 64 cores of 256 × 256; 63.1 TOPS at 9.76 TOPS/W, 8-bit I/O | [4] |
+| IBM HERMES (PCM, 14 nm) | 64 cores of 256 × 256; 63.1 TOPS at 9.76 TOPS/W, 8-bit I/O in the one-phase (low-precision) mode; 16.1 TOPS at 2.48 TOPS/W in the four-phase mode used for its accuracy results | [4], [14] |
 | EnCharge EN100 card | 200 TOPS at 8.25 W | [6] |
 | d-Matrix Corsair card | 2,400 TFLOPS (8-bit dense), 600 W TDP | [7] |
 
@@ -364,7 +376,7 @@ The lab is [labs/23-09-lab/](../labs/23-09-lab/README.md). `cim.py` holds the ch
 **State of the art (as of Nov 2026).**
 
 - *DRAM PIM* [Established as products and prototypes; gains are vendor claims]. Samsung announced HBM-PIM in February 2021, claiming 1.2 TFLOPS and, on its Aquabolt HBM2, twice the system performance and more than 70% less energy [1]. At Hot Chips 2026 Samsung presented LPDDR5X-PIM: a standard 561-ball package, 614 GB/s effective bandwidth against 76.8 GB/s, and 2.28× and 3.01× gains in model run time and tokens per second [2]. UPMEM's DRAM modules with processors beside the banks have been characterized independently [3].
-- *Analog CIM* [Established for research chips; Contested for products]. IBM's 64-core, 14 nm chip with back-end PCM reached near software-equivalent accuracy on ResNet and LSTM networks, with a peak of 63.1 TOPS at 9.76 TOPS/W for 8-bit input/output matrix-vector multiplication [4]. EnCharge AI (Princeton, N. Verma) builds capacitor-based charge-domain arrays in the copper interconnect; IEEE Spectrum reported its EN100 at 200 TOPS in 8.25 W for laptops and a four-chip, 1,000-TOPS card [6], while the company has claimed 150 TOPS/W at 8 bits for its chip [12].
+- *Analog CIM* [Established for research chips; Contested for products]. IBM's 64-core, 14 nm chip with back-end PCM reached near software-equivalent accuracy on ResNet and LSTM networks, with a peak of 63.1 TOPS at 9.76 TOPS/W for 8-bit input/output matrix-vector multiplication [4]. Those headline figures are for its fast one-phase mode; the paper's accuracy results all used the four-phase, high-precision mode, which delivers 16.1 TOPS at 2.48 TOPS/W [14]. EnCharge AI (Princeton, N. Verma) builds capacitor-based charge-domain arrays in the copper interconnect; IEEE Spectrum reported its EN100 at 200 TOPS in 8.25 W for laptops and a four-chip, 1,000-TOPS card [6], while the company has claimed 150 TOPS/W at 8 bits for its chip [12].
 - *Digital CIM at data-center scale* [Industry estimate]. d-Matrix's Corsair card lists 2,048 digital in-memory compute cores, 2,400 TFLOPS at 8 bits, 2 GB of on-chip SRAM at 150 TB/s, up to 256 GB of capacity memory at 400 GB/s, and a 600 W TDP [7].
 - *Near-memory architecture* [Established]. IBM's NorthPole (12 nm, 22 billion transistors, 800 mm², 256 cores, 2,048 operations per core per cycle at 8 bits) keeps all of a network's memory on chip; IBM reports large energy and latency gains on ResNet-50 against GPUs and CPUs, against baselines of its choosing [13].
 
@@ -373,6 +385,7 @@ The lab is [labs/23-09-lab/](../labs/23-09-lab/README.md). `cim.py` holds the ch
 **Marketing vs Reality.**
 
 - *"150 TOPS/W."* At what precision, utilization and boundary? The same company's card works out at 24 TOPS/W [6], [12].
+- *Efficiency from one mode, accuracy from another.* IBM's chip reports 9.76 TOPS/W in its fast mode but demonstrated its accuracy in a four-phase mode at 2.48 TOPS/W [14], a factor of 3.9. Ask which mode produced each number.
 - *"8× the bandwidth."* The measured speedup was 3.01× tokens per second [2]; Amdahl's law explains the gap.
 - *"8-bit."* Analog compute SNR may support only 4–6 effective bits (Example 23-09.3).
 - *"Eliminates the von Neumann bottleneck."* Only for weights that fit in the arrays; larger models must be tiled, and activations and KV caches still move.
@@ -423,7 +436,7 @@ With bit-serial inputs and bit-sliced weights, the number of conversions per MAC
 
 <details><summary>Answer</summary>
 
-No. Amdahl's law: only the memory-bound fraction accelerates. A 3.01× gain with 8× acceleration implies about 76% of the time was accelerated; the rest was untouched (Example 23-09.6).
+No. Amdahl's law: only the memory-bound fraction accelerates. A 3.01× gain with at most 8× acceleration implies at least 76% of the time was accelerated; the rest was untouched (Example 23-09.6).
 
 </details>
 
@@ -431,7 +444,7 @@ No. Amdahl's law: only the memory-bound fraction accelerates. A 3.01× gain with
 
 <details><summary>Answer</summary>
 
-Each boundary step outward (macro, chip, card, system) adds power for ADCs, digital logic, memory, I/O and power conversion. The same technology can be 150 TOPS/W at the chip and 24 TOPS/W at the card (Example 23-09.7).
+Each boundary step outward (macro, chip, card, system) adds power for ADCs, digital logic, memory, I/O and power conversion. The same technology is claimed at 150 TOPS/W for the chip and works out at 24 TOPS/W for the card (Example 23-09.7), although part of that gap may be precision or operating point.
 
 </details>
 
@@ -471,3 +484,4 @@ Problem set: [23-09 problems](../problems/23-09-problems.md).
 11. K. Kavishwar and N. R. Shanbhag, "Compute SNR-Optimal Analog-to-Digital Converters for Analog In-Memory Computing," arXiv:2507.09776, 2025, <https://arxiv.org/abs/2507.09776>. [R-492]
 12. T. Mann, "Startup gets $100M funding for low-power analog AI chips," The Register, 17 Feb 2025, <https://www.theregister.com/2025/02/17/encharge_ai_compute/>. [R-491]
 13. IBM Research, "NorthPole" (research blog), 19 Oct 2023, <https://research.ibm.com/blog/northpole-ibm-ai-chip>. [R-492]
+14. M. Le Gallo et al., Nature Electronics 6, 680–693, Aug 2023, <https://www.nature.com/articles/s41928-023-01010-1>: one-phase and four-phase read modes, pulse-width-modulated 8-bit inputs and one ADC per output line. [R-499]

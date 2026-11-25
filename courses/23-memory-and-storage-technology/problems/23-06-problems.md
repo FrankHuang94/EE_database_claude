@@ -66,7 +66,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 23-06.14 [C]
 
-**Testing a vendor's claims.** A vendor's new 2 Tb QLC die "writes at 4.8 Gb/s". It has 6 planes of 16 KiB pages and $t_{PROG}$ = 2.5 ms (assumed). Find (a) its sustained write throughput and (b) that as a percentage of the 600 MB/s interface. (c) How many such dies must share one channel to keep its interface busy with writes? A second claim is a 400-layer TLC die at 30 Gb/mm². Find (d) its density per layer and per bit and (e) how far that falls below the 332-layer QLC die of Example 23-06.5, in percent.
+**Testing a vendor's claims.** A vendor's new 2 Tb QLC die "writes at 4.8 Gb/s". It has 6 planes of 16 KiB pages and $t_{PROG}$ = 2.5 ms (assumed). Find (a) its sustained write throughput and (b) that as a percentage of its 4.8 GB/s channel interface (8 data pins at 4.8 Gb/s each). (c) How many such dies must share one channel to keep its interface busy with writes? A second claim is a 400-layer TLC die at 30 Gb/mm². Find (d) its density per layer and per bit and (e) how far that falls below the 332-layer QLC die of Example 23-06.5, in percent.
 
 ---
 

@@ -36,11 +36,11 @@ into two virtual-ground columns. Find the currents in (a) column 1 and (b) colum
 
 ### Problem 23-09.5 [B]
 
-**Sizing an ADC.** A 128-row array takes 2-bit inputs and 1-bit weights. Find (a) the largest column sum, (b) the exact ADC resolution and (c) the bits to use. With $\text{FoM}_W$ = 10 fJ per step (assumed) at that resolution, find (d) the energy per conversion and (e) the ADC energy per 2-bit × 1-bit MAC.
+**Sizing an ADC.** A 128-row array takes 2-bit inputs, applied in one step as four voltage levels or pulse widths, and 1-bit weights. Find (a) the largest column sum, (b) the exact ADC resolution and (c) the bits to use. With $\text{FoM}_W$ = 10 fJ per step (assumed) at that resolution, find (d) the energy per conversion and (e) the ADC energy per 2-bit × 1-bit MAC.
 
 ### Problem 23-09.6 [B]
 
-**A better ADC.** *(lab)* A 512-row array uses 7-bit ADCs at $\text{FoM}_W$ = 2 fJ per step (assumed). Find the ADC energy per MAC and the TOPS/W ceiling for (a) 8-bit × 8-bit and (b) 4-bit × 4-bit MACs.
+**A better ADC.** *(lab)* A 512-row array uses 7-bit ADCs at $\text{FoM}_W$ = 2 fJ per step (assumed). Seven bits cannot represent all 513 possible binary sums; assume the sums' narrow distribution means the ADC clips only rarely (§3.4). Find the ADC energy per MAC and the TOPS/W ceiling for (a) 8-bit × 8-bit and (b) 4-bit × 4-bit MACs.
 
 ### Problem 23-09.7 [B]
 
@@ -70,6 +70,10 @@ into two virtual-ground columns. Find the currents in (a) column 1 and (b) colum
 
 **Testing a claim.** A start-up claims "8-bit analog inference at 100 TOPS/W" from 256-row arrays with 8-bit ADCs, bit-serial inputs and bit-sliced weights. (a) What total energy per MAC does 100 TOPS/W imply? (b) If the ADCs may use all of it, what energy per conversion is allowed? (c) What Walden figure of merit does that require, and (d) how many times better is it than the 5 fJ per step of Example 23-09.4? What else might the start-up be doing?
 
+### Problem 23-09.14 [C]
+
+**Error relative to full scale.** A layer's weights $w_i$ are zero-mean and independent, with RMS value $s_w$, and are mapped so that the full-scale conductance represents $w_{max} = c\,s_w$, where $c$ is the crest factor. Each device's programming error is zero-mean with standard deviation $\sigma_{FS}w_{max}$, independent of the weights and of the other devices. The inputs $x_i$ are independent of the weights, with $E[x_i^2] = s_x^2$. (a) Derive the compute SNR of an $M$-row dot product and compare it with §3.3's relative-error result. For $\sigma_{FS}$ = 1% and $c$ = 3, find (b) the SNR and the effective bits, and (c) the penalty against the relative-error model with σ = 1%. (d) What $\sigma_{FS}$ gives 6 effective bits at $c$ = 3?
+
 ---
 
 ## Objective coverage
@@ -78,6 +82,6 @@ into two virtual-ground columns. Find the currents in (a) column 1 and (b) colum
 |---|---|
 | 1. Data movement and taxonomy | 7, 8 |
 | 2. Crossbar arithmetic | 1, 2, 12 |
-| 3. SNR, effective bits and ADC cost | 3, 4, 5, 6, 13 |
+| 3. SNR, effective bits and ADC cost | 3, 4, 5, 6, 13, 14 |
 | 4. PIM throughput, roofline and Amdahl | 7, 8, 9 |
 | 5. Benchmarking | 10, 11, 13 |

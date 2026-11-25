@@ -66,17 +66,17 @@ A better gap fill lets a 16-high stack run cooler than the 12-high stack of Exam
 
 ### Solution 23-05.9
 
-Number the nodes from the base die (0) up to the top die (16), which the lid holds at 75 °C. Layer $j$ lies between nodes $j - 1$ and $j$ and carries $P_b + (j - 1)P_c$. Summing the drops from the top down to node $k$:
+Number the nodes from the base die (0) up to the top die (16), which the lid holds at 74 °C. Layer $j$ lies between nodes $j - 1$ and $j$ and carries $P_b + (j - 1)P_c$. Summing the drops from the top down to node $k$:
 
 $$
-T_k = 75 + R_L\sum_{j=k+1}^{16}\left[10 + (j - 1)\right] = 75 + R_L\left[280 - 9k - \tfrac{k(k + 1)}{2}\right]\ {}^\circ\text{C},
+T_k = 74 + R_L\sum_{j=k+1}^{16}\left[10 + (j - 1)\right] = 74 + R_L\left[280 - 9k - \tfrac{k(k + 1)}{2}\right]\ {}^\circ\text{C},
 $$
 
 with $R_L$ = 0.04877 K/W.
 
-(a) $k = 0$: **88.66** °C. (b) $k = 5$: $75 + 0.04877 \times 220$ = **85.73** °C. (c) $k = 6$: $75 + 0.04877 \times 205$ = **85.00** °C.
+(a) $k = 0$: **87.66** °C. (b) $k = 4$: $74 + 0.04877 \times 234$ = **85.41** °C. (c) $k = 5$: $74 + 0.04877 \times 220$ = **84.73** °C.
 
-(d) Core dies 1 to 5 exceed 85 °C: **5** dies, plus the base die. Die 6 sits within a hundredth of a degree of the threshold.
+(d) The temperature falls monotonically up the stack, so core dies 1 to 4 exceed 85 °C: **4** dies, plus the base die.
 
 Those dies (and their banks) would need doubled refresh. Controllers with per-die temperature reporting can refresh only the hot part of the stack.
 
@@ -96,7 +96,7 @@ The remaining factor would come from other losses: extra process steps that cut 
 
 (c) $20 \times 120{,}000 \times 0.85$ = **2.04** million; (d) $7 \times 120{,}000 \times 0.85$ = **0.714** million.
 
-Doubling the interposer area cuts packages per wafer by almost a factor of 3, because more of the round wafer's edge is wasted.
+By this formula, doubling the interposer area cuts packages per wafer by almost a factor of 3. The formula overstates the edge loss for dies this large: a simple square grid fits **24** interposers of 2,000 mm² and **12** of 4,000 mm², a factor of **2** (compare Example 23-05.8's sanity check). Either way, bigger packages cost disproportionately more wafer area.
 
 ### Solution 23-05.13
 
@@ -145,12 +145,12 @@ Doubling the interposer area cuts packages per wafer by almost a factor of 3, be
 | 23-05.8b1 | layer resistance, 4 s.f. | 0.02983 | K/W |
 | 23-05.8c | base rise, 16 layers | 8.35 | K |
 | 23-05.8d | base rise, 12 layers | 5.55 | K |
-| 23-05.9a | base die temperature | 88.66 | °C |
-| 23-05.9b | core die 5 temperature | 85.73 | °C |
-| 23-05.9c | core die 6 temperature | 85.00 | °C |
-| 23-05.9d | core dies above 85 °C | 5 | |
-| 23-05.9x1 | bracket sum, die 5 | 220 | |
-| 23-05.9x2 | bracket sum, die 6 | 205 | |
+| 23-05.9a | base die temperature | 87.66 | °C |
+| 23-05.9b | core die 4 temperature | 85.41 | °C |
+| 23-05.9c | core die 5 temperature | 84.73 | °C |
+| 23-05.9d | core dies above 85 °C | 4 | |
+| 23-05.9x1 | bracket sum, die 4 | 234 | |
+| 23-05.9x2 | bracket sum, die 5 | 220 | |
 | 23-05.10a | 16-high yield | 0.968 | |
 | 23-05.10b | per-layer yield for 95% | 0.9968 | |
 | 23-05.10c | untested 16-high yield | 0.440 | |
@@ -164,6 +164,9 @@ Doubling the interposer area cuts packages per wafer by almost a factor of 3, be
 | 23-05.12c | packages per month, 2,000 mm² | 2.04e6 | |
 | 23-05.12d | packages per month, 4,000 mm² | 0.714e6 | |
 | 23-05.12x | packages-per-wafer ratio | 3 | |
+| 23-05.12y1 | grid count at 2,000 mm² | 24 | |
+| 23-05.12y2 | grid count at 4,000 mm² | 12 | |
+| 23-05.12y | grid-count ratio | 2 | |
 | 23-05.13a | 11.7 over 8 | 1.46 | |
 | 23-05.13b | 11.7 over 9.6 | 1.22 | |
 | 23-05.13c | 13 over 9.6 | 1.35 | |

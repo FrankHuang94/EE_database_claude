@@ -22,7 +22,7 @@ Every number is recomputed by [verify_23_08.py](../verify/verify_23_08.py).
 
 (c) $2^{26} \times 3.156 \times 10^8 \times 10^9 \times e^{-50}$ = **4085** flips.
 
-Each bit is stable for over a hundred thousand years, yet a 64 Mb array loses thousands of bits in a decade. Array statistics, not single-bit lifetimes, set the design: this array needs a higher $\Delta$ or ECC.
+Each bit is stable for over a hundred thousand years, yet a 64 Mib array loses thousands of bits in a decade. Array statistics, not single-bit lifetimes, set the design: this array needs a higher $\Delta$ or ECC.
 
 ### Solution 23-08.3
 
@@ -30,7 +30,7 @@ Each bit is stable for over a hundred thousand years, yet a 64 Mb array loses th
 
 (b) $\ln(2^{24} \times 3.156 \times 10^8 \times 10^9)$ = **56.9**.
 
-(c) $e^{56.93 - 56.16}$ = **2.15** flips: just over the target, so the array fails it narrowly. Raising $\Delta$ at 25 °C to about 76 would pass.
+(c) $e^{56.93 - 56.16}$ = **2.15** flips: just over the target, so the array fails it narrowly. Passing needs $56.93 \times 398.15/298.15$ = **76.02** at 25 °C, so 76 is not quite enough; specify 77 for margin.
 
 ### Solution 23-08.4
 
@@ -114,7 +114,7 @@ On area alone, the MRAM macro is about a third the size of the SRAM one, and it 
 
 (b) $1680/858$ = **1.96**.
 
-A 16 Gb MRAM die at today's standalone density would need about twice the largest area a lithography scanner can expose. Replacing DRAM would require roughly an order of magnitude better MRAM density, not just better devices.
+A 16 Gb MRAM die at today's standalone density would need about twice the largest area a lithography scanner can expose. A 16 Gb DDR5 die is 66.26 mm² (23-03), so MRAM would need about **25** times today's density to match it: replacing DRAM needs a new cell, not just better devices.
 
 ### Solution 23-08.13
 
@@ -123,6 +123,28 @@ A 16 Gb MRAM die at today's standalone density would need about twice the larges
 (b) $8.389 \times 10^6 \times 0.7\ \text{pJ}$ = **5.87** µW; (c) **33.6** µW; (d) **839** µW.
 
 MRAM and PCM fit a 50 µW budget; NOR flash, at about 17 times the budget, does not. (NOR flash would also wear out quickly at this write rate.)
+
+### Solution 23-08.14
+
+(a) In steady precession, damping removes angular momentum at $\alpha\omega m/\gamma = \alpha(\gamma\mu_0H_k)(M_sV)/\gamma = \alpha\mu_0H_kM_sV$ per second. A current $I$ carries $I/q$ electrons per second, each delivering $\eta\hbar/2$, so it supplies $\eta\hbar I/(2q)$. Switching begins when the supply equals the loss:
+
+$$
+I_{c0} = \frac{2q\alpha}{\hbar\eta}\mu_0H_kM_sV = \frac{4q\alpha}{\hbar\eta}\cdot\frac{\mu_0M_sH_kV}{2} = \frac{4q\alpha}{\hbar\eta}E_b .
+$$
+
+Units: $\mu_0H_kM_sV$ is T × (A/m) × m³ = J, and C/(J·s) × J = C/s = A. ✓
+
+(b) With $E_b = \Delta kT$, $I_{c0}/\Delta = 4 \times 1.602 \times 10^{-19} \times 0.008 \times 4.143 \times 10^{-21}/(1.0546 \times 10^{-34} \times 0.6)$ = **0.336** µA.
+
+(c) $50 \times 0.3356$ = **16.8** µA.
+
+(d) $\Delta_{eff} = 50 \times 0.7$ = **35**. The flip probability is $1 - \exp(-f_0te^{-35}) \approx 10^9 \times 5 \times 10^{-9} \times e^{-35}$ = **3.15** × 10⁻¹⁵.
+
+(e) $1/3.15 \times 10^{-15}$ = **3.17** × 10¹⁴ reads, enough for a bit read once per microsecond for about ten years.
+
+(f) $5e^{-\Delta_{eff}} \le 10^{-18}$ needs $\Delta_{eff} \ge \ln(5 \times 10^{18})$ = **43.06**, so $I/I_{c0} \le 1 - 43.06/50$ = **13.9** %.
+
+The read current that sensing wants is the current that read disturb forbids: a 30% read is safe for this $\Delta$ = 50 cell, but the same fraction would ruin a cache-like cell with $\Delta$ = 30, whose effective barrier would fall to 21.
 
 ---
 
@@ -146,7 +168,7 @@ MRAM and PCM fit a 50 µW budget; NOR flash, at about 17 times the budget, does 
 | 23-08.3b | required Delta | 56.9 | |
 | 23-08.3b1 | required Delta, 4 s.f. | 56.93 | |
 | 23-08.3c | expected flips | 2.15 | |
-| 23-08.3d | room-temperature Delta that passes | 76 | |
+| 23-08.3d | room-temperature Delta that passes | 76.02 | |
 | 23-08.4a0 | write current, Delta 45 | 46.8 | µA |
 | 23-08.4a | write energy, Delta 45 | 0.281 | pJ |
 | 23-08.4b0 | write current, Delta 70 | 72.8 | µA |
@@ -189,9 +211,19 @@ MRAM and PCM fit a 50 µW budget; NOR flash, at about 17 times the budget, does 
 | 23-08.12a | 16 Gb MRAM die area | 1680 | mm² |
 | 23-08.12b | ratio to reticle field | 1.96 | |
 | 23-08.12c | reticle field | 858 | mm² |
+| 23-08.12d | density gap to a 16 Gb DDR5 die | 25 | |
 | 23-08.13a | bits per second | 8388608 | |
 | 23-08.13a1 | bits per second, 4 s.f. | 8.389e6 | |
 | 23-08.13b | MRAM write power | 5.87 | µW |
 | 23-08.13c | PCM write power | 33.6 | µW |
 | 23-08.13d | NOR flash write power | 839 | µW |
 | 23-08.13e | NOR flash over budget | 17 | |
+| 23-08.14b | critical current per unit Delta | 0.336 | µA |
+| 23-08.14b1 | kT at 300 K | 4.143e-21 | J |
+| 23-08.14c | critical current at Delta 50 | 16.8 | µA |
+| 23-08.14d0 | effective barrier at 30% read | 35 | |
+| 23-08.14d | flip probability per read | 3.15e-15 | |
+| 23-08.14e | reads per flip | 3.17e14 | |
+| 23-08.14f0 | effective barrier needed | 43.06 | |
+| 23-08.14f | largest read fraction | 13.9 | % |
+| 23-08.14g | effective barrier of a Delta 30 cell at 30% read | 21 | |

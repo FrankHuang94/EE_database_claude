@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 23-07 · SSD Controllers and Storage Systems
 
 | | |
@@ -75,14 +75,16 @@ PCIe 6.0 doubles the rate to 64 GT/s using PAM4 and moves data in 256-byte flits
 Because NAND pages cannot be overwritten, every host write of a logical block address (LBA) goes to a fresh physical page, and the FTL records the new location. A **page-mapped** FTL keeps one entry per **indirection unit (IU)**, the smallest chunk it maps, usually 4 KiB. The table's size is
 
 $$
-S_{map} = \frac{C}{IU} \times e ,
+S_{map} = \frac{U}{IU} \times b_e ,
 $$
 
-where $C$ is the capacity and $e$ the bytes per entry. With 4 KiB units and 4-byte entries, the table is $C/1024$: about 1 GB of DRAM per terabyte of flash. That DRAM is a real cost in a 30 TB drive (Example 23-07.2). A 32-bit entry can also address only $2^{32}$ units, or 17.6 TB at 4 KiB.
+where $U$ is the user capacity (one entry per logical unit) and $b_e$ the bytes per entry. With 4 KiB units and 4-byte entries, the table is $U/1024$: about 1 GB of DRAM per terabyte of flash. That DRAM is a real cost in a 30 TB drive (Example 23-07.2). Each entry holds a *physical* address, so its width is set by the raw flash, not the user capacity: a 32-bit entry reaches only $2^{32}$ units, or 17.6 TB of raw flash at 4 KiB. Larger drives use 5-byte or bit-packed entries.
 
-Large QLC drives therefore use larger indirection units, such as 16 KiB, cutting the table fourfold. The cost appears on small random writes: a 4 KiB host write inside a 16 KiB unit forces the controller to read the unit, merge the new data and write all 16 KiB elsewhere, an extra fourfold write amplification for that workload. This is one reason large QLC drives are positioned for read-heavy and sequential-write workloads.
+Large QLC drives therefore use larger indirection units: Solidigm's D5-P5336 maps 16 KB units and its predecessor, the D5-P5316, 64 KB [16], [17]. A 16 KiB unit cuts the table fourfold. The cost appears on small random writes: a 4 KiB host write inside a 16 KiB unit forces the controller to read the unit, merge the new data and write all 16 KiB elsewhere, an extra fourfold write amplification for that workload. This is one reason large QLC drives are positioned for read-heavy and sequential-write workloads.
 
 The FTL also keeps **metadata**: which pages of each block are still valid, each block's erase count and the blocks' ages. It must make the table and metadata survive power loss (§3.6).
+
+**Drives without a full table in DRAM.** Client drives cannot afford a gigabyte of DRAM per terabyte. A *DRAM-less* controller caches only the recently used part of the table in on-chip SRAM and keeps the rest in flash, loading entries on demand, the idea of the demand-based FTL (DFTL) [15]. A table miss then costs an extra flash read before the data read. Many such drives also borrow tens of megabytes of host DRAM through NVMe's Host Memory Buffer feature to hold more of the table. Random reads spread across the whole drive miss most often, so DRAM-less drives fall furthest behind on exactly that workload.
 
 ### 3.3 Garbage collection and write amplification
 
@@ -108,7 +110,7 @@ $$
 A = \frac{1}{1 - u} = \frac{\alpha}{\alpha + W\!\left(-\alpha e^{-\alpha}\right)} .
 $$
 
-With 7% OP, $A$ = 7.82; with 28%, $A$ = 2.48 (Example 23-07.3). Raising OP from 7% to 28% cuts the extra work about threefold. **Greedy** cleaning, which takes the block with the fewest valid pages, is optimal for uniform random writes and does somewhat better: Desnoyers' model and simulation give $A$ = 6.62 at a spare factor of 0.07, where the FIFO formula gives 7.32 [1]. The lab reproduces both.
+With 7% OP, $A$ = 7.82; with 28%, $A$ = 2.48 (Example 23-07.3). Raising OP from 7% to 28% cuts the extra work about threefold. **Greedy** cleaning, which takes the block with the fewest valid pages, is optimal for uniform random writes and does somewhat better for small blocks: for 64-page blocks, Desnoyers' model and simulation give $A$ = 6.62 at a spare factor of 0.07, where the FIFO formula gives 7.32 [1]. The advantage shrinks as blocks grow, because a large block's valid count varies less from block to block, so the emptiest block is barely emptier than the oldest. For the thousands of pages in a 3D NAND block, and the multi-die superblocks controllers actually clean, greedy and FIFO are almost the same under uniform random writes [1]. Skewed traffic does not rescue greedy: cold pages dilute every victim, and separating hot and cold data into different blocks helps more than the choice of victim (lab, Part 2). The lab reproduces both results and lets you vary the block size. A third policy, **cost-benefit** cleaning, weighs each block's reclaimable space against the age of its data, preferring old, cold blocks. It approaches greedy's efficiency while also separating hot and cold data.
 
 > **Math refresher — Lambert W.** $W(y)$ is the number $x$ with $x e^x = y$. For $-1/e < y < 0$ there are two real solutions; the formula above needs the principal branch $W_0$, which gives the nontrivial $u < 1$. (The other branch returns the trivial $u = 1$.) SciPy provides it as `scipy.special.lambertw`.
 
@@ -138,12 +140,20 @@ $$
 P_{fail} = \sum_{k = t + 1}^{n} \binom{n}{k} p^k (1 - p)^{n - k} .
 $$
 
-The mean error count $np$ sits far below $t$ when the drive is new and creeps up as it wears. Near $np \approx t$ the failure probability rises by many orders of magnitude over a small change in $p$, a **cliff** (Example 23-07.5). A binary BCH code over GF($2^m$) corrects $t$ errors with at most $mt$ parity bits. BCH served planar SLC and MLC well.
+The mean error count $np$ sits far below $t$ when the drive is new and creeps up as it wears. Near $np \approx t$ the failure probability rises by many orders of magnitude over a small change in $p$, a **cliff** (Example 23-07.5). A binary BCH code over GF($2^m$) corrects $t$ errors with at most $mt$ parity bits, and its codeword can be at most $2^m - 1$ bits long. That rule sets the field: a 1 KiB codeword (8,192 data bits plus parity) needs $m$ = 14, and a 2 KiB one $m$ = 15. BCH served planar SLC and MLC well.
+
+**From codeword failures to UBER.** JEDEC's targets count wrong *bits* per bit read, not failed codewords. A failed codeword of $k$ data bits usually holds just over $t$ errors, so the uncorrectable bit error rate is about
+
+$$
+\text{UBER} \approx \frac{(t + 1)P_{fail}}{k} ,
+$$
+
+several hundred times below the codeword failure rate for a 1 KiB code (Example 23-07.5). Comparing $P_{fail}$ directly against a UBER target is a common, conservative shortcut.
 
 **The capacity limit.** Information theory (17-07) bounds what any code can do. If a read returns only hard bits with error rate $p$, the page is a binary symmetric channel with capacity
 
 $$
-C = 1 - H(p) = 1 + p\log_2 p + (1 - p)\log_2(1 - p)
+C_{BSC} = 1 - H(p) = 1 + p\log_2 p + (1 - p)\log_2(1 - p)
 $$
 
 bits of data per stored bit. A page with 16 KiB of data and 2 KiB of spare area (assumed) has code rate 16/18 = 0.889. No hard-decision code at that rate works reliably above $p$ = 1.48%. A real code must stay some way below that limit (Example 23-07.6).
@@ -161,6 +171,8 @@ $$
 A drive rated for millions of random-read IOPS reaches that rate only with hundreds of commands outstanding (Example 23-07.7). At queue depth 1, IOPS is simply $1/R$, typically tens of thousands. Datasheet IOPS are queue-depth-dependent maxima.
 
 **Where the IOPS come from.** A 4 KiB random read occupies one plane for one $t_R$ (23-06). A die with four planes that can read independently delivers at most $4/t_R$ random reads per second, so millions of IOPS need dozens of dies reading in parallel, plus ECC engines and channel bandwidth to match.
+
+**Garbage collection and tail latency.** A read that arrives while its plane is busy programming or erasing must wait, and both take far longer than a read (23-06). Under a heavy write load, background garbage collection keeps planes busy, so the *tail* of the read-latency distribution (the 99.9th or 99.99th percentile) grows long even when the average looks fine. NAND dies therefore support *program suspend* and *erase suspend*: the controller pauses the long operation, serves the waiting reads and resumes. Suspending trades some write throughput, and firmware complexity, for read latency, and it is one reason enterprise drives quote latency percentiles under mixed load rather than averages.
 
 **Power-loss protection (PLP).** Enterprise drives buffer recently written data and mapping updates in DRAM. If power fails, they must write those to flash before shutting down. A bank of capacitors charged to a high voltage supplies a DC-DC converter that holds the drive's rails up. A capacitor discharging from $V_1$ to $V_2$ releases
 
@@ -182,7 +194,7 @@ Charging to a higher voltage stores energy as $V^2$, which is why PLP banks char
 
 ### Example 23-07.1 · The bandwidth budget (tier A)
 
-**Setup.** Find (a) the per-direction bandwidth of a PCIe 5.0 x4 link and (b) the raw per-direction rate of a PCIe 6.0 x4 link before flit overhead. (c) What fraction of (b) is Micron 9650's 28 GB/s sequential read [5]? (d) Using 236 payload bytes per 256-byte flit, what is the PCIe 6.0 x4 payload ceiling, and (e) what fraction of it is 28 GB/s? (f) What do 16 NAND channels at 2,400 MT/s carry?
+**Setup.** Find (a) the per-direction bandwidth of a PCIe 5.0 x4 link and (b) the raw per-direction rate of a PCIe 6.0 x4 link before flit overhead. (c) What fraction of (b) is Micron 9650's 28 GB/s sequential read [5]? (d) Using 236 TLP bytes per 256-byte flit, what is the PCIe 6.0 x4 TLP-byte ceiling, and (e) what fraction of it is 28 GB/s? (f) What do 16 NAND channels at 2,400 MT/s carry? (g) Each transaction-layer packet (TLP) also carries a header of about 16 bytes. What is the data ceiling with 512-byte payloads, and (h) what fraction of it is 28 GB/s?
 
 **Solution.**
 
@@ -190,10 +202,11 @@ Charging to a higher voltage stores energy as $V^2$, which is why PLP banks char
 - (b) $64 \times 10^9 \times 4/8$ = **32** GB/s; (c) $28/32$ = **87.5** %.
 - (d) $32 \times 236/256$ = **29.5** GB/s; (e) $28/29.5$ = **94.9** %.
 - (f) $16 \times 2400 \times 10^6 \times 1\ \text{byte}$ = **38.4** GB/s.
+- (g) $29.5 \times 512/528$ = **28.6** GB/s; (h) $28/28.6$ = **97.9** %. With the common 256-byte payloads the data ceiling would be $29.5 \times 256/272$ = **27.8** GB/s.
 
 **Units check.** transfers/s × lanes × bits/transfer / 8 = bytes/s. ✓
 
-**Sanity check.** The first PCIe 6.0 drives come within about 5% of the link's payload ceiling on sequential reads, so the link, not the flash, limits reads. Writes, at 14 GB/s [5], are limited by the NAND.
+**Sanity check.** Once headers are counted, the first PCIe 6.0 drives essentially saturate the link on sequential reads, so the link, not the flash, limits reads. Writes, at 14 GB/s [5], are limited by the NAND.
 
 ### Example 23-07.2 · Sizing the mapping table (tier B)
 
@@ -208,21 +221,21 @@ Charging to a higher voltage stores energy as $V^2$, which is why PLP banks char
 
 **Units check.** bytes/(bytes per unit) = units; units × bytes per entry = bytes. ✓
 
-**Sanity check.** A tenth of a percent of capacity sounds small until the capacity is tens of terabytes: 30 GB of DRAM costs real money and power. A 16 KiB unit cuts that fourfold and fits 32-bit entries, at the price of punishing small random writes.
+**Sanity check.** A tenth of a percent of capacity sounds small until the capacity is tens of terabytes: 30 GB of DRAM costs real money and power. Part (b) assumed 4-byte entries for simplicity, but (d) shows the drive needs 33 bits, so a real design uses 5-byte or packed entries (37.5 GB here; Problem 23-07.2). The width is set by the raw flash: at 7% OP the 61.44 TB drive holds $61.44 \times 1.07$ = 65.7 TB raw, inside (g)'s 70.4 TB reach, but at 28% OP it would hold 78.6 TB and need a 33rd bit. A 16 KiB unit cuts the table fourfold, at the price of punishing small random writes.
 
 ### Example 23-07.3 · Write amplification from over-provisioning (tier B)
 
-**Setup.** A drive receives uniformly random writes and uses FIFO garbage collection. For (a) 7% and (b) 28% over-provisioning, find the victim blocks' valid fraction $u$ and the write amplification $A$. (c) What is $A$ for a spare factor $S_f$ = 0.07? Compare with Desnoyers' greedy result of 6.62 at the same spare factor [1].
+**Setup.** A drive receives uniformly random writes and uses FIFO garbage collection. For (a) 7% and (b) 28% over-provisioning, find the victim blocks' valid fraction $u$ and the write amplification $A$. (c) What is $A$ for a spare factor $S_f$ = 0.07? Compare with Desnoyers' greedy result of 6.62 at the same spare factor for 64-page blocks [1].
 
 **Solution.**
 
 - (a) $\alpha$ = 1.07. Solve $u = e^{-1.07(1 - u)}$: $u$ = **0.872**, so $A = 1/(1 - u)$ = **7.82**.
 - (b) $\alpha$ = 1.28: $u$ = **0.597**, $A$ = **2.48**.
-- (c) $\alpha = 1/(1 - 0.07)$ = **1.075**, $A$ = **7.32**. Greedy's 6.62 is 9.5% lower.
+- (c) $\alpha = 1/(1 - 0.07)$ = **1.075**, $A$ = **7.32**. Greedy's 6.62 is 9.5% lower for 64-page blocks; for blocks of thousands of pages the gap almost vanishes (§3.3).
 
 **Units check.** Ratios of page counts are dimensionless. ✓
 
-**Sanity check.** At 7% OP, each host write costs nearly eight NAND writes under the worst-case random workload. Moving to 28% OP cuts that to two and a half. Real workloads, with TRIM and some locality, sit well below these bounds.
+**Sanity check.** At 7% OP, each host write costs nearly eight NAND writes under uniform random writes, the worst case for FIFO. Moving to 28% OP cuts that to two and a half. Real workloads, with TRIM and some locality, sit well below these bounds.
 
 ### Example 23-07.4 · Same flash, two drives (tier B)
 
@@ -251,7 +264,7 @@ Charging to a higher voltage stores energy as $V^2$, which is why PLP banks char
 
 **Units check.** Counts and probabilities are dimensionless. ✓
 
-**Sanity check.** Tripling the raw error rate takes the code from essentially perfect to failing about one codeword in 220. A drive designed with this code must retire blocks, or switch to stronger decoding, well before the mean error count approaches $t$.
+**Sanity check.** At 10⁻³ the UBER is about $41 \times 2.38 \times 10^{-15}/8192$ = **1.2** × 10⁻¹⁷, inside the enterprise target and about 200 times below $P_{fail}$. Tripling the raw error rate takes the code from essentially perfect to failing about one codeword in 220. A drive designed with this code must retire blocks, or switch to stronger decoding, well before the mean error count approaches $t$.
 
 ### Example 23-07.6 · The capacity limit (tier B)
 
@@ -304,9 +317,12 @@ Charging to a higher voltage stores energy as $V^2$, which is why PLP banks char
 | Ex 23-07.1a | PCIe 5.0 x4 bandwidth | 15.75 | GB/s |
 | Ex 23-07.1b | PCIe 6.0 x4 raw rate | 32 | GB/s |
 | Ex 23-07.1c | 28 GB/s as share of raw | 87.5 | % |
-| Ex 23-07.1d | PCIe 6.0 x4 payload ceiling | 29.5 | GB/s |
-| Ex 23-07.1e | 28 GB/s as share of payload ceiling | 94.9 | % |
+| Ex 23-07.1d | PCIe 6.0 x4 TLP-byte ceiling | 29.5 | GB/s |
+| Ex 23-07.1e | 28 GB/s as share of TLP-byte ceiling | 94.9 | % |
 | Ex 23-07.1f | 16-channel NAND bandwidth | 38.4 | GB/s |
+| Ex 23-07.1g | data ceiling, 512-byte payloads | 28.6 | GB/s |
+| Ex 23-07.1h | 28 GB/s as share of data ceiling | 97.9 | % |
+| Ex 23-07.1g1 | data ceiling, 256-byte payloads | 27.8 | GB/s |
 | Ex 23-07.2a | indirection units, 30.72 TB | 7.5e9 | |
 | Ex 23-07.2b | mapping table, 30.72 TB | 30.0 | GB |
 | Ex 23-07.2c | 32-bit reach at 4 KiB | 17.6 | TB |
@@ -370,7 +386,14 @@ Charging to a higher voltage stores energy as $V^2$, which is why PLP banks char
 | Txt 23-07.b | NAND writes per host write, 7% OP | 8 | |
 | Txt 23-07.c | FIFO-to-28% improvement factor | 3 | |
 | Txt 23-07.d | DWPD ratio, read-intensive to mixed-use (vendor) | 3 | |
-| Txt 23-07.e | PCIe 6.0 x4 gap below payload ceiling | 5 | % |
+| Txt 23-07.i | raw flash of 61.44 TB at 7% OP | 65.7 | TB |
+| Txt 23-07.j | raw flash of 61.44 TB at 28% OP | 78.6 | TB |
+| Txt 23-07.k | 30.72 TB table with 5-byte entries | 37.5 | GB |
+| Txt 23-07.l | BCH field exponent for 1 KiB | 14 | |
+| Txt 23-07.m | BCH field exponent for 2 KiB | 15 | |
+| Txt 23-07.n | UBER at 1e-3 | 1.2e-17 | |
+| Txt 23-07.o | ratio of codeword failure rate to UBER | 2e2 | |
+| Txt 23-07.p | errors in a failed codeword, t + 1 | 41 | |
 | Txt 23-07.f | orders of magnitude between RBER and UBER | 12 | |
 | Txt 23-07.g | QD1 latency for 15,000 IOPS | 67 | µs |
 | Txt 23-07.h | IOPS seen in concept check | 15000 | |
@@ -381,11 +404,11 @@ The lab is [labs/23-07-lab/](../labs/23-07-lab/README.md). `ssd.py` holds the ch
 
 ![Write amplification against over-provisioning: the FIFO closed form, simulated FIFO and greedy points, and greedy points from Desnoyers 2012](../../../assets/figures/23-07/wa-vs-op.svg)
 
-*Figure 2. Write amplification falls steeply with over-provisioning. The simulated FIFO points land on the closed form; greedy cleaning is a little better.*
+*Figure 2. Write amplification falls steeply with over-provisioning. The simulated FIFO points land on the closed form; greedy cleaning is a little better for these 64-page blocks, and the gap closes as blocks grow.*
 
 **Predict, then run:**
 
-1. *Predict* the write amplification at 7%, 14% and 28% OP from the closed form. Run the simulator with FIFO cleaning and compare, then switch to greedy.
+1. *Predict* the write amplification at 7%, 14% and 28% OP from the closed form. Run the simulator with FIFO cleaning and compare, then switch to greedy. *Predict* what happens to greedy's advantage at 512 pages per block, then run it.
 2. Send 90% of the writes to 10% of the LBAs. *Predict* whether greedy cleaning gets better or worse than under uniform writes, then run it, with and without separating hot and cold data into different blocks (what FDP lets a host do).
 3. Plot the codeword failure probability of Example 23-07.5 against raw error rate for $t$ = 20, 40 and 60 (Figure 3), and find the raw error rate at which each fails one codeword in 10¹⁵.
 
@@ -399,7 +422,7 @@ The lab is [labs/23-07-lab/](../labs/23-07-lab/README.md). `ssd.py` holds the ch
 |---|---|---|---|
 | Over-provisioning | Write amplification, endurance, steady-state write speed | Sellable capacity | SSD product management |
 | Indirection unit (4 → 16 KiB) | DRAM size and cost, addressable capacity | Small random-write performance and amplification | Controller and firmware architects |
-| Greedy vs FIFO vs cost-benefit GC | Write amplification | Firmware complexity, metadata | Firmware team |
+| Greedy vs FIFO vs cost-benefit GC | Write amplification (mainly for small blocks) | Firmware complexity, metadata | Firmware team |
 | Soft-decision LDPC levels | Correctable raw error rate, endurance | Read latency on the slow path, decoder area and power | Controller architects |
 | Spare area per page | Code strength | Data capacity | NAND and controller teams jointly |
 | Power-loss-protection capacitance | Data safety on power failure | Board area, cost, capacitor aging | Hardware team |
@@ -508,7 +531,7 @@ Problem set: [23-07 problems](../problems/23-07-problems.md).
 
 ## 11. Key terms
 
-[Flash translation layer (FTL)](../../../reference/glossary.md#flash-translation-layer-ftl) · [Indirection unit](../../../reference/glossary.md#indirection-unit) · [Garbage collection (SSD)](../../../reference/glossary.md#garbage-collection-ssd) · [Write amplification factor (WAF)](../../../reference/glossary.md#write-amplification-factor-waf) · [Over-provisioning](../../../reference/glossary.md#over-provisioning) · [Wear leveling](../../../reference/glossary.md#wear-leveling) · [TRIM](../../../reference/glossary.md#trim) · [LDPC code](../../../reference/glossary.md#ldpc-code) · [Soft decision](../../../reference/glossary.md#soft-decision) · [NVMe](../../../reference/glossary.md#nvme) · [Little's law](../../../reference/glossary.md#littles-law) · [Power-loss protection (PLP)](../../../reference/glossary.md#power-loss-protection-plp) · [Zoned Namespaces (ZNS)](../../../reference/glossary.md#zoned-namespaces-zns) · [Flexible Data Placement (FDP)](../../../reference/glossary.md#flexible-data-placement-fdp) · [SLC cache](../../../reference/glossary.md#slc-cache)
+[Flash translation layer (FTL)](../../../reference/glossary.md#flash-translation-layer-ftl) · [Indirection unit](../../../reference/glossary.md#indirection-unit) · [Garbage collection (SSD)](../../../reference/glossary.md#garbage-collection-ssd) · [Write amplification factor (WAF)](../../../reference/glossary.md#write-amplification-factor-waf) · [Over-provisioning](../../../reference/glossary.md#over-provisioning) · [Wear leveling](../../../reference/glossary.md#wear-leveling) · [TRIM](../../../reference/glossary.md#trim) · [LDPC code](../../../reference/glossary.md#ldpc-code) · [Soft decision](../../../reference/glossary.md#soft-decision) · [NVMe](../../../reference/glossary.md#nvme) · [Little's law](../../../reference/glossary.md#littles-law) · [Power-loss protection (PLP)](../../../reference/glossary.md#power-loss-protection-plp) · [Zoned Namespaces (ZNS)](../../../reference/glossary.md#zoned-namespaces-zns) · [Flexible Data Placement (FDP)](../../../reference/glossary.md#flexible-data-placement-fdp) · [SLC cache](../../../reference/glossary.md#slc-cache) · [Uncorrectable bit error rate (UBER)](../../../reference/glossary.md#uncorrectable-bit-error-rate-uber) · [DRAM-less SSD](../../../reference/glossary.md#dram-less-ssd) · [Program suspend](../../../reference/glossary.md#program-suspend)
 
 ## 12. Connections
 
@@ -541,3 +564,6 @@ Problem set: [23-07 problems](../problems/23-07-problems.md).
 12. M. Bjørling et al., "ZNS: Avoiding the Block Interface Tax for Flash-based SSDs," USENIX ATC 2021, <https://www.pdl.cmu.edu/ftp/Storage/USENIX_ATC_2021_ZNS.pdf>. [R-484]
 13. Solidigm, "Solidigm Extends AI Portfolio Leadership with the Introduction of 122TB Drive, the World's Highest Capacity PCIe SSD," 13 Nov 2024, <https://news.solidigm.com/en-WW/243441-solidigm-122tb-drive>. [R-483]
 14. L. James, "Enterprise SSDs cost 18.6 times more than HDDs as 30TB drives hit $22,600," Tom's Hardware, 21 Aug 2026, <https://tomshardware.com/pc-components/ssds/enterprise-ssds-now-cost-18-times-more-than-hard-drives-per-terabyte>. [R-483]
+15. A. Gupta, Y. Kim and B. Urgaonkar, "DFTL: A Flash Translation Layer Employing Demand-based Selective Caching of Page-level Address Mappings," *Proc. ASPLOS*, 2009.
+16. Solidigm, D5-P5336 product brief (specification table), <https://www.solidigm.com/content/dam/solidigm/en/site/products/technology/p5336-product-brief/documents/solidigm-d5-p5336-product-brief.pdf>. [R-493]
+17. StorageReview, "Intel D5-P5316 SSD Review (15.36TB)," 30 Dec 2021, <https://www.storagereview.com/review/intel-p5316-series-ssd-review-15-36tb>. [R-493]

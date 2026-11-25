@@ -225,6 +225,7 @@ cells_mm2 = bits * 6 * 15.9 ** 2 * 1e-12
 v.check("Ex 23-03.5g", cells_mm2)
 v.check("Ex 23-03.5h", 100 * cells_mm2 / 66.26)
 v.check("Txt 23-03.r", 100 * (1 - cells_mm2 / 66.26))
+v.check("Txt 23-03.f1", 100 * cells_mm2 * (1 + 8 / 128) / 66.26)
 v.check("Ex 23-03.5i", 0.021 / a_cell)
 v.check("Txt 23-03.o", bits / 66.26 / 38.1e6)
 v.check("Txt 23-03.s", (1024 * 8) / (16 * 8))
@@ -313,7 +314,11 @@ v.check("Ex 23-03.9f", para_p(pm, 4800))
 v.check("Ex 23-03.9g", para_p(pm, 1000))
 
 # ---------------------------------------------------------------- remaining text values
-v.check("Txt 23-03.f", sigma_array(2 ** 25))
+v.check("Txt 23-03.f", sigma_array(2 ** 24))  # one sense amplifier per bitline pair
+v.check("Txt 23-03.f2", 8 / 128 * 100)
+v.check("Txt 23-03.f3", 2 * 4800)
+v.check("Txt 23-03.f4", 550 / 7812.5 * 100)
+v.check("Txt 23-03.f5", 550 / 3906.25 * 100)
 area = 8e-15 * 6e-9 / (EPS0 * 25)
 v.check("Txt 23-03.g", area * 1e12)
 v.check("Txt 23-03.h", area * 1e12 / a_cell)

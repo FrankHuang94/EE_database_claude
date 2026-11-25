@@ -26,11 +26,11 @@ An 8800 MT/s part needs a core 37.5% faster than DDR5-6400's. MRDIMMs avoid that
 
 ### Solution 23-04.3
 
-(a) $1/(8.8 \times 10^9)$ = **113.6** ps; (b) $1/(28 \times 10^9)$ = **35.7** ps.
+(a) $1/(8.8 \times 10^9)$ = **113.6** ps. (b) The symbol rate is $28/1.5$ = **18.67** GBd, so the interval is **53.6** ps. (An NRZ link at 28 Gb/s would have a 35.7 ps UI.)
 
-(c) $113.6/6.67$ = **17.0** mm; (d) $35.7/6.67$ = **5.35** mm.
+(c) $113.6/6.67$ = **17.0** mm; (d) $53.57/6.67$ = **8.03** mm.
 
-At GDDR7 rates a bit occupies about 5 mm of trace, so a GPU's few-centimetre routes hold several bits each.
+At GDDR7 rates a symbol occupies about 8 mm of trace, so a GPU's few-centimetre routes hold several symbols each.
 
 ### Solution 23-04.4
 
@@ -74,9 +74,9 @@ With both ends within 15 Ω of the line, the far end is already within 1% of its
 
 ### Solution 23-04.8
 
-(a) $\sqrt{4.2}/c$ = **6.84** ps/mm.
+(a) $\sqrt{4.2}/(3.00 \times 10^8\ \text{m/s})$ = **6.83** ps/mm.
 
-(b) $8 \times 14$ mm = 112 mm, so **766** ps. (c) $766/113.6$ = **6.74** UI.
+(b) $8 \times 14$ mm = 112 mm, so **765** ps. (c) $765.1/113.6$ = **6.73** UI.
 
 ### Solution 23-04.9
 
@@ -166,9 +166,12 @@ A first-order channel's loss grows too slowly with frequency to repay the amplit
 | 23-04.2b | 512-bit LPDDR5X-8533 | 546.1 | GB/s |
 | 23-04.2c | 384-bit GDDR7 at 32 Gb/s | 1536 | GB/s |
 | 23-04.3a | UI at 8800 MT/s | 113.6 | ps |
-| 23-04.3b | UI at 28 Gb/s | 35.7 | ps |
+| 23-04.3b0 | GDDR7 symbol rate | 18.67 | GBd |
+| 23-04.3b | PAM3 symbol interval at 28 Gb/s | 53.6 | ps |
+| 23-04.3b1 | NRZ UI at 28 Gb/s | 35.7 | ps |
+| 23-04.3d0 | PAM3 symbol interval, 4 s.f. | 53.57 | ps |
 | 23-04.3c | distance per UI, 8800 MT/s | 17.0 | mm |
-| 23-04.3d | distance per UI, 28 Gb/s | 5.35 | mm |
+| 23-04.3d | distance per symbol, 28 Gb/s | 8.03 | mm |
 | 23-04.4a | low level | 0.533 | V |
 | 23-04.4b | swing | 0.667 | V |
 | 23-04.4c | current | 11.1 | mA |
@@ -193,10 +196,11 @@ A first-order channel's loss grows too slowly with frequency to repay the amplit
 | 23-04.7e3 | second far-end increment | -0.00508 | V |
 | 23-04.7e | far end, second arrival | 0.600 | V |
 | 23-04.7f | far end, final | 0.600 | V |
-| 23-04.8a | delay per millimetre | 6.84 | ps/mm |
+| 23-04.8a | delay per millimetre | 6.83 | ps/mm |
 | 23-04.8b0 | route length | 112 | mm |
-| 23-04.8b | skew | 766 | ps |
-| 23-04.8c | skew in UIs | 6.74 | |
+| 23-04.8b | skew | 765 | ps |
+| 23-04.8b1 | skew, 4 s.f. | 765.1 | ps |
+| 23-04.8c | skew in UIs | 6.73 | |
 | 23-04.9a | UI | 78.125 | ps |
 | 23-04.9b | a | 0.272 | |
 | 23-04.9c | h0 | 0.728 | |

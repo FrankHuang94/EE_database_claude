@@ -66,7 +66,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 23-03.14 [C]
 
-**Sense-amplifier offset and bitline length.** *(lab)* A 16 Gib device must work with 99% probability with no repair of sense amplifiers. A drooped cell's signal relative to the precharge level is 0.25 V, $C_s$ = 8 fF, and each bitline has 0.08 fF per cell plus 4 fF (assumed). With 512 cells per bitline (2²⁵ sense amplifiers), find (a) the sigma each sense amplifier needs, (b) the signal and (c) the largest offset standard deviation allowed. With 256 cells per bitline (2²⁶ sense amplifiers), find (d) the sigma, (e) the signal and (f) the largest offset standard deviation.
+**Sense-amplifier offset and bitline length.** *(lab)* A 16 Gib device must work with 99% probability with no repair of sense amplifiers (for simplicity, treat each of its 2²⁵ bitlines as having its own sense amplifier). A drooped cell's signal relative to the precharge level is 0.25 V, $C_s$ = 8 fF, and each bitline has 0.08 fF per cell plus 4 fF (assumed). With 512 cells per bitline (2²⁵ sense amplifiers), find (a) the sigma each sense amplifier needs, (b) the signal and (c) the largest offset standard deviation allowed. With 256 cells per bitline (2²⁶ sense amplifiers), find (d) the sigma, (e) the signal and (f) the largest offset standard deviation.
 
 ---
 

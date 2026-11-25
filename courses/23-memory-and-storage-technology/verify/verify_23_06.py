@@ -369,9 +369,10 @@ v.check("23-06.13f1", 0.4 / (2 * s13))
 w14 = 6 * page / 2.5e-3
 v.check("23-06.14a", w14 / 1e6)
 v.check("23-06.14a1", w14 / 1e6)
-v.check("23-06.14b", w14 / 600e6 * 100)
-v.check("23-06.14c0", 600e6 / w14)
-v.check("23-06.14c", math.ceil(600e6 / w14))
+bus14 = 8 * 4.8e9 / 8  # 8 pins x 4.8 Gb/s, in bytes/s
+v.check("23-06.14b", w14 / bus14 * 100)
+v.check("23-06.14c0", bus14 / w14)
+v.check("23-06.14c", math.ceil(bus14 / w14))
 d14 = 30 / (400 * 3)
 v.check("23-06.14d", d14)
 v.check("23-06.14e", (1 - d14 / d332) * 100)
@@ -380,5 +381,7 @@ v.check("23-06.14e", (1 - d14 / d332) * 100)
 for ident, bits in (("d", 3), ("e", 4)):
     s = optimize.brentq(lambda x, b=bits: rber_exact(6, b, x) - 1e-3, 0.02, 0.5, xtol=1e-12)
     v.check(f"Lab 23-06.{ident}", s)
+
+v.check("Txt 23-06.g", bus14 / w14)
 
 sys.exit(v.finish())
