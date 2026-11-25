@@ -10114,3 +10114,31 @@
   definition: "Carrying several lanes on different wavelengths in one fiber; CWDM spaces them 20 nm apart (about 3.5 THz at 1310 nm), DWDM 100 GHz or less (0.8 nm at 1550 nm), using Δf = cΔλ/λ²."
   chapter: "24-07"
   see_also: [Optical fiber]
+- term: Silicon photonics
+  definition: "Building optical components (waveguides, splitters, modulators, multiplexers and germanium photodiodes) on silicon wafers in CMOS-style fabs; silicon is transparent at 1310 and 1550 nm but cannot detect that light or lase, so detectors are germanium and lasers are III-V."
+  chapter: "24-08"
+  see_also: [Photonic integrated circuit (PIC), Grating coupler]
+- term: Photonic integrated circuit (PIC)
+  definition: "A chip whose waveguides, splitters, modulators and detectors route and convert light, as a printed circuit board routes current; it is paired with an electronic die (EIC) of drivers and TIAs, monolithically, stacked in 3D or side by side."
+  chapter: "24-08"
+  see_also: [Silicon photonics, Hybrid bonding]
+- term: Cutoff wavelength
+  definition: "The longest wavelength a material absorbs, λc = hc/Eg (1239.84 nm·eV divided by the band gap): 1107 nm for silicon, about 1550 nm for germanium's direct transition."
+  chapter: "24-08"
+  see_also: [Band gap]
+- term: Index contrast
+  definition: "The difference in refractive index between a waveguide's core and cladding; silicon in oxide (3.48 against 1.44) confines light into sub-micrometre waveguides with tight bends, while fiber's contrast of a fraction of a percent gives modes about 9 µm across."
+  chapter: "24-08"
+  see_also: [Critical angle, Mode field diameter]
+- term: Edge coupler
+  definition: "A fiber-to-chip coupler at the polished chip edge, where an inverse taper (spot-size converter) expands the waveguide mode toward the fiber's; broadband and polarization-tolerant, but testable only after dicing."
+  chapter: "24-08"
+  see_also: [Grating coupler, Mode field diameter]
+- term: Grating coupler
+  definition: "A periodic grating etched into a waveguide that diffracts light out of the chip surface toward a fiber at a small angle, with period λ/(n_eff − sin θ); usable anywhere on the die and for wafer-level test, but its beam steers by about 0.1° per nm, limiting its bandwidth."
+  chapter: "24-08"
+  see_also: [Edge coupler, Silicon photonics]
+- term: Pluggable transceiver
+  definition: "A self-contained optical module in a standard form factor (OSFP, QSFP-DD) that plugs into a switch or network card's front panel; a retimed module contains a DSP, drivers, optics and TIAs and runs at about 20 pJ/bit at 800 Gb/s and 1.6 Tb/s."
+  chapter: "24-08"
+  see_also: [Retiming, Co-packaged optics]

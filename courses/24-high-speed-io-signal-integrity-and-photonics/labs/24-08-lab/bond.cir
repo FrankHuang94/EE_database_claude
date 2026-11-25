@@ -1,0 +1,29 @@
+* 24-08 lab: driving a 20 fF ring modulator through a wire bond or a hybrid bond
+* A 50 ohm driver (1 V AC source behind 50 ohm) drives the modulator's 20 fF through
+*   branch 1: a 1 nH wire bond (assumed);  branch 2: a 10 pH hybrid bond (assumed).
+* The transfer function is 1/(LCs^2 + RCs + 1): a resonance at 35.6 GHz with
+* zeta = 0.112 for the wire bond, and zeta = 1.12 (no peaking) for the hybrid bond.
+*
+* EXPECT pk1 key:../../chapters/24-08-silicon-photonics.md#Ex_24-08.6c rtol=0.002
+* EXPECT pkdb1 key:../../chapters/24-08-silicon-photonics.md#Ex_24-08.6c1 rtol=0.003
+* EXPECT f3a key:../../chapters/24-08-silicon-photonics.md#Ex_24-08.6d scale=1e9 rtol=0.002
+* EXPECT f3b key:../../chapters/24-08-silicon-photonics.md#Ex_24-08.6f scale=1e9 rtol=0.003
+
+V1 in1 0 AC 1
+R1 in1 a1 50
+L1 a1 c1 1n
+C1 c1 0 20f
+
+V2 in2 0 AC 1
+R2 in2 a2 50
+L2 a2 c2 10p
+C2 c2 0 20f
+
+.control
+ac dec 2000 1e8 1e12
+meas ac pk1 max vm(c1)
+meas ac pkdb1 max vdb(c1)
+meas ac f3a when vm(c1)=0.7071068 fall=1
+meas ac f3b when vm(c2)=0.7071068 fall=1
+.endc
+.end

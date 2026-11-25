@@ -5273,3 +5273,77 @@ R&D % = R&D ÷ revenue.
 - J. Michel, J. Liu, L. C. Kimerling, "High-performance Ge-on-Si photodetectors," *Nature Photonics* 4, 527–534 (2010), abstract: "high responsivity from visible to near-infrared wavelengths, high bandwidths and compatibility with silicon complementary metal–oxide–semiconductor circuits".
 - Specific measured Ge-on-Si responsivities (≈ 0.9–1.0 A/W in the O-band) were seen only in search excerpts and are **unconfirmed**; the chapter's 0.9 A/W receivers are labelled assumed.
 - **Source:** [Michel, Liu, Kimerling, Nature Photonics 2010](https://www.nature.com/articles/nphoton.2010.157). Checked Nov 2026.
+
+## R-533 · NVIDIA 800 Gb/s twin-port OSFP (2×400G DR4) power (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (NVIDIA networking documentation page opened).* [Established: vendor datasheet]
+
+- NVIDIA MMS4X00-NM, 800 Gb/s twin-port OSFP, 2×400G DR4, single-mode, 500 m, 100G-PAM4 lanes: table row "Maximum Power Dissipation | PD | - | 16 | 17 | W" (16 W typical, 17 W maximum); "Maximum Power Dissipation, Low Power Mode | PDLP | - | - | 1.5 | W"; launch power per lane −1.0 to +4.0 dBm.
+- A 15 W HGX variant appeared only in a search excerpt and is **unconfirmed**.
+- **Derived here:** 16 W / 800 Gb/s = 20 pJ/bit typical (module only, excluding host SerDes).
+- **Source:** [NVIDIA MMS4X00-NM specifications](https://docs.nvidia.com/networking/display/mms4x00nm800g500m/specifications). Checked Nov 2026.
+
+## R-534 · NVIDIA 1.6 Tb/s twin-port OSFP (2×DR4, 200G per lane) (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (NVIDIA overview page opened; the specifications sub-page's text extract lacked the power row).* [Established: vendor datasheet, maximum not typical]
+
+- NVIDIA MMS4A00, 1.6 Tb/s twin-port OSFP, 2×DR4, 1310 nm, two MPO-12/APC connectors, up to 500 m: "8-channels of 200G-PAM4 electrical modulation"; "33.5W max power"; it lets the Quantum-X800 QM3400 switch support 144 ports of 800 Gb/s.
+- **Derived here:** 33.5 W / 1.6 Tb/s = 20.9 pJ/bit; 144 ports of 800 Gb/s from twin-port 1.6 Tb/s modules is 72 modules.
+- **Source:** [NVIDIA MMS4A00 overview](https://docs.nvidia.com/networking/display/9IAHX00XMOSFPTCVR1600). Checked Nov 2026.
+
+## R-535 · How much power does the DSP take? Vendor evidence (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (Semtech blog, an IEEE EPS overview PDF and a Marvell press release opened).* [Industry estimate: vendor claims with differing baselines]
+
+- No primary source found gives a clean percentage of module power for the PAM4 DSP.
+- Semtech webinar recap (with Cignal AI, 25 Mar 2025): "under 15 watts for 1.6T Linear Receive Optics—compared to approximately 20 watts for digital solutions"; Semtech claims LPO/LRO save about 50–60% against fully retimed modules.
+- S. Ramachandra (Celestial AI) and F. Rezaie (Cisco), "Linear Pluggable Optics – An Overview," IEEE EPS (2026): initial 1.6T solutions "require > 30W"; LRO "offers the promise of reduction in power below 20W".
+- Marvell (3 Dec 2024): its 3 nm Ara 1.6 Tb/s PAM4 DSP platform would "reduce 1.6 Tbps optical module power by over 20%" against 5 nm-based modules; LightCounting (quoted by Marvell) expects PAM4 DSP shipments to "more than triple from 2024 to 2029 to nearly 127 million units a year".
+- **Derived here:** Semtech's figures imply 1 − 15/20 = 25% saved by removing receive-side DSP functions. The baselines (Semtech's "about 20 W", NVIDIA's 33.5 W maximum, EPS's "> 30 W") are not comparable without aligning typical against maximum and module types.
+- **Sources:** [Semtech webinar recap](https://blog.semtech.com/webinar-recap-low-power-1.6t-datacom-transceivers-and-the-path-to-3.2t); [IEEE EPS LPO overview](https://eps.ieee.org/wp-content/uploads/2026/03/Linear-Pluggable-Optics_V2-UPDATED.pdf); [Marvell 3 nm 1.6T platform](https://www.marvell.com/company/newsroom/marvell-unveils-industrys-first-3nm-1-6tbps-pam4-interconnect-platform.html). Checked Nov 2026.
+
+## R-536 · IEEE P802.3dj Standards Association ballot results, 2026 (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (IEEE 802.3 DIALOG reflector messages and the adopted timeline opened).* [Established for the ballot facts; final approval open]
+
+- Second SA recirculation closed 15 Aug 2026: 117 approve, 18 disapprove, 138 returned, 185 comments.
+- Third SA recirculation "closed successfully on 10th October 2026. The ballot exceeded the required 75% for consensus to approve the draft": "133 Approve 3 Disapprove", 8 comments.
+- No record of final Standards Board approval as of 25 Nov 2026; R-519 records the draft on the 8 Dec 2026 RevCom agenda.
+- **Derived here:** 133/(133 + 3) = 97.8% approval.
+- **Sources:** [2nd recirculation results](https://grouper.ieee.org/groups/802/3/email_dialog/msg01862.html); [3rd recirculation results](https://grouper.ieee.org/groups/802/3/email_dialog/msg01881.html); [adopted timeline](https://grouper.ieee.org/groups/802/3/dj/projdoc/timeline_3dj_241114.pdf). Checked Nov 2026.
+
+## R-537 · TSMC COUPE silicon-photonics roadmap (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (Tom's Hardware report of 3 Aug 2026 opened; TSMC's own newsroom served a bot challenge and was not used).* [Industry estimate: foundry roadmap as reported; multipliers are TSMC's claims]
+
+- COUPE (Compact Universal Photonic Engine) "bonds a 65nm electronic integrated circuit (EIC) with a photonic integrated circuit (PIC) using the company's SoIC-X bonding technology". Three stages: COUPE on PCB (1.6T OSFP pluggables); COUPE on substrate, co-packaged with switch ASICs, up to 6.4 Tb/s per engine with "2x power efficiency, and 10x lower latency" than pluggables; COUPE on interposer, a 12.8 Tb/s engine with "5x power efficiency and 20x lower latency", described as exploratory with no date.
+- Micro-ring roadmap: "The company plans to bring the world's first 200 Gbps/lane (wavelength) micro-ring modulator into production in 2026" at 0.5 Tb/s/mm, then 1 Tb/s/mm (2028), 2 Tb/s/mm (2029) and 4 Tb/s/mm with 400 Gb/s rings (2030).
+- **Source:** [Tom's Hardware, CPO foundry roadmaps, 3 Aug 2026](https://www.tomshardware.com/tech-industry/artificial-intelligence/co-packaged-optics-cpo-foundry-roadmaps-breaking-down-tsmc-intel-samsung-and-globalfoundries-approach-to-next-generation-scale-up-connectivity). Checked Nov 2026.
+
+## R-538 · GlobalFoundries Fotonix and Advanced Micro Foundry; Samsung pJ/bit targets (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (The Register, a GF press release republished by Nasdaq and the Tom's Hardware report opened; gf.com served a bot challenge and was not used).* [Established for the corporate events; performance figures are vendor claims]
+
+- GF Fotonix (announced 7 Mar 2022): a monolithic 300 mm platform combining photonics with "300GHz-class RF-CMOS"; "GF Fotonix has shown to deliver 0.5Tbps/fiber".
+- GF (17 Nov 2025) announced its acquisition of Advanced Micro Foundry (Singapore, 200 mm, with plans to scale to 300 mm), to "establish the company as the largest silicon photonics pure-play foundry by revenue".
+- GF's SCALE CPO platform (as reported): 50 and 100 Gb/s micro-ring modulators, up to 16 DWDM lanes per fiber. Samsung Foundry (as reported) "expects energy efficiency of this generation to improve from approximately 10 pJ/bit for its initial PIC platform to 5 pJ/bit", with a stacked engine in 2027.
+- **Sources:** [The Register, GF Fotonix, 8 Mar 2022](https://www.theregister.com/2022/03/08/globalfoundries_gf_fotonix/); [GF acquires AMF (Nasdaq)](https://www.nasdaq.com/press-release/globalfoundries-acquires-advanced-micro-foundry-accelerating-silicon-photonics-global); Tom's Hardware as in R-537. Checked Nov 2026.
+
+## R-539 · Optical transceiver market estimates, 2025–2026 (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (two Lightwave articles and a TelecomTV report opened; a Yole report page returned an error and was not used).* [Industry estimate throughout; figures differ by scope]
+
+- LightCounting (Lightwave, 8 Oct 2026): "the forecast assumes the market growth rate will decline from 120% in 2026 to 76% in 2027 and 20% by 2031" for Ethernet optical transceivers.
+- LightCounting (Lightwave, 10 Mar 2026): AI-cluster Ethernet transceivers plus CPO "reached $8 billion in 2025, and it will reach $20 billion in 2030"; optics sales to the top five cloud providers are 3.1% of their 2026 capex. The same article's "60% growth rate for both 2025 and 2026" is inconsistent with $8 B → $20 B over five years and is not used.
+- TrendForce (TelecomTV, 20 Apr 2026): AI optical transceiver "market size projected to expand from US$16.5 billion in 2025 to $26 billion in 2026, representing over 57% YoY growth"; EML and CW-laser supply described as tight.
+- **Derived here:** (20/8)^(1/5) − 1 = 20.1% a year; 26/16.5 − 1 = 57.6%.
+- **Sources:** [Lightwave, 120% growth in 2026](https://www.lightwaveonline.com/home/news/55410716/ethernet-optical-transceiver-set-to-grow-120-in-2026); [Lightwave, AI scale-up and CPO](https://www.lightwaveonline.com/home/article/55362899/ai-scale-up-raises-the-stakes-for-transceivers-and-cpo-adoption); [TelecomTV, TrendForce $26bn](https://www.telecomtv.com/content/access-evolution/global-ai-optical-transceiver-market-to-reach-26bn-in-2026-says-trendforce-55327/). Checked Nov 2026.
+
+## R-540 · Ayar Labs TeraPHY UCIe optical I/O chiplet (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (Hot Chips 2025 slides opened).* [Established: conference disclosure]
+
+- V. Stojanović (Ayar Labs), "A UCIe Optical I/O Retimer Chiplet for AI Scale-up," Hot Chips 2025: "16 modules per chip, total 8.192 Tbps bidirectional BW" over UCIe standard-package modules at 16 Gb/s per lane; "123um bump pitch, bandwidth density of 896 Gbps/mm", limited by the UCIe standard bump map; 8 optical ports, each with "16 TX and 16 RX lanes @ 32Gbps NRZ per lane, 1024Gbps bi-directional BW", on 16 wavelengths from an external multi-wavelength source; qualification heading to volume production around 2027 (roadmap slide).
+- No energy-per-bit figure was given in the slides. Funding and foundry-partnership figures seen only in search excerpts are **unconfirmed**.
+- **Derived here:** 16 × 32 Gb/s = 512 Gb/s per fiber per direction; 8 × 1,024 Gb/s = 8.192 Tb/s, matching the electrical side.
+- **Source:** [Hot Chips 2025 slides](https://hc2025.hotchips.org/assets/program/conference/day2/83_Ayar_Labs_Stojanovic_final.pdf). Checked Nov 2026.

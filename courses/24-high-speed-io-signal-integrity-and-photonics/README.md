@@ -34,7 +34,7 @@ Moving bits between chips at hundreds of gigabits per second: loss, reflection a
 | [24-05 · Interconnect Standards: PCIe, CXL and Ethernet](chapters/24-05-pcie-cxl-ethernet.md) | 6 | ✅ verified | [problems](problems/24-05-problems.md) · [solutions](solutions/24-05-solutions.md) · [lab](labs/24-05-lab/README.md) · [verify](verify/verify_24_05.py) |
 | [24-06 · Die-to-Die Links, Memory PHYs and Scale-Up Fabrics](chapters/24-06-d2d-memory-phys-scale-up.md) | 6 | ✅ verified | [problems](problems/24-06-problems.md) · [solutions](solutions/24-06-solutions.md) · [lab](labs/24-06-lab/README.md) · [verify](verify/verify_24_06.py) |
 | [24-07 · Photonics Fundamentals](chapters/24-07-photonics-fundamentals.md) | 8 | ✅ verified | [problems](problems/24-07-problems.md) · [solutions](solutions/24-07-solutions.md) · [lab](labs/24-07-lab/README.md) · [verify](verify/verify_24_07.py) |
-| [24-08 · Silicon Photonics and Optical Transceivers](chapters/24-08-silicon-photonics.md) | 6 | ⬜ planned | — |
+| [24-08 · Silicon Photonics and Optical Transceivers](chapters/24-08-silicon-photonics.md) | 6 | ✅ verified | [problems](problems/24-08-problems.md) · [solutions](solutions/24-08-solutions.md) · [lab](labs/24-08-lab/README.md) · [verify](verify/verify_24_08.py) |
 | [24-09 · Linear-Drive and Co-Packaged Optics](chapters/24-09-lpo-and-cpo.md) | 4 | ⬜ planned | — |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
