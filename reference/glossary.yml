@@ -9586,3 +9586,53 @@
   definition: "Today's DRAM cell footprint, 3F × 2F where F is the half-pitch design rule, with one bitline contact shared by two cells; 4F² cells with vertical-channel transistors would cut it by a third."
   chapter: "23-03"
   see_also: [1T1C cell]
+
+# ---------------------------------------------------------------- 23-04
+- term: Prefetch (DRAM)
+  definition: "The number of bits per data pin a DRAM's core delivers in one column access (8n for DDR4, 16n for DDR5), serialized onto the pin; it lets the pin rate grow while the core's column rate stays at a few hundred megahertz."
+  chapter: "23-04"
+  see_also: [Burst length]
+- term: Burst length
+  definition: "The number of transfers one DRAM column command produces (BL8 in DDR4, BL16 in DDR5); with the channel width it sets the bytes moved per access."
+  chapter: "23-04"
+  see_also: [Access granularity]
+- term: Access granularity
+  definition: "The bytes a memory channel moves per access, width times burst length divided by eight; DDR systems hold it at one 64-byte cache line."
+  chapter: "23-04"
+  see_also: [DDR5 subchannel]
+- term: DDR5 subchannel
+  definition: "One of the two independent 32-bit halves of a DDR5 module's data bus; with BL16 each moves a 64-byte payload, keeping cache-line granularity despite the doubled burst."
+  chapter: "23-04"
+  see_also: [Access granularity]
+- term: On-die termination (ODT)
+  definition: "Termination resistors built into a DRAM or controller and switched in by mode registers, so reflections are absorbed at the receiver without board resistors or stubs."
+  chapter: "23-04"
+  see_also: [Reflection coefficient]
+- term: Pseudo-open-drain (POD) I/O
+  definition: "DDR4 and DDR5 signaling in which each line is terminated to the I/O supply; a 1 draws no static current and a 0 draws V_DDQ/(R_on + R_TT)."
+  chapter: "23-04"
+  see_also: [Data bus inversion (DBI)]
+- term: Low-voltage-swing terminated logic (LVSTL)
+  definition: "LPDDR4 and LPDDR5 signaling terminated to ground with an I/O supply of about 0.5 V (0.3 V without termination); termination power falls with the square of the supply."
+  chapter: "23-04"
+  see_also: [Pseudo-open-drain (POD) I/O]
+- term: Data bus inversion (DBI)
+  definition: "Sending a byte inverted, flagged on an extra pin, when that reduces the number of wires at the costly level; in DDR4 a byte with more than four 0s is inverted, cutting the expected low wires per byte from 4 to 3.27 for random data."
+  chapter: "23-04"
+  see_also: [Pseudo-open-drain (POD) I/O]
+- term: Fly-by topology
+  definition: "Routing a module's clock and command/address signals past each DRAM in turn, which keeps the stubs short but makes the clock arrive at each DRAM several bit times apart."
+  chapter: "23-04"
+  see_also: [Write leveling]
+- term: Write leveling
+  definition: "Training in which the controller sweeps each byte's data-strobe delay while the DRAM reports the clock level it samples, so writes align with the fly-by clock at every DRAM."
+  chapter: "23-04"
+  see_also: [Fly-by topology]
+- term: PAM3
+  definition: "Three-level pulse-amplitude modulation; GDDR7 sends 3 bits in 2 symbols (1.5 bits per symbol), with eyes half as tall as NRZ's but 1.5 times as tall as PAM4's at the same swing."
+  chapter: "23-04"
+  see_also: [PAM4, Pulse-amplitude modulation]
+- term: MRDIMM
+  definition: "A multiplexed-rank DIMM whose data buffers interleave two ranks, so the host bus runs at twice each rank's rate (8800 MT/s from ranks at 4400 MT/s in the first generation)."
+  chapter: "23-04"
+  see_also: [DDR5 subchannel]

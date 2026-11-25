@@ -1,0 +1,73 @@
+* Lab 23-04: DRAM I/O termination, reflections and a lossy channel's pulse response
+* Part A: DDR5-style pseudo-open-drain (POD) driver (34 ohm) pulling low against 40 ohm termination to VDDQ = 1.1 V.
+* Part B: LPDDR5X-style low-voltage-swing driver (40 ohm) pulling high against 40 ohm termination to ground, VDDQ = 0.5 V.
+* Part C: a 1.0 V step from a 34 ohm driver into a 40 ohm, 300 ps line ending in 40 ohm, 120 ohm or an open end.
+* Part D: a first-order channel (50 ohm, 1.6 pF: tau = 80 ps) driven by one DDR5-8800 unit interval (113.636 ps).
+.options reltol=1e-6 abstol=1e-15 vntol=1e-9
+
+* ---- Part A: POD
+VQA vdda 0 DC 1.1
+RTTA vdda pada 40
+RONA pada 0 34
+
+* ---- Part B: LVSTL
+VQB vddb 0 DC 0.5
+RONB vddb padb 40
+RTTB padb 0 40
+
+* ---- Part C: reflections (one line per termination)
+VS1 s1 0 PWL(0 0 1p 1.0)
+RS1 s1 n1 34
+T1 n1 0 f1 0 Z0=40 TD=300p
+RL1 f1 0 40
+VS2 s2 0 PWL(0 0 1p 1.0)
+RS2 s2 n2 34
+T2 n2 0 f2 0 Z0=40 TD=300p
+RL2 f2 0 120
+VS3 s3 0 PWL(0 0 1p 1.0)
+RS3 s3 n3 34
+T3 n3 0 f3 0 Z0=40 TD=300p
+RL3 f3 0 1G
+
+* ---- Part D: RC channel pulse response
+VP pin 0 PWL(0 0 0.01p 1.0 113.636p 1.0 113.646p 0)
+RCH pin pout 50
+CCH pout 0 1.6p
+
+.tran 0.1p 6n
+.control
+run
+* Part A
+meas tran vpod find v(pada) at=1n
+let ipod = (1.1 - v(pada))/40*1000
+meas tran ipod_ma find ipod at=1n
+let ppod = 1.1*(1.1 - v(pada))/40*1000
+meas tran ppod_mw find ppod at=1n
+* Part B
+meas tran vlv find v(padb) at=1n
+* Part C (first arrival at 300 ps, second at 900 ps, third at 1500 ps)
+meas tran f1_first find v(f1) at=600p
+meas tran f2_first find v(f2) at=600p
+meas tran f2_second find v(f2) at=1200p
+meas tran f2_final find v(f2) at=6n
+meas tran f3_first find v(f3) at=600p
+meas tran f3_second find v(f3) at=1200p
+* Part D (cursors at the ends of successive unit intervals)
+meas tran h0 find v(pout) at=113.636p
+meas tran h1 find v(pout) at=227.273p
+meas tran h2 find v(pout) at=340.909p
+.endc
+* EXPECT vpod key:../../chapters/23-04-dram-interfaces.md#Ex_23-04.3a rtol=0.001
+* EXPECT ipod_ma key:../../chapters/23-04-dram-interfaces.md#Ex_23-04.3c1 rtol=0.001
+* EXPECT ppod_mw key:../../chapters/23-04-dram-interfaces.md#Ex_23-04.3d1 rtol=0.001
+* EXPECT vlv key:../../chapters/23-04-dram-interfaces.md#Ex_23-04.4a rtol=0.001
+* EXPECT f1_first key:../../chapters/23-04-dram-interfaces.md#Ex_23-04.5a1 rtol=0.002
+* EXPECT f2_first key:../../chapters/23-04-dram-interfaces.md#Ex_23-04.5c rtol=0.002
+* EXPECT f2_second key:../../chapters/23-04-dram-interfaces.md#Ex_23-04.5d rtol=0.002
+* EXPECT f2_final key:../../chapters/23-04-dram-interfaces.md#Ex_23-04.5e rtol=0.002
+* EXPECT f3_first key:../../chapters/23-04-dram-interfaces.md#Ex_23-04.5f rtol=0.002
+* EXPECT f3_second key:../../chapters/23-04-dram-interfaces.md#Ex_23-04.5g rtol=0.002
+* EXPECT h0 key:../../chapters/23-04-dram-interfaces.md#Ex_23-04.7b rtol=0.005
+* EXPECT h1 key:../../chapters/23-04-dram-interfaces.md#Ex_23-04.7c rtol=0.005
+* EXPECT h2 key:../../chapters/23-04-dram-interfaces.md#Ex_23-04.7d rtol=0.01
+.end

@@ -4712,3 +4712,39 @@ R&D % = R&D ÷ revenue.
 - **TrendForce, 28 Oct 2026** [Contested]: SK hynix will extend 6F² with EUV while developing 4F² (vertical gate, peri-under-cell with wafer bonding) and 3D DRAM in phases; 4F² "cutting cell area by 33%"; CXMT aims for a 4F²-based server DDR5 RDIMM by the end of 2026; Samsung's DS CTO confirmed 4F² development at SEDEX 2026 (14 Oct).
 - **TrendForce, 24 Apr 2026, citing The Elec** [Contested]: Samsung produced 10a wafers in March and confirmed a working die; first 4F² cell with a vertical-channel transistor; IGZO channel; development completion in 2026, quality tests in 2027, mass production in 2028; 4F² "could increase cell density by around 30–50%"; SK hynix reportedly targets 4F²/VCT at 10b.
 - **Sources:** [Micron roadmap](https://www.trendforce.com/news/2026/10/22/news-micron-reportedly-rules-out-4f%C2%B2-dram-scaling-backs-6f%C2%B2-and-3d-dram-in-next-gen-memory-roadmap/); [SK hynix](https://www.trendforce.com/news/2026/10/28/news-sk-hynix-eyes-euv-driven-6f%C2%B2-scaling-keeps-4f%C2%B2-and-3d-dram-in-play-as-micron-holds-back/); [Samsung 10a](https://www.trendforce.com/news/2026/04/24/news-samsung-reportedly-produces-sub-10nm-10a-dram-working-die-using-4f-square-and-vct-targets-2028-production/). Checked Nov 2026.
+
+## R-470 · DRAM interface organization from data sheets and a Micron white paper (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (documents opened and searched).*
+
+- **Micron, 16Gb DDR4 SDRAM data sheet, Rev. H 8/2021** [Established as vendor specification]: "8n-bit prefetch architecture"; "1.2V pseudo open-drain I/O"; RTT(NOM) settings RZQ/4 (60 Ω), RZQ/2 (120 Ω), RZQ/6 (40 Ω), RZQ/1 (240 Ω), RZQ/5 (48 Ω), RZQ/3 (80 Ω), RZQ/7 (34 Ω); output drivers RZQ/7 (34 Ω) and RZQ/5 (48 Ω); DBI on reads: "If the number of 0 data bits within a given byte lane is greater than four during a READ operation, the DRAM inverts read data on its DQ outputs and drives the DBI_n pin LOW"; write leveling.
+- **Micron, "Micron DDR5: Client Module Features," white paper, Rev. A 10/2021** [Established as vendor description]: "A standard DDR5 module has two independent subchannels"; "each subchannel allows for 32 data I/Os with a BL of 16, resulting in 64-byte payloads"; on-module PMIC; programmable ODT added for CK, CS and CA; CS and CA training; multitap DFE.
+- **Micron, Automotive LPDDR5X MT62F512M32D1 data sheet, Rev. G 05/2025** [Established as vendor specification]: "19.2 GB/s maximum bandwidth per channel"; data rates to 9600 Mb/s per pin with WCK:CK = 4:1; "Dual x16 channel/die"; "16n-bit or 32n-bit prefetch architecture"; BL16 or BL32; VDDQ 0.50 V or 0.45 V (0.30 V with ODT off); "Interface-LVSTL 0.5/0.3"; per-byte and per-pin DFE; optional link ECC.
+- **Sources:** [DDR4](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/8827/16gb-ddr4-sdram.pdf); [DDR5 client white paper](https://www.simms.co.uk/Uploads/Resources/27/357d2ced-2662-46ad-9d63-22f3ae58a98f.pdf); [LPDDR5X](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/7182/MT62F512M32D1.pdf). Checked Nov 2026. Micron's own site returned an error page for its white papers, so a distributor's copy was read.
+
+## R-471 · GDDR7 standard and shipping GPU memory (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **JEDEC press release, 5 Mar 2024, as reproduced by Design & Reuse** [Established]: JESD239 GDDR7 "reaching up to 192 GB/s per device"; "the first JEDEC standard DRAM to use the Pulse Amplitude Modulation (PAM) interface"; PAM3 "using 3 levels (+1, 0, -1) to transmit 3 bits over 2-cycles"; independent channels double "from 2 in GDDR6 to 4 in GDDR7"; 16 Gbit to 32 Gbit densities; on-die ECC with real-time reporting, data poison, error check and scrub, CA parity with command blocking. (Business Wire and JEDEC refused automated fetches; AnandTech's coverage, which adds "[32b @ 48Gbps]", sits behind a bot check and was not read.)
+- **Micron blog, "GDDR7 – the next generation of graphics memory," 4 Jun 2024** [Industry estimate for performance claims]: PAM3 "encodes more information (1.5 times more) per signal cycle" than NRZ; versus PAM4 it "allows for a 50% higher voltage margin and has lower encoder complexity"; initial 32 Gb/s and up to 1.5 TB/s system bandwidth.
+- **NVIDIA RTX 5090 product page** [Established as vendor specification]: 32 GB GDDR7, 512-bit memory interface.
+- **Tom's Hardware (J. Walton), RTX 5090 Founders Edition review, 23 Jan 2025** [Established as reported]: VRAM speed 28 Gbps, bandwidth 1792 GB/s; RTX 4090 21 Gbps, 384-bit, 1008 GB/s; "the GDDR7 runs 33% faster than the GDDR6X memory used on the 4090, yielding a 78% increase in memory bandwidth".
+- **Sources:** [JEDEC via Design & Reuse](https://us.design-reuse.com/news/55819/jedec-gddr7-graphics-memory-standard.html); [Micron blog](https://www.micron.com/about/blog/memory/dram/unveiling-the-next-generation-of-graphics-memory-gddr7); [NVIDIA](https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/); [Tom's Hardware](https://www.tomshardware.com/pc-components/gpus/nvidia-geforce-rtx-5090-review). Checked Nov 2026.
+
+## R-472 · LPDDR5X, LPDDR6 and MRDIMM status (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **Samsung newsroom, 17 Apr 2024** [Established as vendor announcement]: LPDDR5X "supporting the industry's highest performance of up to 10.7 gigabits-per-second (Gbps)", 12 nm-class process, single-package capacity up to 32 GB, 25% higher power efficiency than the previous generation (vendor claim).
+- **Notebookcheck (N. Ali), 11 Jul 2025** [Industry estimate: secondary report of JEDEC's release]: JESD209-6 (LPDDR6) at 10,667–14,400 MT/s, "roughly 28.5–38.4 GB/s"; each die has a 24-bit channel split into two 12-bit sub-channels; 32-byte minimum granularity; burst-length control between 32 and 64 bytes; on-die ECC, programmable link protection, per-row activation counting. The GB/s figures are below 24 bits × rate (43.2 GB/s at 14,400 MT/s); the reason is not stated and has not been checked against the standard.
+- **Tom's Hardware (A. Shilov), 19 Jul 2024** [Industry estimate for vendor claims]: MRDIMMs run two ranks multiplexed; the host interacts at 8800 MT/s "but all the components on the module work at half the rate"; Micron and Intel claim "up to 40% lower loaded latency" than a 128 GB DDR5-6400 RDIMM; the next generation is expected to reach 12,800 MT/s.
+- **Sources:** [Samsung](https://news.samsung.com/global/samsung-develops-industrys-fastest-10-7gbps-lpddr5x-dram-optimized-for-ai-applications); [Notebookcheck](https://www.notebookcheck.net/JEDEC-releases-LPDDR6-standard-data-rates-reach-14-400-MT-s.1055771.0.html); [Tom's Hardware](https://www.tomshardware.com/desktops/servers/micron-unveils-mrdimms-for-intel-xeon-6-up-to-256gb-ddr5-8800-modules). Checked Nov 2026.
+
+## R-473 · NVIDIA Grace LPDDR5X power comparisons (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **NVIDIA Technical Blog, "NVIDIA Grace CPU Superchip Architecture In Depth," 20 Jan 2023** [Industry estimate: vendor comparison]: "Compared to an eight-channel DDR5 design, the NVIDIA Grace CPU LPDDR5X memory subsystem provides up to 53% more bandwidth at one-eighth the power per gigabyte per second while being similar in cost"; up to 960 GB and 1 TB/s per superchip.
+- **NVIDIA Grace Performance Tuning Guide** [Industry estimate: vendor comparison]: "The Grace CPU LPDDR5X memory subsystem provides up to 500 GB/s of bandwidth in only about 16W. That is one fifth the power of 12 channels of conventional DDR5 memory."
+- **Sources:** [NVIDIA blog](https://developer.nvidia.com/blog/nvidia-grace-cpu-superchip-architecture-in-depth); [Tuning guide](https://docs.nvidia.com/dccpu/grace-perf-tuning-guide/index.html). Checked Nov 2026.
