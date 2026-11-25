@@ -9894,3 +9894,35 @@
   definition: "A NAND feature that pauses a long program or erase so the controller can serve waiting reads, trading write throughput for read tail latency."
   chapter: "23-07"
   see_also: [Garbage collection (SSD)]
+- term: Surface roughness (conductor)
+  definition: "The microscopic bumpiness of copper foil, which lengthens the current path once the skin depth falls to the bump size and multiplies conductor loss by up to about 2 (the Hammerstad–Jensen factor 1 + (2/π)arctan[1.4(Δrms/δ)²])."
+  chapter: "24-01"
+  see_also: [Skin effect, Insertion loss]
+- term: Mixed-mode S-parameters
+  definition: "S-parameters of a differential four-port re-expressed as differential and common-mode responses, such as SDD21 (differential insertion loss), SDD11 (differential return loss) and SCD21 (differential-to-common-mode conversion)."
+  chapter: "24-01"
+  see_also: [Insertion loss, Return loss]
+- term: Via stub
+  definition: "The unused part of a via barrel beyond the layer where the signal leaves it: an open-ended transmission line that notches the channel at the quarter-wave frequency c/(4ℓ√εr)."
+  chapter: "24-01"
+  see_also: [Back-drilling]
+- term: Back-drilling
+  definition: "Drilling out the unused stub of a plated via from the far side of the board, so its quarter-wave notch moves far above the Nyquist frequency."
+  chapter: "24-01"
+  see_also: [Via stub]
+- term: Near-end crosstalk (NEXT)
+  definition: "Noise coupled backward onto a victim line, seen at the end near the aggressor's driver: a plateau of height (1/4)(Cm/C + Lm/L) times the aggressor step, lasting twice the coupled delay and saturating beyond a coupled length of v·tr/2."
+  chapter: "24-01"
+  see_also: [Far-end crosstalk (FEXT), Crosstalk]
+- term: Far-end crosstalk (FEXT)
+  definition: "Noise coupled forward onto a victim and arriving with the aggressor's edge at the far end, (ℓ/2v)(Cm/C − Lm/L) times the edge's slope; it grows with coupled length and vanishes in a homogeneous dielectric (stripline)."
+  chapter: "24-01"
+  see_also: [Near-end crosstalk (NEXT)]
+- term: Simultaneous switching noise (SSN)
+  definition: "Ground or supply bounce L·N·ΔI/tr when many drivers sharing a return or supply inductance switch together; differential signalling largely avoids it."
+  chapter: "24-01"
+  see_also: [Target impedance, Crosstalk]
+- term: Loss budget
+  definition: "An allocation of a link's allowed insertion loss at its Nyquist frequency among packages, traces, vias, connectors and cables, such as PCIe 5.0's 36 dB at 16 GHz."
+  chapter: "24-01"
+  see_also: [Insertion loss, Nyquist frequency]

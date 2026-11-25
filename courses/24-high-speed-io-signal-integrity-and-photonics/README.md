@@ -27,7 +27,7 @@ Moving bits between chips at hundreds of gigabits per second: loss, reflection a
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [24-01 · Signal Integrity Fundamentals](chapters/24-01-signal-integrity-fundamentals.md) | 7 | ⬜ planned | — |
+| [24-01 · Signal Integrity Fundamentals](chapters/24-01-signal-integrity-fundamentals.md) | 7 | ✅ verified | [problems](problems/24-01-problems.md) · [solutions](solutions/24-01-solutions.md) · [lab](labs/24-01-lab/README.md) · [verify](verify/verify_24_01.py) |
 | [24-02 · Eye Diagrams, Jitter and BER](chapters/24-02-eye-diagrams-jitter-ber.md) | 6 | ⬜ planned | — |
 | [24-03 · SerDes Architecture and Equalization](chapters/24-03-serdes-architecture.md) | 8 | ⬜ planned | — |
 | [24-04 · DSP-Based SerDes and FEC](chapters/24-04-dsp-serdes-and-fec.md) | 5 | ⬜ planned | — |

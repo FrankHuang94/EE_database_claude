@@ -1,0 +1,33 @@
+* 24-01 lab: a via stub is a quarter-wave notch (Example 24-01.6, Figure 3)
+* Two independent through paths: a 1.6 mm stub and a 0.4 mm back-drilled stub,
+* each an open-ended 50 ohm line hung off the via node, in er = 3.6.
+* EXPECT fnotch1 key:../../chapters/24-01-signal-integrity-fundamentals.md#Ex_24-01.6a scale=1e9 rtol=0.001
+* EXPECT fnotch2 key:../../chapters/24-01-signal-integrity-fundamentals.md#Txt_24-01.o scale=1e9 rtol=0.001
+.param er=3.6 c0=2.998e8
+.param td1={1.6e-3*sqrt(er)/c0} td2={0.4e-3*sqrt(er)/c0}
+V1 in1 0 AC 1
+R1 in1 a1 50
+T1a a1 0 b1 0 Z0=50 TD=50p
+T1s b1 0 s1 0 Z0=50 TD={td1}
+R1s s1 0 1e9
+T1b b1 0 o1 0 Z0=50 TD=50p
+RL1 o1 0 50
+V2 in2 0 AC 1
+R2 in2 a2 50
+T2a a2 0 b2 0 Z0=50 TD=50p
+T2s b2 0 s2 0 Z0=50 TD={td2}
+R2s s2 0 1e9
+T2b b2 0 o2 0 Z0=50 TD=50p
+RL2 o2 0 50
+.control
+ac lin 6001 1e9 120e9
+let s21a = abs(v(o1))*2
+let s21b = abs(v(o2))*2
+let d1 = deriv(s21a)
+let d2 = deriv(s21b)
+meas ac fnotch1 when d1=0 cross=1
+meas ac fnotch2 when d2=0 cross=1
+meas ac depth1 find s21a at=24.69e9
+print fnotch1 fnotch2 depth1
+.endc
+.end

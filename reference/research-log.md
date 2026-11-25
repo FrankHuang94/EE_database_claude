@@ -4990,3 +4990,32 @@ R&D % = R&D ÷ revenue.
 - **NVIDIA Vera Rubin NVL72 page** [Established as vendor specification]: "288 GB HBM4 | 19.2 TB/s" per GPU.
 - **ServeTheHome, 1 Nov 2026** [Established as reported]: NVIDIA revised Rubin's HBM4 bandwidth from 22 TB/s (8 × 2,048 bits at 10.75 Gb/s) to 19.2 TB/s (9.375 Gb/s), a 12.8% cut. NVIDIA's developer blog of 5 Jan 2026 gave 22 TB/s, and its HGX page still listed 22 TB/s per GPU when read.
 - **Sources:** [Vera Rubin NVL72](https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/); [ServeTheHome](https://www.servethehome.com/nvidia-updates-rubin-gpu-specs-as-first-production-hardware-arrives/); [NVIDIA HGX](https://www.nvidia.com/en-us/data-center/hgx/). Checked Nov 2026.
+
+## R-502 · PCIe Gen3–Gen5 loss budgets and laminate loss (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (document opened).*
+
+- **V. Flores Prado, "High-Speed PCB Layout for PCIe Gen 5," Texas Instruments SNLA426, Jun 2023** [Established as vendor design guidance]:
+  - Table 2-1: CPU package 3.5/5/9.0 dB, system board (9-inch trace, high-loss material) 13/14/16 dB, CEM connector 0.5/0.5/1.5 dB, 4-inch add-in card 6.5/8.5/9.5 dB; totals 23.5/28/36 dB for Gen3/Gen4/Gen5. Gen5 also needs 4–5 dB for crosstalk mitigation and 2–3 dB for temperature and humidity.
+  - Table 9-1, "1" Trace Loss Over Frequency for Various PCB Materials" (model values from TI's Eq. 1, geometry not tabulated): Megtron 6 (εr 3.4, Df 0.002) 0.189/0.336 dB at 8/16 GHz; Rogers (3.48, 0.0037) 0.251/0.411; GETEK (4.1, 0.011) 0.548/1.017; Nelco 4000-6 (4.0, 0.012) 0.578/1.078; FR4 (4.4, 0.014) 0.686/1.289; tetra-functional FR4 (4.1, 0.022) 0.961/1.844.
+  - "Insertion loss is expected to be up to 8% higher at temperature for ultra low-loss materials such as Megtron 6 … higher loss materials such as FR4 where insertion loss is 11% higher".
+- **Sources:** [TI SNLA426](https://www.ti.com/lit/pdf/snla426). Checked Nov 2026.
+
+## R-503 · IEEE 802.3dj loss working values and copper-cable budget (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (task-force documents opened).*
+
+- **Ghiasi, Gore and Mellitz, "Bottom-Up Analysis of Medium and High Loss AUI," 18 Jan 2023** [Industry estimate: task-force working numbers]: advanced PCB about 1.52 dB/in (measured, 5-mil stripline) to 1.8 dB/in assumed worst case at 53 GHz; "Cabled host loss is ~0.35 dB/in @ 53 GHz"; package 0.153–0.21 dB/mm; host via about 0.8 dB; "OSFP connector loss is ~1.6 dB @53 GHz".
+- **M. P. Li et al. (Intel), Sep 2024** [Industry estimate]: host channel at 53.125 GHz = BGA via 0.6 dB + 1.272 dB/inch × 4.5 inch + connector via 0.172 dB = 6.5 dB.
+- **Brown, Lusted, Tracy et al., Nov 2023** [Industry estimate]: host-nominal allocation "5dB package", "0.5dB BGA transition", "6dB for PCB trace, ~4.28” reach" (about 1.4 dB/in).
+- **DiMinico, Sep 2023, and 802.3dj Key Motions (16 May 2024)** [Established: adopted baseline]: "TP0d-TP5d= 11.5+17+11.5= 40 dB" at 53.125 GHz for CR (host, cable assembly, host).
+- **Adopted P802.3dj objectives (14 Mar 2024)** [Established]: 200 Gb/s per lane over twin-axial copper "with a reach of up to at least 1.0 meter"; backplane die-to-die insertion loss ≤ 40 dB at 53.125 GHz. 802.3ck (2018): copper cable at least 2 m; backplane ≤ 28 dB at 26.56 GHz.
+- **Sources:** [Ghiasi 2023](https://www.ieee802.org/3/dj/public/23_01/23_0116/ghiasi_3dj_02a_230116.pdf); [Li 2024](https://ieee802.org/3/dj/public/24_09/lim_3dj_01a_2409.pdf); [Tracy 2023](https://www.ieee802.org/3/dj/public/23_11/tracy_3dj_01a_2311.pdf); [DiMinico 2023](https://www.ieee802.org/3/dj/public/23_09/diminico_3dj_01a_2309.pdf); [Key Motions](https://www.ieee802.org/3/dj/projdoc/KeyMotions_3dj_240516.pdf); [P802.3dj objectives](https://www.ieee802.org/3/dj/projdoc/objectives_P802d3dj_240314.pdf). Checked Nov 2026.
+
+## R-504 · Copper-cable yield at 200 G/lane and the PCIe 7.0 budget (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (documents opened).*
+
+- **Tracy, Heck et al. (TE Connectivity), "Cable Assembly TP1-TP4 Insertion Loss (Comment #358)," Sep 2025** [Industry estimate: one vendor's data]: 1.0 m 26/25 AWG DACs built to robust processes reached 15% assembly yield and 90% lane yield against a 24 dB limit at 53.12 GHz, and 62% and 97% at 25 dB; "A more manufacturable specification needs an additional 1 dB insertion loss to be allocated to the cable assembly". Whether the comment was accepted was not verified.
+- **A. Wander (Amphenol FCI), Signal Integrity Journal, 21 Feb 2024 and 13 Dec 2025** [Industry estimate]: PCIe 7.0's budget shifts "from 32 dB @ 16 GHz to 36 dB at 32 GHz", which needs "approximately ≤ 1 dB/in loss at 32 GHz such as Megtron-8 or equivalent". **Synopsys (2024):** PCIe 7.0 keeps "pad-to-pad channel loss of up to -36dB". The PCI-SIG specification is members-only and was not read.
+- **Sources:** [TE 2025](https://www.ieee802.org/3/dj/public/25_09/heck_3dj_02_2509.pdf); [Wander 2024](https://www.signalintegrityjournal.com/articles/3462-navigating-signal-integrity-challenges-transitioning-from-pcie-gen6-to-gen7); [Wander 2025](https://www.signalintegrityjournal.com/articles/4156-evolution-of-pcie-beyond-gen7-pcie-gen8); [Synopsys](https://www.synopsys.com/articles/pcie-7-design-ai-bandwidth.html). Checked Nov 2026.
