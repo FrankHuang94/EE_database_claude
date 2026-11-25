@@ -37,7 +37,7 @@ Converting and delivering power efficiently, from wearables to AI racks: switchi
 | [22-08 · PMICs and Power Management for SoCs](chapters/22-08-pmics.md) | 6 | ✅ verified | [problems](problems/22-08-problems.md) · [solutions](solutions/22-08-solutions.md) · [lab](labs/22-08-lab/README.md) · [verify](verify/verify_22_08.py) |
 | [22-09 · Batteries, Charging and Fuel Gauging](chapters/22-09-batteries-charging-fuel-gauging.md) | 8 | ✅ verified | [problems](problems/22-09-problems.md) · [solutions](solutions/22-09-solutions.md) · [lab](labs/22-09-lab/README.md) · [verify](verify/verify_22_09.py) |
 | [22-10 · Datacenter Power Delivery](chapters/22-10-datacenter-power-delivery.md) | 8 | ✅ verified | [problems](problems/22-10-problems.md) · [solutions](solutions/22-10-solutions.md) · [lab](labs/22-10-lab/README.md) · [verify](verify/verify_22_10.py) |
-| [22-11 · Electric Machines and Drives](chapters/22-11-electric-machines.md) | 6 | ⬜ planned | — |
+| [22-11 · Electric Machines and Drives](chapters/22-11-electric-machines.md) | 6 | ✅ verified | [problems](problems/22-11-problems.md) · [solutions](solutions/22-11-solutions.md) · [lab](labs/22-11-lab/README.md) · [verify](verify/verify_22_11.py) |
 | [22-12 · Power Systems Fundamentals](chapters/22-12-power-systems-fundamentals.md) | 8 | ⬜ planned | — |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)

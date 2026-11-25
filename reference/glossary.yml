@@ -9341,3 +9341,67 @@
 - term: Power smoothing
   definition: "Using local energy storage and control to keep a load's power drawn from the grid steadier than its actual consumption, for example capacitors in AI rack power supplies that absorb training-step swings."
   chapter: "22-10"
+- term: Synchronous speed
+  definition: "The speed of an AC machine's rotating magnetic field, n_s = 120f/P rpm for P poles at frequency f; a synchronous machine's rotor turns at it, an induction machine's slightly slower."
+  chapter: "22-11"
+  see_also: [Slip]
+- term: Slip
+  definition: "The induction machine's fractional speed deficit, s = (n_s − n)/n_s; it sets the rotor's current frequency sf, and the rotor copper loss is s times the air-gap power."
+  chapter: "22-11"
+  see_also: [Synchronous speed, Induction machine]
+- term: Rotating magnetic field
+  definition: "The constant-amplitude field, rotating at synchronous speed, that three windings 120° apart produce when fed with balanced three-phase currents: B = (3/2)B_m cos(θ − ωt)."
+  chapter: "22-11"
+- term: Commutator
+  definition: "The segmented rotating switch of a DC machine that reverses each armature coil's current as it passes from one pole to the next, so the torque keeps one direction."
+  chapter: "22-11"
+- term: Induction machine
+  definition: "An AC machine whose rotor currents are induced by the stator's rotating field; it develops torque only when it slips behind synchronous speed, and is modeled per phase as a transformer with a shorted, slip-dependent secondary R2/s."
+  chapter: "22-11"
+  see_also: [Slip, Squirrel-cage rotor]
+- term: Squirrel-cage rotor
+  definition: "An induction-machine rotor made of bars shorted by end rings, rugged and brushless; its bar resistance sets the trade between starting torque and running efficiency."
+  chapter: "22-11"
+- term: Breakdown torque
+  definition: "An induction motor's maximum torque, reached at slip s_max = R2/√(R_th² + (X_th + X2)²); its value does not depend on the rotor resistance, but its slip does."
+  chapter: "22-11"
+- term: Synchronous machine
+  definition: "An AC machine whose rotor carries its own field (a DC winding or magnets) and turns at exactly synchronous speed; per phase it is an EMF E_f behind the synchronous reactance X_s."
+  chapter: "22-11"
+  see_also: [Power angle, Permanent-magnet synchronous machine (PMSM)]
+- term: Synchronous reactance
+  definition: "The per-phase reactance X_s of a synchronous machine that combines armature reaction and leakage; with the field EMF it sets the power–angle relation."
+  chapter: "22-11"
+- term: Power angle
+  definition: "The angle δ between a synchronous machine's terminal voltage and its field EMF; three-phase power is 3VE_f sin δ/X_s, maximum (pull-out) at δ = 90°."
+  chapter: "22-11"
+- term: Permanent-magnet synchronous machine (PMSM)
+  definition: "A synchronous machine whose rotor field comes from permanent magnets: no rotor losses, high efficiency and power density, but magnet cost and supply, and field weakening needed above base speed."
+  chapter: "22-11"
+  see_also: [Field weakening]
+- term: Field weakening
+  definition: "Reducing a machine's effective field above base speed (field current in a DC or wound-rotor machine, a demagnetizing stator current in a PMSM) so the back EMF stays within the supply voltage, trading torque for speed at roughly constant power."
+  chapter: "22-11"
+- term: Variable-frequency drive (VFD)
+  definition: "A rectifier, DC link and PWM inverter that supply an AC motor at adjustable frequency and voltage, giving speed control, soft starting and energy savings on fans and pumps."
+  chapter: "22-11"
+  see_also: [Volts-per-hertz control, Affinity laws]
+- term: Volts-per-hertz control
+  definition: "Scalar drive control that keeps V/f constant to hold the motor's flux, with a voltage boost at low speed to offset the stator resistance drop."
+  chapter: "22-11"
+- term: Field-oriented control
+  definition: "Vector control that transforms measured stator currents into a frame rotating with the rotor flux and regulates the flux-producing (d) and torque-producing (q) components separately, making an AC machine as controllable as a DC one."
+  chapter: "22-11"
+- term: Space-vector PWM
+  definition: "Inverter modulation, equivalent to adding a common-mode third harmonic to sine-triangle PWM, that raises the maximum linear line-to-line output from 0.612 V_dc to V_dc/√2 (15.5% more)."
+  chapter: "22-11"
+- term: Affinity laws
+  definition: "For fans and centrifugal pumps, flow scales with speed, pressure with speed squared and power with speed cubed, which is why variable-speed drives save so much energy on them."
+  chapter: "22-11"
+- term: Regenerative braking
+  definition: "Operating a drive's machine as a generator to decelerate the load, returning energy through the inverter to the DC link or battery."
+  chapter: "22-11"
+- term: Modulation index (PWM)
+  definition: "In an inverter, the ratio m of the modulating sine's peak to the carrier's peak; with sine-triangle PWM the line-to-line fundamental is 0.612 m V_dc rms, linear up to m = 1 (2/√3 with third-harmonic injection)."
+  chapter: "22-11"
+  see_also: [Space-vector PWM]
