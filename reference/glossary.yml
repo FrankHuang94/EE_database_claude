@@ -10078,3 +10078,39 @@
   definition: "NVIDIA's proprietary scale-up interconnect; NVLink 5 (Blackwell) gives each GPU 18 links of two 200 Gb/s PAM4 lanes each way, 1.8 TB/s counting both directions."
   chapter: "24-06"
   see_also: [Scale-up fabric, UALink]
+- term: Effective modal bandwidth
+  definition: "A multimode fiber's length–bandwidth product at a stated wavelength (2,000 MHz·km for OM3 and 4,700 MHz·km for OM4 at 850 nm), the limit that modal dispersion sets on short multimode links."
+  chapter: "24-07"
+  see_also: [Optical fiber]
+- term: Intensity modulation with direct detection (IM-DD)
+  definition: "Optical signalling in which data modulate the light's power and a photodiode converts power to current, ignoring the optical phase; it carries almost all short-reach datacenter links."
+  chapter: "24-07"
+  see_also: [Responsivity, Extinction ratio]
+- term: Electro-absorption modulated laser (EML)
+  definition: "A single-frequency DFB laser integrated with an electro-absorption modulator, whose absorption edge an applied field shifts; compact, low-voltage, used for 100 and 200 Gb/s-per-lane single-mode optics."
+  chapter: "24-07"
+  see_also: [Intensity modulation with direct detection (IM-DD)]
+- term: Mach–Zehnder modulator
+  definition: "An interferometric modulator that splits light into two arms, shifts their relative phase electro-optically and recombines them, giving P_out = P_in cos²(Δφ/2); usually biased at quadrature."
+  chapter: "24-07"
+  see_also: [Half-wave voltage (Vπ)]
+- term: Half-wave voltage (Vπ)
+  definition: "The voltage that shifts an electro-optic phase shifter by π, taking a Mach–Zehnder modulator from full on to full off; it scales inversely with length, so the material figure is VπL (≈ 2 V·cm for silicon depletion and thin-film lithium niobate)."
+  chapter: "24-07"
+  see_also: [Mach–Zehnder modulator]
+- term: Ring modulator
+  definition: "A micro-ring resonator whose resonant notch an electro-optic index change shifts across a fixed laser wavelength; tiny and energy-efficient, but its resonance also drifts with temperature and needs heater control."
+  chapter: "24-07"
+  see_also: [Mach–Zehnder modulator]
+- term: Extinction ratio
+  definition: "The ratio of an optical transmitter's on and off powers, P1/P0; at a fixed average power a finite ratio shrinks the eye, a penalty of 10·log10((ER + 1)/(ER − 1)) dB."
+  chapter: "24-07"
+  see_also: [Optical modulation amplitude (OMA)]
+- term: Optical modulation amplitude (OMA)
+  definition: "The difference between an optical transmitter's on and off powers, P1 − P0, which sets the received eye directly and is how standards specify transmitters and receivers independent of extinction ratio."
+  chapter: "24-07"
+  see_also: [Extinction ratio]
+- term: Wavelength-division multiplexing (WDM)
+  definition: "Carrying several lanes on different wavelengths in one fiber; CWDM spaces them 20 nm apart (about 3.5 THz at 1310 nm), DWDM 100 GHz or less (0.8 nm at 1550 nm), using Δf = cΔλ/λ²."
+  chapter: "24-07"
+  see_also: [Optical fiber]

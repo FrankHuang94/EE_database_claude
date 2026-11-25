@@ -5209,3 +5209,67 @@ R&D % = R&D ÷ revenue.
 - OCP ODSA "Bunch of Wires PHY Specification," draft 1.9d: "A BoW PHY slice either transmits or receives 16 bits of data between die", with a differential forwarded clock and optional FEC and AUX wires; modes BoW-32 to BoW-512 at 2, 4, 8, 16, 24 and 32 Gb/s per wire; reach 10–25+ mm on laminate (25+ mm doubly terminated), 2–4 mm unterminated on advanced packaging; targets "Very low peak power ( < 0.5 - 1 pJ/bit for doubly terminated modes, < 0.25 - 0.5 pJ/bit for unterminated)", latency under 2–4 ns without FEC and under 15 ns with it, "High throughput density (up to 2 - 12+ Tbps/mm-chip-edge)", portable from 65 nm to 5 nm.
 - IBM Research, ECTC 2023 (abstract): BoW configurations on advanced packaging modelled at "less than 0.2 pJ/bit at 8 and 16 Gbps" (simulation).
 - **Sources:** [BoW specification draft](https://opencomputeproject.github.io/ODSA-BoW/bow_specification.html); [IBM ECTC 2023](https://research.ibm.com/publications/signal-and-power-integrity-design-and-analysis-for-bunch-of-wires-bow-interface-for-chiplet-integration-on-advanced-packaging). Checked Nov 2026.
+
+## R-526 · Single-mode (G.652.D) and multimode (OM3–OM5) fiber specifications (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (Prysmian datasheet PDF, a Fluke Networks knowledge article and the Fiber Optic Association's nomenclature page opened; the Corning SMF-28 Ultra datasheet returned "Access Denied" and was not used).* [Established]
+
+- Prysmian's G.652.D-compliant single-mode fiber: maximum cabled attenuation ≤ 0.36 dB/km at 1310 nm and ≤ 0.22 dB/km at 1550 nm; chromatic dispersion ≤ 3.5 ps/(nm·km) over 1285–1330 nm, ≤ 18 at 1550 nm and ≤ 22 at 1625 nm; zero-dispersion wavelength 1300–1324 nm; mode-field diameter 9.2 ± 0.4 µm at 1310 nm; group index 1.467 at 1310 nm and 1.468 at 1550 nm. Quotes: "Maximum attenuation value of cable at 1310 nm … ≤ 0.36"; "At 1550 nm ps/km ● nm ≤ 18".
+- TIA multimode values (via Fluke): cabled attenuation 3.0 dB/km at 850 nm for OM3/OM4/OM5 (3.5 for OM1/OM2), 1.5 dB/km at 1300 nm; minimum effective modal bandwidth at 850 nm 2,000 MHz·km (OM3) and 4,700 MHz·km (OM4/OM5). Quote: "OM3 50 µm 1500 500 2,000 OM4 50 µm 3500 500 4,700". FOA lists OM4 as "3600/500 MHz-km", a different (overfilled-launch) figure; the chapter uses the TIA EMB.
+- The ITU-T G.652 table itself was not opened; the commonly quoted ITU cable maxima are not used.
+- **Derived here:** fiber group delay $n_g/c$ = 1.468/c = 4.90 µs/km; 100 m of OM4 loses 0.3 dB at 850 nm.
+- **Sources:** [Prysmian G.652.D datasheet](https://ec.prysmian.com/sites/ec.prysmian.com/files/media/documents/G652D.pdf); [Fluke Networks KA-05286](https://my.fluke.com/en-US/article/KA-05286); [FOA fiber nomenclature](https://thefoa.org/tech/OM.html). Checked Nov 2026.
+
+## R-527 · Hollow-core fiber below 0.1 dB/km (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (the paper's full text on PMC; the Southampton repository copy was blocked by a bot challenge and was not used).* [Established for the measured loss; deployment volumes unconfirmed]
+
+- M. Petrovich et al., "Broadband optical fibre with an attenuation lower than 0.1 decibel per kilometre," *Nature Photonics* 19, 1203–1208 (published 1 Sep 2025), doi:10.1038/s41566-025-01747-5: a double-nested antiresonant nodeless hollow-core fiber with "a measured loss of 0.091 dB km −1 at 1,550 nm that remains below 0.2 dB km −1 over a window of 66 THz"; average loss 0.128 dB/km at 1310 nm. The solid-silica record cited is 0.1396 dB/km (2024). The paper states about 30% lower latency because light travels in air.
+- A reported figure of about 1,200 km of hollow-core fiber carrying live traffic came only from a search excerpt and is **unconfirmed**.
+- **Derived here:** latency cut 1 − 1/1.468 = 32%, consistent with the paper's "30%".
+- **Source:** [Petrovich et al., Nature Photonics 2025 (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC12586140). Checked Nov 2026.
+
+## R-528 · IEEE 802.3df-2024: 800 Gb/s PMD reaches (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (IEEE P802.3df task-force page and a 2023 task-force document opened).* [Established; reaches from 2023 draft-stage text]
+
+- IEEE Std 802.3df-2024 was "completed with the approval of IEEE Std 802.3df-2024 by the IEEE-SA Standards Boards on 16 February 2024".
+- 800G PMDs as defined in task-force text: 800GBASE-VR8 (≥ 50 m, 8 multimode fibers), 800GBASE-SR8 ("over eight multimode fibers, with reach up to at least 100 m"), 800GBASE-DR8 (≥ 500 m, 8 single-mode fibers) and 800GBASE-DR8-2 (≥ 2 km, 8 single-mode fibers).
+- The reach values come from May 2023 draft-stage text; the published standard's clause tables were not opened.
+- **Sources:** [IEEE P802.3df Task Force](https://grouper.ieee.org/groups/802/3/df/index.html); [Brown, 802.3df definitions, 23 May 2023](https://grouper.ieee.org/groups/802/3/df/public/23_0523/brown_3df_03_230523.pdf). Checked Nov 2026.
+
+## R-529 · Datacenter lasers: 200G EML, high-power CW for silicon photonics, 200G VCSEL (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (Lumentum product page and blog, and a Coherent press release republished by Nasdaq, opened).* [Established for product existence; performance and adoption are vendor-stated]
+
+- Lumentum 200G EML: "Each device pairs a wavelength-locked DFB laser with a single-ended electro-absorption modulator (EAM)"; "it supports 115GBd PAM4 signaling for 200G-per-lane transmission in DR and FR links up to 2 km"; CWDM4 grid 1271/1291/1311/1331 nm.
+- Lumentum, OFC 2026 takeaways (30 Apr 2026): NVIDIA 1.6T 2xDR4 modules shown both with Lumentum ultra-high-power CW lasers feeding a silicon-photonics engine and with 8 × 200G EMLs; "we demonstrated an 800 mW Super High-Power (SHP) laser"; "Lumentum showed a live 4x400G EML-based pluggable module".
+- Coherent (1 Apr 2025): demonstrated 1.6T-SR8 transceivers based on 200G VCSELs and photodiodes at OFC 2025.
+- **Derived here (not vendor-stated):** 115 GBd × 2 bits = 230 Gb/s line rate for a 200G payload.
+- **Sources:** [Lumentum 200G EML](https://lumentum.com/products/eml-200g-pam4-cwdm-laser); [Lumentum OFC 2026 blog](https://www.lumentum.com/en/blog/enabling-next-phase-ai-optical-infrastructure); [Coherent 200G VCSEL release (Nasdaq)](https://www.nasdaq.com/press-release/coherent-demonstrates-16t-optical-transceivers-based-200g-vcsels-2025-04-01). Checked Nov 2026.
+
+## R-530 · Silicon and lithium-niobate modulator figures of merit (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (full text from the imec repository; another copy failed TLS verification and was not retried insecurely).* [Established, peer-reviewed review]
+
+- A. Rahim et al. (imec), "Taking silicon photonics modulators to a higher performance level: state-of-the-art and a review of new technologies," *Advanced Photonics* 3(2), 024003 (2021), doi:10.1117/1.AP.3.2.024003, Table 2: carrier-depletion silicon phase shifters typically VπL ≈ 2 V·cm (best 0.52), loss 10–30 dB/cm, > 1 mm long, > 40 Gb/s OOK, energy ≈ 200 fJ/bit for MZMs and < 40 fJ/bit for ring modulators; carrier injection VπL < 0.5 V·cm with ≈ 70 dB/cm loss; bulk Ti-diffused LiNbO₃ "typical V π · L of 10 to 20 V · cm"; thin-film LN "∼2 V · cm modulation efficiency, and <0.5 dB loss for a device that is a few millimeters long", with ≈ 100 GHz bandwidth.
+- Reading note: parenthesized values in the PDF's table text carry reference superscripts ("0.529" is 0.52 V·cm, ref. 9).
+- **Source:** [Rahim et al., Advanced Photonics 2021 (imec repository)](https://imec-publications.be/bitstreams/18d20d93-b838-4af3-ae01-639e0072f07c/download). Checked Nov 2026.
+
+## R-531 · Landmark modulators: thin-film lithium niobate (2018) and the silicon micro-ring (2005) (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (Nature abstracts and extended-data captions opened).* [Established]
+
+- C. Wang et al., "Integrated lithium niobate electro-optic modulators operating at CMOS-compatible voltages," *Nature* 562, 101–104 (24 Sep 2018): MZMs "showing half-wave voltages of 1.4 V, 2.3 V and 4.4 V, respectively" for 20, 10 and 5 mm devices; "support data rates up to 210 gigabits per second and show an on-chip optical loss of less than 0.5 decibels".
+- Q. Xu, B. Schmidt, S. Pradhan, M. Lipson, "Micrometre-scale silicon electro-optic modulator," *Nature* 435, 325–327 (19 May 2005): "The modulator is 12 micrometres in diameter", three orders of magnitude smaller than earlier silicon modulators.
+- **Derived here:** VπL = 2.8, 2.3 and 2.2 V·cm.
+- **Sources:** [Wang et al., Nature 2018](https://www.nature.com/articles/s41586-018-0551-y); [Xu et al., Nature 2005](https://www.nature.com/articles/nature03569). Checked Nov 2026.
+
+## R-532 · Photodetector responsivity: the quantum bound (Course 24)
+
+*Derived from CODATA constants; field context from a Nature Photonics review abstract read on 25 Nov 2026 by a research subagent.* [Established for the bound]
+
+- Ideal responsivity $\mathcal R = \eta q\lambda/(hc)$ with η = 1: $q/(hc)$ = 8.0655 × 10⁵ A/(W·m), giving 0.686, 1.057 and 1.250 A/W at 850, 1310 and 1550 nm.
+- J. Michel, J. Liu, L. C. Kimerling, "High-performance Ge-on-Si photodetectors," *Nature Photonics* 4, 527–534 (2010), abstract: "high responsivity from visible to near-infrared wavelengths, high bandwidths and compatibility with silicon complementary metal–oxide–semiconductor circuits".
+- Specific measured Ge-on-Si responsivities (≈ 0.9–1.0 A/W in the O-band) were seen only in search excerpts and are **unconfirmed**; the chapter's 0.9 A/W receivers are labelled assumed.
+- **Source:** [Michel, Liu, Kimerling, Nature Photonics 2010](https://www.nature.com/articles/nphoton.2010.157). Checked Nov 2026.

@@ -1,0 +1,17 @@
+* 24-07 lab: shunt-feedback transimpedance amplifier (Example 24-07.9)
+* Ideal inverting amplifier of gain A = 10, feedback RF = 1 kohm, input capacitance 100 fF
+* (photodiode plus amplifier input), driven by a 1 A AC current source standing in for the photocurrent.
+* EXPECT zlow key:../../chapters/24-07-photonics-fundamentals.md#Ex_24-07.9a rtol=0.001
+* EXPECT f3db key:../../chapters/24-07-photonics-fundamentals.md#Ex_24-07.9b scale=1e9 rtol=0.002
+Iph 0 inn AC 1
+Cin inn 0 100f
+RF inn out 1k
+E1 out 0 0 inn 10
+.control
+ac dec 2000 1e6 1e12
+let z = abs(v(out))
+meas ac zlow find z at=1e6
+let zt = zlow/sqrt(2)
+meas ac f3db when z=zt fall=1
+.endc
+.end
