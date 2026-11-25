@@ -10014,3 +10014,35 @@
   definition: "Resending a unit the receiver's CRC rejects, from a replay buffer in the transmitter; it costs latency only when an error occurs, so PCIe pairs it with a light FEC instead of a strong, slow one."
   chapter: "24-04"
   see_also: [Flit, Forward error correction (FEC)]
+- term: Transaction-layer packet (TLP)
+  definition: "The PCIe unit that carries a memory read or write, a completion, a configuration access or a message, made of a 12- or 16-byte header and an optional payload; framing and link CRC add more bytes, so small payloads use the link inefficiently."
+  chapter: "24-05"
+  see_also: [PCI Express (PCIe), Flit]
+- term: 128b/130b encoding
+  definition: "The PCIe 3.0–5.0 line code: a 2-bit sync header in front of 128 scrambled bits, 98.5% efficient against 8b/10b's 80%, relying on the scrambler rather than the code for transitions and DC balance."
+  chapter: "24-05"
+  see_also: [PCI Express (PCIe)]
+- term: Credit-based flow control
+  definition: "Flow control in which the receiver grants credits for free buffer space and the sender spends one per packet and stops at zero; full throughput needs credits covering the bandwidth-delay product of the credit round trip."
+  chapter: "24-05"
+  see_also: [Bandwidth-delay product]
+- term: Memory expander
+  definition: "A CXL Type 3 device that adds DRAM to a host over CXL.io and CXL.mem, giving extra capacity and bandwidth at the cost of added access latency."
+  chapter: "24-05"
+  see_also: [Compute Express Link (CXL)]
+- term: Switch radix
+  definition: "The number of ports a switch chip offers at a given port speed, its total bandwidth divided by the port rate; a two-tier leaf–spine fabric of radix-k switches connects k²/2 hosts at full bisection bandwidth."
+  chapter: "24-05"
+  see_also: [Leaf–spine fabric]
+- term: Leaf–spine fabric
+  definition: "A two-tier folded-Clos network in which every leaf switch connects to every spine switch, so any two hosts are at most two switch hops apart through a leaf, a spine and a leaf."
+  chapter: "24-05"
+  see_also: [Switch radix]
+- term: UALink
+  definition: "Ultra Accelerator Link, an open accelerator-to-accelerator scale-up interconnect; its 200G 1.0 specification (April 2025) runs 200 Gb/s per connection on 212.5 Gb/s electrical lanes for pods of up to 1,024 accelerators."
+  chapter: "24-05"
+  see_also: [Ultra Ethernet]
+- term: Ultra Ethernet
+  definition: "The Ultra Ethernet Consortium's Ethernet-based stack for AI and HPC (specification 1.0, June 2025; 1.1, October 2026): standard Ethernet PHYs with new RDMA transport, congestion control and optional credit-based flow control and link-level retry."
+  chapter: "24-05"
+  see_also: [UALink, Link-level retry]

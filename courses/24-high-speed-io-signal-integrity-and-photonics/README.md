@@ -31,7 +31,7 @@ Moving bits between chips at hundreds of gigabits per second: loss, reflection a
 | [24-02 · Eye Diagrams, Jitter and BER](chapters/24-02-eye-diagrams-jitter-ber.md) | 6 | ✅ verified | [problems](problems/24-02-problems.md) · [solutions](solutions/24-02-solutions.md) · [lab](labs/24-02-lab/README.md) · [verify](verify/verify_24_02.py) |
 | [24-03 · SerDes Architecture and Equalization](chapters/24-03-serdes-architecture.md) | 8 | ✅ verified | [problems](problems/24-03-problems.md) · [solutions](solutions/24-03-solutions.md) · [lab](labs/24-03-lab/README.md) · [verify](verify/verify_24_03.py) |
 | [24-04 · DSP-Based SerDes and FEC](chapters/24-04-dsp-serdes-and-fec.md) | 5 | ✅ verified | [problems](problems/24-04-problems.md) · [solutions](solutions/24-04-solutions.md) · [lab](labs/24-04-lab/README.md) · [verify](verify/verify_24_04.py) |
-| [24-05 · Interconnect Standards: PCIe, CXL and Ethernet](chapters/24-05-pcie-cxl-ethernet.md) | 6 | ⬜ planned | — |
+| [24-05 · Interconnect Standards: PCIe, CXL and Ethernet](chapters/24-05-pcie-cxl-ethernet.md) | 6 | ✅ verified | [problems](problems/24-05-problems.md) · [solutions](solutions/24-05-solutions.md) · [lab](labs/24-05-lab/README.md) · [verify](verify/verify_24_05.py) |
 | [24-06 · Die-to-Die Links, Memory PHYs and Scale-Up Fabrics](chapters/24-06-d2d-memory-phys-scale-up.md) | 6 | ⬜ planned | — |
 | [24-07 · Photonics Fundamentals](chapters/24-07-photonics-fundamentals.md) | 8 | ⬜ planned | — |
 | [24-08 · Silicon Photonics and Optical Transceivers](chapters/24-08-silicon-photonics.md) | 6 | ⬜ planned | — |

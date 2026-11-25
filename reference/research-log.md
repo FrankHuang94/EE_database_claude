@@ -5111,3 +5111,49 @@ R&D % = R&D ÷ revenue.
 - **D. Das Sharma, "PCI Express 6.0: a low latency, high bandwidth…," IEEE San Diego CAS/SSCS, 27 Aug 2021** [Industry estimate: pre-release design targets; the slides say Rev 0.7]: "<10ns adder for Transmitter + Receiver over 32.0 GT/s (including FEC)", with "(We can not afford the 100ns FEC latency as networking does with PAM-4)"; "Need to keep FEC correction latency low (2ns)"; "FEC + CRC delay expected to be ~ 1-2 ns"; flit accumulation latency "2ns x16, 4ns x8, 8 ns x4, 16 ns x2, 32 ns x1"; networking PHY latency "100+ ns w/ FEC" against "0-1ns FEC overhead" for load–store I/O; "retrying a packet with 10-6 (or 10-5) probability with a retry latency of 100ns – better than always paying a FEC latency impact of 150ns+ in networking"; bandwidth loss "0.05% even with go-back-n". The FEC is "3-way interleaved, single symbol correct" (R-059).
 - **Derived here:** a 256-byte flit is 2,048 bits, 2.0 ns at x16 and 64 GT/s; 151 ns of KP4 latency (R-512) is about 75 times that.
 - **Source:** [Das Sharma 2021](https://ewh.ieee.org/r6/san_diego/sscs/events/slides/2021_08_27_PCIe6.0_IEEE_CAS_iDLP_Debendra.pdf). Checked Nov 2026.
+
+## R-515 · PCIe 7.0 release details and the PCIe 8.0 draft (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (trade-press articles opened; PCI-SIG's own pages block automated clients, see R-216).*
+
+- **PCIe 7.0** (The Register, 13 Jun 2025) [Established for the release; the lag is Industry estimate]: released to members with a 128 GT/s raw bit rate and "up to 512 GBps bi-directionally in an x16 lane configuration"; an "Optical Aware Retimer Engineering Change Notice (ECN) that amends the PCIe 6.4 specs and the new PCIe 7.0 specs" released at the same time; PCI-SIG's president said PCIe 8.0 would be both electrical and optical, not optical only; the industry typically lags "at least 12-18 months between the release of the final specifications and products" (the journalist's statement).
+- **PCIe 8.0** (The Register, 8 Aug 2025; Tom's Hardware, 6 May 2026) [Established for the announcements; 2028 is PCI-SIG's target]: 256 GT/s, "up to 1 TB/s bi-directionally in a x16 configuration", to be delivered in 2028; draft version 0.5 keeps 256 GT/s, "PAM4 signaling with forward error correction (FEC) and Flit Mode encoding", backward compatibility and "new connector technology that is now being evaluated", with "final ratification in 2028".
+- **PCIe 6.0 final release** (The Register, 12 Jan 2022): "supporting 64 gigatransfers per second (GTps) with 16 lanes running at 256 GBps".
+- **Derived here:** 256 GT/s PAM4 is 128 GBd with a 64 GHz Nyquist frequency.
+- **Sources:** [The Register, PCIe 6.0](https://www.theregister.com/2022/01/12/final_pcie_60_specs_released/); [The Register, PCIe 7.0](https://www.theregister.com/2025/06/13/pcie_70_specs_finalized/); [The Register, PCIe 8.0](https://www.theregister.com/2025/08/08/pcie_8_spec_speed_announced/); [Tom's Hardware, PCIe 8.0 draft 0.5](https://www.tomshardware.com/tech-industry/pci-sig-reveals-pcie-8-0-0-5v-spec-first-draft-includes-1-tb-s-bandwidth-and-new-connector-technology). Checked Nov 2026.
+
+## R-516 · CXL generations 2.0 to 4.0 (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent from trade-press reposts of the CXL Consortium's releases (the consortium's specification page restricts AI processing of its documents; see R-217).* [Established]
+
+- **CXL 2.0** (ServeTheHome, 10 Nov 2020): switching, memory pooling ("large disaggregated resource pools"), persistent-memory support and optional link security, over PCIe 5.0.
+- **CXL 3.0** (release of 2 Aug 2022): "Doubles the bandwidth to 64GTs", "Zero added latency over CXL 2.0", fabric capabilities with multi-headed and fabric-attached devices, "Enhanced memory pooling", multi-level switching, enhanced coherency, backward compatible with 2.0, 1.1 and 1.0.
+- **CXL 3.1** (14 Nov 2023): Fabric Manager API for port-based-routing (PBR) switches, host-to-host communication via Global Integrated Memory, direct peer-to-peer CXL.mem through PBR switches, the Trusted-Execution-Environment Security Protocol (TSP), memory-expander RAS improvements.
+- **CXL 3.2** (December 2024; reposts give 3 and 6 Dec): a CXL Hot-Page Monitoring Unit (CHMU) for memory tiering, TSP extensions, expanded IDE protection.
+- **CXL 4.0** (18 Nov 2025; R-217): 128 GT/s at the same latency, native x2 links, bundled ports, up to four retimers (Blocks & Files, 24 Nov 2025). On 25 Nov 2026 the specification page still offered CXL 4.0; no later version was found.
+- **Sources:** [STH, CXL 2.0](https://www.servethehome.com/compute-express-link-cxl-2-0-specification-released-the-big-one/); [CXL 3.0 repost](https://www.design-reuse.com/news/news52425.html); [CXL 3.1 repost](https://design-reuse.com/news/55218/cxl-consortium-compute-express-link-3-1-specification-release.html); [CXL 3.2 repost](https://www.design-reuse.com/news/57150/cxl-3-2-specification-release.html); [Blocks & Files, CXL 4.0](https://www.blocksandfiles.com/ai-ml/2025/11/24/cxl-40-doubles-bandwidth-and-stretches-memory-pooling-to-multi-rack-setups/1709444); [CXL specification page](https://computeexpresslink.org/cxl-specification/). Checked Nov 2026.
+
+## R-517 · Ultra Ethernet specifications 1.0 to 1.1 (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (documents opened).* [Established for release dates and listed features; the claimed benefits are the consortium's]
+
+- **UEC Specification 1.0** (Linux Foundation release, 11 Jun 2025): "a comprehensive, Ethernet-based communication stack" for AI and HPC covering NICs, switches, optics and cables, including "Modern RDMA for Ethernet and IP".
+- **Version history** (UEC specification page): 1.0 on 11 Jun 2025; 1.0.1 on 5 Sep 2025; 1.0.2 on 28 Jan 2026; 1.0.3 on 16 Jul 2026; 1.1 on 12 Oct 2026 ("Current published version").
+- **UEC 1.1** (Network World, 14 Oct 2026): a "Unified Local" scale-up profile; an optional Unified Forwarding Header replacing the 20-byte IPv4 header; optional idle reduction; in-network collectives; congestion signaling (CSIG) and programmable congestion management.
+- **PHY and link layer** (T. Hoefler et al., "Ultra Ethernet's Design Principles and Architectural Innovations," arXiv:2508.08906, Aug 2025): the PHY is "essentially unchanged by UE", first products at "100G / lane signaling or 200G / lane signaling"; optional Credit-Based Flow Control and Link Level Retry (go-back-N with a replay buffer, link round trip "≈ 1 microsecond", recovering frames lost to "uncorrectable FEC symbols or FCS errors").
+- **Sources:** [UEC 1.0 release](https://www.linuxfoundation.org/press/uec-launches-spec-1.0); [UEC specification page](https://ultraethernet.org/specification); [Network World, UEC 1.1](https://www.networkworld.com/article/4235340/ultra-ethernet-1-1-extends-the-specification-to-scale-up-networks-and-adds-programmable-congestion-control.html); [Hoefler et al.](https://arxiv.org/abs/2508.08906). Checked Nov 2026.
+
+## R-518 · UALink 200G 1.0 (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (The Register opened; the consortium's release and white paper seen only in search excerpts).*
+
+- **UALink 200G 1.0** (The Register, 8 Apr 2025) [Established for the release; the latency and power claims are Contested marketing statements]: 200 Gb/s per accelerator connection, up to 4 per accelerator, pods of "1,024 accelerators", pitched as "the same raw speed as Ethernet with the latency of PCIe switches"; network power "between a third and a half" of an Ethernet network (as reported); a follow-on specification for 400G mentioned. Search excerpts of the release add 212.5 GT/s signalling for a 200 GT/s data rate (not opened; not used as a primary fact).
+- **Derived here:** 212.5 Gb/s = 106.25 GBd × 2, the 802.3dj-class electrical lane (R-234).
+- **Source:** [The Register, UALink 200G 1.0](https://www.theregister.com/2025/04/08/ualink_200g_version_1/). Checked Nov 2026.
+
+## R-519 · IEEE P802.3dj status re-check (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent from the IEEE SA RevCom agenda (rolling URL).* [Established; perishable]
+
+- No change since R-234: the 8 Dec 2026 RevCom agenda lists item 13, "P802.3dj/Draft 3.3 IEEE Draft Standard for Ethernet Amendment 13: Media Access Control Parameters for 1.6 Tb/s and Physical Layers and Management Parameters for 200 Gb/s, 400 Gb/s, 800 Gb/s, and 1.6 Tb/s Operation". Not yet approved; the next RevCom teleconference is 27 Jan 2027. Re-check after the 9 Dec 2026 Standards Board meeting.
+- **Source:** [RevCom agenda](https://standards.ieee.org/wp-content/uploads/import/governance/revcom/revcom-agenda.pdf). Checked 25 Nov 2026.
