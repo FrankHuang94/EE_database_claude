@@ -1,0 +1,31 @@
+* Lab 22-10, Part 2 -- interleaving: four buck phases, 12 V to 0.8 V (D = 1/15), 100 nH each, 1 MHz, shifted by
+* 250 ns. Each phase's switch node is an ideal 0-12 V pulse (1 ns edges; the pulse width keeps the average at 0.8 V),
+* and the output is held at 0.8 V so the inductor currents show the ripple alone (Example 22-10.4).
+* EXPECT ipp1 key:../../chapters/22-10-datacenter-power-delivery.md#Ex_22-10.4c rtol=5e-3
+* EXPECT ippsum key:../../chapters/22-10-datacenter-power-delivery.md#Ex_22-10.4f rtol=5e-3
+.param T=1u TON={1u/15} TR=1n
+V1 s1 0 pulse(0 12 0 {TR} {TR} {TON-TR} {T})
+V2 s2 0 pulse(0 12 {T/4} {TR} {TR} {TON-TR} {T})
+V3 s3 0 pulse(0 12 {T/2} {TR} {TR} {TON-TR} {T})
+V4 s4 0 pulse(0 12 {3*T/4} {TR} {TR} {TON-TR} {T})
+L1 s1 o1 100n
+L2 s2 o2 100n
+L3 s3 o3 100n
+L4 s4 o4 100n
+R1 o1 out 0.1m
+R2 o2 out 0.1m
+R3 o3 out 0.1m
+R4 o4 out 0.1m
+Vout out 0 dc 0.8
+.control
+tran 0.5n 20u 15u 0.5n uic
+let isum = -i(vout)
+meas tran i1max max i(L1) from=18u to=19u
+meas tran i1min min i(L1) from=18u to=19u
+meas tran ismax max isum from=18u to=19u
+meas tran ismin min isum from=18u to=19u
+let ipp1 = i1max - i1min
+let ippsum = ismax - ismin
+print ipp1 ippsum
+.endc
+.end

@@ -9291,3 +9291,53 @@
   definition: "A self-accelerating failure in which heat from a cell's exothermic decomposition reactions raises its temperature and speeds the reactions, leading to venting, fire or explosion; triggered by overcharge, overheating, damage or an internal short."
   chapter: "22-09"
   see_also: [Battery protection circuit]
+- term: Power usage effectiveness (PUE)
+  definition: "A datacenter's total facility power divided by the power delivered to its IT equipment; 1.0 would mean no cooling or distribution overhead."
+  chapter: "22-10"
+- term: Uninterruptible power supply (UPS)
+  definition: "Equipment that keeps critical loads powered through utility disturbances, typically by rectifying the grid to charge batteries and inverting back to AC (double conversion), at a few percent of loss."
+  chapter: "22-10"
+- term: Intermediate bus converter
+  definition: "A board-level converter that steps a rack distribution voltage (48–54 V) down to an intermediate bus (about 12 V or lower) for the point-of-load regulators."
+  chapter: "22-10"
+  see_also: [Fixed-ratio bus converter]
+- term: Fixed-ratio bus converter
+  definition: "An unregulated converter, usually resonant or switched-capacitor at a fixed duty cycle, that divides its input voltage by a fixed ratio (4:1, 8:1, 64:1) with high efficiency, leaving regulation to the next stage; it needs a narrow input range."
+  chapter: "22-10"
+  see_also: [Intermediate bus converter]
+- term: Multiphase voltage regulator
+  definition: "A buck regulator built from N parallel phases, each with its own power stage and inductor, switched in staggered sequence by one controller to share current, cancel ripple and speed up load transients."
+  chapter: "22-10"
+  see_also: [Interleaving (multiphase converters), Phase shedding]
+- term: Interleaving (multiphase converters)
+  definition: "Staggering the switching instants of N parallel converter phases by T/N so that their ripple currents partly cancel and the residual ripple appears at N times the switching frequency; cancellation is complete when N·D is an integer."
+  chapter: "22-10"
+- term: Smart power stage
+  definition: "A single package (often 5 × 6 mm) holding a buck phase's high- and low-side MOSFETs, gate driver and current and temperature monitors, rated for tens of amperes; also called DrMOS."
+  chapter: "22-10"
+- term: Voltage identification (VID)
+  definition: "A digital code a processor sends to its voltage regulator to set the regulator's target voltage, changed in small steps at a specified slew rate during DVFS."
+  chapter: "22-10"
+  see_also: [Load line (voltage regulator)]
+- term: Tolerance band (voltage regulator)
+  definition: "The allowed spread around a regulator's load line that covers setpoint error, current-sense error and ripple, for example ±22 mV."
+  chapter: "22-10"
+- term: First droop
+  definition: "The first and usually largest dip in a processor's supply after a fast load step, set by the package inductance against the on-die capacitance: about ΔI·√(L/C), a quarter resonance period after the step."
+  chapter: "22-10"
+  see_also: [Target impedance, Power delivery network]
+- term: Vertical power delivery
+  definition: "Placing voltage-regulator power stages and inductors directly beneath a processor, on the other side of the board, so the high current flows a few millimetres vertically instead of centimetres laterally."
+  chapter: "22-10"
+- term: Integrated voltage regulator (IVR)
+  definition: "A voltage regulator whose switches and control sit on the processor die or in its package, so the package carries a higher voltage and lower current; Intel's FIVR (2013) switched at 140 MHz with air-core package inductors."
+  chapter: "22-10"
+- term: DC distribution (800 V)
+  definition: "Datacenter power distribution at 800 V (or ±400 V) DC to racks, replacing AC and 48–54 V DC to cut current, copper and conversion stages for racks approaching a megawatt."
+  chapter: "22-10"
+- term: Busbar
+  definition: "A solid copper or aluminium bar that distributes high current to many taps along its length; a uniformly distributed load dissipates a third of the loss of the same current carried the full length."
+  chapter: "22-10"
+- term: Power smoothing
+  definition: "Using local energy storage and control to keep a load's power drawn from the grid steadier than its actual consumption, for example capacitors in AI rack power supplies that absorb training-step swings."
+  chapter: "22-10"

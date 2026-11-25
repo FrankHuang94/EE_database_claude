@@ -1,0 +1,23 @@
+* Lab 22-10, Part 1 -- Example 22-10.6: a die's 20 uF of capacitance (with 0.1 mohm ESR) behind 2 pH of package
+* inductance, fed from a stiff 0.8 V source, sees a 100 A load step with a 10 ps edge at t = 1 ns.
+* (a) AC: the impedance seen from the die peaks near f0 = 1/(2 pi sqrt(LC)). (b) Transient: the first droop.
+* EXPECT droop key:../../chapters/22-10-datacenter-power-delivery.md#Ex_22-10.6g scale=1e-3 rtol=1e-2
+* EXPECT fpk key:../../chapters/22-10-datacenter-power-delivery.md#Ex_22-10.6a scale=1e6 rtol=1e-2
+* EXPECT zpk key:README.md#Lab_22-10.a scale=1e-3 rtol=5e-3
+.param L=2p C=20u RESR=0.1m
+Vs src 0 dc 0.8
+Lpkg src die {L}
+Cdie die cx {C}
+Resr cx 0 {RESR}
+Iload die 0 dc 0 pwl(0 0 1n 0 1.01n 100) ac 1
+.control
+ac dec 400 1meg 1g
+let zmag = mag(v(die))
+meas ac zpk max zmag
+meas ac fpk max_at zmag
+tran 1p 60n 0 1p
+meas tran vmin min v(die) from=1n to=30n
+let droop = 0.8 - vmin
+print droop
+.endc
+.end
