@@ -5347,3 +5347,104 @@ R&D % = R&D ÷ revenue.
 - No energy-per-bit figure was given in the slides. Funding and foundry-partnership figures seen only in search excerpts are **unconfirmed**.
 - **Derived here:** 16 × 32 Gb/s = 512 Gb/s per fiber per direction; 8 × 1,024 Gb/s = 8.192 Tb/s, matching the electrical side.
 - **Source:** [Hot Chips 2025 slides](https://hc2025.hotchips.org/assets/program/conference/day2/83_Ayar_Labs_Stojanovic_final.pdf). Checked Nov 2026.
+
+## R-541 · LPO MSA: formation, members and specifications (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (LPO MSA news and specifications pages and two Lightwave articles opened; GlobeNewswire originals returned "Access Denied").* [Established]
+
+- Formed 21 Mar 2024: "Accelink, AMD, Arista, Broadcom, Cisco, Eoptolink, Hisense, Innolight, Intel, MACOM, NVIDIA, and Semtech are the founding members of the LPO MSA".
+- Multi-vendor interoperability shown at ECOC 2024 (19 Sep 2024) for 400G and 800G parallel single-mode links.
+- "Specification 100G-DR-LPO Rev 1" (25 Mar 2025, OFC): 100 Gb/s per lane single-mode links up to 800 GbE. "Specification 400G-FR4-LPO Rev 1" (25 Sep 2025, ECOC): "targeting up to 400 Gigabit Ethernet connectivity over four wavelength division multiplex (WDM) lanes"; the MSA then had over 50 members.
+- Work on 200 Gb/s-per-lane LPO was seen only in a search excerpt and is **unconfirmed**.
+- **Sources:** [LPO MSA news](https://www.lpo-msa.org/home/news.html); [LPO MSA specifications](https://www.lpo-msa.org/home/specifications-and-white-papers.html); [Lightwave, LPO consortium, 25 Mar 2024](https://www.lightwaveonline.com/home/article/14310705/linear-pluggable-optics-consortium-to-define-linear-pluggable-optics-lpo-specifications); [Lightwave, LPO specification released, 31 Mar 2025](https://www.lightwaveonline.com/home/article/55278631/lpo-msa-releases-linear-pluggable-optical-modules-specification). Checked Nov 2026.
+
+## R-542 · Linear receive optics (LRO) (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (Juniper documentation and the IEEE EPS overview opened).* [Industry estimate; savings contested]
+
+- Juniper: "LRO modules operate with a single DSP" in the transmit path; LRO offers "roughly half the power and cost savings compared to LPO interfaces".
+- IEEE EPS overview (Ramachandra and Rezaie, 2026): "At 200G/lane or 1.6Tbps, LRO is expected to be a better choice since the initial solutions require > 30W of power"; LRO promises below 20 W.
+- Semtech states LPO/LRO are standardized by the OIF; no OIF document was found, so that claim is **unconfirmed**. A ~30% savings figure attributed to another vendor was seen only in a search excerpt and is not used.
+- **Sources:** [Juniper, 800G optic types](https://www.juniper.net/documentation/us/en/hardware/800g-optics-cables-guide/optics/topics/concept/800g-optic-types-lpolro.html); IEEE EPS overview as in R-535. Checked Nov 2026.
+
+## R-543 · NVIDIA Spectrum-X and Quantum-X Photonics claims, 2025–2026 (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (NVIDIA newsroom release, technical blog and product page opened).* [Industry estimate: vendor claims with vendor-chosen baselines]
+
+- 18 Mar 2025 (GTC): "integrate optics innovations with 4x fewer lasers to deliver 3.5x more power efficiency", "63x greater signal integrity", "10x better network resiliency"; Spectrum-X Photonics at 100 and 400 Tb/s; Quantum-X Photonics 144 × 800G InfiniBand on 200G SerDes.
+- 18 Aug 2025 blog: electrical loss from "up to 22 dB" on the pluggable path to "~4 dB", "slashing power use to as low as 9W"; availability early 2026 (Quantum-X) and 2H 2026 (Spectrum-X).
+- Product page (read 25 Nov 2026): "5x better power efficiency, 15x higher network reliability, and 10% lower latency"; "this means 25 watts per port with pluggable transceivers versus 5 watts per port with co-packaged optics" (port speed not stated); "one laser per four lanes instead of one per lane".
+- **Derived here:** 22 − 4 = 18 dB, $10^{1.8}$ = 63.1; 25 W and 5 W are 15.6 and 3.1 pJ/bit at 1.6 Tb/s, 31 and 6.25 at 800 Gb/s; 9 W × 3.5 = 31.5 W implied 2025 baseline.
+- **Sources:** [NVIDIA newsroom, 18 Mar 2025](https://nvidianews.nvidia.com/news/nvidia-spectrum-x-co-packaged-optics-networking-switches-ai-factories); [NVIDIA technical blog, 18 Aug 2025](https://developer.nvidia.com/blog/scaling-ai-factories-with-co-packaged-optics-for-better-power-efficiency/); [NVIDIA silicon photonics page](https://www.nvidia.com/silicon-photonics/). Checked Nov 2026.
+
+## R-544 · NVIDIA CPO production and supply chain, 2026 (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (StorageReview report and NVIDIA product page opened; HPCwire was blocked).* [Established that production was announced; volumes undisclosed]
+
+- August 2026: Spectrum-X Ethernet Photonics in "full production": "TSMC handles silicon photonics fabrication. SPIL performs chip-scale packaging and testing. Lumentum fabricates the laser chips, and TFC Communication builds the laser module subassemblies. Foxconn does the final switch system assembly."
+- Earlier 2026 Quantum-X Photonics shipments were seen only in search excerpts and are **unconfirmed**; NVIDIA has not disclosed CPO volumes.
+- **Sources:** [StorageReview, 15 Aug 2026](https://storagereview.com/news/nvidia-spectrum-x-ethernet-photonics-enters-full-production-with-4x-fewer-lasers-and-a-five-vendor-cpo-supply-chain); NVIDIA product page as in R-543. Checked Nov 2026.
+
+## R-545 · Broadcom CPO generations: Humboldt, Bailly, Davisson (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (StorageReview and The Next Platform opened; Broadcom's own release pages rendered empty or denied access and were not used).* [Industry estimate: vendor figures relayed by press]
+
+- TH4-Humboldt (25.6 Tb/s, 4 × 3.2 Tb/s engines): "an 800 Gb/sec port on the CPO consumed about 6.4 watts, compared to somewhere around 16 watts to 18 watts for regular pluggable optics".
+- TH5-Bailly (51.2 Tb/s, 8 × 6.4 Tb/s engines, 100G SerDes): "800 Gb/sec of bandwidth (meaning eight lanes) took 5.5 watts".
+- TH6-Davisson (102.4 Tb/s, BCM78919), announced shipping 8 Oct 2025: 16 × 6.4 Tb/s engines at 200 Gb/s per channel, field-replaceable ELSFP lasers, TSMC COUPE; "Approximately 70% reduction in optical interconnect power consumption relative to traditional pluggables"; "An 800 Gb/sec port will burn about 3.5 watts, says Broadcom". StorageReview also describes sampling to early-access customers with general availability to follow. A fourth generation at 400 Gb/s per channel is in development.
+- **Derived here:** 8.0, 6.9 and 4.4 pJ/bit; pluggables 20–22.5 pJ/bit; 1 − 3.5/16 = 78% and 1 − 3.5/18 = 81%.
+- **Sources:** [StorageReview, TH6-Davisson, 8 Oct 2025](https://www.storagereview.com/news/broadcom-ships-tomahawk-6-davisson-cpo-ethernet-switch-doubling-bandwidth-to-102-4-tb-s-for-ai-fabrics); [The Next Platform, 17 Oct 2025](https://www.nextplatform.com/connect/2025/10/17/the-third-time-will-be-the-charm-for-broadcom-switch-co-packaged-optics/1635588). Checked Nov 2026.
+
+## R-546 · CPO reliability at Meta, and a datacenter-scale power scenario (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (Broadcom release via Nasdaq and The Next Platform opened; Meta's ECOC 2025 paper itself was not obtained).* [Contested: vendor-announced or relayed; lab against field]
+
+- Broadcom (1 Oct 2025): "Testing of Broadcom CPO solutions at Meta has demonstrated one million link hours without a single link flap", in a high-temperature lab environment; "CPO reduces optics power by 65 percent" against pluggables.
+- The Next Platform, relaying Meta's paper: "each unit ran continuously without interruption or clearing the FEC [forward error correction] counters and we did not see any failures or uncorrectable codewords (UCWs) in the links"; pluggable failure rates came from field data and CPO's from lab stress; CPO used 35% less power per 100G lane than LPO; Meta presented no LPO reliability data.
+- The same article relays a scenario: 6.4 million pluggables at 30 W (192 MW), or 64 MW with LPO at 10 W, against a CPO figure of 42 MW, 10.5% of 400 MW of accelerator power.
+- Later figures of about 15 million and over 50 million CPO device-hours, and blast-radius warnings, were seen only in search excerpts and are **unconfirmed**.
+- **Derived here:** 10⁶ device-hours = 114 device-years; with zero failures the 95% upper bound is −ln(0.05)/10⁶ h ≈ 3,000 FIT.
+- **Sources:** [Broadcom CPO reliability (Nasdaq)](https://www.nasdaq.com/press-release/broadcom-showcases-industry-leading-quality-and-reliability-co-packaged-optics-2025); The Next Platform as in R-545. Checked Nov 2026.
+
+## R-547 · Marvell's acquisition of Celestial AI (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (Marvell releases opened, one via Nasdaq).* [Established for deal terms; performance claims are vendor estimates]
+
+- Signed 2 Dec 2025: "upfront consideration valued at approximately $3.25 billion, consisting of $1.0 billion in cash, as well as approximately 27.2 million shares" (valued at $2.25 B); up to about 27.2 million more shares (up to $2.25 B) contingent on revenue milestones through fiscal 2029, paid in full if cumulative revenue exceeds $2.0 B. Marvell targets a $500 M annualized revenue run rate by Q4 FY2028 and $1 B by Q4 FY2029.
+- Celestial's first Photonic Fabric chiplet: "16 terabits per second of bandwidth in a single chiplet", ten times a 1.6T port.
+- Closed 2 Feb 2026.
+- **Derived here:** maximum $5.5 B at the signing share value; $82.7 per share implied.
+- **Sources:** [Marvell to acquire Celestial AI (Nasdaq)](https://www.nasdaq.com/press-release/marvell-acquire-celestial-ai-accelerating-scale-connectivity-next-generation-data); [Marvell completes acquisition, 2 Feb 2026](https://www.marvell.com/company/newsroom/marvell-completes-acquisition-of-celestial-ai.html). Checked Nov 2026.
+
+## R-548 · OIF External Laser Small Form Factor Pluggable (ELSFP) (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (OIF implementation agreement PDF opened).* [Established: industry implementation agreement]
+
+- OIF-ELSFP-02.0 (8 Jan 2025) defines a front-panel, "field replaceable" external laser module supplying CW light to co-packaged optical engines. Power classes per wavelength per fiber core (±1.5 dB): LP 11, MP 14, HP 17, VHP 20, "Ultra High Power - UHP 23dBm" and "Super High Power - SHP 26dBm". Wavelength plans include DR (1311 nm) and FR (CWDM4).
+- **Derived here:** 11 dBm = 12.6 mW, 17 dBm = 50.1 mW, 23 dBm = 200 mW, 26 dBm = 398 mW.
+- **Source:** [OIF-ELSFP-02.0](https://www.oiforum.com/wp-content/uploads/OIF-ELSFP-02.0.pdf). Checked Nov 2026.
+
+## R-549 · Skeptical and analyst views on LPO and CPO timing (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (two Lightwave articles and an arXiv abstract opened).* [Contested]
+
+- Cignal AI (Lightwave, 31 Mar 2025): large-scale CPO deployment "not expected for 3-5 years", with some initial deployments from 2026; "There are positive signs for CPO deployment by 2026, but large-scale deployments will require investment from motivated industry actors, such as hyperscalers or Nvidia."
+- LightCounting (Lightwave, 25 Mar 2024): conventional retimed pluggables "will continue to dominate the market for the next five years, and probably longer than that"; "LPO/CPO ports will account for more than 30% of the total 800G and 1.6T ports deployed in 2026-2028".
+- Y. Yi and D. Wilkerson, arXiv:2603.21313 (2026): "co-packaged optics should not be viewed as a component-level optimization, but as an architectural commitment".
+- **Sources:** Lightwave articles as in R-541; [Yi and Wilkerson, arXiv:2603.21313](https://arxiv.org/abs/2603.21313). Checked Nov 2026.
+
+## R-550 · Spectrum-6 and the Rubin platform's networking (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (NVIDIA technical blog opened).* [Industry estimate: vendor]
+
+- "Spectrum-6 doubles per-switch-chip bandwidth to 102.4 Tb/s using 200G PAM4 SerDes", 128 × 800 Gb/s; ConnectX-9 delivers 1.6 Tb/s per Rubin GPU.
+- "By reducing optical loss from ~22 dB to ~4 dB, Spectrum-X Ethernet achieves up to 64x better signal integrity." The 2025 materials call the same change electrical loss and "63x"; 18 dB is 63.1×.
+- **Derived here:** 102.4 Tb/s ÷ 200 Gb/s = 512 SerDes lanes.
+- **Source:** [NVIDIA, Inside the Vera Rubin platform](https://developer.nvidia.com/blog/inside-the-nvidia-rubin-platform-six-new-chips-one-ai-supercomputer/). Checked Nov 2026.
+
+## R-551 · Lumentum OFC 2026 read-out: 400 Gb/s lanes and new MSAs (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (Lumentum blog opened).* [Industry estimate: a supplier's view]
+
+- "1.6T optics and 200G/lane technologies are moving from feasibility into deployment, co-packaged optics (CPO) is advancing from concept toward industrialization, new MSAs are emerging around scale-up architectures, and 400G/lane is becoming the next major development target." New MSAs named: "OCI, Open CPX, and XPO".
+- **Source:** Lumentum blog as in R-529. Checked Nov 2026.

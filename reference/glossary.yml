@@ -10142,3 +10142,23 @@
   definition: "A self-contained optical module in a standard form factor (OSFP, QSFP-DD) that plugs into a switch or network card's front panel; a retimed module contains a DSP, drivers, optics and TIAs and runs at about 20 pJ/bit at 800 Gb/s and 1.6 Tb/s."
   chapter: "24-08"
   see_also: [Retiming, Co-packaged optics]
+- term: Linear pluggable optics (LPO)
+  definition: "A pluggable optical module with linear drivers, optics and TIAs but no DSP or clock recovery; the host switch's SerDes equalizes the whole link, saving module power at the cost of link margin and host–module co-qualification. Specified by the LPO MSA (100G-DR-LPO, 400G-FR4-LPO)."
+  chapter: "24-09"
+  see_also: [Linear receive optics (LRO), Pluggable transceiver]
+- term: Linear receive optics (LRO)
+  definition: "A half-retimed pluggable: the module keeps a DSP in its transmit path but passes received signals linearly to the host, giving roughly half of LPO's power saving with a cleaner transmitted signal; argued to be the near-term choice at 200 Gb/s per lane."
+  chapter: "24-09"
+  see_also: [Linear pluggable optics (LPO)]
+- term: Optical engine
+  definition: "A photonic IC stacked with its driver and TIA electronics that converts many electrical lanes to light; in co-packaged optics several engines sit on the switch package around the ASIC (for example 16 engines of 6.4 Tb/s in a 102.4 Tb/s switch)."
+  chapter: "24-09"
+  see_also: [Co-packaged optics, Photonic integrated circuit (PIC)]
+- term: External laser source (ELSFP)
+  definition: "A field-replaceable front-panel laser module that supplies continuous light over fiber to co-packaged optical engines; OIF's ELSFP agreement defines power classes from 11 dBm to 26 dBm per wavelength per fiber core. One source can be split across several lanes."
+  chapter: "24-09"
+  see_also: [Co-packaged optics, Optical engine]
+- term: Blast radius
+  definition: "The number of ports or links one failure takes out; a pluggable failure removes one port, a co-packaged optical engine failure every port it serves, so availability depends on failure rate times blast radius times repair time."
+  chapter: "24-09"
+  see_also: [FIT (failures in time), Co-packaged optics]
