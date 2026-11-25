@@ -10046,3 +10046,35 @@
   definition: "The Ultra Ethernet Consortium's Ethernet-based stack for AI and HPC (specification 1.0, June 2025; 1.1, October 2026): standard Ethernet PHYs with new RDMA transport, congestion control and optional credit-based flow control and link-level retry."
   chapter: "24-05"
   see_also: [UALink, Link-level retry]
+- term: Die-to-die interface
+  definition: "A link between dies in one package, run wide and slow over a short, nearly lossless channel with a forwarded clock and no equalization, judged by energy per bit (tenths of a picojoule or less) and bandwidth per millimetre of die edge."
+  chapter: "24-06"
+  see_also: [Chiplet, UCIe, Bunch of Wires (BoW)]
+- term: UCIe
+  definition: "Universal Chiplet Interconnect Express, the die-to-die standard (1.0 in 2022; 3.0 in August 2025 at up to 64 GT/s) with standard-package (UCIe-S), advanced-package (UCIe-A) and hybrid-bonded (UCIe-3D) classes and energy targets of 0.5, 0.25 and under 0.05 pJ/b."
+  chapter: "24-06"
+  see_also: [Die-to-die interface, Chiplet]
+- term: Bunch of Wires (BoW)
+  definition: "The Open Compute Project's open die-to-die PHY: unidirectional slices of 16 data wires with a forwarded clock, at 2 to 32 Gb/s per wire, named by slice throughput (BoW-32 to BoW-512)."
+  chapter: "24-06"
+  see_also: [Die-to-die interface]
+- term: Bump pitch
+  definition: "The centre-to-centre spacing of the bumps or bonds that connect a die to its package or to another die; bump density scales as 1/pitch², so halving the pitch quadruples the areal bandwidth density at a given rate."
+  chapter: "24-06"
+  see_also: [Hybrid bonding, Shoreline bandwidth density]
+- term: Shoreline bandwidth density
+  definition: "Die-to-die bandwidth per millimetre of die edge, the areal density of the bump field times its usable depth; it decides whether a die has enough edge for its memory, I/O and chiplet links."
+  chapter: "24-06"
+  see_also: [Bump pitch]
+- term: Forwarded clock
+  definition: "A clock sent alongside parallel data wires so the receiver samples with it directly instead of recovering timing from the data; it removes the CDR but makes skew between wires the speed limit."
+  chapter: "24-06"
+  see_also: [Clock and data recovery (CDR)]
+- term: Scale-up fabric
+  definition: "The high-bandwidth, low-latency network that joins a group of accelerators (a node or rack) so they can share memory and run collectives as one device, such as NVLink or UALink; distinct from the scale-out network between groups."
+  chapter: "24-06"
+  see_also: [NVLink, UALink]
+- term: NVLink
+  definition: "NVIDIA's proprietary scale-up interconnect; NVLink 5 (Blackwell) gives each GPU 18 links of two 200 Gb/s PAM4 lanes each way, 1.8 TB/s counting both directions."
+  chapter: "24-06"
+  see_also: [Scale-up fabric, UALink]

@@ -5157,3 +5157,55 @@ R&D % = R&D ÷ revenue.
 
 - No change since R-234: the 8 Dec 2026 RevCom agenda lists item 13, "P802.3dj/Draft 3.3 IEEE Draft Standard for Ethernet Amendment 13: Media Access Control Parameters for 1.6 Tb/s and Physical Layers and Management Parameters for 200 Gb/s, 400 Gb/s, 800 Gb/s, and 1.6 Tb/s Operation". Not yet approved; the next RevCom teleconference is 27 Jan 2027. Re-check after the 9 Dec 2026 Standards Board meeting.
 - **Source:** [RevCom agenda](https://standards.ieee.org/wp-content/uploads/import/governance/revcom/revcom-agenda.pdf). Checked 25 Nov 2026.
+
+## R-520 · HBM4, JEDEC JESD270-4 (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (JEDEC release as republished by StorageNewsletter, 17 Apr 2025).* [Established]
+
+- JEDEC published HBM4 (JESD270-4) in April 2025: "with transfer speeds up to 8Gb/s across a 2048-bit interface, HBM4 boosts total bandwidth up to 2TB/s"; "from 16 channels (HBM3) to 32 channels with 2 pseudo-channels per channel"; VDDQ options 0.7, 0.75, 0.8 or 0.9 V and VDDC 1.0 or 1.05 V; 4-, 8-, 12- or 16-high stacks of 24 Gb or 32 Gb dies, up to 64 GB per stack.
+- **Derived here:** 2048 × 8 Gb/s = 2,048 GB/s per stack. NVIDIA's preliminary Rubin pages quote 22 and 19.2 TB/s per GPU (R-522), which imply per-wire rates above 8 Gb/s for 8 stacks, or more stacks; not confirmed which.
+- **Source:** [JEDEC release (republished)](https://www.storagenewsletter.com/2025/04/17/jedec-and-industry-leaders-collaborate-to-release-jesd270-4-hbm4-standard/). Checked Nov 2026.
+
+## R-521 · NVLink 3 to 5 and the GB200 NVL72 (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (Hot Chips 2024 slides opened).* [Established: vendor architecture data at a peer conference]
+
+- A. Tirumala and R. Wong (NVIDIA), "NVIDIA Blackwell Platform," Hot Chips 2024: "Blackwell | NVLink5 … 18 NVLinks | 100GB/s each … x2@200Gbps-PAM4 … 1800GB/s total"; "Hopper | NVLink4 … 18 NVLinks | 50GB/s each … x2@100Gbps-PAM4 … 900GB/s total"; Ampere NVLink 3: 12 links of 50 GB/s, 4 lanes at 50 Gb/s NRZ, 600 GB/s. GB200 NVL72: the NVLink Switch gives "7.2 TB/s full all-to-all bidirectional BW over 72 ports"; rack "Multi-Node Bandwidth 130 TB/s", "Multi-Node All-Reduce 260 TB/s". All bandwidths count both directions.
+- **Derived here:** 2 × 200 Gb/s = 50 GB/s each way per link; 18 × 100 GB/s = 1.8 TB/s; 72 × 1.8 = 129.6 TB/s.
+- **Source:** [Hot Chips 2024 slides](https://www.hc2024.hotchips.org/assets/program/conference/day1/64_HC2024.NVIDIA.TirumalaWong.pdf). Checked Nov 2026.
+
+## R-522 · NVLink 6 figures, NVLink Fusion, the NVIDIA–Intel collaboration and NVLink energy claims (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (NVIDIA pages and newsroom opened).*
+
+- **NVLink 6** [Contested: NVIDIA's own preliminary pages disagree]: the CES blogs of 5 Jan 2026, the technical blog "Inside the NVIDIA Vera Rubin Platform" (36 links per GPU) and a markdown copy of the NVLink page (Last-Modified 12 Aug 2026) give 3.6 TB/s per GPU and 260 TB/s per NVL72, with 22 TB/s of HBM4 per GPU; the live HTML NVLink page fetched 25 Nov 2026 gives "3 TB/s of bandwidth per GPU … 1.7x more bandwidth than the previous generation", 216 TB/s per NVL72, and the Vera Rubin NVL72 table "288 GB HBM4 | 19.2 TB/s" per GPU. All are labelled "Preliminary specifications; may be subject to change."
+- **NVLink Fusion** (NVIDIA newsroom, 18 May 2025) [Established for the announcement]: "MediaTek, Marvell, Alchip Technologies, Astera Labs, Synopsys and Cadence are among the first to adopt NVLink Fusion"; Fujitsu and Qualcomm planned custom CPUs coupled to NVIDIA GPUs.
+- **NVIDIA and Intel** (NVIDIA newsroom, 18 Sep 2025) [Established]: "Intel to design and manufacture custom data center and client CPUs with NVIDIA NVLink; NVIDIA to invest $5 billion in Intel common stock" (at $23.28 per share).
+- **Energy** [Industry estimate: vendor claims]: "NVLink sports 5x the energy efficiency of PCIe Gen 5, thanks to data transfers that consume just 1.3 picojoules per bit" (NVIDIA blog, 6 Mar 2023; generation and conditions unspecified); NVLink-C2C "up to 6x more energy efficiency and 3.5x more area efficiency than a PCIe Gen 6 PHY". No per-bit energy for NVLink 5 or 6 found.
+- **Sources:** [NVLink page](https://www.nvidia.com/en-us/data-center/nvlink/); [NVLink page, markdown](https://www.nvidia.com/en-us/data-center/nvlink.md); [Vera Rubin NVL72](https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/); [Inside the Vera Rubin Platform](https://developer.nvidia.com/blog/inside-the-nvidia-rubin-platform-six-new-chips-one-ai-supercomputer/); [NVLink Fusion](https://nvidianews.nvidia.com/news/nvidia-nvlink-fusion-semi-custom-ai-infrastructure-partner-ecosystem); [NVIDIA and Intel](https://nvidianews.nvidia.com/news/nvidia-and-intel-to-develop-ai-infrastructure-and-personal-computing-products); [What Is NVLink?](https://blogs.nvidia.com/blog/what-is-nvidia-nvlink/); [NVLink-C2C](https://www.nvidia.com/en-us/data-center/nvlink-c2c/). Checked Nov 2026.
+
+## R-523 · UALink specifications, 2025–2026 (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (consortium page, trade press and a republished release opened; the Business Wire original did not load).* [Established for the specification facts; power claims Industry estimate]
+
+- Consortium formed May 2024 (founders include AMD, AWS, Broadcom, Cisco, Google, HPE, Intel, Meta, Microsoft and Astera Labs). **UALink 200G 1.0** (8 Apr 2025): "a maximum bidirectional data rate of 200 GT/s per lane with signaling at 212.5 GT/s to accommodate forward error correction and encoding overhead" (Tom's Hardware); x1, x2 or x4 links up to 800 GT/s each way; up to 1,024 accelerators per pod; "cable lengths are optimized for <4 meters, enabling <1 µs round-trip latency"; a physical layer built on 200GBASE-KR1/CR1 with low-latency FEC changes.
+- **April 2026** (UALink release republished by StorageNewsletter, 5 May 2026): Common Specification 2.0 with in-network compute; 200G Data Link and Physical Layers Specification 2.0, split out so new PHY rates do not force other changes; Manageability 1.0; Chiplet 1.0/1.01, "Fully compliant with the UCIe 3.0 Specification". The consortium site also lists a "128G Data Link and Physical Layers 1.0" specification, "Description coming soon".
+- **Sources:** [UALink specifications page](https://ualinkconsortium.org/?p=1002); [Tom's Hardware](https://www.tomshardware.com/tech-industry/ualink-has-nvidias-nvlink-in-the-crosshairs-final-specs-support-up-to-1-024-gpus-with-200-gt-s-bandwidth); [The Register](https://www.theregister.com/2025/04/08/ualink_200g_version_1/); [StorageNewsletter, May 2026](https://www.storagenewsletter.com/2026/05/05/ultra-accelerator-link-consortium-publishes-four-specifications-defining-innetwork-compute-chiplets-manageability-and-200g-performance). Checked Nov 2026.
+
+## R-524 · UCIe releases, key-metric targets and hybrid-bonded link power (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (consortium slides, a republished release, trade press and a Nature Electronics paper opened).*
+
+- **Releases** [Established]: UCIe 1.0 March 2022; 1.1 August 2023; 2.0 August 2024 (adds UCIe-3D, manageability and DFx); 3.0 announced 5 Aug 2025: "Support for 48 GT/s and 64 GT/s data rates, doubling the bandwidth of UCIe 2.0 (32 GT/s)"; "Fully backward compatible with all previous UCIe specifications". ServeTheHome's view that 3.0 is "likely a chip feature in 2028-2029" is opinion.
+- **Key-metric targets** (D. Das Sharma, SNIA SDC 2024; IEEE HIR 2023 plenary) [Established as targets]: UCIe-S/UCIe-A/UCIe-3D: rates 4–32 GT/s (3D up to 4); widths 16/64/80; bump pitch 100–130 / 25–55 / under 10 µm optimized; reach under 25 mm / under 2 mm / vertical; shoreline "28 – 224 165 – 1317" GB/s/mm; areal 22–125 / 188–1,350 GB/s/mm², 4 TB/s/mm² at 9 µm for 3D; "Power Efficiency Target (pJ/b) 0.5 0.25 <0.05 at 9µm"; "Latency (Tx + Rx) < 2ns Includes D2D Adapter and PHY"; shoreline "Conservatively estimated: AP: 45u; Standard: 110u".
+- **Nature Electronics** (D. Das Sharma, G. Pasdast, S. Tiagaraj, K. Aygün, 19 Feb 2024, doi:10.1038/s41928-024-01126-y) [Established, modelled]: "At 9 µm, the total power of the D2D link due to simplified architecture at 4 GT s−1 is 0.03 pJ b−1. At 1 µm, the total power drops to 0.015 pJ b−1"; forwarded-clock operation at 1 GT/s about 0.01 pJ/b; "the most power-efficient performance … can be achieved by reducing the frequency as the bump pitch goes down"; context: the external UCIe D2D power "0.25 pJ b−1 at 0.5 V running at 16 GT s−1".
+- **Derived here:** a UCIe-A module of 64 lanes carries 256 GB/s each way at 32 GT/s and 512 GB/s at 64 GT/s; 4 TB/s/mm² at 9 µm and 4 GT/s implies about 65% of bonds carrying data.
+- **Sources:** [SNIA SDC 2024 deck](https://snia.org/sites/default/files/2025-05/SNIA-SDC2024-DasSharma-Updates-on-UCIe-Technology.pdf); [IEEE HIR 2023 plenary](https://r6.ieee.org/scv-eps/wp-content/uploads/sites/58/2023/02/D2-4-Sharma.pdf); [UCIe 3.0 release (republished)](https://www.design-reuse.com/news/202529142-ucie-consortium-introduces-3-0-specification-with-64-gt-s-performance-and-enhanced-manageability); [ServeTheHome](https://www.servethehome.com/ucie-3-0-spec-released-with-big-speed-up-for-chiplets/); [Nature Electronics](https://www.nature.com/articles/s41928-024-01126-y.pdf). Checked Nov 2026.
+
+## R-525 · Bunch of Wires (BoW) PHY (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (draft specification on the OCP GitHub Pages site and an IBM abstract opened; OCP's own PDF pages served a bot challenge and were not used).* [Established for the draft's definitions and targets]
+
+- OCP ODSA "Bunch of Wires PHY Specification," draft 1.9d: "A BoW PHY slice either transmits or receives 16 bits of data between die", with a differential forwarded clock and optional FEC and AUX wires; modes BoW-32 to BoW-512 at 2, 4, 8, 16, 24 and 32 Gb/s per wire; reach 10–25+ mm on laminate (25+ mm doubly terminated), 2–4 mm unterminated on advanced packaging; targets "Very low peak power ( < 0.5 - 1 pJ/bit for doubly terminated modes, < 0.25 - 0.5 pJ/bit for unterminated)", latency under 2–4 ns without FEC and under 15 ns with it, "High throughput density (up to 2 - 12+ Tbps/mm-chip-edge)", portable from 65 nm to 5 nm.
+- IBM Research, ECTC 2023 (abstract): BoW configurations on advanced packaging modelled at "less than 0.2 pJ/bit at 8 and 16 Gbps" (simulation).
+- **Sources:** [BoW specification draft](https://opencomputeproject.github.io/ODSA-BoW/bow_specification.html); [IBM ECTC 2023](https://research.ibm.com/publications/signal-and-power-integrity-design-and-analysis-for-bunch-of-wires-bow-interface-for-chiplet-integration-on-advanced-packaging). Checked Nov 2026.
