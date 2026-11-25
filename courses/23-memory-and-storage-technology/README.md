@@ -37,10 +37,38 @@ The technologies that hold data: SRAM, DRAM and its interfaces (DDR, LPDDR, GDDR
 | [23-08 · Emerging Memories: MRAM, ReRAM, PCM, FeRAM](chapters/23-08-emerging-memories.md) | 5 | ✅ verified | [problems](problems/23-08-problems.md) · [solutions](solutions/23-08-solutions.md) · [lab](labs/23-08-lab/README.md) · [verify](verify/verify_23_08.py) |
 | [23-09 · Compute-in-Memory and Near-Memory Computing](chapters/23-09-compute-in-memory.md) | 5 | ✅ verified | [problems](problems/23-09-problems.md) · [solutions](solutions/23-09-solutions.md) · [lab](labs/23-09-lab/README.md) · [verify](verify/verify_23_09.py) |
 
+**Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/23-memory-and-storage-technology.csv) · [Equation sheet](../../reference/equation-sheets/23-memory-and-storage-technology.md)
+
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 
 <!-- END GENERATED -->
 
 ## Course notes
 
-*(Hand-written notes for this course go below the generated block.)*
+**How to approach this course.** Course 23 is planned at about 53 hours: the chapters' own estimates add to 50, plus 3 hours of review and the exam. Course 14 gave you caches and the memory hierarchy as an architect sees them; Course 19 the CMOS circuits inside them; Course 09 the transistor and its leakage; Course 04 tunneling and dielectrics; and Course 17 coding and capacity. This course opens the boxes: how each memory stores a bit, what it costs to move one, and why AI systems are now designed around memory rather than arithmetic.
+
+The nine chapters fall into four blocks:
+
+- **The memory wall (23-01).** Energy per bit as the real limit on bandwidth, Little's law, the roofline and why LLM decoding is memory-bound.
+- **Volatile memories (23-02 to 23-05).** SRAM's stalled bitcell, sigma margins and assists; the DRAM cell, sense amplifier, timing, refresh and row hammer; DDR, LPDDR and GDDR interfaces, termination, reflections, equalization and PAM; HBM's width, interposer, TSVs, heat, yield and packaging.
+- **Storage (23-06 and 23-07).** Flash physics, ISPP, multi-level error rates, 3D NAND and retention; the SSD controller's FTL, write amplification, ECC, queues and power-loss protection.
+- **Beyond (23-08 and 23-09).** MRAM, PCM, ReRAM and FeRAM, and where they win; compute-in-memory and processing-in-memory, and how to test their claims.
+
+Work at least the [A] and [B] problems of every chapter. The labs are of two kinds, both run in CI (the verify scripts, `run_spice.py` for the netlists' EXPECT lines, and `run_notebooks.py` for the notebooks):
+
+- ngspice netlists: a long on-chip wire's charging energy (23-01), SRAM read and write assists (23-02), DRAM charge sharing, writes and a latch read (23-03), termination, reflections and channel cursors (23-04), an HBM stack's thermal ladder and an interposer link (23-05), ISPP with a Fowler–Nordheim source (23-06), a PCM cell's thermal pulses (23-08) and a resistive crossbar (23-09);
+- Python models imported by their notebooks: `memwall.py`, `sramtech.py`, `dramtech.py`, `ddrio.py`, `hbm.py`, `nand.py`, `ssd.py` (with a page-mapped FTL simulator), `emem.py` and `cim.py`.
+
+**What to master cold.** The [equation sheet](../../reference/equation-sheets/23-memory-and-storage-technology.md) collects the relations; these are the ideas behind them:
+
+- moving a bit costs far more than computing on it; energy per bit, not pin count, caps bandwidth; bandwidth times latency is the data that must be in flight; below the ridge point, faster arithmetic changes nothing (23-01);
+- SRAM is limited by variation: large arrays need about 6σ of margin, assists trade one failure for another, and the bitcell has stopped shrinking with logic (23-02);
+- a DRAM read is charge sharing amplified by a latch; bitline length is set by the signal; the boosted wordline exists because NMOS passes only $V_{WL} - V_{TH}$; refresh and row hammer grow as cells shrink (23-03);
+- an interface is a transmission line: termination costs static current, reflections and ISI shrink the eye, DFE removes post-cursors, and PAM pays an eye penalty to halve the symbol rate (23-04);
+- HBM is wide and slow over short unterminated wires; heat and yield, not bandwidth, limit stack height; packaging capacity limits supply (23-05);
+- a flash cell stores tens of electrons per level; ISPP steps the threshold exactly; each extra bit per cell costs orders of magnitude of raw error rate; retention is thermally activated (23-06);
+- an SSD is a remapping machine: over-provisioning buys write amplification and endurance, ECC fails over a cliff and cannot beat capacity, and IOPS are queue depth over latency (23-07);
+- emerging memories trade stability, write energy, endurance and density differently; their market is embedded, not NAND's (23-08);
+- analog compute is limited by device variation and ADCs, PIM by Amdahl's law, and every TOPS/W figure by its precision, utilization and boundary (23-09).
+
+**After this course.** Course 24 moves the same bits between chips: SerDes, PCIe and CXL, and silicon photonics. Course 27 returns to whole systems, where the memory hierarchy of 23-01 decides an accelerator's real throughput.
