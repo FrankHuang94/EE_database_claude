@@ -9926,3 +9926,27 @@
   definition: "An allocation of a link's allowed insertion loss at its Nyquist frequency among packages, traces, vias, connectors and cables, such as PCIe 5.0's 36 dB at 16 GHz."
   chapter: "24-01"
   see_also: [Insertion loss, Nyquist frequency]
+- term: Random jitter (RJ)
+  definition: "The unbounded, Gaussian part of jitter, quoted as an rms value; independent sources add in quadrature, and its contribution to total jitter is 2Q⁻¹(BER) times the rms (14.07 times at 1e-12)."
+  chapter: "24-02"
+  see_also: [Jitter, Deterministic jitter (DJ), Dual-Dirac model]
+- term: Deterministic jitter (DJ)
+  definition: "The bounded part of jitter: data-dependent jitter from ISI and duty-cycle distortion, periodic jitter and bounded uncorrelated jitter from crosstalk; worst cases add linearly, and DJ(δδ) is its dual-Dirac fit, which can be smaller than its peak-to-peak value."
+  chapter: "24-02"
+  see_also: [Random jitter (RJ), Dual-Dirac model]
+- term: Clock and data recovery (CDR)
+  definition: "The receiver loop that aligns its sampling clock to the incoming transitions; it tracks jitter below its bandwidth, leaving a tracking error |1 − H(f)| of the input jitter that the eye must absorb."
+  chapter: "24-02"
+  see_also: [Jitter tolerance, Jitter transfer]
+- term: Jitter tolerance
+  definition: "The largest sinusoidal jitter a receiver tolerates at each frequency at its BER target; for a first-order CDR with corner f_c and eye margin M it is M·√(1 + (f_c/f)²), rising 20 dB/decade below f_c and flat above."
+  chapter: "24-02"
+  see_also: [Clock and data recovery (CDR), Jitter]
+- term: Detector error ratio (DER)
+  definition: "The error ratio of a receiver's symbol decisions before FEC, used by IEEE 802.3 instead of a bit error ratio because equalizer error propagation and precoding make errors bursty; 802.3dj budgets DER₀ = 2e-4 for 200 Gb/s-per-lane backplane and copper-cable links."
+  chapter: "24-02"
+  see_also: [Forward error correction (FEC)]
+- term: Channel operating margin (COM)
+  definition: "IEEE 802.3's single-number channel figure of merit: 20·log10 of signal amplitude over noise-plus-interference amplitude at the target error ratio, computed from S-parameters with a reference transmitter and receiver; a channel passes at 3 dB or more."
+  chapter: "24-02"
+  see_also: [Statistical eye, Detector error ratio (DER)]

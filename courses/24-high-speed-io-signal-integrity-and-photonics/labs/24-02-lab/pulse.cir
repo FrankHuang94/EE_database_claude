@@ -1,0 +1,23 @@
+* 24-02 lab: cursors of a two-equal-pole channel (Example 24-02.2)
+* A 1 V, one-UI pulse (UI = 31.25 ps, 32 GBd) drives two buffered RC sections, each tau = 12.5 ps
+* (tau = 0.4 UI). The output is sampled at the pulse peak, 1.08943 UI after the pulse's start, and at
+* whole UIs either side. The 0.01 ps edges centre the pulse on 10.005 ps.
+* EXPECT h0 key:../../chapters/24-02-eye-diagrams-jitter-ber.md#Ex_24-02.2b1 rtol=0.001
+* EXPECT h1 key:../../chapters/24-02-eye-diagrams-jitter-ber.md#Ex_24-02.2b2 rtol=0.002
+* EXPECT hm1 key:../../chapters/24-02-eye-diagrams-jitter-ber.md#Ex_24-02.2b rtol=0.005
+* EXPECT h2 key:../../chapters/24-02-eye-diagrams-jitter-ber.md#Ex_24-02.2b3 rtol=0.005
+Vin in 0 PWL(0 0 10p 0 10.01p 1 41.25p 1 41.26p 0)
+R1 in a 1k
+C1 a 0 12.5f
+E1 b 0 a 0 1
+R2 b out 1k
+C2 out 0 12.5f
+.control
+tran 0.005p 150p 0 0.005p
+meas tran hm1 find v(out) at=12.7997p
+meas tran h0 find v(out) at=44.0497p
+meas tran h1 find v(out) at=75.2997p
+meas tran h2 find v(out) at=106.5497p
+meas tran vpk max v(out)
+.endc
+.end

@@ -5019,3 +5019,37 @@ R&D % = R&D ÷ revenue.
 - **Tracy, Heck et al. (TE Connectivity), "Cable Assembly TP1-TP4 Insertion Loss (Comment #358)," Sep 2025** [Industry estimate: one vendor's data]: 1.0 m 26/25 AWG DACs built to robust processes reached 15% assembly yield and 90% lane yield against a 24 dB limit at 53.12 GHz, and 62% and 97% at 25 dB; "A more manufacturable specification needs an additional 1 dB insertion loss to be allocated to the cable assembly". Whether the comment was accepted was not verified.
 - **A. Wander (Amphenol FCI), Signal Integrity Journal, 21 Feb 2024 and 13 Dec 2025** [Industry estimate]: PCIe 7.0's budget shifts "from 32 dB @ 16 GHz to 36 dB at 32 GHz", which needs "approximately ≤ 1 dB/in loss at 32 GHz such as Megtron-8 or equivalent". **Synopsys (2024):** PCIe 7.0 keeps "pad-to-pad channel loss of up to -36dB". The PCI-SIG specification is members-only and was not read.
 - **Sources:** [TE 2025](https://www.ieee802.org/3/dj/public/25_09/heck_3dj_02_2509.pdf); [Wander 2024](https://www.signalintegrityjournal.com/articles/3462-navigating-signal-integrity-challenges-transitioning-from-pcie-gen6-to-gen7); [Wander 2025](https://www.signalintegrityjournal.com/articles/4156-evolution-of-pcie-beyond-gen7-pcie-gen8); [Synopsys](https://www.synopsys.com/articles/pcie-7-design-ai-bandwidth.html). Checked Nov 2026.
+
+## R-505 · The dual-Dirac jitter model and its multiplier (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (document opened).*
+
+- **Teledyne LeCroy, "Understanding Jitter Calculations: Why Dj Can Be Less Than DDj (or Pj)," 9 Jul 2014** [Established]: "Tj(BER) = alpha(BER) * Rj + Dj(δδ). Alpha is a multiplier based on the user's selection of BER. For example, for BER = 10-12, alpha = 14.07." Also: "Dj(δδ) is not a 'peak-to-peak' or 'full scale' measure."
+- **Derived here (scipy):** $Q^{-1}$ = 4.753, 5.998, 7.034 and 7.941 at 1e-6, 1e-9, 1e-12 and 1e-15, so $2Q^{-1}(10^{-12})$ = 14.07. Setting $\tfrac12Q(x)$ = 1e-12 gives 13.87, and Keysight's $\rho_T$ = 1 form (R-063) gives 14.26. The 24-02 lab fits a dual-Dirac line to 3 ps peak-to-peak sinusoidal jitter plus 0.4 ps rms random jitter and gets DJ(δδ) = 2.44 ps (1e-9/1e-12 fit), illustrating the quote.
+- **Sources:** [Teledyne LeCroy](https://teledynelecroy.com/doc/docview.aspx?id=8423); see also R-063 (Keysight 5989-3206EN). Checked Nov 2026.
+
+## R-506 · PCIe reference-clock jitter limits by generation (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (documents opened).*
+
+- **TI, "Clocking for PCIe Applications," SNAA386, Nov 2023, Table 4-1** [Established as a clock vendor's statement of the PCI-SIG limits]: common-clock REFCLK phase-jitter limits after the PCIe filter functions of 86 ps (PCIe 1.1), 3.1 ps (2.1), 1.0 ps (3.1), 0.5 ps (4.0), 0.15 ps (5.0) and 0.1 ps (6.0) rms. Separate-reference architectures have no PCIe phase-jitter limit. TI's table gives PCIe 6.0's "Debut Year" as 2021.
+- **Rohde & Schwarz, application card v04.00, Jun 2026** [Established as a test-equipment vendor's statement]: "PCIe 6.0 … jitter limit of 100 fs (RMS) for the reference clock. Data rates of 128 GT/s are introduced with a 67 fs jitter limit for the reference clock in the latest PCIe 7.0 specification"; "a total of 16 different system transfer functions" are defined at 128 GT/s.
+- **Derived here:** in UI terms, 0.215 UI (PCIe 1.1 at 2.5 GT/s) falling to 0.003–0.008 UI from PCIe 3.0 on; 100 fs at 32 GBd is 0.0032 UI and 67 fs at 64 GBd is 0.0043 UI. The PCI-SIG specification text was not read.
+- **Sources:** [TI SNAA386](https://www.ti.com/lit/pdf/snaa386); [R&S application card](https://scdn.rohde-schwarz.com/ur/pws/dl_downloads/pdm/cl_brochures_and_datasheets/application_card/5215_8393_92/Verifying-the-true-jitter-FSWP-FSPN_ac_en_5215-8393-92_v0400.pdf). Checked Nov 2026.
+
+## R-507 · IEEE 802.3dj error-ratio allocations, jitter corner and COM reference receivers (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (documents opened; COM workbooks downloaded and cells read).*
+
+- **802.3dj Key Motions (16 May 2024)** [Established for the task-force motions; final clause values not read]: "Move to adopt DER_0 = 2e−4 for 200 Gb/s per lane backplane and copper cable PMD link" (Nov 2023); all AUIs within a PHY combined at "DER0 value of 2.67e-5 (equivalent to measured BER of 4e-5 with precoding ON)"; "Move to adopt C2C DER_0 = 0.67E-5 and C2M DER_0 = 2E-5" (Sep 2023); a jitter-tolerance and clock-recovery corner of 4 MHz ("fBaud/26562.5") for RS544-based PMDs and AUIs. The PHY objective stays BER ≤ 1e-13 at the MAC/PLS interface.
+- **K. Lusted and M. Brown, "200G/lane AUI BER Allocation for Type 1 and Type 2 PHYs," Sep 2023**: the allocation proposal behind the C2C/C2M split.
+- **COM configuration workbooks** [Established as task-force configurations, not normative tables]: 802.3ck draft 3.1 (30 Nov 2021, COM 3.70), KR/CR: 53.125 GBd, DER₀ 1e-4, a 12-tap DFE plus 3 floating groups of 3 taps, COM pass 3 dB. 802.3dj draft 2.3 KR/CR (file dated 27 Jan 2026, COM 4.13.0): 106.25 GBd, DER₀ 2e-4, Rx FFE with 6 pre-cursor and 8 post-cursor taps plus 2 floating groups of 4 taps, a 1-tap DFE, MLSE, 6-bit ADC quantization, σ_RJ 0.01 UI, COM pass 3 dB.
+- **Derived here:** 0.67e-5 + 2e-5 = 2.67e-5; 106.25e9/26562.5 = 4.0 MHz.
+- **Sources:** [Key Motions](https://www.ieee802.org/3/dj/projdoc/KeyMotions_3dj_240516.pdf); [Lusted and Brown](https://www.ieee802.org/3/dj/public/23_09/lusted_3dj_05_2309.pdf); [802.3ck tools page](https://www.ieee802.org/3/ck/public/tools/index.html); [IEEE SA 802-com/com_code](https://opensource.ieee.org/802-com/com_code). Checked Nov 2026.
+
+## R-508 · PCIe 7.0 error target (Course 24)
+
+*Read on 25 Nov 2026 by a research subagent (document opened).*
+
+- **D. Das Sharma, "PCIe 7.0 Specification: 128 GT/s Bandwidth for Future Data-Intensive Markets," SNIA SDC deck** [Industry estimate: a pre-release presentation by the PCI-SIG board member who led the work; the final PCIe 7.0 text was not read]: repeats PCIe 6.0's "FBER of 1E-6 with a burst of <=16 to meet the performance goals with a light-weight FEC", noting "(Numbers get worse by 2x at 128.0 GT/s - still well within expectations)"; the flit carries "236B TLP, 6B DLP, 8B CRC, 6B FEC"; "Retry probability per FLIT is 5 x 10-6". The deck carries "©2023 SNIA" on every slide, but its title slide shows a 2021 conference template date.
+- **Sources:** [SNIA SDC deck](https://www.snia.org/sites/default/files/2025-05/SNIA-SDC23-DasSharma-PCIe-7.0-Specification-Bandwidth.pdf). Checked Nov 2026.
