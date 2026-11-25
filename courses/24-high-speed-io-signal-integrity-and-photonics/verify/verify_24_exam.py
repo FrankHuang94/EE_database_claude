@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Verify every number in the Course 24 final-exam solutions.
 
-About half the values are recomputed by a second route; the rest are closed-form re-evaluations:
-- Question 1(d): return loss from S11 of the impedance step, computed as a two-port reflection;
+About a third of the values are recomputed by a second route; the rest are closed-form re-evaluations:
+- Question 3(a): the FFE taps by solving the zero-forcing linear system with the swing constraint;
+- Question 7(c): MZM levels by summing the two arms' fields;
+- Question 9(b): the grating steer by finite differences of the phase-matching angle;
 - Questions 2(c), 9(d), 11(d) and 12(b): BERs by numerical integration of the noise density, convolving the
   segments' densities for linear chains;
 - Question 3(c): the CTLE's gains and corner frequencies from H(s) evaluated numerically and root-found;
@@ -85,6 +87,11 @@ v.check("X24.1c2", optimize.brentq(lambda ell: stub(ell) - 2 * 53.125e9, 1e-5, 1
 s11 = (92 / 100 - 1) / (92 / 100 + 1)
 v.check("X24.1d", s11)
 v.check("X24.1d1", -20 * math.log10(abs(s11)))
+kb = 0.25 * (0.03 + 0.03)
+v.check("X24.1e", kb)
+v.check("X24.1e1", kb * 0.8 * 1e3)
+v.check("X24.1e2", C0 / math.sqrt(3.4) * 15e-12 / 2 * 1e3)
+v.check("X24.1e3", (0.03 - 0.03) * 0.8 * 1e3)
 
 # ---------------------------------------------------------------- Q2
 cur = {-1: 0.04, 0: 0.60, 1: 0.18, 2: 0.06, 3: 0.02}
@@ -102,11 +109,19 @@ tj = 2 * qinv(1e-12) * 0.15 + 1.2
 v.check("X24.2d", tj)
 v.check("X24.2d1", ui - tj)
 v.check("X24.2d2", (ui - tj) / ui)
-v.check("X24.2d3", 2 * qinv(1e-6) * 0.15 + 1.2)
+nbits = optimize.brentq(lambda n: stats.poisson.pmf(0, n * 1e-12) - 0.05, 1e11, 1e14)
+v.check("X24.2d3", nbits)
+v.check("X24.2d4", nbits / 212.5e9)
 
 # ---------------------------------------------------------------- Q3
-v.check("X24.3a", 106.25 / 8)
-v.check("X24.3a1", 360 / 8)
+taps = np.linalg.solve(np.array([[0.20, 0.60], [1.0, -1.0]]), np.array([0.0, 1.0]))  # g1 = 0; c0 - c1 = 1 (c1 < 0)
+v.check("X24.3a", taps[0])
+v.check("X24.3a1", taps[1])
+g = np.convolve(taps, [0.60, 0.20])
+v.check("X24.3a2", g[0])
+v.assert_true("first post-cursor cancelled", abs(g[1]) < 1e-12)
+v.check("X24.3a3", g[2])
+v.check("X24.3a4", 20 * math.log10(1 / taps.sum()))
 v.check("X24.3b", 1.0 / 50 * 1e3)
 v.check("X24.3b1", 0.9 * 1.0 / 50 * 1e3)
 v.check("X24.3b2", 1.0 ** 2 / 200 * 1e3)
@@ -136,8 +151,14 @@ v.check("X24.3d", 2e-4 * 106.25e9 / (2 * math.pi * 2e7))
 # ---------------------------------------------------------------- Q4
 snr = -20 * math.log10(2 * math.pi * 53.125e9 * 50e-15)
 v.check("X24.4a", snr)
+v.check("X24.4a0", snr)
 v.check("X24.4a1", (snr - 1.76) / 6.02)
-v.check("X24.4b", 212.5 / 128)
+step = 3.0 / 2 ** 6
+ramp = np.linspace(-0.5, 0.5, 200001) * step  # uniform rounding error over one step
+sq = math.sqrt(np.mean(ramp ** 2))
+v.check("X24.4b", step)
+v.check("X24.4b1", sq)
+v.check("X24.4b2", sq / (1 / 3))
 v.check("X24.4c", db(1 + 0.7 ** 2))
 v.check("X24.4d", 20 * math.log10(qinv(1e-15) / qinv(2.4e-4)) + db(514 / 544))
 v.check("X24.4d1", 544 * 10 / 212.5e9 * 1e9)
@@ -160,8 +181,11 @@ v.check("X24.6b", 0.4 ** 2 / (4 * 50 * 32e9) * 1e15)
 bumps = (1 / 0.036) ** 2
 v.check("X24.6c", bumps * 0.5 * 32 / 8)
 v.check("X24.6c1", bumps * 0.5 * 32 / 8 / 1e3)
-v.check("X24.6d", 2e12 * 8 * 0.3e-12)
-v.check("X24.6d1", 2e12 * 8 * 5e-12)
+ctot = 50e-15 + 200e-15 + 50e-15
+elm = 100 * ctot + 50 * (200e-15 / 2 + 50e-15)
+v.check("X24.6d", ctot * 1e15)
+v.check("X24.6d1", elm * 1e12)
+v.check("X24.6d2", 100 * 100 * ctot / elm)
 
 # ---------------------------------------------------------------- Q7
 r7 = 0.85 * QE * 1310e-9 / (H * C0)
@@ -189,6 +213,7 @@ v.check("X24.7d2", db(pk / 1e-3))
 v.check("X24.7d3", pen)
 p4 = db(pk / 1e-3) + db(3) + pen
 v.check("X24.7d4", p4)
+v.check("X24.7d5", db(pk / 1e-3))
 
 # ---------------------------------------------------------------- Q8
 rx = 3 - 2 * 0.36 - 2 * 0.5 - 2 * 1.8
@@ -233,6 +258,7 @@ v.check("X24.9a1", db(e9))
 v.check("X24.9a2", e9d)
 v.check("X24.9a3", db(e9d))
 v.check("X24.9a4", db(e9 * e9d))
+v.check("X24.9a5", db(e9))
 per = 1310 / (2.75 - math.sin(math.radians(12)))
 ang = lambda lam: math.degrees(math.asin(2.75 - lam / per))  # noqa: E731
 v.check("X24.9b", per)

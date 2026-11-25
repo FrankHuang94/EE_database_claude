@@ -66,8 +66,8 @@ Work at least the [A] and [B] problems of every chapter. The labs are of two kin
 - equalizers mostly lose low-frequency gain rather than add high-frequency gain; the DFE removes post-cursors without amplifying noise but must close its loop in one UI (24-03);
 - long-reach SerDes moved to ADCs and DSP because DSP scales with CMOS; MLSD and FEC buy dB at a cost in power and latency (24-04);
 - protocol bandwidth is lanes × rate × efficiency; buffers scale with bandwidth × round-trip time; the PCIe cadence doubles every three years (24-05);
-- short unterminated wires cost $CV^2/4$; density comes from bump pitch squared; the energy ladder runs from die-to-die links through scale-up fabrics to optics (24-06);
-- light is detected in proportion to power, so optical dB are half electrical dB; dispersion grows as the square of the rate; sensitivity is $Q\sigma/\mathcal R$ plus penalties (24-07);
+- short unterminated wires cost $CV^2/4$; areal density scales as $1/\text{pitch}^2$; the energy ladder runs from die-to-die links through scale-up fabrics to optics (24-06);
+- light is detected in proportion to power, so optical dB are half electrical dB; dispersion spread in UI grows as the square of the symbol rate; sensitivity is $Q\sigma/\mathcal R$ plus penalties (24-07);
 - silicon guides but cannot detect or lase; coupling and packaging set much of the loss and cost; retimed links add BER while linear ones add $1/Q^2$ (24-08);
 - LPO and CPO cut optics power by removing the DSP and shortening the electrical path; their cost is margin, serviceability and supplier choice, and zero failures bound a failure rate only to $3/T$ (24-09).
 

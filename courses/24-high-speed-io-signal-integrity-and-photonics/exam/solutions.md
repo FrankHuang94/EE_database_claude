@@ -1,15 +1,14 @@
 # Course 24 · Final Exam Solutions
 
-Exam: [README.md](README.md). Every number below is recomputed by [verify_24_exam.py](../verify/verify_24_exam.py). About half the values are recomputed by a second route, listed below; the rest are closed-form re-evaluations of the same formulas:
+Exam: [README.md](README.md). Every number below is recomputed by [verify_24_exam.py](../verify/verify_24_exam.py). About a third of the values are recomputed by a second route, listed below; the rest are closed-form re-evaluations of the same formulas:
 
-- Question 1(d): the return loss from $S_{11}$ of the impedance step;
-- Question 2(c) and 9(d): BERs by numerical integration of the noise density (and, for linear chains, of the convolved densities);
-- Question 3(c): the CTLE's gains and frequencies from its transfer function evaluated numerically;
+- Questions 2(c), 9(d), 11(d) and 12(b): BERs by numerical integration of the noise density (for linear chains, of the convolved densities), with $Q^{-1}$ by root finding;
+- Question 3(a): the FFE taps by solving the linear zero-forcing condition; 3(c): the CTLE's gains from $H(s)$ evaluated numerically and its corners from the roots of its polynomials;
 - Question 4(d): the net coding gain with $Q^{-1}$ by root finding;
+- Question 7(c): the MZM levels by summing the two arms' fields;
 - Question 8(b): the TIA by nodal analysis at each frequency;
-- Question 9(c): the driver–bond–modulator response from complex impedances;
-- Questions 10(c), 11(d) and 12(c): failure-rate bounds by root-finding the Poisson probability;
-- Question 11(c): the coupling by numerical quadrature of the overlap integral.
+- Questions 9(a) and 11(c): coupling by numerical quadrature of the overlap integral; 9(b): the steer by finite differences of the phase-matching angle; 9(c): the driver–bond–modulator response from complex impedances;
+- Questions 10(c), 11(d) and 12(c): failure-rate bounds by root-finding the Poisson probability.
 
 ---
 
@@ -25,19 +24,21 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_24_exa
 
 (d) $\Gamma = (92 - 100)/(92 + 100)$ = **−0.0417**; RL = $-20\log_{10}0.0417$ = **27.6** dB.
 
+$K_b = \tfrac14(0.03 + 0.03)$ = **0.015**, so NEXT = $0.015 \times 0.8$ V = **12.0** mV. With $v = c/\sqrt{3.4}$, NEXT saturates beyond $vt_r/2$ = **1.22** mm. In a homogeneous dielectric $C_m/C = L_m/L$, so FEXT = **0**.
+
 ### Solution 2
 
-(a) ISI sum $0.04 + 0.18 + 0.06 + 0.02$ = 0.30 V. NRZ: $0.60 - 0.30$ = **0.30** V. PAM4: $0.60/3 - 0.30$ = **−0.10** V: closed.
+(a) With levels 0 and 1 V and positive cursors, the lowest 1 is $h_0$ minus all other cursors' worst case and the highest 0 is their sum, so the opening is $h_0 - \sum\lvert h_k\rvert$ volts. ISI sum $0.04 + 0.18 + 0.06 + 0.02$ = 0.30 V. NRZ: $0.60 - 0.30$ = **0.30** V. PAM4: $0.60/3 - 0.30$ = **−0.10** V: closed.
 
 (b) Only $h_{-1}$ remains: NRZ **0.56** V; PAM4 $0.20 - 0.04$ = **0.16** V.
 
 (c) $0.16/(2 \times 0.012)$ = **6.67**; BER = $\tfrac34Q(6.67)$ = **9.8** × 10⁻¹².
 
-(d) TJ = $14.07 \times 0.15 + 1.2$ = **3.31** ps. The UI is 9.41 ps, so the eye is **6.10** ps = **0.648** UI. At 10⁻⁶, $2 \times 4.75 \times 0.15 + 1.2$ = **2.63** ps.
+(d) TJ = $14.07 \times 0.15 + 1.2$ = **3.31** ps. The UI is 9.41 ps, so the eye is **6.10** ps = **0.648** UI. A zero-error test needs $-\ln(0.05)/10^{-12}$ = **3.0e12** bits (the rule of three), which at 212.5 Gb/s takes **14.1** s.
 
 ### Solution 3
 
-(a) $106.25/8$ = **13.3** GHz; $360°/8$ = **45**°, one UI.
+(a) Zero-forcing the first post-cursor: $g_1 = c_0h_1 + c_1h_0 = 0$ gives $c_1 = -c_0/3$; with $c_0 + \lvert c_1\rvert = 1$, $c_0$ = **0.75** and $c_1$ = **−0.25**. Then $g_0 = c_0h_0$ = **0.45**, and the tap creates $g_2 = c_1h_1$ = **−0.05**. De-emphasis: $20\log_{10}(1/0.5)$ = **6.02** dB. Cancelling one post-cursor creates a smaller one further out, and the main cursor falls by a quarter.
 
 (b) $I = 1.0\ \text{V}/50\ \Omega$ = **20** mA; $P_{CML} = 0.9 \times 20$ mA = **18** mW. $P_{SST} = 1.0^2/200$ = **5.0** mW. Ratio **3.6**.
 
@@ -47,9 +48,9 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_24_exa
 
 ### Solution 4
 
-(a) $-20\log_{10}(2\pi \times 53.125\ \text{GHz} \times 50\ \text{fs})$ = **35.6** dB; ENOB = **5.61** bits.
+(a) $-20\log_{10}(2\pi \times 53.125\ \text{GHz} \times 50\ \text{fs})$ = **35.6** dB (35.55); ENOB = $(35.55 - 1.76)/6.02$ = **5.61** bits (a full-scale-sine convention).
 
-(b) $212.5/128$ = **1.66** GS/s.
+(b) Full scale 3 over 64 codes: $\Delta$ = **0.0469**; $\sigma_q = \Delta/\sqrt{12}$ = **0.0135**; against the half-eye of 1/3 that is **0.0406**, small next to typical residual ISI and noise.
 
 (c) $10\log_{10}(1 + 0.7^2)$ = **1.73** dB.
 
@@ -69,25 +70,25 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_24_exa
 
 (a) $CV^2/4 = 150\ \text{fF} \times 0.16/4$ = **6.0** fJ; at 32 Gb/s, **0.192** mW.
 
-(b) $V^2/(4Rf_b) = 0.16/(4 \times 50 \times 32 \times 10^9)$ = **25** fJ.
+(b) Driver and termination in series draw $V/2R$ while the line is high, half the time: $V^2/(4Rf_b) = 0.16/(4 \times 50 \times 32 \times 10^9)$ = **25** fJ. The receiver sees a 0.2 V swing.
 
-(c) $0.5 \times 32/(8 \times 0.036^2)$ = **1,543** GB/s/mm², about 1.5 TB/s/mm².
+(c) $0.5 \times 32/(8 \times 0.036^2)$ = **1.54e3** GB/s/mm², about **1.54** TB/s/mm².
 
-(d) $2 \times 10^{12} \times 8 \times 0.3$ pJ = **4.8** W; at 5 pJ/bit, **80** W.
+(d) $C_{tot} = 50 + 200 + 50$ = **300** fF. Elmore: $100 \times 300\ \text{fF} + 50 \times (100 + 50)\ \text{fF} = 30 + 7.5$ = **37.5** ps. The driver term is **80**% of it: a stronger driver helps more than a better wire.
 
 ### Solution 7
 
 (a) $0.85q\lambda/hc$ = **0.898** A/W; −8 dBm = **158** µW; $I$ = **142** µA.
 
-(b) $(1.31\ \mu\text{m})^2 \times 106.25\ \text{GHz}/c$ = **0.608** nm; $3.5 \times 2 \times 0.608$ = **4.26** ps = **0.45** UI.
+(b) $(1.31\ \mu\text{m})^2 \times 106.25\ \text{GHz}/c$ = **0.608** nm; $3.5 \times 2 \times 0.608$ = **4.26** ps = **0.452** UI.
 
 (c) $\cos^2(\pi/4 \mp 0.15\pi)$: **0.905** and **0.0955**; ER = **9.47** = **9.76** dB; OMA = **0.809** $P_{in}$.
 
-(d) σ = $18 \times 10^{-12}\sqrt{55 \times 10^9}$ = **4.22** µA. $P = 3.49 \times 4.22/0.85$ = **17.3** µW = **−17.6** dBm. ER = $10^{0.4}$ = 2.51: penalty **3.66** dB. PAM4: $-17.6 + 4.77 + 3.66$ = **−9.2** dBm.
+(d) σ = $18 \times 10^{-12}\sqrt{55 \times 10^9}$ = **4.22** µA. $P = 3.49 \times 4.22/0.85$ = **17.3** µW = **−17.6** dBm. ER = $10^{0.4}$ = 2.51: penalty **3.66** dB. PAM4: $-17.61 + 4.77 + 3.66$ = **−9.18** dBm.
 
 ### Solution 8
 
-(a) $3 - 0.72 - 1.0 - 3.6$ = **−2.32** dBm; margin $-2.32 - (-9.2)$ = **6.9** dB.
+(a) $3 - 0.72 - 1.0 - 3.6$ = **−2.32** dBm; margin $-2.32 - (-9.18)$ = **6.86** dB.
 
 (b) $Z_T = R_FA/(1 + A)$ = **554** Ω; $f_{3dB} = (1 + A)/(2\pi R_FC_{in})$ = **38.3** GHz; $\sqrt{4kT/R_F}$ = **5.26** pA/√Hz; over 38.3 GHz, **1.03** µA.
 
@@ -97,9 +98,9 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_24_exa
 
 ### Solution 9
 
-(a) $(2 \times 4.6 \times 2.5/(4.6^2 + 2.5^2))^2$ = **0.704**, **−1.52** dB; offset $\exp(-2 \times 0.8^2/27.41)$ = **0.954**, **−0.20** dB; total **−1.73** dB.
+(a) $(2 \times 4.6 \times 2.5/(4.6^2 + 2.5^2))^2$ = **0.704**, **−1.52** dB; offset $\exp(-2 \times 0.8^2/27.41)$ = **0.954**, **−0.203** dB; total $-1.524 - 0.203$ = **−1.73** dB.
 
-(b) $1310/(2.75 - \sin 12°)$ = **515** nm; $1/(\Lambda\cos 12°)$ = **0.114**°/nm; **2.27**° over 20 nm.
+(b) $1310/(2.75 - \sin 12°)$ = **515** nm; $(180/\pi)/(\Lambda\cos 12°)$ = **0.114**°/nm; **2.27**° over 20 nm.
 
 (c) $f_0 = 1/(2\pi\sqrt{LC})$ = **65.0** GHz; ζ = $25\sqrt{30\ \text{fF}/0.2\ \text{nH}}$ = **0.306**; peak $1/(2\zeta\sqrt{1 - \zeta^2})$ = **1.72** = **4.69** dB at $f_0\sqrt{1 - 2\zeta^2}$ = **58.6** GHz; $f_{3dB}$ = **94.2** GHz.
 
@@ -107,11 +108,11 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_24_exa
 
 ### Solution 10
 
-(a) $4/800$ Gb/s = **5.0** pJ/bit; $14/800$ Gb/s = **17.5** pJ/bit; saving $1 - 4/14$ = **71**%.
+(a) $4/800$ Gb/s = **5.0** pJ/bit; $14/800$ Gb/s = **17.5** pJ/bit; saving $1 - 4/14$ = **71.4**%.
 
 (b) $17 - 2 - 1 - 2$ = **12.0** dB, a factor of **15.8**: **8** lanes.
 
-(c) $3.00/(3 \times 10^6)$ h = **1.0e3** FIT; with one failure $4.744/(3 \times 10^6)$ h = **1.58e3** FIT.
+(c) $3.00/(3 \times 10^6)$ h = **999** FIT; with one failure $4.744/(3 \times 10^6)$ h = **1.58e3** FIT.
 
 (d) $(300 \times 16 \times 8/16)/(150 \times 0.5)$ = **32**.
 
@@ -125,7 +126,7 @@ $$
 
 At 26.5625 GHz, $\varepsilon_r$ = 3.0, $\tan\delta$ = 0.0015: 0.723 Np/m × 8.686 × 0.0254 = **0.160** dB/in.
 
-(b) The half circuit's source impedance is $Z_S = (R_S/2) \parallel (1/2sC_S) = (R_S/2)/(1 + sR_SC_S)$. With degeneration, the drain current is $g_mv_{in}/(1 + g_mZ_S)$, so
+(b) The half circuit's source impedance is $Z_S = (R_S/2) \parallel (1/2sC_S) = (R_S/2)/(1 + sR_SC_S)$. With degeneration $v_{gs} = v_{in} - i_dZ_S$ and $i_d = g_mv_{gs}$, so $i_d = g_mv_{in}/(1 + g_mZ_S)$ and, with $v_{out} = -i_dR_D$,
 
 $$
 H(s) = -\frac{g_mR_D}{1 + g_mZ_S} = -\frac{g_mR_D(1 + sR_SC_S)}{1 + g_mR_S/2 + sR_SC_S}.
@@ -133,13 +134,13 @@ $$
 
 At $s = 0$, $H(0) = g_mR_D/(1 + g_mR_S/2)$; as $s \to \infty$, $Z_S \to 0$ and $H(\infty) = g_mR_D$. Their ratio is $1 + g_mR_S/2$. With 30 mS and 300 Ω: **5.5**, **14.8** dB.
 
-(c) With $E_i = e^{-r^2/w_i^2}$, $\iint E_1E_2\,dA = \pi/(1/w_1^2 + 1/w_2^2) = \pi w_1^2w_2^2/(w_1^2 + w_2^2)$ and $\iint E_i^2\,dA = \pi w_i^2/2$. So
+(c) The power coupled from mode 1 into mode 2 is the normalized overlap $\eta = \lvert\iint E_1E_2^*\,dA\rvert^2/(\iint\lvert E_1\rvert^2dA\iint\lvert E_2\rvert^2dA)$. With $E_i = e^{-r^2/w_i^2}$, $\iint E_1E_2\,dA = \pi/(1/w_1^2 + 1/w_2^2) = \pi w_1^2w_2^2/(w_1^2 + w_2^2)$ and $\iint E_i^2\,dA = \pi w_i^2/2$. So
 
 $$
 \eta = \frac{(\pi w_1^2w_2^2/(w_1^2 + w_2^2))^2}{(\pi w_1^2/2)(\pi w_2^2/2)} = \left(\frac{2w_1w_2}{w_1^2 + w_2^2}\right)^2.
 $$
 
-For 4.6 and 3.0 µm: **0.837**, **−0.77** dB.
+For 4.6 and 3.0 µm: **0.837**, **−0.770** dB.
 
 (d) Each segment adds independent zero-mean Gaussian noise $\sigma_i$ to a common half-eye $a$, with $Q_i = a/\sigma_i$. The sum of independent Gaussians is Gaussian with variance $\sum\sigma_i^2$, so $Q = a/\sqrt{\sum\sigma_i^2}$ and $1/Q^2 = \sum\sigma_i^2/a^2 = \sum 1/Q_i^2$. For 9, 7, 9: $Q$ = **4.71**, BER = **1.2** × 10⁻⁶.
 
@@ -149,9 +150,9 @@ With exponential lifetimes, failures in $T$ device-hours are Poisson with mean $
 
 (a) $8/1.6$ Tb/s = **5.0** pJ/bit; $25/1.6$ Tb/s = **15.6** pJ/bit. $4 \times 10^5$ modules: **10** MW with DSP modules and **3.2** MW with LPO; saving **6.8** MW.
 
-(b) $1/Q^2 = 2/121 + 1/42.25$: $Q$ = **4.99**, BER = **3.1** × 10⁻⁷, margin $20\log_{10}(4.99/3.49)$ = **3.1** dB. 10⁻¹² needs $Q$ = **7.03**. The claim is inconsistent with the stated segment $Q$s: the optical segment alone ($Q$ = 6.5) is worse than 10⁻¹². The link can work with FEC, not pre-FEC at 10⁻¹².
+(b) $1/Q^2 = 2/121 + 1/42.25$: $Q$ = **4.99**, BER = **3.1** × 10⁻⁷, margin $20\log_{10}(4.99/3.49)$ = **3.10** dB. 10⁻¹² needs $Q$ = **7.03**. The claim is inconsistent with the stated segment $Q$s: the optical segment alone ($Q$ = 6.5) is worse than 10⁻¹². The link can work with FEC, not pre-FEC at 10⁻¹².
 
-(c) $3.00/(2 \times 10^6)$ h = **1.5e3** FIT, from **228** device-years. "Below 100 FIT" needs about $3.00/(100 \times 10^{-9})$ = **30** million failure-free device-hours.
+(c) $3.00/(2 \times 10^6)$ h = **1.50e3** FIT, from **228** device-years. "Below 100 FIT" needs about $3.00/(100 \times 10^{-9})$ = **30.0** million failure-free device-hours.
 
 (d) Rubric (3 points for four good questions with strong answers):
 
@@ -181,6 +182,10 @@ With exponential lifetimes, failures in $T$ device-hours are Poisson with mean $
 | X24.1c2 | longest stub | 0.383 | mm |
 | X24.1d | reflection coefficient | -0.0417 | |
 | X24.1d1 | return loss | 27.6 | dB |
+| X24.1e | backward coefficient | 0.015 | |
+| X24.1e1 | NEXT | 12.0 | mV |
+| X24.1e2 | saturation length | 1.22 | mm |
+| X24.1e3 | FEXT | 0 | mV |
 | X24.2a0 | ISI sum | 0.30 | V |
 | X24.2a | NRZ eye | 0.30 | V |
 | X24.2a1 | PAM4 eye | -0.10 | V |
@@ -191,9 +196,13 @@ With exponential lifetimes, failures in $T$ device-hours are Poisson with mean $
 | X24.2d | TJ at 1e-12 | 3.31 | ps |
 | X24.2d1 | eye width | 6.10 | ps |
 | X24.2d2 | eye width | 0.648 | UI |
-| X24.2d3 | TJ at 1e-6 | 2.63 | ps |
-| X24.3a | clock | 13.3 | GHz |
-| X24.3a1 | phase spacing | 45 | ° |
+| X24.2d3 | zero-error bits | 3.0e12 | bits |
+| X24.2d4 | test time | 14.1 | s |
+| X24.3a | c0 | 0.75 | |
+| X24.3a1 | c1 | -0.25 | |
+| X24.3a2 | g0 | 0.45 | |
+| X24.3a3 | g2 | -0.05 | |
+| X24.3a4 | de-emphasis | 6.02 | dB |
 | X24.3b | CML current | 20 | mA |
 | X24.3b1 | CML power | 18 | mW |
 | X24.3b2 | SST power | 5.0 | mW |
@@ -206,8 +215,11 @@ With exponential lifetimes, failures in $T$ device-hours are Poisson with mean $
 | X24.3c4 | HF gain | 5.0 | |
 | X24.3d | phase error | 0.169 | UI |
 | X24.4a | SNR | 35.6 | dB |
+| X24.4a0 | SNR, unrounded | 35.55 | dB |
 | X24.4a1 | ENOB | 5.61 | bits |
-| X24.4b | slice rate | 1.66 | GS/s |
+| X24.4b | ADC step | 0.0469 | |
+| X24.4b1 | quantization noise | 0.0135 | |
+| X24.4b2 | ratio to half-eye | 0.0406 | |
 | X24.4c | MLSD gain | 1.73 | dB |
 | X24.4d | NCG | 6.89 | dB |
 | X24.4d1 | codeword time | 25.6 | ns |
@@ -221,16 +233,17 @@ With exponential lifetimes, failures in $T$ device-hours are Poisson with mean $
 | X24.6a | unterminated energy | 6.0 | fJ |
 | X24.6a1 | power at 32 Gb/s | 0.192 | mW |
 | X24.6b | terminated energy | 25 | fJ |
-| X24.6c | areal density | 1543 | GB/s/mm² |
-| X24.6c1 | areal density | 1.5 | TB/s/mm² |
-| X24.6d | die-to-die power | 4.8 | W |
-| X24.6d1 | SerDes power | 80 | W |
+| X24.6c | areal density | 1.54e3 | GB/s/mm² |
+| X24.6c1 | areal density | 1.54 | TB/s/mm² |
+| X24.6d | total capacitance | 300 | fF |
+| X24.6d1 | Elmore delay | 37.5 | ps |
+| X24.6d2 | driver share | 80 | % |
 | X24.7a | responsivity | 0.898 | A/W |
 | X24.7a1 | power | 158 | µW |
 | X24.7a2 | photocurrent | 142 | µA |
 | X24.7b | spectral width | 0.608 | nm |
 | X24.7b1 | spread | 4.26 | ps |
-| X24.7b2 | spread in UI | 0.45 | UI |
+| X24.7b2 | spread in UI | 0.452 | UI |
 | X24.7c | high level | 0.905 | |
 | X24.7c1 | low level | 0.0955 | |
 | X24.7c2 | extinction ratio | 9.47 | |
@@ -240,9 +253,10 @@ With exponential lifetimes, failures in $T$ device-hours are Poisson with mean $
 | X24.7d1 | OOK sensitivity | 17.3 | µW |
 | X24.7d2 | OOK sensitivity | -17.6 | dBm |
 | X24.7d3 | ER penalty | 3.66 | dB |
-| X24.7d4 | PAM4 sensitivity | -9.2 | dBm |
+| X24.7d4 | PAM4 sensitivity | -9.18 | dBm |
+| X24.7d5 | OOK sensitivity, 4 s.f. | -17.61 | dBm |
 | X24.8a | received power | -2.32 | dBm |
-| X24.8a1 | margin | 6.9 | dB |
+| X24.8a1 | margin | 6.86 | dB |
 | X24.8b | transimpedance | 554 | Ω |
 | X24.8b1 | bandwidth | 38.3 | GHz |
 | X24.8b2 | RF noise density | 5.26 | pA/√Hz |
@@ -255,8 +269,9 @@ With exponential lifetimes, failures in $T$ device-hours are Poisson with mean $
 | X24.9a | coupling | 0.704 | |
 | X24.9a1 | coupling loss | -1.52 | dB |
 | X24.9a2 | offset factor | 0.954 | |
-| X24.9a3 | offset loss | -0.20 | dB |
+| X24.9a3 | offset loss | -0.203 | dB |
 | X24.9a4 | total | -1.73 | dB |
+| X24.9a5 | coupling loss, 4 s.f. | -1.524 | dB |
 | X24.9b | period | 515 | nm |
 | X24.9b1 | angular dispersion | 0.114 | °/nm |
 | X24.9b2 | steer over 20 nm | 2.27 | ° |
@@ -271,11 +286,11 @@ With exponential lifetimes, failures in $T$ device-hours are Poisson with mean $
 | X24.9d2 | retimed BER | 1.3e-12 | |
 | X24.10a | CPO energy per bit | 5.0 | pJ/bit |
 | X24.10a1 | pluggable energy per bit | 17.5 | pJ/bit |
-| X24.10a2 | saving | 71 | % |
+| X24.10a2 | saving | 71.4 | % |
 | X24.10b | available for splitting | 12.0 | dB |
 | X24.10b1 | split factor | 15.8 | |
 | X24.10b2 | lanes | 8 | |
-| X24.10c | bound, no failures | 1.0e3 | FIT |
+| X24.10c | bound, no failures | 999 | FIT |
 | X24.10c1 | bound, one failure | 1.58e3 | FIT |
 | X24.10d | port-hours ratio | 32 | |
 | X24.11a0 | dielectric loss | 0.723 | Np/m |
@@ -283,7 +298,7 @@ With exponential lifetimes, failures in $T$ device-hours are Poisson with mean $
 | X24.11b | peaking ratio | 5.5 | |
 | X24.11b1 | peaking | 14.8 | dB |
 | X24.11c | coupling | 0.837 | |
-| X24.11c1 | coupling loss | -0.77 | dB |
+| X24.11c1 | coupling loss | -0.770 | dB |
 | X24.11d | linear Q | 4.71 | |
 | X24.11d1 | linear BER | 1.2e-6 | |
 | X24.11d2 | bound for 5 M h | 599 | FIT |
@@ -294,8 +309,8 @@ With exponential lifetimes, failures in $T$ device-hours are Poisson with mean $
 | X24.12a4 | saving | 6.8 | MW |
 | X24.12b | linear Q | 4.99 | |
 | X24.12b1 | linear BER | 3.1e-7 | |
-| X24.12b2 | margin | 3.1 | dB |
+| X24.12b2 | margin | 3.10 | dB |
 | X24.12b3 | Q for 1e-12 | 7.03 | |
-| X24.12c | bound | 1.5e3 | FIT |
+| X24.12c | bound | 1.50e3 | FIT |
 | X24.12c1 | device-years | 228 | |
-| X24.12c2 | hours for 100 FIT | 30 | million h |
+| X24.12c2 | hours for 100 FIT | 30.0 | million h |

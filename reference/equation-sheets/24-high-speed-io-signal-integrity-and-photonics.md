@@ -6,7 +6,8 @@ Conventions:
 
 - bandwidths are decimal (1 GB/s = 10⁹ bytes/s); "both directions" adds the two directions; energy per bit is power divided by bit rate;
 - electrical dB is $20\log_{10}$ of a voltage ratio; optical dB is $10\log_{10}$ of an optical power ratio, and a photocurrent is proportional to optical power;
-- $Q(x)$ is the Gaussian tail probability, $Q(x) \approx e^{-x^2/2}/(x\sqrt{2\pi})$ for $x \gtrsim 3$; $Q^{-1}(10^{-12})$ = 7.03, $Q^{-1}(2.4 \times 10^{-4})$ = 3.49 (the KP4 FEC threshold);
+- $Q(x)$ is the Gaussian tail probability, $Q(x) \approx [e^{-x^2/2}/(x\sqrt{2\pi})](1 - 1/x^2)$ for $x \gtrsim 3$; $Q^{-1}(10^{-12})$ = 7.03, $Q^{-1}(2.4 \times 10^{-4})$ = 3.49 (the KP4 FEC threshold used in 24-07 to 24-09; 24-04 quotes 2.2 × 10⁻⁴, $Q^{-1}$ = 3.52, as the threshold for a ~10⁻¹⁵ output);
+- link margins are electrical: $20\log_{10}(Q/Q_{req})$;
 - $\lambda$ is a wavelength or (in reliability) a failure rate, by context; $\alpha$ is a loss per length (24-01), a channel tap (24-04) or a conductor-loss fraction (24-03); $D$ is fiber dispersion (24-07) or the delay operator (24-04); $Q$ is a BER margin, a resonator quality factor or a charge, by context; $w$ is a trace width (24-01) or a mode radius (24-08).
 
 ## Signal integrity (24-01)
@@ -29,11 +30,12 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | $y_n = h_0a_n + \sum_{k\ne0}h_ka_{n-k}$ | Pulse-response cursors | [24-02](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-02-eye-diagrams-jitter-ber.md) |
-| $E_{NRZ} = h_0 - \sum\lvert h_k\rvert$; $E_{PAM\text{-}M} = h_0/(M - 1) - \sum\lvert h_k\rvert$ | Peak-distortion eye | [24-02](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-02-eye-diagrams-jitter-ber.md) |
+| $E_{NRZ} = h_0 - \sum\lvert h_k\rvert$; $E_{PAM\text{-}M} = h_0/(M - 1) - \sum\lvert h_k\rvert$ | Peak-distortion eye as a fraction of the full swing; $V_{eye} = E \times V_{pp}$ | [24-02](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-02-eye-diagrams-jitter-ber.md) |
 | BER $= Q(V_{eye}/2\sigma)$; PAM4: $\tfrac34Q(V_{eye}/2\sigma)$ | Gaussian noise, Gray coding | [24-02](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-02-eye-diagrams-jitter-ber.md) |
 | $TJ = 2Q^{-1}(\text{BER})\,RJ + DJ(\delta\delta)$; $2Q^{-1}(10^{-12})$ = 14.07 | Dual-Dirac model; eye width $UI - TJ$ | [24-02](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-02-eye-diagrams-jitter-ber.md) |
 | $H(f) = 1/(1 + jf/f_c)$; $A_{tol} = M\sqrt{1 + (f_c/f)^2}$ | First-order CDR transfer and tolerance | [24-02](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-02-eye-diagrams-jitter-ber.md) |
-| COM $= 20\log_{10}(A_s/A_{ni})$ dB | Channel operating margin | [24-02](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-02-eye-diagrams-jitter-ber.md) |
+| COM $= 20\log_{10}(A_s/A_{ni})$ dB | Channel operating margin |
+| BER $< -\ln(1 - CL)/N \approx 3/N$ | Zero errors in $N$ bits at 95% confidence | [24-02](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-02-eye-diagrams-jitter-ber.md) |
 
 ## SerDes architecture (24-03)
 
@@ -45,7 +47,9 @@ Conventions:
 | $H(s) = -g_mR_D(1 + sR_SC_S)/(1 + g_mR_S/2 + sR_SC_S)$; peaking $1 + g_mR_S/2$ | Source-degenerated CTLE | [24-03](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-03-serdes-architecture.md) |
 | $z_n = y_n - \sum b_k\hat a_{n-k}$, $b_k = h_k$; $t_{clk\text{-}q} + t_{settle} + t_{setup} < 1$ UI | DFE and its first-tap timing | [24-03](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-03-serdes-architecture.md) |
 | $P(e_n\mid e_{n-1}) = \tfrac12Q((h_0 - 2h_1)/\sigma) + \tfrac12Q((h_0 + 2h_1)/\sigma)$ | DFE error propagation | [24-03](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-03-serdes-architecture.md) |
-| $\varphi_d - \varphi_c = \Delta f_{baud}/(2\pi f_c)$ UI | First-order CDR under frequency offset $\Delta$ | [24-03](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-03-serdes-architecture.md) |
+| $\varphi_d - \varphi_c = \Delta f_{baud}/(2\pi f_c)$ UI | Linear first-order CDR under fractional frequency offset $\Delta$ |
+| Bang-bang gain $\approx \sqrt{2/\pi}/\sigma$ per UI; slew limit $\rho\delta$ | Bang-bang phase detector with Gaussian jitter $\sigma$; loop step $\delta$ at update rate $\rho$ |
+| $M(M - 1)$ comparators per unrolled DFE tap | NRZ 2, PAM4 12 | [24-03](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-03-serdes-architecture.md) |
 | PAM4 wins if $L > 9.54\ \text{dB}/[\alpha(\sqrt2 - 1) + 1 - \alpha]$ | $L$ at PAM4 Nyquist, conductor fraction $\alpha$ | [24-03](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-03-serdes-architecture.md) |
 
 ## DSP SerDes and FEC (24-04)
@@ -53,7 +57,10 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | SNR$_{jitter} = -20\log_{10}(2\pi f\sigma_t)$; ENOB $= (\text{SNR} - 1.76)/6.02$ | Sampling-clock jitter | [24-04](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-04-dsp-serdes-and-fec.md) |
-| $z_n = \sum_{j=-P}^{F}c_jx_{n-j}$ | Digital FFE | [24-04](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-04-dsp-serdes-and-fec.md) |
+| $\Delta = FS/2^N$; $\sigma_q = \Delta/\sqrt{12}$ | ADC step and quantization noise |
+| $z_n = \sum_{j=-P}^{F}c_jx_{n-j}$; $T \times P$ multipliers at $f_{baud}/P$ | $T$-tap digital FFE, $P$-way parallel |
+| Codeword time $= nm/R_b$ | $n$ symbols of $m$ bits at line rate $R_b$ (RS(544,514): $m$ = 10) |
+| Inner-code rate expansion $128/120$ | 802.3dj inner code for 200 Gb/s optical lanes | [24-04](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-04-dsp-serdes-and-fec.md) |
 | $G_{MLSD} = 10\log_{10}(1 + \alpha^2)$ dB | Channel $1 + \alpha D$, single-error event | [24-04](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-04-dsp-serdes-and-fec.md) |
 | NCG $= 20\log_{10}[Q^{-1}(p_{out})/Q^{-1}(p_{in})] + 10\log_{10}R$ dB | BPSK-equivalent convention | [24-04](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-04-dsp-serdes-and-fec.md) |
 
@@ -65,16 +72,18 @@ Conventions:
 | $\eta_{TLP} = P/(P + H)$ | Payload $P$, per-packet overhead $H$ | [24-05](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-05-pcie-cxl-ethernet.md) |
 | buffer $\ge B \times t_{RTT}$ | Credits and retry buffers | [24-05](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-05-pcie-cxl-ethernet.md) |
 | $R_{lane} = R_{MAC,lane} \times (257/256) \times (544/514)$ | Ethernet transcoding and RS(544,514) | [24-05](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-05-pcie-cxl-ethernet.md) |
-| $N_{2\text{-tier}} = k^2/2$ | Non-blocking leaf-spine of radix-$k$ switches | [24-05](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-05-pcie-cxl-ethernet.md) |
+| $N_{2\text{-tier}} = k^2/2$ | Non-blocking leaf-spine of radix-$k$ switches |
+| Growth $2^{1/T} - 1$ per year | Doubling every $T$ years | [24-05](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-05-pcie-cxl-ethernet.md) |
 
 ## Die-to-die links (24-06)
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | $E_{bit} = CV^2/4$ | Unterminated short wire, random data | [24-06](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-06-d2d-memory-phys-scale-up.md) |
-| $E_{bit} = V^2/(4Rf_b)$ | Terminated link | [24-06](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-06-d2d-memory-phys-scale-up.md) |
-| $D_{area} = \phi r/(8p^2)$ | Square bump grid of pitch $p$, data fraction $\phi$, rate $r$ | [24-06](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-06-d2d-memory-phys-scale-up.md) |
-| Elmore delay $\approx R_{on}C_{tot} + R_w(C_w/2 + C_L)$; $t_{10\text{–}90} \approx 2.2 \times$ Elmore | RC wire | [24-06](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-06-d2d-memory-phys-scale-up.md) |
+| $E_{bit} = V^2/(4Rf_b)$ | Terminated link: supply $V$, driver and termination each $R$ in series, line high half the time; the receiver swing is $V/2$ | [24-06](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-06-d2d-memory-phys-scale-up.md) |
+| $D_{area} = \phi r/(8p^2)$ | Square bump grid of pitch $p$, data fraction $\phi$, rate $r$ |
+| Shoreline density $=$ bandwidth $/$ edge length | Compare with UCIe's GB/s/mm targets | [24-06](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-06-d2d-memory-phys-scale-up.md) |
+| Elmore delay $\approx R_{on}C_{tot} + R_w(C_w/2 + C_L)$ | RC wire; an upper estimate of the 50% delay. The 24-06 problems also use the single-pole estimate $t_{10\text{–}90} \approx 2.2\times$ Elmore, which overstates a distributed wire's rise | [24-06](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-06-d2d-memory-phys-scale-up.md) |
 
 ## Photonics fundamentals (24-07)
 
@@ -83,10 +92,10 @@ Conventions:
 | $\mathcal R = \eta q\lambda/(hc)$ | Responsivity; 1.06 A/W ideal at 1310 nm | [24-07](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-07-photonics-fundamentals.md) |
 | $\tau = n_gL/c$ (4.9 µs/km) | Fiber latency | [24-07](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-07-photonics-fundamentals.md) |
 | $\Delta\lambda = \lambda^2\Delta f/c$; $\Delta\tau = DL\Delta\lambda$ | Dispersion spread; grows as rate² in UI | [24-07](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-07-photonics-fundamentals.md) |
-| $\beta_2 = -D\lambda^2/(2\pi c)$; broadening $\sqrt{1 + (L/L_D)^2}$, $L_D = T_0^2/\lvert\beta_2\rvert$ | Gaussian pulse | [24-07](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-07-photonics-fundamentals.md) |
-| $P_{out} = P_{in}\cos^2(\Delta\phi/2)$, $\Delta\phi = \pi V/V_\pi$; $L = V_\pi L/V_\pi$ | Mach–Zehnder modulator | [24-07](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-07-photonics-fundamentals.md) |
+| $\beta_2 = -D\lambda^2/(2\pi c)$; broadening $\sqrt{1 + (L/L_D)^2}$, $L_D = T_0^2/\lvert\beta_2\rvert$ | Unchirped Gaussian pulse of 1/e intensity half-width $T_0$; stated (not derived) in the lab | [24-07 lab](../../courses/24-high-speed-io-signal-integrity-and-photonics/labs/24-07-lab/README.md) |
+| $P_{out} = P_{in}\cos^2(\Delta\phi/2)$, $\Delta\phi = \pi V/V_\pi$; $L = V_\pi L/V_\pi$; $ER = P_1/P_0$, OMA $= P_1 - P_0$ | Mach–Zehnder modulator | [24-07](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-07-photonics-fundamentals.md) |
 | $\Delta\lambda_{res} = \lambda\Delta n/n_g$; linewidth $\lambda/Q$ | Ring modulator thermal shift | [24-07](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-07-photonics-fundamentals.md) |
-| $P_{sens} = Q\sigma/\mathcal R$; PAM4 $+10\log_{10}3$; ER $+10\log_{10}[(ER + 1)/(ER - 1)]$ | Optical dB | [24-07](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-07-photonics-fundamentals.md) |
+| $P_{sens} = Q\sigma/\mathcal R$; PAM4 $+10\log_{10}3$; ER $+10\log_{10}[(ER + 1)/(ER - 1)]$ | Average power; OOK with infinite ER, threshold midway, equal Gaussian noise on both levels; penalties in optical dB | [24-07](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-07-photonics-fundamentals.md) |
 | $Z_T = R_FA/(1 + A)$; $f_{3dB} = (1 + A)/(2\pi R_FC_{in})$; $i_n = \sqrt{4kT/R_F}$ | Shunt-feedback TIA | [24-07](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-07-photonics-fundamentals.md) |
 | $\Delta f = c\Delta\lambda/\lambda^2$ | WDM grid conversion | [24-07](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-07-photonics-fundamentals.md) |
 
@@ -98,8 +107,8 @@ Conventions:
 | $\theta_c = \arcsin(n_2/n_1)$; single-mode slab $d < \lambda/(2\sqrt{n_1^2 - n_2^2})$ | Fiber: $V = (\pi d/\lambda)\,\text{NA} < 2.405$ | [24-08](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-08-silicon-photonics.md) |
 | $\eta = [2w_1w_2/(w_1^2 + w_2^2)]^2\exp[-2d^2/(w_1^2 + w_2^2)]$ | Gaussian mode coupling with offset $d$ | [24-08](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-08-silicon-photonics.md) |
 | $\eta_\alpha = \exp[-(\alpha/\theta_{div})^2]$, $\theta_{div} = \lambda/(\pi w)$ | Tilt loss | [24-08](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-08-silicon-photonics.md) |
-| $\Lambda = \lambda/(n_{eff} - \sin\theta)$; $d\theta/d\lambda = -1/(\Lambda\cos\theta)$ | Grating coupler | [24-08](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-08-silicon-photonics.md) |
-| $\omega_0 = 1/\sqrt{LC}$, $\zeta = (R/2)\sqrt{C/L}$; peak $1/(2\zeta\sqrt{1 - \zeta^2})$; $f_{3dB} = f_0\sqrt{1 - 2\zeta^2 + \sqrt{(1 - 2\zeta^2)^2 + 1}}$ | Driver–bond–modulator RLC | [24-08](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-08-silicon-photonics.md) |
+| $\Lambda = \lambda/(n_{eff} - \sin\theta)$; $d\theta/d\lambda = -1/(\Lambda\cos\theta)$, or $-(n_g - \sin\theta)/(\lambda\cos\theta)$ with $n_{eff}$'s dispersion | Grating coupler; the first form neglects $dn_{eff}/d\lambda$ and overstates the bandwidth | [24-08](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-08-silicon-photonics.md) |
+| $\omega_0 = 1/\sqrt{LC}$, $\zeta = (R/2)\sqrt{C/L}$; peak $1/(2\zeta\sqrt{1 - \zeta^2})$ at $f_0\sqrt{1 - 2\zeta^2}$ (only for $\zeta < 1/\sqrt2$); $f_{3dB} = f_0\sqrt{1 - 2\zeta^2 + \sqrt{(1 - 2\zeta^2)^2 + 1}}$ | Driver–bond–modulator RLC | [24-08](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-08-silicon-photonics.md) |
 | $P_{laser} = P_{rx,req} + M + \sum L_i$; quadrature costs 3.01 dB | Transmitter budget | [24-08](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-08-silicon-photonics.md) |
 | Linear: $1/Q^2 = \sum 1/Q_i^2$; retimed: BER $\approx \sum Q(Q_i)$ | Error accumulation | [24-08](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-08-silicon-photonics.md) |
 | $Y = y^n$; cost per good module $(c_P + c_A)/Y$ untested, $c_P/Y + c_A$ tested | Compound yield and wafer test | [24-08](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-08-silicon-photonics.md) |
@@ -110,5 +119,5 @@ Conventions:
 |---|---|---|
 | pJ/bit $=$ W $/$ (Gb/s) $\times 1000$ | State the port speed | [24-09](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-09-lpo-and-cpo.md) |
 | Lanes per laser $\le 10^{(P_{src} - L_{path} - L_{excess} - P_{lane})/10}$ | External laser sharing | [24-09](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-09-lpo-and-cpo.md) |
-| $\lambda_U = -\ln(0.05)/T \approx 3/T$; with $r$ failures $\chi^2_{0.95,2r+2}/(2T)$ | 95% upper bound; FIT = failures per 10⁹ h | [24-09](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-09-lpo-and-cpo.md) |
+| $\lambda_U = -\ln(0.05)/T \approx 3/T$; with $r$ failures $\chi^2_{0.95,2r+2}/(2T)$ (stated) | One-sided 95% upper bound, time-terminated test; FIT = failures per 10⁹ h | [24-09](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-09-lpo-and-cpo.md) |
 | $U = \lambda \times 8766\ \text{h} \times (\text{ports lost} \times \text{MTTR})/(\text{ports per unit})$ | Port-hours lost per port per year | [24-09](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-09-lpo-and-cpo.md) |
