@@ -1,0 +1,25 @@
+* Lab 23-08: a phase-change cell's programming pulses as a thermal RC circuit
+* Thermal-electrical analogy: node th's voltage is the temperature rise (K) above ambient, the behavioural current
+* source injects the Joule power I^2 R (W), Rth is the thermal resistance (K/W) and Cth the thermal capacitance (J/K).
+* Cell: 2 kohm while programming; Rth = 7.5 K/uW; tau = Rth Cth = 2 ns (Example 23-08.4's assumptions).
+* RESET: 200 uA for 50 ns (10-60 ns), 0.1 ns edges. SET: 141.42 uA for 150 ns (100-250 ns).
+.param rcell=2k rth=7.5e6 cth={2e-9/7.5e6}
+ICELL 0 cell PWL(0 0 10n 0 10.1n 200u 60n 200u 60.1n 0 100n 0 100.1n 141.42136u 250n 141.42136u 250.1n 0 300n 0)
+RCELL cell 0 {rcell}
+BHEAT 0 th I = v(cell)*v(cell)/2000
+RTH th 0 {rth}
+CTH th 0 {cth}
+.tran 0.01n 300n
+.control
+run
+meas tran dtreset max v(th) from=10n to=61n
+meas tran t500 when v(th)=500 fall=1
+meas tran t125 when v(th)=125 fall=1
+let tquench = t125 - t500
+print tquench
+meas tran dtset find v(th) at=240n
+.endc
+* EXPECT dtreset key:README.md#Lab_23-08.a rtol=0.002
+* EXPECT tquench key:README.md#Lab_23-08.b scale=1e-9 rtol=0.005
+* EXPECT dtset key:README.md#Lab_23-08.c rtol=0.002
+.end

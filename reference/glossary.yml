@@ -9778,3 +9778,51 @@
   definition: "Flash blocks run temporarily in one-bit-per-cell mode to absorb write bursts at high speed; data is later folded into TLC or QLC blocks, and writes slow sharply once the cache is full."
   chapter: "23-07"
   see_also: ["Multi-level cell (MLC, TLC, QLC)"]
+- term: Tunnel magnetoresistance (TMR)
+  definition: "The resistance contrast of a magnetic tunnel junction, (R_AP − R_P)/R_P; MRAM reads it as a current difference, diluted by the access transistor's series resistance."
+  chapter: "23-08"
+  see_also: [Magnetic tunnel junction]
+- term: Thermal stability factor
+  definition: "Δ = E_b/k_BT, an MRAM free layer's energy barrier in units of thermal energy; a bit flips at about f₀e^(−Δ), so an N-bit array held for time t needs Δ ≳ ln(N t f₀)."
+  chapter: "23-08"
+  see_also: [Spin-transfer torque (STT)]
+- term: Spin-transfer torque (STT)
+  definition: "Switching a magnetic free layer with a spin-polarized current through it; the critical current scales with the thermal stability factor, so stability costs write energy."
+  chapter: "23-08"
+  see_also: [Thermal stability factor, Magnetic tunnel junction]
+- term: Phase-change memory (PCM)
+  definition: "Memory storing a bit in a chalcogenide's crystalline (low-resistance) or amorphous (high-resistance) phase, switched by melt-quench (RESET) and anneal (SET) heat pulses."
+  chapter: "23-08"
+  see_also: [Resistance drift]
+- term: Resistance drift
+  definition: "The slow rise of an amorphous phase-change material's resistance as it relaxes, R(t) = R(t₀)(t/t₀)^ν with ν of order 0.1; it makes multi-level PCM hard."
+  chapter: "23-08"
+  see_also: [Phase-change memory (PCM)]
+- term: Resistive RAM (ReRAM)
+  definition: "Memory storing a bit as the presence or absence of a conductive filament of vacancies or metal atoms through an oxide, set and reset by voltage pulses; simple and dense but variable."
+  chapter: "23-08"
+  see_also: [Conductance quantum]
+- term: Conductance quantum
+  definition: "G₀ = 2e²/h ≈ 77.5 µS (1/G₀ ≈ 12.9 kΩ), the conductance of a single-atom-wide channel; ReRAM filaments in their low-resistance state carry a few quanta."
+  chapter: "23-08"
+  see_also: [Resistive RAM (ReRAM)]
+- term: Ferroelectric RAM (FeRAM)
+  definition: "A 1T1C memory whose capacitor dielectric is ferroelectric; reading reverses the polarization and senses the released charge 2P_rA, so the read is destructive but the data needs no refresh."
+  chapter: "23-08"
+  see_also: [Remanent polarization, Ferroelectric FET (FeFET)]
+- term: Ferroelectric FET (FeFET)
+  definition: "A transistor with a ferroelectric in its gate stack, whose polarization shifts the threshold voltage; the memory window is roughly 2E_c t_FE and the read is nondestructive."
+  chapter: "23-08"
+  see_also: [Ferroelectric RAM (FeRAM)]
+- term: Remanent polarization
+  definition: "The polarization P_r a ferroelectric keeps after the applied field is removed; reversing it moves charge 2P_r per unit area."
+  chapter: "23-08"
+  see_also: [Ferroelectric RAM (FeRAM)]
+- term: Embedded nonvolatile memory (eNVM)
+  definition: "Nonvolatile memory built on the same die as logic, traditionally embedded flash and increasingly MRAM, ReRAM or PCM in the back-end metal layers at advanced nodes."
+  chapter: "23-08"
+  see_also: [Phase-change memory (PCM), Resistive RAM (ReRAM)]
+- term: Storage-class memory
+  definition: "Memory meant to sit between DRAM and NAND in speed and cost, persistent like storage but byte-addressable; 3D XPoint (Optane) was the best-known attempt and was discontinued in 2021–2022."
+  chapter: "23-08"
+  see_also: [Phase-change memory (PCM)]

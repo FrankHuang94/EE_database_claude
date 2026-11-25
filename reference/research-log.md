@@ -4848,3 +4848,45 @@ R&D % = R&D ÷ revenue.
 - **Allison et al., arXiv:2503.11665 (21 Feb 2025)** [Established: preprint with industry authors]: FDP in CacheLib with Meta and Twitter production traces achieves device write amplification of about 1, reducing embodied carbon and power.
 - **Bjørling et al., USENIX ATC 2021** [Established: peer-reviewed]: ZNS exposes erase-block boundaries and sequential-write zones, removing in-device garbage collection and over-provisioning; a zone-specialized RocksDB showed at least 2–4× lower 99.9th-percentile random-read latency and 2× higher write throughput than on a block-interface SSD of identical hardware.
 - **Sources:** [NVMe 2.1 changes](https://nvmexpress.org/wp-content/uploads/NVM-Express-Revision-2.1-Changes-09_05_24.pdf); [arXiv](https://arxiv.org/abs/2503.11665); [ZNS paper](https://www.pdl.cmu.edu/ftp/Storage/USENIX_ATC_2021_ZNS.pdf). Checked Nov 2026. Deployment scale of FDP and ZNS at hyperscalers is not public.
+
+## R-485 · Industry state of emerging nonvolatile memories (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (full text via the Europe PMC API; the PMC and Springer pages served browser checks and were not used).*
+
+- **Hellenbrand, Teck and MacManus-Driscoll, "Progress of emerging non-volatile memory technologies in industry," *MRS Communications* 14, 1099–1112 (7 Nov 2024)** [Established: review of public company data]. Table 2, "Summary of top metrics": endurance FeRAM 10¹⁵ (Infineon, TI), PCRAM >10⁷ (IBM/Macronix, SK hynix), RRAM 10¹² (Samsung), STT-MRAM 10¹⁶ (Avalanche), NOR flash 10⁴–10⁶, DRAM and SRAM 10¹⁶; retention FeRAM 121 years at 85 °C (Infineon), PCRAM >10 years at 150 °C (ST), RRAM 10 years at 105 °C (TSMC), STT-MRAM 20 years at 150 °C (TSMC) and 10⁶ years at 65 °C (Renesas); write speed 2 ns, ≤20 ns, 5/1 ns set/reset, 1.5 ns, NOR 0.1–1 ms; read speed 2 ns, ≤30 ns, <5 ns, 4 ns; switching voltage 0.5 V, <3 V, <1–1.5 V, 0.8–2.0 V, NOR >5 V; cell write energy <100 fJ (projected), 2.63 pJ set and 1.5–9 pJ reset, 5 fJ, 0.7 pJ, NOR ~100 pJ, DRAM ~10 fJ; integration node NOR flash 28 nm. The review states that eNVM's main target is replacing embedded flash and that RRAM and MRAM are the most developed.
+- **Source:** doi:10.1557/s43579-024-00660-2, read via `https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11618178/fullTextXML`. Checked Nov 2026.
+
+## R-486 · Embedded MRAM, ReRAM and PCM at foundries and MCU makers (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **eeNews Europe (P. Clarke), 25 Aug 2020** [Established: company statements]: TSMC's K. Zhang: "we actually have brought both resistive RAM and MRAM to real production at both the 40nm and 22nm nodes"; ReRAM with 10-year retention at 125 °C and 10,000-cycle endurance; Infineon adopted RRAM; 22 nm eMRAM ready, automotive qualification in 4Q20; MRAM moving to 16 nm FinFET.
+- **NXP release, 16 May 2023 (Design & Reuse reprint)** [Established: company announcement]: NXP and TSMC to deliver the first automotive 16 nm FinFET embedded MRAM; one-million-cycle endurance, solder-reflow support, 20-year retention at 150 °C; MRAM updates 20 MB of code in about 3 s against about a minute for flash; product samples to lead customers in early 2025. The nxp.com page returned 404 and NXP's PDF was access-denied.
+- **ST newsroom, 16 Apr 2025** [Established: company announcement]: Stellar with xMemory, based on ST's PCM, production to start later in 2025 on Stellar P6; "the first 28nm eNVM qualified for automotive applications"; "PCM fabricated at 18nm and 28nm nodes provides twice the memory density of other technologies".
+- **StorageNewsletter, 3 Feb 2026** [Established: company release]: Weebit Nano licensed its ReRAM to Texas Instruments (December), achieved JEDEC-based technology qualification at DB HiTek and received onsemi test chips.
+- **Sources:** [eeNews](https://www.eenewseurope.com/en/tsmc-offers-22nm-rram-taking-mram-on-to-16nm); [Design & Reuse](https://www.design-reuse.com/news/news54040.html); [ST](https://newsroom.st.com/media-center/press-item.html/t4687.html); [StorageNewsletter](https://www.storagenewsletter.com/2026/02/03/weebit-nano-signs-largest-customer-to-date-technology-qualified-at-db-hitek/). TSMC annual-report pages, SEMI and Hackster served bot challenges and were not used; GlobalFoundries and Samsung eMRAM claims were therefore left out. Checked Nov 2026.
+
+## R-487 · Ferroelectric memory revival (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **eeNews Europe, 5 Oct 2023** [Established: conference programme]: IEDM 2023 paper 15.7, "NVDRAM: A 32Gbit Dual Layer 3D Stacked Non-Volatile Ferroelectric Memory with Near-DRAM Performance for Demanding AI Workloads"; a 5.7 nm ferroelectric capacitor, dual-gated polysilicon access transistors, two 1T1C layers over CMOS.
+- **Blocks & Files (C. Mellor), 9 Jan 2024** [Contested: analyst views]: "Micron NVDRAM may never become a product"; its component technologies may appear in other products.
+- **Blocks & Files (C. Mellor), 14 Nov 2025** [Established: company funding announcement]: FMC (Dresden) raised €100 million ($116.2 million) in C-round funding, €77 million of it equity, to take FeRAM into AI data centers ("DRAM+", "3D CACHE+").
+- **Sources:** [eeNews](https://www.eenewseurope.com/en/iedm-micron-to-present-dram-like-non-volatile-memory-for-ai/); [B&F NVDRAM](https://www.blocksandfiles.com/flash/2024/01/09/micron-nvdram-may-never-become-a-product/1602216); [B&F FMC](https://www.blocksandfiles.com/ai-ml/2025/11/14/fmc-gets-feram-cash-to-kill-optanes-ghost/1704708). Checked Nov 2026.
+
+## R-488 · The end of 3D XPoint (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **Tom's Hardware (P. Alcorn), 16 Mar 2021** [Established: company announcement as reported]: Micron to cease 3D XPoint development and sell its fab by end-2021, citing "insufficient market validation to justify the ongoing high levels of investments"; Intel had ended consumer Optane production in January 2021.
+- **Tom's Hardware (P. Alcorn), updated 2 Aug 2022** [Established]: Intel winding down Optane entirely, announced with Q2 2022 results, with a $559 million inventory write-off; Gelsinger cited the industry shift to CXL.
+- **Sources:** [Micron exit](https://www.tomshardware.com/news/micron-sell-3d-xpoint-fab-stop-development-intel); [Intel exit](https://www.tomshardware.com/news/intel-kills-optane-memory-business-for-good). The buyer and price of the Lehi fab were not confirmed in pages opened and are not stated. Checked Nov 2026.
+
+## R-489 · Standalone MRAM: Everspin (Course 23)
+
+*Read on 25 Nov 2026 by the main agent (pages opened).*
+
+- **TechInsights, 30 Mar 2021** [Established: teardown]: Everspin's 1 Gb ST-DDR4 STT-MRAM (EMD4E001G) on a 28 nm GlobalFoundries process; die 105.1 mm² (12.29 × 8.55 mm), 1,024 Mb, bit density 9.75 Mb/mm², cell 0.0396 µm²; earlier 256 Mb (40 nm, 2.56 Mb/mm²) and 64 Mb (90 nm, 0.98 Mb/mm²) generations.
+- **Everspin Q4 2025 earnings call transcript (The Motley Fool, 4 Mar 2026)** [Established: company results as stated on the call]: Q4 2025 revenue $14.8 million, MRAM product sales $13.5 million; goal of $100 million annual revenue within three to five years; cash $44.5 million. The full-year figure appeared only in a search summary and is not used.
+- **Sources:** [TechInsights](https://www.techinsights.com/blog/memory/worlds-first-1-gb-28-nm-stt-mram-product-everspin); [transcript](https://www.fool.com/earnings/call-transcripts/2026/03/04/everspin-mram-q4-2025-earnings-call-transcript). Everspin's IR site, Business Wire and SEC EDGAR were inaccessible to automated fetches. Checked Nov 2026.

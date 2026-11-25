@@ -34,7 +34,7 @@ The technologies that hold data: SRAM, DRAM and its interfaces (DDR, LPDDR, GDDR
 | [23-05 · HBM in Depth](chapters/23-05-hbm-in-depth.md) | 7 | ✅ verified | [problems](problems/23-05-problems.md) · [solutions](solutions/23-05-solutions.md) · [lab](labs/23-05-lab/README.md) · [verify](verify/verify_23_05.py) |
 | [23-06 · NAND Flash and 3D NAND](chapters/23-06-nand-flash-and-3d-nand.md) | 7 | ✅ verified | [problems](problems/23-06-problems.md) · [solutions](solutions/23-06-solutions.md) · [lab](labs/23-06-lab/README.md) · [verify](verify/verify_23_06.py) |
 | [23-07 · SSD Controllers and Storage Systems](chapters/23-07-ssd-controllers.md) | 5 | ✅ verified | [problems](problems/23-07-problems.md) · [solutions](solutions/23-07-solutions.md) · [lab](labs/23-07-lab/README.md) · [verify](verify/verify_23_07.py) |
-| [23-08 · Emerging Memories: MRAM, ReRAM, PCM, FeRAM](chapters/23-08-emerging-memories.md) | 5 | ⬜ planned | — |
+| [23-08 · Emerging Memories: MRAM, ReRAM, PCM, FeRAM](chapters/23-08-emerging-memories.md) | 5 | ✅ verified | [problems](problems/23-08-problems.md) · [solutions](solutions/23-08-solutions.md) · [lab](labs/23-08-lab/README.md) · [verify](verify/verify_23_08.py) |
 | [23-09 · Compute-in-Memory and Near-Memory Computing](chapters/23-09-compute-in-memory.md) | 5 | ⬜ planned | — |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
