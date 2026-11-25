@@ -1,0 +1,23 @@
+* Lab 22-09, Part 1 -- Example 22-09.2: a 0.5 A load step on the teaching cell (OCV = 3.30 + 0.90 z, R0 = 0.2 ohm,
+* R1 = 0.1 ohm, C1 = 200 F, Q = 1080 C), starting at the SOC where the OCV is 3.80 V. The SOC is the voltage on a
+* 1080 F capacitor discharged by the cell current, so the OCV falls as charge is drawn. The step is applied at t = 1 s.
+* EXPECT va key:../../chapters/22-09-batteries-charging-fuel-gauging.md#Ex_22-09.2a rtol=2e-4
+* EXPECT vd key:../../chapters/22-09-batteries-charging-fuel-gauging.md#Ex_22-09.2d rtol=2e-4
+* EXPECT vrest key:README.md#Lab_22-09.a rtol=2e-5
+.param Q=1080 Z0={0.5/0.9}
+Csoc soc 0 {Q}
+Bsoc soc 0 I = I(Vsense)
+Bocv ocv 0 V = 3.30 + 0.90*V(soc)
+Vsense ocv x 0
+R0 x n1 0.2
+R1 n1 term 0.1
+C1 n1 term 200
+Iload term 0 PWL(0 0 1 0 1.001 0.5 41.001 0.5 41.002 0)
+.ic v(soc)={Z0}
+.control
+tran 5m 81 0 5m uic
+meas tran va find v(term) at=1.002
+meas tran vd find v(term) at=21.0005
+meas tran vrest find v(term) at=81
+.endc
+.end

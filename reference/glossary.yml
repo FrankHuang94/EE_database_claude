@@ -9209,3 +9209,85 @@
   definition: "A PMBus point-to-point, SPI-like interface at up to 50 MHz through which a processor or FPGA sets its own supply voltage on a voltage regulator, used for adaptive and dynamic voltage scaling in servers."
   chapter: "22-08"
   see_also: [Adaptive voltage scaling (AVS)]
+- term: State of charge (SOC)
+  definition: "The fraction of a cell's usable charge still stored, from 0 (empty) to 1 (full); its open-circuit voltage is a function of it, and fuel gauges estimate it."
+  chapter: "22-09"
+  see_also: [Open-circuit voltage, Fuel gauge]
+- term: C-rate
+  definition: "A current expressed relative to a cell's capacity: 1C would empty the cell in one hour, 0.5C in two, 2C in half an hour (ideally)."
+  chapter: "22-09"
+- term: Specific energy
+  definition: "Stored energy per unit mass of a cell or pack, in Wh/kg; energy density is the same per unit volume, in Wh/L."
+  chapter: "22-09"
+- term: Equivalent-circuit cell model
+  definition: "A battery model made of an OCV source that depends on state of charge, a series resistance R0, and one or more R‖C branches for the slower polarization, with the SOC integrating the current."
+  chapter: "22-09"
+  see_also: [Open-circuit voltage, Internal resistance]
+- term: Voltage relaxation (battery)
+  definition: "The slow recovery of a cell's terminal voltage toward its open-circuit voltage after the current stops, as the RC (diffusion) polarization decays; gauges must wait for it before reading OCV."
+  chapter: "22-09"
+- term: Cutoff voltage
+  definition: "The terminal voltage at which a device or protection circuit stops discharging a cell; reaching it under load strands charge, more so at high current or low temperature."
+  chapter: "22-09"
+- term: Usable capacity
+  definition: "The charge a cell actually delivers before its terminal voltage reaches the cutoff at a given current and temperature; less than rated capacity whenever IR drop moves the cutoff to a higher SOC."
+  chapter: "22-09"
+  see_also: [Cutoff voltage]
+- term: CC/CV charging
+  definition: "Charging a lithium-ion cell at a constant current until its terminal reaches the maximum charge voltage, then holding that voltage while the current tapers exponentially to a termination current."
+  chapter: "22-09"
+  see_also: [Termination current, Lithium plating]
+- term: Termination current
+  definition: "The tapering CV-phase charge current at which a charger declares the cell full and stops, typically a fraction of the fast-charge current."
+  chapter: "22-09"
+- term: Precharge
+  definition: "A low-current charge phase that a charger applies to a deeply discharged lithium-ion cell before allowing full current."
+  chapter: "22-09"
+- term: Lithium plating
+  definition: "Deposition of metallic lithium on a graphite anode when lithium arrives faster than it can intercalate, worst at low temperature and high charge rate; it loses capacity and can grow into an internal short."
+  chapter: "22-09"
+- term: JEITA charging guidelines
+  definition: "Japanese industry safety guidelines (2007) that set lithium-ion charge current and voltage by cell temperature: reduced current when cold, reduced charge voltage when warm, no charging outside the limits."
+  chapter: "22-09"
+- term: Linear charger
+  definition: "A battery charger whose pass transistor drops the input-to-battery voltage difference while carrying the charge current; efficiency V_bat/V_in, so it suits low currents and uses thermal regulation."
+  chapter: "22-09"
+- term: Power path
+  definition: "A charger arrangement that supplies the system load from the input first and charges the battery with the remainder, so a device can run with a dead battery and charge termination is not confused by the load."
+  chapter: "22-09"
+- term: Direct charging
+  definition: "Fast charging in which the adapter itself regulates the battery current (for example through USB PD PPS) and the phone uses a switched-capacitor divider instead of an inductive charger."
+  chapter: "22-09"
+  see_also: [Programmable Power Supply (PPS)]
+- term: Programmable Power Supply (PPS)
+  definition: "A USB Power Delivery mode in which the sink requests the adapter's output voltage in fine steps and the adapter limits current, enabling direct charging."
+  chapter: "22-09"
+- term: Fuel gauge
+  definition: "An IC or algorithm that estimates a battery's state of charge, remaining run time and state of health from its voltage, current and temperature, usually by combining coulomb counting with OCV correction and a cell model."
+  chapter: "22-09"
+  see_also: [Coulomb counting, State of charge (SOC)]
+- term: State of health (SOH)
+  definition: "A cell's present capacity (and sometimes resistance) relative to its new value, used to report aging and to adjust gauging and peak-power limits."
+  chapter: "22-09"
+- term: Capacity learning
+  definition: "A gauge's update of a cell's full capacity from the charge counted between two rested OCV readings, Q = Δq/(z1 − z2); accurate only when the SOC swing is large."
+  chapter: "22-09"
+- term: Solid-electrolyte interphase (SEI)
+  definition: "A passivating film that forms on a lithium-ion anode from electrolyte decomposition; its slow, diffusion-limited growth consumes lithium and causes calendar capacity fade roughly proportional to √t."
+  chapter: "22-09"
+  see_also: [Calendar aging]
+- term: Calendar aging
+  definition: "A battery's capacity loss and resistance growth with time, independent of use, accelerated by high state of charge and high temperature."
+  chapter: "22-09"
+  see_also: [Cycle life]
+- term: Cycle life
+  definition: "The number of full equivalent charge–discharge cycles a cell delivers before its capacity falls to a stated fraction (often 80%) of rated, under stated conditions."
+  chapter: "22-09"
+  see_also: [Calendar aging]
+- term: Battery protection circuit
+  definition: "An IC and back-to-back MOSFETs in a lithium-ion pack that disconnect the cell on overvoltage, undervoltage, overcurrent or short circuit, independently of the charger and gauge."
+  chapter: "22-09"
+- term: Thermal runaway (battery)
+  definition: "A self-accelerating failure in which heat from a cell's exothermic decomposition reactions raises its temperature and speeds the reactions, leading to venting, fire or explosion; triggered by overcharge, overheating, damage or an internal short."
+  chapter: "22-09"
+  see_also: [Battery protection circuit]

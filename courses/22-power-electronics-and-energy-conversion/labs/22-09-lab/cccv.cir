@@ -1,0 +1,25 @@
+* Lab 22-09, Part 2 -- Example 22-09.4: CC/CV charging of the teaching cell from empty, modelled as its OCV
+* (3.30 + 0.90 z) behind 0.30 ohm. The charger supplies min(I_cc, (4.20 V - OCV)/R); charging terminates at 30 mA.
+* Two copies run side by side: I_cc = 0.3 A (1C) and 0.6 A (2C). Times are in seconds; the keys are in minutes.
+* EXPECT tcc key:../../chapters/22-09-batteries-charging-fuel-gauging.md#Ex_22-09.4b scale=60 rtol=1e-3
+* EXPECT tterm key:../../chapters/22-09-batteries-charging-fuel-gauging.md#Ex_22-09.4f scale=60 rtol=1e-3
+* EXPECT zterm key:../../chapters/22-09-batteries-charging-fuel-gauging.md#Ex_22-09.4e rtol=1e-3
+* EXPECT tterm2 key:../../chapters/22-09-batteries-charging-fuel-gauging.md#Ex_22-09.4i scale=60 rtol=1e-3
+.param Q=1080 R=0.3
+* 1C
+Csoc soc 0 {Q}
+Bi ich 0 V = min(0.3, max(0, (4.2 - (3.30 + 0.90*V(soc)))/{R}))
+Bchg 0 soc I = V(ich)
+* 2C
+Csoc2 soc2 0 {Q}
+Bi2 ich2 0 V = min(0.6, max(0, (4.2 - (3.30 + 0.90*V(soc2)))/{R}))
+Bchg2 0 soc2 I = V(ich2)
+.ic v(soc)=0 v(soc2)=0
+.control
+tran 0.5 4500 0 0.5 uic
+meas tran tcc when v(ich)=0.2999 fall=1
+meas tran tterm when v(ich)=0.03 fall=1
+meas tran zterm find v(soc) when v(ich)=0.03 fall=1
+meas tran tterm2 when v(ich2)=0.03 fall=1
+.endc
+.end

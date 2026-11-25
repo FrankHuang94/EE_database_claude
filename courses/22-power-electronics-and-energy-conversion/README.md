@@ -35,7 +35,7 @@ Converting and delivering power efficiently, from wearables to AI racks: switchi
 | [22-06 · Converter Losses and Wide-Bandgap Switches](chapters/22-06-converter-losses-and-wide-bandgap.md) | 7 | ✅ verified | [problems](problems/22-06-problems.md) · [solutions](solutions/22-06-solutions.md) · [lab](labs/22-06-lab/README.md) · [verify](verify/verify_22_06.py) |
 | [22-07 · Converter Dynamics and Control](chapters/22-07-converter-dynamics-and-control.md) | 9 | ✅ verified | [problems](problems/22-07-problems.md) · [solutions](solutions/22-07-solutions.md) · [lab](labs/22-07-lab/README.md) · [verify](verify/verify_22_07.py) |
 | [22-08 · PMICs and Power Management for SoCs](chapters/22-08-pmics.md) | 6 | ✅ verified | [problems](problems/22-08-problems.md) · [solutions](solutions/22-08-solutions.md) · [lab](labs/22-08-lab/README.md) · [verify](verify/verify_22_08.py) |
-| [22-09 · Batteries, Charging and Fuel Gauging](chapters/22-09-batteries-charging-fuel-gauging.md) | 8 | ⬜ planned | — |
+| [22-09 · Batteries, Charging and Fuel Gauging](chapters/22-09-batteries-charging-fuel-gauging.md) | 8 | ✅ verified | [problems](problems/22-09-problems.md) · [solutions](solutions/22-09-solutions.md) · [lab](labs/22-09-lab/README.md) · [verify](verify/verify_22_09.py) |
 | [22-10 · Datacenter Power Delivery](chapters/22-10-datacenter-power-delivery.md) | 8 | ⬜ planned | — |
 | [22-11 · Electric Machines and Drives](chapters/22-11-electric-machines.md) | 6 | ⬜ planned | — |
 | [22-12 · Power Systems Fundamentals](chapters/22-12-power-systems-fundamentals.md) | 8 | ⬜ planned | — |
