@@ -1,0 +1,72 @@
+* Lab 23-03: a DRAM cell, its bitline and a latch sense amplifier (level-1 devices, no parasitic capacitance)
+* Part A: charge sharing. Cell 8 fF at 1.0 V, bitline 40 fF precharged to 0.5 V, wordline boosted to 1.8 V.
+* Part B: writing a 1 from 0 through the access transistor with the wordline at 1.0 V, 1.5 V and 1.8 V.
+* Part C: a full read: charge sharing, then a cross-coupled latch enabled at 5 ns restores the cell.
+.model acc nmos level=1 vto=0.5 kp=20u gamma=0 lambda=0
+.model san nmos level=1 vto=0.3 kp=100u gamma=0 lambda=0
+.model sap pmos level=1 vto=-0.3 kp=100u gamma=0 lambda=0
+.options reltol=1e-6 abstol=1e-15 vntol=1e-9 chgtol=1e-18 method=gear
+
+* ---- Part A: charge sharing
+VWLA wla 0 PULSE(0 1.8 1n 0.1n 0.1n 100n 200n)
+MA bla wla sna 0 acc W=1u L=1u
+CSA sna 0 8f IC=1.0
+CBA bla 0 40f IC=0.5
+
+* ---- Part B: writing a 1 with three wordline voltages (bitline held at 1.0 V)
+VBLB blb_w 0 DC 1.0
+VW1 w1 0 PULSE(0 1.0 0 1p 1p 100n 200n)
+VW2 w2 0 PULSE(0 1.5 0 1p 1p 100n 200n)
+VW3 w3 0 PULSE(0 1.8 0 1p 1p 100n 200n)
+M1 blb_w w1 c1 0 acc W=1u L=1u
+M2 blb_w w2 c2 0 acc W=1u L=1u
+M3 blb_w w3 c3 0 acc W=1u L=1u
+C1 c1 0 8f IC=0
+C2 c2 0 8f IC=0
+C3 c3 0 8f IC=0
+
+* ---- Part C: read with a latch sense amplifier
+VWLC wlc 0 PULSE(0 1.8 1n 0.1n 0.1n 100n 200n)
+MC bl wlc snc 0 acc W=1u L=1u
+CSC snc 0 8f IC=1.0
+CBL bl 0 40f IC=0.5
+CBLB blbar 0 40f IC=0.5
+* latch: cross-coupled inverters with sources on the sense-enable lines
+VSAN nsrc 0 PULSE(0.5 0 5n 0.2n 0.2n 100n 200n)
+VSAP psrc 0 PULSE(0.5 1.0 5n 0.2n 0.2n 100n 200n)
+MN1 bl blbar nsrc 0 san W=1u L=1u
+MN2 blbar bl nsrc 0 san W=1u L=1u
+MP1 bl blbar psrc psrc sap W=1u L=1u
+MP2 blbar bl psrc psrc sap W=1u L=1u
+
+.tran 1p 40n uic
+.control
+run
+* Part A
+meas tran dva find v(bla) at=20n
+let dva_mv = (v(bla) - 0.5)*1000
+meas tran dv_share find dva_mv at=20n
+* Part B
+meas tran vw1 find v(c1) at=10n
+meas tran vw2 find v(c2) at=10n
+meas tran vw3 find v(c3) at=10n
+let def3 = (1.0 - v(c3))*1000
+meas tran def3_mv find def3 at=10n
+* Part C
+let vdiff = v(bl) - v(blbar)
+meas tran dv_before find vdiff at=5n
+meas tran t_resolve when vdiff=0.9 cross=1
+let t_sense = t_resolve - 5e-9
+print t_sense
+meas tran snc_end find v(snc) at=40n
+meas tran bl_end find v(bl) at=40n
+meas tran blb_end find v(blbar) at=40n
+.endc
+* EXPECT dv_share key:../../chapters/23-03-dram-cells-arrays-refresh.md#Ex_23-03.1a rtol=0.001
+* EXPECT vw1 key:../../chapters/23-03-dram-cells-arrays-refresh.md#Ex_23-03.3a rtol=0.002
+* EXPECT vw2 key:README.md#Lab_23-03.a rtol=0.002
+* EXPECT def3_mv key:../../chapters/23-03-dram-cells-arrays-refresh.md#Ex_23-03.3c rtol=0.02
+* EXPECT dv_before key:../../chapters/23-03-dram-cells-arrays-refresh.md#Ex_23-03.1a scale=1e-3 rtol=0.002
+* EXPECT t_sense key:README.md#Lab_23-03.b scale=1e-9 rtol=0.01
+* EXPECT snc_end key:README.md#Lab_23-03.c rtol=0.001
+.end

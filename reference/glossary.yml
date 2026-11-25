@@ -9532,3 +9532,57 @@
 - term: Data-retention voltage
   definition: "The lowest supply at which an idle SRAM cell's cross-coupled inverters still hold their state; far below the voltage needed to read and write, it sets how low a sleep mode can drop the array to cut leakage."
   chapter: "23-02"
+
+# ---------------------------------------------------------------- 23-03
+- term: 1T1C cell
+  definition: "The DRAM bit cell: one access transistor gated by the wordline and one storage capacitor; the bit is the capacitor's charge, read by sharing it with the bitline."
+  chapter: "23-03"
+  see_also: [Storage capacitance, Charge sharing]
+- term: Storage capacitance
+  definition: "The capacitance of a DRAM cell's capacitor, now below 10 fF; it sets the read signal and, with the cell's leakage, how long the cell retains data."
+  chapter: "23-03"
+  see_also: [Transfer ratio, Retention time]
+- term: Transfer ratio
+  definition: "C_s/(C_s + C_BL), the fraction of a DRAM cell's voltage difference from the precharge level that appears on the bitline after charge sharing; typically about 1/5 to 1/10."
+  chapter: "23-03"
+  see_also: [Charge sharing]
+- term: DRAM sense amplifier
+  definition: "A cross-coupled latch on each bitline pair that amplifies the tens-of-millivolt charge-sharing signal to full levels and, through the still-open access transistor, restores the cell after its destructive read."
+  chapter: "23-03"
+  see_also: [Sense amplifier, Row buffer]
+- term: Boosted wordline (VPP)
+  definition: "Driving a DRAM wordline above the array voltage plus the access transistor's threshold (from a separate VPP supply) so that a full 1 can be written and restored quickly."
+  chapter: "23-03"
+  see_also: [1T1C cell]
+- term: Row buffer
+  definition: "The row of sense amplifiers holding a DRAM bank's open row (its page); reads of the open row are fast row hits, while another row first needs a precharge and activation."
+  chapter: "23-03"
+  see_also: [DRAM bank, "Row activation timing (tRCD, tRAS, tRP, tRC)"]
+- term: DRAM bank
+  definition: "An independently operating part of a DRAM device that can have one row open at a time; banks work in parallel, and DDR4 and DDR5 group them into bank groups."
+  chapter: "23-03"
+  see_also: [Row buffer]
+- term: Row activation timing (tRCD, tRAS, tRP, tRC)
+  definition: "The DRAM core timings: tRCD from activate to column command, tRAS from activate to precharge (the restore), tRP from precharge to the next activate, and tRC = tRAS + tRP between activates to one bank."
+  chapter: "23-03"
+  see_also: [Row buffer]
+- term: Refresh interval (tREFI) and refresh cycle time (tRFC)
+  definition: "tREFI is the average time between REF commands (the refresh window divided by 8,192: 7.8 µs for DDR4, 3.9 µs for DDR5 at normal temperature); tRFC is how long each REF keeps the device busy. Their ratio is the refresh overhead."
+  chapter: "23-03"
+  see_also: [Retention time]
+- term: Retention time
+  definition: "How long a DRAM cell holds a readable charge without refresh, C_s times the allowed voltage loss divided by the leakage current; it falls steeply with temperature, and the weakest cells set the refresh window."
+  chapter: "23-03"
+  see_also: [Storage capacitance]
+- term: Row hammer
+  definition: "Read disturbance in which repeatedly activating one DRAM row flips bits in physically adjacent rows before their next refresh; thresholds have fallen to a few thousand activations, making it a security problem."
+  chapter: "23-03"
+  see_also: [Per-row activation counting (PRAC)]
+- term: Per-row activation counting (PRAC)
+  definition: "A DDR5 row-hammer mitigation added in April 2024: the device counts activations per row and, through a back-off signal, makes the controller pause and issue refresh-management commands before a counter reaches its threshold."
+  chapter: "23-03"
+  see_also: [Row hammer]
+- term: 6F² cell
+  definition: "Today's DRAM cell footprint, 3F × 2F where F is the half-pitch design rule, with one bitline contact shared by two cells; 4F² cells with vertical-channel transistors would cut it by a third."
+  chapter: "23-03"
+  see_also: [1T1C cell]

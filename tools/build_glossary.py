@@ -77,7 +77,8 @@ def build() -> str:
            f"{len(entries)} terms. Each entry links to the chapter where the term is first defined. "
            "Notation follows [notation.md](notation.md).", ""]
     if letters:
-        out.append(" · ".join(f"[{L}](#letter-{L.lower() if L != '#' else 'other'})" for L in letters))
+        out.append(" · ".join(f"[{L if L != '#' else '0–9'}](#letter-{L.lower() if L != '#' else 'other'})"
+                              for L in letters))
         out.append("")
     current = None
     for e in entries:
@@ -86,7 +87,8 @@ def build() -> str:
         if L != current:
             current = L
             lid = L.lower() if L != "#" else "other"
-            out += [f'<a id="letter-{lid}"></a>', "", f"## {L}", ""]
+            heading = L if L != "#" else "0–9"  # a bare "#" would read as a closed ATX heading
+            out += [f'<a id="letter-{lid}"></a>', "", f"## {heading}", ""]
         definition = e["definition"].strip().replace("*", "\\*")  # z* must not start emphasis
         line = f'<a id="{e["anchor"]}"></a>**{e["term"]}** — {definition}'
         if e.get("chapter"):
