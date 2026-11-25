@@ -48,7 +48,7 @@ A 0.8 $V_\pi$ swing reaches 16 dB of extinction, where Example 24-07.5's half-$V
 
 ### Solution 24-07.7
 
-(a) $40 \times 0.0561$ = **2.25** nm.
+(a) $40 \times 0.05614$ = **2.25** nm.
 
 (b) $2.25/0.25$ = **9.0** mW.
 

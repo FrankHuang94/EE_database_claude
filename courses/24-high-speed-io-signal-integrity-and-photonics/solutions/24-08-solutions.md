@@ -32,7 +32,7 @@ Lower contrast gives nitride larger modes, gentler sidewall scattering and lower
 
 (c) $\exp(-1/2.0^2)$ = 0.779: **−1.09** dB.
 
-Halving the mode size more than quadruples the offset loss in dB, because the exponent goes as $1/w^2$.
+Shrinking the mode from 4.6 to 2.0 µm (2.3 times) raises the offset loss in dB 5.3 times, because the exponent goes as $1/w^2$.
 
 ### Solution 24-08.4
 
@@ -44,7 +44,7 @@ Halving the mode size more than quadruples the offset loss in dB, because the ex
 
 (d) $2 \times 5.44° \times \sqrt{0.1\ln 10}/0.101$ = **52** nm.
 
-The longer wavelength and larger fiber mode both help: the beam diverges more and the grating steers it less per nanometre.
+The longer wavelength helps twice: the period is longer, so the beam steers less per nanometre, and $\lambda/w$ rises slightly, so the beam diverges a little more. The larger fiber mode on its own would narrow the band, since $\theta_{div} = \lambda/(\pi w)$.
 
 ### Solution 24-08.5
 
@@ -151,6 +151,8 @@ At these scales optics power is a facilities question, and a quarter off every m
 | 24-08.3b | offset loss, 4.6 um | -0.21 | dB |
 | 24-08.3c0 | offset efficiency, 2.0 um | 0.779 | |
 | 24-08.3c | offset loss, 2.0 um | -1.09 | dB |
+| 24-08.3e0 | mode-size ratio | 2.3 | |
+| 24-08.3e | offset-loss ratio in dB | 5.3 | |
 | 24-08.4a | period | 572 | nm |
 | 24-08.4b | angular dispersion | 0.101 | °/nm |
 | 24-08.4c | divergence half-angle | 5.44 | ° |

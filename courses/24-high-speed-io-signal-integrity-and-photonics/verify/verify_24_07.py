@@ -297,4 +297,15 @@ er13 = optimize.brentq(lambda er: er_pen(er) - 1.0, 1.01, 1000)
 v.check("24-07.13a", er13)
 v.check("24-07.13b", 10 * math.log10(er13))
 
+# ---------------------------------------------------------------- audit additions: 200G spread, shot noise
+dl200 = dlam_nm(1550, 113.4375e9)
+v.check("Txt 24-07.l", 18 * 2 * dl200 / (1e12 / 113.4375e9))
+i1 = 0.9 * 2 * p12  # infinite ER: the 1 level carries twice the average power
+v.check("Txt 24-07.m", i1 * 1e6)
+s_shot = math.sqrt(2 * q * i1 * 30e9)
+v.check("Txt 24-07.n", s_shot * 1e6)
+v.check("Txt 24-07.o", 100 * s_shot ** 2 / sig7 ** 2)
+
+v.check("Lab 24-07.l", 10 ** 0.3)
+v.check("Lab 24-07.m", er_pen(10 ** 0.3))
 sys.exit(v.finish())

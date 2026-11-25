@@ -34,7 +34,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 24-07.4 [B]
 
-**The square law of dispersion.** A 200 Gb/s-per-lane optical lane runs 113.4375 GBd PAM4 at 1310 nm (24-04). With the worst-case O-band dispersion of 3.5 ps/(nm·km), find (a) the spectral width, (b) the spread over 2 km and (c) the spread as a fraction of the UI. Compare with Example 24-07.3's 0.11 UI at 53.125 GBd.
+**The square law of dispersion.** A 200 Gb/s-per-lane optical lane runs 113.4375 GBd PAM4 at 1310 nm (24-04). With the worst-case dispersion over 1285–1330 nm of 3.5 ps/(nm·km), find (a) the spectral width, (b) the spread over 2 km and (c) the spread as a fraction of the UI. Compare with Example 24-07.3's 0.11 UI at 53.125 GBd.
 
 ### Problem 24-07.5 [B]
 
@@ -66,7 +66,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 24-07.12 [C]
 
-**Optical dB again.** A link runs at BER 10⁻¹² when the received optical power drops by 3 dB. (a) By what factor does the photocurrent eye shrink? (b) By how many dB does the electrical SNR fall? (c) What does the BER become, with thermal noise fixed?
+**Optical dB again.** A link runs at BER 10⁻¹². The received optical power then drops by 3 dB. (a) By what factor does the photocurrent eye shrink? (b) By how many dB does the electrical SNR fall? (c) What does the BER become, with thermal noise fixed?
 
 ### Problem 24-07.13 [B]
 

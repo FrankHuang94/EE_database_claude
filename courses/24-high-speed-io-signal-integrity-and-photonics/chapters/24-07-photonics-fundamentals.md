@@ -46,11 +46,11 @@ flowchart LR
 
 ### 3.1 Wavelength windows and fiber
 
-**Windows.** Datacenter optics use three windows. At **850 nm**, GaAs VCSELs are cheap and fast, but silica fiber's loss is high (3.0 dB/km cabled for OM3–OM5 multimode [R-526]), so 850 nm is used only on multimode fiber over tens to a hundred metres. At **1310 nm** (the O-band), standard single-mode fiber has nearly zero chromatic dispersion: G.652.D fiber's dispersion stays at or below 3.5 ps/(nm·km) from 1285 to 1330 nm, with zero dispersion between 1300 and 1324 nm, and its cabled loss is at most 0.36 dB/km [R-526]. At **1550 nm** (the C-band) loss is lowest, at most 0.22 dB/km cabled, but dispersion is about 18 ps/(nm·km), which IM-DD cannot easily undo; long-haul coherent systems live there.
+**Windows.** Datacenter optics use three windows. At **850 nm**, GaAs VCSELs are cheap and fast, but silica fiber's loss is high (3.0 dB/km cabled for OM3–OM5 multimode [R-526]), so 850 nm is used only on multimode fiber over tens to a hundred metres. At **1310 nm** (the O-band), standard single-mode fiber has nearly zero chromatic dispersion: a G.652.D-compliant fiber's datasheet (Prysmian) keeps dispersion at or below 3.5 ps/(nm·km) from 1285 to 1330 nm, with zero dispersion between 1300 and 1324 nm, and cabled loss at most 0.36 dB/km [R-526]. At **1550 nm** (the C-band) loss is lowest, at most 0.22 dB/km cabled in the same datasheet, but dispersion is about 18 ps/(nm·km), which IM-DD cannot easily undo; long-haul coherent systems live there.
 
 **Latency.** Light in fiber travels at $c/n_g$, with group index $n_g$ ≈ 1.468: 4.9 µs per kilometre, about 5 ns per metre (Example 24-07.2). Hollow-core fibers guide light in air: one 2025 design reached 0.091 dB/km at 1550 nm, below the solid-silica record of about 0.14 dB/km, and cuts latency by about a third [R-527].
 
-**Multimode bandwidth.** Multimode fiber is specified by its **effective modal bandwidth**, a length–bandwidth product: at 850 nm, 2,000 MHz·km for OM3 and 4,700 MHz·km for OM4 and OM5 [R-526]. Dividing by the length gives a rough modal bandwidth: 47 GHz for 100 m of OM4, a simple linear scaling that real links only approximate. That is why multimode reach shrinks as rates rise: IEEE 802.3df's 800 Gb/s multimode PMDs reach at least 50 m (VR8) or 100 m (SR8), against 500 m (DR8) and 2 km (DR8-2) on single-mode fiber [R-528].
+**Multimode bandwidth.** Multimode fiber is specified by its **effective modal bandwidth**, a length–bandwidth product: at 850 nm, 2,000 MHz·km for OM3 and 4,700 MHz·km for OM4 and OM5 [R-526]. Dividing by the length gives a rough modal bandwidth: 47 GHz for 100 m of OM4, a simple linear scaling that real links only approximate. That is why multimode reach shrinks as rates rise: IEEE 802.3df's 800 Gb/s multimode PMDs reach at least 50 m (VR8) or 100 m (SR8), against 500 m (DR8) and 2 km (DR8-2) on single-mode fiber, per the task force's 2023 draft text, which does not state the multimode fiber grade in the excerpt logged [R-528].
 
 ### 3.2 Chromatic dispersion
 
@@ -60,7 +60,7 @@ $$
 \Delta\tau = D\,L\,\Delta\lambda .
 $$
 
-A modulated signal's spectral width is at least its own bandwidth. Converting a frequency width $\Delta f$ to wavelength, $\Delta\lambda = \lambda^2\Delta f/c$ (from $\lambda = c/f$). Taking $\Delta f$ roughly equal to the symbol rate gives a useful rule: IM-DD works while $\Delta\tau$ is a small fraction of the UI. At 53.125 GBd and 1550 nm, 2 km of fiber with $D$ = 18 spreads a pulse by 15 ps, 0.8 UI: unusable. At 1310 nm with $D$ ≤ 3.5 the spread is at most 2.1 ps, 0.11 UI (Example 24-07.3). This is why 200 Gb/s-per-lane datacenter optics run in the O-band, and why their wavelength grids cluster near 1310 nm: the CWDM4 grid is 1271, 1291, 1311 and 1331 nm [R-529].
+A modulated signal's spectral width is at least its own bandwidth. Converting a frequency width $\Delta f$ to wavelength, $\Delta\lambda = \lambda^2\Delta f/c$ (from $\lambda = c/f$). Taking $\Delta f$ roughly equal to the symbol rate gives a useful rule: IM-DD works while $\Delta\tau$ is a small fraction of the UI. At 53.125 GBd and 1550 nm, 2 km of fiber with $D$ = 18 spreads a pulse by 15 ps, 0.8 UI: unusable. At 1310 nm with $D$ ≤ 3.5 (the worst case over 1285–1330 nm) the spread is at most 2.1 ps, 0.11 UI (Example 24-07.3). At 200 Gb/s per lane (113.4375 GBd) the 1550 nm spread over 2 km grows to 3.7 UI. This is why 100 and 200 Gb/s-per-lane datacenter optics run in the O-band, and why their wavelength grids cluster near 1310 nm: the CWDM4 grid is 1271, 1291, 1311 and 1331 nm [R-529].
 
 There is a second effect peculiar to IM-DD at 1550 nm: the two sidebands of an intensity-modulated signal acquire different phases from dispersion, and at certain frequencies they cancel at the photodiode (power fading). Coherent receivers and dispersion-compensating DSP avoid it; short-reach IM-DD avoids it by staying near zero dispersion.
 
@@ -69,7 +69,7 @@ There is a second effect peculiar to IM-DD at 1550 nm: the two sidebands of an i
 09-14 derived the laser diode's threshold and slope efficiency. For communications three types matter [R-529]:
 
 - **VCSELs** (vertical-cavity surface-emitting lasers) at 850 nm, directly modulated, cheap, low power, for multimode links. 200 Gb/s-per-lane VCSELs were demonstrated in 2025.
-- **EMLs** (electro-absorption modulated lasers): a single-frequency distributed-feedback (DFB) laser integrated with an electro-absorption modulator. A 2026 product pairs "a wavelength-locked DFB laser with a single-ended electro-absorption modulator" at 115 GBd PAM4 for 200 Gb/s DR and FR links up to 2 km.
+- **EMLs** (electro-absorption modulated lasers): a single-frequency distributed-feedback (DFB) laser integrated with an electro-absorption modulator. Lumentum's 200G EML (product page, read Nov 2026) pairs "a wavelength-locked DFB laser with a single-ended electro-absorption modulator" at 115 GBd PAM4 for 200 Gb/s DR and FR links up to 2 km [R-529].
 - **Continuous-wave (CW) lasers** feeding external silicon-photonic modulators: one high-power laser can be split among several modulators.
 
 Direct modulation, turning the laser's current up and down, is simplest but also shifts the laser's frequency with its power (**chirp**), which interacts with dispersion. External modulation separates the two jobs: the laser runs steadily and a modulator does the switching.
@@ -102,7 +102,7 @@ so a tiny index change swings the transmission at a fixed laser wavelength from 
 
 A photodiode of **responsivity** $\mathcal R$ produces a current $I = \mathcal R P$. With quantum efficiency η, $\mathcal R = \eta q\lambda/hc$ (04-10): at most 0.686 A/W at 850 nm, 1.057 A/W at 1310 nm and 1.250 A/W at 1550 nm (Example 24-07.1) [R-532]. Germanium-on-silicon photodiodes integrate with silicon photonics at 1310 nm.
 
-**The noise.** The photocurrent feeds a TIA (§3.6) whose input-referred noise current has a density $i_n$ in A/√Hz; over a bandwidth $B$ it has rms $\sigma = i_n\sqrt B$. For short-reach links this thermal noise usually dominates shot noise.
+**The noise.** The photocurrent feeds a TIA (§3.6) whose input-referred noise current has a density $i_n$ in A/√Hz; over a bandwidth $B$ it has rms $\sigma = i_n\sqrt B$. The photocurrent $I$ adds shot noise of variance $2qIB$, so in general $\sigma^2 = i_n^2B + 2qIB$. At Example 24-07.7's 10⁻¹² point the "1" level carries 48.7 µA, whose shot noise over 30 GHz is 0.68 µA rms against 3.46 µA of thermal noise: its variance is 3.9% of the thermal, so for short-reach links the thermal term dominates and this chapter neglects shot noise.
 
 **OOK sensitivity.** For on-off keying with average optical power $P_{avg}$ and infinite extinction ratio, the "1" level is $2P_{avg}$ and the "0" level is zero, so the current eye is $2\mathcal RP_{avg}$. With equal noise on both levels and the threshold in the middle (24-02), the Q factor is
 
@@ -169,7 +169,7 @@ $$
 
 ### Example 24-07.2 · Fiber loss and latency (tier A)
 
-**Setup.** With $n_g$ = 1.468, find (a) the group delay per kilometre and per metre, (b) the delay of a 500 m link, (c) the latency cut a hollow-core fiber ($n_g$ ≈ 1) would give, and (d) the loss of 2 km at 1310 nm and 10 km at 1550 nm at the G.652.D cabled maxima.
+**Setup.** With $n_g$ = 1.468, find (a) the group delay per kilometre and per metre, (b) the delay of a 500 m link, (c) the latency cut a hollow-core fiber ($n_g$ ≈ 1) would give, and (d) the loss of 2 km at 1310 nm and 10 km at 1550 nm at the cabled maxima of R-526's G.652.D datasheet.
 
 **Solution.**
 
@@ -193,7 +193,7 @@ $$
 
 **Units check.** ps/(nm·km) × km × nm = ps. ✓
 
-**Sanity check.** The O-band figure uses the worst-case dispersion over 1285–1330 nm; near 1310 nm it is smaller still. Doubling the symbol rate doubles both the spectral width and the UI's sensitivity, so dispersion limits grow as the square of the rate.
+**Sanity check.** The O-band figure uses the worst-case dispersion over 1285–1330 nm; near 1310 nm it is smaller still, while the outer CWDM4 lane at 1271 nm lies outside that range and sees more. Doubling the symbol rate doubles the spectral width and halves the UI, so the spread in UI grows as the square of the rate and the dispersion-limited reach falls as its square.
 
 ### Example 24-07.4 · Multimode reach (tier A)
 
@@ -225,7 +225,7 @@ $$
 
 ### Example 24-07.6 · A ring modulator and temperature (tier B)
 
-**Setup.** A silicon ring at 1310 nm has $n_g$ = 4.2 and $Q$ = 10,000; silicon's index rises by 1.8 × 10⁻⁴ per kelvin (all assumed typical values). Find (a) the resonance shift per kelvin, (b) the resonance linewidth and (c) the temperature change that moves the resonance by one linewidth. (d) What energy per bit does the ring's 20 fF driven with 1 V take?
+**Setup.** A silicon ring at 1310 nm has $n_g$ = 4.2 and $Q$ = 10,000; the waveguide's effective index rises by 1.8 × 10⁻⁴ per kelvin (all assumed typical values). Find (a) the resonance shift per kelvin, (b) the resonance linewidth and (c) the temperature change that moves the resonance by one linewidth. (d) What energy per bit does the ring's 20 fF driven with 1 V take?
 
 **Solution.**
 
@@ -279,7 +279,7 @@ $$
 - (c) $\sqrt{4kT/R_F}$ = **4.07** pA/√Hz.
 - (d) $c\Delta\lambda/\lambda^2$ = **3.49** THz; $\lambda^2\Delta f/c$ = **0.80** nm.
 
-**Units check.** Ω; 1/(Ω·F) = s⁻¹; √(J/Ω) /√s = A/√Hz. ✓
+**Units check.** Ω; 1/(Ω·F) = s⁻¹; √(J/Ω) = √(A²·s) = A/√Hz. ✓
 
 **Sanity check.** Without feedback, 1 kΩ and 100 fF would give 1.6 GHz; feedback buys the factor of 11. The resistor's noise is a fifth of Example 24-07.7's assumed total, so the amplifier's own noise dominates there.
 
@@ -354,6 +354,10 @@ $$
 | Txt 24-07.i | RF noise, 2 s.f. | 4.1 | pA/√Hz |
 | Txt 24-07.j | CWDM spacing, 2 s.f. | 3.5 | THz |
 | Txt 24-07.k | link margin, 1 s.f. | 6 | dB |
+| Txt 24-07.l | 1550 nm spread at 113.4375 GBd over 2 km | 3.7 | UI |
+| Txt 24-07.m | photocurrent of the 1 level at 1e-12 | 48.7 | µA |
+| Txt 24-07.n | its shot noise over 30 GHz | 0.68 | µA |
+| Txt 24-07.o | shot over thermal variance | 3.9 | % |
 
 ## 5. Simulate it
 
@@ -389,7 +393,7 @@ The lab is [labs/24-07-lab/](../labs/24-07-lab/README.md). `tia.cir` simulates E
 
 | Quantity | Value | Source |
 |---|---|---|
-| Single-mode cabled loss (G.652.D) | ≤ 0.36 dB/km at 1310 nm; ≤ 0.22 dB/km at 1550 nm | [R-526] |
+| Single-mode cabled loss (a G.652.D fiber's datasheet) | ≤ 0.36 dB/km at 1310 nm; ≤ 0.22 dB/km at 1550 nm | [R-526] |
 | Dispersion (G.652.D) | ≤ 3.5 ps/(nm·km) at 1285–1330 nm; ≤ 18 at 1550 nm | [R-526] |
 | Fiber latency | 4.9 µs/km (≈ 5 ns/m) | §3.1 |
 | Multimode EMB at 850 nm | 2,000 (OM3), 4,700 (OM4/OM5) MHz·km | [R-526] |
@@ -398,7 +402,7 @@ The lab is [labs/24-07-lab/](../labs/24-07-lab/README.md). `tia.cir` simulates E
 | TFLN modulator | ≈ 2 V·cm, < 0.5 dB loss, ≈ 100 GHz | [R-530] |
 | PAM4 optical penalty | 4.77 dB (optical) | §3.5 |
 | CWDM4 grid | 1271, 1291, 1311, 1331 nm | [R-529] |
-| 800G PMD reaches (802.3df) | VR8 50 m, SR8 100 m, DR8 500 m, DR8-2 2 km | [R-528] |
+| 800G PMD reaches (802.3df, 2023 draft text) | VR8 50 m, SR8 100 m, DR8 500 m, DR8-2 2 km | [R-528] |
 
 ## 8. Common mistakes
 
@@ -414,11 +418,11 @@ The lab is [labs/24-07-lab/](../labs/24-07-lab/README.md). `tia.cir` simulates E
 **State of the art (as of Nov 2026).**
 
 - *Fiber* [Established]. G.652.D single-mode fiber remains the datacenter standard. A 2025 hollow-core fiber reached 0.091 dB/km at 1550 nm with about 30% lower latency; reported deployment volumes are unconfirmed [R-526], [R-527].
-- *Sources* [Established for products; performance is vendor-stated]. 200 Gb/s-per-lane EMLs at 115 GBd PAM4 for DR/FR links to 2 km ship for 1.6 Tb/s modules; 1.6 Tb/s modules have been shown both with EMLs and with high-power CW lasers feeding silicon-photonic engines; 200 Gb/s VCSELs were demonstrated in a 1.6T-SR8 module in 2025 [R-529].
+- *Sources* [Established for products; performance is vendor-stated]. 200 Gb/s-per-lane EMLs at 115 GBd PAM4 for DR/FR links to 2 km are on vendors' product pages; at OFC 2026, 1.6 Tb/s modules were shown both with 200G EMLs and with high-power CW lasers feeding silicon-photonic engines; 200 Gb/s VCSELs were demonstrated in a 1.6T-SR8 module in 2025 [R-529].
 - *Modulators* [Established, peer-reviewed]. Silicon depletion remains the workhorse (≈ 2 V·cm); TFLN offers ≈ 2 V·cm with very low loss and ≈ 100 GHz bandwidth in devices a few millimetres long [R-530]; the 2018 TFLN demonstration reached 210 Gb/s at CMOS-compatible voltages [R-531].
 - *Standards* [Established]. IEEE 802.3df (approved 16 February 2024) defines 800 Gb/s PMDs from 50 m multimode to 2 km single-mode; 802.3dj extends to 200 Gb/s per lane [R-528], [R-519].
 
-**Why it matters commercially.** Optical components are a large, cyclical market tied to AI build-outs (24-08 gives the numbers). The physics in this chapter decides which technologies win which slots: VCSELs for cheap short multimode reaches, EMLs and silicon photonics for single-mode, TFLN where bandwidth and loss justify its cost. Analysts described EML and CW-laser supply as tight in 2026 (24-08 gives the source) [Industry estimate], which makes laser capacity a strategic question rather than a purchasing detail.
+**Why it matters commercially.** Optical components are a large, cyclical market tied to AI build-outs (24-08 gives the numbers). The physics in this chapter decides which technologies win which slots: VCSELs for cheap short multimode reaches, EMLs and silicon photonics for single-mode, TFLN where bandwidth and loss justify its cost. TrendForce described EML and CW-laser supply as tight in April 2026 [R-539] [Industry estimate], which makes laser capacity a strategic question rather than a purchasing detail.
 
 **Marketing vs Reality.**
 
@@ -441,7 +445,7 @@ The lab is [labs/24-07-lab/](../labs/24-07-lab/README.md). `tia.cir` simulates E
 
 <details><summary>Answer</summary>
 
-At datacenter distances loss is a fraction of a dB either way, but dispersion matters: near 1310 nm it is nearly zero, while at 1550 nm about 18 ps/(nm·km) would spread a 53 GBd pulse by most of a UI over 2 km, which IM-DD cannot undo.
+At datacenter distances loss is a fraction of a dB either way, but dispersion matters: near 1310 nm it is nearly zero, while at 1550 nm about 18 ps/(nm·km) would spread a 200 Gb/s-per-lane (113 GBd) pulse by about 3.7 UI over 2 km, which IM-DD cannot undo.
 
 </details>
 
@@ -465,7 +469,7 @@ A photodiode's current is proportional to optical power, so a factor of 3 in eye
 
 <details><summary>Answer</summary>
 
-The input capacitance charged through the feedback resistor, divided by $1 + A$: the amplifier holds its input nearly still, so $R_F$ looks $1 + A$ times smaller to the input capacitance, widening the bandwidth by that factor.
+The time constant $R_FC_{in}$ divided by $1 + A$: the amplifier holds its input nearly still, so $R_F$ looks $1 + A$ times smaller to the input capacitance, widening the bandwidth by that factor.
 
 </details>
 

@@ -22,10 +22,10 @@
 
 ## 1. Big picture
 
-24-07 treated an optical link as a laser, a modulator, a fiber and a photodiode. In a datacenter those parts are not discrete: they are integrated on a chip, packaged with electronics into a **transceiver** and plugged into a switch or network card by the hundreds of thousands. **Silicon photonics** builds the optical parts (waveguides, splitters, modulators, multiplexers and germanium photodiodes) on silicon wafers in CMOS-style fabs, so that optics inherits the yield, scale and lithographic precision of chipmaking. This chapter explains what silicon can and cannot do for light, how light gets on and off a chip, how the photonic chip meets its driver electronics, and what is inside an 800 Gb/s or 1.6 Tb/s pluggable module, including the DSP that dominates its power.
+24-07 treated an optical link as a laser, a modulator, a fiber and a photodiode. In a datacenter those parts are not discrete: they are integrated on a chip, packaged with electronics into a **transceiver** and plugged into a switch or network card by the hundreds of thousands. **Silicon photonics** builds the optical parts (waveguides, splitters, modulators, multiplexers and germanium photodiodes) on silicon wafers in CMOS-style fabs, so that optics inherits the yield, scale and lithographic precision of chipmaking. This chapter explains what silicon can and cannot do for light, how light gets on and off a chip, how the photonic chip meets its driver electronics, and what is inside an 800 Gb/s or 1.6 Tb/s pluggable module, including the DSP, which vendors treat as its largest removable power consumer.
 
 - **Every AI cluster's scale-out network** runs on optical transceivers: one at each end of every switch-to-switch and most server-to-switch links.
-- **Module power and cost** scale with the number of GPUs, and the DSP inside each module is the largest single consumer (24-09 is about removing it).
+- **Module power and cost** scale with the number of GPUs, and vendors treat the DSP inside each module as the largest consumer they can remove [Industry estimate; R-535] (24-09 is about removing it).
 - **Foundries now sell photonics** as a process: TSMC, GlobalFoundries and Samsung all have platforms aimed at AI optics.
 - **Coupling and packaging, not the photonic chip itself,** set much of the loss, yield and cost.
 - **The same building blocks** move into the switch package in co-packaged optics (24-09) and into optical I/O chiplets.
@@ -71,7 +71,7 @@ Nor can silicon **lase**. Its gap is indirect: an electron at the conduction-ban
 - **Flip-chip or micro-optic attach**: a finished laser die mounted on the PIC. Needs sub-micrometre alignment.
 - **Heterogeneous integration**: III-V material bonded to the silicon wafer and processed into lasers there. Lowest coupling loss; the laser's yield and reliability become the PIC's.
 
-Modulation in silicon uses the free-carrier plasma-dispersion effect of 24-07: removing or injecting carriers changes the index slightly. That is why silicon modulators are long (millimetres for an MZM) or resonant (rings).
+Modulation in silicon uses the **free-carrier plasma-dispersion effect**: free electrons and holes lower silicon's refractive index and add absorption, so changing their density in the waveguide changes the light's phase. A reverse-biased pn junction across the waveguide **depletes** carriers, which is fast (limited by the junction's RC) but weak; a forward-biased pin junction **injects** them, which is strong but slow (limited by carrier lifetime). Silicon lacks the linear electro-optic effect that lithium niobate uses, so the index change is small, which is why silicon modulators are long (millimetres for an MZM, 24-07) or resonant (rings).
 
 ### 3.2 Waveguides: guiding light by index contrast
 
@@ -129,7 +129,13 @@ $$
 
 The tolerance scales with the mode size: matched 4.6 µm modes lose 0.5 dB at 1.56 µm offset, matched 1.5 µm modes at 0.51 µm. Large modes are forgiving; small ones need active alignment, where the assembler moves the fiber while monitoring the light.
 
-**Tilt.** If the beams are tilted by a small angle $\alpha$, the phase of one field ramps across the other, $e^{jk_0\alpha x}$. The overlap of two equal Gaussians is then reduced by
+**Tilt.** If the beams are tilted by a small angle $\alpha$, the phase of one field ramps across the other, $e^{jk_0\alpha x}$. For two equal Gaussians of radius $w$, the field overlap in $x$ is
+
+$$
+\frac{\int e^{-2x^2/w^2}e^{jk_0\alpha x}dx}{\int e^{-2x^2/w^2}dx} = e^{-k_0^2\alpha^2w^2/8}
+$$
+
+(completing the square, as for the offset), and squaring it for power gives $e^{-(\pi w\alpha/\lambda)^2}$. The coupling is therefore reduced by
 
 $$
 \eta_\alpha = \exp\!\left[-\left(\frac{\alpha}{\theta_{div}}\right)^2\right], \qquad \theta_{div} = \frac{\lambda}{\pi w},
@@ -152,15 +158,23 @@ n_{eff}k_0 - \frac{2\pi}{\Lambda} = k_0\sin\theta
 \Lambda = \frac{\lambda}{n_{eff} - \sin\theta}.
 $$
 
-A typical design uses a small angle (about 10°) rather than vertical, so light reflected straight back into the waveguide does not resonate.
+Here $\theta$ is measured from the surface normal, positive when tilted toward the direction of propagation. A typical design uses a small angle (about 10°) rather than vertical: at vertical emission the grating also meets the second-order Bragg condition and reflects guided light straight back into the waveguide.
 
-**Why gratings are narrowband.** Rearranging, $\sin\theta = n_{eff} - \lambda/\Lambda$. Differentiating, and neglecting the change of $n_{eff}$ with wavelength (a first-order model; real dispersion makes it somewhat worse),
+**Why gratings are narrowband.** Rearranging, $\sin\theta = n_{eff} - \lambda/\Lambda$. Differentiating, and neglecting the change of $n_{eff}$ with wavelength (a first-order model; the Going deeper block below shows that real dispersion makes the steer larger),
 
 $$
 \frac{d\theta}{d\lambda} = -\frac{1}{\Lambda\cos\theta}.
 $$
 
 The diffracted beam steers by about a tenth of a degree per nanometre, while the fiber stays put. The tilt loss of §3.3 then gives the coupler's bandwidth: the loss reaches 1 dB when $(\Delta\theta/\theta_{div})^2 = 0.1\ln 10$. Example 24-08.4 finds a 1-dB bandwidth of about 43 nm at 1310 nm. That suits a single-wavelength parallel link (DR4, one wavelength on four fibers) but not CWDM4, whose 1271–1331 nm grid [R-529] spans 60 nm, so CWDM designs favour edge couplers or one grating per wavelength.
+
+> **Going deeper — the grating's own dispersion.** $n_{eff}$ falls with wavelength, $dn_{eff}/d\lambda = -(n_g - n_{eff})/\lambda$, where $n_g$ is the group index (24-07). Differentiating $\sin\theta = n_{eff}(\lambda) - \lambda/\Lambda$ with this term, and using $1/\Lambda = (n_{eff} - \sin\theta)/\lambda$, gives exactly
+>
+> $$
+> \frac{d\theta}{d\lambda} = -\frac{n_g - \sin\theta}{\lambda\cos\theta},
+> $$
+>
+> larger than the first-order $-(n_{eff} - \sin\theta)/(\lambda\cos\theta)$ by the ratio $(n_g - \sin\theta)/(n_{eff} - \sin\theta)$. In silicon waveguides $n_g$ well exceeds $n_{eff}$, so real grating couplers are narrower than the first-order model predicts.
 
 ### 3.5 Integrating electronics with photonics
 
@@ -191,7 +205,7 @@ $$
 f_{3dB} = f_0\sqrt{1 - 2\zeta^2 + \sqrt{(1 - 2\zeta^2)^2 + 1}}.
 $$
 
-A wire bond of about a millimetre has an inductance of the order of 1 nH; a hybrid bond's is tiny. Against a 20 fF ring and a 50 Ω driver, the wire bond resonates at 35.6 GHz with 13.1 dB of peaking, inside the 56.7 GHz Nyquist band of a 113.4375 GBd lane, which rings and closes the eye. The hybrid bond is flat to 196 GHz (Example 24-08.6). Lumped, low-capacitance modulators at 100+ GBd effectively require 3D integration; long MZMs instead use travelling-wave electrodes, terminated transmission lines (24-01), which trade the resonance for drive power.
+A wire bond of about a millimetre has an inductance of the order of 1 nH; a hybrid bond's is tiny. Against a 20 fF ring and a 50 Ω driver, the wire bond resonates at 35.6 GHz with 13.1 dB of peaking, inside the 56.7 GHz Nyquist band of a 113.4375 GBd lane, which rings and closes the eye. The hybrid bond shows no peaking and is −3 dB only at 196 GHz (Example 24-08.6). Lumped, low-capacitance modulators at 100+ GBd effectively require 3D integration; long MZMs instead use travelling-wave electrodes, terminated transmission lines (24-01), which trade the resonance for drive power.
 
 ### 3.6 The transmitter's optical budget
 
@@ -226,7 +240,7 @@ Inside a **retimed** module the DSP does four jobs:
 3. **Retiming.** It recovers the clock and makes fresh decisions at each boundary, so the host channel and the optical channel are budgeted separately.
 4. **FEC handling.** Depending on the standard it passes the host's FEC through or adds its own (24-04 discusses the concatenated inner code for 200 Gb/s-per-lane optics).
 
-Module power sits around 20 pJ/bit: 16 W typical for an 800 Gb/s twin-port module and 33.5 W maximum for a 1.6 Tb/s one [R-533], [R-534]. No primary source gives a clean percentage for the DSP's share, but vendor evidence for removing parts of it is consistent: Semtech quotes under 15 W for a 1.6 Tb/s linear-receive module against about 20 W for fully digital ones, and Marvell's 3 nm DSP cut module power by over 20% against its 5 nm generation [R-535].
+Module power sits around 20 pJ/bit: 16 W typical for an 800 Gb/s twin-port module and 33.5 W maximum for a 1.6 Tb/s one [R-533], [R-534]. No primary source gives a clean percentage for the DSP's share, but vendor evidence for removing parts of it is consistent: Semtech quotes under 15 W for a 1.6 Tb/s linear-receive module against about 20 W for fully digital ones, and Marvell claims its 3 nm DSP will cut 1.6 Tb/s module power by over 20% against its 5 nm generation [R-535].
 
 ### 3.8 Retimed against linear: how impairments accumulate
 
@@ -323,7 +337,7 @@ because testing first means only good PICs are assembled: the **known-good die**
 
 **Units check.** nm/(nm) dimensionless; rad/nm → °/nm by 180/π. ✓
 
-**Sanity check.** The grating steers its beam across a fiber's whole acceptance over a few tens of nanometres. A single-wavelength DR4 lane is unaffected; a CWDM4 grid spanning 60 nm would lose up to 2 dB at its outer channels, too much for a link budget of a few dB.
+**Sanity check.** The grating steers its beam across a fiber's whole acceptance over a few tens of nanometres. A single-wavelength DR4 lane is unaffected; a CWDM4 grid spanning 60 nm would lose up to 2 dB at its outer channels, too much for a link budget of a few dB. This first-order model is optimistic: with $n_{eff}$'s dispersion (Going deeper, §3.4) and a group index of 3.6–4.0 (assumed), the steer is 1.30–1.46 times larger and the 1-dB band about 33–29 nm.
 
 ### Example 24-08.5 · Laser power for a lane (tier B)
 
@@ -337,6 +351,8 @@ because testing first means only good PICs are assembled: the **known-good die**
 - (d) Two lasers: **0.20** W, **1.2**% of 16 W.
 
 **Units check.** dBm + dB = dBm; mW ÷ efficiency = mW. ✓
+
+**A caveat on the drive.** A 2 mm modulator at 2 V·cm has $V_\pi$ = 10 V. Driven with 2 V peak to peak at quadrature it reaches an extinction ratio of only 1.89 (2.77 dB), whose penalty of 5.10 dB (24-07 §3.5) the −8.0 dBm requirement is taken to include; a longer modulator would raise the extinction ratio at the cost of more insertion loss.
 
 **Sanity check.** The modulator (4 dB insertion plus 3 dB bias) and the split cost the most. Even if real laser bias, control and cooling overheads multiplied the 0.20 W several times, the light would remain a small part of the module: most of the 16 W is electronics.
 
@@ -385,7 +401,7 @@ because testing first means only good PICs are assembled: the **known-good die**
 
 **Units check.** W ÷ (bit/s) = J/bit. ✓
 
-**Sanity check.** Doubling the lane rate doubled module power at about constant energy per bit, so optics power scales with bandwidth. Note that the figures compare different things: a typical figure, a maximum figure and a vendor's round number for "digital solutions". Before comparing pJ/bit claims, align typical against maximum and the module types.
+**Sanity check.** As published, the two NVIDIA modules show similar energy per bit, but one figure is typical and the other a maximum, so they cannot establish how module power scales with lane rate; a typical-against-typical comparison would likely favour the 1.6 Tb/s module. Note that the figures compare different things: a typical figure, a maximum figure and a vendor's round number for "digital solutions". Before comparing pJ/bit claims, align typical against maximum and the module types.
 
 ### Example 24-08.9 · Yield and wafer test (tier B)
 
@@ -481,6 +497,14 @@ because testing first means only good PICs are assembled: the **known-good die**
 | Txt 24-08.e | fiber critical angle, 2 s.f. | 85 | ° |
 | Txt 24-08.f | LightCounting growth per year, 2 s.f. | 20 | % |
 | Txt 24-08.g | TrendForce growth, 2 s.f. | 58 | % |
+| Txt 24-08.h | dispersive steer ratio, n_g 3.6 | 1.30 | |
+| Txt 24-08.i | dispersive steer ratio, n_g 4.0 | 1.46 | |
+| Txt 24-08.j | 1-dB band, n_g 3.6 | 33 | nm |
+| Txt 24-08.k | 1-dB band, n_g 4.0 | 29 | nm |
+| Txt 24-08.l | MZM half-wave voltage, 2 mm | 10 | V |
+| Txt 24-08.m | extinction ratio at 2 V pp | 1.89 | |
+| Txt 24-08.n | extinction ratio at 2 V pp | 2.77 | dB |
+| Txt 24-08.o | its penalty | 5.10 | dB |
 | Txt 24-08.c | grating steer per nm, 1 s.f. | 0.1 | °/nm |
 | Txt 24-08.d | wire-bond peaking frequency, 2 s.f. | 35 | GHz |
 
@@ -494,7 +518,7 @@ The lab is [labs/24-08-lab/](../labs/24-08-lab/README.md). `bond.cir` simulates 
 
 ![Magnitude response of a 20 fF modulator driven through a 1 nH wire bond and through a 10 pH hybrid bond, with the Nyquist frequency of a 113 GBd lane marked](../../../assets/figures/24-08/bond.svg)
 
-*Figure 2. A 50 Ω driver into a 20 fF ring through a 1 nH wire bond (13 dB resonance at 35 GHz) and a 10 pH hybrid bond (flat to 196 GHz). The dashed line is the 56.7 GHz Nyquist frequency of 113.4375 GBd (Example 24-08.6).*
+*Figure 2. A 50 Ω driver into a 20 fF ring through a 1 nH wire bond (13 dB resonance at 35 GHz) and a 10 pH hybrid bond (no peaking, −3 dB at 196 GHz). The dashed line is the 56.7 GHz Nyquist frequency of 113.4375 GBd (Example 24-08.6).*
 
 **Predict, then run:**
 
@@ -511,7 +535,7 @@ The lab is [labs/24-08-lab/](../labs/24-08-lab/README.md). `bond.cir` simulates 
 | Larger spot-size converter | Coupling and alignment tolerance | Area, taper length | Photonics designer |
 | One laser split to $N$ lanes | Fewer lasers, lower cost and failure rate | $10\log_{10}N$ dB more laser power | Module architect |
 | 3D-stacked EIC on PIC | Bandwidth, energy per bit | Bonding cost, thermal coupling | Packaging and product lead |
-| Retimed (DSP) module | Separate, robust budgets for each segment | Power (the largest single consumer), latency, cost | System architect and customer |
+| Retimed (DSP) module | Separate, robust budgets for each segment | Power (the largest removable consumer, by vendors' accounts), latency, cost | System architect and customer |
 | Wafer-level optical test | Fewer bad PICs assembled | Test time, grating couplers on die | Test and operations |
 | More lanes per PIC | Bandwidth per module | Compound yield | Product line manager |
 
@@ -525,8 +549,8 @@ The lab is [labs/24-08-lab/](../labs/24-08-lab/README.md). `bond.cir` simulates 
 | Single-mode fiber MFD | 9.2 µm at 1310 nm | [R-526] |
 | Bare fiber-to-silicon coupling | ≈ −13 dB without mode conversion | Example 24-08.3 |
 | Grating coupler steer | ≈ 0.1°/nm | Example 24-08.4 |
-| 800G twin-port DR4 module | 16 W typical, 17 W max | [R-533] |
-| 1.6T twin-port DR4 module | 33.5 W max | [R-534] |
+| 800G twin-port DR4 module (as of Nov 2026) | 16 W typical, 17 W max | [R-533] |
+| 1.6T twin-port DR4 module (as of Nov 2026) | 33.5 W max | [R-534] |
 | Pluggable energy per bit | ≈ 20 pJ/bit | Example 24-08.8 |
 | Retimed vs linear | $1/Q^2$ adds linearly; BER adds when retimed | §3.8 |
 
@@ -547,7 +571,7 @@ The lab is [labs/24-08-lab/](../labs/24-08-lab/README.md). `bond.cir` simulates 
 - *Pluggables* [Established for datasheets]. 800 Gb/s twin-port DR4 modules run at about 16 W and 1.6 Tb/s twin-port modules at up to 33.5 W, both with 1310 nm single-mode optics [R-533], [R-534]. 200 Gb/s-per-lane optics use 113–115 GBd PAM4 (24-04, [R-529]).
 - *DSPs* [Industry estimate, vendor claims]. Marvell's 3 nm 1.6 Tb/s DSP (announced 3 Dec 2024) claims over 20% lower module power than its 5 nm generation; LightCounting expects PAM4 DSP shipments to more than triple from 2024 to 2029, to nearly 127 million a year [R-535].
 - *Foundry platforms* [Industry estimate: roadmaps as reported]. TSMC's COUPE stacks a 65 nm EIC on a PIC with SoIC-X; TSMC plans its first 200 Gb/s-per-wavelength micro-ring modulator in production in 2026, with density rising from 0.5 to 4 Tb/s/mm by 2030 [R-537]. GlobalFoundries launched the monolithic Fotonix platform in 2022 and on 17 Nov 2025 announced its acquisition of Singapore's Advanced Micro Foundry, calling itself the largest pure-play silicon-photonics foundry by revenue; Samsung targets 5 pJ/bit for a stacked engine in 2027, from about 10 pJ/bit [R-538].
-- *Optical I/O chiplets* [Established: conference disclosure]. Ayar Labs' TeraPHY carries 8.192 Tb/s through 16 UCIe-S modules and 8 optical ports, each with 16 wavelengths at 32 Gb/s NRZ per direction [R-540].
+- *Optical I/O chiplets* [Established: conference disclosure]. Ayar Labs' TeraPHY carries 8.192 Tb/s bidirectional (4.096 Tb/s each way) through 16 UCIe-S modules and 8 optical ports, each with 16 wavelengths at 32 Gb/s NRZ per direction [R-540].
 - *Standards* [Established; perishable]. IEEE P802.3dj (200 Gb/s per lane) passed its third Standards Association recirculation on 10 Oct 2026 with 133 approve and 3 disapprove votes and is on the 8 Dec 2026 RevCom agenda; it was not yet approved when checked [R-536], [R-519].
 - *Market* [Industry estimate; contested by scope]. LightCounting put AI-cluster Ethernet optics plus CPO at $8 B in 2025, rising to $20 B in 2030 (about 20% a year); TrendForce put AI optical transceivers at $16.5 B in 2025 and $26 B in 2026 (about 58%); in October 2026 LightCounting forecast 120% Ethernet transceiver growth for 2026 [R-539]. The ranges differ mainly in scope (which products, which customers), so ask what is counted before comparing.
 

@@ -41,11 +41,13 @@
 | Lab 24-07.i | OOK power for 1e-12 | -15.7 | dBm |
 | Lab 24-07.j | PAM4 power for 1e-12 | -10.9 | dBm |
 | Lab 24-07.k | PAM4 minus OOK at 1e-12 | 4.75 | dB |
+| Lab 24-07.l | 3 dB extinction ratio | 2.0 | |
+| Lab 24-07.m | its penalty | 4.8 | dB |
 
 - Part 1: ngspice gives 909 Ω and 17.5 GHz, as the formulas predict; doubling $R_F$ halves the bandwidth to 8.75 GHz while halving the resistor's noise power.
 - Part 2: at 1550 nm the pulse broadens by 2.09 over 2 km (the dispersion length is 1.09 km); at 1310 nm by only 1.032. The FFT propagation matches the analytic factor to many digits.
 - Part 3: a half-$V_\pi$ drive at quadrature gives 7.66 dB of extinction; 2.3 K moves the ring's notch 0.129 nm, one linewidth.
-- Part 4: OOK reaches 10⁻¹² at −15.7 dBm and PAM4 at −10.9 dBm, 4.75 dB apart: a hair less than the 4.77 dB eye ratio, because PAM4's BER is three quarters of its symbol-error probability.
+- Part 4: OOK reaches 10⁻¹² at −15.7 dBm and PAM4 at −10.9 dBm, 4.75 dB apart: a hair less than the 4.77 dB eye ratio, because Gray-coded PAM4's BER is $0.75\,Q$ (symbol errors $1.5\,Q$, two bits per symbol), slightly below OOK's $Q$ at the same eye.
 
 ## Discussion
 
@@ -69,7 +71,7 @@
 
    <details><summary>Answer</summary>
 
-   It shifts them right by $10\log_{10}((ER + 1)/(ER - 1))$ with $ER$ = 2, that is 4.77 dB, as much as going from OOK to PAM4.
+   It shifts them right by $10\log_{10}((ER + 1)/(ER - 1))$ with $ER = 10^{0.3}$ = 2.0, that is about 4.8 dB, nearly as much as going from OOK to PAM4.
 
    </details>
 

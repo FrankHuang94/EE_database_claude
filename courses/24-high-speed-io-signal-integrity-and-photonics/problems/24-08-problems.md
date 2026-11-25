@@ -37,7 +37,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 24-08.5 [B]
 
-**An FR4 lane with an EML.** A CWDM4 lane at 2 km must deliver −7.0 dBm with 2 dB margin. The fiber loses 0.36 dB/km [R-526]; two connectors lose 0.5 dB each; the multiplexer loses 1.5 dB; the EML's modulator section costs 6 dB of average power relative to its laser section (all assumed). Find (a) the laser section's required output in dBm and (b) in mW, and (c) the total for four lanes in mW.
+**An FR4 lane with an EML.** A CWDM4 lane at 2 km must deliver −7.0 dBm with 2 dB margin. The fiber loses 0.36 dB/km [R-526]; two connectors lose 0.5 dB each; the multiplexer loses 1.5 dB (the −7.0 dBm requirement is at the receiver, after its demultiplexer); the EML's modulator section costs 6 dB of average power relative to its laser section (all assumed). Find (a) the laser section's required output in dBm and (b) in mW, and (c) the total for four lanes in mW.
 
 ### Problem 24-08.6 [B]
 
@@ -65,7 +65,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 24-08.12 [C]
 
-**A grating coupler for CWDM4?** *(lab)* Example 24-08.4's grating is centred at 1301 nm, in the middle of the CWDM4 grid (1271, 1291, 1311 and 1331 nm). Find the tilt loss of (a) the outer and (b) the inner channels. (c) What would you recommend?
+**A grating coupler for CWDM4?** *(lab)* Re-centre Example 24-08.4's grating at 1301 nm (same steer and divergence), in the middle of the CWDM4 grid (1271, 1291, 1311 and 1331 nm). Find the tilt loss of (a) the outer and (b) the inner channels. (c) What would you recommend?
 
 ### Problem 24-08.13 [C]
 

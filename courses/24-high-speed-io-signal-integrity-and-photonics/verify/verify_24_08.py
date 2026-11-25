@@ -302,4 +302,22 @@ v.check("24-08.11b", 100 * (26 / 16.5 - 1))
 v.check("Txt 24-08.f", 100 * cagr)
 v.check("Txt 24-08.g", 100 * (26 / 16.5 - 1))
 
+# ---------------------------------------------------------------- audit additions
+th10 = math.radians(10.0)
+for key, ng, bkey in (("h", 3.6, "j"), ("i", 4.0, "k")):
+    def ang_disp(lam, ng=ng):  # n_eff(lambda) with dn/dlambda = -(ng - neff)/lambda about 1310 nm
+        neff_l = 2.8 - (ng - 2.8) / 1310.0 * (lam - 1310.0)
+        return math.degrees(math.asin(neff_l - lam / per4))
+    steer = (ang_disp(1309.99) - ang_disp(1310.01)) / 0.02
+    v.check(f"Txt 24-08.{key}", steer / disp4)
+    v.check(f"Txt 24-08.{bkey}", 2 * a1db / steer)
+v.check("Txt 24-08.l", 2.0 / 0.2)
+mzm_field = lambda dphi: abs(0.5 * (np.exp(0.5j * dphi) + np.exp(-0.5j * dphi))) ** 2  # noqa: E731
+hi_d, lo_d = mzm_field(math.pi / 2 - math.pi * 1.0 / 10), mzm_field(math.pi / 2 + math.pi * 1.0 / 10)
+v.check("Txt 24-08.m", hi_d / lo_d)
+v.check("Txt 24-08.n", db(hi_d / lo_d))
+v.check("Txt 24-08.o", db((hi_d / lo_d + 1) / (hi_d / lo_d - 1)))
+v.check("24-08.3e0", 4.6 / 2.0)
+v.check("24-08.3e", (2 / 2.0 ** 2) / (2 / 4.6 ** 2))
+
 sys.exit(v.finish())
