@@ -4532,7 +4532,7 @@ R&D % = R&D ÷ revenue.
 - **ABB technical note 9AKK107319 (2018)** [Established]: class names; IE1 11 kW 4-pole 50 Hz 87.6%.
 - **ABB product note 9AKK107424 EN 03-2021 and catalog 9AKK105944 (02-2020)** [Established]: M3BP 160MLA 4, 11 kW, 400 V 50 Hz: IE4 1477 r/min, η 93.3/93.4/92.9%, cos φ 0.79, 21.6 A, I_S/I_N 7.6, T_N 71.1 Nm, T_l/T_N 2.7, T_b/T_N 3.7, 188 kg; IE2 version 1466 r/min, 135 kg.
 - **US DOE, *Premium Efficiency Motor Selection and Application Guide*, DOE/GO-102014-4107 (Feb 2014), Table 6-3 (from NEMA MG 1-2011)** [Established]: Design B starting current 600–700%, locked-rotor torque 70–275%, breakdown torque 175–300%, slip 1–5%; Design D locked-rotor and breakdown torque 275%, slip 5–8%; "Most induction motors are Design B".
-- **Sources:** [EU 2019/1781](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02019R1781-20230124); [10 CFR 431.25](https://www.ecfr.gov/current/title-10/chapter-II/subchapter-D/part-431/subpart-B/section-431.25); [DOE rule](https://www.govinfo.gov/content/pkg/FR-2023-06-01/pdf/2023-10019.pdf); [IEC preview](https://cdn.standards.iteh.ai/samples/iec/iec-60034-30-1-2025/10c5fa52ef7d431a9284e966e3b4ff6a/iec-60034-30-1-2025.pdf); [ABB note](https://library.e.abb.com/public/db64d153e3c346938e18916e66fb1d0d/9AKK107319%20EN%2005-2018_20848_ABB_Technical_note_IEC_60034_30_1.pdf); [ABB IE4](https://library.e.abb.com/public/833c42cc056142d7a5444041132b03a7/9AKK107424%20EN%2003-2021%20PPM%20IE4.pdf); [ABB catalog](https://library.e.abb.com/public/9bd14e5503604a3aadf50c71c7c75c29/Catalogue_Moteurs_Process_Performance_9AKK105944_02-2020_FR_06.pdf); [DOE guide](https://www.energy.gov/sites/prod/files/2014/04/f15/amo_motors_handbook_web.pdf). Checked Nov 2026.
+- **Sources:** [EU 2019/1781](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02019R1781-20230124); [10 CFR 431.25](https://www.ecfr.gov/current/title-10/section-431.25); [DOE rule](https://www.govinfo.gov/content/pkg/FR-2023-06-01/pdf/2023-10019.pdf); [IEC preview](https://cdn.standards.iteh.ai/samples/iec/iec-60034-30-1-2025/10c5fa52ef7d431a9284e966e3b4ff6a/iec-60034-30-1-2025.pdf); [ABB note](https://library.e.abb.com/public/db64d153e3c346938e18916e66fb1d0d/9AKK107319%20EN%2005-2018_20848_ABB_Technical_note_IEC_60034_30_1.pdf); [ABB IE4](https://library.e.abb.com/public/833c42cc056142d7a5444041132b03a7/9AKK107424%20EN%2003-2021%20PPM%20IE4.pdf); [ABB catalog](https://library.e.abb.com/public/9bd14e5503604a3aadf50c71c7c75c29/Catalogue_Moteurs_Process_Performance_9AKK105944_02-2020_FR_06.pdf); [DOE guide](https://www.energy.gov/sites/prod/files/2014/04/f15/amo_motors_handbook_web.pdf). Checked Nov 2026.
 
 ## R-450 · EV traction motors and inverters (Course 22)
 
@@ -4553,3 +4553,58 @@ R&D % = R&D ÷ revenue.
 - **IEA, *The Role of Critical Minerals in Clean Energy Transitions* (May 2021, revised Mar 2022)** [Industry estimate]: "Over 90% of the EVs marketed today use permanent-magnet synchronous motors"; "neodymium (0.25–0.50 kg/vehicle) and other REEs (0.06–0.35 kg/vehicle)"; induction motors need "copper (11–24 kg/vehicle)" against "copper (3–6 kg/vehicle)" for PM motors.
 - **US DOE, *Rare Earth Permanent Magnets: Supply Chain Deep Dive Assessment* (24 Feb 2022)** [Established for shares; Industry estimate for content]: "Each electric vehicle motor typically requires 1-2 kg of permanent magnet material"; China "58% share of annual global rare earth mining in 2020" and "92% share of annual global magnet production".
 - **Sources:** [IEA 2021](https://iea.blob.core.windows.net/assets/ffd2a83b-8c30-4e9d-980a-52b6d9a86fdc/TheRoleofCriticalMineralsinCleanEnergyTransitions.pdf); [DOE 2022](https://www.energy.gov/sites/default/files/2022-02/Neodymium%20Magnets%20Supply%20Chain%20Report%20-%20Final.pdf). Checked Nov 2026.
+
+## R-452 · Datacenter electricity demand (Course 22)
+
+*Read on 25 Nov 2026 by a research subagent.*
+
+- **US DOE release on LBNL's *2024 United States Data Center Energy Usage Report* (LBNL-2001637), 20 Dec 2024** [Established for 2023; Industry estimate for 2028]: datacenters "consumed about 4.4% of total U.S. electricity in 2023 and are expected to consume approximately 6.7 to 12% ... by 2028"; "58 TWh in 2014 to 176 TWh in 2023 ... between 325 to 580 TWh by 2028".
+- **LBNL, *United States Data Center Energy Usage Report: 2025 Update*, LBNL-2001758 (June 2026)** [Established for 2024; Industry estimate for projections]: 2024 "192 terawatt-hours (TWh), accounting for 4.7% of total U.S. electricity consumption"; 2030 reference 649 TWh (11.8%), range "521–843 TWh, equal to 9.5–15.3%"; datacenters 33% of US load growth 2024–2030.
+- **IEA, *Energy and AI* (Apr 2025, CC BY 4.0; read from the EU BUILD UP mirror)** [Industry estimate]: "around 1.5% of the world's electricity consumption in 2024, or 415 terawatt-hours (TWh)"; 2030 base case "around 945 TWh".
+- **Sources:** [DOE release](https://www.energy.gov/articles/doe-releases-new-report-evaluating-increase-electricity-demand-data-centers); [LBNL 2025 update](https://www.energy.gov/documents/united-states-data-center-energy-usage-report-2025-update) (doi:10.71468/P1RP4F); [IEA Energy and AI, EU BUILD UP copy](https://build-up.ec.europa.eu/system/files/2025-04/PChtNmAZVk_11_04_2025_145800.pdf). Checked Nov 2026.
+
+## R-453 · US generation mix, 2025 (Course 22)
+
+*Read on 25 Nov 2026 by a research subagent.*
+
+- **US EIA, *Electric Power Monthly*, Tables 1.1 and 1.1.A (released 24 Nov 2026; 2025 final)** [Established]: utility-scale total 4,425,029 GWh; shares computed from the table: natural gas 40.9%, nuclear 17.7%, coal 16.6%, wind 10.4%, utility-scale solar 6.8%, hydro 5.5%.
+- **Sources:** [EIA EPM Table 1.1](https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=epmt_1_01). Checked Nov 2026.
+
+## R-454 · Inertia, RoCoF and inverter-based-resource disturbances (Course 22)
+
+*Read on 25 Nov 2026 by a research subagent.*
+
+- **ENTSO-E, *Inertia and Rate of Change of Frequency (RoCoF)* v17 (16 Dec 2020)** [Established]: mean inertia constants nuclear 5.9 s, gas and hard coal 4.2 s, lignite 3.8 s, hydro 2.7–3.7 s, wind and solar 0; "transients with RoCoF higher than 1 Hz/s are not manageable by system protections".
+- **ENTSO-E RoCoF withstand guidance (31 Jan 2018)** [Established]: ±2 Hz/s over 500 ms, ±1.5 Hz/s over 1000 ms, ±1.25 Hz/s over 2000 ms.
+- **ERCOT inertia white paper (rev. 2 Dec 2024)** [Established]: critical inertia about 100 GW·s for a 2,805 MW loss; lowest recorded 109 GW·s on 22 Mar 2021; IBR inertia 0.
+- **NERC, *Odessa Disturbance* (Sep 2021)** [Established]: total loss 1,340 MW, of which solar PV 1,112 MW; the largest single cause PLL loss of synchronism (389 MW).
+- **NERC, *2022 Odessa Disturbance* (Dec 2022)** [Established]: 844 MW synchronous plus 1,711 MW IBR, "a total loss of 2,555 MW"; the event "nearly exceeded" the Texas resource-loss protection criteria.
+- **Sources:** [ENTSO-E inertia](https://eepublicdownloads.azureedge.net/clean-documents/SOC%20documents/Inertia%20and%20RoCoF_v17_clean.pdf); [ENTSO-E RoCoF](https://eepublicdownloads.entsoe.eu/clean-documents/Network%20codes%20documents/NC%20RfG/IGD_RoCoF_withstand_capability_final.pdf); [ERCOT](https://www.ercot.com/files/docs/2018/04/04/Inertia_Basic%20Concepts%20and%20Impacts%20on%20the%20ERCOT%20Grid_2024.docx); [NERC 2021](https://www.nerc.com/pa/rrm/ea/Documents/Odessa_Disturbance_Report.pdf); [NERC 2022](https://www.nerc.com/comm/RSTC_Reliability_Guidelines/NERC_2022_Odessa_Disturbance_Report%20(1).pdf). Checked Nov 2026.
+
+## R-455 · Large loads and the bulk power system (Course 22)
+
+*Read on 25 Nov 2026 by a research subagent.*
+
+- **NERC, *Incident Review: Considering Simultaneous Voltage-Sensitive Load Reductions* (8 Jan 2025)** [Established]: 10 Jul 2024; a lightning-arrester failure on a 230 kV line and auto-reclosing produced "6 successive system faults in an 82-second period"; about 1,500 MW of "exclusively data center-type load" "transferred their loads to their backup power systems"; about 1,260 MW stayed off for hours; frequency peaked at 60.047 Hz. The review names only the Eastern Interconnection, not a state.
+- **NERC Large Loads Task Force white paper (Jul 2025)** [Established]: datacenter ramps such as 450 MW to 40 MW in 36 s (it gives 60.053 Hz for the same event, conflicting with the incident review's 60.047 Hz; neither frequency is used).
+- **NERC Level 2 Alert (9 Sep 2025)** [Established]: "multiple events during which 1,000+ MW of unexpected Large Loads output reduction occurred".
+- **NERC Level 3 Alert (4 May 2026; copy hosted by NYSRC)** [Established as proposed]: registering a "Computational Load Entity" of 20 MW or more connected at 60 kV or above.
+- **Sources:** [NERC incident review](https://www.nerc.com/pa/rrm/ea/Documents/Incident_Review_Large_Load_Loss.pdf); [NERC LLTF white paper](https://www.nerc.com/comm/RSTC_Reliability_Guidelines/Whitepaper%20Characteristics%20and%20Risks%20of%20Emerging%20Large%20Loads.pdf); [NERC Level 2 alert](https://www.nerc.com/pa/rrm/bpsa/Alerts%20DL/NERC%20Alert%20Level%202%20%20Large%20Loads.pdf); [NERC Level 3 alert, NYSRC copy](https://www.nysrc.org/wp-content/uploads/2026/06/NYSRC-LLWG-5-Att.-5-NERC-Level-3-Alert-1.pdf). Checked Nov 2026.
+
+## R-456 · Interconnection queues, line parameters and storage (Course 22)
+
+*Read on 25 Nov 2026 by a research subagent.*
+
+- **LBNL, *Queued Up: 2025 Edition* (Dec 2025, data through 2024)** [Established]: about 2,290 GW active (1,400 GW generation, 890 GW storage); projects built in 2024 took 55 months from request to commercial operation (36 in 2015, 22 in 2008); about 13% of capacity requested in 2000–2019 reached operation.
+- **APPA report on LBNL's *Queued Up: 2026 Edition* (1 Jul 2026)** [Established as reported]: 2,061 GW active at end of 2025; request to operation now "exceeds 5 years".
+- **University of Utah ECE 3600 notes (Spring 2025)** [Established, typical values]: 230 kV 0.489 Ω/km, Zc 380 Ω, SIL 140 MW; 345 kV 0.376 Ω/km, 290 Ω, 410 MW; 500 kV 0.326 Ω/km, 250 Ω, 1000 MW; 765 kV 0.339 Ω/km, 260 Ω, 2250 MW; loadability 3 × SIL below 80 km, 1.75 × SIL for 80–240 km, SIL beyond. (Iowa State notes give 320 MW for 345 kV SIL [Contested].)
+- **US EIA, *Today in Energy* (12 Mar 2025, 20 Feb 2026, 7 Aug 2026)** [Established for history; planned additions Industry estimate]: 10.4 GW of batteries added in 2024; "a record 15 GW added in 2025"; 43.6 GW installed at end of 2025, "nearly 52 GW" by mid-2026.
+- **Sources:** [Queued Up 2025](https://emp.lbl.gov/sites/default/files/2025-12/Queued%20Up%202025%20Edition%20-%2012.15.2025.pdf); [APPA](https://www.publicpower.org/periodical/article/backlog-power-plants-seeking-transmission-grid-connection-eased-somewhat-2025-lbnl); [Utah ECE 3600](https://my.ece.utah.edu/~ece3600/Notes_TransmissionLines_S25.pdf); [Iowa State EE 552](https://home.engineering.iastate.edu/jdm/ee552/Transmission.pdf); EIA Today in Energy [64705](https://www.eia.gov/todayinenergy/detail.php?id=64705), [67205](https://www.eia.gov/todayinenergy/detail.php?id=67205), [67925](https://www.eia.gov/todayinenergy/detail.php?id=67925). Checked Nov 2026.
+
+## R-457 · IEEE 1547-2018 and IEEE 2800-2022 (Course 22)
+
+*Read on 25 Nov 2026 by a research subagent.*
+
+- **EPRI (Boemer and Walling), IEEE 1547-2018 overview, PJM workshop (Oct 2018; hosted by the Public Utilities Commission of Ohio)** [Established]: categories I ("Essential"), II (based on NERC PRC-024), III (California Rule 21 and Hawaii Rule 14H, "mandatorily requires momentary cessation"); "DER must restore output to 80% of pre-disturbance active current within 0.4 s".
+- **EPRI/NAGF/NATF/NERC joint webinar on IEEE 2800-2022 (3 May 2022)** [Established]: below 50% voltage, apparent current at least 90% of pre-disturbance; current step response ≤ 2.5 cycles, settling ≤ 4 cycles for non-Type III units; fast frequency response time adjustable to no more than 1 s.
+- **Sources:** [EPRI 1547 deck](https://dam.assets.ohio.gov/image/upload/puco.ohio.gov/empliibrary/files/DER/2018-5-epri-crash-course-ieee-standard-1547-2018.pdf); [IEEE 2800 joint webinar](https://www.nerc.com/comm/RSTC/IRPS/IEEE_2800-2022_EPRI-NAGF-NATF-NERC_May_3-2022_Joint_Webinar.pdf). Checked Nov 2026.

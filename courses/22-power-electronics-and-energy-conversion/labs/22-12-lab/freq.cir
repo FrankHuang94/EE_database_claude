@@ -1,0 +1,26 @@
+* Lab 22-12, Part 2 -- frequency response after losing 1.8 GW in a 60 Hz system with 50 GW of synchronous
+* generation (H = 4 s, kinetic energy 200 GW s), 5% governor droop with a 5 s first-order lag, and 1000 MW/Hz of
+* load damping. Node df is the frequency deviation in Hz (a 1 F capacitor integrating the swing equation); node pg
+* is the governor's extra output in MW (a capacitor of 5 F with a 1 ohm-equivalent behavioral current).
+* EXPECT rocof0 key:../../chapters/22-12-power-systems-fundamentals.md#Ex_22-12.7a rtol=2e-3
+* EXPECT nadir key:README.md#Lab_22-12.a rtol=2e-3
+* EXPECT tnadir key:README.md#Lab_22-12.b rtol=5e-3
+* EXPECT fss key:README.md#Lab_22-12.c rtol=2e-3
+.param DP=1800 EK=200000 F0=60 S=50000 R=0.05 TG=5 D=1000
+Cdf df 0 1
+Bdf 0 df I = (V(pg) - {DP} - {D}*V(df))*{F0}/(2*{EK})
+Cpg pg 0 {TG}
+Bpg 0 pg I = -({S}/({R}*{F0}))*V(df) - V(pg)
+.ic v(df)=0 v(pg)=0
+.control
+tran 1m 60 0 1m uic
+let dfdt = deriv(v(df))
+meas tran rocraw find dfdt at=0.01
+meas tran nmin min v(df)
+meas tran tnadir min_at v(df)
+meas tran fss find v(df) at=60
+let nadir = -nmin
+let rocof0 = -rocraw
+print nadir rocof0
+.endc
+.end

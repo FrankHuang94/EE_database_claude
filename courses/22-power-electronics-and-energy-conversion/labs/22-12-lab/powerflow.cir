@@ -1,0 +1,24 @@
+* Lab 22-12, Part 1 -- Example 22-12.4 in volts and ohms: per phase, bus 1 at 230 kV/sqrt(3) leads bus 2 at
+* 0.98 of that by 10 degrees, through X = 0.1 pu on a 100 MVA, 230 kV base (52.9 ohm). AC analysis at 60 Hz gives
+* the phasor current; three-phase P and Q follow from S = 3 V I*.
+* EXPECT pmw key:../../chapters/22-12-power-systems-fundamentals.md#Ex_22-12.4b rtol=3e-3
+* EXPECT q1 key:../../chapters/22-12-power-systems-fundamentals.md#Ex_22-12.4c rtol=3e-3
+* EXPECT q2 key:../../chapters/22-12-power-systems-fundamentals.md#Ex_22-12.4d rtol=1e-2
+V1 b1 0 ac 132790.562 10
+Vs b1 a 0
+Lx a b2 0.140321
+V2 b2 0 ac 130134.751 0
+.control
+ac lin 1 60 60
+let vr = real(v(b1))
+let vi = imag(v(b1))
+let ir = real(i(vs))
+let ii = imag(i(vs))
+let pmw = 3*(vr*ir + vi*ii)/1e6
+let q1 = 3*(vi*ir - vr*ii)/1e8
+let v2r = real(v(b2))
+let v2i = imag(v(b2))
+let q2 = 3*(v2i*ir - v2r*ii)/1e8
+print pmw q1 q2
+.endc
+.end

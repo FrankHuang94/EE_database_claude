@@ -81,7 +81,7 @@ The full map, with university equivalents, textbook alignment, objectives and ch
 | 6 | [19 · Digital VLSI Design](courses/19-digital-vlsi-design/README.md) | 13 | 112 | 13/13 |
 | 6 | [20 · Analog and Mixed-Signal IC Design](courses/20-analog-and-mixed-signal-ic-design/README.md) | 12 | 104 | 12/12 |
 | 6 | [21 · RF and Microwave Engineering](courses/21-rf-and-microwave-engineering/README.md) | 12 | 91 | 12/12 |
-| 6 | [22 · Power Electronics and Energy Conversion](courses/22-power-electronics-and-energy-conversion/README.md) | 12 | 92 | 11/12 |
+| 6 | [22 · Power Electronics and Energy Conversion](courses/22-power-electronics-and-energy-conversion/README.md) | 12 | 92 | 12/12 |
 | 6 | [23 · Memory and Storage Technology](courses/23-memory-and-storage-technology/README.md) | 9 | 53 | 0/9 |
 | 6 | [24 · High-Speed I/O, Signal Integrity and Photonics](courses/24-high-speed-io-signal-integrity-and-photonics/README.md) | 9 | 59 | 0/9 |
 | 6 | [25 · Semiconductor Fabrication, Packaging, Test and Reliability](courses/25-fabrication-packaging-test-and-reliability/README.md) | 12 | 83 | 0/12 |

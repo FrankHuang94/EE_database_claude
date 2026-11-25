@@ -9405,3 +9405,53 @@
   definition: "In an inverter, the ratio m of the modulating sine's peak to the carrier's peak; with sine-triangle PWM the line-to-line fundamental is 0.612 m V_dc rms, linear up to m = 1 (2/√3 with third-harmonic injection)."
   chapter: "22-11"
   see_also: [Space-vector PWM]
+- term: Per-unit system
+  definition: "Expressing power-system quantities as fractions of chosen bases (a common power base and a voltage base per zone, with Z_b = V_b²/S_b), so that ideal transformers disappear and equipment impedances fall in narrow, comparable ranges."
+  chapter: "22-12"
+- term: Surge-impedance loading (SIL)
+  definition: "The power V_LL²/Z_c a lossless line carries when terminated in its characteristic impedance; its series inductance then absorbs exactly the reactive power its capacitance generates, so the voltage is flat along the line."
+  chapter: "22-12"
+  see_also: [Characteristic impedance, Ferranti effect]
+- term: Ferranti effect
+  definition: "The rise of voltage at the open or lightly loaded far end of a long line above the sending voltage, V_R = V_S/cos(βℓ), because the line's capacitive charging current flows through its inductance."
+  chapter: "22-12"
+- term: Power flow
+  definition: "The steady-state solution of a network's bus voltages and branch flows given loads and generation; between two buses, real power is V1V2 sin δ/X (set by the angle) and reactive power is driven by the voltage magnitudes."
+  chapter: "22-12"
+- term: Symmetrical components
+  definition: "Fortescue's decomposition of an unbalanced set of three phasors into balanced positive-, negative- and zero-sequence sets, each with its own network impedance, used to analyze unbalanced faults; a single-line-to-ground fault current is 3V/(Z1 + Z2 + Z0)."
+  chapter: "22-12"
+- term: Fault MVA
+  definition: "A bus's three-phase short-circuit level, S_b/Z_th(pu): the measure of how stiff the grid is there and the duty its breakers must interrupt."
+  chapter: "22-12"
+  see_also: [Short-circuit ratio]
+- term: Short-circuit ratio
+  definition: "The fault MVA at a connection point divided by the rating of the plant or load connected there; low ratios (a weak grid) make voltage swing with power and challenge inverter controls."
+  chapter: "22-12"
+- term: Inertia constant
+  definition: "H, a synchronous machine's stored rotational energy at rated speed divided by its rated power, in seconds (about 4 s for gas and coal units, 5.9 s for nuclear, zero for inverter-based resources)."
+  chapter: "22-12"
+  see_also: [Rate of change of frequency (RoCoF)]
+- term: Rate of change of frequency (RoCoF)
+  definition: "The initial slope of grid frequency after a power imbalance ΔP, −ΔP f0/(2HS), set by inertia alone before any control acts."
+  chapter: "22-12"
+  see_also: [Inertia constant, Frequency nadir]
+- term: Governor droop
+  definition: "A generator's proportional speed regulation: a unit with droop R raises output from zero to full over a fraction R of nominal frequency, so units share load changes in proportion to rating over droop."
+  chapter: "22-12"
+- term: Frequency nadir
+  definition: "The lowest frequency reached after a loss of generation, when governor and fast responses first match the deficit; deeper and earlier with less inertia or slower response."
+  chapter: "22-12"
+- term: Inverter-based resource (IBR)
+  definition: "Generation or storage connected through power electronics (solar, wind, batteries): fast and controllable, but with no inherent inertia and fault current limited near rated current."
+  chapter: "22-12"
+  see_also: [Grid-forming inverter, Ride-through]
+- term: Grid-forming inverter
+  definition: "An inverter controlled to set its own voltage magnitude and frequency, like a synchronous machine, rather than following the grid with a phase-locked loop; it can supply inertia-like response and support weak grids."
+  chapter: "22-12"
+- term: Ride-through
+  definition: "A requirement that generators, inverter-based resources (and increasingly large loads) stay connected and supportive through voltage and frequency disturbances within specified limits instead of tripping."
+  chapter: "22-12"
+- term: Interconnection queue
+  definition: "A grid operator's list of generation, storage and large-load projects awaiting the studies and agreements needed to connect; in the US it held over 2000 GW in 2025, with typical waits of four to five years or more."
+  chapter: "22-12"
