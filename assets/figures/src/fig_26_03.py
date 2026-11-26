@@ -29,7 +29,8 @@ use_style()
 
 
 def main() -> None:
-    cogs = e.cost_stack(17000, e.dies_per_wafer(300, 100), math.exp(-0.1), 4.0, 0.99, 1.20, 0.98, 1.20)["cogs"]
+    stack = e.cost_stack(17000, e.dies_per_wafer(300, 100), math.exp(-0.1), 4.0, 0.99, 1.20, 0.98, 1.20)
+    cogs, mfg = stack["cogs"], stack["after_test"]
     contrib = 60 - cogs
     units = [1e6, 3e6, 4e6, 2e6]
     slips = np.linspace(0, 1, 49)
@@ -48,13 +49,14 @@ def main() -> None:
     ax[0].set_title("A slip costs revenue, not just hours")
 
     def model(p):
-        f, t = e.program_flows([p["nre"] / 2] * 2, [p["vol"] * u for u in (1, 3, 4, 2)], p["asp"] - p["cogs"])
+        f, t = e.program_flows([p["nre"] / 2] * 2, [p["vol"] * u for u in (1, 3, 4, 2)],
+                            p["asp"] * 0.98 - p["cost"])  # royalty is 2% of ASP
         return e.npv(0.12, f, t) / 1e6
 
-    base = {"asp": 60.0, "cogs": cogs, "vol": 1e6, "nre": 60e6}
+    base = {"asp": 60.0, "cost": mfg, "vol": 1e6, "nre": 60e6}
     rows = e.tornado(base, model)
     b0 = model(base)
-    names = {"asp": "ASP", "cogs": "COGS", "vol": "volume", "nre": "NRE"}
+    names = {"asp": "ASP", "cost": "mfg cost", "vol": "volume", "nre": "NRE"}
     for k, (name, lo, hi) in enumerate(rows):
         ax[1].barh(k, hi - b0, left=b0, color=PALETTE[0], label="+10%" if k == 0 else None)
         ax[1].barh(k, lo - b0, left=b0, color=PALETTE[1], label="−10%" if k == 0 else None)

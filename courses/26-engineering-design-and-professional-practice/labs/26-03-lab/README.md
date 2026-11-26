@@ -21,7 +21,7 @@
 
 **Part 3 · Slip** (notebook). *Predict* the NPV of Example 26-03.5's program after a six-month slip, with the final year's sales cut in proportion to the part of that year that falls past the window (end of year 5), then compute the NPV for slips from 0 to 12 months.
 
-**Part 4 · Tornado** (notebook). *Predict* the order of the bars for ±10% changes in ASP, volume, COGS and NRE, then draw the tornado (Problem 26-03.14 computes the same swings by hand).
+**Part 4 · Tornado** (notebook). *Predict* the order of the bars for ±10% changes in ASP (the 2% royalty moves with it), volume, manufacturing cost (COGS before the royalty) and NRE, then draw the tornado (Problem 26-03.14 computes the same swings by hand).
 
 ## Expected results
 
@@ -35,13 +35,15 @@
 | Lab 26-03.b | volume for $2 of NRE per unit | 30 | million |
 | Lab 26-03.c | NPV after a six-month slip | 75.6 | $M |
 | Lab 26-03.c1 | NPV lost | 20.9 | $M |
+| Lab 26-03.c2 | value lost to a half-year delay | 5.5 | % |
+| Lab 26-03.c3 | value lost to a one-year delay | 10.7 | % |
 
 ## Discussion
 
 1. An eight-point drop in final-test yield costs $3.16 a unit and over five points of margin (38.7% to 33.4%), because every failing unit has already paid for its die, package and test. Moving screening earlier, or improving the test's own escapes and overkill (25-11), is worth real money.
 2. NRE per unit falls as $1/V$, so the first few million units matter most; beyond about 30 million units the NRE is a minor part of the cost, and the business is decided by COGS and ASP.
-3. With the final year prorated, a six-month slip costs $20.9 M, slightly more than half the one-year loss ($39.9 M), because the first months of a slip lose the most valuable sales near the window's end and discount everything else.
-4. The tornado ranks ASP first, COGS second, volume third and NRE last: price and cost per unit, not development budget, decide a high-volume chip's value.
+3. With the final year prorated, a six-month slip costs $20.9 M, slightly more than half the one-year loss ($39.9 M), because the cost of discounting is concave in the delay: a half-year costs $1 - 1.12^{-0.5}$ = 5.5% of value, more than half of a full year's 10.7%.
+4. The tornado ranks ASP first, manufacturing cost second, volume third and NRE last: price and cost per unit, not development budget, decide a high-volume chip's value.
 
 ## Optional hardware
 

@@ -109,7 +109,7 @@ $$
 R = \sum_k r_k + P\sum_k \rho_k,
 $$
 
-and it lowers gross margin by $R/P$ points of price (26-03 §3.1 treats a royalty as part of COGS). A 4% total burden on a 50%-margin chip takes **8**% of the gross profit. 26-02 §3.6 covers stacking across patent holders for a standard; the arithmetic is the same.
+and it lowers gross margin by $R/P$ points of price (26-03 §3.1 treats a royalty as part of COGS). A 4% total burden on a chip with a 50% gross margin before royalties takes **8**% of the gross profit. 26-02 §3.6 covers stacking across patent holders for a standard; the arithmetic is the same.
 
 ### 3.4 Node selection: cost per good function
 
@@ -131,7 +131,7 @@ $$
 
 The new node lowers the cost of a function only if its density gain outruns its wafer-price increase, after yield. With leading-edge wafers rising steeply in price [R-575] and SRAM and analog scaling slowly, the ratio can approach or exceed 1: whether cost per transistor still falls is contested [R-577]. The edge term in DPW slightly favours the smaller die, and a new node's defect density is usually higher at launch, which works the other way (§4, Example 26-04.3).
 
-**Adding NRE.** A newer node costs more to design for: masks (more than $10 M at 7 nm and moving toward $40 M at 3 nm by one analyst's estimate [R-321]), IP that must be bought or ported, and more verification. With an extra NRE $\Delta N$ and a unit saving $C_{old} - C_{new}$, the new node pays back over
+**Adding NRE.** A newer node costs more to design for: masks (more than $10 M at 7 nm and moving toward $40 M at 3 nm by one analyst's July 2022 estimate [R-321] **[Industry estimate]**), IP that must be bought or ported, and more verification. With an extra NRE $\Delta N$ and a unit saving $C_{old} - C_{new}$, the new node pays back over
 
 $$
 V^* = \frac{\Delta N}{C_{old} - C_{new} + \Delta v}
@@ -144,12 +144,12 @@ units, where $\Delta v$ is any extra value per unit the new node earns (a higher
 25-07 §3.7 built the unit-cost model for splitting a die into chiplets: smaller dies yield better, but each chiplet carries die-to-die interface area, each must be tested to known-good-die standard, the package costs more and every attach can fail. In its form here, with a test cost $T$ per die tested, the cost of a good package of $n$ dies is
 
 $$
-C_{pkg} = \frac{\sum_k (W_k/\text{DPW}_k + T)/Y_k + P}{a^n},
+C_{unit} = \frac{\sum_k (W_k/\text{DPW}_k + T)/Y_k + P}{a^n},
 $$
 
 where $P$ is the package cost and $a$ the yield of each attach. Two further effects decide most real chiplet architectures, and both appear only when you look at a product family rather than one chip.
 
-**Mixed nodes.** Blocks that do not shrink (I/O, analog, much of the SRAM) gain little from the newest node but pay its full wafer price. Putting them on a separate die on an older, cheaper node saves about $A_{IO}(c_{new} - c_{old})$ per unit before yield, where $c = W/(\text{DPW}\,A) \approx 4W/(\pi d^2)$ is the cost of a square millimetre of die on each node's wafer. AMD's server processors moved their I/O to a separate die for this reason: I/O and SerDes "see a very small shrink factor to 7nm and very little performance or power gain from advanced nodes" [R-360].
+**Mixed nodes.** Blocks that do not shrink (I/O, analog, much of the SRAM) gain little from the newest node but pay its full wafer price. Putting them on a separate die on an older, cheaper node saves about $A_{IO}(c_{new} - c_{old})$ per unit before yield, where $c = W/(\text{DPW}\,A) \approx 4W/(\pi d^2)$ is the cost of a square millimetre of die on each node's wafer. AMD's server processors moved their I/O to a separate die for this reason: I/O and SerDes "see a very small shrink factor to 7nm and very little performance or power gain from advanced nodes" [R-360] **[Established: vendor paper]**.
 
 **Reuse.** A family of $J$ products built monolithically needs $J$ designs, each with its own mask set and verification, so its NRE is $\sum_j N_j$. Built from chiplets, it needs one design per distinct chiplet plus a smaller integration cost $n_j$ for each product's package: $\sum_{\text{tiles}} N_t + \sum_j n_j$. A family that uses one compute chiplet in counts of one, two or four, with one I/O die, designs two dies instead of $J$. The total cost of the family over its life is
 
@@ -157,7 +157,7 @@ $$
 \text{Total} = \text{NRE} + \sum_j V_jC_j,
 $$
 
-with $V_j$ the lifetime volume and $C_j$ the unit cost of product $j$. Chiplets can lose on unit cost for the small products (their package and interfaces are overhead) and still win for the family, through NRE and the large products (Example 26-04.4). AMD reported a chiplet design cost of "approximately 0.59 of the monolithic approach despite consuming approximately 10% more total silicon" [R-360] **[Industry estimate: vendor analysis]**.
+with $V_j$ the lifetime volume and $C_j$ the unit cost of product $j$. Chiplets can lose on unit cost for the small products (their package and interfaces are overhead) and still win for the family, through NRE and the large products (Example 26-04.4). The unit-cost effect alone can be large for big dies: for first-generation EPYC, AMD's yield modelling put the manufacturing cost of four chiplets at "approximately 0.59 of the monolithic approach despite consuming approximately 10% more total silicon" [R-360] **[Industry estimate: vendor analysis]**, separate from the NRE saving of reuse.
 
 **What chiplets cost beyond the bill of materials.** Die-to-die links consume power per bit and add latency (24-06); the design flow, test and package qualification are more complex; and a defect in a shared chiplet affects every product that uses it.
 
@@ -171,7 +171,7 @@ $$
 T = P + O + E, \qquad E = P_{el}\cdot \text{PUE} \cdot 8760\,L \cdot c_e,
 $$
 
-where $P$ is the accelerator's price, $O$ the per-slot share of everything else that scales with the number of accelerators (host processors, network, racks, facility capital), $P_{el}$ the accelerator's electrical power in kW, PUE the facility's power usage effectiveness (22-10), $8760$ the hours in a year and $c_e$ the electricity price in $/kWh. Units: kW × h × $/kWh = $. ✓
+where $P$ is the accelerator's price, $O$ the per-slot share of everything else that scales with the number of accelerators (host processors, network, racks, facility capital), $P_{el}$ the accelerator's electrical power in kW, PUE the facility's power usage effectiveness (22-10), $8760$ the hours in a year and $c_e$ the electricity price in $/kWh. Units: kW × h × $/kWh = $. ✓ Here $T$ is undiscounted, assumes the accelerator draws $P_{el}$ around the clock, and counts only the accelerator's own power (the hosts and network in $O$ draw power too). Discounting Example 26-04.5's $3,644 of energy over 4 years at a 10% MARR would cut it to **$2,888**, which barely moves the comparison; for a refined case, discount and add the host power to $E$.
 
 Divide by throughput $\theta$ (useful work per second on the target workload, normalized to the merchant part) to get the cost per unit of work, $\tau = T/\theta$. A fleet of $N_c$ custom chips does the work of $N_{eq} = N_c\theta_c/\theta_m$ merchant parts (**merchant-equivalents**). Custom saves $\tau_m - \tau_c$ per merchant-equivalent and costs NRE $N$ (chip design, software, bring-up), so it breaks even at
 
@@ -188,6 +188,8 @@ P_m^* = \theta_m\left(\tau_c + \frac{N}{N_{eq}}\right) - O - E_m.
 $$
 
 A merchant with a high margin can cut its price toward $P_m^*$ and still earn a healthy margin. A credible custom program therefore has value even if it never ships at scale: it caps what the buyer pays.
+
+> **Deeper:** see companion repo *LLM Inference Engineering* for how throughput $\theta$ is measured on real workloads, and *Datacenter Networking* for the scale-out cost inside $O$.
 
 **What TCO leaves out.** The software ecosystem (compilers, kernels, libraries, the ability to run new models on day one), time to market, supply assurance for advanced packaging and HBM (25-07), and the engineering talent to sustain a roadmap of new generations.
 
@@ -211,7 +213,7 @@ The models above put a number on cost and risk. Several factors decide real sour
 
 ## 4. Worked examples
 
-All prices, NRE figures and yields below are **assumed** for teaching unless a source is cited; wafer prices are chosen to lie within the range of public estimates [R-575, R-576]. Dies per wafer use 25-04's formula rounded down; yields are Poisson, $Y = e^{-AD_0}$.
+All prices, NRE figures and yields below are **assumed** for teaching unless a source is cited. Intermediate values are shown rounded but carried at full precision, so recomputing from the displayed figures can differ in the last digit. Notation in this chapter: $P$ is the price of the item in question (chip, package or accelerator), $T$ the test cost per die in §3.5 but the TCO in §3.6, $\tau$ a cost per unit of work (not a time constant), $W$ a wafer price ($C_w$ in 26-03), and $i$ the interest rate; wafer prices are chosen to lie within the range of public estimates [R-575, R-576]. Dies per wafer use 25-04's formula rounded down; yields are Poisson, $Y = e^{-AD_0}$.
 
 ### Example 26-04.1 · Two ways to charge a royalty (tier A)
 
@@ -430,6 +432,7 @@ All prices, NRE figures and yields below are **assumed** for teaching unless a s
 | Txt 26-04.14 | concept check 3 area reduction | 23.6 | % |
 | Txt 26-04.15 | concept check 4 cost ratio | 1.04 | |
 | Txt 26-04.16 | concept check 4 rise | 4 | % |
+| Txt 26-04.17 | discounted energy, Example 26-04.5 | 2888 | $ |
 
 ## 5. Simulate it
 
@@ -462,11 +465,11 @@ The lab is [labs/26-04-lab/](../labs/26-04-lab/README.md). `sourcing.py` impleme
 - **Arm's revenue model** (FYE26, year to March 2026): royalties $2.61 B and licensing $2.31 B of $4.92 B revenue, so royalties were **53.0**% [R-638]. In Q2 FYE27 licensing grew 50% to $773 M while royalties were $670 M, **46.4**% of revenue [R-638] **[Established]**.
 - **Royalty per chip rises with each architecture** (as of fiscal 2024): "the typical royalty fee for Armv9 was around double the fee for Armv8", and Arm's CEO said in July 2025 that its first Compute Subsystems were "delivering double the royalty of Armv9" [R-639] **[Established, company statements]**.
 - **Synopsys Design IP:** **$1.75 B** in fiscal 2025, 24.8% of Synopsys revenue, down **8.1**% from **$1.91 B** [R-640]. Cadence's IP business grew "nearly 25%" in 2025 [R-641] **[Established]**.
-- **Custom AI silicon:** Broadcom's AI semiconductor revenue was $16.7 B in its quarter ended Aug 2026, up 221% [R-642]; Marvell's custom revenue was $1.5 B in its fiscal 2026 [R-643] **[Established]**.
+- **Custom AI silicon:** Broadcom's AI semiconductor revenue (custom accelerators plus AI networking) was $16.7 B in its quarter ended Aug 2026, up 221% [R-642]; Marvell's custom revenue was $1.5 B in its fiscal 2026 [R-643] **[Established]**.
 - **Wafer prices** (reports, 2023–2024): about $18,500–20,000 for N3 and $25,000–30,000 or more for N2 [R-575] **[Industry estimate]**.
-- **Mask sets:** more than $10 M at 7 nm, approaching $40 M at 3 nm, by one analyst's estimate [R-321] **[Industry estimate]**.
+- **Mask sets:** more than $10 M at 7 nm, approaching $40 M at 3 nm, by one analyst's estimate (SemiAnalysis, Jul 2022) [R-321] **[Industry estimate]**.
 - **Density gains, N3 over N5:** "up to" 1.7× logic, 1.2× SRAM, 1.1× analog [R-360]; N3E's SRAM bitcell did not shrink from N5's 0.021 µm² [R-464] **[Industry estimate: vendor claims via press]**.
-- **Chiplet cost:** AMD estimated its chiplet design at about 0.59 of the monolithic cost with about 10% more silicon [R-360] **[Industry estimate]**.
+- **Chiplet cost:** AMD estimated the manufacturing cost of its first EPYC chiplet package at about 0.59 of a monolithic die's, with about 10% more silicon [R-360] **[Industry estimate]**.
 
 ## 8. Common mistakes
 
@@ -484,9 +487,9 @@ The lab is [labs/26-04-lab/](../labs/26-04-lab/README.md). `sourcing.py` impleme
 
 **State of play (as of Nov 2026).**
 
-- **IP vendors are moving up the stack.** Arm earns more per chip by selling more of the design: Armv9 royalties were about double Armv8's, and Compute Subsystems (pre-integrated, pre-verified CPU clusters) about double Armv9's [R-639]. By February 2026 it had 21 CSS licences across 12 companies [R-638] **[Established]**. In make-or-buy terms, a subsystem licence moves more of the NRE, and the schedule risk, from the licensee to the licensor, and the licensor charges for it through a higher royalty. Licensing revenue (upfront fees) has been growing quickly: up 50% year over year in Q2 FYE27 [R-638].
-- **Interface IP is in demand.** Cadence attributed its IP growth to "HBM, UCIe, PCIe, DDR, and SerDes" [R-641]. Synopsys's Design IP revenue fell 8.1% in fiscal 2025 and its segment margin fell from 38.3% to 23.9%, and the company described a "reallocation of resources in our Design IP segment to higher growth opportunities" [R-640] **[Established]**. One vendor's growth and another's decline in the same year show that this market is contested; the reasons (product mix, customer concentration, export restrictions) need a filing-level reading, not a headline.
-- **Custom accelerators have reached scale.** Google's TPU 8t superpod "scales to 9,600 chips"; AWS's Trainium3 is "our first 3nm AWS AI chip" at 2.52 FP8 petaflops per chip; Microsoft's Maia 200 has "over 140 billion transistors" on TSMC 3 nm in a 750 W envelope; Meta deploys "hundreds of thousands of MTIA chips" and plans "four new generations of MTIA chips within the next two years" [R-644] **[Established: vendor statements]**. The design partners' revenue reflects this: Broadcom's AI semiconductor revenue was $16.7 B in one quarter [R-642], and Meta has announced it will "co-develop multiple generations" of MTIA with Broadcom under a commitment that "exceeds 1GW" [R-644].
+- **IP vendors are moving up the stack.** Arm earns more per chip by selling more of the design: Armv9 royalties were about double Armv8's, and Compute Subsystems (pre-integrated, pre-verified CPU clusters) about double Armv9's [R-639]. By February 2026 it had 21 CSS licences across 12 companies [R-638] **[Established]**. In make-or-buy terms, a subsystem licence moves more of the NRE, and the schedule risk, from the licensee to the licensor, and the licensor charges for it through a higher royalty. Licensing and other revenue has been growing quickly: up 50% year over year in Q2 FYE27 [R-638].
+- **Interface IP is in demand.** Cadence attributed its IP growth to "HBM, UCIe, PCIe, DDR, and SerDes" [R-641]. Synopsys's Design IP revenue fell 8.1% in fiscal 2025 and its Design IP adjusted operating margin fell from 38.3% to 23.9% [R-640] **[Established]**. One vendor's growth and another's decline in the same year show that this market is contested; the reasons (product mix, customer concentration, export restrictions) need a filing-level reading, not a headline.
+- **Custom accelerators have reached scale.** Google's TPU 8t superpod "scales to 9,600 chips"; AWS's Trainium3 is "our first 3nm AWS AI chip" at 2.52 FP8 petaflops per chip; Microsoft's Maia 200 has "over 140 billion transistors" on TSMC 3 nm in a 750 W envelope; Meta deploys "hundreds of thousands of MTIA chips" and plans "four new generations of MTIA chips within the next two years" [R-644] **[Established: vendor statements]**. The design partners' revenue reflects this: Broadcom's AI semiconductor revenue, which includes AI networking as well as custom accelerators, was $16.7 B in one quarter [R-642], and Meta has announced it will "co-develop multiple generations" of MTIA with Broadcom under a commitment that "exceeds 1GW" [R-644].
 - **Merchants still earn high margins.** NVIDIA's fiscal 2026 revenue was $215.9 B at a 71.1% GAAP gross margin [R-637] **[Established]**. In the terms of §3.6, that margin is the prize a custom program competes for, and the reason the largest buyers can justify NRE in the hundreds of millions of dollars.
 
 **Commercial relevance.** For an M&A or venture reader, each decision in this chapter is also a business model. An IP vendor sells the left side of the spectrum (it absorbs NRE and earns royalties); a design partner sells the middle (it absorbs physical design, packaging and supply risk, at a margin below a merchant's); a merchant sells the right side. Each model's revenue depends on where its customers' break-even volumes fall, and moves when nodes, packaging or volumes shift those break-evens.
@@ -494,7 +497,7 @@ The lab is [labs/26-04-lab/](../labs/26-04-lab/README.md). `sourcing.py` impleme
 **Marketing vs Reality.**
 
 - *"30% better performance per dollar."* Microsoft's claim for Maia 200 is against "the latest generation hardware in our fleet today" [R-644]. Ask which workload, which baseline part, and whether "dollar" includes NRE and software. Example 26-04.5 shows the answer depends on the fleet size and on the merchant's price, which can change.
-- *"Up to 1.7× density."* That is logic, the best case. For a typical mix the gain is near 1.38× (Example 26-04.3), and less for SRAM-heavy designs.
+- *"Up to 1.7× density."* That is logic, the best case. For a typical mix the gain is at most about 1.38× (Example 26-04.3, built on "up to" per-block figures), and less for SRAM-heavy designs: N3E's SRAM bitcell did not shrink at all [R-464].
 - *"Chiplets cut cost."* Only above an area and defect-density threshold for one product (25-07), or through reuse across a family; for a small product they can cost more (Example 26-04.4).
 - *"New nodes make transistors cheaper."* Contested [R-577]; compute cost per good function from wafer price, effective density and yield before accepting it.
 - *"Royalty per chip doubled."* That is a statement about the licensor's revenue per unit, not about value delivered; check it as a percentage of the chip's price and against the NRE the licensee avoided.

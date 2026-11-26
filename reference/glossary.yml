@@ -10712,7 +10712,7 @@
   chapter: "26-03"
   see_also: [Gross margin]
 - term: Contribution margin
-  definition: ASP − COGS per unit, the amount each sale contributes toward fixed costs (NRE, overhead) and profit; break-even volume is NRE divided by it.
+  definition: ASP − COGS per unit, the amount each sale contributes toward fixed costs (NRE, overhead) and profit; break-even volume is NRE divided by it. Strictly, contribution is price minus variable cost, close to ASP − COGS for a fabless company, while an integrated manufacturer's COGS also carries fixed fab depreciation.
   chapter: "26-03"
   see_also: [Break-even volume]
 - term: Fully loaded cost
@@ -10755,6 +10755,18 @@
 - term: Straight-line depreciation
   definition: Spreading an asset's cost less salvage evenly over its life, D = (P − S)/n a year; depreciation is not a cash flow but lowers taxable income.
   chapter: "26-03"
+- term: Arithmetic gradient
+  definition: A cash-flow series that grows by a fixed amount G each period (0, G, 2G, …); the FE factors (P/G, i, n) = [(1 + i)^n − 1 − ni]/[i²(1 + i)^n] and (A/G, i, n) = 1/i − n/[(1 + i)^n − 1] convert it to a present or uniform annual equivalent.
+  chapter: "26-03"
+  see_also: [Interest factor]
+- term: Capitalized cost
+  definition: The present value of a perpetual uniform series, P = A/i, used for endowments and permanent facilities; the limit of (P/A, i, n) as n grows without bound.
+  chapter: "26-03"
+  see_also: [Interest factor]
+- term: Benefit–cost ratio
+  definition: The present value of benefits divided by the present value of costs; a project passes if it exceeds 1 (equivalent to NPV > 0), and mutually exclusive alternatives are compared on the incremental ratio ΔB/ΔC, not on their own ratios.
+  chapter: "26-03"
+  see_also: [Net present value (NPV)]
 - term: Sensitivity (tornado) analysis
   definition: Varying each input of a model by a set amount, one at a time, and ranking the inputs by the swing they cause in the output; the chart of sorted bars is called a tornado.
   chapter: "26-03"
@@ -10829,7 +10841,7 @@
   definition: A diagram of decisions, chance events with probabilities, and outcomes, solved backward by taking expected values at chance nodes and the best branch at decision nodes.
   chapter: "26-04"
 - term: Value of flexibility
-  definition: How much less a plan that waits to choose until uncertainty resolves is expected to cost than the best plan committed in advance; never negative when keeping the choice is free.
+  definition: How much less a plan that waits to choose until uncertainty resolves is expected to cost than the same first-stage choice committed for both generations; never negative when keeping the choice is free.
   chapter: "26-04"
   see_also: [Real option]
 - term: Real option

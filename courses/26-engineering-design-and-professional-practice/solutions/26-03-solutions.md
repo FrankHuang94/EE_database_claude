@@ -1,6 +1,6 @@
 # Solutions 26-03 · Engineering Economics I: NRE, Die Cost, ASP and Gross Margin
 
-Problems: [26-03 problems](../problems/26-03-problems.md) · Chapter: [26-03](../chapters/26-03-engineering-economics-1.md). Every number is recomputed by [verify_26_03.py](../verify/verify_26_03.py).
+Problems: [26-03 problems](../problems/26-03-problems.md) · Chapter: [26-03](../chapters/26-03-engineering-economics-1.md). Every number is recomputed by [verify_26_03.py](../verify/verify_26_03.py). Intermediate values are shown rounded but carried at full precision, so recomputing from the displayed figures can differ in the last digit.
 
 ---
 
@@ -58,9 +58,11 @@ $(A/P, 9\%, 3) = 0.09 \times 1.09^3/(1.09^3 - 1)$ = **0.39505**, so the annual p
 
 ### Solution 26-03.8
 
-(a) $25 \times 10^6/8$ = **3.13 million** units.
+(a) $25 \times 10^6/8$ = **3.125 million** units.
 
 (b) A $2 price cut lowers the contribution to $6, so $V^* = 25 \times 10^6/6$ = **4.17 million** units, **33**% more. A 10% price cut raised break-even volume by a third, because it took a quarter of the contribution.
+
+(c) COGS is $20 - 8$ = $12. NRE per unit $25 \times 10^6/(5 \times 10^6)$ = **$5.00**; fully loaded cost $12 + 5$ = **$17.00**; fully loaded margin $(20 - 17)/20$ = **15.0**%.
 
 ### Solution 26-03.9
 
@@ -98,19 +100,35 @@ $(A/P, 10\%, 4)$ = **0.31547** and $(A/P, 10\%, 6)$ = **0.22961**. EUAC(A) $= 2.
 
 With 6.61 million discounted units:
 
-(a) ASP ±10% is ±$6.00 a unit: ±**$39.7 M**.
+(a) ASP ±10% is ±$6.00 a unit, less the ±$0.12 change in the 2% royalty: ±$5.88 a unit, ±**$38.9 M**.
 
 (b) Volume ±10% scales the contribution stream: $0.1 \times 23.19 \times 6.61$ = ±**$15.3 M**.
 
-(c) COGS ±10% is ∓$3.68 a unit: ∓**$24.3 M**.
+(c) Manufacturing cost ±10% is ∓$3.56 a unit: ∓**$23.5 M**.
 
 (d) NRE ±10%: ∓**$5.68 M**.
 
-The ranking is ASP, COGS, volume, NRE. COGS outranks volume because a 10% change in COGS ($3.68) is larger than 10% of the contribution ($2.32): at a 39% margin, costs are a larger lever than units.
+The ranking is ASP, manufacturing cost, volume, NRE. Cost outranks volume because a 10% change in manufacturing cost ($3.56) is larger than 10% of the contribution ($2.32): at a 39% margin, costs are a larger lever than units.
 
 ### Solution 26-03.15
 
 (a) **Variable**, in COGS (the die cost). (b) **Fixed** (NRE), not in COGS. (c) **Variable**, in COGS (test cost per unit). (d) **Fixed** (R&D), not in COGS. (e) **Variable**, in COGS (per-unit royalty). (f) **Fixed** (NRE), not in COGS.
+
+### Solution 26-03.16
+
+(a) With $1.08^5$ = 1.469328: $(P/G, 8\%, 5) = (1.469328 - 1 - 5 \times 0.08)/(0.08^2 \times 1.469328) = 0.069328/0.0094037$ = **7.372**; $(A/G, 8\%, 5) = 1/0.08 - 5/0.469328 = 12.5 - 10.6535$ = **1.8465**. (The derivation is in §3.3: stack the gradient as uniform series starting in years 2, 3, 4 and 5.)
+
+(b) The costs are a uniform $50,000 plus a gradient of $10,000: $50{,}000 \times (P/A, 8\%, 5) + 10{,}000 \times (P/G, 8\%, 5) = 50{,}000 \times 3.99271 + 10{,}000 \times 7.3724$ = **$273,360**.
+
+(c) EUAC $= 50{,}000 + 10{,}000 \times 1.8465$ = **$68,465** a year. Check: $273{,}360 \times (A/P, 8\%, 5) = 273{,}360 \times 0.250456$ = $68,465. ✓
+
+### Solution 26-03.17
+
+(a) $P = A/i = 300{,}000/0.06$ = **$5.00 M**.
+
+(b) $(P/A, 10\%, 4)$ = 3.16987. Base: PV of costs $4.0 + 1.0 \times 3.16987$ = $7.170 M; PV of benefits $3.0 \times 3.16987$ = $9.510 M; B/C = **1.33**; NPV = **$2.34 M**. Expanded: costs $6.0 + 1.2 \times 3.16987$ = $9.804 M; benefits $3.8 \times 3.16987$ = $12.045 M; B/C = **1.23**; NPV = **$2.24 M**.
+
+(c) The increment costs $9.804 - 7.170$ = $2.634 M and brings $12.045 - 9.510$ = $2.536 M: $\Delta B/\Delta C$ = **0.963** < 1, so the extra spending does not pay; choose the base version. Both versions pass B/C > 1 on their own, which is why ranking by each one's own ratio, or by B/C rather than the increment, can mislead; the incremental test agrees with NPV (2.34 against 2.24).
 
 ---
 
@@ -147,9 +165,12 @@ The ranking is ASP, COGS, volume, NRE. COGS outranks volume because a 10% change
 | 26-03.7a1 | increase | 0.71 | $ |
 | 26-03.7b | COGS, test 96% | 37.55 | $ |
 | 26-03.7b1 | increase | 0.74 | $ |
-| 26-03.8a | break-even | 3.13 | million |
+| 26-03.8a | break-even | 3.125 | million |
 | 26-03.8b | break-even after price cut | 4.17 | million |
 | 26-03.8b1 | increase | 33 | % |
+| 26-03.8c | NRE per unit | 5.00 | $ |
+| 26-03.8c1 | fully loaded cost | 17.00 | $ |
+| 26-03.8c2 | fully loaded margin | 15.0 | % |
 | 26-03.9 | ASP | 71.43 | $ |
 | 26-03.10a | ASP year 2 | 40.00 | $ |
 | 26-03.10a1 | ASP year 3 | 36.00 | $ |
@@ -181,9 +202,19 @@ The ranking is ASP, COGS, volume, NRE. COGS outranks volume because a 10% change
 | 26-03.13a1 | book value after 2 years | 3.20 | $M |
 | 26-03.13b | annual tax saving | 0.189 | $M |
 | 26-03.13b1 | present value | 0.7165 | $M |
-| 26-03.14a | ASP swing | 39.7 | $M |
+| 26-03.14a | ASP swing | 38.9 | $M |
 | 26-03.14b | volume swing | 15.3 | $M |
-| 26-03.14c | COGS swing | 24.3 | $M |
+| 26-03.14c | manufacturing-cost swing | 23.5 | $M |
 | 26-03.14d | NRE swing | 5.68 | $M |
-| 26-03.14e | 10% of COGS | 3.68 | $ |
+| 26-03.14e | 10% of manufacturing cost | 3.56 | $ |
 | 26-03.14e1 | 10% of contribution | 2.32 | $ |
+| 26-03.16a | P/G at 8%, 5 years | 7.372 | |
+| 26-03.16a1 | A/G at 8%, 5 years | 1.8465 | |
+| 26-03.16b | present worth | 273360 | $ |
+| 26-03.16c | EUAC | 68465 | $ |
+| 26-03.17a | capitalized cost | 5.00 | $M |
+| 26-03.17b | base B/C | 1.33 | |
+| 26-03.17b1 | base NPV | 2.34 | $M |
+| 26-03.17b2 | expanded B/C | 1.23 | |
+| 26-03.17b3 | expanded NPV | 2.24 | $M |
+| 26-03.17c | incremental B/C | 0.963 | |

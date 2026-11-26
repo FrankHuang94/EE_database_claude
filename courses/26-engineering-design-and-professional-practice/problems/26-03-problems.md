@@ -44,7 +44,7 @@ Chapter: [26-03](../chapters/26-03-engineering-economics-1.md) · Worked solutio
 
 ### Problem 26-03.8 [B]
 
-**Break-even at a mature node.** A 12 nm chip has $25 M of NRE, sells for $20 and contributes $8 a unit (assumed). (a) Find the break-even volume. (b) A competitor forces a 10% price cut with no change in cost. Find the new break-even volume and the percentage increase.
+**Break-even at a mature node.** A 12 nm chip has $25 M of NRE, sells for $20 and contributes $8 a unit (assumed). (a) Find the break-even volume. (b) A competitor forces a 10% price cut with no change in cost. Find the new break-even volume and the percentage increase. (c) At the original price, the chip sells 5 million units over its life. Find the NRE per unit, the fully loaded cost and the fully loaded margin.
 
 ### Problem 26-03.9 [B]
 
@@ -68,11 +68,19 @@ Chapter: [26-03](../chapters/26-03-engineering-economics-1.md) · Worked solutio
 
 ### Problem 26-03.14 [C]
 
-**A tornado.** For Example 26-03.5's program, compute the NPV change for a ±10% change in (a) ASP, (b) lifetime volume (all years scaled), (c) COGS and (d) NRE, and rank them. Use the discounted unit stream of 6.61 million units.
+**A tornado.** For Example 26-03.5's program, compute the NPV change for a ±10% change in (a) ASP (the 2% royalty moves with it), (b) lifetime volume (all years scaled), (c) the manufacturing cost (COGS before the royalty, $35.61) and (d) NRE, and rank them. Use the discounted unit stream of 6.61 million units.
 
 ### Problem 26-03.15 [A]
 
-**Fixed or variable?** Classify each cost as fixed (NRE or overhead) or variable (per unit), and say whether it falls in COGS: (a) production wafers; (b) the prototype mask set; (c) final-test time; (d) EDA licenses; (e) per-unit patent royalties; (f) qualification testing (25-10).
+**Fixed or variable?** Classify each cost as fixed (NRE or overhead) or variable (per unit), and say whether it falls in COGS: (a) production wafers; (b) the prototype mask set; (c) final-test time; (d) EDA licences; (e) per-unit patent royalties; (f) qualification testing (25-10).
+
+### Problem 26-03.16 [B]
+
+**A growing cost.** A test floor's maintenance costs $50,000 in year 1 and rises by $10,000 a year through year 5 (assumed). At 8%: (a) derive or evaluate $(P/G, 8\%, 5)$ and $(A/G, 8\%, 5)$; (b) find the present worth of the five years of maintenance; (c) find its equivalent uniform annual cost, and check it against (b).
+
+### Problem 26-03.17 [B]
+
+**Benefit–cost and the increment.** (a) A company endows a university chair that pays $300,000 a year forever; at 6%, what is its capitalized cost? (b) A yield-learning program costs $4.0 M now and $1.0 M a year for 4 years, and saves $3.0 M a year for those 4 years; an expanded version costs $6.0 M now and $1.2 M a year, and saves $3.8 M a year (all assumed). At 10%, find each version's B/C ratio and NPV (counting annual costs as costs). (c) Find the incremental B/C of the expanded version over the base, and choose.
 
 ---
 
@@ -82,6 +90,6 @@ Chapter: [26-03](../chapters/26-03-engineering-economics-1.md) · Worked solutio
 |---|---|
 | 1. Cost stack, margin and markup | 6, 7, 9, 15 |
 | 2. NRE amortization and break-even | 8 |
-| 3. Time-value factors and rates | 1, 2, 3, 4, 13 |
+| 3. Time-value factors and rates | 1, 2, 3, 4, 13, 16, 17 |
 | 4. NPV, IRR, payback and slips | 5, 10, 11 |
 | 5. Alternatives and sensitivity | 12, 14 |

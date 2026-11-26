@@ -274,6 +274,8 @@ v.check("Txt 26-04.13", g_cc)
 v.check("Txt 26-04.14", 100 * (1 - 1 / g_cc))
 v.check("Txt 26-04.15", 1.20 / 1.15)
 v.check("Txt 26-04.16", 100 * (1.20 / 1.15 - 1))
+e_year = 1.0 * 1.3 * 8760 * 0.08  # Example 26-04.5 merchant energy per year
+v.check("Txt 26-04.17", sum(e_year / 1.10**t for t in range(1, 5)))
 
 # ---------------------------------------------------------------- Problem 1
 v.check("26-04.1a", 100 * 0.45 / 18)

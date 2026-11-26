@@ -1,6 +1,6 @@
 # Solutions 26-04 · Engineering Economics II: Build, Buy or License; Node; Chiplets; ASIC vs Merchant
 
-Problems: [26-04 problems](../problems/26-04-problems.md) · Chapter: [26-04](../chapters/26-04-engineering-economics-2.md). Every number is recomputed by [verify_26_04.py](../verify/verify_26_04.py).
+Problems: [26-04 problems](../problems/26-04-problems.md) · Chapter: [26-04](../chapters/26-04-engineering-economics-2.md). Every number is recomputed by [verify_26_04.py](../verify/verify_26_04.py). Intermediate values are shown rounded but carried at full precision, so recomputing from the displayed figures can differ in the last digit.
 
 ---
 

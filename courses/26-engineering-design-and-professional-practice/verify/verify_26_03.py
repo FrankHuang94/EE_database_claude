@@ -43,6 +43,16 @@ def npv_direct(rate, flows, times=None):
     return sum(cf * math.exp(-t * math.log1p(rate)) for cf, t in zip(flows, times))
 
 
+def payback_by_interpolation(flows):
+    """Second route for simple payback: walk the cumulative sum and interpolate inside the crossing year."""
+    cum = 0.0
+    for t, cf in enumerate(flows):
+        if cum < 0 <= cum + cf and t > 0:
+            return (t - 1) + (-cum) / cf
+        cum += cf
+    return float("nan")
+
+
 def cascade_by_accounting(wafer, dpw, y_die, pkg, y_asm, test, y_test, royalty, lot=1_000_000):
     """Track a lot of good dies through assembly and test: total money spent / units shipped."""
     good_dies = lot
@@ -123,7 +133,8 @@ v.assert_true("Ex 5 IRR: Brent equals the lab's bisection", abs(irr_b - econ.irr
 v.check("Ex 26-03.5a5", 100 * irr_b)
 cum = np.cumsum(flows)
 v.check("Ex 26-03.5a6", cum[2] / 1e6)
-v.check("Ex 26-03.5a7", econ.payback(flows))
+v.assert_true("Ex 5 payback: lab routine equals interpolation", abs(econ.payback(flows) - payback_by_interpolation(flows)) < 1e-9)
+v.check("Ex 26-03.5a7", payback_by_interpolation(flows))
 slipped = [-30e6, -30e6, 0.0] + [u * contrib for u in units[:3]]
 npv1 = npv_direct(0.12, slipped)
 f1, t1 = econ.program_flows([30e6, 30e6], units, contrib, slip=1.0, window_end=5.0)
@@ -133,7 +144,9 @@ v.check("Ex 26-03.5c", (npv0 - npv1) / 1e6)
 v.check("Ex 26-03.5c1", 100 * (npv0 - npv1) / npv0)
 pvu = sum(u / 1.12**t for u, t in zip(units, (2, 3, 4, 5))) / 1e6
 v.check("Ex 26-03.5d0", pvu)
-d_asp = npv0 - npv_direct(0.12, econ.program_flows([30e6, 30e6], units, contrib - 6.0)[0])
+c54 = 54.0 - cs["after_test"] - 0.02 * 54.0  # price cut 10%; the 2% royalty falls with it
+v.check("Ex 26-03.5d3", contrib - c54)
+d_asp = npv0 - npv_direct(0.12, econ.program_flows([30e6, 30e6], units, c54)[0])
 d_nre = npv0 - npv_direct(0.12, econ.program_flows([33e6, 33e6], units, contrib)[0])
 v.check("Ex 26-03.5d", d_asp / 1e6)
 v.check("Ex 26-03.5d1", d_nre / 1e6)
@@ -173,7 +186,8 @@ v.check("26-03.5a0", pa_sum(0.10, 3))
 v.check("26-03.5a1", 1.1**-4)
 v.check("26-03.5a", npv_direct(0.10, cf5))
 v.check("26-03.5b", 100 * optimize.brentq(lambda r: npv_direct(r, cf5), 0, 1))
-v.check("26-03.5c", econ.payback(cf5))
+v.assert_true("P5 payback: lab routine equals interpolation", abs(econ.payback(cf5) - payback_by_interpolation(cf5)) < 1e-9)
+v.check("26-03.5c", payback_by_interpolation(cf5))
 
 # ---------------------------------------------------------------- Problems 6-9
 dpw6_raw = math.pi * 300**2 / 800 - math.pi * 300 / math.sqrt(400)
@@ -200,6 +214,9 @@ v.check("26-03.7b1", ct - cogs)
 v.check("26-03.8a", 25e6 / 8 / 1e6)
 v.check("26-03.8b", 25e6 / 6 / 1e6)
 v.check("26-03.8b1", 100 * (8 / 6 - 1))
+v.check("26-03.8c", 25e6 / 5e6)
+v.check("26-03.8c1", (20 - 8) + 25e6 / 5e6)
+v.check("26-03.8c2", 100 * (20 - ((20 - 8) + 25e6 / 5e6)) / 20)
 v.check("26-03.9", optimize.brentq(lambda a: (a - 30 - 0.03 * a) / a - 0.55, 31, 1000))
 
 # ---------------------------------------------------------------- Problem 10
@@ -253,12 +270,12 @@ v.check("26-03.13b1", 0.21 * 0.9 * pa_sum(0.10, 5))
 
 
 def model(p):
-    con = p["asp"] - p["cogs"]
+    con = p["asp"] * (1 - 0.02) - p["cogs"]  # "cogs" here is the manufacturing cost; the royalty is 2% of ASP
     f, t = econ.program_flows([p["nre"] / 2, p["nre"] / 2], [p["vol"] * u for u in (1, 3, 4, 2)], con)
     return econ.npv(0.12, f, t) / 1e6
 
 
-base = {"asp": 60.0, "cogs": cogs, "vol": 1e6, "nre": 60e6}
+base = {"asp": 60.0, "cogs": cs["after_test"], "vol": 1e6, "nre": 60e6}
 tor = {k: abs(hi - lo) / 2 for k, lo, hi in econ.tornado(base, model)}
 v.assert_true("P14 tornado order ASP, COGS, volume, NRE",
               [k for k, *_ in econ.tornado(base, model)] == ["asp", "cogs", "vol", "nre"])
@@ -266,7 +283,7 @@ v.check("26-03.14a", tor["asp"])
 v.check("26-03.14b", tor["vol"])
 v.check("26-03.14c", tor["cogs"])
 v.check("26-03.14d", tor["nre"])
-v.check("26-03.14e", 0.1 * cogs)
+v.check("26-03.14e", 0.1 * cs["after_test"])
 v.check("26-03.14e1", 0.1 * contrib)
 
 # ---------------------------------------------------------------- Lab
@@ -282,5 +299,39 @@ direct = npv_direct(0.12, [-30e6, -30e6] + [u * contrib for u in units[:3]] + [0
 v.assert_true("Lab six-month slip: model equals direct construction", abs(econ.npv(0.12, f_h, t_h) - direct) < 1e-3)
 v.check("Lab 26-03.c", direct / 1e6)
 v.check("Lab 26-03.c1", (npv0 - direct) / 1e6)
+v.check("Lab 26-03.c2", 100 * (1 - 1.12**-0.5))
+v.check("Lab 26-03.c3", 100 * (1 - 1 / 1.12))
+
+# ---------------------------------------------------------------- Problem 16 (gradient by explicit summation)
+g_flows = [50_000 + 10_000 * (t - 1) for t in range(1, 6)]
+pw16 = sum(c / 1.08**t for t, c in enumerate(g_flows, 1))
+pg16 = sum((t - 1) / 1.08**t for t in range(1, 6))
+v.check("26-03.16a", pg16)
+v.check("26-03.16a1", pg16 / pa_sum(0.08, 5))
+v.assert_true("P16 closed forms equal the sums",
+              abs(pg16 - (1.08**5 - 1 - 5 * 0.08) / (0.08**2 * 1.08**5)) < 1e-12
+              and abs(pg16 / pa_sum(0.08, 5) - (1 / 0.08 - 5 / (1.08**5 - 1))) < 1e-12)
+v.check("26-03.16b", pw16)
+v.check("26-03.16c", pw16 / pa_sum(0.08, 5))
+
+# ---------------------------------------------------------------- Problem 17 (perpetuity by a long sum; B/C by direct PVs)
+v.check("26-03.17a", sum(0.3 / 1.06**t for t in range(1, 5001)))
+pv = lambda flows: sum(c / 1.10**t for t, c in enumerate(flows))  # noqa: E731
+cost_b, ben_b = pv([4.0, 1.0, 1.0, 1.0, 1.0]), pv([0, 3.0, 3.0, 3.0, 3.0])
+cost_x, ben_x = pv([6.0, 1.2, 1.2, 1.2, 1.2]), pv([0, 3.8, 3.8, 3.8, 3.8])
+v.check("26-03.17b", ben_b / cost_b)
+v.check("26-03.17b1", ben_b - cost_b)
+v.check("26-03.17b2", ben_x / cost_x)
+v.check("26-03.17b3", ben_x - cost_x)
+v.check("26-03.17c", (ben_x - ben_b) / (cost_x - cost_b))
+v.assert_true("P17 the incremental test agrees with NPV", ((ben_x - ben_b) / (cost_x - cost_b) < 1) == (ben_b - cost_b > ben_x - cost_x))
+
+# ---------------------------------------------------------------- Txt (margin and markup)
+markup = lambda gm: gm / (1 - gm)  # noqa: E731
+v.check("Txt 26-03.a", 100 * markup(0.60))
+v.check("Txt 26-03.b", 100 * markup(0.90))
+v.check("Txt 26-03.c", 100 * 0.5 / 1.5)
+v.check("Txt 26-03.d", 100 * 0.40 / 0.60)
+v.check("Txt 26-03.e", 100 * 0.40 / 1.40)
 
 sys.exit(v.finish())
