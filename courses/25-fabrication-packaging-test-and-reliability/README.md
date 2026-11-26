@@ -29,7 +29,7 @@ How chips are made, packaged, tested and qualified: process flow, lithography th
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
 | [25-01 · Process Flow Overview: FEOL, MOL and BEOL](chapters/25-01-process-flow-overview.md) | 7 | ✅ verified | [problems](problems/25-01-problems.md) · [solutions](solutions/25-01-solutions.md) · [lab](labs/25-01-lab/README.md) · [verify](verify/verify_25_01.py) |
-| [25-02 · Lithography: DUV, Multipatterning, EUV and High-NA](chapters/25-02-lithography.md) | 8 | ⬜ planned | — |
+| [25-02 · Lithography: DUV, Multipatterning, EUV and High-NA](chapters/25-02-lithography.md) | 8 | ✅ verified | [problems](problems/25-02-problems.md) · [solutions](solutions/25-02-solutions.md) · [lab](labs/25-02-lab/README.md) · [verify](verify/verify_25_02.py) |
 | [25-03 · Deposition, Etch, CMP, Implant and Metrology](chapters/25-03-deposition-etch-cmp-implant-metrology.md) | 8 | ⬜ planned | — |
 | [25-04 · Yield Models and Die Cost](chapters/25-04-yield-and-die-cost.md) | 7 | ⬜ planned | — |
 | [25-05 · Foundries, PDKs and Specialty Processes](chapters/25-05-foundries-pdks-specialty-processes.md) | 6 | ⬜ planned | — |

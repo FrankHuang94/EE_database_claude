@@ -10201,3 +10201,45 @@
   definition: "The wafers started but not yet finished in a fab; by Little's law it equals the start rate times the cycle time, so it is the fab's inventory."
   chapter: "25-01"
   see_also: [Little's law, Wafer cycle time]
+
+# ---------------------------------------------------------------- 25-02
+- term: k1 factor
+  definition: "The process-dependent constant in the lithography resolution formula CD = k₁λ/NA; it bundles illumination, mask, resist and layout effects, with a physical floor of 0.25 for dense lines and spaces."
+  chapter: "25-02"
+  see_also: [Numerical aperture, Off-axis illumination]
+- term: Off-axis illumination
+  definition: "Illuminating the mask at an angle so that the zeroth and one first diffraction order sit symmetrically in the pupil; it halves the smallest printable pitch to λ/(2NA) for dense lines."
+  chapter: "25-02"
+- term: Depth of focus (DOF)
+  definition: "The range of defocus over which an image prints acceptably; it scales as λ/NA², so it shrinks faster than resolution improves as NA rises."
+  chapter: "25-02"
+- term: Immersion lithography
+  definition: "Lithography with water (n ≈ 1.44 at 193 nm) between the last lens and the wafer, allowing NA up to about 1.35 and improving depth of focus at a given NA."
+  chapter: "25-02"
+- term: LELE (litho-etch-litho-etch)
+  definition: "Multipatterning by splitting a layer into two interleaved patterns, each exposed and etched separately; it halves the pitch at the cost of a second mask and an overlay error between the two sets."
+  chapter: "25-02"
+  see_also: [Overlay]
+- term: Self-aligned double and quadruple patterning (SADP, SAQP)
+  definition: "Spacer-based pitch division: sidewall spacers formed on a sacrificial mandrel become the pattern, halving (SADP) or quartering (SAQP) the pitch without a second critical exposure."
+  chapter: "25-02"
+  see_also: [Pitch walk]
+- term: Overlay
+  definition: "The placement error of one lithography exposure relative to another; in multipatterning it makes alternate spaces unequal, and it must be held to a few nanometres at advanced nodes."
+  chapter: "25-02"
+- term: Pitch walk
+  definition: "The alternating-space error of spacer patterning: a mandrel width error δ makes neighbouring spaces differ by 2δ."
+  chapter: "25-02"
+- term: Stochastic defects
+  definition: "Random printing failures (rough edges, missing contacts, bridges) caused by Poisson fluctuations in the number of photons and reacting molecules per feature, worst in EUV because each photon carries 14 times the energy of a 193 nm photon."
+  chapter: "25-02"
+- term: Optical proximity correction (OPC)
+  definition: "Deliberate distortion of mask shapes (serifs, line-end hammerheads, sub-resolution assist features) so that the printed pattern matches the design despite diffraction."
+  chapter: "25-02"
+- term: High-NA EUV
+  definition: "EUV lithography at NA 0.55 instead of 0.33, with anamorphic optics that halve the exposure field to 26 mm × 16.5 mm; it resolves about 8 nm in one exposure at higher tool cost and smaller depth of focus."
+  chapter: "25-02"
+  see_also: [Reticle limit, Field stitching]
+- term: Field stitching
+  definition: "Printing a die larger than one exposure field as two or more abutting exposures; it costs throughput and needs alignment across the stitch."
+  chapter: "25-02"

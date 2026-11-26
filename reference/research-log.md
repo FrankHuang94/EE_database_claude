@@ -5524,3 +5524,79 @@ R&D % = R&D ÷ revenue.
 - "We shipped approximately 15 million 12-inch equivalent wafers in 2025 compared to 13 million in 2024."
 - **Derived here:** at a 12-week cycle time, a fully loaded 17 million wafers a year implies about 3.9 million wafers in process (Little's law).
 - **Source:** TSMC Form 20-F FY2025, as in R-552. Checked Nov 2026.
+
+## R-560 · ASML NXE:3800E (0.33-NA EUV) specifications (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (ASML product page and the 2025 annual report's strategic section opened).* [Established: vendor specification]
+
+- Specification block: "Resolution 13 nm", "Projection optics 0.33 NA", "Wafers per hour ≥ 220, At dose: 30 mJ/cm2"; "designed to cost-efficiently support volume production of 2 nm Logic nodes and leading-edge DRAM nodes."
+- Annual report (CEO Q&A): the NXE:3800E delivers "a huge jump in performance ... from 160 wafers per hour to 230 wafers per hour" against the NXE:3600D (ASML's text writes "NXT:3600D").
+- **Derived here:** $k_1$ = 13 × 0.33/13.5 = 0.318.
+- **Sources:** [ASML NXE:3800E](https://www.asml.com/en/products/euv-lithography-systems/twinscan-nxe-3800e); [ASML Annual Report 2025, strategic section](https://ourbrand.asml.com/m/8ab959d4926657b/original/asml-2025-annual-report-strategic-report-section.pdf). Checked Nov 2026.
+
+## R-561 · ASML EXE:5000 and EXE:5200B (High-NA EUV) specifications (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (ASML product pages and annual report opened).* [Established: vendor specification]
+
+- EXE:5000: "Its 8 nm resolution will enable chipmakers to print with a single exposure features 1.7 times smaller – and therefore achieve transistor densities 2.9 times higher – than those possible using TWINSCAN NXE systems"; "The anamorphic mirrors require an exposure field half the size of that in NXE systems".
+- Specifications: 0.55 NA; "Wafers per hour ≥ 110, At dose: 50 mJ/cm²" (EXE:5000) and "≥ 175, At dose: 50 mJ/cm²" (EXE:5200B).
+- Annual report: "In early April 2025, we shipped our first TWINSCAN EXE:5200B system… At 175 wafers per hour, it offers 60% higher productivity compared to the TWINSCAN EXE:5000".
+- **Derived here:** $k_1$ = 8 × 0.55/13.5 = 0.326; half field 26 × 16.5 mm = 429 mm².
+- **Sources:** [EXE:5000](https://www.asml.com/en/products/euv-lithography-systems/twinscan-exe-5000); [EXE:5200B](https://www.asml.com/en/products/euv-lithography-systems/twinscan-exe-5200b); annual report as in R-560. Checked Nov 2026.
+
+## R-562 · ASML NXT:2150i (ArF immersion), EUV replacing multipatterning, sole EUV supplier (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (ASML product page and annual report opened).* [Established]
+
+- Specifications: "ArF light source 193 nm", "Resolution ≤ 38 nm", "Projection optics 1.35 NA", "Wafers per hour ≥ 310".
+- Annual report: "shifting from complex multi-patterning to simpler single patterning using EUV lithography, a method that requires only one exposure per layer. This approach reduces the number of masks and process steps"; "ASML is currently the world's only manufacturer of EUV lithography systems"; $k_1$ is "a factor relating to optical and process optimizations".
+- **Derived here:** $k_1$ = 38 × 1.35/193 = 0.266; single-exposure pitch about 76 nm.
+- **Sources:** [ASML NXT:2150i](https://www.asml.com/en/products/duv-lithography-systems/twinscan-nxt-2150i); annual report as in R-560. Checked Nov 2026.
+
+## R-563 · ASML shipments and results, 2025–2026 (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (ASML 2025 annual report financial section and an eeNews Europe report opened; ASML's investor site was blocked).* [Established]
+
+- "We recognized four EXE and 44 NXE systems in sales in 2025 compared to two EXE and 42 NXE systems in 2024. Our system sales across our DUV technologies decreased from 374 units in 2024 to 279 in 2025"; lithography systems sold 327 (2024: 418).
+- eeNews Europe (15 Oct 2026): "record third-quarter 2026 sales of €11.7 billion"; full-year forecast "between €44 billion and €45 billion"; "we now expect that our supply as currently planned for both 2027 and 2028 will not fully meet the demand of our customers".
+- **Sources:** [ASML Annual Report 2025, financial performance section](https://ourbrand.asml.com/m/419103cb23dfeaa4/original/asml-2025-annual-report-financial-performance-section.pdf); [eeNews Europe, 15 Oct 2026](https://www.eenewseurope.com/en/asml-hits-record-e11-7-billion-sales-as-ai-chip-demand-surges/). Checked Nov 2026.
+
+## R-564 · EUV and High-NA scanner prices, as reported (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (two Tom's Hardware reports and the 2021 SIA/BCG study opened).* [Industry estimate: never officially listed]
+
+- Tom's Hardware (13 Feb 2024, via Taipei Times): High-NA EXE "will cost around $380 million (€350 million)"; "existing Low-NA Twinscan NXE EUV systems cost around €170 million ($183 million), though their prices depend on exact models and configurations"; ASML had "10 to 20" High-NA orders and planned to build 20 a year by 2028.
+- Tom's Hardware (8 Sep 2026): "$400 million scanners". SIA/BCG (2021): "A single EUV machine can cost $150 million."
+- Range used: about €150–200 M Low-NA, €350 M–$400 M High-NA. A ~$720 M figure seen only in search results is not used.
+- **Sources:** [Tom's Hardware, 13 Feb 2024](https://www.tomshardware.com/tech-industry/manufacturing/asmls-high-na-chipmaking-tool-will-cost-dollar380-million-the-company-already-has-orders-for-10-to-20-machines-and-is-ramping-up-production); [Tom's Hardware, 8 Sep 2026](https://www.tomshardware.com/tech-industry/semiconductors/tsmc-to-start-using-high-na-euv-lithography-in-2030-a10-or-a11-technology-prime-candidates-for-use); SIA/BCG 2021 as in R-020. Checked Nov 2026.
+
+## R-565 · High-NA deployment status, 2026 (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (TrendForce and Tom's Hardware reports and ASML's annual report opened).* [Established for ASML's and Intel's own figures; system counts and acceptance throughput Industry estimate]
+
+- TrendForce (1 Sep 2026): "10 High-NA EUV systems are already up and running at four customers worldwide, with another three being shipped and installed"; "ASML's High-NA EUV (EXE) systems have collectively exposed more than 1.35 million wafers. The qualified EXE:5200B system, meanwhile, has reportedly achieved a throughput of 135 wafers per hour (WPH) in acceptance testing".
+- Tom's Hardware (8 Sep 2026): Intel had processed over one million High-NA wafers (including installation, R&D and production wafers); "Intel currently has two ASML Twinscan EXE:5000 tools and at least one EXE:5200B scanner"; ASML earlier reported "over 500,000 wafers ... achieving over 80% availability".
+- ASML annual report: "By the end of the year, our customers had run more than 400,000 wafers on High NA EUV systems."
+- **Derived here:** 135/175 = 77% of specification.
+- **Sources:** [TrendForce, 1 Sep 2026](https://www.trendforce.com/news/2026/09/01/news-asml-advances-high-na-euv-toward-high-volume-manufacturing-as-10-systems-reportedly-go-live-at-4-customers/); [Tom's Hardware, 8 Sep 2026](https://www.tomshardware.com/tech-industry/semiconductors/intel-surpasses-one-million-high-na-euv-wafers-processed-outpaces-the-rest-of-the-industry-combined-company-also-trailblazing-giant-6-12-photomasks-to-speed-production-and-lower-costs1); annual report as in R-560. Checked Nov 2026.
+
+## R-566 · High-NA insertion plans and the stitching penalty (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (ASML annual report and two Tom's Hardware reports opened).* [Established for company statements; stitching throughput Industry estimate]
+
+- ASML: "We expect our TWINSCAN EXE platform to start supporting high-volume manufacturing in 2027."
+- Tom's Hardware: "TSMC plans to start using High-NA EUV lithography tools for high-volume manufacturing in 2030 using conventional 6×6-inch photomasks. The company then plans to build a pilot line that uses 6×12-inch photomasks in 2031 with the goal of bringing 6×12-inch High-NA lithography systems into advanced node production by 2033."
+- Tom's Hardware, on half-field stitching: "it greatly reduces throughput from 175 wafers per hour to 125 wafers per hour on an EXE:5200B" (no named primary source).
+- **Derived here:** 125/175 = 0.71, a 29% loss.
+- **Sources:** annual report as in R-560; Tom's Hardware reports as in R-564 and R-565. Checked Nov 2026.
+
+## R-567 · EUV source power: 600 W in production, 1,000 W demonstrated (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (Bits&Chips and Tom's Hardware reports and ASML's annual report opened).* [Established for the demonstration; roadmap Industry estimate]
+
+- Bits&Chips (24 Feb 2026): "Hooked up to high-NA EUV scanners, ASML's current highest-power industrial source is 600 watts. Increasing gain to 1,000 watts is achieved by employing higher-power laser pulses, increasing the tin droplet rate from 60 to 100 kilohertz, and 'preshaping' the droplets".
+- ASML: "In April 2025, ASML reached a historic milestone: demonstrating the first ever 1,000-watt light source for EUV lithography."
+- Tom's Hardware (24 Feb 2026): a future scanner that "can process up to 330 wafers per hour ... projected for sometime in 2030 or beyond"; ASML: "We see a reasonably clear path toward 1,500 watts, and no fundamental reason why we couldn't get to 2,000 watts."
+- Source power is quoted at intermediate focus, not at the wafer.
+- **Derived here:** 1,000/600 = +67% power against about +50% throughput (220 to 330 wph).
+- **Sources:** [Bits&Chips, 24 Feb 2026](https://bits-chips.com/article/asml-hits-1000-w-in-euv-source-proof-of-concept/); [Tom's Hardware, 24 Feb 2026](https://www.tomshardware.com/tech-industry/semiconductors/asml-makes-breakthrough-in-euv-chipmaking-tech-plans-to-increase-speed-by-50-percent-by-2030-new-1-000-watt-light-source-fires-three-lasers-at-100-000-tin-droplets-every-second); annual report as in R-560. Checked Nov 2026.
