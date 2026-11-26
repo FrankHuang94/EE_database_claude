@@ -5731,3 +5731,42 @@ R&D % = R&D ÷ revenue.
 - efabless faced "funding challenges" and shut down around 1 Mar 2025 (Tom's Hardware); Tiny Tapeout: "Current TT10 shuttle and future SkyWater Sky130 shuttles are paused while we explore options".
 - **Derived here:** minimum GF 22FDSOI slot €71,280 (standard) or €64,800 (discounted); GF180MCU €5,478.
 - **Sources:** TSMC 20-F as in R-552; [Europractice schedules 2026](https://europractice-ic.com/schedules-prices-2026/); [Tom's Hardware, 2 Mar 2025](https://www.tomshardware.com/tech-industry/semiconductors/efabless-shuts-down-fate-of-tiny-tapeout-chip-production-projects-unclear); [Tiny Tapeout, 1 Mar 2025](https://tinytapeout.com/news/efabless-shutsdown/). Checked Nov 2026.
+
+## R-582 · TrendForce top-10 OSAT ranking, 2024 (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (TrendForce press release opened).* [Industry estimate]
+
+- "the combined revenue of the world's top 10 OSAT companies reached US$41.56B in 2024, up 3% YoY. ASE led the ranking with revenue of $18.54B, holding nearly a 45% share among the top ten."
+- "Amkor ranked second with $6.32B in revenue (-2.8% YoY)"; "JCET took third place with $5B in revenue (+19.3% YoY)." Then Tongfu $3.32 B, Powertech $2.28 B, HT-Tech $2.01 B, WiseRoad $1.56 B, Hana Micron $0.92 B, KYEC $0.91 B, ChipMOS $0.71 B.
+- **Caveats:** shares are of the top-ten total, not the whole OSAT market (a Gartner figure of about 26% for ASE's share of the whole 2025 market appeared only in a search excerpt and is unconfirmed); ASE's revenue includes electronics manufacturing services (USI). No 2025-data TrendForce ranking was found.
+- **Derived here:** shares of the top ten: ASE 44.6%, Amkor 15.2%, JCET 12.0%; top five 85.3%.
+- **Source:** [TrendForce, 13 May 2025](https://www.trendforce.com/presscenter/news/20250513-12577.html). Checked Nov 2026.
+
+## R-583 · Build-up film and substrate supply, 2026 (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (Tom's Hardware article opened).* [Industry estimate]
+
+- "Japan's Ajinomoto, which controls a reported 95% or more of the global market" for build-up film; "Unimicron, Ibiden, and Shinko together account for roughly three-quarters of the substrate market by most estimates".
+- "Ajinomoto's film capacity was already running at full load in the second quarter of 2026, at a reported two million square meters per month"; "Ajinomoto notified substrate manufacturers in May 2026 that it would raise ABF film prices by approximately 30%, effective in the third quarter."
+- An AI substrate example uses "about 3.5 times the board area and three times as many ABF layers as a conventional design — 18 layers against six — consuming roughly ten times as much ABF overall."
+- Ibiden's roadmap: 90 × 90 mm substrates (2026), 110 × 110 mm (2028), 130 × 130 mm and larger later; organic substrates are reported to lose usable flatness beyond about 120 mm per side.
+- **Caveats:** shares are "reported" and pricing is second-hand. Separate reports of a glass-cloth shortage appeared only in search excerpts and are not used.
+- **Derived here:** 3.5 × 18/6 = 10.5, consistent with "roughly ten times".
+- **Source:** [Tom's Hardware, 10 Sep 2026](https://www.tomshardware.com/tech-industry/semiconductors/the-state-of-abf-substrates-in-data-center-silicon-in-2026-solving-the-supply-crunch-and-material-wall-beneath-every-ai-accelerator). Checked Nov 2026.
+
+## R-584 · TSMC InFO in Apple's A10, 2016 (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (I-Connect007 article and TSMC 20-F opened).* [Established]
+
+- "Apple underwent a strategic change by selecting TSMC's new inFO-PoP packaging technology for its new A10 processor"; "the A10 processor is showing an impressive thickness reduction of 30% compared to traditional PoP-based systems" (System Plus Consulting teardown); "copper pillar Through inFO Vias. This technology is replacing the well-known Through Molded Via approach."
+- TSMC's FY2025 20-F still lists "TSMC 3DFabric® advanced packaging services, such as our industry-leading InFO technology" for smartphone customers.
+- **Caveat:** the 30% figure is a teardown firm's measurement.
+- **Sources:** [I-Connect007, 21 Oct 2016](https://iconnect007.com/article/100622/iphone-7-apple-underwent-strategic-change-by-selecting-tsmcs-info-platform/100625/ein); TSMC 20-F as in R-552. Checked Nov 2026.
+
+## R-585 · Wire bond against flip-chip: qualitative trend only (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (TechInsights web summary opened).* [Industry estimate]
+
+- "Although wire bonding dominates traditional IC packages, advanced techniques like flip-chip and FO-WLP are growing quickly"; "In 2024, area-array bonding is expected to exceed peripheral bonding for better performance and a smaller footprint"; "advanced packaging wafers will grow 10% in 2024 and 23% in 2025."
+- **Caveats:** the page is undated (it refers to 2024 forecasts, so probably late 2024); the area-array crossover is a connection-count metric, not a package-unit share. No credible, openly published unit share of wire bond against flip-chip was found (market-research data is paywalled), so the chapter gives no percentage.
+- **Source:** [TechInsights, "Advanced Packaging Market: 2025 Outlook and Growth Trends"](https://www.techinsights.com/ja/node/58737). Checked Nov 2026.

@@ -10332,3 +10332,39 @@
 - term: BCD process
   definition: "A bipolar-CMOS-DMOS process combining logic, precision analog and high-voltage LDMOS transistors on one die, used for power management, motor drivers and battery management."
   chapter: "25-05"
+
+# ---------------------------------------------------------------- 25-06
+- term: Wire bonding
+  definition: "Connecting die pads to package leads with fine gold or copper wires bonded one at a time; cheap and flexible, but limited to the die perimeter and adding about 1 nH per millimetre of wire."
+  chapter: "25-06"
+  see_also: [Flip-chip]
+- term: Flip-chip
+  definition: "Mounting a die face down on solder bumps or copper pillars spread over its whole area, giving area-array I/O, short low-inductance connections and many parallel power and ground paths."
+  chapter: "25-06"
+  see_also: [Underfill, Wire bonding]
+- term: Underfill
+  definition: "An epoxy filled between a flip-chip die and its substrate after reflow; it bonds die to substrate so thermal-mismatch strain is shared by the whole interface rather than concentrated in the solder joints."
+  chapter: "25-06"
+- term: Build-up substrate (ABF)
+  definition: "An organic package substrate made of a core plus alternating copper and insulating film layers (Ajinomoto Build-up Film is the dominant film), with laser-drilled microvias; it fans flip-chip bumps out to board-level balls."
+  chapter: "25-06"
+  see_also: [Escape routing]
+- term: Escape routing
+  definition: "Routing signals from inner rows of a bump or ball array out past the outer rows; the traces that fit between adjacent pads set how many rows each layer can escape and hence the substrate layer count."
+  chapter: "25-06"
+- term: Fan-out wafer-level packaging (FOWLP)
+  definition: "Packaging that embeds dies in a reconstituted mould wafer and builds thin redistribution layers over die and mould, so I/O can extend beyond the die edge without a laminate substrate."
+  chapter: "25-06"
+- term: System-in-package (SiP)
+  definition: "A package holding several dies and passive components that together form a complete subsystem, such as a wearable's processor, memory, power management and radio."
+  chapter: "25-06"
+- term: Package-on-package (PoP)
+  definition: "Stacking a memory package directly on top of a processor package, connected through the lower package's perimeter, to save board area in phones and wearables."
+  chapter: "25-06"
+- term: Distance from neutral point (DNP)
+  definition: "The distance of a solder joint from the point of zero relative thermal displacement, usually the die centre; joint shear strain grows in proportion to it, so the corner joints fail first."
+  chapter: "25-06"
+  see_also: [Coffin–Manson relation]
+- term: Coffin–Manson relation
+  definition: "An empirical fatigue law: cycles to failure scale as a negative power of the plastic strain range per cycle, with an exponent near 2 for solder joints, so halving the strain roughly quadruples the life."
+  chapter: "25-06"

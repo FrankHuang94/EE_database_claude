@@ -67,7 +67,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 >
 > 25-05 (Foundries, PDKs and Specialty Processes) is verified: business models and foundry market data (share denominators, wafer-revenue mix); PDK contents and maturity; corners priced with the alpha-power law; MPW shuttles against dedicated runs; FD-SOI back-gate coupling derived as series capacitors (confirmed by a numerical Laplace solve); the specialty-process map and shrink economics for mixed-signal dies; R-578 to R-581.
 >
-> **Next: 25-06 (Packaging I: Wire Bond, Flip-Chip, Substrates, SiP and PoP).** Use research batch A's 25-06 section (scratchpad `research25_A.md`). Research batch B for 25-07 to 25-12 is confirmed in scratchpad `research25_B_confirmed.md` (use only confirmed or corrected statements, as corrected). Then 25-07 to 25-12, wrap-up, audit and the Term 6 checkpoint (50 FE-style questions on Courses 19–25).
+> 25-06 (Packaging I: Wire Bond, Flip-Chip, Substrates, SiP and PoP) is verified: package functions; perimeter against area I/O and the crossover die size; escape routing and substrate layer count; power-bump budgets; underfill; FOWLP, SiP and PoP; joint shear strain from DNP, Coffin–Manson and the weakest-link Weibull package life; substrate panel economics and the 2026 build-up-film crunch; OSAT market data; R-582 to R-585.
+>
+> **Next: 25-07 (Packaging II: 2.5D, 3D, Hybrid Bonding and Chiplets).** Research batch B for 25-07 to 25-12 is confirmed in scratchpad `research25_B_confirmed.md` (use only confirmed or corrected statements, as corrected). Then 25-07 to 25-12, wrap-up, audit and the Term 6 checkpoint (50 FE-style questions on Courses 19–25).
 >
 > Tips carried from Course 22: switched-converter ngspice runs show sub-millivolt steps when the time step changes, so measure averages over a late window and peak-to-peak values over the final period only; new notebooks that call ngspice must use the guarded helper (copied in 21-01 to 21-10), because CI's notebook job has no ngspice; `.meas integ` on non-uniform transient points is inaccurate for small harmonics, so run, `linearize`, then `meas` in a `.control` block.
 >
@@ -165,10 +167,10 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | 22 | 12 | 12 | 12 | 12 | 96,801 | 171 | 1653 | 12 | 12 / 25 / 0 |
 | 23 | 9 | 9 | 9 | 9 | 73,016 | 123 | 1567 | 9 | 9 / 8 / 0 |
 | 24 | 9 | 9 | 9 | 9 | 64,285 | 132 | 1522 | 9 | 9 / 7 / 0 |
-| 25 | 12 | 5 | 5 | 0 | 31,227 | 70 | 489 | 5 | 5 / 1 / 0 |
-| **Total** | **307** | **275** | **275** | **270** | **1,947,230** | **3933** | **33881** | **275** | **271 / 270 / 27** |
+| 25 | 12 | 6 | 6 | 0 | 35,788 | 82 | 545 | 6 | 6 / 1 / 0 |
+| **Total** | **307** | **276** | **276** | **270** | **1,951,791** | **3945** | **33937** | **276** | **272 / 270 / 27** |
 
-Glossary terms: **2794** · Flashcards: **2545**
+Glossary terms: **2804** · Flashcards: **2545**
 
 <!-- END STATS -->
 
@@ -601,3 +603,4 @@ Changes relative to the original build brief's chapter plan.
 | 2026-11-26 | Phase 2. **25-03 Deposition, Etch, CMP, Implant and Metrology ✅ verified.** CVD regimes from fluxes in series; ALD; PVD, epitaxy and Faraday-law plating; plasma etch, selectivity and overetch; Preston's law and pattern density; implant profiles and junction depth; anneal broadening and the thermal budget; gauge noise; equipment market. 9 examples, 14 problems with solutions, verify (101 checks: numerical flux balance, charge integration, numerical convolution, a Crank–Nicolson solver with a reflecting surface, simulated gauge noise), lab (units.py with a finite-difference diffusion solver, notebook), 2 figures, 12 glossary terms, R-568 to R-571. Research batch B for 25-07 to 25-12 confirmed by a fact-checking agent. |
 | 2026-11-26 | Phase 2. **25-04 Yield Models and Die Cost ✅ verified.** Dies per wafer (formula and exact count), Poisson yield, clustering via Jensen's inequality, Murphy and negative-binomial models derived, cost per good die, redundancy and harvesting, yield learning, depreciation-based wafer cost, cost per transistor, reading yield claims. 8 examples, 14 problems with solutions, verify (90 checks: numerical averaging over triangular and gamma densities, a row-wise exact die count, binomial enumeration, a clustered Monte Carlo), lab (yieldcost.py, notebook), 2 figures, 10 glossary terms, R-572 to R-577. |
 | 2026-11-26 | Phase 2. **25-05 Foundries, PDKs and Specialty Processes ✅ verified.** Foundry models and market data, PDK contents and maturity, corners and signoff margin, MPW economics, FD-SOI back-gate coupling (derived; numerically confirmed), specialty-process map and shrink economics. 6 examples, 13 problems with solutions, verify (64 checks: a charge-balance network and a sparse finite-difference Laplace solve for the coupling, corner ratios, Monte Carlo local variation), lab (foundry.py, notebook), 2 figures, 4 glossary terms, R-578 to R-581. RF-SOI switches (21-09), the Baliga limit (09-13, 22-06) and eNVM (23-08) are linked, not repeated. |
+| 2026-11-26 | Phase 2. **25-06 Packaging I: Wire Bond, Flip-Chip, Substrates, SiP and PoP ✅ verified.** Package functions and technologies, perimeter against area-array I/O (crossover derived), escape routing and layer count, power-bump budgets, FOWLP/SiP/PoP, solder-joint strain from DNP, Coffin–Manson and the weakest-link Weibull package life (derived), substrate panel economics, OSAT and build-up-film market data. 6 examples, 12 problems with solutions, verify (58 checks: brute-force trace counting, root-found crossovers, an exact integer count of the strain map, survival-function integration and a Monte Carlo over 17,689 joints), lab (package.py, notebook), 2 figures, 10 glossary terms, R-582 to R-585. Bond-wire inductance (13-03) is linked, not repeated; no wire-bond unit share is published because no credible free figure exists. |
