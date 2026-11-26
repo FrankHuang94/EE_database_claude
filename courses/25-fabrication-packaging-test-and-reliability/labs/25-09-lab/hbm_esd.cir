@@ -1,0 +1,23 @@
+* 25-09 lab: human-body-model ESD discharge into a pad clamp (Example 25-09.7)
+* The HBM source is 100 pF charged to 2 kV discharging through 1.5 kohm (no series inductance in this
+* simplified model, so the current rises instantly). The clamp is modelled as a 5 V holding voltage in
+* series with 1 ohm. Expected: peak current (2000 - 5)/1501 = 1.329 A, peak pad voltage 6.33 V, and the
+* current falls to 1/e of its peak after tau = 1501 * 100 pF = 150.1 ns (0.489 A at t = tau).
+*
+* EXPECT ipk key:../../chapters/25-09-reliability-physics.md#Ex_25-09.7a rtol=0.002
+* EXPECT vpk key:../../chapters/25-09-reliability-physics.md#Ex_25-09.7c rtol=0.002
+* EXPECT itau key:../../chapters/25-09-reliability-physics.md#Ex_25-09.7d rtol=0.004
+
+Chbm src 0 100p ic=2000
+Rhbm src pad 1500
+Vsense pad clampin 0
+Vhold clampin mid 5
+Ron mid 0 1
+
+.control
+tran 0.1n 600n uic
+meas tran ipk max i(Vsense)
+meas tran vpk max v(pad)
+meas tran itau find i(Vsense) at=150.1n
+.endc
+.end

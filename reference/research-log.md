@@ -5956,3 +5956,56 @@ R&D % = R&D ÷ revenue.
 - Microchip MCP16367/8/9: "Operating Junction Temperature Range | TJ | -40 | — | +125 | °C | Steady State"; "Maximum Junction Temperature | TJ | — | — | +150 | °C | Transient".
 - **Derived here:** the automotive profile's time-weighted mean junction temperature is 78.0 °C.
 - **Sources:** [TI AM62x datasheet, §6.4](https://ti.com/document-viewer/AM625/datasheet/GUID-A025377A-0F66-410F-B7B2-B137B14D1CFA); [Microchip MCP16367/8/9, temperature specifications](https://onlinedocs.microchip.com/oxy/GUID-818C9189-BAE2-477E-8033-0E60407CD520-en-US-2/GUID-DBFF8684-8BB8-4CD2-A55E-A359FC6C1699.html). Checked Nov 2026.
+
+## R-605 · Black's equation, current exponents and copper transport paths (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (three TU Wien theses opened).* [Established]
+
+- Rovitto (TU Wien), §1.4.3: "a current density exponent n value close to 2 indicates a lognormal lifetime distribution, which corresponds to a nucleation time dominated failure …, while a value close to 1 indicates that the dominant phase of the electromigration failure time is the void evolution"; "Black's original empirical work predicted a failure time following a j-2 dependence, while later experimental studies estimated values of n generally lying between 1 and 3"; the two-phase form "MTTF = t_N + t_E = Bj^{-2} + Cj^{-1}".
+- Orio (TU Wien), §1.3.1: "An exponent close to 1 indicates that the lifetime is dominated by the void growth mechanisms".
+- Wessner (TU Wien), §5.1: "the activation energy and the current density exponent have to be determined experimentally and therefore its validity is limited to specific test configurations"; "In Cu interconnects, grain boundary and interface diffusion are the dominating transport mechanisms at normal temperature operating conditions".
+- **Derived here:** for the two-phase form the local exponent is (2 + x)/(1 + x) with x = jC/B, tending to 2 at low j and 1 at high j. A quoted claim that n rises with current density was not found and is not used.
+- **Sources:** [Rovitto, §1.4.3](https://www.iue.tuwien.ac.at/phd/rovitto/node24.html); [Orio, §1.3.1](https://www.iue.tuwien.ac.at/phd/orio/node16.html); [Wessner, §5.1](https://www.iue.tuwien.ac.at/phd/wessner/node25.html). Checked Nov 2026.
+
+## R-606 · Copper EM activation energies and the early-failure mode (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Cambridge Core abstract opened; the full PDF was behind a bot challenge).* [Established]
+
+- Hauschildt, Gall and Hernandez, "Large-Scale Electromigration Statistics for Cu Interconnects", MRS Proc. 1156 (2009): "The use of these structures enabled an increase of the tested sample size past 1.1 million"; "The activation energy for the down-flow early failure mechanism was determined to be 0.83 ± 0.01 eV … significantly lower than the usually reported activation energy of 0.90 eV for electromigration-induced diffusion along Cu/SiCN interfaces"; tests reached "down to 150 °C, coming quite close to typical operating conditions up to 125 °C"; "the down-flow early failure mode may control the chip lifetime at operating conditions."
+- **Source:** [Cambridge Core abstract](https://www.cambridge.org/core/journals/mrs-online-proceedings-library-archive/article/abs/largescale-electromigration-statistics-for-cu-interconnects/73DB541A8BB22417C979ACE3F3A5CC0C). Checked Nov 2026.
+
+## R-607 · TDDB models and industry practice (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Padovani et al. IRPS 2023 PDF, an arXiv review and a NIST paper opened).* [Contested on model choice]
+
+- NIST (Suehle, 2001): "popular models include the linear electric field or "E" model that assumes a thermodynamic process of defect creation, and the reciprocal "1/E" model that assumes that the injection of holes from the anode region causes defects that eventually lead to breakdown."
+- Padovani et al. (IRPS 2023), on the E model: "too conservative and results in overly stringent design limitations. For this reason, it is typically disregarded by industry in favor of the power-law model (and, less often, of the 1/E model, that is overly relaxed) that provides larger design margins".
+- arXiv 2503.21165 (2025): the anode hole injection (1/E) model and the "Power-law Voltage (V) Model: Also known as the anode hydrogen release (AHR) model … frequently used for ultrathin … dielectric MOSFETs".
+- **Caveat:** a widely repeated quote projecting more than 20-year life for very thin oxides was not found in the sources opened and is not used. Typical field-acceleration and power-law exponents remain an open item.
+- **Sources:** [Padovani et al., IRPS 2023](https://discovery.ucl.ac.uk/id/eprint/10188320/1/Padovani_IRPS23_BD_full_paper_Towards_universal_model.pdf); [arXiv 2503.21165](https://arxiv.org/pdf/2503.21165); [Suehle, NIST, 2001](https://zenodo.org/records/1266252/files/article.pdf). Checked Nov 2026.
+
+## R-608 · BTI exponents and HCI worst-case conditions (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Grasser et al. chapter, Starkov thesis and an arXiv paper opened; an IEDM 2007 tutorial copy returned 404).* [Established for the forms; Contested for mechanism and exponent]
+
+- Grasser, Goes and Kaczer (2008): "This results in the well-known exponents 1/2, 1/4, and 1/6 for proton, atomic, and molecular hydrogen transport, respectively"; "the value of the extracted power-law exponent depends significantly on the delay introduced during the measurement … Experimental results obtained with delayed measurements show a linear increase of the exponent with temperature with values around 0.2–0.3."
+- Starkov (TU Wien): "The WCC of hot-carrier degradation in the case of a long-channel n-MOSFET are reached when the substrate current Isub is at its maximum … usually assumed that this maximum corresponds to Vgs≅ (0.4-0.5)Vds. As for long-channel p-MOSFET, WCC are observed at the maximum gate current Ig".
+- arXiv 2104.12165 (IEEE TDMR, 2021): "the worst-case of NMOS is VGstress @Isubmax and the worst-case of PMOS is VGstress = VDstress".
+- **Sources:** [Grasser et al., TU Wien PDF](https://www.iue.tuwien.ac.at/pdf/ib_2009/BC2009_Grasser_1.pdf); [Starkov thesis](https://www.iue.tuwien.ac.at/phd/starkov/node34.html); [arXiv 2104.12165](https://arxiv.org/pdf/2104.12165). Checked Nov 2026.
+
+## R-609 · JEDEC JEP122H (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (NSAI standards listing opened; jedec.org and another reseller were behind bot challenges).* [Established]
+
+- Standards.ie (NSAI): JEDEC JEP122H:2016, "FAILURE MECHANISMS AND MODELS FOR SEMICONDUCTOR DEVICES", status "Current", published 1 Sep 2016 (NSAI dates are day-month-year), 114 pages, superseding JEP122G:2011. Abstract: "This publication provides a list of failure mechanisms and their associated activation energies or acceleration factors that may be used in making system failure rate estimations when the only available data is based on tests performed at accelerated stress test conditions."
+- **Source:** [Standards.ie, JEDEC JEP122H:2016](https://shop.standards.ie/en-ie/standards/jedec-jep122h-2016-1316433_saig_jedec_jedec_3219064/). Checked 26 Nov 2026.
+
+## R-610 · FIT definition and TI's HTOL example (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (TI terminology and calculator pages and app note SNAA391 opened).* [Established]
+
+- TI: "FIT – Failures in Time, number of units failing per billion operating hours."
+- TI SNAA391 (Jun 2023): JEDEC JESD85 methods, of which "Most of these methods only apply to constant failure rates"; HTOL "sample size for HTOL is 7859, test duration is 1000 hours, the number of failures is zero, and the test temperature is 125 °C"; acceleration factor "78.6" (0.7 eV, 55 °C use); "the FIT value is calculated to be 1.5 for 55 °C operation"; "the confidence level is 60% (which is typical for industrial calculations)".
+- TI calculator: "If you have a FIT of 16.7 at a reference temperature of 55C, you can predict FIT at application temperature of 75C to be 69.2 with 0.7Ea".
+- **Derived here:** TI's 78.6 reproduces with k = 8.6 × 10⁻⁵ eV/K and T = °C + 273; exact constants give 77.6. χ²(0.60, 2) = 1.833; 1.833 × 10⁹/(2 × 1000 × 7859 × 78.6) = 1.48 FIT. A different 231-unit example reported elsewhere was not found in TI's pages and is not used.
+- **Sources:** [TI reliability terminology](https://www.ti.com/quality-reliability/reliability/terminology.html); [TI reliability calculators](https://ti.com/support-quality/reliability/fail-fraction-average-fail-rate-fit.html); [TI SNAA391](https://www.ti.com/lit/an/snaa391/snaa391.pdf). Checked Nov 2026.

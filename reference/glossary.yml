@@ -10449,3 +10449,33 @@
 - term: Mission profile
   definition: "The fraction of a product's life spent at each operating condition, such as junction temperature; because wear-out is roughly Arrhenius in temperature, the hottest intervals dominate the damage."
   chapter: "25-08"
+
+# ---------------------------------------------------------------- 25-09
+- term: Black's equation
+  definition: "The empirical electromigration lifetime model MTTF = A j^(−n) exp(E_a/kT); the current exponent n is near 2 when void nucleation dominates and near 1 when void growth dominates."
+  chapter: "25-09"
+  see_also: [Electromigration, Blech effect]
+- term: Blech effect
+  definition: "Immunity of short interconnect lines to electromigration: the back-stress gradient built by atoms piling up stops the flux when the product of current density and length stays below a critical value (jL)_c."
+  chapter: "25-09"
+  see_also: [Black's equation]
+- term: Bias-temperature instability (BTI)
+  definition: "A gradual, partly recoverable shift in transistor threshold voltage under gate bias at elevated temperature (NBTI for PMOS, PBTI for NMOS), growing roughly as a power of stress time with a disputed exponent."
+  chapter: "25-09"
+  see_also: [Hot-carrier injection (HCI)]
+- term: Hot-carrier injection (HCI)
+  definition: "Degradation caused by carriers accelerated in the high field near the drain that create interface states or become trapped in the gate oxide; for long-channel NMOS it is worst near maximum substrate current."
+  chapter: "25-09"
+  see_also: [Bias-temperature instability (BTI)]
+- term: Activation energy
+  definition: "The energy barrier E_a of a thermally activated process; it sets how strongly temperature accelerates the process through the Arrhenius factor exp(−E_a/kT), and each failure mechanism has its own value."
+  chapter: "25-09"
+  see_also: [Arrhenius model, Acceleration factor]
+- term: Acceleration factor
+  definition: "The ratio of a failure mechanism's lifetime at use conditions to its lifetime at stress conditions, the product of thermal (Arrhenius), voltage, current or field factors; it converts accelerated-test results into field predictions."
+  chapter: "25-09"
+  see_also: [Activation energy, HTOL]
+- term: ESD clamp
+  definition: "An on-chip protection device at each pad that turns on during an electrostatic discharge and diverts the current to a supply rail, holding the pad voltage below what the protected circuit can survive."
+  chapter: "25-09"
+  see_also: [Electrostatic discharge (ESD), Human-body model (HBM)]
