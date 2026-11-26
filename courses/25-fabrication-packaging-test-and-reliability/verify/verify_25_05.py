@@ -126,6 +126,7 @@ s2, f2 = delay(0.675, 0.345, 2.0) / tt2, delay(0.825, 0.255, 2.0) / tt2
 v.check("25-05.5a", s2)
 v.check("25-05.5b", f2)
 v.check("25-05.5c", s2 / f2)
+v.check("25-05.6a0", ss)
 v.check("25-05.6a", 2.0 * ss)
 v.check("25-05.7a", 0.080 / k20)
 v.check("25-05.7b", 10 ** (80 / 70))
@@ -143,6 +144,7 @@ v.check("25-05.9c", 100 * (1 - 1.8 * a9 / 10))
 v.check("25-05.10a", 4 * 16200)
 v.check("25-05.10b", 4 * 16200 / 40)
 v.check("25-05.11a", (80 / 20) ** 2)
+v.check("25-05.11b", math.exp(2.5 * math.log(80 / 20)))
 v.check("25-05.12a", norm.sf(3))
 v.check("25-05.12b", norm.sf(3) * 1e6)
 v.check("25-05.13a", 0.30 * 20)
@@ -159,5 +161,8 @@ v.check("Lab 25-05.c", 3e6 / 17820)
 ad = (4 * 2 / 3) / 3 + (4 / 3) / 2.5 + 6 / 1.2
 v.check("Lab 25-05.d", ad)
 v.check("Lab 25-05.d1", 1.8 * ad / 10)
+# break-even analog fraction: the migrated-area cost ratio is linear in x; solve 1.8 * area(x) / 10 = 1 by root-finding
+area_x = lambda x: (1 - x) * 10 * (2 / 3) / 3.0 + (1 - x) * 10 * (1 / 3) / 2.5 + x * 10 / 1.2  # noqa: E731
+v.check("Lab 25-05.e", optimize.brentq(lambda x: 1.8 * area_x(x) / 10 - 1, 0.01, 0.99))
 
 sys.exit(v.finish())

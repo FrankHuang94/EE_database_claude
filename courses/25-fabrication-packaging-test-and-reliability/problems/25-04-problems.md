@@ -32,7 +32,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-04.4 [B]
 
-**A reticle-sized die.** *(lab)* Estimate dies per wafer for a 25 mm × 30 mm die, showing both terms of the formula.
+**A reticle-sized die.** *(lab)* Estimate dies per wafer for a 25 mm × 30 mm die, showing both terms of the formula, and compare with the lab's exact count.
 
 ### Problem 25-04.5 [B]
 
@@ -74,6 +74,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Separating systematic loss.** A product of 1.0 cm² dies measures 72% yield. Inline inspection suggests random killer defects at 0.15 cm⁻². Under the Poisson model, find (a) the random-defect yield and (b) the implied systematic yield.
 
+### Problem 25-04.15 [B]
+
+**Critical area of a wire array.** A block has 10⁶ gaps, each 1 mm long, between parallel wires at 40 nm spacing. Conducting particles have the size density $2x_0^2/x^3$ above $x_0$ = 20 nm, with 2 cm⁻² of them in all (assumed). (a) Starting from $A_c(x) = L(x - s)$, show that the average critical area of one gap is $Lx_0^2/s$, and evaluate it in mm². (b) Find the block's total critical area in cm² and (c) its Poisson yield. (d) What is the yield if the spacing is halved to 20 nm?
+
 ---
 
 ## Objective coverage
@@ -81,7 +85,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Objective | Problems |
 |---|---|
 | 1. Dies per wafer | 4, 6 |
-| 2. Yield models and their derivations | 1, 2, 3, 13 |
+| 2. Yield models and their derivations | 1, 2, 3, 13, 15 |
 | 3. Cost per good die, redundancy and harvesting | 5, 6, 7, 8 |
 | 4. Yield learning | 9 |
 | 5. Wafer cost and cost per transistor | 10, 11 |

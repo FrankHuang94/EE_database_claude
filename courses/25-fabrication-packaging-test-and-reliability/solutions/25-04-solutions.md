@@ -36,7 +36,7 @@ Seeds: $1/(1 + 2)$ = **0.333**. Negative binomial ($\alpha$ = 3): $(5/3)^{-3}$ =
 
 ### Solution 25-04.4
 
-$A$ = 750 mm²: $70{,}686/750$ = **94.2** minus $\pi \times 300/\sqrt{1500}$ = **24.3**, giving **69.9**, about 69 whole dies.
+$A$ = 750 mm²: $70{,}686/750$ = **94.2** minus $\pi \times 300/\sqrt{1500}$ = **24.3**, giving **69.9** by the formula. The lab's exact count on an optimized grid fits **76** whole dies, **8.7**% more: the formula's edge term is pessimistic, and its error grows with die size (about 2% for Example 25-04.1's 100 mm² die).
 
 ### Solution 25-04.5
 
@@ -54,9 +54,9 @@ $A$ = 750 mm²: $70{,}686/750$ = **94.2** minus $\pi \times 300/\sqrt{1500}$ = *
 
 (c) $(1 + 0.206/3)^{-3}$ = **0.819**.
 
-(d) $30{,}000/(296 \times 0.819)$ = **$124**.
+(d) $30{,}000/(296 \times 0.819)$ = **$124** (unrounded **$123.6**).
 
-(e) Four chiplets cost **$494** of silicon against $838 monolithic, so the chiplet version can absorb up to **$344** of extra packaging, assembly and test cost per product, less any yield loss in assembly. Known-good-die testing (25-07) matters: assembling an untested bad chiplet wastes the other three.
+(e) Four chiplets cost $4 \times 123.6$ = **$494** of silicon against $838 monolithic, so the chiplet version can absorb up to **$344** of extra packaging, assembly and test cost per product, less any yield loss in assembly. With the lab's exact counts (76 monolithic dies and **306** chiplets), the monolithic die costs **$771** and four chiplets **$479**, so the margin shrinks to **$292**: the formula's pessimism, worse for the larger die, flatters the chiplet case by about $50. Known-good-die testing (25-07) matters: assembling an untested bad chiplet wastes the other three.
 
 ### Solution 25-04.7
 
@@ -102,6 +102,16 @@ The target density is still 0.232 cm⁻², now reached when $0.42\,e^{-t/3} = 0.
 
 (b) $0.72/0.861$ = **0.837**. About a sixth of the dies fail for reasons random defects do not explain: a design-process interaction or a parametric problem worth a separate investigation.
 
+### Solution 25-04.15
+
+(a) A particle of diameter $x > s$ shorts the gap if its centre falls in a band of width $x - s$, so $A_c = L(x - s)$. Averaging over sizes, $\bar A_c = \int_s^\infty L(x - s)(2x_0^2/x^3)\,dx = 2Lx_0^2[1/s - s/(2s^2)] = Lx_0^2/s$, valid for $x_0 \le s$. Here $1\ \text{mm} \times (2 \times 10^{-5}\ \text{mm})^2/(4 \times 10^{-5}\ \text{mm})$ = **1.0e-5** mm².
+
+(b) $10^6 \times 10^{-5}$ mm² = 10 mm² = **0.100** cm².
+
+(c) $e^{-0.100 \times 2}$ = **0.819**.
+
+(d) Halving $s$ doubles $\bar A_c$ (still $x_0 \le s$): $e^{-0.400}$ = **0.670**. Spacing is a yield knob: relaxing it where timing allows (wire spreading) buys yield back.
+
 ---
 
 ## Answer key
@@ -146,3 +156,14 @@ The target density is still 0.232 cm⁻², now reached when $0.42\,e^{-t/3} = 0.
 | 25-04.13b | yield | 0.763 | |
 | 25-04.14a | random-defect yield | 0.861 | |
 | 25-04.14b | systematic yield | 0.837 | |
+| 25-04.4d | exact count | 76 | |
+| 25-04.4e | exact over formula | 8.7 | % |
+| 25-04.6d0 | unrounded chiplet cost | 123.6 | $ |
+| 25-04.6f | exact chiplets per wafer | 306 | |
+| 25-04.6g | monolithic cost, exact count | 771 | $ |
+| 25-04.6h | four chiplets, exact count | 479 | $ |
+| 25-04.6i | margin, exact counts | 292 | $ |
+| 25-04.15a | critical area per gap | 1.0e-5 | mm² |
+| 25-04.15b | total critical area | 0.100 | cm² |
+| 25-04.15c | yield | 0.819 | |
+| 25-04.15d | yield at half spacing | 0.670 | |

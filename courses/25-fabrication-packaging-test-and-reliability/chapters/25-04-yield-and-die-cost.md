@@ -34,10 +34,11 @@ A wafer costs the same whether it carries one large die or a thousand small ones
 
 **The physical picture.** Sprinkle dust onto a tiled floor. Each speck that lands on a tile ruins it. If the floor is tiled with small tiles, most tiles escape; with large tiles, almost every tile catches a speck. If the dust falls in clumps instead of evenly, several specks land on the same unlucky tiles while others stay clean, so more tiles survive than with even dust. Tiles along a round room's walls are cut and wasted, and big tiles waste more at the wall.
 
-**An analogy and its limits.** For a finance reader, yield is a default rate and a die is a loan: a portfolio of many small loans loses a predictable fraction, a few large loans are lumpier, and correlated defaults (clustering) change the loss distribution but not the expected default count per unit of exposure. The analogy holds for expectations and for clustering. It breaks in two ways:
+**An analogy and its limits.** For a finance reader, yield is a default rate and a die is a loan: a portfolio of many small loans loses a predictable fraction, a few large loans are lumpier, and correlated defaults (clustering) change the loss distribution but not the expected default count per unit of exposure. The analogy holds for the expected loss from independent risks. It breaks in three ways:
 
 - **A die's "loss given default" is total.** One killer defect destroys the whole die, unless the design includes spare capacity (redundancy), which is like a loan with partial recovery.
 - **Exposure is area, not dollars.** A die twice as large is not two independent dies; it is one die that fails if either half fails, which is why yield falls exponentially, not linearly, with area.
+- **Clustering raises the expected yield.** For loans, correlation leaves the expected loss unchanged and only widens its distribution. For dies, clustering at the same mean defect density raises the expected fraction of good dies, because extra defects pile onto dies that were already lost (§3.3).
 
 ## 3. Theory
 
@@ -49,7 +50,15 @@ $$
 \text{DPW} \approx \frac{\pi d^2}{4A} - \frac{\pi d}{\sqrt{2A}} .
 $$
 
-It is a good first estimate, but it is not a count: the true number depends on where the grid sits relative to the wafer centre, and an optimized grid usually beats the formula by a few percent (Example 25-04.1). Production planning counts dies exactly, and it also subtracts sites used for test structures and alignment marks.
+It is a good first estimate, but it is not a count. The true number depends on where the grid sits relative to the wafer centre, and an optimized grid beats the formula by about 2% for a 100 mm² die and by nearly 9% for a 750 mm² one (Example 25-04.1, Problem 25-04.4). Production planning counts dies exactly, and it also subtracts sites used for test structures and alignment marks.
+
+**Why the formula undercounts.** The edge term treats every die whose centre lies within half a diagonal of the edge as lost. But a die reaches toward the edge only as far as its extent along the radius, and that equals the half-diagonal only where the radius runs through a corner. For a square die of side $a$ aligned with the grid, the half-extent along a radius at angle $\theta$ is $(a/2)(\lvert\cos\theta\rvert + \lvert\sin\theta\rvert)$. Averaged around the wafer it is $2a/\pi \approx 0.64a$, not $a/\sqrt2 \approx 0.71a$, because the average of $\lvert\cos\theta\rvert$ is $2/\pi$. A band of that width holds about $\pi d(2a/\pi)/a^2 = 2d/a$ dies, so a better estimate is
+
+$$
+\text{DPW} \approx \frac{\pi d^2}{4A} - \frac{2d}{\sqrt A} .
+$$
+
+Even this ignores the partial rows that an offset grid can recover, so the exact count is a little higher still. Because the edge term is a larger share of the total for big dies, the common formula's pessimism grows with die size. That matters when the formula is used to compare a large monolithic die with smaller chiplets (Problem 25-04.6).
 
 ### 3.2 Poisson yield
 
@@ -59,7 +68,17 @@ $$
 Y_{Poisson} = e^{-AD_0} .
 $$
 
-Two refinements matter in practice. Not every defect kills: a particle on empty dielectric is harmless, while the same particle bridging two wires is fatal. The relevant area is the **critical area**, the part of the die where a defect of a given size causes a failure, and $D_0$ is understood as the density of killer defects over that area. Second, some losses are not random at all: a design-process mismatch (a layout pattern the process prints poorly), a parametric shift or an edge effect. These are folded into a **systematic yield** $Y_s$ that multiplies the random part: $Y = Y_s\,Y_{random}$.
+Two refinements matter in practice. Not every defect kills: a particle on empty dielectric is harmless, while the same particle bridging two wires is fatal. The relevant area is the **critical area**, the part of the die where a defect of a given size causes a failure, and $D_0$ is understood as the density of killer defects over that area.
+
+**Critical area of a wire gap.** Take two parallel wires of length $L$ separated by spacing $s$, and a circular conducting particle of diameter $x$. It shorts them if it touches both, which needs $x > s$ and its centre within a band of width $x - s$ along the gap, so the critical area is $A_c(x) = L(x - s)$. Defect sizes are spread out; a common model (Stapper's) takes the size density $f(x) = 2x_0^2/x^3$ for $x \ge x_0$, so large particles are rare. If $x_0 \le s$, the average critical area is
+
+$$
+\bar A_c = \int_s^\infty L(x - s)\,\frac{2x_0^2}{x^3}\,dx = 2Lx_0^2\left[\frac1s - \frac{s}{2s^2}\right] = \frac{Lx_0^2}{s} .
+$$
+
+The result ignores particles large enough to bridge more than one gap, which are rare under the $1/x^3$ density. Its message is what layout rules encode: critical area, and so random-defect loss, scales as the inverse of spacing, which is why dense layers (and the densest layouts) dominate yield, and why yield-aware layout spreads wires where it can (Problem 25-04.15). $D_0$ in the yield formulas is then the density of defects of all sizes above $x_0$, and the yield is $e^{-\bar A_cD_0}$ summed over layers and defect types.
+
+Second, some losses are not random at all: a design-process mismatch (a layout pattern the process prints poorly), a parametric shift or an edge effect. These are folded into a **systematic yield** $Y_s$ that multiplies the random part: $Y = Y_s\,Y_{random}$.
 
 ### 3.3 Clustering: averaging the Poisson model
 
@@ -71,7 +90,7 @@ $$
 
 Since $e^{-AD}$ is convex in $D$, Jensen's inequality guarantees $Y \ge e^{-AD_0}$: for the same average defect density, clustering always helps. Different choices of $f$ give the classic models.
 
-**Murphy's model.** Taking $f$ triangular on $[0, 2D_0]$ (a symmetric spread around $D_0$) and integrating gives
+**Murphy's model.** Take $f$ triangular on $[0, 2D_0]$, a symmetric spread around $D_0$. A triangle on $[0, 2]$ is the density of $U_1 + U_2$ for two independent uniform variables on $[0, 1]$ (03-04), so write $D = D_0(U_1 + U_2)$. Then $e^{-AD} = e^{-AD_0U_1}e^{-AD_0U_2}$, and because the two factors are independent the expectation splits into $\left(\mathbb E[e^{-AD_0U}]\right)^2$, with $\mathbb E[e^{-xU}] = \int_0^1e^{-xu}\,du = (1 - e^{-x})/x$. This gives
 
 $$
 Y_{Murphy} = \left(\frac{1 - e^{-AD_0}}{AD_0}\right)^2 .
@@ -137,17 +156,18 @@ so a new node lowers cost per transistor only if its density gain beats its wafe
 
 ### Example 25-04.1 · Counting dies (tier B)
 
-**Setup.** A 300 mm wafer has a 3 mm edge exclusion. Dies are 10.0 mm × 10.0 mm with 0.1 mm scribe lines (assumed). (a) Find the effective die area and usable diameter. (b) Estimate DPW with the formula of §3.1, showing both terms. (c) Compare with an exact count on an optimized grid (computed in the lab).
+**Setup.** A 300 mm wafer has a 3 mm edge exclusion. Dies are 10.0 mm × 10.0 mm with 0.1 mm scribe lines (assumed). (a) Find the effective die area and usable diameter. (b) Estimate DPW with the formula of §3.1, showing both terms. (c) Compare with an exact count on an optimized grid (computed in the lab). (d) Repeat (b) with the corrected edge term of §3.1.
 
 **Solution.**
 
 - (a) Pitch 10.1 mm, so $A$ = **102.01** mm²; usable diameter **294** mm.
 - (b) $\pi \times 294^2/(4 \times 102.01)$ = **665.5** minus $\pi \times 294/\sqrt{204.02}$ = **64.7**, giving **601** dies.
-- (c) The exact count is **612**, **1.9**% more than the formula.
+- (c) The exact count is **612**, **1.9**% more than the formula's unrounded value.
+- (d) The corrected edge term $2d/\sqrt A = 2 \times 294/10.1$ = **58.2** gives **607**, within 1% of the exact count.
 
 **Units check.** mm²/mm² and mm/mm are dimensionless. ✓
 
-**Sanity check.** The formula's edge term is a heuristic; it errs slightly pessimistic for medium-sized dies. A 2% difference is small for planning but real money at volume, which is why product teams optimize the grid offset.
+**Sanity check.** The formula's edge term is a heuristic that errs pessimistic, more so for large dies (Problem 25-04.4). A 2% difference is small for planning but real money at volume, which is why product teams optimize the grid offset.
 
 ### Example 25-04.2 · Three yield models (tier B)
 
@@ -185,7 +205,7 @@ so a new node lowers cost per transistor only if its density gain beats its wafe
 **Solution.**
 
 - (a) $(1 + 0.5/3)^{-3}$ = **0.630** at the start; $(1 + 0.08/3)^{-3}$ = **0.924** when mature.
-- (b) Solving $(1 + D/3)^{-3} = 0.80$ gives $D$ = **0.232** cm⁻², reached when $0.42\,e^{-t/6} = 0.152$: $t$ = **6.1** months.
+- (b) Solving $(1 + D/3)^{-3} = 0.80$ gives $D = 3(0.80^{-1/3} - 1)$ = **0.232** cm⁻². That is reached when $0.42\,e^{-t/6} = 0.232 - 0.08$ = **0.152** cm⁻², so $t = 6\ln(0.42/0.152)$ = **6.1** months.
 
 **Units check.** $t/\tau$ is dimensionless. ✓
 
@@ -228,11 +248,11 @@ so a new node lowers cost per transistor only if its density gain beats its wafe
 
 **Units check.** A ratio of ratios is dimensionless. ✓
 
-**Sanity check.** On these reported numbers, cost per transistor rises 30–41% at N2, consistent with the claim that transistor cost scaling has stalled [R-577]. But the comparison is crude: logic alone may shrink more than 1.15× (Example 25-01.8), customers pay negotiated prices, and the performance and power gains have value of their own. Treat it as a reason to ask questions, not a verdict.
+**Sanity check.** On these reported numbers, cost per transistor rises 30–41% at N2, consistent with the claim that transistor cost scaling has stalled [R-577]. But the comparison is crude: TSMC's 1.15× is quoted against N3E while the prices are for N3, logic alone may shrink more than 1.15× (Example 25-01.8), customers pay negotiated prices, and the performance and power gains have value of their own. Treat it as a reason to ask questions, not a verdict.
 
 ### Example 25-04.8 · Reading a yield claim (tier A)
 
-**Setup.** A CEO reportedly said a node's yield reached 70%, on a product whose compute tile is about 100–110 mm² [R-573]. (a) What Poisson defect density does 70% imply for a 105 mm² die? (b) At that density, what would a 600 mm² die yield (Poisson, and negative binomial with $\alpha$ = 3)?
+**Setup.** A CEO reportedly said a node's yield reached 70%, without naming a product or die size [R-573]. Assume the figure refers to a die of about 105 mm², the size of the node's first compute tile. (a) What Poisson defect density does 70% imply for a 105 mm² die? (b) At that density, what would a 600 mm² die yield (Poisson, and negative binomial with $\alpha$ = 3)?
 
 **Solution.**
 
@@ -254,6 +274,8 @@ so a new node lowers cost per transistor only if its density gain beats its wafe
 | Ex 25-04.1b | DPW by formula | 601 | |
 | Ex 25-04.1c | exact count | 612 | |
 | Ex 25-04.1c1 | exact over formula | 1.9 | % |
+| Ex 25-04.1d | corrected edge term | 58.2 | |
+| Ex 25-04.1d1 | corrected estimate | 607 | |
 | Ex 25-04.2a | Poisson, 0.1 | 0.905 | |
 | Ex 25-04.2a0 | 1 - exp(-0.1) | 0.0952 | |
 | Ex 25-04.2a1 | Murphy, 0.1 | 0.906 | |
@@ -351,7 +373,7 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 
 **State of the art (as of Nov 2026).**
 
-- *Defect density disclosures* [Established, qualitative]. TSMC has shown N2's defect density below N3's, N5's and N7's at the same stage before mass production, and in 2026 said N2 is ramping better than N3, but it publishes no absolute $D_0$ [R-572]. Forum numbers for N2 $D_0$ are unverified and not used here.
+- *Defect density disclosures* [Established, qualitative]. TSMC has shown N2's defect density below its predecessors' at the same stage of development, two quarters before mass production, and in 2026 said N2 is ramping better than N3, but it publishes no absolute $D_0$ [R-572]. Forum numbers for N2 $D_0$ are unverified and not used here.
 - *Yield claims* [Contested]. Intel showed an 18A defect-density curve with no y-axis scale, and its CEO reportedly cited 18A yields of about 70% in November 2026, with no die size or test definition; the Panther Lake compute tile is about 100–110 mm² [R-573]. Samsung's SF2 yield was reported at about 50% on an application-processor benchmark, "with real yields varying by die size" [R-574].
 - *Prices* [Industry estimate]. N2 wafers were reported above $30,000, against about $18,500 for N3; IBS estimated about $30,000 for N2 and a $28 B cost for a 2 nm fab of 50,000 wafer starts per month [R-575]. Samsung reportedly cut its 2 nm price to about $20,000 [R-574]. Foundries publish no price lists, and prices vary by customer and volume.
 - *Cost per transistor* [Contested]. Google's analysis presented at IEDM 2023 found transistor cost scaling "stalled at 28 nm and remains flat gen-over-gen"; others disagree, and the answer depends on the metric and on including design costs [R-577].

@@ -1,6 +1,6 @@
 # Lab 25-05 · Corners, Back Bias, Shuttles and Shrinks
 
-**Objective.** Simulate how global and local variation spread path delays around the corners; check the FD-SOI back-gate coupling formula against a numerical electrostatics solve; price shuttles against dedicated runs; and see how analog content limits the payoff of a shrink.
+**Objective.** Simulate how global and local variation spread path delays around the corners; check the algebra of the FD-SOI back-gate coupling formula against a numerical solve of the same dielectric stack; price shuttles against dedicated runs; and see how analog content limits the payoff of a shrink.
 
 **Chapter:** [25-05 · Foundries, PDKs and Specialty Processes](../../chapters/25-05-foundries-pdks-specialty-processes.md)
 
@@ -34,8 +34,9 @@
 | Lab 25-05.c | break-even area, €3 M | 168 | mm² |
 | Lab 25-05.d | migrated area, 60% analog | 6.42 | mm² |
 | Lab 25-05.d1 | die cost ratio, 60% analog | 1.16 | |
+| Lab 25-05.e | break-even analog fraction | 0.42 | |
 
-The simulated fraction is within 10% of the analytical value (Monte Carlo noise); the formula and the numerical solve agree to better than 0.01%.
+The simulated fraction is within 10% of the analytical value (Monte Carlo noise); the formula and the numerical solve agree to better than 0.01%. Both treat the depleted body as a charge-free dielectric, so the agreement checks the algebra, not the depletion assumption of §3.5.
 
 ## Discussion
 

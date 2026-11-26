@@ -41,7 +41,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-06.6 [B]
 
-**The true corner.** The corner joint of Example 25-06.4's 20 mm die is on the diagonal, 14.14 mm from the centre. Find its strain and its life relative to the edge-midline joint.
+**The true corner.** The corner joint of Example 25-06.4's 20 mm die is on the diagonal, 14.14 mm from the centre. Find its strain and its life relative to the edge-midpoint joint.
 
 ### Problem 25-06.7 [B]
 
@@ -65,7 +65,11 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-06.12 [C]
 
-**Designing the substrate.** A 130 µm pitch array with 80 µm pads must escape 20 rows in no more than 5 layers per side. With equal line and space $w = s$, what is the largest line width that works?
+**Designing the substrate.** A 130 µm pitch array with 80 µm pads must escape 20 rows to each die edge in no more than 5 signal layers. With equal line and space $w = s$, what is the largest line width that works?
+
+### Problem 25-06.13 [A]
+
+**Choosing a package.** Choose among a wire-bonded QFN, a flip-chip BGA on a build-up substrate, fan-out wafer-level packaging and package-on-package, and justify each choice by I/O count, electrical performance, thickness and cost: (a) a 4 mm² temperature-sensor ASIC; (b) a smartwatch application processor that needs LPDDR memory in the same footprint; (c) a 600 mm² network-switch ASIC with 1,500 signal and power connections; (d) a thin phone power-management die with a few dozen I/Os.
 
 ---
 
@@ -73,7 +77,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 | Objective | Problems |
 |---|---|
-| 1. Package functions and technologies | 11 |
+| 1. Package functions and technologies | 11, 13 |
 | 2. Perimeter against area I/O | 1 |
 | 3. Escape routing and power bumps | 2, 3, 4, 12 |
 | 4. Solder-joint strain, fatigue and the weakest link | 5, 6, 7, 8 |

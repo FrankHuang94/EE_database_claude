@@ -32,7 +32,7 @@ Slow: **1.67**; fast: **0.686**; spread **2.44**, against 1.67 with $\alpha$ = 1
 
 ### Solution 25-05.6
 
-The slow corner is 1.35 times slower than typical, so the path needs $2.0 \times 1.35$ = **2.69** GHz at typical.
+The slow corner is **1.347** times slower than typical (Example 25-05.4's 1.35, unrounded), so the path needs $2.0 \times 1.347$ = **2.69** GHz at typical.
 
 ### Solution 25-05.7
 
@@ -46,7 +46,7 @@ The slow corner is 1.35 times slower than typical, so the path needs $2.0 \times
 
 (b) In units of $\varepsilon_0$/nm: $C_{ox}$ = **3.9**, $C_{Si}$ = **1.95**, $C_{BOX}$ = **0.156**; coupling **0.0370**, that is **37.0** mV/V.
 
-(c) The BOX: it is the smallest capacitance. Solving for twice the coupling gives a BOX of **11.5** nm, less than half of 25 nm.
+(c) The BOX: it is the smallest capacitance. Solving for twice the coupling gives a BOX of **11.5** nm, less than half of 25 nm. The coupling is also inversely proportional to $C_{ox}$, so doubling the gate oxide's EOT would double it exactly; but that halves the front gate's control of the channel, cutting drive current and worsening short-channel behaviour, so the BOX is the knob to turn.
 
 ### Solution 25-05.9
 
@@ -58,7 +58,7 @@ $4 \times 16{,}200$ = **€64,800**; **€1,620** per sample.
 
 ### Solution 25-05.11
 
-$(80/20)^2$ = **16** times. At fixed on-resistance the 80 V device needs about 16 times the area, which is why high-voltage BCD dies are dominated by their power transistors and why lateral RESURF designs that beat the one-dimensional limit matter commercially.
+$(80/20)^2$ = **16** times at a fixed critical field. Silicon's critical field falls as the drift doping falls (09-13), so the empirical scaling is closer to $V_B^{2.5}$, giving $4^{2.5}$ = **32** times. Either way, at fixed on-resistance the 80 V device needs tens of times the area, which is why high-voltage BCD dies are dominated by their power transistors and why lateral RESURF (reduced surface field) designs, which shape the drift region's field to beat the one-dimensional limit, matter commercially.
 
 ### Solution 25-05.12
 
@@ -67,6 +67,10 @@ $Q(3)$ = **1.35e-3**, about **1,350** dies per million slower than the slow corn
 ### Solution 25-05.13
 
 Expected respin cost: $0.30 \times 20$ = **$6 M**. Spread over six months of earlier launch, the start pays if earlier revenue brings at least **$1.0 M** of gross profit per month, ignoring the respin's own schedule delay, which makes the bar higher.
+
+### Solution 25-05.14
+
+(a) The design rules and DRC deck; immature rules miss real failure modes or change after tape-out, forcing late layout fixes. (b) The LVS rule deck; errors in device recognition let a wrong connection or device size pass. (c) The device models with their corner and statistical variants; early models are fitted to few wafers, so silicon can be slower or leakier than simulated, which is why early-PDK starts carry respin risk (Problem 25-05.13). (d) The parasitic-extraction (RC) deck; mis-modelled wire resistance or coupling capacitance makes post-layout timing optimistic. (e) The parameterized cells (PCells) and their models; without a characterized inductor PCell the designer must model the device from electromagnetic simulation and accept more risk.
 
 ---
 
@@ -86,6 +90,7 @@ Expected respin cost: $0.30 \times 20$ = **$6 M**. Spread over six months of ear
 | 25-05.5a | slow corner, alpha 2 | 1.67 | |
 | 25-05.5b | fast corner, alpha 2 | 0.686 | |
 | 25-05.5c | spread, alpha 2 | 2.44 | |
+| 25-05.6a0 | slow-corner delay ratio, unrounded | 1.347 | |
 | 25-05.6a | typical frequency needed | 2.69 | GHz |
 | 25-05.7a | back-gate swing | 1.49 | V |
 | 25-05.7b | leakage factor | 13.9 | |
@@ -101,6 +106,7 @@ Expected respin cost: $0.30 \times 20$ = **$6 M**. Spread over six months of ear
 | 25-05.10a | minimum slot, discounted | 64800 | € |
 | 25-05.10b | per sample | 1620 | € |
 | 25-05.11a | on-resistance ratio | 16 | |
+| 25-05.11b | ratio with V_B^2.5 | 32 | |
 | 25-05.12a | fraction slower than corner | 1.35e-3 | |
 | 25-05.12b | per million | 1350 | |
 | 25-05.13a | expected respin cost | 6 | $M |

@@ -39,7 +39,7 @@ The Monte Carlo mean first-failure life agrees with the Weibull formula's mean, 
 
 ## Discussion
 
-1. Only about 2% of the joints are near the corner strain, yet the package behaves like about 990 corner joints. Where does the rest of the weakest-link penalty come from?
+1. Only a few percent of the joints are near the corner strain (2.3% for Part 2's 25 mm die), yet Part 3's 20 mm package behaves like about 990 corner joints. Where does the rest of the weakest-link penalty come from?
 2. How would underfill change Part 3's answer if it cut every joint's strain by the same factor? If it cut corner strain more than centre strain?
 3. Why do substrate makers quote line and space so prominently?
 4. Lowering the core supply raises the current for the same power. What does that do to the bump budget, and what does that imply for low-voltage AI chips?

@@ -74,6 +74,10 @@ $(18.54 + 6.32 + 5.00 + 3.32 + 2.28)/41.56$ = **85.3**%.
 
 Five layers for 20 rows need 4 rows per layer, so $n \ge 3$ traces between pads: $3w + 4s \le 130 - 80 = 50$ µm. With $w = s$, $7w \le 50$, so $w \le$ **7.14** µm: about 7 µm line and space, finer than most organic substrates in production today, which again points toward silicon interposers or bridges for the densest routing.
 
+### Solution 25-06.13
+
+(a) A wire-bonded QFN: few I/Os sit easily on the perimeter, the die is below the area-array crossover, and wire bond is the cheapest assembly. (b) Package-on-package (often a fan-out base): memory stacks on the processor to save board area, and a fan-out base keeps the stack thin. (c) A flip-chip BGA on a build-up substrate: only an area array supplies that many connections, the short bumps give low inductance for power delivery, and the substrate fans them out to the board. (d) Fan-out wafer-level packaging: there is no substrate, so the package is thin and its RDL is short for low resistance, and a few dozen I/Os fit within or just beyond the die. Each choice follows the chapter's rule: I/O count and power decide perimeter against area array, then thickness and cost decide among the area-array options.
+
 ---
 
 ## Answer key

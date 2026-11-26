@@ -56,7 +56,7 @@ A PDK typically includes:
 
 - **Design rules** and the **DRC deck** that checks them: minimum widths, spacings, enclosures, densities (25-03's CMP density limits), and the multipatterning colouring rules of 25-02.
 - **LVS rules** that check the layout's connectivity against the schematic.
-- **Device models**, usually BSIM-family compact models for SPICE, with **corner** and **statistical** (Monte Carlo) variants, covering transistors, resistors, capacitors, inductors, varactors and diodes.
+- **Device models**, usually BSIM-family (Berkeley short-channel IGFET model) compact models for SPICE, with **corner** and **statistical** (Monte Carlo) variants, covering transistors, resistors, capacitors, inductors, varactors and diodes.
 - **Parasitic extraction** rules (RC decks) that turn wire geometry into resistances and capacitances (25-01, 19-05).
 - **Parameterized cells** (pcells) for devices, and technology files for the layout tools.
 - **Reliability rules:** electromigration current limits, gate-oxide voltage limits, and aging models (25-09).
@@ -73,13 +73,13 @@ To see what a corner costs, use the alpha-power delay model of 19-02, $t_d \prop
 
 ### 3.4 Multi-project wafers
 
-A full mask set at an advanced node costs millions, too much for a prototype, a university project or a low-volume product. A **multi-project wafer (MPW)** run, or shuttle, shares one mask set among many designs: each customer buys a few square millimetres and receives a few dozen unpackaged dies. TSMC's CyberShuttle covers nodes from 2 nm to 0.35 µm [R-581]; brokers such as Europractice resell slots on several foundries' processes, priced per square millimetre with a minimum area [R-581]. The cost of a slot is
+A full mask set at an advanced node costs millions, too much for a prototype, a university project or a low-volume product. A **multi-project wafer (MPW)** run, or shuttle, shares one mask set among many designs: each customer buys a few square millimetres and receives a few dozen unpackaged dies. TSMC's multi-project wafer service covers processes from 2 nm to 0.35 µm [R-581]; brokers such as Europractice resell slots on several foundries' processes, priced per square millimetre with a minimum area [R-581]. The cost of a slot is
 
 $$
 C_{MPW} = \max(A, A_{min}) \times p_{mm^2} ,
 $$
 
-and a dedicated run is the mask set plus engineering wafers. The break-even area, above which a dedicated mask set is cheaper than a shuttle slot, is the mask cost divided by the price per mm² (Example 25-05.3). Shuttles schedule a few runs a year per process, so they trade cost for calendar time. The open-source ecosystem built around SkyWater's SKY130 PDK depended on one shuttle operator, efabless, which shut down in 2025 for lack of funding; Tiny Tapeout continued independently [R-581].
+and a dedicated run is the mask set plus engineering wafers. The break-even area, above which a dedicated mask set is cheaper than a shuttle slot, is the mask cost divided by the price per mm² (Example 25-05.3). Shuttles schedule a few runs a year per process, so they trade cost for calendar time. The open-source ecosystem built around SkyWater's SKY130 PDK depended on one shuttle operator, efabless, which shut down in 2025 for lack of funding, pausing Tiny Tapeout's SKY130 shuttles [R-581]; ChipFoundry later acquired efabless's assets and offers tapeouts again [R-160], [R-319].
 
 ### 3.5 FD-SOI and the back gate
 
@@ -91,7 +91,9 @@ $$
 C_{ox}\,\Delta V_{TH} = -C_{back}\,\Delta V_{BG} \quad\Longrightarrow\quad \frac{\Delta V_{TH}}{\Delta V_{BG}} = -\frac{C_{Si}C_{BOX}}{C_{ox}(C_{Si} + C_{BOX})} .
 $$
 
-This is the Lim–Fossum coupling result in its simplest form. Thin BOX and thin body strengthen the coupling; a thick gate oxide also does, at the cost of drive. Forward back bias lowers the threshold (faster, leakier); reverse back bias raises it (slower, far less leaky). Because subthreshold leakage changes tenfold for every subthreshold-swing worth of threshold (about 60–80 mV), a coupling of tens of millivolts per volt gives leakage control of several times per volt (Example 25-05.5). That is the basis of the "adaptive body bias" that FD-SOI vendors sell [R-580]: the same die can be tuned after manufacture toward speed or toward leakage, and corner spread can be partly compensated.
+This is the Lim–Fossum coupling result in its simplest form.
+
+**Conditions.** The derivation treats the silicon body as depleted from front to back, so that a back-gate change reaches the front surface through the body's depletion capacitance. That holds only over a range of back bias. If the back surface is driven into accumulation or inversion, its potential is pinned, further back-gate voltage no longer reaches the front, and the coupling collapses: these are the other two regimes of Lim and Fossum's analysis. A depletion layer in the substrate under the BOX adds a further series capacitance and weakens the coupling, which is why FD-SOI processes implant a heavily doped ground plane under the BOX. These limits, together with the leakage and breakdown of the junctions that isolate the substrate wells, set the usable back-bias range of a few volts. Thin BOX and thin body strengthen the coupling; a thick gate oxide also does, at the cost of drive. Forward back bias lowers the threshold (faster, leakier); reverse back bias raises it (slower, far less leaky). Because subthreshold leakage changes tenfold for every subthreshold-swing worth of threshold (about 60–80 mV), a coupling of tens of millivolts per volt gives leakage control of several times per volt (Example 25-05.5). That is the basis of the "adaptive body bias" that FD-SOI vendors sell [R-580]: the same die can be tuned after manufacture toward speed or toward leakage, and corner spread can be partly compensated.
 
 ### 3.6 A map of specialty processes
 
@@ -100,7 +102,7 @@ Most of the industry's wafers are not leading-edge logic. Specialty processes ad
 | Process | What it adds | Typical products | Where it is derived |
 |---|---|---|---|
 | FD-SOI | Back-gate tuning, low leakage, good RF devices, often embedded MRAM or RRAM | IoT, automotive MCUs, RF transceivers | §3.5; 09-12 |
-| BCD (bipolar-CMOS-DMOS) | High-voltage LDMOS transistors next to CMOS logic and analog | PMICs, motor drivers, battery management | 22-06; 09-13 (Baliga limit) |
+| BCD (bipolar-CMOS-DMOS) | High-voltage LDMOS (laterally diffused MOS) transistors next to CMOS logic and analog | PMICs, motor drivers, battery management | 09-13 (Baliga limit) |
 | RF-SOI | Low-loss, high-isolation switches and LNAs on insulating substrates | Phone front-end modules | 21-09 |
 | SiGe BiCMOS | Fast heterojunction bipolar transistors | mmWave, optical drivers | 21-04, 21-07 |
 | Embedded NVM (flash, MRAM, RRAM, PCM) | Non-volatile memory on the logic die | MCUs, secure elements | 23-08 |
@@ -138,7 +140,7 @@ Foundries publish such offerings with qualification claims: for example, TSMC re
 
 **Units check.** Percentages of the same base. ✓
 
-**Sanity check.** A share rising from 3% to 8% in one quarter, while 5 nm's share falls, is what a "steep ramp-up" looks like in a node mix; share growth also reflects the other nodes' totals, so it overstates absolute growth if total wafer revenue is flat and understates it if total revenue grows.
+**Sanity check.** A share rising from 3% to 8% in one quarter, while 5 nm's share falls, is what a "steep ramp-up" looks like in a node mix; share growth also reflects the other nodes' totals, so share growth equals revenue growth if total wafer revenue is flat, understates it if the total grows (as it did into 3Q26), and overstates it if the total shrinks.
 
 ### Example 25-05.3 · Shuttle or dedicated run? (tier B)
 
@@ -183,7 +185,7 @@ Foundries publish such offerings with qualification claims: for example, TSMC re
 
 **Sanity check.** Thinning the BOX nearly doubles the coupling because $C_{BOX}$ is the smallest capacitor in the series pair and so controls it. A few volts of back bias then spans a few hundred millivolts of threshold, enough to move a die across most of its corner spread.
 
-### Example 25-05.6 · Should an MCU move to 22 nm FD-SOI? (tier B)
+### Example 25-05.6 · Should an MCU move to 18 nm FD-SOI? (tier B)
 
 **Setup.** A 40 nm microcontroller die is 10 mm²: 4 mm² digital, 2 mm² embedded NVM and 4 mm² analog and I/O. ST claims that its 18 nm FD-SOI process gives 3× digital density and 2.5× NVM density against its 40 nm process [R-580]; assume analog and I/O shrink only 1.2× and the new wafer costs 1.8 times as much (both assumed). Ignoring yield and edge effects, find (a) the new die area and (b) the ratio of die costs.
 
@@ -231,7 +233,7 @@ Foundries publish such offerings with qualification claims: for example, TSMC re
 
 ## 5. Simulate it
 
-The lab is [labs/25-05-lab/](../labs/25-05-lab/README.md). `foundry.py` implements the corner delay model with Monte Carlo global and local variation, the FD-SOI coupling and a numerical 1-D electrostatics check of it, MPW-versus-dedicated cost and die-area migration; the notebook runs the parts below.
+The lab is [labs/25-05-lab/](../labs/25-05-lab/README.md). `foundry.py` implements the corner delay model with Monte Carlo global and local variation, the FD-SOI coupling and a numerical 1-D Laplace solve of the same dielectric stack (a check of the formula's algebra, not of its depletion assumption), MPW-versus-dedicated cost and die-area migration; the notebook runs the parts below.
 
 ![Threshold-voltage shift of an FD-SOI transistor against back-gate voltage for buried-oxide thicknesses of 10, 20 and 25 nanometres, from the series-capacitor model](../../../assets/figures/25-05/back-bias.svg)
 
@@ -243,7 +245,7 @@ The lab is [labs/25-05-lab/](../labs/25-05-lab/README.md). `foundry.py` implemen
 
 **Predict, then run:**
 
-1. *Predict* the fraction of simulated dies slower than the slow corner when the corner is set at +3σ of global variation, then simulate 100,000 dies.
+1. *Predict* the fraction of simulated paths slower than the slow corner when the corner is set at +3σ of global variation and each path adds local variation, then simulate 100,000 paths.
 2. *Predict* how the coupling of Example 25-05.5 changes when the silicon body thins from 7 nm to 5 nm, then compute it with the formula and with the numerical electrostatics model.
 3. *Predict* the break-even area for a €3 M mask set on the 22 nm shuttle, then compute it.
 4. *Predict* the die-cost ratio of Example 25-05.6 if analog and I/O are 60% of the 40 nm die, then sweep the analog fraction.
@@ -295,7 +297,7 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 
 - *"Our node is 3× denser."* For digital logic; analog, I/O and memory shrink less (Example 25-05.6).
 - *"Automotive-qualified memory."* Qualified at what grade, temperature and endurance, and on which node [R-580]?
-- *"Adaptive body bias gives the best of both worlds."* Within a bias range of a few volts, at the cost of bias circuitry, and only on FD-SOI.
+- *"Adaptive body bias gives the best of both worlds."* Within a bias range of a few volts, at the cost of bias circuitry, and with useful strength only on FD-SOI: bulk planar CMOS supports body bias more weakly and with junction-leakage limits, and FinFETs and nanosheets have almost none.
 - *"72.5% share."* Of the foundry market as TrendForce defines it, excluding IDMs' internal fabs [R-578].
 
 **Questions for engineering leaders.**

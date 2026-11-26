@@ -59,7 +59,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-05.11 [A]
 
-**High-voltage area.** Using the unipolar-limit scaling $R_{on,sp} \propto V_B^2$ of 09-13, by what factor does the specific on-resistance of an 80 V LDMOS exceed a 20 V one? What does that imply for the die area of a BCD power stage at fixed on-resistance?
+**High-voltage area.** Using the unipolar-limit scaling $R_{on,sp} \propto V_B^2$ of 09-13 (which holds at a fixed critical field, a simplification), by what factor does the specific on-resistance of an 80 V LDMOS exceed a 20 V one? What does that imply for the die area of a BCD power stage at fixed on-resistance? How does the answer change with silicon's empirical scaling $R_{on,sp} \propto V_B^{2.5}$, which allows for the critical field's dependence on doping?
 
 ### Problem 25-05.12 [B]
 
@@ -69,6 +69,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Starting on an early PDK.** Starting a design on a 0.5 PDK adds a 30% chance of a $20 M respin (assumed) and launches six months earlier. What gross profit per month of earlier launch makes the early start worth it on expected value?
 
+### Problem 25-05.14 [A]
+
+**What the PDK provides.** For each design task, name the PDK component that supports it and say what goes wrong if that component is immature: (a) checking that metal spacings meet the foundry's limits; (b) confirming that the layout implements the schematic; (c) predicting a ring oscillator's frequency at the slow corner; (d) estimating a long wire's delay after layout; (e) placing a standard inductor without drawing it by hand.
+
 ---
 
 ## Objective coverage
@@ -76,7 +80,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Objective | Problems |
 |---|---|
 | 1. Foundry models and market data | 1, 2 |
-| 2. PDK contents and maturity | 13 |
+| 2. PDK contents and maturity | 13, 14 |
 | 3. Corners and signoff margin | 5, 6, 12 |
 | 4. Shuttles against dedicated runs | 3, 4, 10 |
 | 5. FD-SOI back-gate coupling | 7, 8 |

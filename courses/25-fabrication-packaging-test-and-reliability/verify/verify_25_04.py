@@ -48,15 +48,16 @@ def y_gamma_num(x, alpha):
     return integrate.quad(lambda u: f(u) * math.exp(-x * u), 0, np.inf)[0]
 
 
-def exact_count(d, p, steps=40):
+def exact_count(d, p, steps=40, py=None):
     """Row-wise count: for each row band, columns whose four corners lie inside the circle."""
     r = d / 2
+    py = p if py is None else py
     best = 0
     for ox in np.linspace(0, p, steps, endpoint=False):
-        for oy in np.linspace(0, p, steps, endpoint=False):
+        for oy in np.linspace(0, py, steps, endpoint=False):
             total = 0
-            for y0 in np.arange(-r - p + oy, r + p, p):
-                ymax = max(abs(y0), abs(y0 + p))
+            for y0 in np.arange(-r - py + oy, r + py, py):
+                ymax = max(abs(y0), abs(y0 + py))
                 if ymax > r:
                     continue
                 half = math.sqrt(r**2 - ymax**2)       # columns need |x|, |x+p| <= half
@@ -76,6 +77,13 @@ v.check("Ex 25-04.1b", dpw(294, a1))
 n_exact = exact_count(294, 10.1)
 v.check("Ex 25-04.1c", n_exact)
 v.check("Ex 25-04.1c1", 100 * (n_exact / dpw(294, a1) - 1))
+# corrected edge term: integrate the radial half-extent (a/2)(|cos|+|sin|) around the wafer numerically
+a_side = math.sqrt(a1)
+ext = integrate.quad(lambda th: (a_side / 2) * (abs(math.cos(th)) + abs(math.sin(th))), 0, 2 * math.pi)[0] / (2 * math.pi)
+edge_corr = math.pi * 294 * ext / a1
+v.assert_true("mean radial half-extent is 2a/pi", abs(ext - 2 * a_side / math.pi) < 1e-9)
+v.check("Ex 25-04.1d", edge_corr)
+v.check("Ex 25-04.1d1", math.pi * 294**2 / (4 * a1) - edge_corr)
 
 # ---------------------------------------------------------------- Example 2
 v.check("Ex 25-04.2a", y_poisson(0.1))
@@ -169,6 +177,9 @@ v.check("25-04.4a", math.pi * 300**2 / (4 * 750))
 v.check("25-04.4b", math.pi * 300 / math.sqrt(1500))
 n4 = dpw(300, 750)
 v.check("25-04.4c", n4)
+n4x = exact_count(300, 25.0, 60, 30.0)
+v.check("25-04.4d", n4x)
+v.check("25-04.4e", 100 * (n4x / n4 - 1))
 y5 = y_gamma_num(0.75, 3)
 v.check("25-04.5a", y5)
 v.check("25-04.5b", n4 * y5)
@@ -182,8 +193,15 @@ yc = y_gamma_num(ac / 100 * 0.1, 3)
 v.check("25-04.6c", yc)
 c_ch = 30000 / (nc * yc)
 v.check("25-04.6d", c_ch)
+v.check("25-04.6d0", c_ch)
 v.check("25-04.6e", 4 * c_ch)
 v.check("25-04.6e1", c_mono - 4 * c_ch)
+ncx = exact_count(300, math.sqrt(ac), 60)
+v.check("25-04.6f", ncx)
+c_mono_x, c_ch_x = 30000 / (n4x * y5), 30000 / (ncx * yc)
+v.check("25-04.6g", c_mono_x)
+v.check("25-04.6h", 4 * c_ch_x)
+v.check("25-04.6i", c_mono_x - 4 * c_ch_x)
 v.check("25-04.7a", y_poisson(0.2))
 from scipy.stats import poisson  # noqa: E402
 v.check("25-04.7b", poisson.cdf(2, 0.2))
@@ -222,5 +240,17 @@ def cpmm(a):
 
 v.check("Lab 25-04.c", optimize.brentq(lambda a: cpmm(a) - 2 * cpmm(50), 60, 800))
 v.check("Lab 25-04.d", month_for(3))
+
+# ---------------------------------------------------------------- Problem 15: critical area by numerical integration
+L15, s15, x0 = 1.0, 40e-6, 20e-6                          # mm
+dens = lambda x: 2 * x0**2 / x**3  # noqa: E731
+ac15 = integrate.quad(lambda x: L15 * (x - s15) * dens(x), s15, np.inf)[0]
+v.assert_true("critical area per gap equals L x0^2 / s", abs(ac15 / (L15 * x0**2 / s15) - 1) < 1e-8)
+v.check("25-04.15a", ac15)
+tot = 1e6 * ac15 / 100                                     # mm^2 -> cm^2
+v.check("25-04.15b", tot)
+v.check("25-04.15c", math.exp(-tot * 2))
+ac15h = integrate.quad(lambda x: L15 * (x - 20e-6) * dens(x), 20e-6, np.inf)[0]
+v.check("25-04.15d", math.exp(-1e6 * ac15h / 100 * 2))
 
 sys.exit(v.finish())

@@ -91,11 +91,11 @@ $$
 
 signal layers (Example 25-06.2). Finer lines and spaces, larger bump pitch or smaller pads cut the layer count; this is why large AI packages need many build-up layers and so much more ABF than consumer packages [R-583].
 
-**Power bumps.** A bump's current is limited by electromigration and heating (25-09) to a fraction of an ampere. A die drawing current $I$ needs about $I/I_{bump}$ power bumps and as many ground bumps; at kilowatt power and sub-volt supply, these can consume most of the bump array (Example 25-06.3), which is one reason for finer-pitch copper pillars, backside power (25-01) and integrated voltage regulation (22-10).
+**Power bumps.** A bump's current is limited by electromigration and heating (25-09) to a fraction of an ampere. A die drawing current $I$ needs about $I/I_{bump}$ power bumps and as many ground bumps; at kilowatt power and sub-volt supply, they can take nearly half the area of a reticle-sized die (Example 25-06.3), which is one reason for finer-pitch copper pillars, backside power (25-01) and integrated voltage regulation (22-10).
 
 ### 3.4 Fan-out, SiP and PoP
 
-**Fan-out wafer-level packaging (FOWLP).** Dies are placed face-down on a carrier, embedded in mould compound to form a reconstituted wafer, and wired with redistribution layers (RDL) patterned by lithography directly on the die and mould. There is no substrate, so the package is thinner and the interconnect finer. TSMC's InFO brought fan-out to high volume with Apple's A10 in 2016, about 30% thinner than the conventional package-on-package it replaced, according to the teardown firm System Plus [R-584].
+**Fan-out wafer-level packaging (FOWLP).** Dies are placed face-down on a carrier, embedded in mould compound to form a reconstituted wafer, and wired with redistribution layers (RDL) patterned by lithography directly on the die and mould. There is no substrate, so the package is thinner and the interconnect finer. TSMC's InFO brought fan-out to a flagship smartphone application processor, Apple's A10, in 2016, as an InFO package-on-package about 30% thinner than the conventional package-on-package it replaced, according to the teardown firm System Plus [R-584] **[Established]**.
 
 **System-in-package (SiP).** Several dies and passives in one package: an application processor, power management, RF front-end and memory in a wearable or a phone module. It shortens interconnect, shrinks the board and lets each die use its best process, the precursor of chiplets (25-07).
 
@@ -109,7 +109,7 @@ $$
 \gamma \approx \frac{\Delta\alpha\,\Delta T\,L_{DNP}}{h} ,
 $$
 
-where $L_{DNP}$ is the joint's distance from the neutral point. The corner joints of large dies see the largest strain (Example 25-06.4).
+where $L_{DNP}$ is the joint's distance from the neutral point. The corner joints of large dies see the largest strain (Example 25-06.4 and Problem 25-06.6).
 
 **Fatigue.** Each temperature cycle plastically deforms the solder a little; cracks grow, and the joint eventually opens. The Coffin–Manson relation captures the trend: cycles to failure fall as a power of the cyclic strain,
 
@@ -161,7 +161,7 @@ Packaging is done by OSATs (ASE, Amkor, JCET and others), by foundries (TSMC's I
 
 **Units check.** µm/µm is dimensionless. ✓
 
-**Sanity check.** A third finer lines save three layers on each side of the core, which is fewer laminations, less ABF and better yield. Substrate line and space are therefore a competitive lever, and the jump to silicon interposers with sub-micrometre lines (25-07) is a jump in routing density of an order of magnitude or more.
+**Sanity check.** Lines a third finer save three signal layers (8 against 5), which means fewer laminations, less ABF and better yield. Substrate line and space are therefore a competitive lever, and the jump to silicon interposers with sub-micrometre lines (25-07) is a jump in routing density of an order of magnitude or more.
 
 ### Example 25-06.3 · Bumps for a kilowatt (tier B)
 
@@ -176,11 +176,11 @@ Packaging is done by OSATs (ASE, Amkor, JCET and others), by foundries (TSMC's I
 
 **Units check.** W/V = A; mm² per bump × bumps = mm². ✓
 
-**Sanity check.** Four hundred square millimetres is more than half of a reticle-sized die just for power and ground; signals must share what is left. The pressure toward finer bump pitch, higher current per bump and power delivered from below or by integrated regulators is direct.
+**Sanity check.** Four hundred square millimetres is nearly half of a reticle-sized die (400 of 858 mm²) just for power and ground; signals must share what is left. The pressure toward finer bump pitch, higher current per bump and power delivered from below or by integrated regulators is direct.
 
-### Example 25-06.4 · Shear strain in a corner joint (tier B)
+### Example 25-06.4 · Shear strain in an edge joint (tier B)
 
-**Setup.** A 20 mm × 20 mm die (silicon, 2.6 ppm/K) sits on an organic substrate (16 ppm/K, assumed). The corner joint is 10 mm from the neutral point (along an edge midline, simplified) and 70 µm tall (assumed). Find (a) the CTE mismatch, (b) the shear strain for a 100 K cycle, and (c) the factor by which fatigue life rises if underfill cuts the effective strain tenfold, with a Coffin–Manson exponent of 2.
+**Setup.** A 20 mm × 20 mm die (silicon, 2.6 ppm/K) sits on an organic substrate (16 ppm/K, assumed). Take the joint at the midpoint of an edge, 10 mm from the neutral point, 70 µm tall (assumed); the true corner joint, farther out on the diagonal, is Problem 25-06.6. Find (a) the CTE mismatch, (b) the shear strain for a 100 K cycle, and (c) the factor by which fatigue life rises if underfill cuts the effective strain tenfold, with a Coffin–Manson exponent of 2.
 
 **Solution.**
 
@@ -190,11 +190,11 @@ Packaging is done by OSATs (ASE, Amkor, JCET and others), by foundries (TSMC's I
 
 **Units check.** (1/K)(K)(mm/mm) is dimensionless. ✓
 
-**Sanity check.** A 19% cyclic shear strain would crack an unprotected joint within a modest number of cycles; underfill is what makes large flip-chip dies possible on organic substrates. The strain grows with die size and with package temperature swing, which is why large AI packages and automotive parts are the hardest cases.
+**Sanity check.** A 19% cyclic shear strain at the edge midpoint, and more at the corners, would crack an unprotected joint within a modest number of cycles; underfill is what makes large flip-chip dies possible on organic substrates. The strain grows with die size and with package temperature swing, which is why large AI packages and automotive parts are the hardest cases.
 
 ### Example 25-06.5 · Panels and film (tier A)
 
-**Setup.** Substrates are made on panels; take a 510 mm × 515 mm panel (assumed) and ignore edge margins and spacing. (a) How many 90 mm and 110 mm substrates fit? (b) What is the area ratio of the two sizes? (c) Ajinomoto describes an AI substrate with 3.5 times the area and 18 build-up layers against 6 [R-583]. What multiple of build-up film does that imply?
+**Setup.** Substrates are made on panels; take a 510 mm × 515 mm panel (assumed) and ignore edge margins and spacing. (a) How many 90 mm and 110 mm substrates fit? (b) What is the area ratio of the two sizes? (c) An AI-substrate example in industry reporting has 3.5 times the area and 18 build-up layers against 6 [R-583]. What multiple of build-up film does that imply?
 
 **Solution.**
 
@@ -208,7 +208,7 @@ Packaging is done by OSATs (ASE, Amkor, JCET and others), by foundries (TSMC's I
 
 ### Example 25-06.6 · Reading an OSAT ranking (tier A)
 
-**Setup.** TrendForce put the top-10 OSATs' 2024 revenue at $41.56 B, with ASE at $18.54 B, Amkor at $6.32 B and JCET at $5.00 B [R-582]. Find (a) each one's share of the top 10, (b) the top three's combined share and (c) ASE's revenue relative to Amkor's.
+**Setup.** TrendForce put the top-10 OSATs' 2024 revenue at $41.56 B, with ASE at $18.54 B, Amkor at $6.32 B and JCET at $5 B as reported (taken as $5.00 B) [R-582]. Find (a) each one's share of the top 10, (b) the top three's combined share and (c) ASE's revenue relative to Amkor's.
 
 **Solution.**
 
@@ -286,7 +286,7 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 
 | Quantity | Value | Dated | Source |
 |---|---|---|---|
-| Top-10 OSAT revenue | $41.56 B (2024); ASE $18.54 B, Amkor $6.32 B, JCET $5.00 B | May 2025 | [R-582] |
+| Top-10 OSAT revenue | $41.56 B (2024); ASE $18.54 B, Amkor $6.32 B, JCET $5 B | May 2025 | [R-582] |
 | Build-up film supply | Ajinomoto, a reported ≥ 95% | Sep 2026 | [R-583] |
 | Substrate makers | Unimicron, Ibiden, Shinko ≈ three-quarters | Sep 2026 | [R-583] |
 | ABF price rise | ≈ 30% from 3Q26 | Sep 2026 | [R-583] |
@@ -308,7 +308,7 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 
 **State of the art (as of Nov 2026).**
 
-- *OSATs* [Industry estimate]. The top 10 earned $41.56 B in 2024 (+3%); ASE $18.54 B, nearly 45% of the top ten, then Amkor ($6.32 B, −2.8%) and JCET ($5.00 B, +19.3%), with Chinese firms growing fastest; no 2025 ranking from the same source was found [R-582].
+- *OSATs* [Industry estimate]. The top 10 earned $41.56 B in 2024 (+3%); ASE $18.54 B, nearly 45% of the top ten, then Amkor ($6.32 B, −2.8%) and JCET ($5 B, +19.3%); no 2025 ranking from the same source was found [R-582].
 - *Substrates and film* [Industry estimate]. Ajinomoto supplies a reported 95% or more of build-up film and was at full capacity in 2Q26; it announced a roughly 30% price rise from 3Q26. Unimicron, Ibiden and Shinko hold about three-quarters of the substrate market. Ibiden's roadmap moves from 90 × 90 mm substrates in 2026 to 110 × 110 mm in 2028 [R-583].
 - *Fan-out* [Established]. InFO entered high volume with Apple's A10 in 2016 and remains in TSMC's portfolio for smartphone customers [R-584].
 - *Technology mix* [Industry estimate, qualitative]. TechInsights describes wire bonding as still dominant in traditional packages, with flip-chip and fan-out growing fastest, and forecast area-array bonding to overtake peripheral bonding in 2024; no credible free unit-share figure exists [R-585].
