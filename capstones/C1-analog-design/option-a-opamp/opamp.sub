@@ -1,0 +1,20 @@
+* C1 option A reference design: two-stage Miller-compensated CMOS op-amp (see design-report.md for the sizing).
+* Pins: inp (non-inverting), inn (inverting), out, vdd, vss, ibias (20 uA reference current flows INTO this pin).
+* Every device uses L = 0.5 um, the length the C1 process characterizes; drain and source areas assume
+* 0.5 um-long diffusions (AD = AS = W x 0.5 um, PD = PS = 2W + 1 um).
+.subckt opamp inp inn out vdd vss ibias
+* bias mirror: M8 (diode) sets the gate voltage of the current sinks M5 (tail, 40 uA) and M7 (output, 160 uA)
+M8 ibias ibias vss vss nch W=3.3u L=0.5u AD=1.65p AS=1.65p PD=7.6u PS=7.6u
+M5 tail ibias vss vss nch W=6.6u L=0.5u AD=3.3p AS=3.3p PD=14.2u PS=14.2u
+* first stage: NMOS differential pair M1-M2 with PMOS mirror load M3-M4 (output at n1)
+M1 x inn tail vss nch W=7.4u L=0.5u AD=3.7p AS=3.7p PD=15.8u PS=15.8u
+M2 n1 inp tail vss nch W=7.4u L=0.5u AD=3.7p AS=3.7p PD=15.8u PS=15.8u
+M3 x x vdd vdd pch W=7.1u L=0.5u AD=3.55p AS=3.55p PD=15.2u PS=15.2u
+M4 n1 x vdd vdd pch W=7.1u L=0.5u AD=3.55p AS=3.55p PD=15.2u PS=15.2u
+* second stage: PMOS common source M6 with NMOS current-sink load M7
+M6 out n1 vdd vdd pch W=57u L=0.5u AD=28.5p AS=28.5p PD=115u PS=115u
+M7 out ibias vss vss nch W=26.4u L=0.5u AD=13.2p AS=13.2p PD=53.8u PS=53.8u
+* Miller compensation with a nulling resistor of about 1/gm6
+RZ n1 nz 625
+CC nz out 1.5p
+.ends opamp

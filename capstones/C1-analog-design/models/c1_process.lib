@@ -1,0 +1,41 @@
+* C1 teaching process: a 1.8 V, 0.18 um-class CMOS process described with SPICE level-1 models.
+* These are teaching models, not a foundry PDK: the square law, a single channel-length modulation
+* coefficient characterized at L = 0.5 um (use L = 0.5 um for every device), Meyer gate capacitance from TOX,
+* overlap and junction capacitances, and level-1's built-in temperature scaling (KP falls as (T/TNOM)^-1.5).
+* Corners: tt (typical), ss (KP -15%, |VTO| +50 mV), ff (KP +15%, |VTO| -50 mV), sf and fs (mixed).
+* Use as:  .lib '../models/c1_process.lib' tt
+
+.lib tt
+.model nch nmos (level=1 vto=0.45 kp=270u gamma=0.40 phi=0.80 lambda=0.10 tox=4.1n
++ cgso=0.3n cgdo=0.3n cj=1.0m mj=0.5 cjsw=0.2n mjsw=0.33 pb=0.8 tnom=27)
+.model pch pmos (level=1 vto=-0.45 kp=70u gamma=0.45 phi=0.80 lambda=0.12 tox=4.1n
++ cgso=0.3n cgdo=0.3n cj=1.1m mj=0.5 cjsw=0.2n mjsw=0.33 pb=0.8 tnom=27)
+.endl tt
+
+.lib ss
+.model nch nmos (level=1 vto=0.50 kp=229.5u gamma=0.40 phi=0.80 lambda=0.10 tox=4.1n
++ cgso=0.3n cgdo=0.3n cj=1.0m mj=0.5 cjsw=0.2n mjsw=0.33 pb=0.8 tnom=27)
+.model pch pmos (level=1 vto=-0.50 kp=59.5u gamma=0.45 phi=0.80 lambda=0.12 tox=4.1n
++ cgso=0.3n cgdo=0.3n cj=1.1m mj=0.5 cjsw=0.2n mjsw=0.33 pb=0.8 tnom=27)
+.endl ss
+
+.lib ff
+.model nch nmos (level=1 vto=0.40 kp=310.5u gamma=0.40 phi=0.80 lambda=0.10 tox=4.1n
++ cgso=0.3n cgdo=0.3n cj=1.0m mj=0.5 cjsw=0.2n mjsw=0.33 pb=0.8 tnom=27)
+.model pch pmos (level=1 vto=-0.40 kp=80.5u gamma=0.45 phi=0.80 lambda=0.12 tox=4.1n
++ cgso=0.3n cgdo=0.3n cj=1.1m mj=0.5 cjsw=0.2n mjsw=0.33 pb=0.8 tnom=27)
+.endl ff
+
+.lib sf
+.model nch nmos (level=1 vto=0.50 kp=229.5u gamma=0.40 phi=0.80 lambda=0.10 tox=4.1n
++ cgso=0.3n cgdo=0.3n cj=1.0m mj=0.5 cjsw=0.2n mjsw=0.33 pb=0.8 tnom=27)
+.model pch pmos (level=1 vto=-0.40 kp=80.5u gamma=0.45 phi=0.80 lambda=0.12 tox=4.1n
++ cgso=0.3n cgdo=0.3n cj=1.1m mj=0.5 cjsw=0.2n mjsw=0.33 pb=0.8 tnom=27)
+.endl sf
+
+.lib fs
+.model nch nmos (level=1 vto=0.40 kp=310.5u gamma=0.40 phi=0.80 lambda=0.10 tox=4.1n
++ cgso=0.3n cgdo=0.3n cj=1.0m mj=0.5 cjsw=0.2n mjsw=0.33 pb=0.8 tnom=27)
+.model pch pmos (level=1 vto=-0.50 kp=59.5u gamma=0.45 phi=0.80 lambda=0.12 tox=4.1n
++ cgso=0.3n cgdo=0.3n cj=1.1m mj=0.5 cjsw=0.2n mjsw=0.33 pb=0.8 tnom=27)
+.endl fs
