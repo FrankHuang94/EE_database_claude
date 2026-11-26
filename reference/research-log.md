@@ -6707,3 +6707,21 @@ R&D % = R&D ÷ revenue.
 - **IDC (12 Jan 2026):** "Global PC shipments grew 9.6% year-over-year in the fourth quarter of 2025, reaching 76.4 million units"; full-year 2025 table "Total 284.7 ... 263.3 ... 8.1%".
 - **IDC (8 Oct 2026):** "Worldwide PC shipments fell 20.1% year over year in Q3 2026 to 62.7 million units ... the second consecutive decline"; table: Apple 5.9 million (9.5%), total 62.7 against 78.5 a year earlier. Gartner's Q3 2026 release returned 403 and is not used.
 - **Sources:** [IDC Q4 2025](https://www.idc.com/resource-center/press-releases/4q25-pc-top-5-pr/); [IDC Q3 2026](https://idc.com/resource-center/press-releases/idc-pc-tracker-3q26). Checked Nov 2026.
+
+## R-688 · ADAS compute: Mobileye EyeQ6 and NVIDIA DRIVE (Course 27)
+
+*Read on 26 Nov 2026 on Mobileye's and NVIDIA's product pages.* [Established as manufacturer claims]
+
+- **Mobileye EyeQ page:** EyeQ 6 High, "Premium ADAS /AV partial or full surround", "34 DL TOPS (int8) 7nm"; "2x EyeQ™ 6 High powering Mobileye SuperVision™", "> 3x EyeQ™ 6 High powering Mobileye Chauffeur™", "> 4x EyeQ™ 6 High powering Mobileye Drive™"; EyeQ 6 Lite, "ADAS front camera", "5 DL TOPS (int8) 7nm".
+- **NVIDIA in-vehicle computing page:** the Hyperion platform for "robotaxis and Level 4-capable autonomous vehicles ... includes standardized sensor suite with dual NVIDIA DRIVE AGX™ Thor system-on-a-chip (SoCs)"; "NVIDIA DRIVE AGX Thor and Orin deliver the in-vehicle compute performance to run reasoning models in real time". The page states no TOPS figure, so none is used.
+- Derived (ours): four EyeQ 6 High chips give 136 TOPS (int8) of rated peak for the "Drive" configuration's minimum.
+- **Sources:** [Mobileye EyeQ](https://www.mobileye.com/technology/eyeq-chip/); [NVIDIA in-vehicle computing](https://www.nvidia.com/en-us/self-driving-cars/in-vehicle-computing/). Checked Nov 2026.
+
+## R-689 · In-vehicle network standards: CAN XL and automotive Ethernet (Course 27)
+
+*Read on 26 Nov 2026 on CAN in Automation's and IEEE 802.3's pages.* [Established]
+
+- **CiA, CAN XL:** "The PWM coding allows bit rates of 20 Mbit/s and higher (depends on the physical network design). CAN XL is intended for backbone and sub-backbone network applications"; "The data field length is 1 byte to 2048 byte"; "separation of the CAN-ID field into the 11-bit priority ID field and the 32-bit acceptance field".
+- **IEEE P802.3cg (10 Mb/s Single Pair Ethernet):** the task force "completed with the approval of IEEE Std 802.3cg-2019 by the IEEE-SA Standards Boards on November 7, 2019" (the standard that includes 10BASE-T1S).
+- **IEEE P802.3ch (Multi-Gig Automotive Ethernet PHY):** "completed with the approval of IEEE Std 802.3ch-2020 by the IEEE-SA Standards Boards on June 4, 2020".
+- **Sources:** [CiA CAN XL](https://www.can-cia.org/can-knowledge/can-xl); [IEEE 802.3cg](https://www.ieee802.org/3/cg/); [IEEE 802.3ch](https://www.ieee802.org/3/ch/). Checked Nov 2026.

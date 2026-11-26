@@ -11142,3 +11142,39 @@
   definition: The two phases of language-model inference; prefill processes the prompt in parallel and is compute-bound, while decode generates one token at a time, reading every weight per token, and is memory-bandwidth-bound.
   chapter: "27-05"
   see_also: [Unified memory]
+- term: E/E architecture
+  definition: The electrical/electronic architecture of a vehicle, the arrangement of its control units, networks, power distribution and software; it has evolved from one controller per function (distributed) through domain controllers to zonal designs with central compute.
+  chapter: "27-06"
+  see_also: [Zone controller, Central compute (vehicle)]
+- term: Zone controller
+  definition: A vehicle controller placed in a physical region of the car that connects the nearby sensors, actuators and loads, distributes their power and links them over a backbone to central compute, so wiring follows geography rather than function.
+  chapter: "27-06"
+  see_also: [E/E architecture]
+- term: Central compute (vehicle)
+  definition: One or a few high-performance computers in a vehicle that run most of its software (driver assistance, vehicle functions, cockpit), fed by zone controllers and sensors over high-speed links.
+  chapter: "27-06"
+  see_also: [Zone controller, Software-defined vehicle]
+- term: Controller Area Network (CAN)
+  definition: A two-wire differential vehicle bus with dominant and recessive states in which nodes arbitrate by identifier bit by bit, so the lowest identifier wins without collision and the bus acts as a fixed-priority, non-preemptive scheduler.
+  chapter: "27-06"
+  see_also: [Bit stuffing, CAN FD]
+- term: Bit stuffing
+  definition: Inserting a complementary bit after five identical bits so receivers stay synchronized; in CAN the worst case adds one bit per four after the first five over the stuffed part of the frame.
+  chapter: "27-06"
+  see_also: [Controller Area Network (CAN)]
+- term: CAN FD
+  definition: CAN with flexible data rate, which arbitrates at the classic rate and then switches to a faster data phase carrying up to 64 data bytes per frame.
+  chapter: "27-06"
+  see_also: [Controller Area Network (CAN)]
+- term: Automotive Ethernet
+  definition: Ethernet variants for vehicles that run over single twisted pairs, from the 10BASE-T1S multidrop bus to 100 Mb/s, 1 Gb/s and multi-gigabit point-to-point links used for backbones and high-rate sensors.
+  chapter: "27-06"
+  see_also: [Zone controller]
+- term: Fail-operational
+  definition: A system design that keeps providing its function, at least in degraded form, after a fault, using redundant and independent compute, power and sensing; required when no driver is available as an immediate fallback.
+  chapter: "27-06"
+  see_also: [Diagnostic coverage]
+- term: Software-defined vehicle
+  definition: A vehicle whose features are defined mainly by software running on central compute with headroom, a service-oriented platform and over-the-air updates, so behaviour can change over the vehicle's life.
+  chapter: "27-06"
+  see_also: [Central compute (vehicle), Over-the-air (OTA) update]
