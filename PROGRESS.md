@@ -94,7 +94,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 
 > 27-08 (Edge AI and IoT) is verified: MAC and memory counts for a depthwise-separable keyword spotter, with the $1/C_{\text{out}} + 1/k^2$ saving; latency and energy per inference on an MCU CPU against an NPU, and the always-on budget, where the front end dominates once the NPU is in; send the answer, not the data; radio choice; LoRa chirp spread spectrum, symbol time and the data sheet's time-on-air formula; EU 868 MHz duty cycles and community fair use; battery life with self-discharge; indoor photovoltaic harvest from lux, energy neutrality and supercapacitor sizing; the time, energy and airtime of secure boot and over-the-air updates under the Cyber Resilience Act. 6 examples, 13 problems with solutions, verify (172 checks: the keyword spotter executed in numpy with counted MACs, brute-force LoRa payload symbols, day-by-day battery life, a simulated supercapacitor discharge), lab (`edgemodel.py`, notebook), 1 figure, 11 glossary terms; perishable facts in R-695 to R-699 (Arm Ethos-U55/U85, MLPerf Tiny, Semtech SX1276 Rev. 7, ETSI sub-band duty cycles via The Things Network, IoT Analytics device counts), all read on primary pages.
 
-> **Next: Course 27 wrap-up.** Write `courses/27-system-architectures/exam/README.md` and `solutions.md` (10–15 problems across 27-01 to 27-08, time limit, answer key, verify script), `reference/equation-sheets/27-system-architectures.md`, the course notes and `flashcards/27-system-architectures.csv` (50–150 cards), following Course 26's pattern. Then launch fresh reviewer subagents for the course audit (split 27-01 to 27-04, 27-05 to 27-08, and the exam, sheet and cards). Fold in open issue 78's 27-06 enrichment candidates after re-reading each page, and resolve open issues 76 (R-416) and 77 (GB200 footnote) where possible. Fix every finding, mark the course reviewed, then push and check CI. Course 28 and the Term 7 checkpoint follow.
+> Course 27 wrap-up written: final exam (12 questions, 180 min, 104 points) with worked solutions and `verify_27_exam.py` (93 checks, mostly second routes: a thermal ODE, a simulated ANC residual, a stepped EWMA, bit-by-bit CAN stuffing, executed ring all-reduces, an ODE for the supercapacitor), the equation sheet, course notes in the course README, and 72 flashcards.
+
+> **Next: Course 27 audit.** Launch three fresh reviewer subagents that have not seen the drafting: A for 27-01 to 27-04, B for 27-05 to 27-08, C for the exam, equation sheet, flashcards and notes. They audit technical correctness, derivation rigour, problem and solution consistency, difficulty against the university equivalent, and perishable facts against the R-log. Fix every finding. Fold in open issue 78's 27-06 enrichment candidates after re-reading each page, and resolve open issues 76 and 77 where possible. Then mark Course 27 reviewed, push and check CI. Course 28 and the Term 7 checkpoint follow.
 
 > Course 26 audit lessons to carry forward: (i) key every intermediate a solution displays, not just the final answers; (ii) anything defined relative to price (a percentage royalty, a margin) must move with price in a sensitivity; (iii) never publish a value that sits on a rounding tie, publish it exactly; (iv) when an answer needs iteration, teach the iteration (a Math refresher) and show the steps; (v) cite a figure only to a log entry whose recorded source contains it.
 >
@@ -204,10 +206,10 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | 24 | 9 | 9 | 9 | 9 | 64,285 | 132 | 1522 | 9 | 9 / 7 / 0 |
 | 25 | 12 | 12 | 12 | 12 | 75,761 | 167 | 1321 | 12 | 12 / 2 / 0 |
 | 26 | 7 | 7 | 7 | 7 | 49,840 | 100 | 1275 | 7 | 7 / 0 / 0 |
-| 27 | 8 | 8 | 8 | 0 | 58,054 | 101 | 1164 | 8 | 8 / 0 / 0 |
-| **Total** | **307** | **297** | **297** | **289** | **2,099,658** | **4231** | **37152** | **297** | **293 / 271 / 27** |
+| 27 | 8 | 8 | 8 | 0 | 58,054 | 101 | 1256 | 8 | 8 / 0 / 0 |
+| **Total** | **307** | **297** | **297** | **289** | **2,099,658** | **4231** | **37244** | **297** | **293 / 271 / 27** |
 
-Glossary terms: **3036** · Flashcards: **2723**
+Glossary terms: **3036** · Flashcards: **2795**
 
 <!-- END STATS -->
 
