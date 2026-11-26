@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 26-03 · Engineering Economics I: NRE, Die Cost, ASP and Gross Margin
 
 | | |

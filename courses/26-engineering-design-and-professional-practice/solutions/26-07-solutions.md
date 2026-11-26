@@ -20,7 +20,7 @@ Problems: [26-07 problems](../problems/26-07-problems.md) · Chapter: [26-07](..
 
 ### Solution 26-07.2
 
-"A. Codes of ethics", "B. Intellectual property" and "C. Safety" [R-655]. Examples: (A) applying the NSPE canons to an erratum decision; (B) handling a former employer's trade secrets, or patenting a circuit; (C) electrostatic-discharge and laser safety in a lab, or the functional safety of an automotive part.
+"A. Codes of ethics", "B. Intellectual property" and "C. Safety" [R-655]. Examples: (A) applying the NSPE canons to an erratum decision; (B) handling a former employer's trade secrets, or patenting a circuit; (C) grounding of lab equipment, safety data sheets for fab and lab chemicals, or laser radiation protection in an optical lab.
 
 ### Solution 26-07.3
 
@@ -90,6 +90,16 @@ A model set:
 2. *Open source:* "Which open-source RTL, tools and firmware are in your products, under which licenses, and how do you track them?" Strong: a maintained inventory, license review, compliance with obligations. Weak: "it's all permissive".
 3. *Export controls:* "How are your products classified under the EAR, who made the classification, and how do you screen customers and data-center end users?" Strong: a written classification with TPP and density calculations, a compliance owner, procedures updated for the 2026 rules [R-659]. Weak: "our chips are below the thresholds" without a calculation.
 4. *Escalation:* "When an engineer disagreed with a release decision, what happened?" Strong: a concrete case, a written record and a decision that weighed the concern. Weak: no example, or "we have never had a disagreement".
+
+### Solution 26-07.13
+
+(a) **C**: canon 1 makes the public paramount; the duty to the employer or client (canon 4) comes after it [R-654].
+
+(b) **B**: licensing boards generally require a bachelor's degree from an EAC/ABET-accredited program, and "most states require four years of acceptable, progressive, and verifiable work experience" before the PE exam, which follows the FE [R-655]. Many states also provide other paths.
+
+(c) **B**: protection begins at first commercial exploitation, but terminates if registration is not applied for within two years of it [R-658]. Registered in time, it would run ten years to the end of 2036, as in (D).
+
+(d) **D**: the headings are codes of ethics, intellectual property and safety [R-655].
 
 ---
 

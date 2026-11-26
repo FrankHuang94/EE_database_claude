@@ -184,4 +184,11 @@ steps = [b - a for a, b in zip(bounds, bounds[1:])]
 v.check("Lab 26-07.d4", min(steps))
 v.check("Lab 26-07.d5", max(steps))
 
+# ---------------------------------------------------------------- Problem 13(c) (17 U.S.C. 908(a): register within two years)
+first_sale = dt.date(2026, 3, 1)
+deadline = first_sale.replace(year=first_sale.year + 2)
+v.assert_true("P13c registration deadline is 1 March 2028", deadline == dt.date(2028, 3, 1))
+v.assert_true("P13c if registered in time, protection runs to 31 Dec 2036",
+              dt.date(first_sale.year + 10, 12, 31) == dt.date(2036, 12, 31))
+
 sys.exit(v.finish())

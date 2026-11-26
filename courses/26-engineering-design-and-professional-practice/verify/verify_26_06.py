@@ -146,11 +146,11 @@ v.check("Ex 26-06.5c6", sum(max(0, l - b5) for l in load5) * cc / 1e6)
 v.check("Ex 26-06.5d", cost(load5, 15, ce, cc) / 1e6)
 
 # ---------------------------------------------------------------- Example 6
-ey = 0.8 * 416e6 / 300e3
+ey = 0.8 * 249e6 / 300e3
 v.check("Ex 26-06.6a", ey)
 v.check("Ex 26-06.6a1", ey / 2.5)
-v.check("Ex 26-06.6b", 416 / 1.66)
-v.check("Ex 26-06.6b1", 416 / 1.5)
+v.check("Ex 26-06.6b", 249 / 1.66)
+v.check("Ex 26-06.6b1", 249 / 1.5)
 v.check("Ex 26-06.6b2", ey / 1.66 / 2.5)
 v.check("Ex 26-06.6b3", ey / 1.5 / 2.5)
 
@@ -191,6 +191,12 @@ v.check("26-06.4c", 1 - 0.015 * 11)
 O4 = hier(12, 6, 0.03, 0.015)
 v.check("26-06.4d", O4)
 v.check("26-06.4d1", O4 / 84)
+v.check("26-06.4d2", 1 - 0.03 * (8 - 1))  # Example 26-06.2: teams of 8 engineers
+O4x = 12 * 6 * (1 - 0.03 * 5) * (1 - 0.02 * 11)
+v.check("26-06.4d3", 1 - 0.02 * 11)
+v.check("26-06.4d4", O4x)
+v.check("26-06.4d5", O4x / 84)
+v.check("26-06.4d6", 51.8 / 90)
 
 v.check("26-06.5a", finish_stepped(60, 8, 0.02))
 e5 = 1 - 0.02 * 11
@@ -225,6 +231,9 @@ v.check("26-06.7a1", sum(1 for l in load7 if l > 20) / len(load7))
 v.check("26-06.7a2", b7)
 v.check("26-06.7b", cost(load7, b7, ce7, cc7) / 1e6)
 v.check("26-06.7b1", sum(max(0, l - b7) for l in load7))
+v.check("26-06.7c0", 30 * len(load7) * ce7 / 1e6)
+v.check("26-06.7c1", sum(max(0, l - 30) for l in load7) * cc7 / 1e6)
+v.check("26-06.7c2", sum(max(0, l - 30) for l in load7))
 v.check("26-06.7c", cost(load7, 30, ce7, cc7) / 1e6)
 v.check("26-06.7d", cost(load7, 60, ce7, cc7) / 1e6)
 v.check("26-06.7e", cost(load7, 0, ce7, cc7) / 1e6)
@@ -234,7 +243,7 @@ v.check("26-06.8a1", 14 * 200e3 / 1e6)
 v.check("26-06.8b", 150 / 200)
 v.check("26-06.8b1", optimize.brentq(lambda m: m * 200e3 - 18 * 150e3, 1, 18))
 
-ey10 = 0.75 * 590e6 / 350e3
+ey10 = 0.75 * 725e6 / 350e3
 v.check("26-06.10", ey10)
 v.check("26-06.10a", ey10 / 3)
 

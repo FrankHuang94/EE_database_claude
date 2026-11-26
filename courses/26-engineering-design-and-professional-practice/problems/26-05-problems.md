@@ -59,11 +59,15 @@ Chapter: [26-05](../chapters/26-05-schedule-and-respin-risk.md) · Worked soluti
 
 ### Problem 26-05.12 [C]
 
-**Formal verification instead of emulation.** In Example 26-05.5, formal verification of the cache-coherence protocol costs $2 M and proves correct half of the respin-class bugs (so $\phi N_0$ falls from 10 to 5), without changing $\tau$. Find (a) the new optimal time and respin probability, (b) the expected cost including the formal work, and (c) explain why the respin probability at the optimum does not change while the optimal time does.
+**Formal verification instead of emulation.** In Example 26-05.5, formal verification of the cache-coherence protocol costs $2 M and exhaustively checks the protocol, so that half of the respin-class bugs are found and fixed before final verification (so $\phi N_0$ falls from 10 to 5), without changing $\tau$. Find (a) the new optimal time and respin probability, (b) the expected cost including the formal work, and (c) explain why the respin probability at the optimum does not change while the optimal time does.
 
 ### Problem 26-05.13 [A]
 
 **Reading the survey.** A headline says "Only 5% of chips work the first time". Give three reasons why this does not mean that 95% of chip programs fail or that first silicon is usually unusable.
+
+### Problem 26-05.14 [B]
+
+**Find the critical path.** A block's tasks (duration in weeks, predecessors): A, specification (4, none); B, RTL (10, A); C, verification environment (6, A); D, verification (8, B and C); E, physical design (7, B); F, signoff (3, D and E). (a) Do a forward pass (earliest start and finish) and find the project duration. (b) Do a backward pass, find each task's total float, and name the critical path. (c) Physical design slips by 2 weeks. By how much does the project slip? (d) Which single tasks could be shortened by 2 weeks to bring the project to 23 weeks, and why does shortening verification alone not do it?
 
 ---
 
@@ -71,7 +75,7 @@ Chapter: [26-05](../chapters/26-05-schedule-and-respin-risk.md) · Worked soluti
 
 | Objective | Problems |
 |---|---|
-| 1. Schedules, three-point estimates and merge bias | 1, 3, 4 |
+| 1. Schedules, three-point estimates and merge bias | 1, 3, 4, 14 |
 | 2. Expected tape-outs and survey statistics | 5, 6, 13 |
 | 3. Respin causes and fixes | 2, 7 |
 | 4. Risk registers and EMV | 8, 9, 10 |

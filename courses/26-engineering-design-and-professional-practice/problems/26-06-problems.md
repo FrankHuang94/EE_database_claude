@@ -51,7 +51,7 @@ Chapter: [26-06](../chapters/26-06-team-structures-and-sizing.md) · Worked solu
 
 ### Problem 26-06.10 [B]
 
-**A 3 nm design-cost estimate.** IBS estimated up to about $590 M to design a 3 nm chip from scratch [R-019]. If 75% of the cost is engineering labor at a loaded $350,000 per engineer-year over 3 years, find the engineer-years and the average headcount.
+**A 2 nm design-cost estimate.** IBS, as cited in Arm's 2023 prospectus, put the cost of designing a 2 nm chip at about $725 M [R-019]. If 75% of the cost is engineering labor at a loaded $350,000 per engineer-year over 3 years, find the engineer-years and the average headcount.
 
 ### Problem 26-06.11 [C]
 

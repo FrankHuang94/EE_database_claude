@@ -365,4 +365,54 @@ tau_be = optimize.brentq(lambda x: best_cost(x) + 3 - f5, 2.0, 3.99, xtol=1e-9)
 v.check("Lab 26-05.d", tau_be)
 v.check("Lab 26-05.d1", 100 * (1 - tau_be / 4))
 
+# ---------------------------------------------------------------- Problem 14 (CPM by forward and backward passes)
+dur = {"A": 4, "B": 10, "C": 6, "D": 8, "E": 7, "F": 3}
+pred = {"A": [], "B": ["A"], "C": ["A"], "D": ["B", "C"], "E": ["B"], "F": ["D", "E"]}
+order = ["A", "B", "C", "D", "E", "F"]
+
+
+def cpm(d):
+    ef = {}
+    for t in order:
+        ef[t] = max((ef[p] for p in pred[t]), default=0) + d[t]
+    end = max(ef.values())
+    succ = {t: [s for s in order if t in pred[s]] for t in order}
+    ls = {}
+    for t in reversed(order):
+        lf = min((ls[s] for s in succ[t]), default=end)
+        ls[t] = lf - d[t]
+    return end, {t: ls[t] - (ef[t] - d[t]) for t in order}
+
+
+end14, fl14 = cpm(dur)
+v.check("26-05.14a", end14)
+v.check("26-05.14b", fl14["C"])
+v.check("26-05.14b1", fl14["E"])
+v.assert_true("P14 critical path is A-B-D-F", [t for t in order if fl14[t] == 0] == ["A", "B", "D", "F"])
+v.check("26-05.14c", cpm({**dur, "E": 9})[0] - end14)
+v.check("26-05.14d", 4 + 10 + 7 + 3)
+v.assert_true("P14 cutting A, B or F by 2 gives 23; cutting D alone gives 24",
+              all(cpm({**dur, x: dur[x] - 2})[0] == 23 for x in "ABF") and cpm({**dur, "D": 6})[0] == 24)
+
+# ---------------------------------------------------------------- Txt (knapsack counterexample; roots for k = 0.15)
+items = {"A": (1.5, 1.2), "B": (2.5, 1.5), "C": (2.0, 1.3)}
+greedy, spent = 0.0, 0.0
+for name, (cost, net) in sorted(items.items(), key=lambda kv: -kv[1][1] / kv[1][0]):
+    if spent + cost <= 4.0:
+        spent += cost
+        greedy += net
+best = max(sum(items[n][1] for n in combo) for r in range(4) for combo in __import__("itertools").combinations(items, r)
+           if sum(items[n][0] for n in combo) <= 4.0)
+v.check("Txt 26-05.8", greedy)
+v.check("Txt 26-05.9", best)
+v.check("Txt 26-05.10", optimize.brentq(lambda x: x * math.exp(-x) - 0.15, 1e-9, 1.0))
+v.check("Txt 26-05.11", optimize.brentq(lambda x: x * math.exp(-x) - 0.15, 1.0, 20.0))
+lam_s, lam_l = 0.15, 3.0
+for j in range(4):
+    lam_s = 0.15 * math.exp(lam_s)
+    v.check(f"Txt 26-05.{12 + j}", lam_s)
+for j in range(3):
+    lam_l = math.log(lam_l / 0.15)
+    v.check(f"Txt 26-05.{16 + j}", lam_l)
+
 sys.exit(v.finish())

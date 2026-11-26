@@ -6,7 +6,7 @@
 
 ## Background
 
-§3.2 derived PERT estimates, path statistics and merge bias, and noted that the beta-PERT distribution is wider than $(b - a)/6$ suggests. §3.3 derived $E[N] = \sum_k P(N \ge k)$ for the number of tape-outs. §3.6 built the bug-discovery model $\lambda(t) = \phi N_0e^{-t/\tau}$ and the expected cost $f(t) = c_wt + C_r(1 - e^{-\lambda})$, with its maximum and minimum where $\lambda e^{-\lambda} = c_w\tau/C_r$.
+§3.2 derived PERT estimates, path statistics and merge bias, and noted that the beta-PERT distribution is usually wider than $(b - a)/6$ suggests. §3.3 derived $E[N] = \sum_k P(N \ge k)$ for the number of tape-outs. §3.6 built the bug-discovery model $\lambda(t) = \phi N_0e^{-t/\tau}$ and the expected cost $f(t) = c_wt + C_r(1 - e^{-\lambda})$, with its maximum and minimum where $\lambda e^{-\lambda} = c_w\tau/C_r$.
 
 ## Files
 
@@ -40,9 +40,9 @@
 
 ## Discussion
 
-1. The Monte Carlo gives 0.77 against the normal approximation's 0.826, and needs about 21 weeks for 90% confidence against 20.7. The beta-PERT tasks are wider and more skewed than $(b - a)/6$ implies; for a committed date, simulate.
+1. The Monte Carlo gives 0.77 against the normal approximation's 0.826, and needs about 21 weeks for 90% confidence against 20.7. The beta-PERT tasks are wider than $(b - a)/6$ implies, and skewed, which the normal approximation ignores; for a committed date, simulate.
 2. Doubling A0's success probability lowers the expected tape-outs from 1.99 to 1.66, worth **0.33** of a tape-out (**5.9** weeks at 18 weeks a spin).
-3. The cost curve starts at $40 M (respin nearly certain), rises to a ridge near 5 weeks, falls to its minimum at 16.1 weeks and then rises slowly as the weekly cost dominates ($37.0 M at 24 weeks). Stopping on the ridge is the worst decision available.
+3. The cost curve starts at $40 M (respin nearly certain), rises to a ridge near 5 weeks, falls to its minimum at 16.1 weeks and then rises slowly as the weekly cost dominates ($37.0 M at 24 weeks). Stopping on the ridge is the worst time to stop short of the optimum.
 4. Emulation at $3 M pays only if it shortens $\tau$ below 3.51 weeks, a **12**% faster discovery; the assumed 2.5 weeks clears that easily, which is why most large SoC programs use it.
 
 ## Optional hardware

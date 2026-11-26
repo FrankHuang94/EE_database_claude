@@ -29,7 +29,7 @@ Chapter: [26-07](../chapters/26-07-engineering-ethics.md) · Worked solutions: [
 
 ### Problem 26-07.4 [B]
 
-**An ASIL B budget.** A part meets the ASIL B target of 100 FIT [R-614] and goes into 2 million vehicles operating 2 hours a day for 10 years. Find (a) the hours per vehicle, (b) the expected fleet failures, and (c) the probability per vehicle over its life.
+**An ASIL B budget.** An ASIL B item meets the 100 FIT target for safety-goal violations [R-614] and goes into 2 million vehicles operating 2 hours a day for 10 years. Find (a) the hours per vehicle, (b) the expected fleet failures, and (c) the probability per vehicle over its life.
 
 ### Problem 26-07.5 [B]
 
@@ -63,6 +63,10 @@ Chapter: [26-07](../chapters/26-07-engineering-ethics.md) · Worked solutions: [
 
 **Diligence questions.** You are evaluating a startup that designs datacenter accelerators and hired its founding team from a large competitor. Write four questions, one each on IP provenance, open-source license compliance, export controls and the escalation of safety or quality concerns, and say what a strong answer would contain.
 
+### Problem 26-07.13 [A]
+
+**FE-style questions.** Choose one answer for each [R-654, R-655, R-658]. (a) Under the NSPE Code, an engineer's paramount obligation is to: (A) the employer; (B) the client; (C) the safety, health and welfare of the public; (D) the profession. (b) In most US states, the usual path to a PE licence is: (A) the FE exam alone; (B) a degree from an EAC/ABET-accredited program, the FE exam, about four years of progressive engineering experience, then the PE exam; (C) eight years of experience with no exams; (D) a master's degree in engineering. (c) A chip's layout is first sold on 1 March 2026 and never registered as a mask work. Protection: (A) lasts ten years from first sale; (B) ends if registration is not applied for within two years of first sale, by 1 March 2028; (C) never starts; (D) runs to 31 December 2036. (d) Which is not one of the three headings of the FE exam's Ethics and Professional Practice area? (A) Codes of ethics; (B) Intellectual property; (C) Safety; (D) Project finance.
+
 ---
 
 ## Objective coverage
@@ -70,7 +74,7 @@ Chapter: [26-07](../chapters/26-07-engineering-ethics.md) · Worked solutions: [
 | Objective | Problems |
 |---|---|
 | 1. Codes of ethics | 1, 11 |
-| 2. Licensure and the FE exam | 2 |
+| 2. Licensure and the FE exam | 2, 13 |
 | 3. Quantified safety | 3, 4, 5, 6, 7 |
-| 4. Intellectual property | 9, 10, 12 |
+| 4. Intellectual property | 9, 10, 12, 13 |
 | 5. Export controls | 8, 12 |

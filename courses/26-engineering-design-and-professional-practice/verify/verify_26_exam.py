@@ -344,4 +344,46 @@ v.check("X26.12d", tpp)
 v.check("X26.12d1", tpp / 520)
 v.assert_true("Q12d meets 3A090.a.2 but not a.1", tpp < 4800 and tpp >= 1600 and tpp / 520 >= 5.92)
 
+# ---------------------------------------------------------------- intermediates shown in the solutions
+die_u = 15000 / (528 * math.exp(-1.2 * 0.12))
+v.check("X26.4i1", die_u)
+v.check("X26.4i2", (round(die_u, 2) + 5.00) / 0.985)
+v.check("X26.4i3", (die_u + 5.00) / 0.985)
+v.check("X26.5i1", 0.08 * 1.08**6 / (1.08**6 - 1))
+npv5 = lambda r: sum(c / (1 + r)**t for t, c in enumerate([-40, -40, 35, 35, 35, 35]))  # noqa: E731
+v.check("X26.5i2", npv5(0.21))
+v.check("X26.5i3", npv5(0.22))
+v.check("X26.5i4", npv5(0.2125))
+v.check("X26.5i5", 21 + round(npv5(0.21), 3) / (round(npv5(0.21), 3) - round(npv5(0.22), 3)))
+dpw_raw = lambda A: math.pi * 300**2 / (4 * A) - math.pi * 300 / math.sqrt(2 * A)  # noqa: E731
+s_eff7 = 1 / (0.6 / 1.6 + 0.25 / 1.15 + 0.15 / 1.05)
+v.check("X26.7i1", dpw_raw(150))
+v.check("X26.7i2", dpw_raw(150 / s_eff7))
+c_old = 15000 / (math.floor(dpw_raw(150)) * math.exp(-1.5 * 0.10))
+c_new = 19000 / (math.floor(dpw_raw(150 / s_eff7)) * math.exp(-150 / s_eff7 / 100 * 0.12))
+v.check("X26.7i3", c_old - c_new)
+mA9 = (6 + 4 * 8 + 14) / 6 + (2 + 4 * 3 + 5) / 6
+sA9 = math.hypot((14 - 6) / 6, (5 - 2) / 6)
+mB9 = (5 + 4 * 7 + 11) / 6 + (3 + 4 * 4 + 7) / 6
+sB9 = math.hypot((11 - 5) / 6, (7 - 3) / 6)
+both = lambda T: Phi((T - mA9) / sA9) * Phi((T - mB9) / sB9)  # noqa: E731
+v.check("X26.9i1", Phi((14 - mA9) / sA9))
+v.check("X26.9i2", Phi((14 - mB9) / sB9))
+v.check("X26.9i3", both(13.8))
+v.check("X26.9i4", both(13.9))
+v.check("X26.9i5", both(14.0))
+v.check("X26.9i6", optimize.brentq(lambda T: both(T) - 0.9, 10, 30))
+table = lambda z: Phi(math.floor(z * 10) / 10) + (z * 10 - math.floor(z * 10)) * (Phi(math.floor(z * 10) / 10 + 0.1) - Phi(math.floor(z * 10) / 10))  # noqa: E731,E501
+v.check("X26.9i7", table((14 - mA9) / sA9) * table((14 - mB9) / sB9))
+lam = 0.12
+for j in range(3):
+    lam = 0.12 * math.exp(lam)
+    v.check(f"X26.10i{j + 1}", lam)
+lam = 0.08
+for j in range(2):
+    lam = 0.08 * math.exp(lam)
+    v.check(f"X26.10i{j + 4}", lam)
+v.check("X26.10i6", optimize.brentq(lambda x: x * math.exp(-x) - 0.08, 1e-9, 1))
+v.check("X26.12i1", 220 / 2)
+
 sys.exit(v.finish())

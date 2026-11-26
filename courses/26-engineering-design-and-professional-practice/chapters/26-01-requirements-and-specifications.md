@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 26-01 · Requirements, Specifications and the Design Process
 
 | | |

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 26-07 · Engineering Ethics and Professional Responsibility
 
 | | |
@@ -30,13 +30,14 @@ Engineers make decisions whose consequences reach people who never agreed to the
 
 ## 2. Intuition first
 
-**The order of obligations.** An engineer owes duties to several parties: the public, the employer or client, the profession and the engineer's own conscience. Most of the time they agree. When they conflict, the codes rank them, and the public comes first.
+**The order of obligations.** An engineer owes duties to several parties: the public, the employer or client, the profession and the engineer's own conscience. Most of the time they agree. When they conflict, the codes rank them: the public comes first, and the duties of honesty and competence bound what any employer or client may ask, so they sit beside the duty to the employer rather than below it.
 
 ```mermaid
 flowchart TB
-    P["Public safety, health and welfare<br/>(paramount)"] --> E["Employer or client<br/>(faithful agent)"]
-    E --> F["Profession<br/>(honest statements, competence)"]
-    F --> S["Self<br/>(career, reputation)"]
+    P["Public safety, health and welfare<br/>(paramount, canon 1)"] --> E["Employer or client<br/>(faithful agent, canon 4)"]
+    P --> F["Honesty and competence (canons 2, 3, 5)<br/>limits on what any employer may ask"]
+    E --> S["Self<br/>(career, reputation)"]
+    F --> S
 ```
 
 **Analogy: fiduciary duty.** A CFA charterholder knows the structure: duties to clients and to the integrity of markets come before the adviser's own interests. Engineering codes have the same shape, with one difference in who sits at the top: the engineer's highest duty is to the public, a party that never signed the contract and usually never knows the engineer's name. **Where the analogy breaks:** a client harmed by bad advice loses money that can be measured and, sometimes, recovered; a person harmed by an unsafe product may lose health or life, which cannot. And engineering errors are copied into every unit shipped, so a small per-unit risk becomes a large fleet-level one (§3.3).
@@ -66,7 +67,7 @@ The order matters. Canon 4 makes the engineer a faithful agent of the employer, 
 - *Canon 4 (faithful agent):* keep the employer's confidential information confidential, including after you leave (§3.5).
 - *Canon 5 (no deception):* benchmark claims that hide their conditions (26-04 §9) deceive customers.
 
-Professional societies have their own codes; IEEE, the main society for electrical engineers, publishes one in its policies. The FE exam asks about codes of ethics "of professional and technical societies" and about the NCEES Model Law and Model Rules, which govern licensed engineers [R-655].
+Professional societies have their own codes; IEEE, the main society for electrical engineers, publishes one in its policies. The FE exam asks about codes of ethics of "professional and technical societies" and about the NCEES Model Law and Model Rules, which govern licensed engineers [R-655].
 
 ### 3.2 Licensure
 
@@ -90,7 +91,7 @@ $$
 E[\text{failures}] = \lambda \times 10^{-9} \times N t.
 $$
 
-Functional-safety standards set targets for the probability of hardware failures that violate a safety goal: under ISO 26262-5, below 100 FIT for ASIL B and C and below 10 FIT for ASIL D [R-614] **[Established, as cited in 25-10]**. A target of 10 FIT is not zero: across a large fleet it still predicts hundreds of events (Example 26-07.2). This is why safety-critical chips are designed with safety mechanisms (25-10) that detect faults and move the system to a safe state, rather than relying on the absence of faults.
+Functional-safety standards set targets for the probability of hardware failures that violate a safety goal: under ISO 26262-5, below 100 FIT for ASIL B and C and below 10 FIT for ASIL D [R-614] **[Established, as cited in 25-10]**. These targets apply to the whole item (a vehicle function, not one chip) and count only failures that get past the safety mechanisms; 25-10 shows how the item's budget is shared out among its components, each with a much smaller share. The mechanisms (25-10), which detect faults and move the system to a safe state, are what bring a large chip's much higher raw failure rate down to its share. Even 10 FIT is not zero: across a large fleet it predicts hundreds of safety-goal violations (Example 26-07.2), a residual risk the program accepts.
 
 **Redundancy and common cause.** Two independent protections that each fail on demand with probability $p$ both fail with probability $p^2$. In practice some failures hit both at once, for the same reason: a shared design error, a shared power supply, the same software. The **beta-factor model** puts a fraction $\beta$ of each channel's failures into a common cause:
 
@@ -106,9 +107,9 @@ $$
 \lambda_U = \frac{-\ln(1 - 0.95)}{T} = \frac{2.996}{T},
 $$
 
-because $P(\text{no failures} \mid \lambda) = e^{-\lambda T}$, and $\lambda_U$ is the rate at which that probability falls to 5% (03-05). With $k$ failures the bound becomes $\chi^2_{0.95,\,2k+2}/(2T)$. Turned around, showing a rate below $\lambda$ with 95% confidence and no failures needs $T = 2.996/\lambda$ device-hours. For the rates safety standards ask for, that is far more than any test can run, which is why safety cases combine field data, accelerated testing (25-09, 25-10) and design analysis. An absence of failures in the field is evidence, but often much weaker evidence than it sounds.
+because $P(\text{no failures} \mid \lambda) = e^{-\lambda T}$, and $\lambda_U$ is the rate at which that probability falls to 5% (03-05). With $k$ failures the bound becomes $\chi^2_{0.95,\,2k+2}/(2T)$, where $\chi^2_{0.95,\nu}$ is the value with 95% of the chi-square distribution with $\nu$ degrees of freedom below it (03-05). Turned around, showing a rate below $\lambda$ with 95% confidence and no failures needs $T = 2.996/\lambda$ device-hours. For the rates safety standards ask for, that is far more than any test can run, which is why safety cases combine field data, accelerated testing (25-09, 25-10) and design analysis. An absence of failures in the field is evidence, but often much weaker evidence than it sounds.
 
-**When judgment is overruled.** The Space Shuttle Challenger (flight 51-L) was lost when the seals in a joint of its right solid rocket motor failed. The Presidential Commission's 1986 report found that the decision to launch "was flawed": those who made it "were unaware of the initial written recommendation of the contractor advising against the launch at temperatures below 53 degrees Fahrenheit and the continuing opposition of the engineers at Thiokol after the management reversed its position", and that Thiokol's management had reversed its position "contrary to the views of its engineers in order to accommodate a major customer" [R-657] **[Established]**. Two lessons carry into chip work. First, the burden of proof belongs on the claim of safety, not on the engineers raising a concern. Second, concerns must reach the people who decide, in writing, which is what NSPE rule II.1.a requires.
+**When judgment is overruled.** The Space Shuttle Challenger (flight 51-L) was lost when the seals in a joint of its right solid rocket motor failed. The Presidential Commission's 1986 report found that the decision to launch "was flawed": those who made it "were unaware of the initial written recommendation of the contractor advising against the launch at temperatures below 53 degrees Fahrenheit and the continuing opposition of the engineers at Thiokol after the management reversed its position", and that Thiokol's management had reversed its position "contrary to the views of its engineers in order to accommodate a major customer" [R-657] **[Established]**. Two lessons carry into chip work. First, the burden of proof belongs on the claim of safety, not on the engineers raising a concern. Second, concerns must reach the people who decide: rule II.1.a requires an overruled engineer to notify the employer or client "and such other authority as may be appropriate", and putting the concern in writing makes sure it arrives and is on record.
 
 ### 3.4 Honesty in data and claims
 
@@ -119,7 +120,7 @@ Most ethical failures in chip companies are not dramatic. They are small dishone
 Engineers create and handle four kinds of intellectual property:
 
 - **Patents** protect inventions (a new circuit, a new method). In the US a patent's term ends "20 years from the date on which the application for the patent was filed", subject to maintenance fees and some adjustments [R-658]. In exchange the invention is published.
-- **Mask works** protect the layout of a chip. Under the Semiconductor Chip Protection Act, protection starts on registration or first commercial exploitation, whichever comes first, lasts ten years, and runs "to the end of the calendar year in which they would otherwise expire" [R-658].
+- **Mask works** protect the layout of a chip. Under the Semiconductor Chip Protection Act, protection starts on registration or first commercial exploitation, whichever comes first, lasts ten years, and runs "to the end of the calendar year in which they would otherwise expire"; but it terminates if registration is not applied for "within two years after the date on which the mask work is first commercially exploited anywhere in the world" [R-658].
 - **Trade secrets** protect information kept secret: process recipes, design methods, test limits, customer data. Information qualifies only if "the owner thereof has taken reasonable measures to keep such information secret" and it "derives independent economic value … from not being generally known" [R-658]. Since 2016, owners can sue for misappropriation in federal court under the Defend Trade Secrets Act [R-658].
 - **Copyright** protects expression: RTL code, firmware, documents. **Trademarks** protect names and logos.
 
@@ -167,7 +168,7 @@ Probabilities, fleet sizes and chip parameters are **assumed** for teaching unle
 
 ### Example 26-07.2 · What a 10 FIT target means (tier B)
 
-**Setup.** An ASIL D chip meets the 10 FIT target for hardware failures that violate its safety goal [R-614]. It goes into 10 million cars, each driven 1 hour a day for 12 years. Find (a) the operating hours per car, (b) the expected number of such failures across the fleet, (c) the same at the ASIL B target of 100 FIT, and (d) the probability that a given car experiences one over its life at 10 FIT.
+**Setup.** An ASIL D item (a vehicle function built around one chip, for simplicity) meets the 10 FIT target for hardware failures that violate its safety goal [R-614]. It goes into 10 million cars, each driven 1 hour a day for 12 years. Find (a) the operating hours per car, (b) the expected number of such failures across the fleet, (c) the same at the ASIL B target of 100 FIT, and (d) the probability that a given car experiences one over its life at 10 FIT.
 
 **Solution.**
 
@@ -178,7 +179,7 @@ Probabilities, fleet sizes and chip parameters are **assumed** for teaching unle
 
 **Units check.** FIT × 10⁻⁹ per hour × device-hours = failures. ✓
 
-**Sanity check.** The target bounds the rate; it does not promise zero events. What makes the system safe is that each of those faults is detected and handled (25-10), which is why the safety mechanisms, not the FIT number alone, carry the safety case.
+**Sanity check.** The target bounds the rate of safety-goal violations; it does not promise zero. These events are the failures the safety mechanisms missed: the residual risk the program accepts, which is why the budget is shared out among the item's components (25-10) and why the mechanisms, not a raw FIT number, carry the safety case.
 
 ### Example 26-07.3 · Two interlocks that fail together (tier B)
 
@@ -220,7 +221,7 @@ Probabilities, fleet sizes and chip parameters are **assumed** for teaching unle
 
 **Units check.** TOPS × bits gives the rule's TPP units; TPP per mm² gives density. ✓
 
-**Sanity check.** B is controlled despite a TPP below 4800 because it packs its performance densely; C, with the same TPP floor, is not, because its density is low. The rule's thresholds, its technical notes (multiple precisions, sparsity, "applicable die area") and later changes all matter in practice, which is why classification belongs to the compliance team.
+**Sanity check.** B is controlled despite a TPP below 4800 because it packs its performance densely; C, which also clears the 1600 floor, is not, because its density is low. The rule's thresholds, its technical notes (multiple precisions, sparsity, "applicable die area") and later changes all matter in practice, which is why classification belongs to the compliance team.
 
 ### Example 26-07.6 · When does protection end? (tier A)
 

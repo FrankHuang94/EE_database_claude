@@ -402,6 +402,7 @@ R&D % = R&D ÷ revenue.
   - Arm's 2023 F-1 prospectus, citing IBS (Jul 2022): 7 nm ≈ \$249 M, 2 nm ≈ \$725 M, of which software, verification and IP qualification are about 71%.
   - Earlier 2018 estimates were higher, e.g. 5 nm ≈ \$542 M.
 - **Critique:** industry critics (SemiAnalysis, 2022, second-hand) argue IBS figures run 50–66% above typical real-world costs.
+- **Audit note (Nov 2026):** the c. 2021 figures above are not tied to a logged primary source; Course 26 uses only the F-1 figures (7 nm ≈ \$249 M, 2 nm ≈ \$725 M) and states which reading of the critique it applies.
 - **Mask sets:** reported at roughly \$10–30 M at 3 nm, from secondary sources only (UNVERIFIED).
 - **Source:** [Arm F-1](https://www.sec.gov/Archives/edgar/data/1973239/000119312523216983/d393891df1.htm).
 
@@ -6437,9 +6438,10 @@ R&D % = R&D ÷ revenue.
 
 - 35 U.S.C. §154(a)(2): the patent term begins when the patent issues and ends "20 years from the date on which the application for the patent was filed in the United States" (or from the earliest referenced application), "Subject to the payment of fees".
 - 17 U.S.C. §904: protection commences on registration "or the date on which the mask work is first commercially exploited anywhere in the world, whichever occurs first"; it "shall end ten years after the date on which such protection commences"; and "All terms of protection provided in this section shall run to the end of the calendar year in which they would otherwise expire." (Semiconductor Chip Protection Act, Pub. L. 98–620, 1984.)
+- 17 U.S.C. §908(a) (read 26 Nov 2026 during the Course 26 audit): "Protection of a mask work under this chapter shall terminate if application for registration of a claim of protection in the mask work is not made as provided in this chapter within two years after the date on which the mask work is first commercially exploited anywhere in the world."
 - 18 U.S.C. §1836(b)(1) (added by the Defend Trade Secrets Act of 2016, Pub. L. 114–153): "An owner of a trade secret that is misappropriated may bring a civil action under this subsection if the trade secret is related to a product or service used in, or intended for use in, interstate or foreign commerce."
 - 18 U.S.C. §1839(3): information is a trade secret if "(A) the owner thereof has taken reasonable measures to keep such information secret; and (B) the information derives independent economic value, actual or potential, from not being generally known to, and not being readily ascertainable through proper means by, another person who can obtain economic value from the disclosure or use of the information".
-- **Sources:** [35 U.S.C. §154](https://www.law.cornell.edu/uscode/text/35/154); [17 U.S.C. §904](https://www.law.cornell.edu/uscode/text/17/904); [18 U.S.C. §1836](https://www.law.cornell.edu/uscode/text/18/1836); [18 U.S.C. §1839](https://www.law.cornell.edu/uscode/text/18/1839). Checked Nov 2026.
+- **Sources:** [35 U.S.C. §154](https://www.law.cornell.edu/uscode/text/35/154); [17 U.S.C. §904](https://www.law.cornell.edu/uscode/text/17/904); [17 U.S.C. §908](https://www.law.cornell.edu/uscode/text/17/908); [18 U.S.C. §1836](https://www.law.cornell.edu/uscode/text/18/1836); [18 U.S.C. §1839](https://www.law.cornell.edu/uscode/text/18/1839). Checked Nov 2026.
 
 ## R-659 · US export controls on advanced computing chips, 2022–2026 (Course 26)
 

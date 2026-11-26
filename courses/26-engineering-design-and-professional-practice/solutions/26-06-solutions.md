@@ -38,7 +38,7 @@ Problems: [26-06 problems](../problems/26-06-problems.md) · Chapter: [26-06](..
 
 (c) $1 - 0.015 \times 11$ = **0.835**.
 
-(d) $12 \times 5.1 \times 0.835$ = **51.1** FTE, **0.608** per head: nearly the same output as the 90-person hierarchy with six fewer people, because smaller teams coordinate less internally.
+(d) $12 \times 5.1 \times 0.835$ = **51.1** FTE, **0.608** per head: nearly the same output as the 90-person hierarchy with six fewer people, partly because smaller teams coordinate less internally (0.85 against 0.79 per member) and partly because each interface is assumed cheaper ($c_x$ = 0.015 against 0.02). With $c_x$ = 0.02 the factor would be $1 - 0.02 \times 11$ = 0.78, giving **47.7** FTE, **0.568** per head, below Example 26-06.2's **0.576**.
 
 ### Solution 26-06.5
 
@@ -58,7 +58,7 @@ Span 7: **215**, **31**, **5**, **1**: four layers, **252** managers ($N/6$ = **
 
 (b) $20 \times 8 \times 80{,}000 + 160 \times 100{,}000$ = **$28.8 M**, with **160** engineer-quarters contracted.
 
-(c) **$29.2 M**.
+(c) $30 \times 8 \times 80{,}000 + 100 \times 100{,}000 = 19.2 + 10.0$ = **$29.2 M** (**100** engineer-quarters contracted).
 
 (d) $60 \times 8 \times 80{,}000$ = **$38.4 M**.
 
@@ -78,7 +78,7 @@ Span 7: **215**, **31**, **5**, **1**: four layers, **252** managers ($N/6$ = **
 
 ### Solution 26-06.10
 
-$0.75 \times 590 \times 10^6/350{,}000$ = **1264** engineer-years, an average of **421** engineers over 3 years (more at the peak).
+$0.75 \times 725 \times 10^6/350{,}000$ = **1554** engineer-years, an average of **518** engineers over 3 years (more at the peak).
 
 ### Solution 26-06.11
 
@@ -114,6 +114,11 @@ Advantages: shared methodology and expertise across programs; people can move to
 | 26-06.4c | cross-team factor | 0.835 | |
 | 26-06.4d | total output | 51.1 | FTE |
 | 26-06.4d1 | per head | 0.608 | |
+| 26-06.4d2 | member efficiency, Example 26-06.2 | 0.79 | |
+| 26-06.4d3 | cross-team factor at 0.02 | 0.78 | |
+| 26-06.4d4 | total at 0.02 | 47.7 | FTE |
+| 26-06.4d5 | per head at 0.02 | 0.568 | |
+| 26-06.4d6 | per head, Example 26-06.2 | 0.576 | |
 | 26-06.5a | time without | 8.72 | months |
 | 26-06.5b | efficiency with hires | 0.78 | |
 | 26-06.5b1 | output during ramp | 4.68 | FTE |
@@ -137,6 +142,9 @@ Advantages: shared methodology and expertise across programs; people can move to
 | 26-06.7a2 | base | 20 | |
 | 26-06.7b | cost with base | 28.8 | $M |
 | 26-06.7b1 | contracted | 160 | engineer-quarters |
+| 26-06.7c0 | employee cost, base 30 | 19.2 | $M |
+| 26-06.7c1 | contractor cost, base 30 | 10.0 | $M |
+| 26-06.7c2 | contracted, base 30 | 100 | engineer-quarters |
 | 26-06.7c | cost, base 30 | 29.2 | $M |
 | 26-06.7d | all employees | 38.4 | $M |
 | 26-06.7e | all contractors | 32.0 | $M |
@@ -144,7 +152,7 @@ Advantages: shared methodology and expertise across programs; people can move to
 | 26-06.8a1 | outsourced | 2.80 | $M |
 | 26-06.8b | break-even utilization | 0.75 | |
 | 26-06.8b1 | break-even work-months | 13.5 | months |
-| 26-06.10 | engineer-years | 1264 | |
-| 26-06.10a | average headcount | 421 | |
+| 26-06.10 | engineer-years | 1554 | |
+| 26-06.10a | average headcount | 518 | |
 | 26-06.11a | peak headcount | 40 | |
 | 26-06.11b | hiring rate | 2.22 | per month |

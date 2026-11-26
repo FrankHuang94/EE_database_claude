@@ -61,7 +61,7 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_26_exa
 
 **(a)** $(P/A, 8\%, 6) = (1 - 1.08^{-6})/0.08$ = **4.6229**; $(A/P, 8\%, 6)$ = **0.21632**; payment $250{,}000 \times 0.216315$ = **$54,079** a year.
 
-**(b)** NPV $= -40 - 40/1.12 + 35[(P/A, 12\%, 5) - (P/A, 12\%, 1)]$ = **$19.2 M**. IRR: NPV(21%) = +$0.43 M and NPV(22%) = −$1.25 M bracket the root; linear interpolation gives $21 + 0.43/(0.43 + 1.25)$ = 21.25%, and NPV(21.25%) = +$0.001 M confirms it: IRR = **21.25**%.
+**(b)** NPV $= -40 - 40/1.12 + 35[(P/A, 12\%, 5) - (P/A, 12\%, 1)]$ = **$19.2 M**. IRR: NPV(21%) = +$0.426 M and NPV(22%) = −$1.248 M bracket the root; linear interpolation gives $21 + 0.426/(0.426 + 1.248)$ = 21.25%, and NPV(21.25%) = +$0.001 M confirms it: IRR = **21.25**%.
 
 **(c)** Cumulative cash: −40, −80, −45, −10 after year 3, then +25 after year 4, so payback = $3 + 10/35$ = **3.29** years.
 
@@ -311,3 +311,28 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_26_exa
 | X26.12c2 | hours for 10 FIT | 3.00e8 | h |
 | X26.12d | TPP | 3520 | |
 | X26.12d1 | density | 6.77 | |
+| X26.4i1 | unrounded die cost | 32.809 | $ |
+| X26.4i2 | after assembly from the rounded die cost | 38.39 | $ |
+| X26.4i3 | after assembly, unrounded | 38.385 | $ |
+| X26.5i1 | (A/P, 8%, 6) to six figures | 0.216315 | |
+| X26.5i2 | NPV at 21% | 0.426 | $M |
+| X26.5i3 | NPV at 22% | -1.248 | $M |
+| X26.5i4 | NPV at 21.25% | 0.001 | $M |
+| X26.7i1 | old DPW before rounding | 416.8 | |
+| X26.7i2 | new DPW before rounding | 577.5 | |
+| X26.7i3 | unrounded saving | 4.3046 | $ |
+| X26.9i1 | P(A by 14 weeks) | 0.9359 | |
+| X26.9i2 | P(B by 14 weeks) | 0.9739 | |
+| X26.9i3 | P(both) at 13.8 weeks | 0.882 | |
+| X26.9i4 | P(both) at 13.9 weeks | 0.897 | |
+| X26.9i5 | P(both) at 14.0 weeks | 0.912 | |
+| X26.9i6 | 90% date, finer | 13.92 | weeks |
+| X26.9i7 | P(both) by table interpolation | 0.911 | |
+| X26.10i1 | iterate 1 | 0.1353 | |
+| X26.10i2 | iterate 2 | 0.1374 | |
+| X26.10i3 | iterate 3 | 0.1377 | |
+| X26.10i4 | iterate 1, tau = 2 | 0.0867 | |
+| X26.10i5 | iterate 2, tau = 2 | 0.0872 | |
+| X26.10i6 | lambda*, tau = 2 | 0.0873 | |
+| X26.12i1 | dense MacTOPS | 110 | |
+| X26.5i5 | interpolated IRR | 21.25 | % |

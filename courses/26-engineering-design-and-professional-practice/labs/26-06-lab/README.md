@@ -35,7 +35,7 @@
 | Lab 26-06.c | break-even remaining work | 51.1 | person-months |
 | Lab 26-06.c1 | break-even in months of current work | 6.2 | months |
 | Lab 26-06.d | base with expensive contractors | 25 | |
-| Lab 26-06.d1 | cost at that base | 20.6 | $M |
+| Lab 26-06.d1 | cost at that base | 20.625 | $M |
 | Lab 26-06.d2 | critical ratio | 0.40 | |
 
 ## Discussion
@@ -43,7 +43,7 @@
 1. A flat team with a 3% coordination cost per colleague stops producing at 34.3 people; long before that, at 17, it has passed its best. Teams need structure well before they are large.
 2. Twelve teams of eight give 59.2 FTE from 96 engineers. Fewer, larger teams lose output to internal coordination; more, smaller teams lose it to interfaces between teams. The best split balances the two, and in practice it is set by the architecture's natural blocks.
 3. With 51.1 person-months or more left, the five hires shorten the project; with less, they lengthen it. The break-even is **6.2** months of the existing team's work, about twice the three-month ramp.
-4. At 2.5 times the price, contractors are worth using only above a load exceeded in less than **0.40** of quarters, so the base rises from 10 to 25 engineers and the total cost to $20.6 M.
+4. At 2.5 times the price, contractors are worth using only above a load exceeded in less than **0.40** of quarters, so the base rises from 10 to 25 engineers and the total cost to $20.625 M.
 
 ## Optional hardware
 

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 26-02 · Design Reviews, Documentation and Standards Bodies
 
 | | |

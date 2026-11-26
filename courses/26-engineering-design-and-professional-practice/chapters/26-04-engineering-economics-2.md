@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 26-04 · Engineering Economics II: Build, Buy or License; Node; Chiplets; ASIC vs Merchant
 
 | | |

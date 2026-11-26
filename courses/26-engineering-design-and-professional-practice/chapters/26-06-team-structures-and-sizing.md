@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 26-06 · Engineering Team Structures and Sizing
 
 | | |
@@ -170,7 +170,7 @@ $$
 E = \frac{\ell D}{w}\ \text{engineer-years},
 $$
 
-and over a program of $T$ years the average headcount is $E/T$. The peak is higher, because staffing rises and falls (§3.1). Published design-cost estimates for leading-edge chips are contested: IBS estimated about $416 M for a 5 nm design from scratch, while critics argue that IBS figures run 50–66% above typical costs [R-019] **[Contested]**. Converting both to engineers (Example 26-06.6) shows what each claim implies about team size, which is easier to sanity-check against a company's disclosed R&D headcount (§7).
+and over a program of $T$ years the average headcount is $E/T$. The peak is higher, because staffing rises and falls (§3.1). Published design-cost estimates for leading-edge chips are contested: Arm's 2023 prospectus, citing IBS (July 2022), put a 7 nm design at about $249 M and a 2 nm design at about $725 M, while critics argue that IBS figures run 50–66% above typical costs [R-019] **[Contested]**. Converting both to engineers (Example 26-06.6) shows what each claim implies about team size, which is easier to sanity-check against a company's disclosed R&D headcount (§7).
 
 ## 4. Worked examples
 
@@ -246,16 +246,16 @@ The coordination costs, ramp times, wages and loads below are **assumed** for te
 
 ### Example 26-06.6 · What does a design-cost estimate imply? (tier C)
 
-**Setup.** IBS estimated about $416 M to design a 5 nm chip from scratch; critics argue IBS figures run 50–66% above typical costs [R-019]. Assume 80% of the cost is engineering labor at a loaded $300,000 per engineer-year, over 2.5 years. Find (a) the engineer-years and average headcount implied by the IBS figure, and (b) the range implied by the critique.
+**Setup.** IBS, as cited in Arm's 2023 prospectus (July 2022 estimate), put the cost of designing a 7 nm chip at about $249 M; critics argue IBS figures run 50–66% above typical costs [R-019]. Assume 80% of the cost is engineering labor at a loaded $300,000 per engineer-year, over 2.5 years. Find (a) the engineer-years and average headcount implied by the IBS figure, and (b) the range implied by the critique.
 
 **Solution.**
 
-- (a) $0.8 \times 416 \times 10^6/300{,}000$ = **1109** engineer-years; average headcount $1109/2.5$ = **444**.
-- (b) If IBS is 1.5 to 1.66 times typical cost, typical cost is $416/1.66$ = **$251 M** to $416/1.5$ = **$277 M**, implying an average of **267** to **296** engineers.
+- (a) $0.8 \times 249 \times 10^6/300{,}000$ = **664** engineer-years; average headcount $664/2.5$ = **266**.
+- (b) Reading the critique as "IBS is 1.5 to 1.66 times typical cost", typical cost is $249/1.66$ = **$150 M** to $249/1.5$ = **$166 M**, implying an average of **160** to **177** engineers. (Read instead as "IBS is 50–66% too high", typical cost would be 34–50% of IBS; state which reading a claim uses.)
 
 **Units check.** $ ÷ ($/engineer-year) = engineer-years; ÷ years = engineers. ✓
 
-**Sanity check.** Either way, a new leading-edge SoC is a team of several hundred engineers for two to three years, with a higher peak; claims that a 30-person startup will deliver one from scratch should prompt questions about licensed IP, design services and reuse (26-04).
+**Sanity check.** Either way, a new leading-edge SoC is a team of one to three hundred engineers on average for two to three years, with a higher peak; claims that a 30-person startup will deliver one from scratch should prompt questions about licensed IP, design services and reuse (26-04).
 
 <!-- answer-key -->
 
@@ -308,12 +308,12 @@ The coordination costs, ramp times, wages and loads below are **assumed** for te
 | Ex 26-06.5c5 | employee part | 6.0 | $M |
 | Ex 26-06.5c6 | contractor part | 10.7 | $M |
 | Ex 26-06.5d | cost with base 15 | 16.9 | $M |
-| Ex 26-06.6a | engineer-years | 1109 | |
-| Ex 26-06.6a1 | average headcount | 444 | |
-| Ex 26-06.6b | typical cost, low | 251 | $M |
-| Ex 26-06.6b1 | typical cost, high | 277 | $M |
-| Ex 26-06.6b2 | headcount, low | 267 | |
-| Ex 26-06.6b3 | headcount, high | 296 | |
+| Ex 26-06.6a | engineer-years | 664 | |
+| Ex 26-06.6a1 | average headcount | 266 | |
+| Ex 26-06.6b | typical cost, low | 150 | $M |
+| Ex 26-06.6b1 | typical cost, high | 166 | $M |
+| Ex 26-06.6b2 | headcount, low | 160 | |
+| Ex 26-06.6b3 | headcount, high | 177 | |
 | Txt 26-06.1 | zero-output team size | 34.3 | |
 | Txt 26-06.2 | NVIDIA R&D share of employees | 74 | % |
 | Txt 26-06.3 | channels, 20 | 190 | |
@@ -362,7 +362,7 @@ The lab is [labs/26-06-lab/](../labs/26-06-lab/README.md). `team.py` implements 
 - **Verification and design engineers:** about one-to-one at the mean peak on IC/ASIC projects, up to 5-to-1 in segments such as processors (2022 study); verification demand grew 6.2% a year against 2.7% for design over 2007–2022 [R-651] **[Industry estimate]**.
 - **Design-services revenue mix:** GUC 24% NRE and 75% turnkey in 2025; Socionext about 19% NRE [R-652] **[Established]**.
 - **Verification share of project time:** about 49% (2026 study) [R-018] **[Industry estimate]**.
-- **Design cost of a leading-edge SoC:** IBS estimates of a few hundred million dollars at 5 nm and below, disputed as too high by 50–66% [R-019] **[Contested]**.
+- **Design cost of a leading-edge SoC:** IBS estimates (July 2022, via Arm's prospectus) of about $249 M at 7 nm and $725 M at 2 nm, disputed as 50–66% too high [R-019] **[Contested]**.
 
 ## 8. Common mistakes
 
@@ -381,7 +381,7 @@ The lab is [labs/26-06-lab/](../labs/26-06-lab/README.md). `team.py` implements 
 - **Chip companies are R&D organizations.** At NVIDIA about **74**% of employees work in R&D (about 31,000 of 42,000) [R-017] **[Industry estimate for the split]**, and the large chip companies spend from 8.6% (NVIDIA) to 26.1% (Intel) of revenue on R&D [R-017] **[Established]**.
 - **Verification keeps growing.** Verification engineers have grown faster than designers for fifteen years, and verification takes about half of project time [R-018, R-321] **[Industry estimate]**.
 - **Leading-edge chips take thousands of engineer-years.** NVIDIA said that "Thousands of NVIDIA engineers spent over three years crafting Volta" (2017) [R-653] **[Established, qualitative]**; no company publishes exact team sizes.
-- **Design services have scaled, and their revenue mix shows the business model.** GUC's 2025 revenue was NT$**34.1** B, of which 24% was NRE and 75% turnkey (chips delivered), against 34% NRE a year earlier; Socionext's NRE revenue was ¥**38.3** B of ¥**200.8** B in the year to March 2026, **19.1**%; Alchip's 2025 revenue fell to US$**992** M from US$**1.62** B as production revenue paused [R-652] **[Established]**. A rising turnkey share means designs moving into volume; a rising NRE share means a pipeline of new designs. Broadcom's and Marvell's custom-silicon revenue shows the same model at larger scale [R-642, R-643].
+- **Design services have scaled, and their revenue mix shows the business model.** GUC's 2025 revenue was NT$**34.1** B, of which 24% was NRE and 75% turnkey (chips delivered), against 34% NRE a year earlier; Socionext's NRE revenue was ¥**38.3** B of ¥**200.8** B in the year to March 2026, **19.1**%; Alchip's 2025 revenue fell to US$**992** M from US$**1.62** B, with NRE more than half of fourth-quarter revenue [R-652] **[Established]**. A rising turnkey share means designs moving into volume; a rising NRE share means a pipeline of new designs. Broadcom's AI semiconductor revenue (custom accelerators plus AI networking) and Marvell's custom revenue show the same model at larger scale [R-642, R-643].
 
 **Commercial relevance.** For acquisitions, the team's structure is part of what is bought: which disciplines are in-house, how much depends on contractors, who the key people are (and whether they will stay), and whether the organization's shape matches the roadmap. Integration plans that merge two functional organizations change every reporting line at once, which is when key people leave.
 

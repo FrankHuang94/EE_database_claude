@@ -91,7 +91,7 @@
 (d) Verification needs 12, 18, 30, 45, 45, 30, 18 and 12 engineers in eight quarters; employees cost $80,000 a quarter and contractors $120,000. Find the newsvendor base and its total cost, and compare with a base of 12 and of 30.
 
 **12 [C] · Safety, evidence and export rules.** (26-07)
-(a) An ASIL B part at its 100 FIT target goes into 5 million vehicles that run 1.5 hours a day for 15 years. Find the hours per vehicle, the expected fleet failures and the probability per vehicle.
+(a) An ASIL B item (one chip, for simplicity) at its 100 FIT target for safety-goal violations goes into 5 million vehicles that run 1.5 hours a day for 15 years. Find the hours per vehicle, the expected fleet failures and the probability per vehicle.
 (b) Two protection channels each fail on demand with probability $5 \times 10^{-4}$, with a common-cause fraction $\beta$ = 0.03. Find the probability that both fail and the factor by which the common cause raises it over independence. What design choice lowers $\beta$?
 (c) A part has $2 \times 10^8$ failure-free device-hours. Find the 95% upper bound on its rate in FIT, and the total failure-free hours needed to support 10 FIT, as a multiple of the hours so far. What does this say about a clean field record as evidence?
 (d) A datacenter accelerator delivers 220 TFLOPS dense at 16 bits on a 520 mm² die. Find its TPP and performance density, and which 2023 ECCN 3A090 criterion it meets. Marketing wants to describe it to an overseas prospect as "below US export thresholds". Which NSPE canons apply, and what should the engineer do?

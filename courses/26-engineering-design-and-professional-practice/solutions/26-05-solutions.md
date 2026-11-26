@@ -16,7 +16,7 @@ $\mu = (6 + 32 + 16)/6$ = **9.0** weeks; $\sigma = 10/6$ = **1.67** weeks; $P(D 
 
 (b) **Metal-only ECO**: rewire nearby spare cells to add the missing logic.
 
-(c) **Full respin**: transistor sizes are set by the base layers, which no metal change can alter (a lower-voltage operating point might serve as a stopgap).
+(c) **Full respin**: transistor sizes are set by the base layers, which no metal change can alter (raising the minimum supply voltage, at a power cost, might serve as a stopgap).
 
 (d) **Trim**: set the bandwidth trim bits at test or in firmware.
 
@@ -114,7 +114,17 @@ $E[N] = 1 + (1 - q_1) + (1 - q_1)(0.4)$:
 
 ### Solution 26-05.13
 
-Any three of: (1) the survey counts any respin, including planned steppings and quick metal ECOs, so "not first-time success" often means an A1 or B0 stepping, not an unusable chip; (2) first silicon is usually good enough for bring-up, software development and customer sampling even when a respin follows; (3) the respondents are self-selected, the sponsor sells verification tools, and the recruitment method changed between studies [R-018, R-321]; (4) the figure is about projects reaching production without a respin, not about whether the program eventually succeeds.
+Any three of: (1) the survey counts spins before production, and as far as its published material shows it does not separate planned steppings and quick metal ECOs from forced fixes (our reading), so "not first-time success" often means an A1 or B0 stepping, not an unusable chip; (2) first silicon is usually good enough for bring-up, software development and customer sampling even when a respin follows; (3) the respondents are self-selected, the sponsor sells verification tools, and the recruitment method changed between studies [R-018, R-321]; (4) the figure is about projects reaching production without a respin, not about whether the program eventually succeeds.
+
+### Solution 26-05.14
+
+(a) Forward pass (ES–EF): A 0–4; B 4–14; C 4–10; D starts at the later of B and C, 14–22; E 14–21; F starts at the later of D and E, 22–25. The project takes **25** weeks.
+
+(b) Backward pass from 25 (LS–LF): F 22–25; D 14–22; E 15–22; B must finish by the earlier of D's and E's latest starts, 14, so 4–14; C must finish by 14, so 8–14; A 0–4. Total float (LS − ES): A 0, B 0, C **4**, D 0, E **1**, F 0. The critical path is A–B–D–F (4 + 10 + 8 + 3 = 25 weeks); A–B–E–F is one week shorter and A–C–D–F four weeks shorter.
+
+(c) E has 1 week of float, so a 2-week slip delays the project by **1** week, to 26: A–B–E–F becomes the critical path.
+
+(d) Every path must fall to 23 weeks or less: A–B–D–F (25) needs 2 weeks and A–B–E–F (24) needs 1. Shortening A, B or F by 2 weeks cuts both paths at once and gives 23. Shortening only D by 2 weeks brings A–B–D–F to 23 but leaves A–B–E–F at **24** weeks: the near-critical path becomes critical. This is the network form of merge bias: compressing one path exposes the next.
 
 ---
 
@@ -193,3 +203,8 @@ Any three of: (1) the survey counts any respin, including planned steppings and 
 | 26-05.12a1 | respin probability | 0.164 | |
 | 26-05.12b | expected cost | 28.5 | $M |
 | 26-05.12c | time saved | 2.77 | weeks |
+| 26-05.14a | project duration | 25 | weeks |
+| 26-05.14b | float of C | 4 | weeks |
+| 26-05.14b1 | float of E | 1 | weeks |
+| 26-05.14c | project slip | 1 | weeks |
+| 26-05.14d | A-B-E-F after shortening D | 24 | weeks |

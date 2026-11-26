@@ -42,7 +42,7 @@ def main() -> None:
                     fontsize=8)
     i = int(np.argmax(f0[:300]))
     ax.plot([t[i]], [f0[i]], "kv", ms=5)
-    ax.annotate(f"worst time to stop\n{t[i]:.1f} wk, \\${f0[i]:.1f} M", (t[i], f0[i]), xytext=(8, 2),
+    ax.annotate(f"worst stop before optimum\n{t[i]:.1f} wk, \\${f0[i]:.1f} M", (t[i], f0[i]), xytext=(8, 2),
                 textcoords="offset points", fontsize=8)
     ax.set_xlabel("weeks of final verification before tape-out")
     ax.set_ylabel("expected cost ($M)")

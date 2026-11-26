@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 26-05 · Schedule and Risk: Why Respins Happen
 
 | | |
@@ -70,7 +70,7 @@ $$
 \mu = \frac{a + 4m + b}{6}, \qquad \sigma = \frac{b - a}{6}.
 $$
 
-The mean is pulled from the mode toward the long tail: for a task with $a$ = 10, $m$ = 14 and $b$ = 24 weeks, $\mu$ = **15.0** weeks, a week later than the most likely value. The standard deviation is a convention, chosen so that $a$ and $b$ sit about three standard deviations apart from the mean.
+The mean is pulled from the mode toward the long tail: for a task with $a$ = 10, $m$ = 14 and $b$ = 24 weeks, $\mu$ = **15.0** weeks, a week later than the most likely value. The standard deviation is a convention, chosen so that the range $b - a$ spans about six standard deviations.
 
 **Paths.** A chain of tasks done one after another (a **path**) takes the sum of their durations. For independent tasks, means add and variances add:
 
@@ -90,7 +90,7 @@ $$
 
 Each factor is at most 1, so the joint probability is lower than that of any single path: two paths that each have an 85% chance of finishing by a date have only a 72% chance of both doing so. Schedules that track only the critical path miss this.
 
-> **Going deeper — beta-PERT and Monte Carlo.** The beta distribution behind PERT (shape parameters $1 + 4(m - a)/(b - a)$ and $1 + 4(b - m)/(b - a)$) has the PERT mean, but its variance is $(\mu - a)(b - \mu)/7$, larger than $((b - a)/6)^2$ for skewed tasks. A Monte Carlo schedule samples each task from its distribution, adds along paths, takes the maximum at each join and counts how often the end date is met. It captures skew, merge bias and correlations that the normal approximation misses (Example 26-05.2 and lab Part 1).
+> **Going deeper — beta-PERT and Monte Carlo.** The beta distribution behind PERT (shape parameters $1 + 4(m - a)/(b - a)$ and $1 + 4(b - m)/(b - a)$) has the PERT mean, but its variance is $(\mu - a)(b - \mu)/7$, which is larger than $((b - a)/6)^2$ (by up to 9/7, for a symmetric task) unless the mode lies within about 15% of the range of $a$ or $b$, as it does not for any task in Example 26-05.2. A Monte Carlo schedule samples each task from its distribution, adds along paths, takes the maximum at each join and counts how often the end date is met. It captures skew, merge bias and correlations that the normal approximation misses (Example 26-05.2 and lab Part 1).
 
 ### 3.3 Respins: how many tape-outs to expect
 
@@ -109,8 +109,8 @@ using the identity $E[N] = \sum_{k \ge 1} P(N \ge k)$ for a positive integer ran
 When bring-up finds a bug, the team picks the cheapest fix that works:
 
 1. **Software, firmware or microcode workaround.** Disable a feature, change a register default, or patch microcode. AMD's fix for the Zenbleed vulnerability in Zen 2 CPUs was a microcode update, with a configuration-bit workaround in the meantime [R-321]. Cost: engineering time and, sometimes, performance.
-2. **Fuses and trims.** Analog and memory blocks often have programmable trim bits and redundant rows set at test (25-11); a marginal block may be fixed without new masks.
-3. **Metal-only ECO.** An engineering change order that rewires existing **spare cells** (unused gates scattered through the layout for this purpose) using only the metal and via layers. Transistor masks are the most expensive and metal masks cheaper, so "respin costs can be reduced by reusing transistor masks and only changing the metal layer masks", a **metal fix**, although it "still takes several weeks and is expensive" [R-648]. If the fab holds some partly processed wafers at the contact layer (a **wafer hold**), they "can be finished quickly" [R-648], because only the remaining layers need processing. Cost: the metal masks and a fraction of the fab time.
+2. **Fuses and trims.** Analog and memory blocks often have programmable trim bits and redundant rows (memory redundancy, 23-02) set at test; a marginal block may be fixed without new masks.
+3. **Metal-only ECO.** An engineering change order that rewires existing **spare cells** (unused gates scattered through the layout for this purpose) using only the metal and via layers. Transistor masks are the most expensive and metal masks cheaper, so "respin costs can be reduced by reusing transistor masks and only changing the metal layer masks", a **metal fix**, although it "still takes several weeks and is expensive" [R-648]. If the fab holds some partly processed wafers at the contact layer (a **wafer hold**), they "can be finished quickly" [R-648] **[Vendor claim]**, because only the remaining layers need processing. Cost: the metal masks and a fraction of the fab time.
 4. **Full respin.** A change to transistors or the base layers needs a new mask set and a full fab cycle.
 5. **Recall or replacement.** If a bug reaches customers and cannot be worked around, the cost can dwarf the program's: Intel took a $475 M pre-tax charge in 1994 to replace Pentium processors with the FDIV division bug [R-321] **[Established]**.
 
@@ -130,7 +130,7 @@ $$
 (p_i - p_i')\,C_i > M_i,
 $$
 
-that is, if it reduces the expected loss by more than it costs. With a limited budget $B$, choose the set of mitigations that maximizes the total net benefit $\sum_i [(p_i - p_i')C_i - M_i]$ subject to $\sum_i M_i \le B$, a small knapsack problem that can be solved by listing the combinations (Example 26-05.4). The best set is not always the one with the best individual ratios.
+that is, if it reduces the expected loss by more than it costs. With a limited budget $B$, choose the set of mitigations that maximizes the total net benefit $\sum_i [(p_i - p_i')C_i - M_i]$ subject to $\sum_i M_i \le B$, a small knapsack problem that can be solved by listing the combinations (Example 26-05.4). The best set is not always the one with the best individual ratios. With a $4 M budget and three mitigations, A ($1.5 M, net benefit $1.2 M), B ($2.5 M, net $1.5 M) and C ($2.0 M, net $1.3 M), ranking by net benefit per dollar picks A then C (net **$2.5 M**), after which B no longer fits; but A and B together use the budget exactly and net **$2.7 M**.
 
 **What EMV leaves out.** Correlated risks (a staffing shortfall raises several probabilities at once), the size of the worst case (a company that cannot survive a $30 M loss should not treat it as a $4.5 M expected cost), and risks nobody listed. A register is reviewed at every milestone (26-02): risks are retired, new ones added and probabilities updated as evidence arrives.
 
@@ -172,6 +172,8 @@ $$
 
 with a respin probability $1 - e^{-\lambda^*}$ that is small but not zero. Compare $f(t^*)$ with $f(0)$ to confirm that verifying is worth it at all. Units: $c_w\tau/C_r$ is ($/week × weeks)/$, dimensionless. ✓
 
+> **Math refresher — solving $\lambda e^{-\lambda} = k$ by hand.** There is no elementary formula, but two fixed-point iterations converge quickly. For the smaller root, rewrite the equation as $\lambda = ke^{\lambda}$ and iterate from $\lambda = k$: each step multiplies the error by about $\lambda < 1$, so it converges. With $k$ = 0.15: 0.1743, 0.1786, 0.1793, 0.1795, giving $\lambda^*$ = 0.179. For the larger root, rewrite it as $\lambda = \ln(\lambda/k)$ and iterate from $\lambda$ = 3: 2.9957, 2.9943, 2.9938, giving 2.99. (The closed forms use the Lambert W function, $\lambda = -W_0(-k)$ and $-W_{-1}(-k)$, which software provides.)
+
 **What mitigation changes.** Emulation and FPGA prototyping run software on the design thousands of times faster than RTL simulation (19-13), so they find system-level bugs sooner, which lowers $\tau$. Formal verification can prove some properties outright, which removes whole classes of bugs from $N_0$. Both are worth their cost if they lower $f(t^*)$ by more than they cost (Example 26-05.6).
 
 **What the model leaves out.** Bugs are not equally easy to find (the hard ones dominate the tail, so real discovery curves flatten more than an exponential); $N_0$ is itself an estimate (from the bug-discovery rate, coverage closure and the capture–recapture methods of 26-02); and verification also finds bugs that would only have needed workarounds, which have value of their own.
@@ -191,8 +193,8 @@ All probabilities, durations and costs are **assumed** for teaching unless a sou
 **Solution.**
 
 - (a) $1 - 0.25$ = **0.75**.
-- (b) $P(N = 1) = 0.25$; $P(N = 2) = 0.75 \times 0.70$ = **0.525**; $P(N = 3) = 0.75 \times 0.30 \times 0.95$ = **0.214**; $P(N = 4) = 0.75 \times 0.30 \times 0.05$ = **0.0113**.
-- (c) $E[N] = 1 + 0.75 + 0.75 \times 0.30 + 0.75 \times 0.30 \times 0.05 = 1 + 0.75 + 0.225 + 0.0113$ = **1.99**.
+- (b) $P(N = 1) = 0.25$; $P(N = 2) = 0.75 \times 0.70$ = **0.525**; $P(N = 3) = 0.75 \times 0.30 \times 0.95$ = **0.21375**; $P(N = 4) = 0.75 \times 0.30 \times 0.05$ = **0.01125** (exact products, shown in full).
+- (c) $E[N] = 1 + 0.75 + 0.75 \times 0.30 + 0.75 \times 0.30 \times 0.05 = 1 + 0.75 + 0.225 + 0.01125$ = **1.99**.
 - (d) Expected extra tape-outs 0.986, so the expected delay is $0.986 \times 18$ = **17.8** weeks and the expected respin cost $0.986 \times 21$ = **$20.7 M**.
 - (e) With $q$ = 0.25 every time, $N$ is geometric: $E[N] = 1/0.25$ = **4**.
 
@@ -243,7 +245,7 @@ All probabilities, durations and costs are **assumed** for teaching unless a sou
 
 **Units check.** Probability × $ M = $ M. ✓
 
-**Sanity check.** Ranking by net benefit alone (R1, R2, R3) would pick R1 and R2, which does not fit the $4 M budget; the budget, not just the ratios, decides. R4 has a positive gross benefit ($0.75 M) but costs more than it saves.
+**Sanity check.** Here, filling the $4 M budget in order of net benefit per dollar (R1, then R2, which does not fit, then R3) happens to find the optimum; §3.5 shows a register where that ranking fails, which is why the combinations should be listed. R4 has a positive gross benefit ($0.75 M) but costs more than it saves.
 
 ### Example 26-05.5 · When to tape out (tier C)
 
@@ -283,8 +285,8 @@ All probabilities, durations and costs are **assumed** for teaching unless a sou
 | Txt 26-05.2 | two paths at 85% | 72 | % |
 | Ex 26-05.1a | P(at least one respin) | 0.75 | |
 | Ex 26-05.1b | P(2 tape-outs) | 0.525 | |
-| Ex 26-05.1b1 | P(3 tape-outs) | 0.214 | |
-| Ex 26-05.1b2 | P(4 tape-outs) | 0.0113 | |
+| Ex 26-05.1b1 | P(3 tape-outs) | 0.21375 | |
+| Ex 26-05.1b2 | P(4 tape-outs) | 0.01125 | |
 | Ex 26-05.1c | expected tape-outs | 1.99 | |
 | Ex 26-05.1c1 | third term | 0.225 | |
 | Ex 26-05.1d | expected extra tape-outs | 0.986 | |
@@ -370,6 +372,17 @@ All probabilities, durations and costs are **assumed** for teaching unless a sou
 | Txt 26-05.5 | concept check 2 | 0.729 | |
 | Txt 26-05.6 | concept check 3 | 2 | |
 | Txt 26-05.7 | concept check 5 | 0.6 | $M |
+| Txt 26-05.8 | ratio-ranked set | 2.5 | $M |
+| Txt 26-05.9 | best set | 2.7 | $M |
+| Txt 26-05.10 | smaller root, k = 0.15 | 0.179 | |
+| Txt 26-05.11 | larger root, k = 0.15 | 2.99 | |
+| Txt 26-05.12 | smaller-root iterate 1 | 0.1743 | |
+| Txt 26-05.13 | smaller-root iterate 2 | 0.1786 | |
+| Txt 26-05.14 | smaller-root iterate 3 | 0.1793 | |
+| Txt 26-05.15 | smaller-root iterate 4 | 0.1795 | |
+| Txt 26-05.16 | larger-root iterate 1 | 2.9957 | |
+| Txt 26-05.17 | larger-root iterate 2 | 2.9943 | |
+| Txt 26-05.18 | larger-root iterate 3 | 2.9938 | |
 
 ## 5. Simulate it
 
@@ -384,7 +397,7 @@ The lab is [labs/26-05-lab/](../labs/26-05-lab/README.md). `risk.py` implements 
 
 ![Expected cost of Example 26-05.5 against verification time, with and without emulation](../../../assets/figures/26-05/tapeout-cost.svg)
 
-*Figure 1. Expected cost against weeks of final verification: a ridge near five weeks where stopping is worst, and a minimum at 16.1 weeks (11.4 weeks with emulation, whose curve is shifted up by its $3 M price).*
+*Figure 1. Expected cost against weeks of final verification: a ridge near five weeks, the worst time to stop short of the optimum, and a minimum at 16.1 weeks (11.4 weeks with emulation, whose curve is shifted up by its $3 M price).*
 
 ## 6. Engineering tradeoffs
 
@@ -400,11 +413,11 @@ The lab is [labs/26-05-lab/](../labs/26-05-lab/README.md). `risk.py` implements 
 ## 7. Numbers to know
 
 - **First-silicon success** (IC/ASIC, Wilson Research Group/Siemens survey): 5% in 2026, 14% in 2024, about 30–33% from 2010 to 2020; the survey's recruitment method changed in 2024 [R-018] **[Industry estimate]**.
-- **Respin causes (2024):** logic or functional flaws contributed to about half of IC/ASIC respins and analog issues to about 30%, with clocking, timing, power, IR drop, firmware, safety and security each in the low teens; a respin can have several causes [R-645] **[Industry estimate: read from the survey's chart]**.
+- **Respin causes (2024):** logic or functional flaws contributed to about half of IC/ASIC respins, analog issues to about 30% and reliability to about 21%, with clocking, timing, power, IR drop, firmware and safety each about 12–15% and security about 8%; a respin can have several causes [R-645] **[Industry estimate: read from the survey's chart]**.
 - **Schedules:** about three out of four IC/ASIC and FPGA projects miss their original schedule, against about two in three historically [R-018, R-321, R-645] **[Industry estimate]**.
 - **Verification share:** about 49% of IC/ASIC project time in 2026 [R-018] **[Industry estimate]**.
-- **Fab time:** about 12 weeks on average and 14–20 weeks at advanced nodes; about 1–1.5 days per mask layer; about 80–85 mask layers at 7 nm [R-020] **[Industry estimate]**.
-- **Mask sets:** more than $10 M at 7 nm and toward $40 M at 3 nm by one analyst's estimate [R-321] **[Industry estimate]**.
+- **Fab time:** about 12 weeks on average and 14–20 weeks at advanced nodes (2021 report); about 1–1.5 days per mask layer and about 80–85 mask layers at 7 nm (2017 report) [R-020] **[Industry estimate]**.
+- **Mask sets:** more than $10 M at 7 nm and toward $40 M at 3 nm by one analyst's estimate (SemiAnalysis, Jul 2022) [R-321] **[Industry estimate]**.
 - **The cost of an escape:** Intel's 1994 FDIV replacement charge was $475 M pre-tax [R-321] **[Established]**.
 
 ## 8. Common mistakes
@@ -416,7 +429,7 @@ The lab is [labs/26-05-lab/](../labs/26-05-lab/README.md). `risk.py` implements 
 - **Ignoring the ECO path in the design.** Without spare cells, configuration bits and held wafers, most silicon bugs need a full respin.
 - **Mitigating every risk.** A mitigation is worth doing only if it lowers the expected loss by more than it costs; some are not.
 - **Stopping verification halfway.** In the bug-discovery model, the worst time to tape out is partway through: the weeks are spent but the respin is still likely.
-- **Quoting survey statistics without their definitions.** "First-silicon success" in a survey counts any respin, planned or not, and the survey's sponsor and method matter.
+- **Quoting survey statistics without their definitions.** "First-silicon success" in the survey means reaching production on the first spin; as far as the published material shows, it does not separate planned steppings from forced fixes (our reading), and the survey's sponsor and method matter.
 
 ## 9. Practitioner lens
 
@@ -432,7 +445,7 @@ The lab is [labs/26-05-lab/](../labs/26-05-lab/README.md). `risk.py` implements 
 
 **Marketing vs Reality.**
 
-- *"First-pass silicon success."* Ask what shipped: was A0 the production stepping, or did a metal ECO (A1) quietly follow? Surveys count both as respins; press releases often do not.
+- *"First-pass silicon success."* Ask what shipped: was A0 the production stepping, or did a metal ECO (A1) quietly follow? By the survey's spins-before-production measure, an A1 counts as a second spin; press releases often do not count it.
 - *"We taped out."* Tape-out is the start of a 12–20-week fab cycle [R-020], then bring-up and qualification. A tape-out announcement is several months, at least, from revenue.
 - *"Our schedule is aggressive but achievable."* Ask for the confidence level of the date and how it was estimated. A date built from most-likely durations has a low chance of holding (Example 26-05.2).
 - *"Emulation found all the bugs."* Emulation finds bugs faster; it does not prove their absence. Ask for the bug-discovery curve and the coverage closure behind the tape-out decision.
@@ -491,7 +504,7 @@ No: it lowers the expected loss by $0.1 \times 6$ = **$0.6 M**, less than its $1
 
 <details><summary>Answer</summary>
 
-Early on, so many respin-class bugs remain that a respin is nearly certain whatever the team finds this week, so a week of verification costs time and saves little. Only when the expected number of escapes falls below about one does each week sharply cut the respin probability. The cost therefore rises at first, peaks, and then falls to its minimum.
+Early on, so many respin-class bugs remain that a respin is nearly certain whatever the team finds this week, so a week of verification costs time and saves little. Each week cuts the respin probability most sharply around the point where the expected number of escapes is about one. The cost therefore rises at first, peaks, and then falls to its minimum.
 
 </details>
 

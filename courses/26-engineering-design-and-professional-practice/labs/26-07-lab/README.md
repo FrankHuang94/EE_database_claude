@@ -42,7 +42,7 @@
 
 ## Discussion
 
-1. A one-in-a-million risk per unit is more likely than not to occur somewhere in a fleet of 693,000 units, a modest production volume. Safety arguments must be made per fleet, not per unit.
+1. A one-in-a-million risk per unit has an even chance of occurring somewhere in a fleet of 693,000 units, a modest production volume. Safety arguments must be made per fleet, not per unit.
 2. Common cause dominates as soon as $\beta$ exceeds about $p$: two channels with $p = 10^{-3}$ and only 0.1% of their failures in common are already **2.0** times as likely to fail together as independence predicts. Diversity (different designs, different physics, as a hardware interlock alongside software) is what keeps $\beta$ small.
 3. Showing 1 FIT with confidence needs three billion failure-free device-hours, more than any test programme can run directly; field data, accelerated testing (25-09, 25-10) and design arguments carry the rest of the case.
 4. Each failure observed raises the bound by **1.46** to **1.75** FIT here: a handful of field failures quickly rules out an ambitious claim.
