@@ -11330,3 +11330,27 @@
   definition: Reporting the best of $N$ measured workloads; for log speedups spread with standard deviation $\sigma$ the headline is inflated by about $e^{\sigma\operatorname{E}[Z_{(N)}]}$, with $\operatorname{E}[Z_{(N)}]$ = 1.16, 1.54 and 1.87 for $N$ = 5, 10 and 20.
   chapter: "28-02"
   see_also: [Geometric mean of ratios, MLPerf]
+- term: Technology readiness level (TRL)
+  definition: NASA's nine-level maturity scale, from TRL 1 (scientific research beginning) to TRL 9 (flight proven in a successful mission), with TRL 6 a fully functional prototype and TRL 8 flight qualified.
+  chapter: "28-03"
+  see_also: [Silicon maturity level]
+- term: Silicon maturity level
+  definition: A chip programme's position on the ladder concept, architecture and RTL, tape-out, first silicon in bring-up, engineering samples, qualification complete, production release, volume; each level is reached only with its evidence, and respins loop back to tape-out.
+  chapter: "28-03"
+  see_also: [Technology readiness level (TRL), Engineering sample (ES), Value multiplier (maturity)]
+- term: Engineering sample (ES)
+  definition: Pre-production silicon shipped to customers for evaluation, usually with an errata list and before qualification; evidence of maturity when customers measure it themselves.
+  chapter: "28-03"
+  see_also: [Silicon maturity level, Stepping]
+- term: Value multiplier (maturity)
+  definition: The fraction of a released product's value that a programme at a given maturity level is worth to a risk-neutral buyer, $P_k/(1 + r)^{T_k/12}$, where $P_k$ is the probability of reaching production and $T_k$ the months still to wait.
+  chapter: "28-03"
+  see_also: [Silicon maturity level, Earn-out]
+- term: Failure-rate confidence bound
+  definition: The highest constant failure rate consistent, at confidence $C$, with a life test's result; with $r$ failures in $T_{\text{eq}}$ equivalent device-hours it is $\chi^2_{C;\,2r+2}/(2T_{\text{eq}})$, which for zero failures is $-\ln(1 - C)/T_{\text{eq}}$.
+  chapter: "28-03"
+  see_also: [FIT (failures in time), Acceleration factor]
+- term: Goel–Okumoto model
+  definition: A software-reliability-growth model in which the cumulative defects found by testing time $t$ are $a(1 - e^{-bt})$; the remaining defects are $a\,e^{-bt}$, always the current discovery rate divided by $b$.
+  chapter: "28-03"
+  see_also: [Bug-discovery curve]

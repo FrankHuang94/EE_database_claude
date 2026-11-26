@@ -28,7 +28,7 @@ The practitioner's course: a framework for evaluating a chip company's technolog
 |---|---|---|---|
 | [28-01 · A Framework for Evaluating a Chip Company's Technology](chapters/28-01-technology-evaluation-framework.md) | 6 | ✅ verified | [problems](problems/28-01-problems.md) · [solutions](solutions/28-01-solutions.md) · [lab](labs/28-01-lab/README.md) · [verify](verify/verify_28_01.py) |
 | [28-02 · Validating Claims: TOPS/W, Benchmarks, Tapeout Status](chapters/28-02-validating-claims.md) | 6 | ✅ verified | [problems](problems/28-02-problems.md) · [solutions](solutions/28-02-solutions.md) · [lab](labs/28-02-lab/README.md) · [verify](verify/verify_28_02.py) |
-| [28-03 · Maturity Scales for Silicon](chapters/28-03-silicon-maturity-scales.md) | 4 | ⬜ planned | — |
+| [28-03 · Maturity Scales for Silicon](chapters/28-03-silicon-maturity-scales.md) | 4 | ✅ verified | [problems](problems/28-03-problems.md) · [solutions](solutions/28-03-solutions.md) · [lab](labs/28-03-lab/README.md) · [verify](verify/verify_28_03.py) |
 | [28-04 · Domain Question Banks I: Digital/CPU, AI Accelerators, Memory, Interconnect and Optics](chapters/28-04-question-banks-digital-ai-memory-interconnect.md) | 6 | ⬜ planned | — |
 | [28-05 · Domain Question Banks II: Analog/Mixed-Signal, RF, Power, Packaging, Embedded](chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) | 6 | ⬜ planned | — |
 | [28-06 · Red Flags and Green Flags](chapters/28-06-red-and-green-flags.md) | 4 | ⬜ planned | — |

@@ -102,7 +102,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 >
 > 28-02 (Validating Claims: TOPS/W, Benchmarks, Tapeout Status) is verified: peak throughput $2N_{\text{MAC}}f$ with precision and sparsity factors, TPP as a precision-normalized measure and export screen, roofline-delivered throughput; efficiency as energy per operation with a first-principles floor from Horowitz's 45 nm table and HBM2's 3.9 pJ/bit; $V^2$ scaling between operating points; power at core, card, server and facility boundaries; MLPerf divisions and scenarios, the geometric mean's reference independence, best-of-N inflation via expected normal maxima; what tape-out, MPW, steppings and qualification prove, and the tape-out-to-production sum. 6 examples, 14 problems, verify (115 checks), lab (`claimcheck.py`, notebook), 1 figure, 5 new glossary terms; logged facts reused (R-020, R-061, R-147, R-208, R-223, R-224, R-458, R-459, R-492, R-581, R-646 to R-648, R-659, R-690, R-692).
 >
-> **Next: 28-03 Maturity Scales for Silicon.** Then 28-04 to 28-10 in order, the Course 28 wrap-up and audit, and the **Term 7 checkpoint** (50 FE-style questions on Courses 26–28 with a verify script). Perishable facts need web searches; where search is unavailable, fetch known primary pages with curl or reuse logged R-entries.
+> 28-03 (Maturity Scales for Silicon) is verified: an eight-level silicon maturity ladder (concept to volume, with respins looping back) mapped by analogy onto NASA's TRL; the probability, remaining time and value multiplier $P_k/(1+r)^{T_k/12}$ by level; Arrhenius acceleration and chi-square failure-rate bounds (derived from the Poisson tail), what a minimum JESD47G life test proves (about 51 FIT at 60%) and qualification sample sizes; the Goel–Okumoto defect-discovery model with its two-point fit and release criterion; the least mature of silicon, qualification and software as the binding dimension. 5 examples, 12 problems, verify (66 checks: Poisson-tail root finding, least squares, Monte Carlo), lab (`matscale.py`, notebook), 1 figure, 6 glossary terms, R-701 (NASA TRL page, read with curl).
+>
+> **Next: 28-04 Domain Question Banks I: Digital/CPU, AI Accelerators, Memory, Interconnect and Optics.** Then 28-05 to 28-10 in order, the Course 28 wrap-up and audit, and the **Term 7 checkpoint** (50 FE-style questions on Courses 26–28 with a verify script). Perishable facts need web searches; where search is unavailable, fetch known primary pages with curl or reuse logged R-entries.
 
 > Course 26 audit lessons to carry forward: (i) key every intermediate a solution displays, not just the final answers; (ii) anything defined relative to price (a percentage royalty, a margin) must move with price in a sensitivity; (iii) never publish a value that sits on a rounding tie, publish it exactly; (iv) when an answer needs iteration, teach the iteration (a Math refresher) and show the steps; (v) cite a figure only to a log entry whose recorded source contains it.
 >
@@ -213,10 +215,10 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | 25 | 12 | 12 | 12 | 12 | 75,761 | 167 | 1321 | 12 | 12 / 2 / 0 |
 | 26 | 7 | 7 | 7 | 7 | 49,840 | 100 | 1275 | 7 | 7 / 0 / 0 |
 | 27 | 8 | 8 | 8 | 8 | 61,565 | 112 | 1396 | 8 | 8 / 0 / 0 |
-| 28 | 10 | 2 | 2 | 0 | 14,388 | 28 | 228 | 2 | 2 / 0 / 0 |
-| **Total** | **307** | **299** | **299** | **297** | **2,117,557** | **4270** | **37612** | **299** | **295 / 271 / 27** |
+| 28 | 10 | 3 | 3 | 0 | 19,442 | 40 | 291 | 3 | 3 / 0 / 0 |
+| **Total** | **307** | **300** | **300** | **297** | **2,122,611** | **4282** | **37675** | **300** | **296 / 271 / 27** |
 
-Glossary terms: **3051** · Flashcards: **2799**
+Glossary terms: **3057** · Flashcards: **2799**
 
 <!-- END STATS -->
 
@@ -252,7 +254,7 @@ Glossary terms: **3051** · Flashcards: **2799**
 | 25 | 🏁 audited | ✅ 2026-11-26 | 12 chapters reviewed: 167 problems, 1,173 keyed chapter, solution and lab values plus 148 exam values (1,375 checks), 12 lab notebooks, 2 ngspice netlists; exam (12 questions, 104 points, 240 minutes), 96 flashcards, equation sheet and course notes. Five reviewers, 111 findings, all fixed. Term 6 checkpoint complete. |
 | 26 | 🏁 audited | ✅ 2026-11-26 | 7 chapters reviewed: 100 problems, 1,095 keyed chapter, solution and lab values plus 180 exam values (1,392 checks across 8 verify scripts), 7 lab notebooks; exam (12 questions, 104 points, 180 minutes), 82 flashcards, equation sheet and course notes; R-625 to R-659. Four reviewers, 111 findings, all fixed. |
 | 27 | 🏁 audited | ✅ 2026-11-26 | 8 chapters reviewed: 112 problems, 1,301 keyed chapter, solution and lab values plus 95 exam values (1,462 checks across 9 verify scripts), 8 lab notebooks; exam (12 questions, 104 points, 210 minutes), 76 flashcards, equation sheet and course notes; R-660 to R-700. Three reviewers, 161 findings, all fixed. |
-| 28 | 🔄 in progress | — | 28-01 and 28-02 verified (28 problems, 228 keyed values, 245 checks). |
+| 28 | 🔄 in progress | — | 28-01 to 28-03 verified (40 problems, 291 keyed values, 311 checks). |
 | all others | ⬜ planned (stubs only) | — | |
 
 Course status values: ⬜ planned · 🔄 in progress · ✅ complete (all chapters verified, exam + flashcards + glossary done) · 🏁 audited (independent review findings fixed).
@@ -695,3 +697,4 @@ Changes relative to the original build brief's chapter plan.
 | 2026-11-26 | Phase 2. **Course 27 audit and close-out 🏁.** Three fresh reviewers (161 findings: A 52, B 60, C 49) recomputed every number and found none wrong; the findings were in models (chiplet interface overhead, decode-bound assumptions, error-frame margins, the dense-FP8 reading, the checkpoint power step, supercapacitor cells), derivation rigour (the all-reduce lower bound, the CAN iteration shown pass by pass) and sourcing (dating, tags, exact quotes). All fixed; 13 problems added (a derivation in every chapter, plus three for objectives without exercises); R-700 folded into 27-06; textbook anchors and lecture videos added; open issue 78 resolved, 79 logged. All eight chapters reviewed. |
 | 2026-11-26 | Phase 2. **28-01 A Framework for Evaluating a Chip Company's Technology ✅ verified.** First chapter of Course 28: seven dimensions and their evidence; weighted and geometric scorecards, gates, score uncertainty and rank reversal; Bayes' rule in odds form; spins beyond plan, milestone chains and earn-outs; EVPI and EVSI; a roadmap consistency check. 6 examples, 14 problems, verify (130 checks), lab (`dilmodel.py`, notebook), 1 figure, 10 glossary terms; no new R-entries (web search unavailable this turn; logged facts reused). |
 | 2026-11-26 | Phase 2. **28-02 Validating Claims: TOPS/W, Benchmarks, Tapeout Status ✅ verified.** Peak, precision, sparsity and TPP; roofline-delivered throughput; energy per operation and its first-principles floor; operating points and power boundaries; MLPerf, geometric means and best-of-N; silicon status and schedule arithmetic. 6 examples, 14 problems, verify (115 checks), lab (`claimcheck.py`, notebook), 1 figure, 5 glossary terms; no new R-entries. |
+| 2026-11-26 | Phase 2. **28-03 Maturity Scales for Silicon ✅ verified.** Silicon maturity ladder and TRL; probability, time and value multiplier by level; Arrhenius acceleration, chi-square failure-rate bounds and qualification sample sizes; the Goel–Okumoto defect-discovery model; the binding dimension. 5 examples, 12 problems, verify (66 checks), lab (`matscale.py`, notebook), 1 figure, 6 glossary terms, R-701. |
