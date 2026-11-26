@@ -58,7 +58,7 @@ JEDEC's JESD47, *Stress-Test-Driven Qualification of Integrated Circuits*, "desc
 - **ESD and latch-up:** electrical overstress robustness (25-09).
 - **Early-life failure rate:** a short burn-in-like stress on a larger sample, for infant mortality (25-11).
 
-Each test runs a sample, classically three lots of 77 units, with zero failures allowed; 03-01 and 03-05 showed what that demonstrates statistically (below about 1% defective at 90% confidence) and why it cannot demonstrate ppm-level quality. Qualification therefore shows the *absence of a gross weakness*, not a field failure rate.
+The major stresses run a sample, classically three lots of 77 units, with zero failures allowed (the early-life test uses a larger sample, and ESD and latch-up their own; the exact sample sizes of Rev J were not verified here); 03-01 and 03-05 showed what that demonstrates statistically (below about 1% defective at 90% confidence) and why it cannot demonstrate ppm-level quality. Qualification therefore shows the *absence of a gross weakness*, not a field failure rate.
 
 **AEC-Q100** adapts this for automotive ICs. It defines temperature **grades** as *ambient* operating ranges: Grade 0, −40 to +150 °C; Grade 1, −40 to +125 °C; Grade 2, −40 to +105 °C; Grade 3, −40 to +85 °C [R-612]. Its stress conditions scale with grade: temperature cycling for Grade 0 is now −55 to +150 °C for 1,500 cycles (reduced from 2,000 in revision J), and for Grade 1, −55 to +150 °C for 1,000 cycles [R-612]. Revision J (11 August 2023) also added a drift-analysis requirement to HTOL, a bump shear test and wafer-bumping change items for flip-chip parts, a requirement for supporting data on copper-wire devices, and a section on mission profiles [R-612].
 
@@ -74,13 +74,13 @@ $$
 
 field cycles of range $\Delta T_{field}$. With $n = 2$, 1,000 cycles over 205 K stand for about **1.17e4** field cycles of 60 K, about 32 years at one cycle a day (Example 25-10.1). The answer depends strongly on $n$: the exponent, not the cycle count, carries the uncertainty. (Fuller models such as Norris–Landzberg add dwell time, frequency and peak temperature.)
 
-**HTOL against a mission profile.** 25-08 introduced mission profiles, the fraction of life spent at each junction temperature. The stress hours that reproduce the profile's damage for an Arrhenius mechanism are
+**HTOL against a mission profile.** 25-08 introduced mission profiles, the fraction of life spent at each junction temperature. For an Arrhenius mechanism, an hour at junction temperature $T_i$ does damage at a rate $r(T_i) \propto e^{-E_a/kT_i}$. Over a life $t_{life}$ the profile does total damage $\sum_i w_it_{life}\,r(T_i)$, and a stress test of $t_{stress}$ hours at $T_{stress}$ does $t_{stress}\,r(T_{stress})$. Equating the two, and writing $AF(T_i \to T_{stress}) = r(T_{stress})/r(T_i)$, the stress hours that reproduce the profile's damage are
 
 $$
 t_{stress} = \sum_i \frac{w_i\,t_{life}}{AF(T_i \to T_{stress})},
 $$
 
-with $AF$ the Arrhenius factor from each profile temperature $T_i$ to the stress temperature. For a demanding automotive profile, 1,000 h at 125 °C can cover only a fraction of the damage, and the hottest segments dominate the requirement (Example 25-10.2). This is why AEC-Q100 now addresses mission profiles explicitly and why automotive suppliers often extend HTOL time or temperature beyond the baseline.
+with $AF$ the Arrhenius factor from each profile temperature $T_i$ to the stress temperature. Here $T_{stress}$ is the junction temperature during the test; the examples take a baseline HTOL of 1,000 h with the junction at 125 °C (self-heating neglected) as an assumption, since AEC-Q100's own stress conditions were not reproduced here. For a demanding automotive profile, such a test can cover only a fraction of the damage, and the hottest segments dominate the requirement (Example 25-10.2). This is why AEC-Q100 now addresses mission profiles explicitly and why automotive suppliers often extend HTOL time or temperature beyond the baseline.
 
 ### 3.3 Functional safety: hazards and integrity levels
 
@@ -97,13 +97,13 @@ Faults come in two kinds. **Systematic faults** (design bugs, specification erro
 - **Safe faults** ($\lambda_S$): cannot violate the safety goal, even with a second fault.
 - **Single-point faults** ($\lambda_{SPF}$): violate the goal directly and no safety mechanism covers them.
 - **Residual faults** ($\lambda_{RF}$): violate the goal directly; a safety mechanism covers the element but misses this fraction. If a mechanism has **diagnostic coverage** $DC$ of the dangerous faults $\lambda_{D}$, then $\lambda_{RF} = (1 - DC)\lambda_D$.
-- **Multiple-point faults** ($\lambda_{MPF}$): violate the goal only together with another independent fault. They are **detected** (by a safety mechanism or the driver), or **latent**, $\lambda_{MPF,L}$, if nothing reveals them. A fault in a safety mechanism itself is the typical latent fault: the checker is broken, but nothing happens until the fault it was meant to catch arrives.
+- **Multiple-point faults** ($\lambda_{MPF}$): violate the goal only together with another independent fault. They are **detected** (by a safety mechanism or the driver), or **latent**, with rate $\lambda_L$, if nothing reveals them. A fault in a safety mechanism itself is the typical latent fault: the checker is broken, but nothing happens until the fault it was meant to catch arrives.
 
 **The metrics.** With sums over all safety-related hardware of the item,
 
 $$
 SPFM = 1 - \frac{\sum(\lambda_{SPF} + \lambda_{RF})}{\sum\lambda},\qquad
-LFM = 1 - \frac{\sum\lambda_{MPF,L}}{\sum(\lambda - \lambda_{SPF} - \lambda_{RF})}.
+LFM = 1 - \frac{\sum\lambda_L}{\sum(\lambda - \lambda_{SPF} - \lambda_{RF})}.
 $$
 
 The **single-point fault metric** is the fraction of failures that cannot directly violate the goal; the **latent-fault metric** is the fraction of the remaining failures that are not latent. The **probabilistic metric for random hardware failures (PMHF)** is the average rate at which random hardware faults violate the safety goal, in failures per hour. Targets from ISO 26262-5:2018, as reproduced by TI and others, are [R-614]:
@@ -116,15 +116,15 @@ The **single-point fault metric** is the fraction of failures that cannot direct
 
 These apply to the safety goal of the whole item, so a chip vendor supplies its FMEDA and the system integrator allocates budgets across parts. 19-12 noted that these are in-field diagnostic coverages, not manufacturing test coverage.
 
-**PMHF to first order.** Single-point and residual faults violate the goal at their own rate. A dual-point violation needs two faults: a latent fault first (rate $\lambda_L$), which then stays undetected for an exposure time $\tau$, during which a second, dangerous fault (rate $\lambda_D$) arrives with probability about $\lambda_D\tau$. The dual-point violation rate is therefore about $\lambda_L\lambda_D\tau$, and
+**PMHF to first order.** Single-point and residual faults violate the goal at their own rate. A dual-point violation needs two faults: a latent fault first (rate $\lambda_L$), typically in a safety mechanism, which then stays undetected for an exposure time $\tau$. During that time a second fault that the mechanism would normally have caught, a dangerous fault in the covered logic at rate $\lambda_{DD} = DC\,\lambda_D$, arrives with probability about $\lambda_{DD}\tau$. The dual-point violation rate is therefore about $\lambda_L\lambda_{DD}\tau$, and
 
 $$
-PMHF \approx \sum(\lambda_{SPF} + \lambda_{RF}) + \lambda_L\lambda_D\tau.
+PMHF \approx \sum(\lambda_{SPF} + \lambda_{RF}) + \lambda_L\lambda_{DD}\tau.
 $$
 
 If a latent fault is never tested, $\tau$ is about half the operating life; a self-test at every start-up cuts it to about half a drive. Periodic tests therefore improve both the LFM (they reveal latent faults, moving them from latent to detected) and the dual-point term (Examples 25-10.4 and 25-10.5).
 
-> **Going deeper — exposure time.** For a latent fault arriving uniformly in an interval of length $T$ between tests, its mean remaining undetected time is $T/2$. The dual-point probability over a vehicle life $T_L$ is $\int_0^{T_L}\lambda_L\lambda_D(t\bmod T)\,dt \approx \lambda_L\lambda_D T_L T/2$ for small rates, which divided by $T_L$ gives the rate $\lambda_L\lambda_D T/2$. ISO 26262-10 discusses more complete formulas.
+> **Going deeper — exposure time.** Suppose a test every $T$ hours reveals any latent fault. At a time $t$ after the last test, a latent fault is present with probability about $\lambda_L(t \bmod T)$ for small rates, since it can have arrived at any moment since that test. A covered dangerous fault arriving then violates the goal, so the instantaneous violation rate is $\lambda_{DD}\lambda_L(t \bmod T)$. Over a vehicle life $T_L$ the violation probability is $\int_0^{T_L}\lambda_L\lambda_{DD}(t\bmod T)\,dt \approx \lambda_L\lambda_{DD}T_LT/2$, which divided by $T_L$ gives the rate $\lambda_L\lambda_{DD}T/2$: the mean exposure is $\tau = T/2$. ISO 26262-10 discusses more complete formulas.
 
 ### 3.5 Safety mechanisms in silicon
 
@@ -162,7 +162,14 @@ A modern car contains thousands of semiconductor components, so component qualit
 
 **Setup.** Take 25-08's automotive profile: 20,000 power-on hours, 5% at −40 °C, 65% at 70 °C, 20% at 110 °C and 10% at 125 °C junction temperature [R-604]. With $E_a$ = 0.7 eV, find the stress hours that reproduce its damage (a) at 125 °C and (b) at 150 °C, (c) the share of (b) contributed by the 125 °C segment, and (d) the fraction of the profile a 1,000 h, 125 °C HTOL covers.
 
-**Solution.** $t_{stress} = \sum_i w_i \times 20{,}000/AF(T_i \to T_{stress})$:
+**Solution.** $t_{stress} = \sum_i w_i \times 20{,}000/AF(T_i \to T_{stress})$, segment by segment:
+
+| Segment | Hours in profile | AF to 125 °C | Stress h at 125 °C | AF to 150 °C | Stress h at 150 °C |
+|---|---|---|---|---|---|
+| −40 °C | 1,000 | 1.9e6 | < 0.001 | 6.2e6 | < 0.001 |
+| 70 °C | 13,000 | 26.3 | 494 | 87.8 | 148 |
+| 110 °C | 4,000 | 2.22 | 1,800 | 7.42 | 539 |
+| 125 °C | 2,000 | 1 | 2,000 | 3.34 | 599 |
 
 - (a) **4.29e3** h.
 - (b) **1.29e3** h.
@@ -195,9 +202,9 @@ A modern car contains thousands of semiconductor components, so component qualit
 
 - (a) $\lambda_D = 200 - 80$ = **120** FIT; $\lambda_{RF} = 0.01 \times 120$ = **1.2** FIT; $\sum\lambda = 200 + 20$ = **220** FIT.
 - (b) $SPFM = 1 - 1.2/220$ = **99.45**%.
-- (c) $\lambda_{MPF,L} = 0.10 \times 20$ = **2.0** FIT; $LFM = 1 - 2.0/(220 - 1.2)$ = **99.09**%.
+- (c) $\lambda_L = 0.10 \times 20$ = **2.0** FIT; $LFM = 1 - 2.0/(220 - 1.2)$ = **99.09**%.
 - (d) Without self-test all 20 FIT are latent: $1 - 20/218.8$ = **90.86**%.
-- (e) SPFM ≥ 99% and LFM ≥ 90% are met in both cases, but without self-test the LFM margin is under one percentage point.
+- (e) SPFM ≥ 99% and LFM ≥ 90% are met in both cases, but without self-test the LFM clears 90% by only 90.86 − 90 = **0.86** percentage points.
 
 **Units check.** FIT ratios are dimensionless.
 
@@ -205,7 +212,7 @@ A modern car contains thousands of semiconductor components, so component qualit
 
 ### Example 25-10.5 · The value of a self-test (tier B)
 
-**Setup.** For Example 25-10.4, with covered dangerous faults at $\lambda_D$ = 118.8 FIT, estimate the dual-point violation rate when the comparator's faults (a) are never tested over a 15,000 h life ($\tau$ = 7,500 h), and (b) with self-test leave 2.0 FIT latent. (c) What is the first-order PMHF in case (b), and does it meet ASIL D?
+**Setup.** For Example 25-10.4, with covered dangerous faults at $\lambda_{DD}$ = 118.8 FIT, estimate the dual-point violation rate when the comparator's faults (a) are never tested over a 15,000 h life ($\tau$ = 7,500 h), and (b) with self-test leave 2.0 FIT latent. (c) What is the first-order PMHF in case (b), and does it meet ASIL D?
 
 **Solution.**
 
@@ -246,6 +253,18 @@ A modern car contains thousands of semiconductor components, so component qualit
 | Ex 25-10.2b | stress hours at 150 °C | 1.29e3 | h |
 | Ex 25-10.2c | 125 °C segment share | 46.6 | % |
 | Ex 25-10.2c0 | 125 °C segment hours at 150 °C | 599 | h |
+| Ex 25-10.2s1 | AF −40 → 125 °C | 1.9e6 | |
+| Ex 25-10.2s2 | AF 70 → 125 °C | 26.3 | |
+| Ex 25-10.2s3 | hours, 70 °C at 125 °C | 494 | h |
+| Ex 25-10.2s4 | AF 110 → 125 °C | 2.22 | |
+| Ex 25-10.2s5 | hours, 110 °C at 125 °C | 1800 | h |
+| Ex 25-10.2s6 | hours, 125 °C at 125 °C | 2000 | h |
+| Ex 25-10.2s7 | AF −40 → 150 °C | 6.2e6 | |
+| Ex 25-10.2s8 | AF 70 → 150 °C | 87.8 | |
+| Ex 25-10.2s9 | hours, 70 °C at 150 °C | 148 | h |
+| Ex 25-10.2s10 | AF 110 → 150 °C | 7.42 | |
+| Ex 25-10.2s11 | hours, 110 °C at 150 °C | 539 | h |
+| Ex 25-10.2s12 | AF 125 → 150 °C | 3.34 | |
 | Ex 25-10.2d | coverage of 1,000 h at 125 °C | 23 | % |
 | Ex 25-10.3a | ASIL D PMHF | 10 | FIT |
 | Ex 25-10.3a1 | ASIL B PMHF | 100 | FIT |
@@ -258,6 +277,7 @@ A modern car contains thousands of semiconductor components, so component qualit
 | Ex 25-10.4c | latent rate | 2.0 | FIT |
 | Ex 25-10.4c1 | LFM | 99.09 | % |
 | Ex 25-10.4d | LFM without self-test | 90.86 | % |
+| Ex 25-10.4e | LFM margin without self-test | 0.86 | points |
 | Ex 25-10.5a | dual-point rate, untested | 0.0178 | FIT |
 | Ex 25-10.5b | dual-point rate, tested | 0.00178 | FIT |
 | Ex 25-10.5c | PMHF | 1.20 | FIT |
@@ -311,7 +331,7 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 | TC, Grades 0 and 1 | −55/150 °C, 1,500 and 1,000 cycles | Aug 2023 | [R-612] |
 | ISO 26262 | 2nd ed. Dec 2018; 3rd ed. at DIS ballot from Oct 2026, publication expected about 2027 | Oct 2026 | [R-613] |
 | Hardware metrics ASIL B/C/D | SPFM ≥ 90/97/99%; LFM ≥ 60/80/90%; PMHF < 100/100/10 FIT | 2018 edition | [R-614] |
-| Classical qualification sample | 3 lots × 77 units, zero failures | — | 03-01, 03-05 |
+| Classical qualification sample | 3 lots × 77 units, zero failures (major stresses; not verified against Rev J) | — | 03-01, 03-05 |
 | Components per car (illustrative) | ~10,000 semiconductor components | Jun 2022 | [R-615] |
 
 ## 8. Common mistakes
@@ -328,7 +348,7 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 
 **State of the art (as of Nov 2026).**
 
-- *JEDEC* [Established]. JESD47N, *Stress-Test-Driven Qualification of Integrated Circuits*, published 1 August 2026 (42 pages), is current and supersedes JESD47M:2025; the abstract is unchanged [R-611].
+- *JEDEC* [Established]. JESD47N, *Stress-Test-Driven Qualification of Integrated Circuits*, published 1 August 2026 (42 pages), is current and supersedes JESD47M:2025 [R-611].
 - *AEC-Q100* [Established]. Revision J (11 August 2023) replaced revision H (September 2014): Grade 0 temperature cycling cut from 2,000 to 1,500 cycles at −55 to +150 °C, an HTOL drift-analysis requirement, a new bump shear test and wafer-bumping change items, copper-wire data per AEC-Q006, an FC-BGA definition, mission profiles and acceptance criteria for advanced CMOS nodes. A revision J1 was reported but could not be verified [R-612].
 - *ISO 26262* [Established for the 2018 edition; Industry estimate for the third]. Parts 1 and 6 of the third edition entered a 12-week draft-international-standard ballot on 14 October 2026; forecasts point to publication in 2027, with machine-learning alignment (ISO/TS 5083, ISO/PAS 8800) among the expected changes [R-613].
 - *Hardware metrics* [Established]. The ASIL B/C/D SPFM, LFM and PMHF targets above, as reproduced from ISO 26262-5:2018 by independent sources [R-614].
@@ -381,7 +401,7 @@ The hazard analysis: the severity, exposure and controllability of the hazardous
 
 <details><summary>Answer</summary>
 
-The fraction of multiple-point faults that are not latent. Faults in safety mechanisms stay hidden until a second fault arrives; a self-test reveals them, moving them from latent to detected.
+The fraction of the faults that are neither single-point nor residual (that is, safe plus multiple-point faults) that are not latent. Faults in safety mechanisms stay hidden until a second fault arrives; a self-test reveals them, moving them from latent to detected.
 
 </details>
 
@@ -418,7 +438,7 @@ Now try the [25-10 problem set](../problems/25-10-problems.md).
 
 - AEC, *AEC-Q100 Rev J: Failure Mechanism Based Stress Test Qualification for Integrated Circuits in Automotive Applications* (2023): the stress tables and grade definitions.
 - ISO 26262-5:2018 (hardware) and ISO 26262-10:2018 (guidelines): metric definitions and worked examples.
-- D. D. Ward and colleagues' overviews of functional safety for semiconductors, and vendor safety manuals (for example, those of automotive MCU families) for real FMEDA structures.
+- Vendor safety manuals (for example, those of automotive MCU families) for real FMEDA structures.
 - J. W. McPherson, *Reliability Physics and Engineering* (Springer): the acceleration models behind qualification.
 
 ## 14. Sources

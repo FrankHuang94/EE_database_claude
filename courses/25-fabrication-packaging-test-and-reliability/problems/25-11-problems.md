@@ -66,6 +66,14 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Why sort?** A wafer has 1,000 dies at 86% yield; packaging costs $3 per die; sort costs $0.05 per die and catches 95% of bad dies (all assumed). Find the packaging money wasted per wafer without sort, the cost with sort (sort plus wasted packaging), and the saving.
 
+### Problem 25-11.13 [C]
+
+**Escapes in closed form.** With the test limit at the population mean ($L = \mu$) and no guard band, scale the true value and the error by $\sigma_F$ and $\sigma_m$ so that both are standard normal. (a) Show that the escape region is a wedge whose angle is $\arctan(\sigma_m/\sigma_F)$, so $P(\text{escape}) = \arctan(\sigma_m/\sigma_F)/(2\pi)$, and evaluate it in ppm for Example 25-11.6. (b) What is it with a tester twice as accurate?
+
+### Problem 25-11.14 [B]
+
+**Burn-in time from the Weibull.** Weak parts, a fraction $p_w$ of production, fail as $F_w(t) = 1 - \exp[-(t/\eta_w)^\beta]$. (a) Derive the use-equivalent burn-in $AF\,t_b = \eta_w[\ln(p_w/q)]^{1/\beta}$ that leaves a shipped weak fraction $q$. (b) Evaluate it for $p_w$ = 1%, $q$ = 10 ppm, $\eta_w$ = 100 h and $\beta$ = 0.5, and the hours at $AF$ = 50.
+
 ---
 
 ## Objective coverage
@@ -74,6 +82,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Test flow | 12 |
 | 2. Test cost and multisite | 1, 2, 3 |
-| 3. Burn-in | 4, 5, 6 |
-| 4. Binning, guard bands, escapes and overkill | 7, 8 |
+| 3. Burn-in | 4, 5, 6, 14 |
+| 4. Binning, guard bands, escapes and overkill | 7, 8, 13 |
 | 5. Test market data | 9, 10, 11 |

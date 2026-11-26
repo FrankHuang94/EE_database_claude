@@ -28,7 +28,7 @@ Metal ECO: $2 + 10 \times 2 + 0.2 \times (25 + 20 \times 2)$ = **$35 M**. Full r
 
 ### Solution 25-12.5
 
-$n = 1 + 1.96^2/(2 \times 0.05^2)$ = **769** parts: halving the tolerance quadruples the sample.
+$n = 1 + 1.96^2/(2 \times 0.05^2)$ = **769.3**, rounded up to **770** parts: halving the tolerance quadruples the sample.
 
 ### Solution 25-12.6
 
@@ -36,7 +36,7 @@ $n = 1 + 1.96^2/(2 \times 0.05^2)$ = **769** parts: halving the tolerance quadru
 
 ### Solution 25-12.7
 
-(a) $20/650$ = **3.1**% to $40/650$ = **6.2**%. (b) $20/75$ = **27**% to $40/50$ = **80**%. For a large company a mask set is a modest share of the program; for a startup a respin can consume most of its budget.
+(a) $20/650$ = **3.1**% to $40/650$ = **6.2**%. (b) At least $10/75$ = **13**% to $10/50$ = **20**% at 7 nm. (c) $20/75$ = **27**% to $40/50$ = **80**%: a startup budget sized for 7 nm cannot absorb 3 nm masks, let alone a respin. For a large company a mask set is a modest share of the program; for a startup a respin can consume most of its budget.
 
 ### Solution 25-12.8
 
@@ -46,7 +46,7 @@ $n = 1 + 1.96^2/(2 \times 0.05^2)$ = **769** parts: halving the tolerance quadru
 
 ### Solution 25-12.9
 
-Each entry is $256 + 32 = 288$ bits, so $1{,}048{,}576/288$ = **3.64e3** entries. At one entry per 20 cycles they span 72,800 cycles, a window of **36.4** µs: event-driven storage stretches the window about eighteenfold for this activity level.
+Each entry is $256 + 32 = 288$ bits, so $1{,}048{,}576/288$ = **3.64e3** entries. At one entry per 20 cycles they span **7.28e4** cycles, a window of **36.4** µs: event-driven storage stretches the window about eighteenfold for this activity level.
 
 ### Solution 25-12.10
 
@@ -71,16 +71,20 @@ Solving $K(V - 0.33)^{1.3}/V = 2.5$ gives **0.702** V, **51** mV above 0.651 V. 
 | 25-12.4a | metal ECO expected cost | 35 | $M |
 | 25-12.4b | full respin cost | 65 | $M |
 | 25-12.4c | break-even probability | 0.338 | |
-| 25-12.5a | parts for ±5% | 769 | |
+| 25-12.5a | parts for ±5% | 770 | |
 | 25-12.6a | Wilson lower, 46/320 | 11.0 | % |
 | 25-12.6b | Wilson upper, 46/320 | 18.6 | % |
 | 25-12.7a | share of $650 M, low | 3.1 | % |
 | 25-12.7a1 | share of $650 M, high | 6.2 | % |
-| 25-12.7b | share of startup budget, low | 27 | % |
-| 25-12.7b1 | share of startup budget, high | 80 | % |
+| 25-12.7b | share of startup budget, low | 13 | % |
+| 25-12.7b1 | share of startup budget, high | 20 | % |
 | 25-12.8b | half-life of remaining bugs | 4.0 | weeks |
 | 25-12.9a | entries | 3.64e3 | |
 | 25-12.9b | window | 36.4 | µs |
 | 25-12.9c | window gain | 18 | |
 | 25-12.10a | voltage for 2.5 GHz, cold | 0.702 | V |
 | 25-12.10b | increase | 51 | mV |
+| 25-12.7c | share of startup budget, 3 nm low | 27 | % |
+| 25-12.7c1 | share of startup budget, 3 nm high | 80 | % |
+| 25-12.9a1 | cycles spanned | 7.28e4 | |
+| 25-12.5a0 | unrounded sample size | 769.3 | |

@@ -20,7 +20,7 @@ Fifteen years is $15 \times 365.25$ = **5.48e3** cycles, so $(205/60)^n \ge 5.47
 
 ### Solution 25-10.3
 
-**2.33e3** h are needed, so 1,000 h covers **43**% of the profile. A lower activation energy makes the hot test accelerate less, so more test time is needed.
+Segment by segment at 0.5 eV, the acceleration factors to 150 °C are **7.1e4** (−40 °C), **24.5** (70 °C), **4.19** (110 °C) and **2.37** (125 °C), so the segments need **0.014**, **532**, **956** and **845** stress hours. In total **2.33e3** h are needed, so 1,000 h covers **43**% of the profile. A lower activation energy makes the hot test accelerate less, so more test time is needed.
 
 ### Solution 25-10.4
 
@@ -28,7 +28,7 @@ $SPFM = 1 - (1 - DC) \times 120/220$.
 
 (a) $(1 - DC) \le 0.01 \times 220/120 = 0.0183$: $DC \ge$ **98.2**%.
 
-(b) $(1 - DC) \le 0.03 \times 220/120 = 0.055$: $DC \ge$ **94.5**%. Because a third of the element's failures are safe, the lockstep needs less than 99% coverage to reach a 99% SPFM.
+(b) $(1 - DC) \le 0.03 \times 220/120 = 0.055$: $DC \ge$ **94.5**%. Because 100 of the 220 FIT in the SPFM denominator are not dangerous (the core's 80 FIT of safe faults and the comparator's 20 FIT of multiple-point faults), 45% of the total, the lockstep needs less than 99% coverage to reach a 99% SPFM.
 
 ### Solution 25-10.5
 
@@ -38,7 +38,7 @@ $SPFM = 1 - (1 - DC) \times 120/220$.
 
 ### Solution 25-10.6
 
-$\tau = 1000/2$ = 500 h: $20 \times 10^{-9} \times 118.8 \times 10^{-9} \times 500 \times 10^9$ = **0.00119** FIT, fifteen times less than never testing.
+With a test that reveals every comparator fault, $\tau = 1000/2$ = 500 h: $20 \times 10^{-9} \times 118.8 \times 10^{-9} \times 500 \times 10^9$ = **0.00119** FIT, fifteen times less than never testing.
 
 ### Solution 25-10.7
 
@@ -58,7 +58,19 @@ $n = \ln 0.1/\ln(1 - 10^{-4})$ = **2.30e4** units, about 100 times a 231-unit qu
 
 ### Solution 25-10.11
 
-Raw: $4 \times 1000$ = **4.0e3** FIT. Residual: $0.001 \times 4000$ = **4.0** FIT, 40% of an entire ASIL D item's budget. Raw soft errors alone would be 400 times the budget, which is why safety-critical SRAM always carries ECC, often with interleaving so that physically adjacent upsets land in different words.
+Raw: $4 \times 1000$ = **4.0e3** FIT. Residual, counting every multi-bit event: $0.001 \times 4000$ = **4.0** FIT, 40% of an entire ASIL D item's budget. This is an upper bound: SEC-DED detects double-bit errors, and a detected error that drives the system to a safe state is not a residual fault, so only undetected events (three or more bits, or miscorrections) belong here. Raw soft errors alone would be 400 times the budget, which is why safety-critical SRAM always carries ECC, often with interleaving so that physically adjacent upsets land in different words.
+
+### Solution 25-10.12
+
+(a) High severity (possible fatal crash), high exposure (highway driving is common) and low controllability (the driver cannot avoid the sudden stop or the car behind): all three push the ASIL up, toward the most demanding levels. (b) Severity is lower at parking speed, exposure is moderate and most drivers can still steer, more heavily: the ASIL is lower. (c) No injury can result, so severity is minimal: QM, ordinary quality management. The assignment comes from the item's hazard analysis, not from the chip; the chip supports whatever ASIL the safety goal carries.
+
+### Solution 25-10.13
+
+(a) A time $t$ after the last test, a latent fault is present with probability $1 - e^{-\lambda_L(t \bmod T)} \approx \lambda_L(t \bmod T)$, because it may have arrived at any moment since the test. A covered dangerous fault then violates the goal at rate $\lambda_{DD}$, so the instantaneous violation rate is $\lambda_{DD}\lambda_L(t \bmod T)$. Its average over one interval is $\lambda_L\lambda_{DD}\frac1T\int_0^Tt\,dt = \lambda_L\lambda_{DD}T/2$, and every interval repeats it.
+
+(b) $20 \times 10^{-9} \times 118.8 \times 10^{-9} \times 360 \times 10^9$ = **8.55e-4** FIT.
+
+(c) Never testing gives an exposure of 7,500 h against 360 h: **20.8** times better. At these small rates both are negligible against the residual faults, so the test matters mostly for the LFM.
 
 ---
 
@@ -90,3 +102,13 @@ Raw: $4 \times 1000$ = **4.0e3** FIT. Residual: $0.001 \times 4000$ = **4.0** FI
 | 25-10.11a | raw rate | 4.0e3 | FIT |
 | 25-10.11b | residual rate | 4.0 | FIT |
 | 25-10.11c | raw over budget | 400 | |
+| 25-10.3s1 | AF −40 → 150 °C, 0.5 eV | 7.1e4 | |
+| 25-10.3s2 | AF 70 → 150 °C, 0.5 eV | 24.5 | |
+| 25-10.3s3 | AF 110 → 150 °C, 0.5 eV | 4.19 | |
+| 25-10.3s4 | AF 125 → 150 °C, 0.5 eV | 2.37 | |
+| 25-10.3s5 | hours, −40 °C segment | 0.014 | h |
+| 25-10.3s6 | hours, 70 °C segment | 532 | h |
+| 25-10.3s7 | hours, 110 °C segment | 956 | h |
+| 25-10.3s8 | hours, 125 °C segment | 845 | h |
+| 25-10.13b | dual-point rate, monthly test | 8.55e-4 | FIT |
+| 25-10.13c | improvement over never testing | 20.8 | |

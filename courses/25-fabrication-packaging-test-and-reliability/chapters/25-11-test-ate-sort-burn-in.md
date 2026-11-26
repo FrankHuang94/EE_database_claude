@@ -4,7 +4,7 @@
 | | |
 |---|---|
 | **Course** | [25 · Semiconductor Fabrication, Packaging, Test and Reliability](../README.md) |
-| **University equivalent** | Production test and test economics (VLSI test courses: Bushnell and Agrawal, *Essentials of Electronic Testing*, chapters on test economics, ATE and IDDQ; burn-in from reliability courses) |
+| **University equivalent** | Production test and test economics (VLSI test courses: Bushnell and Agrawal, *Essentials of Electronic Testing*, chapters on test economics and ATE; burn-in from reliability courses) |
 | **Prerequisites** | [19-12](../../19-digital-vlsi-design/chapters/19-12-design-for-test.md) (scan, BIST, coverage and defect level), [03-01](../../03-probability-statistics-and-random-variables/chapters/03-01-probability-in-ee-language.md) (escapes and overkill), [03-04](../../03-probability-statistics-and-random-variables/chapters/03-04-joint-distributions-and-clt.md) (speed prediction at sort), [03-05](../../03-probability-statistics-and-random-variables/chapters/03-05-estimation-and-hypothesis-testing.md) (Weibull and infant mortality), [25-04](25-04-yield-and-die-cost.md) (yield and cost per good die), [25-07](25-07-advanced-packaging-and-chiplets.md) (known-good die) |
 | **Estimated study hours** | 6 |
 | **Last verified** | 2026-11-26 |
@@ -25,7 +25,7 @@ Every chip is tested before it ships, usually several times: at wafer level, aft
 
 - **Where it shows up:** every product's cost of goods; the speed and price grades of every CPU and GPU; automotive ppb quality (25-10); the known-good-die economics of chiplets (25-07).
 - **The equipment:** automatic test equipment (ATE), dominated by Advantest and Teradyne; probe cards (FormFactor, Technoprobe, MJC); handlers and probers; burn-in and system-level-test systems [R-616]–[R-620].
-- **The economics:** historically about 2% of manufacturing cost, now reported at several percent of the selling price for the most complex AI parts [R-618].
+- **The economics:** historically about 2% of manufacturing cost, now reported at several percent of the selling price for the most complex AI parts [R-618]; the two bases differ (selling price includes margin), so the figures are not a like-for-like trend.
 
 ## 2. Intuition first
 
@@ -78,7 +78,13 @@ $$
 P(\text{escape}) = P(F < L,\ F + e \ge L + g),\qquad P(\text{overkill}) = P(F \ge L,\ F + e < L + g),
 $$
 
-both computed by integrating the measurement-error distribution over the population. Raising $g$ trades escapes for overkill; tester accuracy $\sigma_m$ sets how expensive that trade is (Example 25-11.6). Automotive parts run wide guard bands and accept the overkill; consumer parts run narrow ones.
+both computed by integrating the measurement-error distribution over the population. With $f_F$ the density of $F$, $\Phi$ the standard normal CDF and $Q = 1 - \Phi$ its tail,
+
+$$
+P(\text{escape}) = \int_{-\infty}^{L} f_F(x)\,Q\!\left(\frac{L + g - x}{\sigma_m}\right)dx,\qquad P(\text{overkill}) = \int_{L}^{\infty} f_F(x)\,\Phi\!\left(\frac{L + g - x}{\sigma_m}\right)dx:
+$$
+
+a bad part ($x < L$) escapes if its measurement error lifts it past $L + g$, and a good one is killed if the error leaves it below. With the limit at the population mean and no guard band, a rotation of coordinates gives the closed form $\arctan(\sigma_m/\sigma_F)/(2\pi)$ for each (Problem 25-11.13). Raising $g$ trades escapes for overkill; tester accuracy $\sigma_m$ sets how expensive that trade is (Example 25-11.6). Automotive parts run wide guard bands and accept the overkill; consumer parts run narrow ones.
 
 ### 3.4 Infant mortality and burn-in
 
@@ -148,7 +154,7 @@ Every test generates data: pass/fail by test, parametric values, bins, all tagge
 
 **Units check.** Weibull arguments are hours over hours; ppm is a fraction × 10⁶.
 
-**Sanity check.** A day of burn-in cuts first-year early failures about thirtyfold, from 1% of parts to about 0.03%. The burn-in also scraps about 1% of production (the weak parts it catches), which is the screen working, not a loss.
+**Sanity check.** A day of burn-in cuts first-year early failures by a factor of about **32**, from 1.0e4 to 3.1e2 ppm. The burn-in also scraps about 1% of production (the weak parts it catches), which is the screen working, not a loss.
 
 ### Example 25-11.4 · How long to burn in? (tier B)
 
@@ -181,13 +187,13 @@ Every test generates data: pass/fail by test, parametric values, bins, all tagge
 
 **Solution.** Integrating over the population (lab and verify):
 
-- (a) escapes **2.11e4** ppm, overkill **2.11e4** ppm (symmetric with no guard band);
+- (a) escapes **2.11e4** ppm, overkill **2.11e4** ppm (equal because the limit sits at the population mean and there is no guard band);
 - (b) escapes **451** ppm, overkill **1.05e5** ppm;
 - (c) escapes **20** ppm, overkill **1.54e5** ppm.
 
 **Units check.** Probabilities expressed in ppm.
 
-**Sanity check.** Each 20 MHz of guard band cuts escapes by about an order of magnitude but adds about five percentage points of overkill. With the limit at the population's mean, many parts sit near it; real limits usually sit in a tail, where both numbers are far smaller.
+**Sanity check.** Escapes fall ever faster as the guard band grows (from 2.11e4 to 451 ppm over the first 40 MHz, then to 20 ppm with the next 20 MHz), while overkill climbs by several percentage points for every 20 MHz. With the limit at the population's mean, many parts sit near it; real limits usually sit in a tail, where both numbers are far smaller.
 
 <!-- answer-key -->
 
@@ -211,6 +217,7 @@ Every test generates data: pass/fail by test, parametric values, bins, all tagge
 | Ex 25-11.3d | first-year failures without burn-in | 1.0e4 | ppm |
 | Ex 25-11.3e | first-year failures with burn-in | 3.1e2 | ppm |
 | Ex 25-11.3e0 | survivors failing in first year | 0.9985 | |
+| Ex 25-11.3f | reduction in first-year failures | 32 | |
 | Ex 25-11.4a | equivalent hours for 100 ppm | 2.12e3 | h |
 | Ex 25-11.4b | burn-in hours at AF 50 | 42.4 | h |
 | Ex 25-11.4c | extra time over 24 h | 77 | % |
@@ -291,7 +298,7 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 
 - *ATE vendors* [Established for financials; Industry estimate for shares]. Advantest reported record FY2025 (to March 2026) sales of ¥1,128.6 billion and operating income of ¥499.1 billion (a 44.2% margin), estimated its tester share at 65% in CY2025 (58% in CY2024), with about 66% of SoC testers and 60% of memory testers, and in October 2026 raised its FY2026 forecast to ¥1,863.0 billion of sales [R-616]. Teradyne reported 2025 revenue of $3.19 billion (+13%), with semiconductor test nearly 80% of revenue; management believes it held about 50% of the "VIP compute" market, and compute became the largest part of its SoC business, "eclipsing" mobile. Its Q3 2026 revenue was $1,306 million, against $769 million a year earlier [R-617].
 - *Market and cost of test* [Established for the 2% rule; Industry estimate for the rest]. Test was long held to about 2% of manufacturing cost; a May 2026 venture-capital analysis puts the CY2025 ATE market at $9.0 billion (+50%), the two leading vendors at about 90% combined, and test cost on the most complex AI packages at 5–7% of selling price [R-618].
-- *Probe cards* [Established for FormFactor; Industry estimate for the ranking]. FormFactor's FY2025 revenue was $785.0 million (+2.8%); TrendForce expects Technoprobe to overtake it as the largest supplier in 2026, with MJC the third major player [R-619].
+- *Probe cards* [Established for FormFactor; Industry estimate for the ranking]. FormFactor's FY2025 revenue was $785.0 million (+2.8%); TrendForce sees Technoprobe "poised to overtake" it as the largest supplier, with MJC the third major player [R-619].
 - *Burn-in for AI* [Industry estimate]. Aehr Test Systems reports its lead AI customer "shifting their burn-in from system-level to all wafer-level" for AI accelerators; Aehr's FY2026 revenue was $50.0 million and it guided $130–150 million for FY2027 [R-620].
 
 **Why it matters commercially.** Test sits where AI hardware, quality and capital equipment meet: AI accelerators need more tester time, more power per site, more SLT and burn-in, and their packages carry so much value that every escape and every scrapped module matters. The ATE duopoly has been among the clearest beneficiaries of the AI build-out [R-616], [R-617]. For a chip company, test is both a cost line and a source of competitive data; for an acquirer, test capability (programs, correlation, data infrastructure) is often what makes a newly acquired product line shippable at scale.

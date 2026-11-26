@@ -38,7 +38,7 @@ Fractions **0.0228**, **0.477**, **0.477**; revenue **$345**, up from $332. The 
 
 ### Solution 25-11.8
 
-A guard band of **50.4** MHz gives 100 ppm escapes, with **13.1**% overkill.
+Escapes are 451 ppm at 40 MHz and 20 ppm at 60 MHz (Example 25-11.6), so the root lies between them. Solving $P_{esc}(g) = 10^{-4}$ with the escape integral of §3.3 by bisection on $g$ gives a guard band of **50.4** MHz; the overkill integral at that $g$ gives **13.1**%.
 
 ### Solution 25-11.9
 
@@ -54,7 +54,19 @@ $9.0/1.5$ = **$6.0 B**.
 
 ### Solution 25-11.12
 
-Without sort, 140 bad dies are packaged: **$420** wasted. With sort: $1000 \times 0.05 = 50$ plus $140 \times 0.05 \times 3 = 21$ of wasted packaging, **$71**. Saving **$349** per wafer; for chiplets, where a bad die scraps a whole module, the case is far stronger (25-07).
+Without sort, $1000 \times 0.14$ = **140** bad dies are packaged: **$420** wasted. With sort: $1000 \times 0.05$ = **$50** of sort plus $140 \times 0.05 \times 3$ = **$21** of wasted packaging, **$71**. Saving **$349** per wafer; for chiplets, where a bad die scraps a whole module, the case is far stronger (25-07).
+
+### Solution 25-11.13
+
+(a) Write $u = (F - \mu)/\sigma_F$ and $w = e/\sigma_m$, independent standard normals, so their joint density depends only on the distance from the origin and every wedge of angle $\theta$ has probability $\theta/(2\pi)$. A part escapes if $F < \mu$ and $F + e \ge \mu$, that is $u < 0$ and $w \ge (\sigma_F/\sigma_m)\lvert u\rvert$: the wedge between the positive $w$ axis and the ray $(-1, \sigma_F/\sigma_m)$, whose angle from the axis is $\arctan(\sigma_m/\sigma_F)$. Hence $P = \arctan(20/150)/(2\pi)$ = **2.11e4** ppm, matching Example 25-11.6(a).
+
+(b) $\arctan(10/150)/(2\pi)$ = **1.06e4** ppm: halving the tester error roughly halves the escapes when the limit sits at the mean, because the angle is nearly proportional to $\sigma_m/\sigma_F$.
+
+### Solution 25-11.14
+
+(a) Burn-in ages every part by $AF\,t_b$ use hours, so the weak parts surviving it are $p_w[1 - F_w(AF\,t_b)] = p_w\exp[-(AF\,t_b/\eta_w)^\beta]$. Setting this equal to $q$ and taking logarithms twice gives $(AF\,t_b/\eta_w)^\beta = \ln(p_w/q)$, so $AF\,t_b = \eta_w[\ln(p_w/q)]^{1/\beta}$.
+
+(b) $100 \times (\ln 1000)^2$ = **4.77e3** use hours, or **95.4** h at $AF$ = 50: four days of burn-in, because the shallow shape $\beta$ = 0.5 spreads the weak lives out.
 
 ---
 
@@ -90,3 +102,10 @@ Without sort, 140 bad dies are packaged: **$420** wasted. With sort: $1000 \time
 | 25-11.12a | wasted without sort | 420 | $ |
 | 25-11.12b | cost with sort | 71 | $ |
 | 25-11.12c | saving | 349 | $ |
+| 25-11.12a0 | bad dies packaged without sort | 140 | |
+| 25-11.12b0 | sort cost | 50 | $ |
+| 25-11.12b1 | wasted packaging with sort | 21 | $ |
+| 25-11.13a | escapes, closed form | 2.11e4 | ppm |
+| 25-11.13b | escapes, half the tester error | 1.06e4 | ppm |
+| 25-11.14a | use-equivalent burn-in | 4.77e3 | h |
+| 25-11.14b | burn-in hours at AF 50 | 95.4 | h |

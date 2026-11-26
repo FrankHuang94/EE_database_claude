@@ -6073,7 +6073,7 @@ R&D % = R&D ÷ revenue.
 *Read on 26 Nov 2026 by a research subagent (Teradyne releases, annual report on SEC EDGAR and a call transcript opened).* [Established for financials; Industry estimate for the share]
 
 - Release (2 Feb 2026): "Revenue of $3.19 billion in 2025, up 13% from 2024". Annual report: "The Semiconductor Test Group … growing revenue by 19% year-over-year. This group now represents nearly 80% of our total revenue".
-- Call (3 Feb 2026): "we believe that we maintained about 50% market share in the VIP compute market in 2025"; "compute is now the largest part of our SoC portfolio, eclipsing our historical stronghold of mobile"; "the overall memory TAM was down about 4% from 2024, and we are able to gain a little share."
+- Call (Q4 2025 results call; dated 3 Feb 2026 from the results release, while the transcript page is dated 21 Apr 2026, so the call date is not confirmed): "we believe that we maintained about 50% market share in the VIP compute market in 2025"; "compute is now the largest part of our SoC portfolio, eclipsing our historical stronghold of mobile"; "the overall memory TAM was down about 4% from 2024, and we are able to gain a little share."
 - Q3 2026 (27 Oct 2026): "revenue of $1,306 million for the third quarter of 2026 of which $1,072 million was in Semiconductor Test"; Q3 2025 revenue $769 million; Q4 2026 guidance $1,250–1,350 million.
 - **Sources:** [Teradyne release, 2 Feb 2026](https://investors.teradyne.com/news-events/press-releases/detail/433); [Teradyne ARS FY2025](https://www.sec.gov/Archives/edgar/data/97210/000119312526127510/2025_ter-ars.pdf); [Teradyne Q3 2026, Form 8-K Ex. 99.1](https://www.sec.gov/Archives/edgar/data/0000097210/000119312526434981/ter-ex99_1.htm); [The Motley Fool, Q4 2025 call transcript](https://www.fool.com/earnings/call-transcripts/2026/04/21/teradyne-ter-q4-2025-earnings-transcript/). Checked Nov 2026.
 
@@ -6100,6 +6100,7 @@ R&D % = R&D ÷ revenue.
 
 - Aehr (14 Jul 2026): "Our lead AI production customer is significantly ramping capacity … They are shifting their burn-in from system-level to all wafer-level for their AI accelerators used for training and inference applications"; "Net revenue was $50.0 million, compared to $59.0 million in fiscal 2025"; "projected fiscal 2027 revenue of $130 million to $150 million".
 - Call: management "is evaluating a development agreement for high-bandwidth memory (HBM) and NAND flash".
+- **Caveat:** the results release was read through the finviz news aggregator; the company's investor-relations or SEC copy was not opened.
 - **Sources:** [Aehr FY2026 results release](https://finviz.com/news/368117/aehr-test-systems-reports-fiscal-2026-fourth-quarter-and-full-year-financial-results-with-record-quarterly-bookings-and-100-million-effective-backlog); [The Motley Fool, Aehr Q4 FY2026 call](https://www.fool.com/earnings/call-transcripts/2026/07/14/aehr-test-systems-aehr-q4-2026-earnings-call-transcript/). Checked Nov 2026.
 
 ## R-621 · Wilson Research Group / Siemens EDA 2024 IC/ASIC study and its methodology change (Course 25)

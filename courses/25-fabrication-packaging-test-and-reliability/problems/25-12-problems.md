@@ -45,7 +45,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-12.7 [A]
 
-**Mask cost in context.** A leading-edge mask set costs $20–40 M by estimate [R-623]. What share is that of (a) a $650 M design budget and (b) a $50–75 M startup budget (use the extremes)?
+**Mask cost in context.** A leading-edge (3 nm-class) mask set costs $20–40 M by estimate [R-623]. What share is that of (a) a $650 M design budget? (b) The $50–75 M budget reported for a startup chip is for 7 nm, where mask sets cost "beyond $10M" [R-623]: taking $10 M as a floor, what share is that? (c) What would a 3 nm mask set be as a share of the same startup budget? Use the extremes throughout.
 
 ### Problem 25-12.8 [C]
 

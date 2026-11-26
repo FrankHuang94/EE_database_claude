@@ -52,7 +52,7 @@ flowchart LR
 2. **Clocks and reset.** PLLs must lock (20-10); reset must release cleanly across clock domains.
 3. **Debug access.** The JTAG port (19-12) is the lifeline: through it engineers read identification registers, run scan chains, access on-chip debug and load code.
 4. **Boot.** The boot ROM executes, memories are initialized and tested, and firmware loads. Each step usually has a fallback path (boot from JTAG, run from internal SRAM) so that one broken block does not stop bring-up.
-5. **System and stress.** Operating systems, drivers, I/O links (24-xx), and stress workloads run across voltage, frequency and temperature.
+5. **System and stress.** Operating systems, drivers, I/O links (24-03, 24-05), and stress workloads run across voltage, frequency and temperature.
 
 Teams practise all of this before silicon arrives on emulators and FPGA prototypes running the real firmware (19-13), which is why bring-up of a mature team's chip can be fast; the lab board, its power delivery and its firmware are themselves designs that can be wrong.
 
@@ -82,7 +82,7 @@ $$
 
 with $K$ fitted to one measured point. The minimum voltage $V_{min}$ for a target frequency follows by solving $F_{max}(V) = F_{target}$; the product specification then adds guard bands for aging (25-09), temperature, tester accuracy (25-11) and part-to-part spread, measured across many units and skewed "corner lots" processed fast and slow on purpose (Example 25-12.2). Lowering the guaranteed voltage saves power roughly as $V^2$, so characterization quality is worth real product value. Deviations from the smooth boundary are themselves symptoms: a hole in the shmoo, or a boundary that bends at low voltage, points to a marginal path, a memory-cell stability limit or a power-delivery problem.
 
-**How many parts?** A $V_{min}$ distribution's spread is estimated from a sample; to know its standard deviation within ±10% at 95% confidence takes about $1 + z^2/(2\delta^2) \approx 193$ parts (the chi-square interval of 03-05, Example 25-12.5), which is why characterization uses hundreds of units from several lots.
+**How many parts?** A $V_{min}$ distribution's spread is estimated from a sample; to know its standard deviation within ±10% at 95% confidence takes about $1 + z^2/(2\delta^2)$, rounded up to **194** parts, by a large-sample approximation (Example 25-12.5); the exact chi-square interval of 03-05 is lopsided and needs more. Either way characterization uses hundreds of units from several lots.
 
 ### 3.4 Bug discovery and when to stop
 
@@ -100,7 +100,7 @@ A bug found in silicon has four kinds of remedy, in rising cost:
 
 1. **Software or firmware workaround:** avoid the triggering condition, add a delay, patch microcode. Cheap and fast; may cost performance or features, and goes into the errata.
 2. **Configuration change:** a chicken bit disables or modifies the faulty feature.
-3. **Metal-only ECO:** rewire spare cells using only the upper metal and via masks. Only those masks are remade, and wafers parked before the metal steps finish quickly (00-05).
+3. **Metal-only ECO:** rewire spare cells by changing only metal and via masks, no transistor (FEOL) layers. Only those masks are remade, and wafers parked before the metal steps finish quickly (00-05). The fewer and higher the changed layers, the cheaper and faster the fix; a change that reaches the finely patterned lower metals costs much more.
 4. **Full respin:** a new base-layer mask set and a full fab cycle.
 
 The decision weighs direct cost, schedule (the dominant term, 00-05), the probability that a fix works, and the risk of new bugs it introduces. An expected-cost decision tree makes the trade explicit (Example 25-12.4): a cheaper, faster fix with a moderate chance of success can beat a sure but slow full respin. Mask costs themselves are unofficial and widely ranged: estimates for a leading-edge full mask set run from about $10–20 million (3–5 nm) to $20–30 million (3 nm) and toward $40 million beyond it [R-623] **[Contested]**.
@@ -119,7 +119,7 @@ The Siemens EDA and Wilson Research Group study is the industry's main public da
 
 - (a) $256 \times 4096$ = **1.05e6** bits = **128** KiB.
 - (b) $4096/(2 \times 10^9)$ s = **2.05** µs.
-- (c) $10/2.05$ = **4.9** times deeper, about 5 Mbit, or a trigger that fires on an earlier event so the 2 µs window lands on the cause.
+- (c) $10/2.05$ = **4.9** times deeper, about **5.1** Mbit (10⁶ bits), or a trigger that fires on an earlier event so the 2 µs window lands on the cause.
 
 **Units check.** Signals × entries = bits; entries/(cycles/s) = s. ✓
 
@@ -135,7 +135,7 @@ The Siemens EDA and Wilson Research Group study is the industry's main public da
 - (b) **2.76** GHz. (c) **3.23** GHz.
 - (d) Solving $F_{max}(V) = 2.5$: **0.651** V.
 - (e) $0.651 + 0.030$ = **0.681** V.
-- (f) $(0.681/0.75)^2$ = **0.823**: **17.7**% less dynamic power.
+- (f) With the unrounded **0.6806** V, $(0.6806/0.75)^2$ = **0.823**: **17.7**% less dynamic power.
 
 **Units check.** $K$ absorbs the units so that $F_{max}$ comes out in GHz.
 
@@ -154,7 +154,7 @@ The Siemens EDA and Wilson Research Group study is the industry's main public da
 
 **Units check.** $bt$ is dimensionless; $1/b$ is in weeks.
 
-**Sanity check.** The last 5% of bugs take as long again as the first 75%, which is why production release criteria combine the discovery curve with the severity of open bugs and the existence of workarounds, rather than waiting for zero.
+**Sanity check.** Going from 75% of the estimated bugs (week 8) to 95% (week 17.3) takes longer, **9.3** weeks, than reaching 75% did, which is why production release criteria combine the discovery curve with the severity of open bugs and the existence of workarounds, rather than waiting for zero.
 
 ### Example 25-12.4 · Metal-only ECO or full respin? (tier C)
 
@@ -172,13 +172,16 @@ The Siemens EDA and Wilson Research Group study is the industry's main public da
 
 ### Example 25-12.5 · How many parts to characterize? (tier B)
 
-**Setup.** How many parts are needed to know the standard deviation of $V_{min}$ within ±10% at 95% confidence, using the large-sample approximation $\delta \approx z/\sqrt{2(n - 1)}$?
+**Setup.** How many parts are needed to know the standard deviation of $V_{min}$ within ±10% at 95% confidence? Use (a) the large-sample approximation and (b) the exact chi-square interval of 03-05, requiring its upper side to stay within +10%.
 
-**Solution.** $n = 1 + z^2/(2\delta^2) = 1 + 1.96^2/(2 \times 0.01)$ = **193** parts.
+**Solution.**
+
+- (a) For Gaussian data the sample variance $S^2$ has $\operatorname{Var}(S^2) = 2\sigma^4/(n - 1)$. The sample standard deviation is $S = \sqrt{S^2}$, and by the delta method (03-03) $\operatorname{SD}(S) \approx \frac{1}{2\sigma}\operatorname{SD}(S^2) = \sigma/\sqrt{2(n - 1)}$. A 95% interval of $\pm z\,\sigma/\sqrt{2(n - 1)}$ is within $\pm\delta\sigma$ when $n = 1 + z^2/(2\delta^2) = 1 + 1.96^2/(2 \times 0.01)$ = **193.07**, so **194** parts (a sample size is rounded up).
+- (b) The exact interval for $\sigma$ runs from $s\sqrt{(n-1)/\chi^2_{0.975}}$ to $s\sqrt{(n-1)/\chi^2_{0.025}}$ and is lopsided, its upper side the longer. Increasing $n$ until $\sqrt{(n-1)/\chi^2_{0.025,\,n-1}} \le 1.10$ gives **234** parts.
 
 **Units check.** Dimensionless.
 
-**Sanity check.** Specifying a voltage several σ from the mean multiplies any error in σ, so characterization uses hundreds of parts across lots and corner splits, not a handful of samples.
+**Sanity check.** The approximation is symmetric and slightly optimistic; the exact interval asks for about a fifth more parts. Specifying a voltage several σ from the mean multiplies any error in σ, so characterization uses hundreds of parts across lots and corner splits, not a handful of samples.
 
 ### Example 25-12.6 · How precise is "5%"? (tier B)
 
@@ -187,12 +190,14 @@ The Siemens EDA and Wilson Research Group study is the industry's main public da
 **Solution.**
 
 - (a) $16/320$ = **5.0**%.
-- (b) $\hat{p} = 0.05$, $z = 1.96$: $\dfrac{\hat{p} + z^2/2n \pm z\sqrt{\hat{p}(1-\hat{p})/n + z^2/4n^2}}{1 + z^2/n}$ = **3.1**% to **8.0**%.
+- (b) $\hat{p} = 0.05$, $z = 1.96$: $\dfrac{\hat{p} + z^2/2n \pm z\sqrt{\hat{p}(1-\hat{p})/n + z^2/4n^2}}{1 + z^2/n}$ = **3.1**% to **8.0**%. The simpler Wald interval $\hat p \pm z\sqrt{\hat p(1 - \hat p)/n}$ of 03-05 would give **2.6**% to **7.4**%.
 - (c) $14.4/5$ = **2.9**.
 
 **Units check.** Proportions.
 
-**Sanity check.** Even the interval's upper end is about half of 2024's value, so the decline is not just sampling noise within this survey; but self-selection, the 2024 methodology change and the 2026 mix of complex processor projects all affect what the number means [R-621], [R-622].
+**Sanity check.** The 2026 interval lies entirely below the 2024 one (Problem 25-12.6), so the decline is not sampling noise alone; but self-selection, the 2024 methodology change and the 2026 mix of complex processor projects all affect what the number means [R-621], [R-622].
+
+> **Math refresher — the Wilson interval.** The Wald interval of 03-05 plugs the estimate $\hat p$ into the standard error. For small $\hat p$ or small $n$ it can reach below zero and covers the truth less often than claimed. Wilson's interval instead collects every $p$ that a $z$-test would not reject: $(\hat p - p)^2 \le z^2p(1 - p)/n$. That is a quadratic inequality in $p$; solving $(1 + z^2/n)p^2 - (2\hat p + z^2/n)p + \hat p^2 = 0$ gives the two endpoints above. It never leaves [0, 1] and is shifted toward ½, which is why it is preferred for rare outcomes such as first-silicon success.
 
 <!-- answer-key -->
 
@@ -202,11 +207,13 @@ The Siemens EDA and Wilson Research Group study is the industry's main public da
 | Ex 25-12.1a1 | trace storage | 128 | KiB |
 | Ex 25-12.1b | time window | 2.05 | µs |
 | Ex 25-12.1c | depth factor for 10 µs | 4.9 | |
+| Ex 25-12.1c1 | storage for 10 µs | 5.1 | Mbit |
 | Ex 25-12.2a | fitted K | 6.35 | |
 | Ex 25-12.2b | Fmax at 0.70 V | 2.76 | GHz |
 | Ex 25-12.2c | Fmax at 0.80 V | 3.23 | GHz |
 | Ex 25-12.2d | voltage for 2.5 GHz | 0.651 | V |
 | Ex 25-12.2e | specified voltage | 0.681 | V |
+| Ex 25-12.2e0 | specified voltage, unrounded | 0.6806 | V |
 | Ex 25-12.2f | power ratio | 0.823 | |
 | Ex 25-12.2f1 | power saving | 17.7 | % |
 | Ex 25-12.2g | frequency worth of 30 mV | 0.16 | GHz |
@@ -215,15 +222,20 @@ The Siemens EDA and Wilson Research Group study is the industry's main public da
 | Ex 25-12.3b | expected total bugs | 120 | |
 | Ex 25-12.3c | bugs remaining | 30 | |
 | Ex 25-12.3d | time to 95% | 17.3 | weeks |
+| Ex 25-12.3e | weeks from 75% to 95% | 9.3 | weeks |
 | Ex 25-12.4a | expected cost, metal ECO | 77 | $M |
 | Ex 25-12.4b | cost, full respin | 125 | $M |
 | Ex 25-12.4c | break-even success probability | 0.416 | |
-| Ex 25-12.5a | parts for ±10% on sigma | 193 | |
-| Txt 25-12.a | parts for ±10% on sigma (text) | 193 | |
+| Ex 25-12.5a0 | unrounded sample size | 193.07 | |
+| Ex 25-12.5a | parts for ±10% on sigma | 194 | |
+| Ex 25-12.5b | parts, exact chi-square | 234 | |
+| Txt 25-12.a | parts for ±10% on sigma (text) | 194 | |
 | Ex 25-12.6a | point estimate | 5.0 | % |
 | Ex 25-12.6b | Wilson lower | 3.1 | % |
 | Ex 25-12.6b1 | Wilson upper | 8.0 | % |
 | Ex 25-12.6c | ratio to 2024 | 2.9 | |
+| Ex 25-12.6d | Wald lower | 2.6 | % |
+| Ex 25-12.6d1 | Wald upper | 7.4 | % |
 
 ## 5. Simulate it
 
@@ -265,9 +277,9 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 | First-silicon success, IC/ASIC | 14% (2024); 5% (2026; method changed in 2024) | Sep 2026 | [R-621], [R-622] |
 | Projects behind schedule | 75% (2024); about three in four (2026) | Oct 2026 | [R-621], [R-622] |
 | Leading-edge mask set | ≈ $10–20 M (3–5 nm) to $20–30 M (3 nm), toward $40 M beyond (estimates) | 2022–2026 | [R-623] |
-| Design cost, large leading-edge chip | ≈ $650 M (3 nm) to $725 M (2 nm), IBS estimates, contested | 2020–2023 | [R-623] |
+| Design cost, large leading-edge chip | ≈ $650 M (3 nm, IBS); ≈ $725 M (large 2 nm chip, from scratch without IP); contested | 2020–2023 | [R-623] |
 | Trace window | depth / clock frequency | timeless | §3.2 |
-| Characterization sample for σ to ±10% | ≈ 193 parts at 95% | timeless | §3.3 |
+| Characterization sample for σ to ±10% | 194 parts at 95% (large-sample); 234 (exact) | timeless | §3.3 |
 
 ## 8. Common mistakes
 
@@ -283,8 +295,8 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 **State of the art (as of Nov 2026).**
 
 - *First-silicon success* [Established as reported; statistically fragile]. The 2024 Siemens EDA and Wilson Research Group report found 14% of IC/ASIC projects succeeded on first silicon, "the lowest value recorded in the past twenty years", with 75% behind schedule (historically about 66%) and logic or functional flaws still the leading cause of bugs [R-621]. The 2026 study reports 5% (604 participants: 320 IC/ASIC, 284 FPGA), with about three in four projects missing their original schedules; it uses the recruitment method introduced in 2024, and its author stresses that no single factor is shown to cause the decline [R-622].
-- *Costs* [Industry estimate; Contested]. No foundry publishes mask prices; third-party estimates for leading-edge mask sets span roughly $10–40 million, and IBS's widely quoted design-cost estimates ($650 million at 3 nm, $725 million for a large 2 nm chip) assume a design built from scratch without existing IP [R-623].
-- *Effort* [Established qualitatively; Contested quantitatively]. Bug localization dominates post-silicon validation effort, per a 2010 DAC survey; a frequently repeated claim that post-silicon validation exceeds half of all development effort traces to an unsourced statement [R-624].
+- *Costs* [Industry estimate; Contested]. No foundry publishes mask prices; third-party estimates for leading-edge mask sets span roughly $10–40 million, IBS estimated $650 million to design a 3 nm chip, and a 2023 estimate put a fairly large 2 nm chip at $725 million for a company building it from scratch without existing IP [R-623].
+- *Effort* [Established qualitatively; Contested quantitatively]. Bug localization dominates post-silicon validation effort, per a 2010 DAC survey; a frequently repeated claim that post-silicon validation exceeds half of all development effort appears in a 2016 paper that gives no primary source [R-624].
 
 **Why it matters commercially.** The time from first silicon to production revenue is where schedules are won or lost: every week is lost revenue (00-05), and the number and severity of errata shape customer trust. For an acquirer, a target's bring-up record (weeks from silicon to boot, respins per product, errata counts) is one of the most honest measures of engineering maturity, because it cannot be produced by slides.
 
@@ -370,7 +382,7 @@ Now try the [25-12 problem set](../problems/25-12-problems.md).
 
 - S. Mitra, S. A. Seshia and N. Nicolici, "Post-Silicon Validation Opportunities, Challenges and Recent Advances," DAC 2010.
 - P. Mishra and F. Farahmandi (eds.), *Post-Silicon Validation and Debug* (Springer, 2019).
-- A. L. Goel and K. Okumoto, "Time-dependent error-detection rate model for software reliability," *IEEE Trans. Reliability* R-28(3), 1979: the reliability-growth model used here.
+- A. L. Goel and K. Okumoto, "Time-dependent error-detection rate model for software reliability and other performance measures," *IEEE Trans. Reliability* R-28(3), pp. 206–211, 1979: the reliability-growth model used here.
 - The Siemens EDA / Wilson Research Group functional verification study series (2024 and 2026 editions).
 
 ## 14. Sources

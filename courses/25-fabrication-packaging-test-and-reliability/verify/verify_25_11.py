@@ -86,6 +86,7 @@ v.check("Ex 25-11.3d", 1e6 * 0.01 * weak_cdf(8766, 100, 0.5))
 cond = 1 - (1 - weak_cdf(1200 + 8766, 100, 0.5)) / (1 - fb)
 v.check("Ex 25-11.3e0", cond)
 v.check("Ex 25-11.3e", 1e6 * 0.01 * (1 - fb) * cond)
+v.check("Ex 25-11.3f", (0.01 * weak_cdf(8766, 100, 0.5)) / (0.01 * (1 - fb) * cond))
 teq = optimize.brentq(lambda t: 0.01 * (1 - weak_cdf(t, 100, 0.5)) - 1e-4, 100, 1e5)
 v.check("Ex 25-11.4a", teq)
 v.check("Ex 25-11.4b", teq / 50)
@@ -141,6 +142,9 @@ v.check("25-11.10a", 100 * (1306 / 769 - 1))
 v.check("25-11.10b", 100 * 1072 / 1306)
 v.check("25-11.11a", 9.0 / 1.5)
 bad = round(1000 * (1 - 0.86))
+v.check("25-11.12a0", bad)
+v.check("25-11.12b0", 1000 * 0.05)
+v.check("25-11.12b1", bad * 0.05 * 3)
 v.check("25-11.12a", bad * 3)
 v.check("25-11.12b", 1000 * 0.05 + bad * 0.05 * 3)
 v.check("25-11.12c", bad * 3 - (1000 * 0.05 + bad * 0.05 * 3))
@@ -151,5 +155,15 @@ v.check("Lab 25-11.a", optimize.brentq(lambda e: cost(250, 2.0, 8, e, 0.3) - c4,
 v.check("Lab 25-11.b", f3)
 v.check("Lab 25-11.c", 1000 * g100)
 v.check("Lab 25-11.d", r10)
+
+# Problem 13: the bivariate-normal escape probability at g = 0, L = mu against the wedge formula
+for key, sm in (("a", 0.02), ("b", 0.01)):
+    p_esc = esc_ovk(0.0, sm=sm)[0]
+    v.assert_true(f"Problem 13{key}: bivariate escape equals arctan(sm/sF)/(2 pi)", abs(p_esc / (math.atan(sm / 0.15) / (2 * math.pi)) - 1) < 1e-4)
+    v.check(f"25-11.13{key}", 1e6 * p_esc)
+# Problem 14: burn-in time by root-finding on the shipped weak fraction
+tb = optimize.brentq(lambda t: 0.01 * (1 - weak_cdf(t, 100, 0.5)) - 1e-5, 1, 1e6)
+v.check("25-11.14a", tb)
+v.check("25-11.14b", tb / 50)
 
 sys.exit(v.finish())

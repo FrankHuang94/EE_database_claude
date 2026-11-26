@@ -8,7 +8,7 @@ Chapter: [25-10](../chapters/25-10-qualification-and-functional-safety.md) · Wo
 
 - Coffin–Manson acceleration $(\Delta T_s/\Delta T_{field})^n$; one 60 K field cycle a day unless stated.
 - Mission-profile stress hours $\sum_i w_it_{life}/AF(T_i \to T_{stress})$ with Arrhenius, $k$ = 8.617 × 10⁻⁵ eV/K.
-- $SPFM = 1 - \sum(\lambda_{SPF} + \lambda_{RF})/\sum\lambda$; $LFM = 1 - \sum\lambda_{MPF,L}/\sum(\lambda - \lambda_{SPF} - \lambda_{RF})$; dual-point rate $\lambda_L\lambda_D\tau$.
+- $SPFM = 1 - \sum(\lambda_{SPF} + \lambda_{RF})/\sum\lambda$; $LFM = 1 - \sum\lambda_L/\sum(\lambda - \lambda_{SPF} - \lambda_{RF})$; dual-point rate $\lambda_L\lambda_D\tau$.
 - ASIL D: SPFM ≥ 99%, LFM ≥ 90%, PMHF < 10 FIT; ASIL C: SPFM ≥ 97%, LFM ≥ 80%, PMHF < 100 FIT [R-614].
 - "Assumed" values are illustrative.
 - Problems marked *(lab)* can be checked with `labs/25-10-lab/qual.py`.
@@ -41,7 +41,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-10.6 [B]
 
-**Periodic test.** *(lab)* In Example 25-10.5(a), the comparator is instead tested every 1,000 h of operation. Estimate the dual-point rate.
+**Periodic test.** *(lab)* In Example 25-10.5(a), the comparator is instead tested every 1,000 h of operation by a test that reveals all of its faults. Estimate the dual-point rate.
 
 ### Problem 25-10.7 [A]
 
@@ -61,7 +61,15 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-10.11 [B]
 
-**ECC and soft errors.** A 4 Mb SRAM has a raw soft-error rate of 1,000 FIT per megabit (assumed). SEC-DED ECC corrects all single-bit events, and 0.1% of events are multi-bit in one word (assumed). Find the raw rate and the residual rate, and compare with an ASIL D item's 10 FIT budget.
+**ECC and soft errors.** A 4 Mb SRAM has a raw soft-error rate of 1,000 FIT per megabit (assumed). SEC-DED ECC corrects all single-bit events, and 0.1% of events are multi-bit in one word (assumed); treat every multi-bit event as residual, an upper bound because SEC-DED detects (and the system could safely handle) double-bit errors. Find the raw rate and the residual rate, and compare with an ASIL D item's 10 FIT budget.
+
+### Problem 25-10.12 [A]
+
+**What sets an ASIL.** For each hazard, say whether its severity, its exposure and its controllability push the ASIL up or down, and which is most likely to be rated QM: (a) unintended full braking at highway speed; (b) loss of power-steering assist while parking; (c) a dashboard clock showing the wrong time.
+
+### Problem 25-10.13 [C]
+
+**The dual-point rate, derived.** A safety mechanism's faults arrive at rate $\lambda_L$ and are revealed by a test every $T$ hours; dangerous faults that the mechanism would catch arrive at $\lambda_{DD}$. (a) Show that for small rates the time-averaged violation rate is $\lambda_L\lambda_{DD}T/2$. (b) Evaluate it in FIT for Example 25-10.5's rates ($\lambda_L$ = 20 FIT, $\lambda_{DD}$ = 118.8 FIT) with a monthly test, $T$ = 720 h. (c) By what factor does that beat never testing over a 15,000 h life?
 
 ---
 
@@ -71,6 +79,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. What qualification shows | 10 |
 | 2. Equivalent field use | 1, 2, 3 |
-| 3. ASILs and targets | 7, 9 |
-| 4. FMEDA metrics and latent faults | 4, 5, 6, 11 |
+| 3. ASILs and targets | 7, 9, 12 |
+| 4. FMEDA metrics and latent faults | 4, 5, 6, 11, 13 |
 | 5. ppm, ppb and vehicles | 8 |

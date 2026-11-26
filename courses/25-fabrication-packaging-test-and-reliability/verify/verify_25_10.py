@@ -100,10 +100,12 @@ v.check("Ex 25-10.4c", lat)
 v.check("Ex 25-10.4c1", 100 * lfm)
 rows_nb = [(80, "S"), (118.8, "MPF_D"), (1.2, "RF"), (20, "MPF_L")]
 v.check("Ex 25-10.4d", 100 * fmeda(rows_nb)[4])
+v.check("Ex 25-10.4e", 100 * fmeda(rows_nb)[4] - 90)
 lam_d = 118.8e-9
-v.check("Ex 25-10.5a", 20e-9 * lam_d * 7500 * 1e9)
-v.check("Ex 25-10.5b", 2e-9 * lam_d * 7500 * 1e9)
-v.check("Ex 25-10.5c", rf + 2e-9 * lam_d * 7500 * 1e9)
+# dual-point rates from the exact integral (latent arrival, exposure until the next test or end of life)
+v.check("Ex 25-10.5a", dual_exact(20e-9, lam_d, 15000, 15000) * 1e9)
+v.check("Ex 25-10.5b", dual_exact(2e-9, lam_d, 15000, 15000) * 1e9)
+v.check("Ex 25-10.5c", rf + dual_exact(2e-9, lam_d, 15000, 15000) * 1e9)
 
 # ---------------------------------------------------------------- Example 6
 v.check("Ex 25-10.6a", 100 * stats.binom.sf(0, 10_000, 1e-6))
@@ -134,7 +136,7 @@ v.check("25-10.5a", 100 * fmeda([(80, "S"), (118.8, "MPF_D"), (1.2, "RF"), (30, 
 v.check("25-10.5b", 100 * optimize.brentq(
     lambda x: fmeda([(80, "S"), (118.8, "MPF_D"), (1.2, "RF"), (30 * x, "MPF_D"), (30 * (1 - x), "MPF_L")])[4] - 0.90,
     0, 1))
-v.check("25-10.6a", 20e-9 * lam_d * 500 * 1e9)
+v.check("25-10.6a", dual_exact(20e-9, lam_d, 1000, 15000) * 1e9)
 v.check("25-10.6b", 7500 / 500)
 v.check("25-10.7a", 0.10 * 10)
 v.assert_true("1.20 FIT exceeds the 1.0 FIT allocation", rf + 2e-9 * lam_d * 7500 * 1e9 > 1.0)
@@ -154,5 +156,23 @@ v.check("Lab 25-10.a", 100 * optimize.brentq(lambda d: spfm_dc(d) - 0.99, 0.5, 1
 v.check("Lab 25-10.b", h05)
 v.check("Lab 25-10.c", dual_exact(2e-6, 2e-5, 1000, 15000) / (2e-6 * 2e-5 * 500))
 v.check("Lab 25-10.d", 100 * stats.binom.sf(0, 20_000, 1e-7))
+
+# per-segment acceleration factors and stress hours (Example 2 and Problem 3)
+def af_to(ea, tc, ts):
+    return rate(ea, ts) / rate(ea, tc)
+
+
+for key, ea, tc, ts, val in (("s1", 0.7, -40, 125, "af"), ("s2", 0.7, 70, 125, "af"), ("s3", 0.7, 70, 125, "h"), ("s4", 0.7, 110, 125, "af"),
+                             ("s5", 0.7, 110, 125, "h"), ("s6", 0.7, 125, 125, "h"), ("s7", 0.7, -40, 150, "af"), ("s8", 0.7, 70, 150, "af"),
+                             ("s9", 0.7, 70, 150, "h"), ("s10", 0.7, 110, 150, "af"), ("s11", 0.7, 110, 150, "h"), ("s12", 0.7, 125, 150, "af")):
+    w = dict(PROFILE)[tc]
+    v.check(f"Ex 25-10.2{key}", af_to(ea, tc, ts) if val == "af" else w * 20000 / af_to(ea, tc, ts))
+for i, tc in enumerate((-40, 70, 110, 125), start=1):
+    v.check(f"25-10.3s{i}", af_to(0.5, tc, 150))
+    v.check(f"25-10.3s{i + 4}", dict(PROFILE)[tc] * 20000 / af_to(0.5, tc, 150))
+v.check("25-10.13b", 20e-9 * lam_d * 720 / 2 * 1e9)
+v.assert_true("Problem 13: the exact integral over whole test intervals agrees with lambda_L lambda_DD T/2 within 0.5%",
+              abs(dual_exact(20e-9, lam_d, 720, 720 * 20) / (20e-9 * lam_d * 360) - 1) < 5e-3)
+v.check("25-10.13c", 7500 / 360)
 
 sys.exit(v.finish())
