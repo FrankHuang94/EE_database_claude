@@ -10836,3 +10836,35 @@
   definition: The right, but not the obligation, to take a business action later (expand, switch, abandon), valued with the same logic as a financial option.
   chapter: "26-04"
   see_also: [Value of flexibility]
+
+# ---------------------------------------------------------------- 26-05
+- term: PERT three-point estimate
+  definition: A task duration estimated from optimistic, most likely and pessimistic values a, m, b, with mean (a + 4m + b)/6 and standard deviation (b − a)/6 (Program Evaluation and Review Technique).
+  chapter: "26-05"
+- term: Critical path (schedule)
+  definition: The chain of dependent tasks with the longest expected duration from start to finish; shortening any other chain does not move the end date.
+  chapter: "26-05"
+  see_also: [Merge bias]
+- term: Merge bias
+  definition: The drop in the chance of meeting a date where parallel paths must all finish, P(all done) = Π P(each done), which is lower than for any single path.
+  chapter: "26-05"
+- term: Metal-only ECO
+  definition: A design change made by altering only the metal and via masks, usually by rewiring spare cells, so the transistor masks are reused and held wafers can be finished quickly; also called a metal fix.
+  chapter: "26-05"
+  see_also: [Engineering change order (ECO), Spare cells, Wafer hold]
+- term: Spare cells
+  definition: Unused logic gates scattered through a layout so that later logic fixes can be made by rewiring them in the metal layers alone.
+  chapter: "26-05"
+- term: Wafer hold
+  definition: Partly processed wafers parked in the fab before metallization (for example at the contact layer), so that a metal-only fix needs only the remaining layers processed.
+  chapter: "26-05"
+- term: Risk register
+  definition: A program's list of risks, each with an owner, probability, impact, mitigation and trigger date, reviewed and updated at every milestone.
+  chapter: "26-05"
+  see_also: ["Expected monetary value (EMV)"]
+- term: Expected monetary value (EMV)
+  definition: The sum over risks of probability × impact; a mitigation is worth doing if it lowers the EMV by more than it costs.
+  chapter: "26-05"
+- term: Bug-discovery curve
+  definition: The number of bugs found per week (or cumulatively) during verification; a curve flattening toward zero, with coverage closed, is the evidence a tape-out review looks for.
+  chapter: "26-05"

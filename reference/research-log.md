@@ -392,7 +392,7 @@ R&D % = R&D ÷ revenue.
 - **Share of project time in verification:** 49% (IC/ASIC, 2026); earlier studies 53–57%.
 - **Schedule:** about 75% of IC/ASIC projects were behind schedule (2024 and 2026).
 - **Verification vs design engineers:** about a 1:1 mean peak headcount ratio (2022 study), with verification headcount growing faster (6.2% vs 2.7% CAGR, 2007–2022).
-- **Respins:** "logic or functional flaws" are the #1 cause of respins. Exact 2024 and 2026 percentages are UNVERIFIED.
+- **Respins:** "logic or functional flaws" are the #1 cause of respins. The 2024 percentages, read from the report's chart, are in R-645; the 2026 percentages are members-only and UNVERIFIED.
 - **Sources:** [Siemens 2026 study blog](https://blogs.sw.siemens.com/verificationhorizons/2026/09/08/the-2026-functional-verification-study/); [2024 report PDF](https://static.sw.cdn.siemens.com/siemens-disw-assets/public/1NyfMZJ3nuPhMGQCGFDITG/en-US/ic-asic-functional-verification-trend-report-wp-86424-d3.pdf); [SemiEngineering, "First-Time Silicon Success Plummets"](https://semiengineering.com/first-time-silicon-success-plummets/); [2022 study, part 8](https://blogs.sw.siemens.com/verificationhorizons/2022/12/12/part-8-the-2022-wilson-research-group-functional-verification-study/).
 
 ## R-019 · Advanced-node design and mask cost estimates [Contested]
@@ -6315,3 +6315,41 @@ R&D % = R&D ÷ revenue.
 - **Microsoft** Maia 200 (26 Jan 2026): "built on TSMC's 3nm process … 216GB HBM3e at 7 TB/s and 272MB of on-chip SRAM"; "over 140 billion transistors"; "over 10 petaFLOPS in 4-bit precision (FP4) and over 5 petaFLOPS of 8-bit (FP8) performance, all within a 750W SoC TDP envelope"; "30% better performance per dollar than the latest generation hardware in our fleet today".
 - **Meta** MTIA (11 Mar 2026): "four new generations of MTIA chips within the next two years"; "We deploy hundreds of thousands of MTIA chips for inference workloads". Meta and Broadcom (14 Apr 2026): "co-develop multiple generations of our next-generation MTIA"; a "commitment that exceeds 1GW".
 - **Sources:** [Google, TPU 8](https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/eighth-generation-tpu-agentic-era/); [Google, Ironwood](https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/ironwood-tpu-age-of-inference/); [AWS, Trn3 UltraServers](https://aws.amazon.com/about-aws/whats-new/2025/12/amazon-ec2-trn3-ultraservers/); [Microsoft, Maia 200](https://blogs.microsoft.com/blog/2026/01/26/maia-200-the-ai-accelerator-built-for-inference/); [Meta, MTIA](https://about.fb.com/news/2026/03/expanding-metas-custom-silicon-to-power-our-ai-workloads/); [Meta and Broadcom](https://about.fb.com/news/2026/04/meta-partners-with-broadcom-to-co-develop-custom-ai-silicon/). Checked Nov 2026.
+
+## R-645 · Wilson Research Group/Siemens 2024 IC/ASIC functional verification trend report (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent (report PDF, 14 pages, footer "86424-D3 2/25"; quotes spot-checked against the saved text).* [Industry estimate: vendor-sponsored survey]
+
+- "only 14 percent of IC/ASIC projects achieved first silicon success. Moreover, the data indicate a declining trend in the percentage of projects reaching first silicon success, marking the lowest value recorded in the past twenty years."
+- "'Logic or functional flaws' remain the leading cause of bugs … for the 2024 study, we separated yield flaws from reliability flaws … Multiple flaws can contribute to bug escapes, which is why the total percentage of flaws exceeds 100 percent."
+- "Historically, about 66 percent of IC/ASIC projects were behind schedule. However, in 2024, this figure increased to 75 percent."
+- **Read from the report's bar charts (values not printed; about ±1 point):** flaws contributing to 2024 respins: logic or functional about 50%, analog about 30%, reliability about 21%, clocking, crosstalk, mixed-signal interface, timing too fast, IR drop and other about 15% each, power, yield and safety about 14%, timing too slow and firmware about 12%, security about 8%. Spins before production (2024): 1 about 14%, 2 about 25%, 3 about 28%, 4 about 16%, 5 about 10%, 6 about 4%.
+- The 2026 study's per-cause percentages and spin distribution are in members-only documents and were not read; its blog reports 5% first-silicon success and "the overwhelming majority of respondents reporting multiple spins before production" (see R-321).
+- **Source:** [Siemens EDA, 2024 IC/ASIC functional verification trend report](https://static.sw.cdn.siemens.com/siemens-disw-assets/public/1NyfMZJ3nuPhMGQCGFDITG/en-US/ic-asic-functional-verification-trend-report-wp-86424-d3.pdf). Checked Nov 2026. Resolves the "UNVERIFIED" note on respin percentages in R-018, as chart readings.
+
+## R-646 · NVIDIA's Blackwell mask change for yield (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent from a call transcript (NVIDIA's investor site returned a bot challenge; the press release has no mask wording).* [Established: management statements, secondary transcript]
+
+- Q2 FY2025 earnings call, 28 Aug 2024. CFO C. Kress: "We executed a change to the Blackwell GPU mass [mask] to improve production yields. Blackwell production ramp is scheduled to begin in the fourth quarter and continue into fiscal year '26"; gross margins were affected by "inventory provisions for low-yielding Blackwell material". CEO J. Huang: "The change to the mask is complete. There were no functional changes necessary."
+- **Source:** [Motley Fool transcript, 28 Aug 2024](https://www.fool.com/earnings/call-transcripts/2024/08/28/nvidia-nvda-q2-2025-earnings-call-transcript/). Checked Nov 2026.
+
+## R-647 · Intel Sapphire Rapids validation delays and production stepping (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent (Intel's newsroom returned 403; statements via press; the specification update read from Intel's documentation site).* [Established for the statements as reported and for the stepping]
+
+- L. Spelman (Intel), in an Intel blog post, as reported by Data Center Knowledge (July 2021): "Given the breadth of enhancements in Sapphire Rapids, we are incorporating additional validation time prior to the production release … we now expect Sapphire Rapids to be in production in the first quarter of 2022, with ramp beginning in the second quarter of 2022."
+- S. Rivera (Intel), June 2022, as reported by Tom's Hardware (8 Jun 2022): "we are building in more platform and product validation time, so we see Sapphire Rapids […] ramp being later in the year than what we had originally forecasted."
+- Intel specification update 772415 (rev. 022US): errata table "Processor Stepping XCC E-5", "MCC S-3", "HBM B-3".
+- **Not used:** a press report (via Igor's Lab) of "about 500 bugs" and 12 steppings, not confirmed by Intel.
+- **Sources:** [Data Center Knowledge, Jul 2021](https://www.datacenterknowledge.com/data-center-chips/intel-delays-sapphire-rapids-xeon-data-center-chip); [Tom's Hardware, 8 Jun 2022](https://www.tomshardware.com/news/intel-delays-xeon-scalable-sapphire-rapids-again); [Intel specification update](https://edc.intel.com/content/www/us/en/design/products-and-solutions/processors-and-chipsets/eagle-stream/sapphire-rapids-specification-update/). Checked Nov 2026.
+
+## R-648 · Metal-only ECOs and spare cells (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent (a university-hosted conference paper and vendor pages).* [Established for the paper; vendor statements marked]
+
+- K.-H. Chang, I. L. Markov and V. Bertacco, "Reap What You Sow: Spare Cells for Post-Silicon Metal Fix," ISPD 2008: "A mask set consists of 20-40 individual masks, whose costs vary depending on their minimal feature sizes"; transistor masks "are the most expensive, while metal layers have larger features and are consequently cheaper. Therefore, respin costs can be reduced by reusing transistor masks and only changing the metal layer masks. A fix that only changes metal layers is often called metal fix"; "even though transistor masks can be reused in metal fix, respin still takes several weeks and is expensive"; "modern CPUs can have as many as 1% spare cells". (2008 figures.)
+- Synopsys ECO Kits page (vendor, undated): "Since only metal and contact layers are utilized, wafers held at contact can be finished quickly, supporting a fast time to market."
+- Siemens Aprisa blog (vendor, 26 Apr 2022): "two types of ECOs: base layer and metal layer"; for a metal ECO "the base layer is frozen and only the metal layers are permitted any changes".
+- **Not found:** a quantified time or mask-count saving from a reputable source.
+- **Sources:** [ISPD 2008 paper (University of Michigan)](https://web.eecs.umich.edu/~imarkov/pubs/conf/ispd08-spare.pdf); [Synopsys ECO Kits](https://www.synopsys.com/designware-ip/memories-logic-libraries/eco-kits.html); [Siemens Aprisa blog](https://blogs.sw.siemens.com/aprisa/2022/04/26/a-cure-for-eco-headaches-aprisa-automates-metal-eco/). Checked Nov 2026.
