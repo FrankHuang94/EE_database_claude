@@ -10479,3 +10479,52 @@
   definition: "An on-chip protection device at each pad that turns on during an electrostatic discharge and diverts the current to a supply rail, holding the pad voltage below what the protected circuit can survive."
   chapter: "25-09"
   see_also: [Electrostatic discharge (ESD), Human-body model (HBM)]
+
+# ---------------------------------------------------------------- 25-10
+- term: Qualification
+  definition: "A standard set of accelerated stress tests (HTOL, temperature cycling, humidity, storage, ESD, latch-up) run on samples of a new or changed product to show it has no gross reliability weakness; it does not by itself demonstrate a field failure rate."
+  chapter: "25-10"
+  see_also: [AEC-Q100, HTOL]
+- term: AEC-Q100
+  definition: "The Automotive Electronics Council's stress-test qualification standard for integrated circuits, with temperature grades defined as ambient ranges from Grade 3 (−40 to +85 °C) to Grade 0 (−40 to +150 °C); revision J dates from August 2023."
+  chapter: "25-10"
+  see_also: [Qualification]
+- term: ISO 26262
+  definition: "The functional-safety standard for electrical and electronic systems in road vehicles, adapted from IEC 61508; it grades development rigour by ASIL and sets quantitative targets for random hardware faults."
+  chapter: "25-10"
+  see_also: [ASIL]
+- term: ASIL
+  definition: "Automotive Safety Integrity Level, from A (least demanding) to D (most demanding), assigned to a safety goal from the severity, exposure and controllability of the hazard it prevents; QM marks hazards needing only normal quality management."
+  chapter: "25-10"
+  see_also: [ISO 26262, Safety goal]
+- term: Safety goal
+  definition: "A top-level safety requirement derived from hazard analysis, such as avoiding unintended braking, which carries an ASIL and flows down to hardware and software requirements."
+  chapter: "25-10"
+- term: FMEDA
+  definition: "Failure modes, effects and diagnostic analysis: a table of every failure mode of every safety-related hardware element, its rate, its effect on the safety goal and the diagnostic coverage of the safety mechanisms, from which SPFM, LFM and PMHF are computed."
+  chapter: "25-10"
+  see_also: [Diagnostic coverage]
+- term: Diagnostic coverage
+  definition: "The fraction of an element's dangerous failure rate that a safety mechanism detects in the field; the remainder is the residual-fault rate. It is not the same as manufacturing test coverage."
+  chapter: "25-10"
+  see_also: [FMEDA]
+- term: Latent fault
+  definition: "A multiple-point fault that is neither detected by a safety mechanism nor perceived by the driver, typically a fault in a safety mechanism itself; it violates nothing until a second fault arrives."
+  chapter: "25-10"
+  see_also: [Latent-fault metric (LFM)]
+- term: Single-point fault metric (SPFM)
+  definition: "One minus the fraction of the safety-related failure rate made up of single-point and residual faults; ISO 26262 targets are at least 90%, 97% and 99% for ASIL B, C and D."
+  chapter: "25-10"
+  see_also: [Latent-fault metric (LFM), PMHF]
+- term: Latent-fault metric (LFM)
+  definition: "One minus the fraction of the remaining (non-single-point, non-residual) failure rate that is latent; ISO 26262 targets are at least 60%, 80% and 90% for ASIL B, C and D."
+  chapter: "25-10"
+  see_also: [Latent fault]
+- term: PMHF
+  definition: "Probabilistic metric for random hardware failures: the average rate at which random hardware faults violate a safety goal, with targets below 100 FIT for ASIL B and C and below 10 FIT for ASIL D."
+  chapter: "25-10"
+  see_also: [Single-point fault metric (SPFM)]
+- term: Lockstep
+  definition: "Running two identical processor cores on the same instructions, often offset in time and separated physically, with a comparator that flags any difference; a common safety mechanism with very high diagnostic coverage."
+  chapter: "25-10"
+  see_also: [Diagnostic coverage]

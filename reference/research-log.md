@@ -6009,3 +6009,52 @@ R&D % = R&D ÷ revenue.
 - TI calculator: "If you have a FIT of 16.7 at a reference temperature of 55C, you can predict FIT at application temperature of 75C to be 69.2 with 0.7Ea".
 - **Derived here:** TI's 78.6 reproduces with k = 8.6 × 10⁻⁵ eV/K and T = °C + 273; exact constants give 77.6. χ²(0.60, 2) = 1.833; 1.833 × 10⁹/(2 × 1000 × 7859 × 78.6) = 1.48 FIT. A different 231-unit example reported elsewhere was not found in TI's pages and is not used.
 - **Sources:** [TI reliability terminology](https://www.ti.com/quality-reliability/reliability/terminology.html); [TI reliability calculators](https://ti.com/support-quality/reliability/fail-fraction-average-fail-rate-fit.html); [TI SNAA391](https://www.ti.com/lit/an/snaa391/snaa391.pdf). Checked Nov 2026.
+
+## R-611 · JEDEC JESD47N (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (NSAI standards listings opened; jedec.org was behind a bot challenge).* [Established]
+
+- Standards.ie (NSAI): JEDEC JESD47N:2026, "Stress-Test-Driven Qualification of Integrated Circuits", status "Current", published 1 Aug 2026, 42 pages, superseding JESD47M:2025; JESD47M (1 Aug 2025, 38 pages) is marked "Superseded" as of 21 Aug 2026. Abstract: "This standard describes a baseline set of acceptance tests for use in qualifying electronic devices as new products, a product family, or as products in a process which is being changed."
+- **Caveat:** whether revisions M and N retain earlier text excluding automotive and military extremes was not checked.
+- **Sources:** [Standards.ie, JESD47N:2026](https://shop.standards.ie/en-ie/standards/jedec-jesd47n-2026-1137371_saig_jedec_jedec_4039270/); [Standards.ie, JESD47M:2025](https://shop.standards.ie/en-ie/standards/jedec-jesd47m-2025-1137371_saig_jedec_jedec_3652738/). Checked 26 Nov 2026.
+
+## R-612 · AEC-Q100 Rev J (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (the full Rev J document in a supplier-hosted copy and an iST overview opened; aecouncil.com could not be reached).* [Established for Rev J]
+
+- AEC-Q100 Rev J, "Failure Mechanism Based Stress Test Qualification for Integrated Circuits in Automotive Applications", dated "August 11, 2023", a "Complete Revision" of Rev H (11 Sep 2014).
+- Table 1: "Grade | Ambient Operating Temperature Range | 0 -40C to +150C | 1 -40C to +125C | 2 -40C to +105C | 3 -40C to +85C".
+- Table 2, Test A4: "Grade 0: -55ºC to +150ºC for 1500 cycles or equivalent. Grade 1: -55oC to +150oC for 1000 cycles or equivalent. Note: -65oC to 150oC for 500 cycles is also an allowed test condition due to legacy use … Grade 2: -55ºC to +125ºC for 1000 cycles or equivalent. Grade 3: -55ºC to +125ºC for 500 cycles or equivalent."
+- Revision summary: "Test A4: Change of requirement for Grade 0"; "Test B1: Alternative TEST sequence added, drift analysis requirement added"; "Added NEW Test C7 (BST – Bump Shear Test)"; new wafer-bumping change items; Section 3.6: "Devices using Copper (Cu) wire shall have supporting data according AEC-Q006"; plus an FC-BGA definition, a mission-profiles section and acceptance criteria for advanced CMOS nodes.
+- iST: "AEC-Q100 Rev. J reduces the Grade 0 temperature cycling test (TCT) requirement from 2,000 to 1,500 cycles."
+- **Caveats:** a revision J1 is referenced but could not be verified; supplier change notices in 2026 still cite Rev H (seen in search results only).
+- **Sources:** [AEC-Q100 Rev J (supplier-hosted copy)](https://www.guerrilla-rf.com/includes/pdfs/general/AEC_Q100_Rev_J_Base_Document.pdf); [iST overview](https://www.istgroup.com/en/tech_20231121-aec-q100-rev/). Checked Nov 2026.
+
+## R-613 · ISO 26262 editions and relation to IEC 61508 (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Genorma listings, UL Solutions, a HORIBA MIRA deck and Wikipedia opened; iso.org was behind a bot challenge).* [Established for the 2018 edition; Industry estimate for the third edition]
+
+- Wikipedia (pointer): "The standard ISO 26262 is an adaptation of the functional safety standard IEC 61508 for automotive electric/electronic systems"; "The second edition (ISO 26262:2018), published in December 2018, extended the scope from passenger cars to all road vehicles except mopeds"; ISO 26262 uses single-point and latent-fault metrics rather than IEC 61508's safe failure fraction; "ISO 26262 does not provide normative nor informative mapping of ASIL to SIL".
+- Genorma: ISO/DIS 26262-1 and ISO/DIS 26262-6 at "Current stage: 40.20 DIS ballot initiated: 12 weeks Oct 14, 2026".
+- UL Solutions (2 Jan 2024): "don't expect an official release until sometime in 2027"; machine-learning Annex C to be extended and "aligned with the new standards ISO TS 5083 and PAS 8800". HORIBA MIRA (Dec 2024): "likely publication Q4/2027 (subject to change)".
+- **Derived here:** a 12-week ballot from 14 Oct 2026 closes about 6 Jan 2027.
+- **Sources:** [Genorma, ISO/DIS 26262-6](https://genorma.com/en/standards/iso-dis-26262-6); [Genorma, ISO/DIS 26262-1](https://genorma.com/en/standards/iso-dis-26262-1/amp); [UL Solutions, 2 Jan 2024](https://ul.com/sis/blog/what-to-expect-with-version-3-of-iso-26262); [HORIBA MIRA deck](https://globalplatform.org/wp-content/uploads/2025/01/6_Evolution-of-Functional-Safety-Ward-1.pdf); [Wikipedia, ISO 26262](https://en.wikipedia.org/wiki/ISO_26262); [Wikipedia, ASIL](https://en.wikipedia.org/wiki/Automotive_Safety_Integrity_Level). Checked Nov 2026.
+
+## R-614 · ISO 26262-5 hardware-metric targets (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (a TI training deck and a Battery Design page opened).* [Established]
+
+- TI SLYP685 (2020), "Hardware metrics": PMHF "<10-7 h-1 <10-7 h-1 <10-8 h-1 (100 FIT) (100 FIT) (10 FIT)"; SPFM ">= 90% >= 97% >= 99%"; LFM ">= 60% >= 80% >= 90%" for ASIL B, C and D.
+- Battery Design (Oct 2026): "ISO 26262-5:2018 sets the pass/fail bar for each metric against the ASIL of the safety goal in question"; the same values; "These are targets, not automatic outcomes"; PMHF concerns "the violation of the safety goal".
+- **Caveats:** neither source gives ASIL A targets; the table numbers inside ISO 26262-5 were not checked against the standard text.
+- **Sources:** [TI SLYP685](https://ti.com/lit/SLYP685); [Battery Design](https://www.batterydesign.net/battery-management-system/functional-safety/bms-hardware-architectural-metrics-spfm-lfm-pmhf/). Checked Nov 2026.
+
+## R-615 · Automotive zero-defect expectations (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Amkor, Electronic Design and Infineon pages opened).* [Industry estimate; vendor claims]
+
+- Amkor (6 Jun 2022): "If every car has ~40 electronic systems and each system has ~250 semiconductor components, then even a 1 ppm (parts per million) defect rate at the component level can result in a 10,000 ppm (1%) defect rate in the car"; "Defects used to be measured in parts per million (ppm) but are now measured in parts per billion (ppb)"; the AEC's zero-defects framework (AEC-Q004) "was assembled by participants throughout the automotive supply chain".
+- Electronic Design (28 Dec 2011): "Automotive system manufacturers expect component suppliers to ship components that will have zero failures per million devices, also known as 0 ppm."
+- Infineon (current page): "we deliver Zero Defect for all but the last 3 seconds of a year"; "sub ppm quality levels"; "90% of our products are already Zero Defect".
+- **Derived here:** 1 − (1 − 10⁻⁶)^10,000 = 0.995%; 3 s per year ≈ 0.095 ppm. An older vendor figure of about 50 ppb and a "1 DPM / 0.1 DPM" quote were not found on the pages opened and are not used.
+- **Sources:** [Amkor, 6 Jun 2022](https://amkor.com/blog/the-drive-toward-zero-defects/); [Electronic Design, 28 Dec 2011](https://www.electronicdesign.com/technologies/test-measurement/article/21794591/achieve-0-ppm-in-your-automotive-testing); [Infineon, Automotive Quality](https://www.infineon.com/cms/en/product/promopages/automotive-quality/). Checked Nov 2026.

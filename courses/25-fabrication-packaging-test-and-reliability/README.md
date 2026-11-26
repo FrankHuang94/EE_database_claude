@@ -37,7 +37,7 @@ How chips are made, packaged, tested and qualified: process flow, lithography th
 | [25-07 · Packaging II: 2.5D, 3D, Hybrid Bonding and Chiplets](chapters/25-07-advanced-packaging-and-chiplets.md) | 7 | ✅ verified | [problems](problems/25-07-problems.md) · [solutions](solutions/25-07-solutions.md) · [lab](labs/25-07-lab/README.md) · [verify](verify/verify_25_07.py) |
 | [25-08 · Thermal Engineering](chapters/25-08-thermal-engineering.md) | 6 | ✅ verified | [problems](problems/25-08-problems.md) · [solutions](solutions/25-08-solutions.md) · [lab](labs/25-08-lab/README.md) · [verify](verify/verify_25_08.py) |
 | [25-09 · Reliability Physics](chapters/25-09-reliability-physics.md) | 8 | ✅ verified | [problems](problems/25-09-problems.md) · [solutions](solutions/25-09-solutions.md) · [lab](labs/25-09-lab/README.md) · [verify](verify/verify_25_09.py) |
-| [25-10 · Qualification and Functional Safety](chapters/25-10-qualification-and-functional-safety.md) | 5 | ⬜ planned | — |
+| [25-10 · Qualification and Functional Safety](chapters/25-10-qualification-and-functional-safety.md) | 5 | ✅ verified | [problems](problems/25-10-problems.md) · [solutions](solutions/25-10-solutions.md) · [lab](labs/25-10-lab/README.md) · [verify](verify/verify_25_10.py) |
 | [25-11 · Test: ATE, Wafer Sort, Burn-In and Binning](chapters/25-11-test-ate-sort-burn-in.md) | 6 | ⬜ planned | — |
 | [25-12 · Post-Silicon Validation and Bring-Up](chapters/25-12-post-silicon-validation.md) | 4 | ⬜ planned | — |
 
