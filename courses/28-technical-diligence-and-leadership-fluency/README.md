@@ -34,7 +34,7 @@ The practitioner's course: a framework for evaluating a chip company's technolog
 | [28-06 · Red Flags and Green Flags](chapters/28-06-red-and-green-flags.md) | 4 | ✅ verified | [problems](problems/28-06-problems.md) · [solutions](solutions/28-06-solutions.md) · [lab](labs/28-06-lab/README.md) · [verify](verify/verify_28_06.py) |
 | [28-07 · Evaluating Engineering Teams](chapters/28-07-evaluating-engineering-teams.md) | 5 | ✅ verified | [problems](problems/28-07-problems.md) · [solutions](solutions/28-07-solutions.md) · [lab](labs/28-07-lab/README.md) · [verify](verify/verify_28_07.py) |
 | [28-08 · Post-Acquisition Integration Risk](chapters/28-08-integration-risk.md) | 5 | ✅ verified | [problems](problems/28-08-problems.md) · [solutions](solutions/28-08-solutions.md) · [lab](labs/28-08-lab/README.md) · [verify](verify/verify_28_08.py) |
-| [28-09 · The Business ↔ Engineering Translation Table](chapters/28-09-business-engineering-translation.md) | 3 | ⬜ planned | — |
+| [28-09 · The Business ↔ Engineering Translation Table](chapters/28-09-business-engineering-translation.md) | 3 | ✅ verified | [problems](problems/28-09-problems.md) · [solutions](solutions/28-09-solutions.md) · [lab](labs/28-09-lab/README.md) · [verify](verify/verify_28_09.py) |
 | [28-10 · Conversation Scenarios](chapters/28-10-conversation-scenarios.md) | 15 | ⬜ planned | — |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)

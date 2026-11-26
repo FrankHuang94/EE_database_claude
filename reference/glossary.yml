@@ -11435,3 +11435,11 @@
   definition: A contract term that changes, requires consent for, or terminates a license or agreement when the licensee is acquired; for processor, EDA and other IP licenses it can turn an acquisition into a renegotiation.
   chapter: "28-08"
   see_also: [Architecture license]
+- term: Cost elasticity of die area
+  definition: The percentage change in cost per good die for a 1% change in die area; ignoring the wafer edge it is $1 + AD_0$ (area and Poisson yield loss), and edge losses add more for large dies, so cost grows faster than area.
+  chapter: "28-09"
+  see_also: [Dies per wafer, Gross margin]
+- term: Area budget
+  definition: The largest die area that meets a margin target: allowed unit cost = selling price × (1 − target margin), less package and test, inverted through the die-cost model.
+  chapter: "28-09"
+  see_also: [Cost elasticity of die area]
