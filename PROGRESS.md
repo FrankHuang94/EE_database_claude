@@ -118,7 +118,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 >
 > 28-10 (Conversation Scenarios) is verified: the conversation as a sequence of tests (prepare, conduct, debrief); seven core moves and six anti-patterns; Brier-score calibration (proper scoring rule derived); a pocket card of 17 live checks from 28-02 to 28-09; and 26 condensed dialogues with live checks and annotated debriefs across accelerators, CPUs, HBM, SerDes, optics reliability, ADCs, PAs, power supplies, package yield, battery life, track records, schedules, key people, customer concentration, pipelines, flow migration, royalties, export status, area budgets, customer TCO, FIT, flag counting, maturity value, best-of-N and regression capacity. 12 problems, verify (104 checks: first-principles recomputation, Monte Carlo order statistics and departures, numerical half-sine integrals), lab (`convo.py` with pocket card, debrief scorer, Brier score and timed drills; notebook), 1 figure, 4 glossary terms. Currency amounts next to inline math are now escaped (`\$`) across Course 28 so they cannot pair with math delimiters.
 >
-> **All ten Course 28 chapters are verified. Next: the Course 28 wrap-up** (final exam with solutions and a verify script, equation sheet, course notes in the README, flashcards), then the course audit with fresh reviewers, fixes and `reviewed` status, then the **Term 7 checkpoint** (50 FE-style questions on Courses 26–28 with a verify script). Perishable facts need web searches; where search is unavailable, fetch known primary pages with curl or reuse logged R-entries.
+> **Course 28 wrap-up done:** final exam (12 questions, 104 points, 210 minutes in two sittings) with worked solutions, rubrics and a verify script (110 checks, mostly by second routes); the Course 28 equation sheet; course notes in the README; 71 flashcards.
+>
+> **Next: the Course 28 audit.** Spawn fresh reviewers (not the drafter) for 28-01 to 28-04, 28-05 to 28-07, 28-08 to 28-10, and the exam, equation sheet, flashcards and notes; fix every finding; mark the chapters `reviewed`; push and confirm CI. Then the **Term 7 checkpoint** (50 FE-style questions on Courses 26–28 with a verify script). Perishable facts need web searches; where search is unavailable, fetch known primary pages with curl or reuse logged R-entries.
 
 > Course 26 audit lessons to carry forward: (i) key every intermediate a solution displays, not just the final answers; (ii) anything defined relative to price (a percentage royalty, a margin) must move with price in a sensitivity; (iii) never publish a value that sits on a rounding tie, publish it exactly; (iv) when an answer needs iteration, teach the iteration (a Math refresher) and show the steps; (v) cite a figure only to a log entry whose recorded source contains it.
 >
@@ -229,10 +231,10 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | 25 | 12 | 12 | 12 | 12 | 75,761 | 167 | 1321 | 12 | 12 / 2 / 0 |
 | 26 | 7 | 7 | 7 | 7 | 49,840 | 100 | 1275 | 7 | 7 / 0 / 0 |
 | 27 | 8 | 8 | 8 | 8 | 61,565 | 112 | 1396 | 8 | 8 / 0 / 0 |
-| 28 | 10 | 10 | 10 | 0 | 59,049 | 123 | 880 | 10 | 10 / 0 / 0 |
-| **Total** | **307** | **307** | **307** | **297** | **2,162,218** | **4365** | **38264** | **307** | **303 / 271 / 27** |
+| 28 | 10 | 10 | 10 | 0 | 59,049 | 123 | 985 | 10 | 10 / 0 / 0 |
+| **Total** | **307** | **307** | **307** | **297** | **2,162,218** | **4365** | **38369** | **307** | **303 / 271 / 27** |
 
-Glossary terms: **3085** · Flashcards: **2799**
+Glossary terms: **3085** · Flashcards: **2870**
 
 <!-- END STATS -->
 
@@ -268,7 +270,7 @@ Glossary terms: **3085** · Flashcards: **2799**
 | 25 | 🏁 audited | ✅ 2026-11-26 | 12 chapters reviewed: 167 problems, 1,173 keyed chapter, solution and lab values plus 148 exam values (1,375 checks), 12 lab notebooks, 2 ngspice netlists; exam (12 questions, 104 points, 240 minutes), 96 flashcards, equation sheet and course notes. Five reviewers, 111 findings, all fixed. Term 6 checkpoint complete. |
 | 26 | 🏁 audited | ✅ 2026-11-26 | 7 chapters reviewed: 100 problems, 1,095 keyed chapter, solution and lab values plus 180 exam values (1,392 checks across 8 verify scripts), 7 lab notebooks; exam (12 questions, 104 points, 180 minutes), 82 flashcards, equation sheet and course notes; R-625 to R-659. Four reviewers, 111 findings, all fixed. |
 | 27 | 🏁 audited | ✅ 2026-11-26 | 8 chapters reviewed: 112 problems, 1,301 keyed chapter, solution and lab values plus 95 exam values (1,462 checks across 9 verify scripts), 8 lab notebooks; exam (12 questions, 104 points, 210 minutes), 76 flashcards, equation sheet and course notes; R-660 to R-700. Three reviewers, 161 findings, all fixed. |
-| 28 | 🔄 in progress | — | 28-01 to 28-10 verified (123 problems, 880 keyed values, 1,006 checks); wrap-up and audit next. |
+| 28 | 🔄 in progress | — | 28-01 to 28-10 verified (123 problems, 880 keyed values, 1,006 checks); exam (105 keyed, 110 checks), sheet, notes and 71 flashcards done; audit next. |
 | all others | ⬜ planned (stubs only) | — | |
 
 Course status values: ⬜ planned · 🔄 in progress · ✅ complete (all chapters verified, exam + flashcards + glossary done) · 🏁 audited (independent review findings fixed).
@@ -719,3 +721,4 @@ Changes relative to the original build brief's chapter plan.
 | 2026-11-26 | Phase 2. **28-08 Post-Acquisition Integration Risk ✅ verified.** Synergy value with delay and realization; flow migration against delay and the flow freeze; roadmap overlap as parallel paths; retention cliffs; licensing, royalties and export controls; risk registers and earn-outs. 6 examples, 12 problems, verify (81 checks), lab (`integrate.py`, notebook), 1 figure, 4 glossary terms. |
 | 2026-11-26 | Phase 2. **28-09 Business ↔ Engineering Translation Table ✅ verified.** Translation table; die cost and area elasticity; area budgets from margin targets; respin, energy and field-failure costs; margin tornado. 6 examples, 10 problems, verify (76 checks), lab (`translate.py`, notebook), 1 figure, 2 glossary terms. |
 | 2026-11-26 | Phase 2. **28-10 Conversation Scenarios ✅ verified.** Conversation method, moves, anti-patterns and Brier calibration; pocket card; 26 dialogues with live checks and debriefs. 12 problems, verify (104 checks), lab (`convo.py`, notebook), 1 figure, 4 glossary terms. Also escaped currency `$` next to inline math across Course 28 (17 lines) and fixed two lecture-video references. All Course 28 chapters verified. |
+| 2026-11-26 | Phase 2. **Course 28 wrap-up.** Final exam (12 questions, 104 points, 210 minutes) with worked solutions, rubrics and a verify script (110 checks, mostly by second routes); equation sheet; course notes; 71 flashcards. Next: the course audit. |
