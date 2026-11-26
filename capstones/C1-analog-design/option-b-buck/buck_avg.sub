@@ -1,0 +1,41 @@
+* C1 option B reference design: averaged (state-space-averaged, CCM) model of the synchronous buck with its
+* Type III voltage-mode compensator. Used for loop gain (AC) and load steps (transient); see design-report.md.
+* Pins: vin, out (output capacitor node), fbin (top of the feedback divider; connect to out, or through a loop-
+* injection source), iload is applied outside. Parameters: L, C (total output capacitance), RHS, RLS (switch
+* on-resistances), DCR, ESR, VREF, VRAMP, FSW, TDEAD, VF.
+.subckt buck_avg vin out fbin params: L=1u C=44u RHS=50m RLS=30m DCR=20m ESR=1.5m VREF=0.6 VRAMP=1
++ FSW=2Meg TDEAD=10n VF=0.7
+* duty cycle from the error-amplifier output, clamped to 0 ... 0.95
+Bd d 0 V = max(0, min(0.95, V(eo) / {VRAMP}))
+* averaged switch node: d*Vin, less the switch drops, plus the two dead times. In each dead time a body diode
+* carries the inductor current: the low side's (node at -VF) if the current is positive, the high side's (node at
+* VIN + VF) if it is negative. The current at the two dead times is the ripple peak and valley, iL +- dI/2 with
+* dI = (VIN - VOUT) d / (L FSW); a 5 mA-wide tanh makes the switch-over smooth.
+Bdi di 0 V = (V(vin) - V(out))*V(d)/({L}*{FSW})
+Bsw sw 0 V = V(d)*V(vin) - I(Vil)*(V(d)*{RHS} + (1 - V(d))*{RLS})
++ + {TDEAD}*{FSW}*(-2*{VF} + (V(vin) + 2*{VF})*0.5*(2 - tanh((I(Vil) + V(di)/2)/0.005) - tanh((I(Vil) - V(di)/2)/0.005)))
+* input current drawn by the switch network
+Bin vin 0 I = V(d)*I(Vil)
+Lb sw lx {L}
+Rdcr lx li {DCR}
+Vil li out DC 0
+Cout out ce {C}
+Resr ce 0 {ESR}
+* Type III compensator around the error amplifier (inverting input fb, reference at the non-inverting input)
+R1 fbin fb 10k
+Rb fb 0 10k
+R3 fbin n3 169
+C3 n3 fb 910p
+R2 fb n2 6.34k
+C1 n2 eo 1.5n
+C2 fb eo 27p
+Vr ref 0 {VREF}
+* error amplifier: 80 dB DC gain, single pole at 1 kHz (10 MHz gain-bandwidth), output clamped 0 ... 1.2 V
+Gea 0 xa ref fb 1m
+Rea xa 0 10Meg
+Cea xa 0 15.9155p
+Beo eoi 0 V = max(0, min(1.2, V(xa)))
+* 10 ohm and 1 pF smooth the clamp for the integrator (a pole at 16 GHz, invisible to the loop)
+Reo eoi eo 10
+Ceo eo 0 1p
+.ends buck_avg

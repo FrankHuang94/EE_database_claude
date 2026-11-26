@@ -55,7 +55,7 @@ Option B uses ideal switches with on-resistance (the `sw` element), an inductor 
 
 **Conditions.** Input 3.0 V to 4.2 V. Switching frequency 2 MHz, fixed. Load 0.1 A to 1 A, continuous conduction. Corners: input {3.0, 3.6, 4.2} V; inductance ±20%; output capacitance −20% (DC-bias derating) and nominal; switch on-resistance at 27 °C and at 125 °C (+40%). Losses to model: high-side switch 50 mΩ and low-side 30 mΩ at 27 °C; inductor DCR 20 mΩ; capacitor ESR 3 mΩ; gate-drive loss 2 nC per switch per cycle at 3.6 V; dead time 10 ns per edge with a 0.7 V body-diode drop; a fixed 1 mA controller quiescent current. PWM ramp amplitude 1 V. The error amplifier may be ideal with finite gain (80 dB) and a 10 MHz gain-bandwidth.
 
-**Reference solution:** in preparation (see PROGRESS.md); until it lands, use [22-02](../../courses/22-power-electronics-and-energy-conversion/chapters/22-02-buck-converter-steady-state.md), [22-06](../../courses/22-power-electronics-and-energy-conversion/chapters/22-06-converter-losses-and-wide-bandgap.md) and [22-07](../../courses/22-power-electronics-and-energy-conversion/chapters/22-07-converter-dynamics-and-control.md) and their labs.
+**Reference solution:** [design report](option-b-buck/design-report.md), [results](option-b-buck/results.md) (30 loop corners, load steps, switching-model efficiency, ripple and peak current), the [averaged](option-b-buck/buck_avg.sub) and [switching](option-b-buck/buck_sw.sub) models, and the [netlist generator](option-b-buck/gen_buck.py). Open them only after your own design passes, or when you are stuck at a milestone.
 
 ## Milestones
 
@@ -93,4 +93,4 @@ python tools/run_spice.py C1
 python tools/run_verify.py C1
 ```
 
-The first re-runs every reference netlist and compares it with the published results; the second recomputes the hand calculations in the reports and checks every requirement at every corner. To regenerate option A's corner netlists and results after a design change, run `python gen_corners.py --run` in [option-a-opamp/](option-a-opamp/).
+The first re-runs every reference netlist and compares it with the published results; the second recomputes the hand calculations in the reports and checks every requirement at every corner. To regenerate the netlists and results after a design change, run `python gen_corners.py --run` in [option-a-opamp/](option-a-opamp/) or `python gen_buck.py --run` in [option-b-buck/](option-b-buck/).

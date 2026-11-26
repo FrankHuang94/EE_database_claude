@@ -1,0 +1,45 @@
+* C1 option B reference design: cycle-by-cycle switching model of the synchronous buck, with the same Type III
+* compensator and error amplifier as buck_avg.sub. Trailing-edge PWM from a 0 -> 1 V sawtooth at 2 MHz; 10 ns dead
+* time on each edge (the low-side body diode conducts); gate-drive and controller losses drawn from the input.
+* Pins: vin, out, fbin (top of the divider), ramp (the shared sawtooth). Parameters as in buck_avg.sub, plus the
+* soft-start time TSS (simulations start from zero with uic, as a real converter does).
+.subckt buck_sw vin out fbin ramp params: L=1u C=44u RHS=50m RLS=30m DCR=20m ESR=1.5m VREF=0.6 DEAD=0.02
++ IGATE=8m IQ=1m TSS=100u
+* PWM: high side on from the ramp reset until the ramp crosses the error-amplifier output; low side on after a
+* dead time (DEAD volts of ramp = 10 ns at 2 V/us) until a dead time before the next reset
+Bgh gh 0 V = 0.5*(1 + tanh(2000*(V(eo) - V(ramp))))
+Bgl gl 0 V = 0.25*(1 + tanh(2000*(V(ramp) - V(eo) - {DEAD}))) * (1 + tanh(2000*(1 - {DEAD} - V(ramp))))
+Shs vin sw gh 0 swhs
+Sls sw 0 gl 0 swls
+* body diodes: the low side's conducts in both dead times at full load; the high side's conducts when the
+* inductor current is negative during a dead time (light load in forced continuous conduction)
+Dbody 0 sw dbody
+Dbodyh sw vin dbody
+.model swhs sw vt=0.5 vh=0 ron={RHS} roff=1Meg
+.model swls sw vt=0.5 vh=0 ron={RLS} roff=1Meg
+.model dbody d is=1.75e-12 n=1 rs=5m
+* gate-drive charge (2 x 2 nC x 2 MHz) and controller quiescent current, drawn from the input
+Igate vin 0 DC {IGATE}
+Iq vin 0 DC {IQ}
+Lb sw lx {L}
+Rdcr lx li {DCR}
+Vil li out DC 0
+Cout out ce {C}
+Resr ce 0 {ESR}
+R1 fbin fb 10k
+Rb fb 0 10k
+R3 fbin n3 169
+C3 n3 fb 910p
+R2 fb n2 6.34k
+C1 n2 eo 1.5n
+C2 fb eo 27p
+* soft start: the reference ramps from 0 to VREF over TSS, so the error amplifier never winds up at start-up
+Vr ref 0 PWL(0 0 {TSS} {VREF})
+Gea 0 xa ref fb 1m
+Rea xa 0 10Meg
+Cea xa 0 15.9155p
+Beo eoi 0 V = max(0, min(1.2, V(xa)))
+* 10 ohm and 1 pF smooth the clamp for the integrator (a pole at 16 GHz, invisible to the loop)
+Reo eoi eo 10
+Ceo eo 0 1p
+.ends buck_sw
