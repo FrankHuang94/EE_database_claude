@@ -11062,3 +11062,55 @@
   definition: A supply dip below a device's undervoltage threshold that resets it, typically when a burst of current through a cold, aged or nearly empty battery's internal resistance pulls the terminal voltage down while charge remains.
   chapter: "27-03"
   see_also: [Internal resistance]
+- term: Driver sensitivity
+  definition: The sound pressure level a loudspeaker or earphone driver produces for 1 mW of electrical input, in dB SPL/mW; each 10 dB of extra loudness then needs ten times the power.
+  chapter: "27-04"
+  see_also: [Sound pressure level (SPL)]
+- term: Active noise cancellation (ANC)
+  definition: Playing an inverted copy of measured noise so that it cancels at the ear; the delay of the anti-noise path limits cancellation to frequencies where 2 sin(pi f tau) is small, and gain mismatch limits its depth.
+  chapter: "27-04"
+  see_also: [Driver sensitivity]
+- term: LE Audio
+  definition: Audio over Bluetooth Low Energy using isochronous channels and the LC3 codec, with connected streams to earbuds and hearing aids and broadcast streams to any number of listeners.
+  chapter: "27-04"
+  see_also: [LC3 codec, Connected isochronous stream (CIS), Auracast]
+- term: LC3 codec
+  definition: The low-complexity communication codec of LE Audio, coding audio in fixed frames of 7.5 or 10 ms at sample rates up to 48 kHz with a frame size set by the bit rate.
+  chapter: "27-04"
+  see_also: [LE Audio]
+- term: Connected isochronous stream (CIS)
+  definition: A Bluetooth LE link that carries time-bounded data, such as one audio frame per interval, between two devices with acknowledgment, the transport for LE Audio earbuds.
+  chapter: "27-04"
+  see_also: [LE Audio, Connection interval]
+- term: Auracast
+  definition: The marketing name for Bluetooth LE Audio broadcast, in which one transmitter sends isochronous audio streams that any number of receivers can join without acknowledgment.
+  chapter: "27-04"
+  see_also: [LE Audio]
+- term: Waveguide display
+  definition: A see-through display in which light from a tiny projector is guided by total internal reflection through a thin plate and coupled out towards the eye over an eyebox; only a small fraction of the projector's light reaches the pupil.
+  chapter: "27-04"
+  see_also: [Eyebox]
+- term: Eyebox
+  definition: The region of space in which a near-eye display's image remains fully visible as the eye moves or the device sits differently on the face; a larger eyebox spreads the light and lowers efficiency.
+  chapter: "27-04"
+  see_also: [Waveguide display]
+- term: Foveated rendering
+  definition: Rendering only the region the eye's fovea sees at full resolution and the periphery at reduced resolution, usually guided by eye tracking, to cut GPU work several-fold.
+  chapter: "27-04"
+  see_also: [Motion-to-photon latency]
+- term: Motion-to-photon latency
+  definition: The delay from a head or body movement to the display showing an image that reflects it; a head turning at omega misplaces virtual objects by omega times the latency, and a consensus target is under about 15 to 20 ms.
+  chapter: "27-04"
+  see_also: [Late-stage reprojection, Pose prediction]
+- term: Late-stage reprojection
+  definition: Re-sampling a finished frame with the newest head pose just before it is scanned out, so rendering and network delays no longer add registration error (also called timewarp).
+  chapter: "27-04"
+  see_also: [Motion-to-photon latency, Split rendering]
+- term: Split rendering
+  definition: Rendering a headset's frames on a phone, PC or server and streaming them to the headset, which moves power and heat off the head at the cost of encoding, network and decoding latency.
+  chapter: "27-04"
+  see_also: [Late-stage reprojection]
+- term: Pose prediction
+  definition: Extrapolating head motion forward by the known pipeline latency so the rendered or reprojected image matches where the head will be when the photons arrive.
+  chapter: "27-04"
+  see_also: [Motion-to-photon latency]

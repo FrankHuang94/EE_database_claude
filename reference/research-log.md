@@ -6602,3 +6602,62 @@ R&D % = R&D ÷ revenue.
 - **arXiv 2105.00141 (a paper on a BLE digital receiver; authors not recorded here):** "The preamble ... length for LE1M PHY and LE2M PHY modes is 8 bits and 16 bits respectively. It consists of a 32-bit access address, 16-bit PDU, and 24-bit CRC" (two-column text reassembled) [Established; cited by arXiv number].
 - **TI application note SDAA329, "CC27xx Operation and Configuration Without an External 32kHz Crystal" (PDF created 11 May 2026):** "Window Width = 2 × (SCA_peripheral + SCA_central) × time_since_last_anchor where SCA values are expressed in parts per million (ppm)"; a "Sleep Clock Accuracy (SCA) of ±500ppm, the maximum allowable drift permitted by the Bluetooth Core Specification"; RX windows "are wider due to 500 ppm clock accuracy versus 50 ppm with crystal (room temperature)" [Established as vendor statement of the specification].
 - **Sources:** [Silicon Labs throughput](https://docs.silabs.com/bluetooth/6.2.0/bluetooth-fundamentals-system-performance/throughput); [arXiv 2105.00141](https://arxiv.org/abs/2105.00141); [TI SDAA329](https://www.ti.com/lit/an/sdaa329/sdaa329.pdf). Checked Nov 2026.
+
+## R-677 · Earbuds: AirPods Pro 3, Galaxy Buds4 Pro, Pixel Buds Pro 2 (Course 27)
+
+*Read on 26 Nov 2026 on manufacturer specification pages and iFixit.* [Established as manufacturer claims]
+
+- **AirPods Pro 3 (Apple specifications):** "Chip Apple H2 headphone chip"; "Up to 8 hours of listening time on a single charge with Active Noise Cancellation enabled (up to 7.5 hours with Spatial Audio and Head Tracking enabled)"; with the case "Up to 24 hours of listening time with Active Noise Cancellation enabled"; "Up to 10 hours of listening time on a single charge in Transparency using the Hearing Aid feature"; "Bluetooth 5.3"; test: "358 unique audio tracks ... (256-Kbps AAC encoding). Listening time was up to 8 hours when volume was set to 50%".
+- **AirPods Pro 3 case (iFixit, Elizabeth Chamberlain, 1 Oct 2025):** "Apple switched from twin batteries to a single 1.334 Wh cell. That change shaves the advertised case life down from 30 hours in the AirPods Pro 2 to 24 hours in the Pro 3." An earbud cell energy reported by secondary outlets was not found on the iFixit page and is not used.
+- **Galaxy Buds4 Pro (Samsung UK support comparison):** "Battery Capacity 61/530 mAh" (Buds3 Pro "53/515 mAh"); "Play Time (Buds/Total) 6/26 hrs (ANC ON) 7/30 hrs (ANC OFF)".
+- **Pixel Buds Pro 2 (Google Store):** "Processor Each earbud: Google Tensor A1"; "With Active Noise Cancellation off, up to 12 hours of listening time ... With Active Noise Cancellation on, up to 8 hours of listening time, and up to 30 hours of total listening time with the charging case".
+- **IDC, Wearable Devices Market Insights (updated 29 Oct 2026; the page of R-675):** "Earwear remained the backbone of the market. It accounted for 64.9% of shipments and grew 5.4% year over year." Derived (ours): about 96 million ear-worn devices in Q2 2026 (64.9% of about 148 million) [Industry estimate].
+- Derived (ours): Galaxy Buds4 Pro average current 61/6 = 10.2 mA with ANC on; the ANC-on/off life ratios are 7/6 (Samsung) and 12/8 (Google), so ANC adds 17% and 50% to average power in the two vendors' ratings.
+- **Sources:** [AirPods Pro 3 specs](https://www.apple.com/airpods-pro/specs/); [iFixit AirPods Pro 3](https://www.ifixit.com/News/113507/airpods-pro-3-teardown-still-a-tragedy); [Galaxy Buds4 comparison](https://www.samsung.com/uk/support/mobile-devices/what-are-the-differences-between-the-galaxy-buds4-pro-buds4-and-galaxy-buds3-pro-buds3/); [Pixel Buds Pro 2 specs](https://store.google.com/us/product/pixel_buds_pro_2_specs?hl=en-US). Checked Nov 2026.
+
+## R-678 · Earbud SoC and LE Audio sources (Course 27)
+
+*Read on 26 Nov 2026.*
+
+- **Qualcomm S7 / S7 Pro Gen 1 product brief:** "AI: Qualcomm eNPU 64 GOPS"; "DSP: 2x 500 MHz + 1x 250 MHz"; "RAM: 10.6 MB"; S7 Pro Gen 1 "(QCC7226 + QCP7321)" with "Classic Bluetooth, LE Audio, Qualcomm XPAN"; "Adaptive ANC"; "Low-latency DSP" (table text reassembled from columns) [Industry estimate: vendor]. The September 2026 Snapdragon Sound Elite Gen 2 release page returned no readable text and is not cited.
+- **Android developers, "BLE Audio overview":** "LC3 audio codec support: This is the default audio codec and replaces the SBC codec used for A2DP (media) and mSBC in HFP (voice). LC3 is more efficient, reconfigurable, and higher quality."; broadcast audio lets users "broadcast audio to friends and family" [Established].
+- **Google liblc3 (lc3.h):** LC3 "operates only on fixed frame duration, for any supported sample rates (8 to 48 KHz). Two frames duration are available 7.5ms and 10ms"; "The proposed implementation accepts any frame sizes between 20 and 400 Bytes" (LC3_MIN_FRAME_BYTES 20, LC3_MAX_FRAME_BYTES 400) [Established: reference implementation].
+- **Sources:** [Qualcomm S7 brief](https://www.qualcomm.com/content/dam/qcomm-martech/dm-assets/documents/Qualcomm-S7-Sound-Platform-Audio-SoCs-Product-Brief.pdf); [Android BLE Audio](https://developer.android.com/develop/connectivity/bluetooth/ble-audio/overview); [liblc3 lc3.h](https://github.com/google/liblc3/blob/main/include/lc3.h). Checked Nov 2026. The ST wiki on LE Audio stream configurations could not be reached and is not used.
+
+## R-679 · Smart glasses: Meta Ray-Ban Gen 2 and Display (Course 27)
+
+*Read on 26 Nov 2026 on Meta newsroom and engineering pages, iFixit and TechInsights.*
+
+- **Ray-Ban Meta (Gen 2), Meta newsroom (Sep 2025):** "can last up to eight hours with typical use. That's almost twice the battery life of Ray-Ban Meta (Gen 1)"; "up to 50% in just 20 minutes"; the case "provides an additional 48 hours of charging" [Established as manufacturer claim].
+- **Engineering at Meta (Pascal Hartig, 23 Jun 2026):** "From Gen 1 to Gen 2 the Meta Ray-Ban's, cell capacity grew from 160 mAh to 210 mAh — roughly a 30 percent bump. Yet the product shipped with claims of double the runtime. The chemistry didn't change. The extra gains came from system-level efficiency improvements"; the Display model's "screen draws sustained power rather than short bursts, which required designing a 248 mAh steel-can cell, the largest in Meta's lineup" [Established].
+- **Meta Ray-Ban Display, Meta newsroom (17 Sep 2025; on sale 30 Sep 2025):** "up to six hours of mixed-use battery life and up to 30 hours of total battery life"; "Starting at $799 USD, which includes both the glasses and Meta Neural Band" [Established as manufacturer claim].
+- **iFixit teardown (Elizabeth Chamberlain, 8 Oct 2025):** "we found a 960 mWh battery, a small upgrade over the Oakley Meta HSTN's 856 mWh pack"; "a liquid crystal on silicon (LCoS) device with a grid of 600×600 pixels, bouncing the light from three LEDs"; panel "made by Omnivision" [Established].
+- **TechInsights (10 Jun 2026):** teardown "uncovers the Qualcomm Snapdragon AR1 platform, OmniVision display technology, Sony imaging"; "display-related components account for 50.8% of total BOM costs, making displays the largest cost category in the device" [Industry estimate].
+- Derived (ours): Gen 1 to Gen 2, 31% more charge for about twice the runtime implies about 35% less average power ($1.31/2 = 0.66$); 960 mWh over 6 h is an average of 160 mW.
+- **Sources:** [Ray-Ban Meta Gen 2](https://about.fb.com/news/2025/09/ray-ban-meta-gen-2-better-battery-life-video-capture/); [Engineering at Meta](https://engineering.fb.com/2026/06/23/production-engineering/how-meta-built-ultra-narrow-batteries-for-ai-glasses-meta-tech-podcast/); [Meta Ray-Ban Display](https://about.fb.com/news/2025/09/meta-ray-ban-display-ai-glasses-emg-wristband/); [iFixit](https://www.ifixit.com/News/113543/theres-groundbreaking-waveguide-tech-inside-metas-800-ar-glasses-but-dont-count-on-fixing-them); [TechInsights](https://www.techinsights.com/blog/meta-ray-ban-display-teardown-reveals-more-meets-eye). Checked Nov 2026.
+
+## R-680 · Headsets: Apple Vision Pro (M5) and Samsung Galaxy XR (Course 27)
+
+*Read on 26 Nov 2026 on Apple and Samsung pages.* [Established as manufacturer claims]
+
+- **Vision Pro (M5), Apple newsroom (15 Oct 2025):** the R1 chip "processes input from 12 cameras, five sensors, and six microphones, and streams new images to the displays within 12 milliseconds"; "up to two and a half hours of general use, and up to three hours of video playback".
+- **Vision Pro (M5) tech specs:** "Display 23 million pixels 3D display system Micro‑OLED 7.5‑micron pixel pitch"; "Supported refresh rates: 90Hz, 96Hz, 100Hz, 120Hz"; "Device Weight 26.4–28.2 ounces (750–800 grams)"; "Separate battery weighs 353 grams".
+- **Galaxy XR, Samsung newsroom (US):** "Powered by Snapdragon® XR2+ Gen 2"; "Display 3,552 x 3,840, 27 million pixels Micro-OLED 6.3‑micron pixel pitch"; "Refresh rates: 60Hz, 72Hz (Default), 90Hz"; "Field of View 109 degrees horizontal and 100 degrees vertical"; "Up to 2 hours of general use"; "Weight 545g (w/ forehead cushion)"; "Separate battery weighs 302g".
+- Derived (ours): Galaxy XR pixel rate at 90 Hz, $2 \times 3552 \times 3840 \times 90 = 2.46 \times 10^9$ pixels/s.
+- **Sources:** [Vision Pro M5 release](https://www.apple.com/newsroom/2025/10/apple-vision-pro-upgraded-with-the-m5-chip-and-dual-knit-band/); [Vision Pro M5 specs](https://support.apple.com/en-us/125436); [Galaxy XR](https://news.samsung.com/us/introducing-galaxy-xr-opening-new-worlds/). Checked Nov 2026.
+
+## R-681 · XR and smart-glasses shipments (Course 27)
+
+*Read on 26 Nov 2026 on IDC's blog (16 Sep 2026).* [Industry estimate]
+
+- "Global shipments of XR headsets and glasses rose 35.3% year over year in the second quarter of 2026, strong growth but a significant moderation from the 130.2% increase IDC tracked in the prior quarter"; "70.3% Audio (display-less) glasses' share of Q2 2026 shipments, up from 61.9% a year ago"; "14.3% Display glasses' share"; "Meta continued to dominate the market with 68.7% share"; forecast "26.3% ... unit growth for full-year 2026", "40.5% Forecasted unit growth for 2027".
+- **Source:** [IDC, Smart Glasses Growth Cools to 35%](https://www.idc.com/resource-center/blog/smart-glasses-growth-cools-to-35-as-meta-doubles-down-on-distribution/). Checked Nov 2026. IDC's December 2025 press release (my.idc.com) returned 403 and is not used.
+
+## R-682 · Head-worn power, heat and latency limits (Course 27)
+
+*Read on 26 Nov 2026 in arXiv papers.*
+
+- **Meta Reality Labs paper on contextual-AI glasses (arXiv 2512.16045, Dec 2025):** "Assuming a 3 Wh capacity, the all-day requirement translates to a ~200 mW ceiling on average power dissipation for the entire glasses system"; "a touch temperature limit of ~40°C for comfort implies an upper limit for sustained power dissipation of approximately 1–2 watts"; the measured Aria Gen 2 system power "still far exceeds the target ... 200 mW always on operating target" (two-column text reassembled) [Established as a research estimate].
+- **LiKamWa et al., Google Glass characterization (arXiv 1404.1320, 2014):** "Video capture 2963 mW 43 min."; "Video chat 2960 mW 43 min."; under sustained load the device "reach[ed] a stable 51.9◦ C (124◦ F)" [Established, historical].
+- **Elbamby et al., "Toward Low-Latency and Ultra-Reliable Virtual Reality" (IEEE Network 2018; arXiv 1801.07587):** "There is broad consensus in setting the upper bound for MTP to less than 15-20 ms"; "the loopback latency of 4G under ideal operation conditions is 25 ms" [Established].
+- **Sources:** [arXiv 2512.16045](https://arxiv.org/abs/2512.16045); [arXiv 1404.1320](https://arxiv.org/abs/1404.1320); [arXiv 1801.07587](https://arxiv.org/abs/1801.07587). Checked Nov 2026.
