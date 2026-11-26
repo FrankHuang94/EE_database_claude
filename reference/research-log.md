@@ -6251,3 +6251,67 @@ R&D % = R&D ÷ revenue.
 - "NVIDIA (NASDAQ: NVDA) today reported record revenue for the fourth quarter ended January 25, 2026, of $68.1 billion, up 20% from the previous quarter and up 73% from a year ago. For fiscal 2026, revenue was $215.9 billion, up 65% from a year ago. For the quarter, GAAP and non-GAAP gross margins were 75.0% and 75.2%, respectively. For fiscal 2026, GAAP and non-GAAP gross margins were 71.1% and 71.3%, respectively."
 - Fiscal 2025 GAAP gross margin was 75.0% (summary table).
 - **Source:** [NVIDIA, 25 Feb 2026](https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2026). Checked Nov 2026.
+
+## R-638 · Arm license and royalty revenue, FYE26 and Q2 FYE27 (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent (Arm newsroom summaries; investors.arm.com returned 403, so the shareholder letters were not read).* [Established: company results]
+
+- Q2 FYE27 (quarter ended 30 Sep 2026; posted 4 Nov 2026): "Total revenue for Arm in Q2 FYE27 increased 27% year over year to $1.44 billion", with "licensing and other revenue of $773 million, reflecting a 50% year over year increase", while "royalty revenue for the quarter reached $670 million, with data center royalties doubling year over year".
+- Q4 FYE26 (posted 6 May 2026): "full-year revenue at $4.92 billion"; "record full-year royalty revenue of $2.61 billion"; licensing "yearly revenue at $2.31 billion".
+- Q3 FYE26 (posted 4 Feb 2026): "the total number of CSS licenses to 21 across 12 companies".
+- **Derived here:** royalties were 53.0% of FYE26 revenue and 46.4% of Q2 FYE27 revenue ($670 M of $1,443 M).
+- **Sources:** [Arm Q2 FYE27](https://newsroom.arm.com/news/arm-q2-fye27-results); [Arm Q4 FYE26](https://newsroom.arm.com/news/arm-q4-fye26-results); [Arm Q3 FYE26](https://newsroom.arm.com/news/arm-q3-fye26-results). Checked Nov 2026.
+
+## R-639 · Arm royalty-rate statements: Armv9, Armv8 and Compute Subsystems (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent (SoftBank Group annual reports, Arm CEO message pages; a press report of an earnings call).* [Established for the company statements; the CSS quote is via press]
+
+- SoftBank Group Report 2025: "For fiscal 2024, the typical royalty fee for Armv9 was around double the fee for Armv8"; Compute Subsystems "can command even higher royalty revenue than Armv9 itself"; "For the quarter ended March 2025, Arm estimates that Armv9 provided around 30% of royalty revenues, Armv8 around 45%, and older architectures around 25%". The 2024 report makes the same "around double" statement for fiscal 2023, with about 20% (v9), 50% (v8) and 30% (older) for the quarter ended March 2024.
+- SoftBank Group Report 2026: qualitative only ("Armv9 commanding significantly higher royalty rates"; CSS adoption "further increasing royalty per chip").
+- R. Haas, Q1 FYE26 earnings call, as quoted by The Register (31 Jul 2025): "Our first generation of CSS is now in market with five customers and is delivering double the royalty of Armv9".
+- **Sources:** [SoftBank Group Report 2025, Arm](https://group.softbank/en/ir/financials/annual_reports/2025/message/arm); [2024](https://group.softbank/en/ir/financials/annual_reports/2024/message/arm); [2026](https://group.softbank/en/ir/financials/annual_reports/2026/message/arm); [The Register, 31 Jul 2025](https://www.theregister.com/on-prem/2025/07/31/arm-eyes-move-up-the-stack-with-push-into-end-to-end-silicon/1204768). Checked Nov 2026.
+
+## R-640 · Synopsys fiscal 2025 results: the Design IP segment (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent (Synopsys press release, 10 Dec 2025, with segment tables).* [Established: company results]
+
+- "Revenue for fiscal year 2025 was $7.054 billion, an increase of approximately 15% from $6.127 billion in fiscal year 2024"; Ansys contributed $756.6 M.
+- Segment table: Design IP $1,751.8 M (24.8% of total) in FY2025 against $1,906.3 M (31.1%) in FY2024; Q4 FY2025 $407.2 M against $517.8 M. Design IP adjusted operating margin 23.9% (FY2025) against 38.3% (FY2024). Design Automation $5,302.4 M.
+- Segment definition: "Design IP, which includes our interface, foundation, security, and embedded processor IP, IP subsystems, and IP implementation services".
+- **Derived here:** Design IP revenue fell 8.1% year over year.
+- **Source:** [Synopsys, 10 Dec 2025](https://news.synopsys.com/2025-12-10-Synopsys-Posts-Financial-Results-for-Fourth-Quarter-and-Fiscal-Year-2025). Checked Nov 2026.
+
+## R-641 · Cadence fiscal 2025 results (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent from a republication of the release (cadence.com returned 403).* [Established: company results as republished]
+
+- "Revenue of $5.297 billion, compared to revenue of $4.641 billion in 2024"; "Cadence's IP business grew nearly 25% year-over-year in 2025, driven by the superior performance and expanding adoption of its IP portfolio, including HBM, UCIe, PCIe, DDR, and SerDes".
+- **Not found:** the IP business's share of revenue (not in the release or the call transcript read).
+- **Source:** [Design & Reuse republication of the 17 Feb 2026 release](https://www.design-reuse.com/news/202530117-cadence-reports-fourth-quarter-and-fiscal-year-2025-financial-results). Checked Nov 2026.
+
+## R-642 · Broadcom AI semiconductor revenue, FY2025 to Q3 FY2026 (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent (press releases on PR Newswire; call transcript; investors.broadcom.com returned 403).* [Established: company results; the dollar figures for Q4 FY2025 and FY2025 are from the call]
+
+- Q3 FY2026 (ended 2 Aug 2026; release 2 Sep 2026): "Revenue of $29.6 billion for the third quarter, up 86 percent"; "Q3 AI semiconductor revenue of $16.7 billion grew 221% year-over-year, and 54% quarter-over-quarter"; guidance: "expect AI semiconductor revenue to accelerate to $21.7 billion, up 236% year-over-year".
+- Q4 FY2025 call (11 Dec 2025, H. Tan): "AI semiconductor revenue of $6.5 billion, which was up 74% year on year"; fiscal 2025 "AI revenue grew 65% year over year to $20 billion".
+- **Sources:** [Broadcom Q3 FY2026 release](https://www.prnewswire.com/news-releases/broadcom-inc-announces-third-quarter-fiscal-year-2026-financial-results-and-quarterly-dividend-302868129.html); [Q4 FY2025 release](https://www.prnewswire.com/news-releases/broadcom-inc-announces-fourth-quarter-and-fiscal-year-2025-financial-results-and-quarterly-dividend-302639606.html); [Q4 FY2025 call transcript (Motley Fool)](https://www.fool.com/earnings/call-transcripts/2025/12/12/broadcom-avgo-q4-2025-earnings-call-transcript/). Checked Nov 2026.
+
+## R-643 · Marvell fiscal 2026 results and custom-silicon revenue (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent (Marvell investor-relations releases; call transcript).* [Established: company results; custom figures are management statements on the call]
+
+- FY2026 (ended 31 Jan 2026; release 5 Mar 2026): "Net revenue for fiscal 2026 was $8.195 billion, a new record", up 42%; Q4 data center revenue $1,651.3 M of $2,218.7 M.
+- Call (5 Mar 2026): "Our data center revenue surpassed $6 billion, growing 46% year over year"; custom "scaled from zero revenue to $1.5 billion in fiscal 2026 … we doubled our custom revenue year over year"; "We expect custom revenue to grow more than 20% year over year in fiscal 2027". (The transcript's "$1.5 billion" for Q4 data center conflicts with the release; the release figure is used.)
+- Q2 FY2027 (release 27 Aug 2026): revenue $2.739 B; data center $2,171.5 M.
+- **Sources:** [Marvell FY2026 release](https://investor.marvell.com/news-events/press-releases/detail/1011/marvell-technology-inc-reports-fourth-quarter-and-fiscal-year-2026-financial-results); [Q2 FY2027 release](https://investor.marvell.com/news-events/press-releases/detail/1031/marvell-technology-inc-reports-second-quarter-of-fiscal-year-2027-financial-results); [Q4 FY2026 call transcript (Motley Fool)](https://www.fool.com/earnings/call-transcripts/2026/03/05/marvell-mrvl-q4-2026-earnings-call-transcript/). Checked Nov 2026.
+
+## R-644 · Hyperscaler custom AI accelerators, 2025–2026 (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent (company blogs and announcements).* [Established: vendor statements; performance figures are vendor claims]
+
+- **Google** TPU 8t and 8i (22 Apr 2026): "A single TPU 8t superpod now scales to 9,600 chips and two petabytes of shared high bandwidth memory"; "TPU 8i pairs 288 GB of high-bandwidth memory with 384 MB of on-chip SRAM"; "up to two times better performance-per-watt over the previous generation, Ironwood". Ironwood (9 Apr 2025): "9,216 chips per pod", "192 GB per chip", "7.37 TB/s per chip".
+- **AWS** Trainium3 (2 Dec 2025): "our first 3nm AWS AI chip"; "Each AWS Trainium3 chip provides 2.52 petaflops (PFLOPs) of FP8 compute … 144 GB of HBM3e memory, and 4.9 TB/s of memory bandwidth".
+- **Microsoft** Maia 200 (26 Jan 2026): "built on TSMC's 3nm process … 216GB HBM3e at 7 TB/s and 272MB of on-chip SRAM"; "over 140 billion transistors"; "over 10 petaFLOPS in 4-bit precision (FP4) and over 5 petaFLOPS of 8-bit (FP8) performance, all within a 750W SoC TDP envelope"; "30% better performance per dollar than the latest generation hardware in our fleet today".
+- **Meta** MTIA (11 Mar 2026): "four new generations of MTIA chips within the next two years"; "We deploy hundreds of thousands of MTIA chips for inference workloads". Meta and Broadcom (14 Apr 2026): "co-develop multiple generations of our next-generation MTIA"; a "commitment that exceeds 1GW".
+- **Sources:** [Google, TPU 8](https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/eighth-generation-tpu-agentic-era/); [Google, Ironwood](https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/ironwood-tpu-age-of-inference/); [AWS, Trn3 UltraServers](https://aws.amazon.com/about-aws/whats-new/2025/12/amazon-ec2-trn3-ultraservers/); [Microsoft, Maia 200](https://blogs.microsoft.com/blog/2026/01/26/maia-200-the-ai-accelerator-built-for-inference/); [Meta, MTIA](https://about.fb.com/news/2026/03/expanding-metas-custom-silicon-to-power-our-ai-workloads/); [Meta and Broadcom](https://about.fb.com/news/2026/04/meta-partners-with-broadcom-to-co-develop-custom-ai-silicon/). Checked Nov 2026.

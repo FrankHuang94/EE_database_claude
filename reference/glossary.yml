@@ -10758,3 +10758,81 @@
 - term: Sensitivity (tornado) analysis
   definition: Varying each input of a model by a set amount, one at a time, and ranking the inputs by the swing they cause in the output; the chart of sorted bars is called a tornado.
   chapter: "26-03"
+
+# ---------------------------------------------------------------- 26-04
+- term: Incremental analysis
+  definition: Comparing alternatives by only the cash flows that differ between them; shared revenues and costs cancel and the decision rests on the difference.
+  chapter: "26-04"
+- term: Make-or-buy decision
+  definition: The choice between building something in-house (high fixed cost, low unit cost) and buying or licensing it (low fixed cost, higher unit cost); the expected volume and the risks of each option decide it.
+  chapter: "26-04"
+  see_also: [Break-even volume]
+- term: Discounted unit stream
+  definition: U = Σ V_t/(1 + i)^t, the number of year-0 units equivalent to a shipment plan; any per-unit charge r has present value rU.
+  chapter: "26-04"
+- term: Royalty
+  definition: A payment to the owner of IP or a patent for each unit sold, either a fixed amount per unit or a percentage of the selling price, usually counted in COGS.
+  chapter: "26-04"
+  see_also: [Royalty stacking]
+- term: Upfront licence fee
+  definition: The fixed amount an IP licensee pays when a licence is signed, separate from the royalties paid as units ship.
+  chapter: "26-04"
+  see_also: [Royalty]
+- term: Percentage royalty
+  definition: A royalty set as a fraction of the product's selling price rather than a fixed amount per unit, so it falls as the price erodes and shifts price risk to the licensor.
+  chapter: "26-04"
+  see_also: [Royalty]
+- term: Silicon-proven IP
+  definition: An IP block that already works in a manufactured and tested chip on the target process, which lowers the respin and schedule risk of using it.
+  chapter: "26-04"
+- term: Hard IP
+  definition: An IP block delivered as a finished layout for one specific process (typical for PHYs, PLLs and memories); it cannot move to another foundry without being redesigned.
+  chapter: "26-04"
+  see_also: [Soft IP]
+- term: Soft IP
+  definition: An IP block delivered as synthesizable RTL, portable across processes but needing synthesis, timing closure and verification on each one.
+  chapter: "26-04"
+  see_also: [Hard IP]
+- term: Operating leverage
+  definition: The sensitivity of profit to volume, set by the share of costs that are fixed; licensing converts fixed NRE into per-unit royalties and so lowers it.
+  chapter: "26-04"
+- term: Effective density gain
+  definition: The whole die's density improvement at a new node, s_eff = 1/Σ(f_k/s_k), the area-weighted harmonic mean of the per-block gains; blocks that barely shrink (SRAM, analog, I/O) cap it.
+  chapter: "26-04"
+  see_also: [Amdahl's law]
+- term: Cost per good function
+  definition: The cost of implementing a given function in good silicon, proportional to wafer price divided by effective density and yield; the quantity a node choice should minimize.
+  chapter: "26-04"
+  see_also: [Cost per transistor]
+- term: Mixed-node partitioning
+  definition: Putting blocks that gain little from a new node (I/O, analog, some memory) on separate dies made on an older, cheaper process, joined to the leading-edge logic in one package.
+  chapter: "26-04"
+  see_also: [Chiplet]
+- term: Merchant silicon
+  definition: A standard chip designed by a supplier and sold to many customers, whose price includes the supplier's design cost and gross margin.
+  chapter: "26-04"
+  see_also: [Custom ASIC]
+- term: Custom ASIC
+  definition: An application-specific integrated circuit designed for one customer's own products or workloads, often with a design partner; the customer pays the NRE and avoids a merchant's margin.
+  chapter: "26-04"
+  see_also: [Merchant silicon, "Design partner (ASIC services)"]
+- term: Design partner (ASIC services)
+  definition: A company that turns a customer's specification or RTL into a manufactured chip, supplying interface IP, physical design, packaging, test and supply-chain management, and sells the chips at a margin.
+  chapter: "26-04"
+- term: Total cost of ownership (TCO)
+  definition: All costs of using equipment over its service life, including purchase, its share of shared infrastructure, energy and operation, usually divided by the useful work delivered.
+  chapter: "26-04"
+- term: Merchant-equivalent
+  definition: The number of merchant parts whose throughput a fleet of custom chips matches, N_c θ_c/θ_m; it puts custom and merchant fleets on a common basis.
+  chapter: "26-04"
+- term: Decision tree
+  definition: A diagram of decisions, chance events with probabilities, and outcomes, solved backward by taking expected values at chance nodes and the best branch at decision nodes.
+  chapter: "26-04"
+- term: Value of flexibility
+  definition: How much less a plan that waits to choose until uncertainty resolves is expected to cost than the best plan committed in advance; never negative when keeping the choice is free.
+  chapter: "26-04"
+  see_also: [Real option]
+- term: Real option
+  definition: The right, but not the obligation, to take a business action later (expand, switch, abandon), valued with the same logic as a financial option.
+  chapter: "26-04"
+  see_also: [Value of flexibility]
