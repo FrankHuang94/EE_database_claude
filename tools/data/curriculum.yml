@@ -1232,7 +1232,7 @@ courses:
       - {id: "28-06", slug: red-and-green-flags, title: "Red Flags and Green Flags", hours: 4, topics: "Technical, organizational and commercial signals"}
       - {id: "28-07", slug: evaluating-engineering-teams, title: "Evaluating Engineering Teams", hours: 5, topics: "Team composition, track record, tapeout history, tooling, culture, key-person risk"}
       - {id: "28-08", slug: integration-risk, title: "Post-Acquisition Integration Risk", hours: 5, topics: "Tool/flow/process migration, roadmap overlap, retention, IP and licensing issues"}
-      - {id: "28-09", slug: business-engineering-translation, title: "The Business ↔ Engineering Translation Table", hours: 3, topics: "Mapping margin, cost, schedule and risk to engineering metrics and back"}
+      - {id: "28-09", slug: business-engineering-translation, title: "The Business ↔ Engineering Translation Table", hours: 4, topics: "Mapping margin, cost, schedule and risk to engineering metrics and back"}
       - {id: "28-10", slug: conversation-scenarios, title: "Conversation Scenarios", hours: 15, topics: "25+ dialogues with VPs of Engineering and chief architects, with annotated debriefs"}
 
 # -----------------------------------------------------------------------------

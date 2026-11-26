@@ -52,6 +52,7 @@ f2 = 1.2 / 1.1
 v.check("Ex 28-10.2a", f2)
 v.check("Ex 28-10.2b", f2 ** 3)
 v.check("Ex 28-10.2c", 100 * (1 - 1 / f2 ** 3))
+v.check("Ex 28-10.2d", 100 * (1 - 1 / (1.05 * f2 ** 3)))
 s3 = 2048 * 10e9 / 8
 v.check("Ex 28-10.3a", s3 / 1e9)
 v.check("Ex 28-10.3b", 8 * s3 / 1e12)
@@ -68,18 +69,27 @@ v.assert_true("Ex 5: lab bound agrees", abs(cv.zero_failure_bound(1e6) - lam) < 
 # --- Examples 6-10 --------------------------------------------------------------------------
 v.check("Ex 28-10.6a", 62 + 10 * math.log10(2.5e8 / 0.05))
 v.check("Ex 28-10.6b", (62 - 1.76) / 6.02)
+fom6 = 62 + 10 * math.log10(2.5e8 / 0.05)
+v.check("Ex 28-10.6c", 181.49 - fom6, tol=0.06)
+v.check("Ex 28-10.6d", 173.3 - fom6)
+v.check("Ex 28-10.6e", 10 ** ((181.49 - fom6) / 10))
+v.check("Ex 28-10.6f", 10 ** ((173.3 - fom6) / 10))
 a7 = 10 ** (-7 / 20)
 th = np.linspace(-math.pi / 2, math.pi / 2, 200001)
 dc = np.trapezoid(np.cos(th), th) / (2 * math.pi)       # half-sine of unit peak: mean over a period
 f1 = np.trapezoid(np.cos(th) ** 2, th) / math.pi         # fundamental amplitude
 v.check("Ex 28-10.7a", 100 * 0.5 * a7 * f1 / dc)         # class B at relative swing a7
 v.check("Ex 28-10.7b", 100 * 2 * 0.5 * a7 * f1 / dc)     # Doherty carrier: twice class B below half amplitude
-l96, l975 = 5000 / 0.96 - 5000, 5000 / 0.975 - 5000
-v.check("Ex 28-10.8a", l96)
-v.check("Ex 28-10.8b", l975)
-v.check("Ex 28-10.8c", l96 - l975)
-v.check("Ex 28-10.8d", 100 * (l96 - l975) / l96)
-v.check("Ex 28-10.9", 100 * 0.992 * np.prod([0.996] * 6) * 0.985)
+lf1, lf2 = 5000 / 0.958 - 5000, 5000 / 0.971 - 5000
+v.check("Ex 28-10.8a", lf1)
+v.check("Ex 28-10.8b", lf2)
+v.check("Ex 28-10.8c", lf1 - lf2)
+v.check("Ex 28-10.8d", 100 * (lf1 - lf2) / lf1)
+lh1, lh2 = 2500 / 0.96 - 2500, 2500 / 0.975 - 2500
+v.check("Ex 28-10.8e", lh1)
+v.check("Ex 28-10.8f", lh2)
+v.check("Ex 28-10.8g", lh1 - lh2)
+v.check("Ex 28-10.9", 100 * 0.992 * np.prod([0.996] * 6) * 0.975)
 i10 = 1.2 + 3000 * 0.004 / 2 + 6000 * 0.002 / 30
 yrs10 = 230 / (i10 / 1000) / H
 v.check("Ex 28-10.10a", i10)
@@ -92,7 +102,9 @@ v.check("Ex 28-10.11b", 4 / 14)
 v.assert_true("Ex 11: lab Beta mean agrees", abs(cv.beta_mean(3, 4) - 4.4 / 14) < 1e-12)
 g12 = math.exp((math.log(1.2) + math.log(1.35)) / 2)
 v.check("Ex 28-10.12a", g12)
-v.check("Ex 28-10.12b", 15 * g12)
+v.check("Ex 28-10.12b", 15 / 1.1 * g12)
+v.check("Ex 28-10.12c", 15 / 1.1)
+v.check("Ex 28-10.12d", 15 * g12)
 sim = (RNG.random((400_000, 8)) < 0.10).any(axis=1).mean()
 v.check("Ex 28-10.13", 100 * (1 - 0.9 ** 8))
 v.assert_true("Ex 13: simulation within 0.3 points", abs(sim - (1 - 0.9 ** 8)) < 0.003)
@@ -107,6 +119,7 @@ v.check("Ex 28-10.15c", 120 / (30 * 0.4 * 4 * fac))
 # --- Examples 16-21 -------------------------------------------------------------------------
 v.check("Ex 28-10.16a", 80 * 3 / 12)
 v.check("Ex 28-10.16b", 15 * 4 * 0.03)
+v.check("Ex 28-10.16c", 0.55 * 80 * 3 / 12)
 v.check("Ex 28-10.17", 20e6 * 15 * 0.025 / 1e6)
 v.check("Ex 28-10.18a", 2 * (800 / 2) * 8)
 v.check("Ex 28-10.18b", 2 * (800 / 2) * 8 / 700)
@@ -119,6 +132,10 @@ v.check("Ex 28-10.20b", e600)
 v.check("Ex 28-10.20c", e750 - e600)
 v.check("Ex 28-10.20d", 100 * (0.75 / 0.6 - 1))
 v.check("Ex 28-10.21", 10e-9 * 2e6 * 400)
+af21 = math.exp(0.7 / 8.617333262e-5 * (1 / 328.15 - 1 / 363.15))
+v.check("Ex 28-10.21a", af21)
+v.check("Ex 28-10.21b", 10e-9 * 2e6 * 400 * af21)
+v.check("Ex 28-10.21c", 2 * 10e-9 * 2e6 * 400)
 
 # --- Examples 22-26 -------------------------------------------------------------------------
 def tail(n, p, k):
@@ -189,9 +206,21 @@ v.check("28-10.12b", float(np.mean((0.9 - mc) ** 2)), tol=0.002)
 v.assert_true("P12b: closed form (p-q)^2 + q(1-q)", abs((0.9 - q) ** 2 + q * (1 - q) - 0.25) < 1e-12)
 v.assert_true("P12a: order of answers does not matter",
               abs(odds_post(0.3, [3, 0.4, 2])[0] - odds_post(0.3, [2, 3, 0.4])[0]) < 1e-12)
+v.check("28-10.13a", 300 / (14 * 24) * 1000)
+v.check("28-10.13b", 0.8 * 300 / (14 * 24) * 1000)
+o14, p14 = odds_post(0.4, [3, 1, 0.4])
+v.check("28-10.14a", o14)
+v.check("28-10.14b", 100 * p14)
+o14c, p14c = odds_post(0.4, [3, 1, 0.4, 0.4])
+v.check("28-10.14c", o14c)
+v.check("28-10.14d", 100 * p14c)
+v.check("28-10.14e", 4 + 0.3)
+v.check("28-10.14f", 4.3e-12 * 112e9)
+v.check("28-10.14g", 100 * odds_post(0.4, [3, 1, 3])[1])
+v.assert_true("P14g odds 6", abs(odds_post(0.4, [3, 1, 3])[0] - 6) < 1e-12)
 
 # --- Lab ---------------------------------------------------------------------------------------
-v.check("Lab 28-10.a", 100 * odds_post(0.4, [3, 2, 0.5, 1, 3, 0.3])[1])
+v.check("Lab 28-10.a", 100 * odds_post(0.4, [3, 2, 0.3, 1, 3])[1])  # follow-up replaces the evasive answer on the same fact
 v.check("Lab 28-10.c", cv.brier([0.8] * 5 + [0.6] * 5, [1] * 5 + [0] * 5))
 v.check("Lab 28-10.d", 100 * odds_post(0.4, [3, 2, 0.5, 1])[1])
 

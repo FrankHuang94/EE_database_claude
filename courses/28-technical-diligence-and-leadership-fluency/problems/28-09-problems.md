@@ -49,7 +49,7 @@ Chapter: [28-09](../chapters/28-09-business-engineering-translation.md) · Worke
 
 ### Problem 28-09.9 [A]
 
-**Break-even volume.** A leading-edge design costs $150M of engineering plus a $40M mask set [R-321]. Each unit earns $30 of gross profit. How many units are needed to recover the fixed cost?
+**Break-even volume.** A leading-edge design costs $150M of engineering plus a \$40M mask set (the top of the range of estimates [R-321], [R-623]). Each unit earns $30 of gross profit. How many units are needed to recover the fixed cost?
 
 ### Problem 28-09.10 [C]
 
@@ -59,6 +59,14 @@ Chapter: [28-09](../chapters/28-09-business-engineering-translation.md) · Worke
 - (b) Show that a 10% rise in selling price raises gross margin by $(1 - \text{GM})(1 - 1/1.1)$, and check it against Example 28-09.6.
 - (c) Show that a power saving of fraction $s$ per device allows $1/(1 - s) - 1$ more devices in a fixed power budget, and evaluate it for $s$ = 0.1.
 
+### Problem 28-09.11 [B]
+
+**A plausible-range tornado.** Start from the base case of Example 28-09.6 (ASP \$90, 100 mm², \$18,500 wafer, $D_0$ = 0.001 per mm², package and test \$8, whole dies). A skeptical engineer accepts these ranges for a die on a young node: ASP \$80–95, die area 98–103 mm², wafer price \$17,000–20,000, $D_0$ 0.0008–0.003 per mm², package and test \$7–10.
+
+- (a) Find the change in gross margin (points) at each end of each range, and each driver's total swing.
+- (b) Rank the drivers by swing and compare the ranking with the equal-swing tornado of Example 28-09.6.
+- (c) Which engineering claim should diligence test hardest, and what would you ask for?
+
 ---
 
 ## Objective coverage
@@ -66,7 +74,7 @@ Chapter: [28-09](../chapters/28-09-business-engineering-translation.md) · Worke
 | Objective | Problems |
 |---|---|
 | 1. Margin from die area; elasticity | 1, 2, 3, 10 |
-| 2. Reverse translation: area budgets | 4, 9 |
-| 3. Pricing schedule and power | 1, 5, 6, 8, 10 |
+| 2. Reverse translation: area budgets | 4 |
+| 3. Pricing schedule and power (including the masks and NRE a respin or a new design must recover) | 1, 5, 6, 8, 9, 10 |
 | 4. FIT to field cost | 1, 7 |
-| 5. Sensitivity of margin | 10 |
+| 5. Sensitivity of margin | 10, 11 |

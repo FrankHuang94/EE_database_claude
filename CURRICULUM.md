@@ -4,7 +4,7 @@
 
 The complete map of the Self-Taught BSEE: every course and chapter, with university equivalents, textbook alignment, prerequisites, learning objectives and estimated study hours. For the week-by-week schedule see [STUDY_PLAN.md](STUDY_PLAN.md). For build status see [PROGRESS.md](PROGRESS.md).
 
-**At a glance:** 29 courses · 307 chapters · 7 terms · 4 capstones · ≈ 2760 study hours in total (courses 2546 h, capstones 160 h, term checkpoints 56 h).
+**At a glance:** 29 courses · 307 chapters · 7 terms · 4 capstones · ≈ 2760 study hours in total (courses 2547 h, capstones 160 h, term checkpoints 56 h).
 
 > **About the hour estimates.** Hours cover reading, working the examples, the full problem set and the lab for each chapter, for a strong learner meeting the material for the first time. At 10–12 hours per week, the full curriculum is a multi-year undertaking; see [STUDY_PLAN.md](STUDY_PLAN.md) for the calendar and the shorter practitioner fast track.
 
@@ -40,7 +40,7 @@ The complete map of the Self-Taught BSEE: every course and chapter, with univers
 | [25 · Semiconductor Fabrication, Packaging, Test and Reliability](#course-25) | 6 | 12 | 83 | Microfabrication / IC Process Technology + Packaging and Reliability (senior elective) |
 | [26 · Engineering Design and Professional Practice](#course-26) | 7 | 7 | 42 | Senior Design / Engineering Professional Practice + Engineering Economics |
 | [27 · System Architectures (Case-Study Course)](#course-27) | 7 | 8 | 63 | Systems-design case-study capstone seminar |
-| [28 · Technical Diligence and Engineering Leadership Fluency](#course-28) | 7 | 10 | 62 | No university equivalent. Draws on industry diligence practice. |
+| [28 · Technical Diligence and Engineering Leadership Fluency](#course-28) | 7 | 10 | 63 | No university equivalent. Draws on industry diligence practice. |
 
 ## Prerequisite graph
 
@@ -1143,7 +1143,7 @@ How chips are made, packaged, tested and qualified: process flow, lithography th
 
 ## Term 7 — Design Practice, Systems and Practitioner Layer
 
-Engineering economics, end-to-end system case studies and technical diligence. *Term total: ≈ 167 hours + checkpoint (8 h).*
+Engineering economics, end-to-end system case studies and technical diligence. *Term total: ≈ 168 hours + checkpoint (8 h).*
 
 <a id="course-26"></a>
 
@@ -1222,7 +1222,7 @@ The practitioner's course: a framework for evaluating a chip company's technolog
 - **Prerequisites:** [26 · Engineering Design and Professional Practice](#course-26), [27 · System Architectures (Case-Study Course)](#course-27)
 - **FE areas served:** —
 - **Deeper:** see companion repo(s): semiconductor capital equipment; datacenter networking; LLM inference engineering; quantum computing
-- **Study hours:** ≈ 62 (60 chapter hours + 2 review/exam)
+- **Study hours:** ≈ 63 (61 chapter hours + 2 review/exam)
 
 **Learning objectives.** By the end of the course you can:
 
@@ -1242,7 +1242,7 @@ The practitioner's course: a framework for evaluating a chip company's technolog
 | [28-06 · Red Flags and Green Flags](courses/28-technical-diligence-and-leadership-fluency/chapters/28-06-red-and-green-flags.md) | 4 | Technical, organizational and commercial signals |
 | [28-07 · Evaluating Engineering Teams](courses/28-technical-diligence-and-leadership-fluency/chapters/28-07-evaluating-engineering-teams.md) | 5 | Team composition, track record, tapeout history, tooling, culture, key-person risk |
 | [28-08 · Post-Acquisition Integration Risk](courses/28-technical-diligence-and-leadership-fluency/chapters/28-08-integration-risk.md) | 5 | Tool/flow/process migration, roadmap overlap, retention, IP and licensing issues |
-| [28-09 · The Business ↔ Engineering Translation Table](courses/28-technical-diligence-and-leadership-fluency/chapters/28-09-business-engineering-translation.md) | 3 | Mapping margin, cost, schedule and risk to engineering metrics and back |
+| [28-09 · The Business ↔ Engineering Translation Table](courses/28-technical-diligence-and-leadership-fluency/chapters/28-09-business-engineering-translation.md) | 4 | Mapping margin, cost, schedule and risk to engineering metrics and back |
 | [28-10 · Conversation Scenarios](courses/28-technical-diligence-and-leadership-fluency/chapters/28-10-conversation-scenarios.md) | 15 | 25+ dialogues with VPs of Engineering and chief architects, with annotated debriefs |
 
 ## Capstones and checkpoints

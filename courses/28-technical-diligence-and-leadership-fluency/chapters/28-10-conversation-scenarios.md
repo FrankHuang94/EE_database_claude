@@ -52,9 +52,9 @@ flowchart LR
 
 28-01 and 28-04 treat each answer as evidence with a likelihood ratio. A conversation is a sequence of such tests, chosen and ordered by the analyst:
 
-1. **Prepare.** For each claim that matters to the deal, write the claim, a prior probability, the governing identity and its pre-computed check, two or three questions, and the strong, partial and evasive answers you expect, each with a likelihood ratio (for example 3, 1 and 0.4).
+1. **Prepare.** For each claim that matters to the deal, write the claim, a prior probability, the governing identity and its pre-computed check, two or three **diagnostic questions** (questions whose strong and weak answers differ in a way you can check; 28-04), and the strong, partial and evasive answers you expect, each with a likelihood ratio (for example 3, 1 and 0.4).
 2. **Conduct.** Ask, listen, reconcile, and take notes in the ratio language as you go.
-3. **Debrief.** Within hours, group the answers by underlying fact (28-06 §3.6), multiply the ratios, compute the posterior, and list follow-ups with owners and dates.
+3. **Debrief.** Within hours, group the answers by underlying fact (28-06 §3.6), multiply the ratios, compute the posterior, and list follow-ups with owners and dates. The written result is the **debrief ratio sheet**: one line per answer with its ratio, grouped by fact, then the posterior for each claim and the follow-ups.
 
 The debrief arithmetic is the odds form of Bayes' rule: posterior odds = prior odds × the product of the likelihood ratios of the conditionally independent answers.
 
@@ -79,7 +79,13 @@ The debrief arithmetic is the odds form of Bayes' rule: posterior odds = prior o
 
 ### 3.4 Calibrating yourself
 
-Judgments improve when they are scored. After each deal, record the probabilities you assigned to key claims and whether the claims turned out true. The **Brier score**, $\frac{1}{n}\sum_i (p_i - o_i)^2$ with $o_i \in \{0, 1\}$, is 0 for perfect forecasts and 0.25 for always saying 50%; it rewards both accuracy and honest confidence. Over a few dozen claims it shows whether your ratios are too generous or too harsh, and the next conversation's priors and ratios can be adjusted accordingly (Problem 28-10.10).
+Judgments improve when they are scored. After each deal, record the probabilities you assigned to key claims and whether the claims turned out true. The **Brier score**, $\frac{1}{n}\sum_i (p_i - o_i)^2$ with $o_i \in \{0, 1\}$, is 0 for perfect forecasts and 0.25 for always saying 50%; it rewards both accuracy and honest confidence. It is a *proper* scoring rule: if a claim is true with probability $q$ and you report $p$, the expected score is
+
+$$
+E\big[(p - o)^2\big] = q(1 - p)^2 + (1 - q)p^2 = (p - q)^2 + q(1 - q),
+$$
+
+which is smallest at $p = q$, so shading a forecast up or down can only hurt (Problem 28-10.12). A single Brier number does not say *which way* you are miscalibrated, though. For that, keep a calibration table: group past claims by the probability you gave them (say 0.5–0.6, 0.6–0.7, …) and compare each group's average forecast with the fraction that came true. Groups whose outcomes fall short of the forecasts mean your ratios are too generous; outcomes above the forecasts mean they are too harsh. Over a few dozen claims, the next conversation's priors and ratios can be adjusted accordingly (Problem 28-10.10).
 
 ### 3.5 The pocket card
 
@@ -87,7 +93,7 @@ The live checks used most often, with the chapter that derives each:
 
 | Claim type | Live check | Chapter |
 |---|---|---|
-| Accelerator throughput | Ridge $F/B$; decode intensity $2B_{\text{batch}}/b_w$; attainable = intensity × bandwidth | 28-04 |
+| Accelerator throughput | Ridge $F/B_{\text{mem}}$; decode intensity $2N_b/b_w$ ($N_b$ sequences, $b_w$ bytes per weight); attainable = intensity × bandwidth | 28-04 |
 | Iso-power CPU gain | Reduction $1 - 1/[g_C(R/g_{\text{IPC}})^3]$ | 28-04 |
 | Memory and link power | Bits per second × pJ/bit | 28-04 |
 | Converter quality | $\text{FoM}_S = \text{SNDR} + 10\log_{10}(f_s/2P)$; ceiling about 191.8 dB | 28-05 |
@@ -111,7 +117,7 @@ Each scenario is a condensed conversation with an invented company; names and pa
 
 ### Example 28-10.1 · The utilization claim (tier B)
 
-**Setup.** A start-up's VP of Engineering claims "40% utilization on 70B-parameter decode". Its accelerator: 2 PFLOP/s dense FP8, 4 TB/s of HBM. The analyst's prepared check: the roofline (28-04 §3.2).
+**Setup.** A start-up's VP of Engineering (VPE in the dialogues) claims "40% utilization on 70B-parameter decode". Its accelerator: 2 PFLOP/s dense FP8, 4 TB/s of HBM. The analyst's prepared check: the roofline (28-04 §3.2).
 
 **Dialogue.**
 
@@ -122,7 +128,7 @@ Each scenario is a condensed conversation with an invented company; names and pa
 
 **Live check.** Ridge $2 \times 10^{15}/4 \times 10^{12}$ = **500** FLOP/byte; decode intensity $2 \times 8/1$ = **16**; attainable $16 \times 4$ TB/s = **64** TFLOP/s, **3.2**% of peak; batch to reach the ridge **250**.
 
-**Debrief.** The first answer was a number with missing conditions (partial, LR 1). The reconciliation exposed that it described prefill; the correction was candid and mechanistic (strong, LR 3). Follow-up: utilization and latency at batch 128 and the KV-cache capacity that batch requires.
+**Debrief.** The first answer attached a prefill number to a decode question. Prefill processes the whole prompt at once, reusing each weight across many tokens, so it is compute-bound; decode generates one token per sequence per step and is bandwidth-bound (28-04 §3.2). Quoting one for the other is the wrong regime, which on the claim "the target reports utilization accurately" is evidence against (LR 0.5). The reconciliation exposed it, and the correction was candid and mechanistic (LR 2), which partly offsets the first answer; on the decode claim itself, the evidence now says low single digits. Follow-up: utilization and latency at batch 128 and the KV-cache capacity that batch requires (the KV cache holds each sequence's attention keys and values, so its size grows with batch and context length).
 
 **Units check.** FLOP/s ÷ byte/s = FLOP/byte; FLOP/byte × byte/s = FLOP/s. ✓
 
@@ -141,7 +147,7 @@ Each scenario is a condensed conversation with an invented company; names and pa
 
 **Live check.** Frequency ratio $1.2/1.1$ = **1.091**; power factor $1.091^3$ = **1.298**; required energy-per-operation reduction **23.0**%.
 
-**Debrief.** A decomposition, a mechanism and an offered artifact: strong (LR 3). The remaining risk is the adaptive-clocking margin, which depends on silicon behavior across parts; ask for the distribution (28-05 §3.6).
+**Debrief.** A decomposition, a mechanism and an offered artifact: strong (LR 3). The remaining risk is the adaptive-clocking margin, which depends on silicon behavior across parts; ask for the distribution (28-05 §3.6). One assumption also needs its own question: a wider back end usually switches more capacitance, so $g_C = 1$ is optimistic. At $g_C = 1.05$ the required reduction rises to $1 - 1/(1.05 \times 1.298)$ = **26.6**%. Ask for the block-level capacitance change along with the breakdown.
 
 **Units check.** Ratios throughout. ✓
 
@@ -155,10 +161,10 @@ Each scenario is a condensed conversation with an invented company; names and pa
 
 - **Analyst:** Is 10 Gb/s the qualified rate at all your customers, or the best bin?
 - **CTO:** Qualified at two customers; the third qualifies at 9.2 this quarter.
-- **Analyst:** So a stack gives about 2.56 TB/s, and eight stacks about 20 TB/s. At full read rate that's over 120 W per stack at 6 pJ/bit; what energy per bit do you measure at 10 Gb/s?
+- **Analyst:** So a stack gives about 2.56 TB/s, and eight stacks about 20 TB/s. At full read rate and an all-in 6 pJ/bit that's over 120 W of memory-subsystem power attributable to each stack, host side included; what energy per bit do you measure at 10 Gb/s, and at which boundary?
 - **CTO:** Between 5.5 and 6.5 depending on temperature; I'll send the curve.
 
-**Live check.** Stack bandwidth $2048 \times 10/8$ = **2560** GB/s; eight stacks **20.48** TB/s; stack power at 6 pJ/bit **123** W.
+**Live check.** Stack bandwidth $2048 \times 10/8$ = **2560** GB/s; eight stacks **20.48** TB/s; memory-subsystem power per stack at an all-in 6 pJ/bit **123** W (an all-in figure including the host side, 28-04 §3.3; the DRAM alone draws less).
 
 **Debrief.** Qualified rates by customer and a measured energy range: strong (LR 3). Follow-up: the curve, and yield at 10 Gb/s.
 
@@ -211,16 +217,18 @@ Each scenario is a condensed conversation with an invented company; names and pa
 
 - **Analyst:** Is 62 dB near Nyquist, and does 50 mW include references and the clock buffer?
 - **CTO:** Near Nyquist, yes; 50 mW is the full macro including references, excluding the PLL.
-- **Analyst:** That's a Schreier figure of about 159 dB: well inside the published frontier, which is what a robust product macro should look like. Why not push it?
-- **CTO:** Our customers care about calibration-free operation over temperature; we trade a few dB for no background calibration.
+- **Analyst:** That's a Schreier figure of about 159 dB. The best published results are about 181.5 dB at 100 MS/s or faster and 173.3 dB at 1 GS/s or faster, so at 500 MS/s this is roughly 14 to 22 dB from the frontier: 25 to 180 times the power of the best papers for the same performance. Where do those decibels go?
+- **CTO:** We trade a few dB for calibration-free operation over temperature; our customers care about that.
+- **Analyst:** Fourteen dB or more is more than a few. Can you break the 50 mW into the converter core, references, buffers and the margin you hold for temperature?
+- **CTO:** I'd have to get that from the team.
 
-**Live check.** $\text{FoM}_S = 62 + 10\log_{10}(2.5 \times 10^8/0.05)$ = **159.0** dB; ENOB **10.0** bits.
+**Live check.** $\text{FoM}_S = 62 + 10\log_{10}(2.5 \times 10^8/0.05)$ = **159.0** dB; ENOB **10.0** bits. Gaps: $181.5 - 159.0$ = **22.5** dB and $173.3 - 159.0$ = **14.3** dB, power ratios **178** and **27.0** [R-336].
 
-**Debrief.** Boundary stated, mechanism and design choice explained: strong (LR 3). No red flag in being far from the research frontier; the question is fit to the customer's need.
+**Debrief.** The boundary was stated (good), but the explanation for a 14–22 dB gap was qualitative and the breakdown was deferred: partial (LR 1) on "the macro is competitive for its speed" until the breakdown arrives. Note the anti-pattern the analyst avoided: an earlier draft of this conversation said "well inside the frontier, which is what a robust product macro should look like; why not push it?", a leading question that supplies the answer and invites agreement (§3.3). Being far from the research frontier is not itself a red flag; an unexplained gap of this size is a question.
 
 **Units check.** dB + 10 log₁₀(Hz/W), the survey convention. ✓
 
-**Sanity check.** A claim near the 191.8 dB ceiling would have needed scrutiny; this one needs only confirmation.
+**Sanity check.** A claim near or above the frontier for its speed class would need scrutiny for the opposite reason; this one needs an explanation of where the power goes, because power is what the customer pays for.
 
 ### Example 28-10.7 · A PA at back-off (tier B)
 
@@ -249,15 +257,15 @@ Each scenario is a condensed conversation with an invented company; names and pa
 
 - **Analyst:** At what load and input voltage, and with fans included?
 - **VP Eng:** Half load, 230 V, fans included; at full load it's 97.1% against 95.8%.
-- **Analyst:** At 5 kW, 97.5% against 96% is about 128 W of heat against 208 W, 80 W less per supply.
+- **Analyst:** Then I should pair each figure with its own load. At full load, 5 kW, 97.1% against 95.8% is about 149 W of heat against 219 W, 70 W less per supply; at half load, 2.5 kW, 97.5% against 96% is about 64 W against 104 W. Where on that curve will our racks run?
 
-**Live check.** Losses $5000(1/0.96 - 1)$ = **208.3** W and $5000(1/0.975 - 1)$ = **128.2** W; difference **80.1** W.
+**Live check.** Full load: $5000(1/0.958 - 1)$ = **219.2** W and $5000(1/0.971 - 1)$ = **149.3** W; difference **69.9** W, **31.9**% less heat. Half load: $2500(1/0.96 - 1)$ = **104.2** W and $2500(1/0.975 - 1)$ = **64.1** W; difference **40.1** W.
 
-**Debrief.** Conditions and a curve point: strong (LR 3).
+**Debrief.** Conditions and a second curve point: strong (LR 3) on "the efficiency advantage is real". The analyst's first instinct would have been to apply the half-load figures to the full 5 kW, which mixes operating conditions, exactly the error §3.2 warns against; the follow-up question about where the racks run is what turns the advantage into money.
 
 **Units check.** W × dimensionless = W. ✓
 
-**Sanity check.** A point and a half of efficiency is nearly 40% less heat, which is the number the customer's thermal design cares about.
+**Sanity check.** About 1.3 points of efficiency at full load is nearly a third less heat, which is the number the customer's thermal design cares about.
 
 ### Example 28-10.9 · A package-yield figure (tier B)
 
@@ -266,16 +274,17 @@ Each scenario is a condensed conversation with an invented company; names and pa
 **Dialogue.**
 
 - **Analyst:** Is that end to end, from known-good dies to a tested package, or one step?
-- **VP Ops:** End to end on our last 2,000 units: die survival about 99.2%, stacks 99.6% each, assembly 98.5%.
-- **Analyst:** Multiplying those gives about 95.4%, so the figure reconciles.
+- **VP Ops:** End to end: die survival about 99.2%, stacks 99.6% each, assembly 97.5%.
+- **Analyst:** Multiplying those gives about 94.4%, below the headline. Which lots does the 95% come from?
+- **VP Ops:** Our best lot last quarter was over 95%. The average is what you calculated, and it's improving.
 
-**Live check.** $0.992 \times 0.996^6 \times 0.985$ = **95.4**%.
+**Live check.** $0.992 \times 0.996^6 \times 0.975$ = **94.4**%.
 
-**Debrief.** A definition, a sample size and components that multiply to the headline: strong (LR 3). Follow-up: the trend across lots.
+**Debrief.** The components do not multiply to the headline, and the headline turned out to be the best lot: selection of the kind 28-02 §3.4 warns about. On the claim "95% end-to-end yield" that is evidence against (LR 0.5); the candid admission of the average is worth noting but does not rescue the claim. Follow-up: yield by lot for the last four quarters, and what drove the best lot.
 
 **Units check.** Probabilities multiply. ✓
 
-**Sanity check.** Compare 28-05's Example 28-05.5, where a 98% claim could not be end to end.
+**Sanity check.** A one-point gap matters: at six stacks per package, each point of package yield is a point of the most expensive parts scrapped. Compare 28-05's Example 28-05.5, where a 98% claim could not be end to end.
 
 ### Example 28-10.10 · A battery-life claim (tier B)
 
@@ -303,7 +312,7 @@ Each scenario is a condensed conversation with an invented company; names and pa
 **Dialogue.**
 
 - **Analyst:** What counts as first-time-right: shipped on A0 to production?
-- **VPE:** Yes, A0 to production; the fourth needed a metal fix, B0.
+- **VPE:** Yes, A0 to production; the fourth needed a metal fix, A1.
 - **Analyst:** With an industry base rate of about 14% [R-621] and your four projects, I'd estimate your rate around 31%: clearly better than average, but four projects can't prove 75%.
 - **VPE:** Reasonable. The two most recent were derivatives, so they were easier.
 
@@ -317,18 +326,18 @@ Each scenario is a condensed conversation with an invented company; names and pa
 
 ### Example 28-10.12 · A 15-month plan (tier B)
 
-**Setup.** A program manager presents a 15-month plan; the last two projects took 1.2 and 1.35 times plan.
+**Setup.** A program manager presents a 15-month plan, built as 13.6 months of work plus a 10% buffer; the last two projects took 1.2 and 1.35 times their unbuffered plans.
 
 **Dialogue.**
 
 - **Analyst:** How does this plan differ from the last two in method?
 - **PM:** We added a 10% buffer and earlier emulation.
-- **Analyst:** Your history's geometric-mean overrun is about 27%, so a calibrated forecast is about 19 months. A 10% buffer covers about a third of that.
+- **Analyst:** Your history's geometric-mean overrun is about 27%, and it applies to the 13.6 months of work, so a calibrated forecast is about 17.4 months. The 10% buffer covers about a third of that overrun.
 - **PM:** Then I'd rather commit to 18 months with the emulation gate as the first checkpoint.
 
-**Live check.** $\sqrt{1.2 \times 1.35}$ = **1.273**; forecast $15 \times 1.273$ = **19.1** months.
+**Live check.** $\sqrt{1.2 \times 1.35}$ = **1.273**; unbuffered plan $15/1.1$ = **13.6** months; forecast $13.6 \times 1.273$ = **17.4** months. (Applying the overrun to the buffered 15 months would double-count the buffer and give 19.1.)
 
-**Debrief.** The plan was uncalibrated (partial, LR 1); the revision on evidence is a good sign (LR 2).
+**Debrief.** The plan was uncalibrated (partial, LR 1); the PM's 18-month commitment, slightly above the calibrated median, with an early gate, is a revision on evidence and a good sign (LR 2) on "the team plans realistically".
 
 **Units check.** months × ratio = months. ✓
 
@@ -378,12 +387,12 @@ Each scenario is a condensed conversation with an invented company; names and pa
 **Dialogue.**
 
 - **Analyst:** How many wins from three years ago reached production?
-- **VP Sales:** About 40%, and those took about two years to ramp.
-- **Analyst:** Then the risk-adjusted value is about $34M, roughly a third of the headline.
+- **VP Sales:** We don't track it that way. Every one of these is a strategic customer.
+- **Analyst:** Then may we have the list of wins from three years ago, and we'll check which shipped? Meanwhile, at the 40% that comparable companies report and a two-year ramp, the risk-adjusted value is about \$34M, roughly a third of the headline.
 
 **Live check.** Average discount factor **0.715**; value $30 \times 0.4 \times 4 \times 0.715$ = **34.3** \$M; claim over value **3.50**.
 
-**Debrief.** A conversion rate offered without evasion: strong (LR 3). The headline itself was not misleading by intent; it was the wrong measure.
+**Debrief.** A refusal to give the one number that converts a pipeline into a forecast: evasive (LR 0.5) on "the pipeline is worth roughly its headline". The analyst did not argue; they asked for a checkable artifact (the old win list) and priced the pipeline on an assumed outside-view rate in the meantime. The headline may not be misleading by intent, but it is the wrong measure, and a sales leader who does not track conversion is itself a finding.
 
 **Units check.** $M × fractions = $M. ✓
 
@@ -391,21 +400,21 @@ Each scenario is a condensed conversation with an invented company; names and pa
 
 ### Example 28-10.16 · When to migrate (tier B)
 
-**Setup.** The buyer's integration lead wants the target on the buyer's flow within 90 days; the target's next tape-out is in four months, for a product earning $80M a year in a fixed window.
+**Setup.** The buyer's integration lead wants the target on the buyer's flow within 90 days; the target's next tape-out is in four months, for a product earning \$80M a year at a 55% gross margin (assumed) in a fixed window.
 
 **Dialogue.**
 
 - **Analyst (to the target's VPE):** What would migrating now do to the tape-out?
 - **Target VPE:** At least three months' slip; timing and power sign-off would restart in tools we don't know.
-- **Analyst:** Three months is about $20M of revenue; migrating 15 engineers for four months at $30k a month costs $1.8M either way. Freezing the flow until tape-out looks right.
+- **Analyst:** Three months is about \$20M of revenue, \$11M of gross profit. Migrating 15 engineers for four months at \$30k a month costs \$1.8M, and that cost is paid whether we migrate now or after the tape-out, so the real choice is whether to add an \$11M delay. Freezing the flow until tape-out looks right.
 
-**Live check.** Delay cost $80 \times 3/12$ = **20** \$M; migration cost $15 \times 4 \times 0.03$ = **1.8** \$M.
+**Live check.** Lost revenue $80 \times 3/12$ = **20** \$M; lost gross profit $0.55 \times 20$ = **11** \$M; migration cost $15 \times 4 \times 0.03$ = **1.8** \$M.
 
 **Debrief.** The target's estimate was specific; the analyst's arithmetic turned a process debate into a decision (28-08 §3.2).
 
 **Units check.** $M/year × years = $M. ✓
 
-**Sanity check.** Delay costs over ten times the migration here; the flow freeze is the default for good reason.
+**Sanity check.** The delay's lost profit is about six times the migration's cost here, and the migration cost is not avoided by waiting, only moved; the flow freeze is the default for good reason.
 
 ### Example 28-10.17 · A royalty line (tier A)
 
@@ -413,13 +422,15 @@ Each scenario is a condensed conversation with an invented company; names and pa
 
 **Dialogue.**
 
-- **Analyst:** That's $7.5M a year, two and a half margin points. Does the rate change on a change of control?
+- **Analyst:** That's \$7.5M a year, two and a half margin points. Does the rate change on a change of control?
 - **Counsel:** The agreement requires consent to assignment; the rate is fixed through 2028.
+- **Analyst:** We're buying the shares, so the licensee doesn't change. Does the agreement treat a change of control as an assignment?
+- **Counsel:** It does: a change of control is deemed an assignment, so we need the licensor's consent.
 - **Analyst:** Then consent is a closing condition, and the 2028 renewal is a margin risk to model.
 
 **Live check.** $20 \times 10^6 \times 15 \times 0.025$ = **7.5** \$M.
 
-**Debrief.** Specific terms: strong (LR 3). Two follow-ups for the register (28-08 §3.5).
+**Debrief.** Specific terms: strong (LR 3). The analyst's follow-up mattered: in a share purchase an anti-assignment clause bites only if the contract treats a change of control as an assignment, which this one does. Two items for the register (28-08 §3.5). (A pointer for counsel, not legal advice.)
 
 **Units check.** units × $ × fraction = $. ✓
 
@@ -441,7 +452,7 @@ Each scenario is a condensed conversation with an invented company; names and pa
 
 **Units check.** TPP is dimensionless by definition; density per mm². ✓
 
-**Sanity check.** TPP is precision-normalized (28-02), so INT4 or FP8 marketing figures do not change it.
+**Sanity check.** TPP multiplies the operation rate by its bit length (28-02), so a figure quoted at another precision gives the same TPP only if the rate scales in proportion, for example INT4 at exactly twice the INT8 rate. A precision that runs faster than that has a higher TPP. Ask for the rate at every supported precision and let counsel decide which one governs.
 
 ### Example 28-10.19 · Margin and die size (tier B)
 
@@ -490,14 +501,16 @@ Each scenario is a condensed conversation with an invented company; names and pa
 - **Quality head:** 60% confidence, 55 °C junction, 0.7 eV, from our qualification plus field returns.
 - **Analyst:** And the field data agree?
 - **Quality head:** Three returns in two years, two not confirmed as part failures.
+- **Analyst:** Two things before we lean on that. A 55 °C junction is mild for a vehicle: at a 90 °C mission-profile junction the same 0.7 eV mechanism runs about 11 times faster, so the fleet would see closer to 90 failures a year. And how many failed parts actually come back? One confirmed return against about 16 expected over two years means either the parts are better than 10 FIT or most failures never reach you.
+- **Quality head:** Our mission profile is mostly below 70 °C; I'll send it. Capture of field failures through the tier-1 is incomplete, yes.
 
-**Live check.** $10 \times 10^{-9} \times 2 \times 10^6 \times 400$ = **8** failures a year.
+**Live check.** $10 \times 10^{-9} \times 2 \times 10^6 \times 400$ = **8** failures a year; Arrhenius factor 55 → 90 °C at 0.7 eV = **10.9**, giving about **86.9** a year; expected in two years at 10 FIT **16**.
 
-**Debrief.** Conditions and field data: strong (LR 3).
+**Debrief.** Conditions and field data were given (strong in form), but the FIT was quoted at a junction temperature below the mission profile and the field data are incomplete: partial (LR 1) on "10 FIT in the vehicle" until the mission-profile FIT and the return-capture rate are in hand.
 
 **Units check.** failures/device-hour × devices × hours = failures. ✓
 
-**Sanity check.** Field returns below the bound are consistent; returns above it would be a red flag (28-03 §3.3).
+**Sanity check.** A FIT figure is only as good as its temperature: quote it at the mission profile, not the qualification's use point. Field returns below the bound are consistent only if the returns capture most failures (28-03 §3.3).
 
 ### Example 28-10.22 · Counting flags in the debrief (tier B)
 
@@ -602,6 +615,7 @@ Each scenario is a condensed conversation with an invented company; names and pa
 | Ex 28-10.2a | frequency ratio | 1.091 | — |
 | Ex 28-10.2b | power factor | 1.298 | — |
 | Ex 28-10.2c | required reduction | 23.0 | % |
+| Ex 28-10.2d | required reduction at g_C = 1.05 | 26.6 | % |
 | Ex 28-10.3a | stack bandwidth | 2560 | GB/s |
 | Ex 28-10.3b | eight stacks | 20.48 | TB/s |
 | Ex 28-10.3c | stack power at 6 pJ/bit | 123 | W |
@@ -613,28 +627,38 @@ Each scenario is a condensed conversation with an invented company; names and pa
 | Ex 28-10.5b | cluster flaps per day | 0.72 | flaps |
 | Ex 28-10.6a | Schreier figure | 159.0 | dB |
 | Ex 28-10.6b | ENOB | 10.0 | bits |
+| Ex 28-10.6c | gap to the 100 MS/s frontier | 22.5 | dB |
+| Ex 28-10.6d | gap to the 1 GS/s frontier | 14.3 | dB |
+| Ex 28-10.6e | power ratio, 100 MS/s frontier | 178 | — |
+| Ex 28-10.6f | power ratio, 1 GS/s frontier | 27.0 | — |
 | Ex 28-10.7a | class B at 7 dB | 35.1 | % |
 | Ex 28-10.7b | ideal Doherty at 7 dB | 70.2 | % |
-| Ex 28-10.8a | loss at 96% | 208.3 | W |
-| Ex 28-10.8b | loss at 97.5% | 128.2 | W |
-| Ex 28-10.8c | difference | 80.1 | W |
-| Ex 28-10.8d | heat reduction | 38.5 | % |
-| Ex 28-10.9 | package yield | 95.4 | % |
+| Ex 28-10.8a | loss at 95.8%, full load | 219.2 | W |
+| Ex 28-10.8b | loss at 97.1%, full load | 149.3 | W |
+| Ex 28-10.8c | difference, full load | 69.9 | W |
+| Ex 28-10.8d | heat reduction, full load | 31.9 | % |
+| Ex 28-10.8e | loss at 96%, half load | 104.2 | W |
+| Ex 28-10.8f | loss at 97.5%, half load | 64.1 | W |
+| Ex 28-10.8g | difference, half load | 40.1 | W |
+| Ex 28-10.9 | package yield | 94.4 | % |
 | Ex 28-10.10a | average current | 7.6 | µA |
 | Ex 28-10.10b | battery life | 3.45 | years |
 | Ex 28-10.10c | margin over three years | 13 | % |
 | Ex 28-10.11a | posterior mean | 31.4 | % |
 | Ex 28-10.11b | weight on the record | 0.286 | — |
 | Ex 28-10.12a | geometric-mean overrun | 1.273 | — |
-| Ex 28-10.12b | calibrated forecast | 19.1 | months |
+| Ex 28-10.12b | calibrated forecast | 17.4 | months |
+| Ex 28-10.12c | unbuffered plan | 13.6 | months |
+| Ex 28-10.12d | forecast with the buffer double-counted | 19.1 | months |
 | Ex 28-10.13 | lose at least one in two years | 57.0 | % |
 | Ex 28-10.14a | HHI | 0.445 | — |
 | Ex 28-10.14b | effective customers | 2.25 | — |
 | Ex 28-10.15a | average discount factor | 0.715 | — |
 | Ex 28-10.15b | risk-adjusted value | 34.3 | $M |
 | Ex 28-10.15c | claim over value | 3.50 | — |
-| Ex 28-10.16a | delay cost | 20 | $M |
+| Ex 28-10.16a | lost revenue | 20 | $M |
 | Ex 28-10.16b | migration cost | 1.8 | $M |
+| Ex 28-10.16c | lost gross profit | 11 | $M |
 | Ex 28-10.17 | annual royalty | 7.5 | $M |
 | Ex 28-10.18a | TPP | 6400 | — |
 | Ex 28-10.18b | performance density | 9.14 | per mm² |
@@ -646,6 +670,9 @@ Each scenario is a condensed conversation with an invented company; names and pa
 | Ex 28-10.20c | saving | 822 | $ |
 | Ex 28-10.20d | capacity gain | 25 | % |
 | Ex 28-10.21 | field failures a year | 8 | failures |
+| Ex 28-10.21a | Arrhenius factor, 55 to 90 °C | 10.9 | — |
+| Ex 28-10.21b | field failures a year at 90 °C | 86.9 | failures |
+| Ex 28-10.21c | expected failures in two years at 10 FIT | 16 | failures |
 | Ex 28-10.22a | three or more, troubled | 98.8 | % |
 | Ex 28-10.22b | three or more, healthy | 7.55 | % |
 | Ex 28-10.22c | tail ratio of the rule | 13.1 | — |
@@ -662,7 +689,7 @@ Each scenario is a condensed conversation with an invented company; names and pa
 
 ## 5. Simulate it
 
-The lab is [labs/28-10-lab/](../labs/28-10-lab/README.md). `convo.py` collects the pocket-card checks of §3.5 as functions, a debrief scorer (posterior from likelihood ratios, with grouping by cause) and a Brier-score calibrator. The notebook runs timed drills: it draws a random claim, you compute the check, and it scores your answer and your debrief.
+The lab is [labs/28-10-lab/](../labs/28-10-lab/README.md). `convo.py` collects the pocket-card checks of §3.5 as functions, a debrief scorer (posterior from likelihood ratios, with grouping by cause) and a Brier-score calibrator. The notebook prints timed drills: twelve random live checks in one cell and their answers in the next, so you write and time your answers before you see them and score yourself.
 
 1. *Predict* the posterior in Example 28-10.26 if the evasive answer is followed up and turns out weak (likelihood ratio 0.3). Then plot the posterior's path answer by answer.
 2. *Predict* how many of 12 drill checks you can complete within a minute each. Then run the drills and record your times.
@@ -708,7 +735,7 @@ The pocket card of §3.5 is the reference for this chapter. Perishable facts use
 
 ## 9. Practitioner lens
 
-**State of play (as of Nov 2026).** The scenarios rely on sourced facts that change: first-silicon base rates have fallen in the surveys (14% in 2024, 5% in 2026) with a methodology change [R-621], [R-321] **[Industry estimate; Contested trend]**; leading-edge wafer prices are rising [R-575] **[Industry estimate]**; and export-control rules for accelerators have been revised repeatedly since 2022 [R-659] **[Established]**. Before a real meeting, refresh every number on the pocket card that carries a date.
+**State of play (as of Nov 2026).** The scenarios rely on sourced facts that change: first-silicon base rates have fallen in the surveys (14% in 2024, 5% in 2026), though the 2026 figure comes from a small sample heavy in CPU, GPU and AI projects (a 95% interval of roughly 3–8%) and the recruitment change came earlier, between 2022 and 2024 [R-621], [R-321], [R-622] **[Industry estimate; Contested trend]**; leading-edge wafer prices are rising [R-575] **[Industry estimate]**; and export-control rules for accelerators have been revised repeatedly since 2022 [R-659] **[Established]**. Before a real meeting, refresh every number on the pocket card that carries a date.
 
 **Commercial relevance.** The conversations in this chapter are where deal value is found or lost: a utilization number corrected before it enters a model, a flow migration postponed before it delays a product, a royalty term discovered before closing, a pipeline converted into a forecast. They are also where relationships with future colleagues begin; a conversation that is rigorous and respectful earns the candor that later diligence depends on.
 

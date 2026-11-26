@@ -38,6 +38,8 @@ Wafer prices are reported estimates [R-575].
 |---|---|---|---|
 | Lab 28-09.a | elasticity at 600 mm² | 1.75 | — |
 | Lab 28-09.b | area budget on N2 | 34.4 | mm² |
+| Lab 28-09.b1 | density gain needed to fit on N2 | 1.57 | × |
+| Lab 28-09.b2 | N3 design shrunk by 1.15× | 46.9 | mm² |
 | Lab 28-09.c | energy cost at $0.15 | 6837 | $ |
 | Lab 28-09.d | base margin, 600 mm² die | 49.5 | % |
 | Lab 28-09.d1 | defect density +10% | −2.57 | points |
@@ -46,7 +48,7 @@ Wafer prices are reported estimates [R-575].
 ## Discussion
 
 1. At 600 mm² the elasticity is **1.75**: each 1% of area costs 1.75% of die cost, against about 1.15 at 100 mm². Large dies are where chiplets and area discipline earn their keep.
-2. On N2 the same product can afford only **34.4** mm² of silicon. Moving a cost-sensitive product to the leading edge is a margin decision before it is a performance one.
+2. On N2 the same product can afford only **34.4** mm² of silicon, against 53.9 mm² on N3 (Example 28-09.2). Equal area is the wrong comparison, though: a product that moves to N2 keeps its transistor count, not its area. It fits the budget only if N2 packs the same design into 64% of the N3 area, a density gain of **1.57**×. TSMC quotes about 1.15× mixed (logic, SRAM and analog) chip density for N2 over N3E [R-552], so the design would need about **46.9** mm² on N2, well over budget. Moving a cost-sensitive product to the leading edge is a margin decision before it is a performance one.
 3. At $0.15 per kWh the device's energy costs **6837** $ over four years, nearly twice the cost at $0.08. Where a customer's datacenter sits changes the value of a watt.
 4. The large die starts at **49.5**% margin; a 10% rise in defect density costs **2.57** points, about seven times as much as for the 100 mm² die, and a 10% rise in area **7.48** points, nearly twice as much. Yield claims deserve more scrutiny for big dies.
 

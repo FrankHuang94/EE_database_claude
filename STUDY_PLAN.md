@@ -483,7 +483,7 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 
 ### Term 7 — Design Practice, Systems and Practitioner Layer
 
-≈ 335 hours · ≈ 30 weeks · ends around program week 252 (≈ 5.5 years in, at 46 study weeks/year)
+≈ 336 hours · ≈ 31 weeks · ends around program week 252 (≈ 5.5 years in, at 46 study weeks/year)
 
 | Weeks | Course | Hours |
 |---|---|---|
@@ -492,7 +492,7 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 229–233 | Capstone C2: Digital: RTL to layout (OpenLane/Sky130) or Verilator + synthesis | 50 |
 | 233–239 | [27 · System Architectures (Case-Study Course)](courses/27-system-architectures/README.md) | 63 |
 | 239–242 | Capstone C3: Embedded/system: wearable sensor node design | 35 |
-| 242–248 | [28 · Technical Diligence and Engineering Leadership Fluency](courses/28-technical-diligence-and-leadership-fluency/README.md) | 62 |
+| 242–248 | [28 · Technical Diligence and Engineering Leadership Fluency](courses/28-technical-diligence-and-leadership-fluency/README.md) | 63 |
 | 248–251 | Capstone C4: Practitioner: technical diligence memo on a public chip product | 35 |
 | 251–252 | **Term 7 checkpoint** (FE-style exam + error log review) | 8 |
 
@@ -528,8 +528,8 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 245 | 28-06 Red Flags and Green Flags | 4 |
 | 245 | 28-07 Evaluating Engineering Teams | 5 |
 | 245–246 | 28-08 Post-Acquisition Integration Risk | 5 |
-| 246 | 28-09 The Business ↔ Engineering Translation Table | 3 |
-| 246–247 | 28-10 Conversation Scenarios | 15 |
+| 246 | 28-09 The Business ↔ Engineering Translation Table | 4 |
+| 246–248 | 28-10 Conversation Scenarios | 15 |
 | 248 | 28 review + final exam | 2 |
 | 248–251 | Capstone C4 | 35 |
 | 251–252 | Term 7 checkpoint | 8 |
@@ -571,7 +571,7 @@ The minimum path to fluent, skeptical conversations with engineering leaders. In
 | 25 · Semiconductor Fabrication, Packaging, Test and Reliability | [25-02](courses/25-fabrication-packaging-test-and-reliability/chapters/25-02-lithography.md), [25-04](courses/25-fabrication-packaging-test-and-reliability/chapters/25-04-yield-and-die-cost.md), [25-07](courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md), [25-11](courses/25-fabrication-packaging-test-and-reliability/chapters/25-11-test-ate-sort-burn-in.md) | 17 |
 | 26 · Engineering Design and Professional Practice | all (full depth) | 42 |
 | 27 · System Architectures (Case-Study Course) | all (full depth) | 63 |
-| 28 · Technical Diligence and Engineering Leadership Fluency | all (full depth) | 62 |
+| 28 · Technical Diligence and Engineering Leadership Fluency | all (full depth) | 63 |
 | **Total** | | **≈ 480** |
 
 At 11 h/week that is ≈ 43 weeks (≈ 0.9 years). Chapters skipped on the fast track can be back-filled later without re-doing anything.

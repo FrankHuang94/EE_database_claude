@@ -7,7 +7,7 @@ The practitioner's course: a framework for evaluating a chip company's technolog
 | | |
 |---|---|
 | **Term** | 7 |
-| **Study hours** | ≈ 62 |
+| **Study hours** | ≈ 63 |
 | **University equivalents** | No university equivalent. Draws on industry diligence practice. |
 | **Textbook alignment** | Curriculum courses 09–27 (this repo); Public company filings, conference papers and technical documentation (cited per chapter) |
 | **Prerequisites** | [26 · Engineering Design and Professional Practice](../26-engineering-design-and-professional-practice/README.md), [27 · System Architectures (Case-Study Course)](../27-system-architectures/README.md) |
@@ -34,7 +34,7 @@ The practitioner's course: a framework for evaluating a chip company's technolog
 | [28-06 · Red Flags and Green Flags](chapters/28-06-red-and-green-flags.md) | 4 | ✅ verified | [problems](problems/28-06-problems.md) · [solutions](solutions/28-06-solutions.md) · [lab](labs/28-06-lab/README.md) · [verify](verify/verify_28_06.py) |
 | [28-07 · Evaluating Engineering Teams](chapters/28-07-evaluating-engineering-teams.md) | 5 | ✅ verified | [problems](problems/28-07-problems.md) · [solutions](solutions/28-07-solutions.md) · [lab](labs/28-07-lab/README.md) · [verify](verify/verify_28_07.py) |
 | [28-08 · Post-Acquisition Integration Risk](chapters/28-08-integration-risk.md) | 5 | ✅ verified | [problems](problems/28-08-problems.md) · [solutions](solutions/28-08-solutions.md) · [lab](labs/28-08-lab/README.md) · [verify](verify/verify_28_08.py) |
-| [28-09 · The Business ↔ Engineering Translation Table](chapters/28-09-business-engineering-translation.md) | 3 | ✅ verified | [problems](problems/28-09-problems.md) · [solutions](solutions/28-09-solutions.md) · [lab](labs/28-09-lab/README.md) · [verify](verify/verify_28_09.py) |
+| [28-09 · The Business ↔ Engineering Translation Table](chapters/28-09-business-engineering-translation.md) | 4 | ✅ verified | [problems](problems/28-09-problems.md) · [solutions](solutions/28-09-solutions.md) · [lab](labs/28-09-lab/README.md) · [verify](verify/verify_28_09.py) |
 | [28-10 · Conversation Scenarios](chapters/28-10-conversation-scenarios.md) | 15 | ✅ verified | [problems](problems/28-10-problems.md) · [solutions](solutions/28-10-solutions.md) · [lab](labs/28-10-lab/README.md) · [verify](verify/verify_28_10.py) |
 
 **Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/28-technical-diligence-and-leadership-fluency.csv) · [Equation sheet](../../reference/equation-sheets/28-technical-diligence-and-leadership-fluency.md)
@@ -57,7 +57,7 @@ Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 
 - a translation table between business and engineering units (28-09);
 - and 26 conversation scenarios that put it all to work in real time (28-10).
 
-The course draws on all the technical courses: the roofline and accelerators of Course 14; converters, PLLs and analog scaling of Course 20; PAs and link budgets of Course 21; power conversion of Course 22; memory and HBM of Course 23; SerDes, chiplet links and optics of Course 24; die cost, packaging, reliability and qualification of Course 25; economics, schedules and teams of Course 26; and the product budgets of Course 27.
+The course draws on all the technical courses: the roofline and accelerators of Course 14; microcontrollers, low-power design and embedded security of Course 18; CMOS power, timing, verification and design for test of Course 19; converters, PLLs and analog scaling of Course 20; PAs and link budgets of Course 21; power conversion of Course 22; memory and HBM of Course 23; SerDes, chiplet links and optics of Course 24; die cost, packaging, reliability and qualification of Course 25; economics, schedules and teams of Course 26; and the product budgets of Course 27.
 
 Work at least the [A] and [B] problems of every chapter; the [C] problems are where a calculation becomes a decision. The labs are Python models imported by their notebooks, all run in CI:
 

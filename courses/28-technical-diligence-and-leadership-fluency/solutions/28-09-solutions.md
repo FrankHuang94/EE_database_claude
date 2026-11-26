@@ -19,7 +19,7 @@ Problems: [28-09 problems](../problems/28-09-problems.md) · Chapter: [28-09](..
 
 ### Solution 28-09.3
 
-$1 + 600 \times 0.001$ = **1.6**. Dies per wafer **90** and **81**. Cost increase **18.0**%, average elasticity **1.80**: larger than $1 + AD_0$ because the edge loss and the rounding to whole dies weigh more for large dies.
+$1 + 600 \times 0.001$ = **1.6**. Dies per wafer: $\pi \cdot 300^2/2400 - \pi \cdot 300/\sqrt{1200} = 117.8 - 27.2 = 90.6$, so **90**; at 660 mm², $107.1 - 25.9 = 81.2$, so **81**. Cost increase **18.0**%, average elasticity **1.80**: larger than $1 + AD_0 = 1.6$ mainly because the wafer-edge term is large for big dies (the point elasticity including it is about **1.75** at 600 mm²) and $AD_0$ rises across the interval; rounding to whole dies here slightly *lowers* the increase (it is **18.5**% unrounded).
 
 ### Solution 28-09.4
 
@@ -53,6 +53,22 @@ $190/30$ = **6.33** million units.
 
 (c) A budget $B$ holds $B/P$ devices of power $P$ and $B/[(1 - s)P]$ at power $(1 - s)P$; the ratio is $1/(1 - s)$, so the gain is $1/(1 - s) - 1$. For $s = 0.1$, **11.1**%.
 
+### Solution 28-09.11
+
+(a) The base margin is 55.6%. Changing one driver at a time, with whole dies (640 at 100 mm², 653 at 98 mm², 620 at 103 mm²):
+
+| Driver | Low end | High end | Swing (points) |
+|---|---|---|---|
+| ASP \$80 / \$95 | **−5.5** | **+2.3** | **7.9** |
+| Die area 98 / 103 mm² | **+0.8** | **−1.3** | **2.0** |
+| Wafer \$17,000 / \$20,000 | **+2.9** | **−2.9** | **5.8** |
+| $D_0$ 0.0008 / 0.003 per mm² | **+0.7** | **−7.9** | **8.6** |
+| Package and test \$7 / \$10 | **+1.1** | **−2.2** | **3.3** |
+
+(b) Ranked by swing: defect density, ASP, wafer price, package and test, die area. The equal-swing tornado (±10%) ranked die area and ASP first and defect density last (−0.36 points). The reversal comes from the ranges: die area after tape-out is known within a few percent, while defect density on a young node can be off by several times, and its effect is one-sided, because it enters through $e^{-AD_0}$ and the plausible range sits mostly above the base. The ASP range is also wide, but it is a commercial claim, tested with customer pricing rather than engineering.
+
+(c) Defect density. Ask for the measured $D_0$ trend on this node by month, the wafer-sort yield of the last few lots with the die size, the yield model used in the plan, and any contractual yield commitment from the foundry. Then rerun the margin at the measured value.
+
 ---
 
 <!-- answer-key -->
@@ -67,6 +83,8 @@ $190/30$ = **6.33** million units.
 | 28-09.3c | dies per wafer, 660 mm² | 81 | dies |
 | 28-09.3d | cost increase | 18.0 | % |
 | 28-09.3e | average elasticity | 1.80 | — |
+| 28-09.3f | point elasticity with the edge term, 600 mm² | 1.75 | — |
+| 28-09.3g | cost increase without rounding | 18.5 | % |
 | 28-09.4a | maximum unit cost | 20.25 | $ |
 | 28-09.4b | maximum die cost | 14.25 | $ |
 | 28-09.4c | maximum die area | 48.5 | mm² |
@@ -86,3 +104,18 @@ $190/30$ = **6.33** million units.
 | 28-09.9 | break-even volume | 6.33 | million units |
 | 28-09.10a | ASP sensitivity | 4.0 | points |
 | 28-09.10b | capacity gain at s = 0.1 | 11.1 | % |
+| 28-09.11a | margin change, ASP \$80 | -5.5 | points |
+| 28-09.11b | margin change, ASP \$95 | 2.3 | points |
+| 28-09.11c | swing, ASP | 7.9 | points |
+| 28-09.11d | margin change, 98 mm² | 0.8 | points |
+| 28-09.11e | margin change, 103 mm² | -1.3 | points |
+| 28-09.11f | swing, die area | 2.0 | points |
+| 28-09.11g | margin change, \$17,000 wafer | 2.9 | points |
+| 28-09.11h | margin change, \$20,000 wafer | -2.9 | points |
+| 28-09.11i | swing, wafer price | 5.8 | points |
+| 28-09.11j | margin change, D0 = 0.0008 | 0.7 | points |
+| 28-09.11k | margin change, D0 = 0.003 | -7.9 | points |
+| 28-09.11l | swing, defect density | 8.6 | points |
+| 28-09.11m | margin change, \$7 package and test | 1.1 | points |
+| 28-09.11n | margin change, \$10 package and test | -2.2 | points |
+| 28-09.11o | swing, package and test | 3.3 | points |

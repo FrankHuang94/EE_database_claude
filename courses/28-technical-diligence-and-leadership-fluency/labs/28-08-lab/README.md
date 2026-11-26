@@ -35,13 +35,14 @@ The lab uses the chapter's models with its assumed parameters:
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
 | Lab 28-08.a | value, three years late, 80% | 113.9 | $M |
+| Lab 28-08.a1 | share of the headline | 60.1 | % |
 | Lab 28-08.b | gain with joint failure 0.35 | 10 | $M |
 | Lab 28-08.c | TPP, 2,000 FP8 TFLOP/s | 16000 | — |
 | Lab 28-08.d | expected loss, license resolved | 34 | $M |
 
 ## Discussion
 
-1. Three years late at 80%, the plan is worth **113.9** $M, 60% of its headline. Integration plans that take years should be valued as such, not at the synergy run rate.
+1. Three years late at 80%, the plan is worth **113.9** $M, **60.1**% of its 189.5 $M headline. Integration plans that take years should be valued as such, not at the synergy run rate.
 2. With a joint-failure probability of 0.35 the second program adds only **10** $M against a $30M cost. Correlation between programs is the most common reason a parallel path is worth less than it seems.
 3. At 2,000 dense FP8 TFLOP/s the TPP is **16000**, more than three times the 4800 threshold; an acquisition that adds such products must plan for licensing under the rules in force [R-659].
 4. Resolving the license risk takes the expected loss from $49M to **34** $M, the largest single improvement available, which is why license review belongs before signing.

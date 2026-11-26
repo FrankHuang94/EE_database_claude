@@ -11,7 +11,7 @@
 "Why are milestone chains fragile?","The probability of success is the product of stage probabilities: four stages at 0.8 give 0.41.","bsee::28 bsee::28-01"
 "How is an accelerator's peak throughput built?","F_peak = 2·N_MAC·f·k_prec·k_sparse; a brochure figure usually includes precision and sparsity multipliers, which must be stated.","bsee::28 bsee::28-02"
 "What is TPP?","Total processing performance, 2 × MacTOPS × bit length, aggregated over the chip; precision-normalized, used by US export rules (3A090: 4800, or 1600 with density 5.92).","bsee::28 bsee::28-02"
-"What does the roofline give?","Attainable throughput min(F_peak, I·B), with ridge point F_peak/B; below the ridge a workload is memory-bound.","bsee::28 bsee::28-02"
+"What does the roofline give?","Attainable throughput min(F_peak, I·B_mem), with ridge point F_peak/B_mem (B_mem = memory bandwidth); below the ridge a workload is memory-bound.","bsee::28 bsee::28-02"
 "What energy per operation does 50 TOPS/W mean?","20 fJ per operation; the floor is arithmetic energy plus each memory level's energy per byte divided by its operations per byte.","bsee::28 bsee::28-02"
 "Why must power claims state their boundary?","Core, card, server and facility power differ by converter losses, system overhead and PUE; efficiency can halve from core to meter.","bsee::28 bsee::28-02"
 "Why compare benchmarks with a geometric mean of ratios?","Its ranking does not depend on the reference machine; the arithmetic mean's can.","bsee::28 bsee::28-02"

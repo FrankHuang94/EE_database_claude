@@ -6,31 +6,31 @@ Exam: [README.md](README.md). Every number is recomputed by [verify_28_exam.py](
 
 **1.** (a) A: weighted $0.3 \times 4 + 0.3 \times 4 + 0.2 \times 2 + 0.2 \times 5$ = **3.80**; geometric $4^{0.6} \times 2^{0.2} \times 5^{0.2}$ = **3.64**. B: weighted **3.50**; geometric $3^{0.5} \times 4^{0.5}$ = **3.46**. A leads on both, but its geometric score falls more because of its weak third dimension.
 (b) Prior odds $0.35/0.65 = 0.538$; posterior odds $0.538 \times 4 \times 0.6$ = **1.29**; probability **56.4**%.
-(c) Expected value $0.564 \times 300 - 0.436 \times 150$ = **103.7** \$M. With perfect information the buyer buys only when the claim holds: $0.564 \times 300 = 169.1$, so EVPI = **65.4** \$M.
-(d) $0.564 \times 120/1.12^2$ = **53.9** \$M.
+(c) Expected value $0.5638 \times 300 - 0.4362 \times 150$ = **103.7** \$M (posterior carried at full precision). With perfect information the buyer buys only when the claim holds: $0.5638 \times 300 = 169.1$, so EVPI = **65.4** \$M.
+(d) $0.5638 \times 120/1.12^2$ = **53.9** \$M.
 
 **2.** (a) $2 \times 16384 \times 1.5 \times 10^9$ = **49.2** TOPS dense INT8, so the brochure is **1.99** times that: 2:4 sparsity at INT8 or dense INT4 (28-02).
-(b) MacTOPS $16384 \times 1.5 \times 10^9/10^{12} = 24.6$; TPP $2 \times 24.6 \times 8$ = **393**.
+(b) MacTOPS $16384 \times 1.5 \times 10^9/10^{12} = 24.576$; TPP $2 \times 24.576 \times 8$ = **393**.
 (c) $100 \times 51.2 \times 10^9$ = **5.12** TOPS, **10.4**% of the dense peak.
 (d) $5.12/4$ = **1.28** TOPS/W delivered, against the brochure's **24.5**: a factor of about 19, from sparsity or precision (2×) and memory-bound utilization.
 
 **3.** (a) $P = 0.85 \times 0.95$ = **0.8075**; multiplier $0.8075/1.15^{7/12}$ = **0.744**.
 (b) $\exp[(0.7/8.617 \times 10^{-5})(1/333.15 - 1/398.15)]$ = **53.6**.
 (c) $1.833/(2 \times 300 \times 1000 \times 53.6) \times 10^9$ = **57.0** FIT.
-(d) $n \ge 4.605 \times 10^9/(2 \times 20 \times 1000 \times 53.6) = 2149.9$, so **2150** devices.
+(d) $n \ge 4.605 \times 10^9/(2 \times 20 \times 1000 \times 53.56) = 2149.5$ (AF carried unrounded), so **2150** devices.
 
 **4.** (a) Frequency $1.18/1.08$ = **1.093**; power factor $1.04 \times 1.093^3$ = **1.356**; reduction $1 - 1/1.356$ = **26.3**%.
-(b) Ridge $4 \times 10^{15}/8 \times 10^{12}$ = **500** FLOP/byte; intensity $2 \times 24$ = **48**; attainable $48 \times 8$ TB/s = **384** TFLOP/s, **9.6**% of peak; batch at the ridge **250**.
+(b) Ridge $4 \times 10^{15}/(8 \times 10^{12})$ = **500** FLOP/byte; intensity $2 \times 24$ = **48**; attainable $48 \times 8$ TB/s = **384** TFLOP/s, **9.6**% of peak; batch at the ridge **250**.
 (c) $2048 \times 9.6/8$ = **2457.6** GB/s per stack; six stacks **14.7** TB/s.
-(d) $14.75 \times 10^{12} \times 8 \times 6.5 \times 10^{-12}$ = **767** W.
+(d) $14.746 \times 10^{12} \times 8 \times 6.5 \times 10^{-12}$ = **767** W, memory-subsystem power at an all-in energy per bit (it includes the host side; the DRAM alone draws less).
 
-**5.** (a) $102.4 \times 10^{12} \times 4.5 \times 10^{-12}$ = **460.8** W.
-(b) $3 \times 10^{12} \times 8 \times 0.25 \times 10^{-12}$ = **6** W; edge $3000/1317$ = **2.28** mm.
-(c) Pluggable $25/1.6 \times 10^{12}$ = **15.625** pJ/bit; CPO **3.75** pJ/bit.
-(d) $10^{23/10}$ = **200** mW; electrical $0.1995/0.2$ = **0.998** W.
+**5.** (a) Engine alone $3.5/(800 \times 10^9)$ = **4.375** pJ/bit; all-in $(3.5 + 1)/(800 \times 10^9)$ = **5.625** pJ/bit. The claim holds only at the engine boundary; at the boundary a buyer pays for, it fails (28-04 §3.4, question O1).
+(b) $-\ln 0.05/(4 \times 10^5)$ per hour $\times 10^9$ = **7490** FIT, a weak bound, and from a lab, not the field; link-hours across several devices per link are not device-hours either. "Field-proven" is not supported.
+(c) Odds $1 \times 0.5 \times 0.5 \times 1$ = **0.25**, probability **20.0**%. The laser answer is strong and useful, but it is evidence about serviceability, not about the energy or field-reliability claim, so it should not move this posterior (28-10 §3.3: score answers against the claim they bear on).
+(d) See the rubric below.
 
 **6.** (a) $58 + 10\log_{10}(10^9/0.08)$ = **159.0** dB; ENOB $(58 - 1.76)/6.02$ = **9.34** bits.
-(b) $\sigma_t = 10^{-58/20}/(2\pi \times 3 \times 10^9)$ = **66.8** fs.
+(b) $\sigma_t = 10^{-58/20}/(2\pi \times 10^9)$ = **200** fs.
 (c) Class B $(\pi/4)10^{-9/20}$ = **27.9**%; Doherty **55.7**%.
 (d) $20\log_{10}0.02$ = **−34.0** dB.
 
@@ -45,12 +45,12 @@ Exam: [README.md](README.md). Every number is recomputed by [verify_28_exam.py](
 (d) Sensitivity $P(K \ge 3; 30, 0.25)$ = **98.9**%; false-positive rate $P(K \ge 3; 30, 0.03)$ = **6.01**%; ratio **16.5**. That ratio weighs the *rule*. A target observed with exactly three flags carries $(0.25/0.03)^3(0.75/0.97)^{27}$ = **0.558**, mild evidence of health, because a troubled target averages 7.5 flags (28-06 §3.2); full marks need neither, but an answer that uses 16.5 to update on an observed count of three loses the interpretation mark.
 
 **9.** (a) Posterior $\text{Beta}(3.4, 11.6)$: mean $3.4/15$ = **22.7**%; weight $5/15$ = **0.333**.
-(b) 5th to 95th percentile: **7.75**% to **41.8**%.
-(c) $e^{\mu}$ = **1.275**; forecast $20 \times 1.275$ = **25.5** months; $\sigma$ = **0.139**; $\Phi(-\mu/\sigma)$ = **4.03**%.
+(b) The 90% interval, **7.75**% to **41.8**%, contains the 14% base rate, so the record does not show the team to be better than average at 90% credibility, although the posterior mean is well above 14%. More projects (each success raises the lower end), or evidence that the prior is too heavy for this kind of team, would change the answer. Scoring: 1 point for the comparison with 14%, 1 for a valid reason that would change it.
+(c) $e^{\mu}$ = **1.275**; median forecast $20 \times 1.275$ = **25.5** months; $s_{\ln}$ = **0.139**; plug-in $\Phi(-\mu/s_{\ln}) = \Phi(-1.747)$ = **4.03**% (interpolating the sheet's table gives about 4.0%). With three projects the plug-in figure is overconfident: the $t$ predictive distribution of 28-07 §3.2 gives about **13.5**%; a full-credit answer notes the caveat.
 (d) $q = 1 - 0.85^2$ = **27.75**% with one owner; $q^2$ = **7.70**% with two.
 
 **10.** (a) Annuity $[1 - 1.1^{-5}]/0.1 = 3.791$; planned $40 \times 3.791$ = **151.6** \$M; late and partial $0.75 \times 151.6/1.1$ = **103.4** \$M; loss $1 - 0.75/1.1$ = **31.8**%.
-(b) Migration $30 \times 5 \times 0.025$ = **3.75** \$M; delay $120 \times 2/12$ = **20** \$M. Freeze the flow until the tape-out.
+(b) Migration $30 \times 5 \times 0.025$ = **3.75** \$M; lost revenue $120 \times 2/12$ = **20** \$M; lost gross profit $0.55 \times 20$ = **11** \$M, about three times the migration cost (which is paid later anyway). Freeze the flow until the tape-out.
 (c) $1 - 0.45 \times 0.55$ = **0.7525**; with both $180 \times 0.7525$ = **135.45** \$M; better alone $180 \times 0.55$ = **99** \$M; gain **36.45** \$M, just above the \$35M cost: keep both, narrowly, and only if the programs are truly independent.
 (d) Contingent $0.45 \times 300/1.1^3$ = **101.4** \$M; deal **601.4** \$M.
 
@@ -64,7 +64,11 @@ Exam: [README.md](README.md). Every number is recomputed by [verify_28_exam.py](
 (c) $[(0.1)^2 + (0.3)^2 + (0.6)^2 + (0.3)^2 + (0.8)^2]/5$ = **0.238**, barely better than **0.25** for always saying 0.5: the forecaster's 0.8 on a false claim cost most.
 (d) See the rubric below.
 
+**Rubric for 2(a)** (2 points): ½ for the dense peak, ½ for the ratio, 1 for the explanation. Full credit names a factor-of-two mechanism (2:4 structured sparsity at INT8, or dense INT4) and says the brochure should state which; ½ for "a different precision or sparsity" without the factor of two.
+
 **Rubric for 11(b) and 12(a)** (3 points each). 11(b): 1 for $C \propto Ae^{AD_0}$ from DPW and yield, 1 for the logarithmic derivative, 1 for the numbers. 12(a): 1 for the expectation over the Bernoulli outcome, 1 for completing the square, 1 for the minimization argument.
+
+**Rubric for 5(d)** (2 points: ½ per question, ½ per strong-answer criterion; the anti-pattern is required for full marks). Good questions: the all-in power at 800 Gb/s with the laser's electrical power and the power at end of life; field failure counts in device-hours with their conditions and how they compare with pluggables; what happens operationally when an engine fails. Anti-patterns to name: a leading question ("so the laser is included, right?"), double-counting the two reliability answers, or letting the strong laser answer raise the score on the energy claim.
 
 **Rubric for 12(d)** (3 points: one per question with a strong-answer criterion; ½ point for a pertinent question without one). Credible questions include: TOPS/W at which precision, sparsity and utilization on a named model, measured on silicon (strong: dense and sparse figures, the model, batch, and the measurement boundary, 28-02); power boundary (strong: chip, module or board, with the voltage and temperature); comparison basis (strong: named competitor part, same model and accuracy, independent or customer measurement); memory-bound performance (strong: bandwidth and the intensity of the buyer's model, 28-04).
 
@@ -106,16 +110,14 @@ Exam: [README.md](README.md). Every number is recomputed by [verify_28_exam.py](
 | X28.4c | stack bandwidth | 2457.6 | GB/s |
 | X28.4c1 | six stacks | 14.7 | TB/s |
 | X28.4d | six stacks' power | 767 | W |
-| X28.5a | switch SerDes power | 460.8 | W |
-| X28.5b | D2D link power | 6 | W |
-| X28.5b1 | die edge | 2.28 | mm |
-| X28.5c | pluggable energy per bit | 15.625 | pJ/bit |
-| X28.5c1 | CPO energy per bit | 3.75 | pJ/bit |
-| X28.5d | laser optical power | 200 | mW |
-| X28.5d1 | laser electrical power | 0.998 | W |
+| X28.5a | energy per bit, engine alone | 4.375 | pJ/bit |
+| X28.5a1 | energy per bit, all-in | 5.625 | pJ/bit |
+| X28.5b | 95% failure-rate bound | 7490 | FIT |
+| X28.5c | posterior odds | 0.25 | — |
+| X28.5c1 | posterior probability | 20.0 | % |
 | X28.6a | Schreier figure | 159.0 | dB |
 | X28.6a1 | ENOB | 9.34 | bits |
-| X28.6b | jitter | 66.8 | fs |
+| X28.6b | jitter | 200 | fs |
 | X28.6c | class B at 9 dB | 27.9 | % |
 | X28.6c1 | Doherty at 9 dB | 55.7 | % |
 | X28.6d | 2% EVM | −34.0 | dB |
@@ -145,14 +147,16 @@ Exam: [README.md](README.md). Every number is recomputed by [verify_28_exam.py](
 | X28.9c | geometric-mean overrun | 1.275 | — |
 | X28.9c1 | forecast | 25.5 | months |
 | X28.9c2 | standard deviation of log-ratios | 0.139 | — |
-| X28.9c3 | probability of meeting plan | 4.03 | % |
+| X28.9c3 | probability of meeting plan, plug-in | 4.03 | % |
+| X28.9c4 | probability of meeting plan, t predictive | 13.5 | % |
 | X28.9d | one owner, two years | 27.75 | % |
 | X28.9d1 | two owners, two years | 7.70 | % |
 | X28.10a | planned synergy value | 151.6 | $M |
 | X28.10a1 | late and partial | 103.4 | $M |
 | X28.10a2 | loss | 31.8 | % |
 | X28.10b | migration cost | 3.75 | $M |
-| X28.10b1 | delay cost | 20 | $M |
+| X28.10b1 | lost revenue | 20 | $M |
+| X28.10b2 | lost gross profit | 11 | $M |
 | X28.10c | at least one succeeds | 0.7525 | — |
 | X28.10c1 | value with both | 135.45 | $M |
 | X28.10c2 | better alone | 99 | $M |

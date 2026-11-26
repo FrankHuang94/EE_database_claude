@@ -26,7 +26,7 @@ Conventions:
 |---|---|---|
 | $F_{\text{peak}} = 2N_{\text{MAC}}f\,k_{\text{prec}}k_{\text{sparse}}$ | Peak operations per second; state precision and sparsity | [28-02](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-02-validating-claims.md) |
 | $\text{TPP} = 2 \times \text{MacTOPS} \times$ bit length | Precision-normalized; export thresholds use it | [28-02](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-02-validating-claims.md) |
-| $F_{\text{att}} = \min(F_{\text{peak}}, IB)$; ridge $F_{\text{peak}}/B$ | Roofline; utilization $u = F_{\text{delivered}}/F_{\text{peak}}$ | [28-02](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-02-validating-claims.md) |
+| $F_{\text{att}} = \min(F_{\text{peak}}, IB_{\text{mem}})$; ridge $F_{\text{peak}}/B_{\text{mem}}$ ($B_{\text{mem}}$ = memory bandwidth) | Roofline; utilization $u = F_{\text{delivered}}/F_{\text{peak}}$ | [28-02](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-02-validating-claims.md) |
 | $E_{\text{op}} = 1/(\eta \times 10^{12})$ J; $E_{\text{op}} \ge E_{\text{arith}} + \sum_\ell E_\ell/I_\ell$ | TOPS/W as energy per operation, and its floor | [28-02](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-02-validating-claims.md) |
 | $P \propto CV^2f$ | Scale power between operating points | [28-02](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-02-validating-claims.md) |
 | $P_{\text{sys}} = k_{\text{sys}}P_{\text{card}}$; $P_{\text{fac}} = \text{PUE}\cdot P_{\text{sys}}$ | Power at successive boundaries; compare at the same one | [28-02](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-02-validating-claims.md) |
@@ -60,7 +60,7 @@ Conventions:
 | $\text{SNR}_j = -20\log_{10}(2\pi f_{in}\sigma_t)$; noises add in power | Clock jitter | [28-05](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) |
 | Class B $\eta = (\pi/4)10^{-\text{BO}/20}$; Doherty $2\times$ that below half amplitude | Ideal PA efficiency at back-off | [28-05](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) |
 | $P_{\text{loss}} = P_{\text{out}}(1/\eta - 1)$; $\eta_{\text{chain}} = \prod\eta_i$ | Converter heat and chains | [28-05](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) |
-| Density $= 10^6/p^2$ per mm²; $Y_{\text{pkg}} = Y_{\text{asm}}\prod Y_i$; $T_j = T_{\text{ref}} + P\theta$ | Packaging | [28-05](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) |
+| Density $= 10^6/p^2$ per mm² ($p$ = bump or bond pitch in µm); $Y_{\text{pkg}} = Y_{\text{asm}}\prod Y_i$; $T_j = T_{\text{ref}} + P\theta$ | Packaging | [28-05](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) |
 | $I_{\text{avg}} = I_{\text{sleep}} + \sum_k I_kt_k/T_k$ | Duty-cycled current; life = capacity ÷ $I_{\text{avg}}$ | [28-05](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) |
 | $C_{pk} = (\text{USL} - \mu)/3\sigma$; beyond-limit fraction $\Phi(-3C_{pk})$; $\sigma \le s\sqrt{(n - 1)/\chi^2_{1-C;\,n-1}}$ | Typical against guaranteed | [28-05](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) |
 
@@ -80,7 +80,8 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | $\hat\theta = (\alpha_0 + s)/(n_0 + n)$; weight $n/(n_0 + n)$ | Beta-binomial track-record shrinkage | [28-07](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-07-evaluating-engineering-teams.md) |
-| $\hat T = T_{\text{plan}}e^{\mu}$; $P(\text{on time}) = \Phi(-\mu/\sigma)$; $T_{90} = T_{\text{plan}}e^{\mu + 1.2816\sigma}$ | Reference-class schedule calibration (log-ratios) | [28-07](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-07-evaluating-engineering-teams.md) |
+| $\hat T_{50} = T_{\text{plan}}e^{\mu}$; plug-in $P(\text{on time}) = \Phi(-\mu/s_{\ln})$, $T_{90} = T_{\text{plan}}e^{\mu + 1.2816s_{\ln}}$; predictive: $t_{n-1}$ with scale $s_{\ln}\sqrt{1 + 1/n}$ | Schedule calibration from log-ratios (plug-in is overconfident for a short record) | [28-07](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-07-evaluating-engineering-teams.md) |
+| $\Phi(-z)$: 15.9% (z = 1.0), 10.6% (1.25), 6.68% (1.5), 4.01% (1.75), 2.28% (2.0), 1.22% (2.25), 0.621% (2.5), 0.135% (3.0) | Normal tail table for exam use; interpolate between rows | [28-07](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-07-evaluating-engineering-teams.md) |
 | $P(\text{lose}) = q^k$, or $c + (1 - c)q'^k$ with group departures | Bench depth | [28-07](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-07-evaluating-engineering-teams.md) |
 | $T = Nt/(Cu)$; retained value $NV\rho$ | Regression capacity; retention | [28-07](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-07-evaluating-engineering-teams.md) |
 
@@ -89,7 +90,7 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | $\text{PV} = S[1 - (1 + r)^{-n}]/r$; late and partial: $\times\rho(1 + r)^{-d}$ | Synergy value | [28-08](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-08-integration-risk.md) |
-| Lost gross profit $\approx m\,R\,d_m/12$ for $d_m$ months (revenue $R\,d_m/12$ times margin $m$) | Delay in a fixed market window; compare profit, not revenue, with a cost | [28-08](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-08-integration-risk.md) |
+| Lost gross profit $\approx m\,R\,d_m/12$ for $d_m$ months (revenue $R\,d_m/12$ times margin $m$); a respin adds the mask set | Delay in a fixed market window; compare profit, not revenue, with a cost | [28-08](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-08-integration-risk.md) |
 | Gain $= W[1 - P(\text{both fail}) - \max(p_1, p_2)]$ | Parallel paths | [28-08](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-08-integration-risk.md) |
 | $\text{EL} = \sum_i p_iI_i$; earn-out PV $= pC(1 + r)^{-T}$ | Risk register; contingent payments | [28-08](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-08-integration-risk.md) |
 
@@ -98,10 +99,12 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | $\text{DPW} \approx \pi d^2/(4A) - \pi d/\sqrt{2A}$; $Y = e^{-AD_0}$; $C_{\text{die}} = W/(\text{DPW}\,Y)$ | Unit cost | [28-09](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-09-business-engineering-translation.md) |
-| $\varepsilon = d\ln C/d\ln A \approx 1 + AD_0$ (+ edge) | Die-cost elasticity | [28-09](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-09-business-engineering-translation.md) |
+| $\varepsilon = d\ln C/d\ln A = 1 + AD_0 + [\pi d/(2\sqrt{2A})]/\text{DPW}$; the edge term vanishes for small dies | Die-cost elasticity with the wafer-edge term | [28-09](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-09-business-engineering-translation.md) |
 | $\text{GM} = 1 - (C_{\text{die}} + C_{\text{pkg+test}})/\text{ASP}$ | Gross margin; reverse it for an area budget | [28-09](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-09-business-engineering-translation.md) |
 | $E_{\text{cost}} = P\cdot\text{PUE}\cdot h\cdot p_e$; capacity gain $1/(1 - s) - 1$ | Customer energy and capacity | [28-09](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-09-business-engineering-translation.md) |
 | Failures $= \lambda N t \times 10^{-9}$ | FIT to field failures | [28-09](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-09-business-engineering-translation.md) |
+| Break-even volume $=$ (NRE + masks) ÷ gross profit per unit | Recovering a design's fixed cost | [28-09](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-09-business-engineering-translation.md) |
+| Plausible-range tornado: swing each driver across its low and high plausible values, rank by swing | Which engineering claim to test hardest | [28-09](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-09-business-engineering-translation.md) |
 
 ## Conversation scenarios (28-10)
 

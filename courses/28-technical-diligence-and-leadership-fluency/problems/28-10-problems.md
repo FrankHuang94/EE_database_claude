@@ -65,14 +65,56 @@ Chapter: [28-10](../chapters/28-10-conversation-scenarios.md) · Worked solution
 - (a) Show that the order in which answers arrive does not change the posterior, provided they are conditionally independent.
 - (b) Show that the expected Brier score of reporting $p$ when the true probability is $q$ is $(p - q)^2 + q(1 - q)$, so reporting $p = q$ minimizes it (a proper scoring rule). Evaluate it for $q = 0.7$ with $p = 0.7$ and $p = 0.9$.
 
+### Problem 28-10.13 [B]
+
+**A prep sheet.** Tomorrow you meet the CTO of a wearables start-up whose deck says its watch SoC "runs 14 days on a 300 mAh battery with always-on heart rate". Write the prep sheet for this claim (§3.1, step 1):
+
+- (a) a prior probability, with the reason for it;
+- (b) the governing identity and a pre-computed check: the average current the claim allows, before and after a 20% derating for aging and temperature;
+- (c) three diagnostic questions;
+- (d) for each question, a strong, a partial and an evasive answer you might hear, with likelihood ratios.
+
+### Problem 28-10.14 [B]
+
+**Debrief a transcript.** The claim: "our 112 Gb/s SerDes runs at 4 pJ/bit and ships in three customers' switches". Your prior is 0.4. Use likelihood ratios of 3 for a strong answer, 1 for a partial one and 0.4 for an evasive one.
+
+- **Analyst:** What energy per bit, at what channel loss, and does it include the PLL and DSP?
+- **SerDes lead:** 4 pJ/bit at 30 dB loss, measured on our evaluation board. That excludes the shared PLL, which adds about 0.3 pJ/bit.
+- **Analyst:** Which customers ship it, and in what volume?
+- **SerDes lead:** Three. I can't name them here, but we can arrange reference calls under NDA.
+- **Analyst:** What BER margin do you see at the worst-case channel and 85 °C?
+- **SerDes lead:** It's very robust; we've never had a field issue.
+- **Analyst:** Do your field records cover that worst-case channel?
+- **SerDes lead:** We don't track field issues by channel. Customers would tell us.
+
+Tasks:
+
+- (a) Score each answer as strong, partial or evasive, and say why.
+- (b) Group the answers by underlying fact.
+- (c) Compute the posterior.
+- (d) Compute the posterior a careless debrief would give by counting every evasive answer separately.
+- (e) Compute the all-in energy per bit and the power per lane.
+- (f) List the follow-ups, each with an owner and a date.
+
+### Problem 28-10.15 [A]
+
+**Spot the anti-pattern.** Name the anti-pattern of §3.3 in each line, and rewrite the line (or describe the better action):
+
+- (a) "Your sort yield must be above 90% by now, right?"
+- (b) "We modeled 25% utilization for you. What do you see?"
+- (c) "That can't be right. The roofline says 3%."
+- (d) The architect says "CTLE plus a 31-tap FFE with baud-rate CDR", and the analyst, not knowing the terms, nods and moves on.
+- (e) The debrief counts "first silicon worked" from the CEO and the same statement from the VP of Engineering as two strong answers.
+- (f) "The CTO answered every question instantly and with total confidence, so I raised my probability a lot."
+
 ---
 
 ## Objective coverage
 
 | Objective | Problems |
 |---|---|
-| 1. Preparation and question design | 1 |
-| 2. Moves and anti-patterns | 1, 8 |
-| 3. Live calculations | 2, 3, 4, 5, 6, 9, 11 |
-| 4. Debrief scoring | 7, 8, 12 |
+| 1. Preparation and question design | 1, 13 |
+| 2. Moves and anti-patterns | 1, 8, 15 |
+| 3. Live calculations | 2, 3, 4, 5, 6, 9, 11, 13, 14 |
+| 4. Debrief scoring | 7, 8, 12, 14 |
 | 5. Calibration | 10, 12 |

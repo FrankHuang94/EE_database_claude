@@ -6,7 +6,7 @@
 | **Course** | [28 · Technical Diligence and Engineering Leadership Fluency](../README.md) |
 | **University equivalent** | No direct university equivalent. It joins the cost models of semiconductor manufacturing (die cost and yield, as in a VLSI or fabrication course), engineering economics, and the managerial-accounting view of margins into one table that converts in both directions |
 | **Prerequisites** | [25-04](../../25-fabrication-packaging-test-and-reliability/chapters/25-04-yield-and-die-cost.md) (dies per wafer and yield), [26-03](../../26-engineering-design-and-professional-practice/chapters/26-03-engineering-economics-1.md) and [26-04](../../26-engineering-design-and-professional-practice/chapters/26-04-engineering-economics-2.md) (engineering economics), [25-09](../../25-fabrication-packaging-test-and-reliability/chapters/25-09-reliability-physics.md) (FIT), [27-07](../../27-system-architectures/chapters/27-07-ai-datacenter-server-and-rack.md) (datacenter power), [28-08](28-08-integration-risk.md) (delay cost) |
-| **Estimated study hours** | 3 |
+| **Estimated study hours** | 4 |
 | **Last verified** | 2026-11-26 |
 
 **Learning objectives.** After this chapter you can:
@@ -62,13 +62,13 @@ flowchart LR
 
 | Business quantity | Engineering drivers | Translation | Taught in |
 |---|---|---|---|
-| Unit cost, gross margin | Die area $A$, defect density $D_0$, wafer price $W$, package and test cost, selling price | $C_{\text{die}} = W/(\text{DPW}\cdot Y)$; $\text{GM} = 1 - (C_{\text{die}} + C_{\text{pkg+test}})/\text{ASP}$ | 25-04, 25-11 |
-| R&D and NRE | Team size and duration, EDA and IP licenses, mask sets | Engineer-months × loaded cost + licenses + masks | 26-03, 26-06 |
-| Time to revenue | Tape-out date, spins, qualification | Delay cost $\approx R\,d/12$ in a fixed window; respin = masks + delay | 26-05, 28-03, 28-08 |
+| Unit cost, gross margin | Die area $A$, defect density $D_0$, wafer price $W$, package and test cost, average selling price (ASP) | $C_{\text{die}} = W/(\text{DPW}\cdot Y)$; $\text{GM} = 1 - (C_{\text{die}} + C_{\text{pkg+test}})/\text{ASP}$ | 25-04, 25-11 |
+| R&D and NRE (non-recurring engineering: the one-time cost of designing and taping out) | Team size and duration, EDA and IP licenses, mask sets | Engineer-months × loaded cost + licenses + masks | 26-03, 26-06 |
+| Time to revenue | Tape-out date, spins, qualification | Delay cost $\approx R\,d_m/12$ for $d_m$ months in a fixed window; respin = masks + delay | 26-05, 28-03, 28-08 |
 | Customer total cost of ownership | Power, PUE, electricity price, lifetime, performance | Energy cost $= P \cdot \text{PUE} \cdot h \cdot p_e$ | 22-10, 27-07 |
 | Warranty and field cost | Failure rate (FIT), installed base, hours | Failures $= \lambda N t$; cost = failures × cost each | 25-09, 28-03 |
 | Price premium | Performance, performance per watt, features | Customer value (TCO and revenue) at the buyer's operating point | 28-02, 28-04 |
-| Risk-adjusted value | Milestone probabilities, maturity level | $P/(1 + r)^{T/12}$ chains | 28-01, 28-03 |
+| Risk-adjusted value | Milestone probabilities, maturity level | $V\prod_k p_k/(1 + r)^{T/12}$: value $V$ times the milestone probabilities $p_k$, discounted over $T$ months | 28-01, 28-03 |
 | Revenue forecast | Design wins, conversion, lag | Funnel value (28-06 §3.5) | 28-06 |
 
 Each row runs both ways. The forward direction answers "what does this engineering choice cost or earn?"; the reverse answers "what must the engineering deliver to hit this business target?".
@@ -89,9 +89,11 @@ $$
 
 The **elasticity** $\varepsilon$ is the percentage change in die cost per percentage change in area. It exceeds 1 because a larger die both occupies more wafer and is more likely to catch a defect; the edge term adds a little more, since large dies waste more of the wafer's rim. For a 100 mm² die at $D_0 = 0.1$ per cm² ($AD_0 = 0.1$), $\varepsilon \approx 1.1$ before the edge term (Example 28-09.1). For a 600 mm² die at the same defect density, $\varepsilon \approx 1.6$: big dies are where area discipline pays most.
 
+> **Going deeper — the edge term and clustering.** Write $\text{DPW}(A) = \pi d^2/(4A) - \pi d/\sqrt{2A}$ and $C = W/[\text{DPW}(A)\,e^{-AD_0}]$. Then $\ln C = \ln W - \ln \text{DPW} + AD_0$, and $\varepsilon = d\ln C/d\ln A = 1 + AD_0 + \big[\pi d/(2\sqrt{2A})\big]/\text{DPW}$: the edge loss shrinks more slowly than the usable area, which adds the last term. On a 300 mm wafer it is about 0.05 at 100 mm² and 0.15 at 600 mm² (so $\varepsilon \approx 1.15$ and 1.75). The Poisson yield used here is the pessimistic case: with the clustered (negative binomial) yield of 25-04, $Y = (1 + AD_0/\alpha)^{-\alpha}$, the defect term becomes $AD_0/(1 + AD_0/\alpha)$, which at 600 mm² and $\alpha = 2$ gives an elasticity of about 1.46 before the edge term rather than 1.6.
+
 > **Math refresher — elasticity.** For $y = f(x)$, the elasticity $d\ln y/d\ln x = (x/y)\,dy/dx$ is the ratio of percentage changes. For a product $y = g(x)h(x)$ it is the sum of the elasticities of $g$ and $h$: here $A$ (elasticity 1) and $e^{AD_0}$ (elasticity $AD_0$).
 
-**Wafer prices.** Leading-edge wafers are expensive and rising: reports put TSMC's N3 wafers around $18,500 and N2 above $30,000 [R-575] **[Industry estimate: no published price lists]**. At those prices, a few square millimetres matter.
+**Wafer prices.** Leading-edge wafers are expensive and rising: reports put TSMC's N3 wafers around \$18,500 (IBS: about \$20,000) and N2 above \$30,000 (reported October 2024 and December 2023) [R-575] **[Industry estimate: no published price lists; two to three years old]**. At those prices, a few square millimetres matter.
 
 ### 3.3 Reversing the translation: from a margin target to a die
 
@@ -99,15 +101,15 @@ A product manager sets a selling price and a gross-margin target. The total unit
 
 ### 3.4 Time and power are money
 
-**Schedule.** In a market window that ends at a fixed date, a delay of $d$ months at revenue rate $R$ per year loses about $R\,d/12$ of revenue (28-08 §3.2); the gross profit lost is that times the gross margin. A respin adds a new mask set (at the leading edge, estimates reach about \$40M [R-321] **[Industry estimate]**) and a delay of several months, so its cost is usually dominated by the delay, not the masks (Example 28-09.3).
+**Schedule.** In a market window that ends at a fixed date, a delay of $d_m$ months at revenue rate $R$ per year loses about $R\,d_m/12$ of revenue (the subscript keeps it apart from the wafer diameter $d$) (28-08 §3.2); the gross profit lost is that times the gross margin. A respin adds a new mask set (at the leading edge, estimates range from about \$10–20M to about \$40M [R-321], [R-623] **[Industry estimate; Contested]**) and a delay of several months, so its cost is usually dominated by the delay, not the masks (Example 28-09.3).
 
-**Power, for the customer.** A datacenter pays for every watt twice: once in the server and again in cooling and power distribution, captured by the power usage effectiveness (PUE, the ratio of facility power to IT power). Over a life of $h$ hours at electricity price $p_e$, a device drawing $P$ costs
+**Power, for the customer.** A datacenter pays for every watt in the server and again, in part, for the cooling and power distribution that serve it. The power usage effectiveness (PUE, the ratio of facility power to IT power) captures the overhead: at a PUE of 1.3, each watt of IT load brings 0.3 W of overhead with it. Over a life of $h$ hours at electricity price $p_e$, a device drawing $P$ costs
 
 $$
 E_{\text{cost}} = P \cdot \text{PUE} \cdot h \cdot p_e
 $$
 
-in electricity. At kilowatt power and multi-year lives, energy is a meaningful fraction of a device's price, which is why performance per watt carries a price premium (Example 28-09.4). Datacenter electricity use is large and growing: US datacenters used about 4.7% of US electricity in 2024, and global datacenter use was about 415 TWh in 2024 [R-452] **[Established for 2024; projections are estimates]**.
+in electricity. At kilowatt power and multi-year lives, energy is a meaningful fraction of a device's price, which is why performance per watt carries a price premium (Example 28-09.4). Datacenter electricity use is large and growing: US datacenters used about 4.7% of US electricity in 2024 (LBNL) **[Established]**, and global datacenter use was about 415 TWh in 2024 (IEA) [R-452] **[Industry estimate]**.
 
 ### 3.5 Reliability is money
 
@@ -115,7 +117,7 @@ A failure rate $\lambda$ in FIT (failures per $10^9$ device-hours, 25-09) across
 
 ### 3.6 Sensitivity analysis
 
-With many drivers, a **tornado analysis** varies each by the same fraction (say ±10%) with the others fixed, and ranks the effects on the output. For gross margin, the typical ranking is selling price and die area first, wafer price next, and package cost and defect density last for small dies; for large dies defect density rises up the list because it enters through $e^{AD_0}$ (Example 28-09.6). The ranking tells a diligence team which engineering claims to test hardest: a 10% error in the target's die-area estimate matters more than a 10% error in its defect-density assumption.
+With many drivers, a **tornado analysis** varies each by the same fraction (say ±10%) with the others fixed, and ranks the effects on the output. For gross margin, the typical ranking is selling price and die area first, wafer price next, and package cost and defect density last for small dies; for large dies defect density rises up the list because it enters through $e^{AD_0}$ (Example 28-09.6). Equal swings are only a first pass, because the drivers are not equally uncertain. A better tornado swings each driver across its *plausible* range (the low and high cases a skeptical engineer would accept). Die area after tape-out is known within a few percent; defect density on an immature node can be off by two or three times. At 100 mm², moving $D_0$ from 0.1 to 0.3 per cm² costs **7.9** points of margin, against 4.1 for a 10% area error and **2.1** for a 5% one, so for an early-node die defect density tops the plausible-range tornado even though it sits near the bottom of the equal-swing one. The ranking tells a diligence team which engineering claims to test hardest.
 
 ## 4. Worked examples
 
@@ -127,19 +129,19 @@ Wafer prices are from [R-575]; other parameters are illustrative assumptions. Di
 
 **Solution.**
 
-- 100 mm²: DPW **640**, yield **90.5**%, cost **31.95** $ per good die.
-- 120 mm²: DPW **528**, yield **88.7**%, cost **39.51** $.
+- 100 mm²: DPW $= \pi \cdot 300^2/(4 \times 100) - \pi \cdot 300/\sqrt{2 \times 100} = 706.9 - 66.6 = 640.2$, so **640** whole dies; yield $e^{-0.1}$ = **90.5**%; cost $18500/(640 \times 0.905)$ = **31.95** \$ per good die.
+- 120 mm²: DPW $= 589.0 - 60.8 = 528.2$, so **528**; yield $e^{-0.12}$ = **88.7**%; cost **39.51** \$.
 - Increase **23.7**%; average elasticity $23.7/20$ = **1.18**.
 
 **Units check.** mm² × per mm² = dimensionless exponent; $/wafer ÷ good dies per wafer = $/die. ✓
 
-**Sanity check.** The elasticity of 1.18 is close to $1 + AD_0 = 1.1$, with the rest from the wafer edge. A feature that adds 20% area must earn about 24% more die cost back in price or volume.
+**Sanity check.** The average elasticity of 1.18 sits above $1 + AD_0 = 1.1$ for three reasons: $AD_0$ itself rises across the interval (to 1.12 at 120 mm²), the wafer-edge term adds about 0.05 at these sizes, and a ratio of simple percentages differs from a logarithmic (point) elasticity. A feature that adds 20% area must earn about 24% more die cost back in price or volume.
 
 ### Example 28-09.2 · From a margin target to an area budget (tier B)
 
 **Setup.** A product will sell at $60 with $8 of package and test cost, and must reach 60% gross margin. Find the maximum unit cost, the maximum die cost, and the largest die area that meets it on the same wafer and defect density (dies per wafer unrounded).
 
-**Solution.** Unit cost $60 \times 0.40$ = **24** \$; die cost $24 - 8$ = **16** \$. Solving $18500/(\text{DPW}(A)e^{-0.001A}) = 16$ gives $A$ = **53.9** mm².
+**Solution.** Unit cost $60 \times 0.40$ = **24** \$; die cost $24 - 8$ = **16** \$. The die cost $18500/(\text{DPW}(A)e^{-0.001A})$ rises with $A$, so bisect on $A$ until it equals \$16: at 40 mm² it is **11.59** \$ (too cheap, so the die can grow), at 55 mm² **16.35** \$ (too dear), at 50 mm² **14.74** \$, at 54 mm² **16.03** \$, and at 53.9 mm² \$16.00, so $A$ = **53.9** mm².
 
 **Units check.** $ − $ = $; area in mm². ✓
 
@@ -147,13 +149,13 @@ Wafer prices are from [R-575]; other parameters are illustrative assumptions. Di
 
 ### Example 28-09.3 · The cost of a respin (tier B)
 
-**Setup.** A product earning $300M a year at 60% gross margin, in a fixed market window, needs a full-layer respin: a new mask set at about $40M [R-321] and a 4-month delay. Find the lost revenue, the lost gross profit, and the total profit impact.
+**Setup.** A product earning $300M a year at 60% gross margin, in a fixed market window, needs a full-layer respin: a new mask set at about \$40M (the top of the \$10–40M range of estimates [R-321], [R-623]) and a 4-month delay. Find the lost revenue, the lost gross profit, and the total profit impact.
 
 **Solution.** Lost revenue $300 \times 4/12$ = **100** \$M; lost gross profit $100 \times 0.6$ = **60** \$M; with masks, **100** \$M.
 
 **Units check.** $M/year × years = $M. ✓
 
-**Sanity check.** The delay costs half again as much as the masks. Respin risk (28-06's base rates) is therefore mainly schedule risk, which is why verification effort (28-07) is worth paying for.
+**Sanity check.** The delay costs half again as much as the masks, and the mask figure used is the top of the range of estimates: at \$10–20M masks the delay dominates even more. Respin risk (28-06's base rates) is therefore mainly schedule risk, which is why verification effort (28-07) is worth paying for.
 
 ### Example 28-09.4 · What a watt is worth to a datacenter (tier B)
 
@@ -191,7 +193,14 @@ Wafer prices are from [R-575]; other parameters are illustrative assumptions. Di
 |---|---|---|---|
 | Txt 28-09.1 | elasticity 1 + AD0 at 100 mm² | 1.1 | — |
 | Txt 28-09.2 | elasticity 1 + AD0 at 600 mm² | 1.6 | — |
+| Txt 28-09.3 | margin change, D0 from 0.1 to 0.3 per cm², 100 mm² | 7.9 | points |
+| Txt 28-09.4 | margin change, 5% more area, 100 mm² | 2.1 | points |
+| Txt 28-09.5 | point elasticity with edge term, 100 mm² | 1.15 | — |
+| Txt 28-09.6 | point elasticity with edge term, 600 mm² | 1.75 | — |
+| Txt 28-09.7 | clustered-yield elasticity before edge, 600 mm², alpha 2 | 1.46 | — |
 | Ex 28-09.1a | dies per wafer, 100 mm² | 640 | dies |
+| Ex 28-09.1f | dies per wafer before rounding, 100 mm² | 640.2 | dies |
+| Ex 28-09.1g | dies per wafer before rounding, 120 mm² | 528.2 | dies |
 | Ex 28-09.1a1 | yield, 100 mm² | 90.5 | % |
 | Ex 28-09.1a2 | cost per good die, 100 mm² | 31.95 | $ |
 | Ex 28-09.1b | dies per wafer, 120 mm² | 528 | dies |
@@ -202,6 +211,10 @@ Wafer prices are from [R-575]; other parameters are illustrative assumptions. Di
 | Ex 28-09.2a | maximum unit cost | 24 | $ |
 | Ex 28-09.2b | maximum die cost | 16 | $ |
 | Ex 28-09.2c | maximum die area | 53.9 | mm² |
+| Ex 28-09.2c1 | die cost at 40 mm² | 11.59 | $ |
+| Ex 28-09.2c2 | die cost at 55 mm² | 16.35 | $ |
+| Ex 28-09.2c3 | die cost at 50 mm² | 14.74 | $ |
+| Ex 28-09.2c4 | die cost at 54 mm² | 16.03 | $ |
 | Ex 28-09.2d | margin of a 100 mm² die at $60 | 33 | % |
 | Ex 28-09.3a | lost revenue | 100 | $M |
 | Ex 28-09.3b | lost gross profit | 60 | $M |
@@ -253,13 +266,13 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 | Quantity | Value | Note |
 |---|---|---|
-| N3 and N2 wafer prices | about $18,500 and above $30,000 per 300 mm wafer | Reports, not price lists [R-575] **[Industry estimate]** |
-| Leading-edge mask set | up to about $40M at 3 nm | [R-321] **[Industry estimate]** |
+| N3 and N2 wafer prices | about \$18,500 (IBS: about \$20,000) and above \$30,000 per 300 mm wafer (reported 2023–2024) | Reports, not price lists [R-575] **[Industry estimate]** |
+| Leading-edge mask set | about \$10–20M (2026 estimate) to about \$40M (2022 estimate) at 3–5 nm | [R-321], [R-623] **[Industry estimate; Contested]** |
 | Die-cost elasticity to area | about $1 + AD_0$, plus an edge term | §3.2 |
 | Gross margin | $1 - (C_{\text{die}} + C_{\text{pkg+test}})/\text{ASP}$ | §3.1 |
 | Lifetime energy cost | $P \cdot \text{PUE} \cdot h \cdot p_e$ | §3.4 |
 | Field failures | $\lambda N t \times 10^{-9}$ (λ in FIT) | §3.5 |
-| US datacenter electricity, 2024 | about 192 TWh, 4.7% of US use | LBNL [R-452] |
+| US datacenter electricity, 2024 | about 192 TWh, 4.7% of US use | LBNL [R-452] **[Established]** |
 
 ## 8. Common mistakes
 
@@ -268,14 +281,14 @@ Figures are as of Nov 2026 unless dated otherwise.
 - **Counting a respin as its mask cost.** The delay usually costs more.
 - **Ignoring the customer's power bill.** Performance per watt is a price argument only when translated into TCO or capacity.
 - **Reserving warranty on a typical FIT.** Use a bound with its confidence and conditions.
-- **Testing every assumption equally.** Rank them by sensitivity and test the ones that move the answer.
+- **Testing every assumption equally, or ranking them by equal swings.** Rank them by sensitivity across their plausible ranges and test the ones that move the answer: an uncertain small-looking driver can matter more than a well-known large one.
 
 ## 9. Practitioner lens
 
 **State of play (as of Nov 2026).**
 
 - **Wafer prices keep rising at the leading edge.** Reports put N2 wafers above $30,000 against about $18,500 for N3 [R-575] **[Industry estimate]**, so area discipline and chiplet partitioning (25-07) are margin decisions as much as engineering ones.
-- **Mask sets are a large fixed cost.** Estimates reach about $40M at 3 nm [R-321] **[Industry estimate]**, which raises the break-even volume for leading-edge designs and the cost of each respin.
+- **Mask sets are a large fixed cost.** Estimates range from about \$10–20M to about \$40M at 3–5 nm [R-321], [R-623] **[Industry estimate; Contested]**, which raises the break-even volume for leading-edge designs and the cost of each respin.
 - **Power is a capacity constraint as much as a cost.** US datacenters used about 4.7% of US electricity in 2024, with projections of 9.5–15.3% by 2030 [R-452] **[Industry estimate for projections]**; in power-limited sites, watts per unit of work decide how much can be deployed.
 
 **Commercial relevance.** The translation table is the bridge between the technical chapters of this curriculum and the financial models of a deal. It lets the analyst check a target's plan for internal consistency (does the die size fit the margin?), value engineering claims in money (what is 10% less power worth to the customer?), and decide where to spend diligence effort (which assumptions move value most?).
@@ -368,5 +381,5 @@ Problems: [28-09 problem set](../problems/28-09-problems.md) · Solutions: [28-0
 
 ## 14. Sources
 
-1. Wafer prices [R-575]; mask-set cost [R-321].
+1. Wafer prices [R-575]; mask-set costs [R-321], [R-623].
 2. Datacenter electricity [R-452].

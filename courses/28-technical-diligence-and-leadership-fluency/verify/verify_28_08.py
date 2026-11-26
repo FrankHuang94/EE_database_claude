@@ -154,6 +154,7 @@ v.check("28-08.10a", fixed)
 v.check("28-08.10b", 100 * (1 - fixed / p0))
 v.check("28-08.10c", shifted)
 v.check("28-08.10d", 100 * (1 - shifted / p0))
+v.check("28-08.10e", (1 - fixed / p0) / (1 - shifted / p0))
 v.assert_true("P10: lab fixed-window model agrees",
               abs(ig.synergy_value(50, 5, 0.10, delay=1, fixed_window=True) - fixed) < 1e-9)
 rates = {"none": [0.01] * 27, "lump": [0.003] * 24 + [0.05] * 3, "staged": [0.005] * 27}
@@ -173,6 +174,7 @@ v.assert_true("P12c: correlation lowers the gain",
 
 # --- Lab ---------------------------------------------------------------------------------------
 v.check("Lab 28-08.a", plan(50, 5, 0.10, 3, 0.8))
+v.check("Lab 28-08.a1", 100 * plan(50, 5, 0.10, 3, 0.8) / p0)
 v.check("Lab 28-08.b", 200 * (1 - 0.35) - 120)
 v.check("Lab 28-08.c", 2 * (2000 / 2) * 8)
 v.check("Lab 28-08.d", sum(terms) - 0.10 * 150)

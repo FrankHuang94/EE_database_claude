@@ -82,19 +82,16 @@ v.check("X28.4c1", 6 * s / 1e12)
 v.check("X28.4d", 6 * s * 8 * 6.5e-12)
 
 # ---------------------------------------------------------------- Q5
-v.check("X28.5a", 102.4e12 * 4.5e-12)
-v.check("X28.5b", 3e12 * 8 * 0.25e-12)
-v.check("X28.5b1", 3000 / 1317)
-v.check("X28.5c", 25 / 1.6e12 / 1e-12)
-v.check("X28.5c1", 6 / 1.6e12 / 1e-12)
-mw = 10 ** 2.3
-v.check("X28.5d", mw)
-v.check("X28.5d1", mw / 1000 / 0.2)
+v.check("X28.5a", 3.5 / 800e9 / 1e-12)
+v.check("X28.5a1", 4.5 / 800e9 / 1e-12)
+v.check("X28.5b", -math.log(0.05) / 4e5 * 1e9, tol=5)  # published to 3 significant figures
+v.check("X28.5c", 1 * 0.5 * 0.5 * 1)
+v.check("X28.5c1", 100 * 0.25 / 1.25)
 
 # ---------------------------------------------------------------- Q6
 v.check("X28.6a", 58 + 10 * math.log10(1e9 / 0.08))
 v.check("X28.6a1", (58 - 1.76) / 6.02)
-v.check("X28.6b", 10 ** (-58 / 20) / (2 * math.pi * 3e9) * 1e15)
+v.check("X28.6b", 10 ** (-58 / 20) / (2 * math.pi * 1e9) * 1e15)
 th = np.linspace(-math.pi / 2, math.pi / 2, 200001)
 dc = np.trapezoid(np.cos(th), th) / (2 * math.pi)
 f1 = np.trapezoid(np.cos(th) ** 2, th) / math.pi
@@ -160,6 +157,8 @@ v.check("X28.9c1", 20 * math.exp(mu))
 v.check("X28.9c2", sd)
 v.check("X28.9c3", 100 * integrate.quad(lambda x: math.exp(-x * x / 2) / math.sqrt(2 * math.pi), -np.inf, -mu / sd)[0])
 q2 = 1 - 0.85 ** 2
+l9 = np.log([1.10, 1.30, 1.45])
+v.check("X28.9c4", 100 * stats.t.cdf(-l9.mean() / (l9.std(ddof=1) * math.sqrt(1 + 1 / 3)), 2))
 v.check("X28.9d", 100 * q2)
 v.check("X28.9d1", 100 * q2 ** 2)
 
@@ -171,6 +170,7 @@ v.check("X28.10a1", late)
 v.check("X28.10a2", 100 * (1 - late / plan))
 v.check("X28.10b", 30 * 5 * 0.025)
 v.check("X28.10b1", 120 * 2 / 12)
+v.check("X28.10b2", 0.55 * 120 * 2 / 12)
 pboth = 1 - 0.45 * 0.55
 v.check("X28.10c", pboth)
 v.check("X28.10c1", 180 * pboth)

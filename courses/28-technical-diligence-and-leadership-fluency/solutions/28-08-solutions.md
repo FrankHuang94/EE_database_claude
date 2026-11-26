@@ -49,7 +49,7 @@ $0.8 \times 189.5/1.1^2$ = **125.3** \$M; loss **33.9**%.
 
 ### Solution 28-08.10
 
-Fixed window: years 2–5 only, $50 \times [1 - 1.1^{-4}]/0.1 \times 1.1^{-1}$ = **144.1** \$M, a loss of **24.0**%. Shifted window: $189.5/1.1$ = **172.3** \$M, a loss of **9.09**%. Losing a year of a fixed window costs more than two and a half times as much as shifting it.
+Fixed window: years 2–5 only, $50 \times [1 - 1.1^{-4}]/0.1 \times 1.1^{-1}$ = **144.1** \$M, a loss of **24.0**%. Shifted window: $189.5/1.1$ = **172.3** \$M, a loss of **9.09**%. Losing a year of a fixed window costs $24.0/9.09$ = **2.64** times as much as shifting it.
 
 ### Solution 28-08.11
 
@@ -111,6 +111,7 @@ The gross gain from a second path is $200 \times (0.8 - 0.6)$ = **40** \$M (Exam
 | 28-08.10b | loss, fixed window | 24.0 | % |
 | 28-08.10c | value, shifted window | 172.3 | $M |
 | 28-08.10d | loss, shifted window | 9.09 | % |
+| 28-08.10e | ratio of the losses | 2.64 | — |
 | 28-08.11a | retention at 24 months, no package | 78.6 | % |
 | 28-08.11b | retention at 24 months, lump package | 93.0 | % |
 | 28-08.11c | retention at 24 months, staged package | 88.7 | % |

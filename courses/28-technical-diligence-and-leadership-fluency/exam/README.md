@@ -9,10 +9,10 @@
 - Scoring:
   - Questions 1–10 are [B] and worth 8 points each, 2 per part.
   - Questions 11 and 12 are [C] and worth 12 points each, 3 per part.
-  - The total is 104 points; 73 or more (70%) is a strong pass.
-- Give numerical answers to 3 significant figures, with units, unless a part asks otherwise; exact values may be given in full. Carry intermediate values at full precision and round only final answers.
-- Two parts need a short iteration on the calculator (bisection is fine): 3(d) only if you do not use the closed form, and 11(c). Say what you iterated on.
-- Questions 11(b) and 12(a) ask for derivations: a result quoted from the equation sheet earns no credit unless derived. Question 12(d) is a short written answer; its rubric is at the end of the solutions.
+  - The total is 104 points; 52 or more (50%) is a pass and 73 or more (70%) a strong pass.
+- Give numerical answers to 3 significant figures, with units, unless a part asks otherwise; exact values may be given in full, and the key sometimes shows a fourth figure. Carry intermediate values at full precision and round only final answers; an answer within 1% of the key earns full credit.
+- One part, 11(c), needs a short iteration on the calculator (bisection is fine); say what you iterated on. Where a part needs a normal probability, use the table rows on the equation sheet and interpolate.
+- Questions 11(b) and 12(a) ask for derivations: a result quoted from the equation sheet earns no credit unless derived. Questions 5(d) and 12(d) are short written answers, and 2(a) ends with a short explanation; their rubrics are at the end of the solutions.
 - Solutions are in a separate file, [solutions.md](solutions.md). Open it only after you finish.
 
 **Conventions.** These follow the chapters.
@@ -42,24 +42,33 @@ An NPU has 16,384 INT8 MAC units at 1.5 GHz; its brochure says "98 TOPS" and "24
 **3 [B] · Maturity and qualification.** (28-03)
 (a) A program has completed engineering samples; qualification (0.85, 5 months) and release (0.95, 2 months) remain. Find the probability of production and the value multiplier at 15% a year.
 (b) Find the Arrhenius acceleration factor between a 60 °C use junction and a 125 °C stress junction at 0.7 eV.
-(c) 300 devices run 1000 hours at 125 °C with no failures. Find the FIT bound at 60% confidence ($\chi^2_{0.6;2} = 1.833$).
-(d) How many devices would a zero-failure 1000-hour test need to bound the rate at 20 FIT with 90% confidence ($\chi^2_{0.9;2} = 4.605$)?
+(c) 300 devices run 1000 hours at 125 °C with no failures. Find the FIT bound at the 60 °C use junction of (b), at 60% confidence ($\chi^2_{0.6;2} = 1.833$).
+(d) With the same 125 °C stress and 60 °C use junction, how many devices would a zero-failure 1000-hour test need to bound the rate at 20 FIT with 90% confidence ($\chi^2_{0.9;2} = 4.605$)?
 
 **4 [B] · Digital and AI claims.** (28-04)
 (a) A CPU claims 18% more performance at the same power, with 8% more IPC and 4% more switched capacitance. Find the frequency ratio, the power factor and the required power reduction at the new operating point.
 (b) An accelerator has 4 PFLOP/s of dense FP8 and 8 TB/s. Find the ridge, the decode intensity at batch 24 with FP8 weights, the attainable throughput and share of peak, and the batch at the ridge.
 (c) Find the bandwidth of one 2,048-bit HBM4 stack at 9.6 Gb/s, and of six stacks.
-(d) Find the power of six such stacks at full read bandwidth at 6.5 pJ/bit.
+(d) Find the power of six such stacks at full read bandwidth at an all-in 6.5 pJ/bit.
 
-**5 [B] · Interconnect and optics.** (28-04)
-(a) A 102.4 Tb/s switch's SerDes draw 4.5 pJ/bit all-in. Find their power.
-(b) Two chiplets exchange 3 TB/s over UCIe-A links at 0.25 pJ/bit [R-524]. Find the link power and the die edge needed at 1,317 GB/s per mm.
-(c) A 1.6 Tb/s port draws 25 W with pluggable optics and 6 W with CPO. Find each energy per bit.
-(d) An external laser delivers 23 dBm per fiber. Find its optical power in mW and its electrical power at 20% wall-plug efficiency.
+**5 [B] · Debrief a transcript.** (28-04, 28-06, 28-10)
+A start-up claims its 800 Gb/s co-packaged optical engine is "under 5 pJ/bit and field-proven". The transcript:
+
+> - **Analyst:** What is the power per port, at what port speed, including lasers?
+> - **CTO:** 3.5 W at 800 Gb/s for the optical engine. The external laser is extra, about 1 W electrical.
+> - **Analyst:** And field reliability?
+> - **CTO:** No failures in 400,000 link-hours in a customer's lab.
+> - **Analyst:** How many lasers per lane?
+> - **CTO:** One per four lanes, and they are field-replaceable.
+
+(a) Find the energy per bit of the engine alone and all-in. Which boundary does the claim use?
+(b) Treating the link-hours as device-hours, find the 95% upper bound on the failure rate in FIT. What does the evidence say about "field-proven"?
+(c) With a 50% prior that the claim holds as a buyer would read it (all-in, in the field), and likelihood ratios of 0.5 for the power answer, 0.5 for the reliability answer and 1 for the laser answer (it bears on serviceability, not on the claim), find the posterior odds and probability. Why is the laser answer given a ratio of 1?
+(d) Write two follow-up questions, each with what a strong answer would contain, and name one anti-pattern the analyst should avoid in asking them.
 
 **6 [B] · Analog and RF claims.** (28-05)
 (a) A 2 GS/s ADC reports 58 dB SNDR near Nyquist at 80 mW. Find its Schreier figure and ENOB.
-(b) What clock jitter alone would limit SNR to 58 dB for a 3 GHz input?
+(b) What clock jitter alone would limit SNR to 58 dB for a 1 GHz input (the Nyquist frequency of the converter in (a))?
 (c) Find the ideal class-B and symmetric-Doherty efficiencies at 9 dB back-off.
 (d) Express a 2% EVM requirement in dB.
 
@@ -77,13 +86,13 @@ An NPU has 16,384 INT8 MAC units at 1.5 GHz; its brochure says "98 TOPS" and "24
 
 **9 [B] · Teams.** (28-07)
 (a) With a Beta prior of mean 14% and weight 10, find the posterior mean first-silicon success rate for a team with 2 successes in 5 projects, and the weight on its record.
-(b) Find the 90% credible interval of that posterior.
+(b) Software gives the 5th and 95th percentiles of that posterior as 7.75% and 41.8%. Is the team shown to be better than the 14% base rate at 90% credibility? What evidence would change the answer?
 (c) A team's last three projects took 1.10, 1.30 and 1.45 times plan. Find the geometric-mean overrun, the forecast for a 20-month plan, the standard deviation of the log-ratios ($n - 1$) and the probability of meeting the plan.
 (d) Engineers leave at 15% a year. Over two years, find the probability of losing a capability with one owner and with two.
 
 **10 [B] · Integration.** (28-08)
 (a) Synergies of $40M a year for 5 years at 10%: find the planned value, the value if integration slips a year with 75% realization, and the fractional loss.
-(b) Migrating 30 engineers takes 5 months at $25k per engineer-month; done now it would delay a product earning $120M a year in a fixed window by 2 months. Find both costs.
+(b) Migrating 30 engineers takes 5 months at $25k per engineer-month; done now it would delay a product earning \$120M a year at a 55% gross margin in a fixed window by 2 months. Find the migration cost, the lost revenue and the lost gross profit, and decide.
 (c) Two programs for a $180M socket succeed with probabilities 0.55 and 0.45 (independent); keeping the second costs $35M. Find the probability that at least one succeeds, the expected value with both and with the better alone, the gain, and the decision.
 (d) A deal pays $500M upfront and $300M contingent (all-or-nothing) in 3 years with probability 0.45, at 10%. Find the contingent part's expected present value and the deal's.
 

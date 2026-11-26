@@ -73,6 +73,12 @@ def gm(asp, a, wafer, d0, pkg):
 # --- Theory text ---------------------------------------------------------------------------
 v.check("Txt 28-09.1", 1 + 100 * 0.001)
 v.check("Txt 28-09.2", 1 + 600 * 0.001)
+base9 = 1 - (cost(100, 18500, 0.001) + 8) / 90
+for key, a in (("5", 100), ("6", 600)):
+    v.check(f"Txt 28-09.{key}", 1 + a * 0.001 + (math.pi * 300 / (2 * math.sqrt(2 * a))) / dpw_formula(a))
+v.check("Txt 28-09.7", 1 + 0.6 / (1 + 0.6 / 2))
+v.check("Txt 28-09.3", -100 * ((1 - (cost(100, 18500, 0.003) + 8) / 90) - base9))
+v.check("Txt 28-09.4", -100 * ((1 - (cost(105, 18500, 0.001) + 8) / 90) - base9))
 for a in (100, 300, 600):
     v.assert_true(f"grid count (no scribe lines) within 8% above the formula at {a} mm2",
                   0 <= dpw_grid(a) - dpw_formula(a) <= 0.08 * dpw_formula(a))
@@ -158,6 +164,31 @@ v.check("28-09.8d", 100 * e8b / 25000)
 v.check("28-09.9", (150 + 40) / 30)
 v.check("28-09.10a", 100 * (1 - b6) * (1 - 1 / 1.1))
 v.check("28-09.10b", 100 * (1 / 0.9 - 1))
+
+# --- Problem 28-09.11: plausible-range tornado ------------------------------------------------
+base11 = gm(90, 100, 18500, 0.001, 8)
+ranges11 = [  # (keys low, high, swing), index of the driver in gm(), low, high
+    (("a", "b", "c"), 0, 80, 95),
+    (("d", "e", "f"), 1, 98, 103),
+    (("g", "h", "i"), 2, 17000, 20000),
+    (("j", "k", "l"), 3, 0.0008, 0.003),
+    (("m", "n", "o"), 4, 7, 10),
+]
+swings11 = {}
+for keys, idx, lo, hi in ranges11:
+    out = []
+    for val in (lo, hi):
+        args = [90, 100, 18500, 0.001, 8]
+        args[idx] = val
+        out.append(100 * (gm(*args) - base11))
+    v.check(f"28-09.11{keys[0]}", out[0])
+    v.check(f"28-09.11{keys[1]}", out[1])
+    v.check(f"28-09.11{keys[2]}", abs(out[1] - out[0]))
+    swings11[idx] = abs(out[1] - out[0])
+v.assert_true("28-09.11 ranking: D0 > ASP > wafer > package > area",
+              [k for k, _ in sorted(swings11.items(), key=lambda kv: -kv[1])] == [3, 0, 2, 4, 1])
+v.assert_true("28-09.11 whole dies 653/640/620",
+              [math.floor(dpw_formula(a)) for a in (98, 100, 103)] == [653, 640, 620])
 for a in (50, 200, 600):
     v.assert_true(f"P10a: no-edge elasticity is 1 + AD0 at {a} mm2",
                   abs((math.log((a * 1.0001) * math.exp(a * 1.0001 * 0.001)) - math.log((a * 0.9999) * math.exp(a * 0.9999 * 0.001)))
@@ -168,11 +199,23 @@ v.assert_true("P10b: ASP formula matches Example 6", abs((1 - b6) * (1 - 1 / 1.1
 hh = 1e-4
 el600 = (math.log(cost(600 * (1 + hh), 18500, whole=False)) - math.log(cost(600 * (1 - hh), 18500, whole=False))) / (math.log(1 + hh) - math.log(1 - hh))
 v.check("Lab 28-09.a", el600)
-v.check("Lab 28-09.b", bisect(lambda a: cost(a, 30000, whole=False) - 16, 5, 300))
+lab_b = bisect(lambda a: cost(a, 30000, whole=False) - 16, 5, 300)
+v.check("Lab 28-09.b", lab_b)
+v.check("Lab 28-09.b1", a2 / lab_b)
+v.check("Lab 28-09.b2", a2 / 1.15)  # TSMC N2 vs N3E mixed chip density about 1.15x [R-552]
 v.check("Lab 28-09.c", 1.3 * 4 * H * 0.15)
 bb = gm(900, 600, 18500, 0.001, 80)
 v.check("Lab 28-09.d", 100 * bb)
 v.check("Lab 28-09.d1", 100 * (gm(900, 600, 18500, 0.0011, 80) - bb))
 v.check("Lab 28-09.d2", 100 * (gm(900, 660, 18500, 0.001, 80) - bb))
+
+for key, a in (("c1", 40), ("c2", 55), ("c3", 50), ("c4", 54)):
+    v.check(f"Ex 28-09.2{key}", cost(a, 18500, whole=False))
+v.check("Ex 28-09.1f", dpw_formula(100))
+v.check("Ex 28-09.1g", dpw_formula(120))
+
+n600 = dpw_formula(600)
+v.check("28-09.3f", 1 + 600 * 0.001 + (math.pi * 300 / (2 * math.sqrt(2 * 600))) / n600)
+v.check("28-09.3g", 100 * (cost(660, 18500, whole=False) / cost(600, 18500, whole=False) - 1))
 
 sys.exit(v.finish())
