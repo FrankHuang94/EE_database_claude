@@ -16,5 +16,5 @@ At the end of each term there is an FE-style checkpoint exam: 40–60 multiple-c
 | Term 3 | Electronics; Properties of Electrical Materials; Linear Systems; Signal Processing | [ready](term-3/README.md): 50 questions, [solutions](term-3/solutions.md) |
 | Term 4 | Electronics; Electromagnetics; Computer Systems | [ready](term-4/README.md): 50 questions, [solutions](term-4/solutions.md) |
 | Term 5 | Control Systems; Signal Processing; Communications; Computer Networks; Computer Systems; Software Engineering | [ready](term-5/README.md): 50 questions, [solutions](term-5/solutions.md) |
-| Term 6 | Power Systems; Electronics; Properties of Electrical Materials; Digital Systems | planned |
+| Term 6 | Electronics; Power Systems; Digital Systems; Properties of Electrical Materials; Communications; Computer Systems | [ready](term-6/README.md): 50 questions, [solutions](term-6/solutions.md) |
 | Term 7 | Ethics and Professional Practice; Engineering Economics; full-length mixed practice exam (110 questions) | planned |
