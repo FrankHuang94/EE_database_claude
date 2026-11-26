@@ -61,21 +61,21 @@ With $P(k) = 0.60[1 - 0.4^k] + 0.25[1 - 0.8^k] + 0.15 \times 0$:
 
 (c) $E[n_1] = E[n_2] = 20 \times 0.8 + 20 \times 0.2$ = **20**; $E[m] = 20 \times 0.8^2 + 20 \times 0.2^2$ = **13.6**; so $\hat N = 20 \times 20/13.6$ = **29.4**, **26.5**% below the true 40.
 
-(d) Both reviewers find the easy defects, so the overlap is larger than independence at the *average* rate predicts ($20 \times 0.5^2 \times 2$ = **10** for $p$ = 0.5 everywhere); a larger $m$ in the denominator makes $\hat N$ too small. Heterogeneous difficulty acts like positive correlation between the reviewers.
+(d) Both reviewers find the easy defects, so the overlap is larger than independence at the *average* rate predicts ($40 \times 0.5^2$ = **10** for $p$ = 0.5 everywhere); a larger $m$ in the denominator makes $\hat N$ too small. Heterogeneous difficulty acts like positive correlation between the reviewers.
 
 ### Solution 26-02.7
 
-(a) Return: $160/220$ = **72.7**%, below 75%, so the ballot fails the return rule. Approval: $105/145$ = **72.4**%, also below 75%. Abstention: $15/160$ = **9.4**%, valid.
+(a) Return: $160/220$ = **72.7**%, below 75%, so the ballot cannot close yet; under the rules a first ballot may be extended until a 75% return is received, and fails only if that cannot be obtained [R-632]. Approval: $105/145$ = **72.4**%, also below 75%. Abstention: $15/160$ = **9.4**%, valid.
 
 (b) Return $165/220$ = **75.0**%, which meets the rule; approval $110/150$ = **73.3**%, still short. It does not pass.
 
-(c) It needs at least $0.75 \times 150 = 112.5$, so **113** Approve votes: **3** Do Not Approve voters must change (resolving their comments is how that happens).
+(c) It needs at least $0.75 \times 150$ = **112.5**, so **113** Approve votes: **3** Do Not Approve voters must change (resolving their comments is how that happens).
 
 ### Solution 26-02.8
 
 (a) Return $170/200$ = **85.0**% ✓; approval $90/115$ = **78.3**% ✓; abstention $55/170$ = **32.4**% ≥ 30%, so the ballot is invalid despite its approval rate.
 
-(b) Abstentions must stay below $0.30 \times 170 = 51$, so at most **50**.
+(b) Abstentions must stay below $0.30 \times 170$ = **51**, so at most **50**.
 
 (c) Five abstainers become Do Not Approve: approval $90/120$ = **75.0**%, exactly the threshold, so the ballot passes, with no margin at all.
 
@@ -156,11 +156,13 @@ With $P(k) = 0.60[1 - 0.4^k] + 0.25[1 - 0.8^k] + 0.15 \times 0$:
 | 26-02.7a2 | abstention | 9.4 | % |
 | 26-02.7b | return | 75.0 | % |
 | 26-02.7b1 | approval | 73.3 | % |
+| 26-02.7c0 | 75% of votes cast | 112.5 | |
 | 26-02.7c | approvals needed | 113 | |
 | 26-02.7c1 | switches | 3 | |
 | 26-02.8a | return | 85.0 | % |
 | 26-02.8a1 | approval | 78.3 | % |
 | 26-02.8a2 | abstention | 32.4 | % |
+| 26-02.8b0 | 30% of returns | 51 | |
 | 26-02.8b | maximum abstentions | 50 | |
 | 26-02.8c | approval | 75.0 | % |
 | 26-02.9a | stacked royalty | 100 | $ |

@@ -267,6 +267,8 @@ dj_rss = reqs.stack_rss(dj)
 v.check("26-01.4b", dj_rss)
 v.check("26-01.4b1", dj_rss + 2 * 7.03 * srj)
 v.check("26-01.4b2", 0.5 * ui - (dj_rss + 2 * 7.03 * srj))
+v.check("26-01.4a8", 2 * 7.03)
+v.check("26-01.4c2", sum(rj))
 v.check("26-01.4c0", 2 * 7.03 * sum(rj))
 v.check("26-01.4c", sum(dj) + 2 * 7.03 * sum(rj))
 v.check("26-01.4c1", sum(dj) + 2 * 7.03 * sum(rj) - 0.5 * ui)
@@ -302,6 +304,8 @@ for key_w, key_r, n in (("26-01.7a", "26-01.7a2", 4), ("26-01.7a1", "26-01.7a3",
     v.check(key_r, optimize.brentq(lambda x: math.sqrt(n) * x - 1.0, 0, 1))
 v.check("26-01.7b", math.sqrt(4))
 v.check("26-01.7b1", math.sqrt(9))
+v.check("26-01.7c2", 1.0 - 0.5**2)
+v.check("26-01.7c3", (1.0 - 0.5**2) / 3)
 v.check("26-01.7c", math.sqrt((1.0 - 0.5**2) / 3))
 v.check("26-01.7c1", (1.0 - 0.5) / 3)
 
@@ -422,5 +426,20 @@ for key, f in (("Lab 26-01.c", lo_f), ("Lab 26-01.c1", hi_f)):
     savings.append(sv)
 v.check("Lab 26-01.c3", savings[1])
 v.check("Lab 26-01.c2", savings[1] / savings[0])
+
+# ---------------------------------------------------------------- Problem 16 (traceability by set operations)
+reqs16 = {f"R{k}" for k in range(1, 9)}
+tests16 = {"T1": {"R1"}, "T2": {"R2"}, "T3": {"R3"}, "T4": {"R4"}, "T5": set(), "T6": {"R6"}}
+design16 = {"D1": {"R1", "R2"}, "D2": {"R3", "R4"}, "D3": {"R5", "R8"}, "D4": {"R1", "R6"}, "D5": set()}
+need16 = {"R1": "M1", "R2": "M1", "R3": "M2", "R4": "M2", "R5": "M3", "R6": "M5", "R7": "M4", "R8": "M3"}
+tested = set().union(*tests16.values())
+implemented = set().union(*design16.values())
+v.check("26-01.16b", 100 * len(tested & reqs16) / len(reqs16))
+v.check("26-01.16b1", len(reqs16 - tested))
+v.check("26-01.16c", len(reqs16 - implemented))
+v.check("26-01.16d", sum(1 for t in tests16.values() if not t))
+v.check("26-01.16d1", sum(1 for d in design16.values() if not d))
+open_needs = {need16[r] for r in reqs16 - tested}
+v.assert_true("Problem 16e: M3 and M4 are the needs not fully verified", open_needs == {"M3", "M4"})
 
 sys.exit(v.finish())

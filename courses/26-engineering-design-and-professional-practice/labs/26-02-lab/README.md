@@ -43,7 +43,7 @@
 ## Discussion
 
 1. At $h$ = 50% the same average detection rate yields only 49.9% of the defects with five reviewers, against 88.4% when no defect is hidden. Averages hide the structure that matters; ask what kinds of defects a review can find at all.
-2. Capture–recapture undercounts by about a fifth when difficulty varies (28.1 against 36): it is a floor on the defects remaining, not an estimate of them.
+2. Capture–recapture undercounts by about a fifth when difficulty varies (28.1 against 36): with same-trained reviewers it tends to run low, so treat a small estimate as weak reassurance rather than a count of what remains.
 3. With full return and no abstentions, three voters block any group of 11 or fewer (8 of 11 is 72.7%); from 12 members up they need allies. Consensus rules protect large minorities, not small ones.
 4. Doubling the value of time raises the break-even probability from 0.545 to 0.706: the more valuable the market window, the more draft-standard risk is worth taking.
 

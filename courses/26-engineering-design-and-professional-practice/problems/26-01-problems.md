@@ -74,14 +74,18 @@ Chapter: [26-01](../chapters/26-01-requirements-and-specifications.md) · Worked
 
 **Every unit, not the average.** A device's mean battery life is 175 h against a requirement of at least 168 h for every unit. Battery capacity and average current vary from unit to unit as independent lognormal variables with log-standard deviations 0.03 and 0.05 (assumed). (a) Find the log-standard deviation of life. (b) What fraction of units falls short of 168 h, taking 175 h as the median life? (c) What median life is needed for 99% of units to meet 168 h? (d) Rewrite the requirement so that it says what the customer actually needs.
 
+### Problem 26-01.16 [B]
+
+**Build the matrix.** A fitness band's MRD lists five needs: M1, a week between charges; M2, accurate heart rate during exercise; M3, easy phone sync; M4, rugged outdoor use; M5, a low price. The PRD derives eight requirements, each tracing to the need in brackets: R1, battery life ≥ 168 h under profile UP-1 (M1); R2, sleep current ≤ 50 µA (M1); R3, heart-rate error ≤ ±5 bpm from 60 to 180 bpm while running (M2); R4, optical sampling ≥ 25 Hz (M2); R5, a day's data synced in under 30 s (M3); R6, BOM ≤ $38 at 1 M units (M5); R7, operation from −10 to 50 °C (M4); R8, firmware updates over the air (M3). The verification plan has six tests: T1, battery rundown under UP-1 (verifies R1); T2, sleep-current measurement (R2); T3, treadmill heart-rate test against a chest strap (R3); T4, sampling-rate check (R4); T5, a 1.5 m drop test (no requirement listed); T6, BOM roll-up analysis (R6). The architecture has five design elements: D1, a PMIC with 30 µA quiescent current (implements R1, R2); D2, a PPG front end sampling at 32 Hz (R3, R4); D3, a BLE radio and bootloader (R5, R8); D4, a low-cost MCU (R1, R6); D5, an NFC payment module (no requirement listed). (a) Build the traceability matrix with requirements as rows and tests and design elements as columns. (b) Find the test coverage and list the unverified requirements. (c) List the childless requirements. (d) List the orphan tests and design elements, and say what each orphan suggests. (e) Which MRD needs are not yet fully verified?
+
 ---
 
 ## Objective coverage
 
 | Objective | Problems |
 |---|---|
-| 1. Market requirements to verifiable specifications | 1, 2 |
+| 1. Market requirements to verifiable specifications | 1, 2, 16 |
 | 2. Flow-down, worst-case and RSS budgets, compliance probability | 3, 4, 5, 6, 7, 15 |
-| 3. Traceability and the cost of gaps | 8 |
+| 3. Traceability and the cost of gaps | 8, 16 |
 | 4. Process models and changes after freeze | 13, 14 |
 | 5. Escalation of late errors and decision matrices | 9, 10, 11, 12 |

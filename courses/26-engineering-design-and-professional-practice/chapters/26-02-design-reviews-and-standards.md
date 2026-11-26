@@ -114,7 +114,7 @@ $$
 
 reduces the bias and stays finite when $m$ = 0.
 
-**Its assumptions, and how they fail.** Both estimates assume every defect is equally findable. When some defects are harder than others, the reviewers' finds overlap more than independence predicts (both find the easy ones), $m$ is too large, and $\hat N$ is biased *low*: the estimate says the document is cleaner than it is. The lab shows the bias by simulation. Capture–recapture therefore gives a lower bound on what remains, which is still useful: a large estimate is a reliable warning, while a small one is not a guarantee.
+**Its assumptions, and how they fail.** Both estimates assume every defect is equally findable. When some defects are harder than others, the reviewers' finds overlap more than independence predicts (both find the easy ones), $m$ is too large, and $\hat N$ is biased *low*: the estimate says the document is cleaner than it is. The lab shows the bias by simulation. With same-trained reviewers, capture–recapture therefore tends to underestimate what remains (reviewers chosen to look at different things overlap less than independence predicts and can push it the other way, and sampling noise moves any single estimate either way). It is still useful: a large estimate is a strong warning, while a small one is not a guarantee.
 
 > **Going deeper — more than two reviewers.** With three or more reviewers, log-linear models of the capture histories (which reviewers found each defect) can estimate and partly correct for heterogeneity and reviewer dependence. They are the standard tools in software-inspection research and in wildlife statistics, and they need more data than a single review usually provides.
 
@@ -132,7 +132,7 @@ The internal specification, the datasheet and the errata must agree: a requireme
 
 ### 3.5 How standards are made
 
-**The landscape.** Formal standards development organizations, such as IEEE SA (Ethernet and Wi-Fi in IEEE 802), ETSI and its 3GPP partnership (cellular), and ISO/IEC, operate under published due-process rules. Industry consortia such as JEDEC (memory), PCI-SIG (PCIe) and the UCIe Consortium (die-to-die links) are membership organizations that write specifications for their members, often faster. UCIe, for example, lists its promoter members as AMD, ASE, Alibaba Cloud, Arm, Google Cloud, Intel, Meta, Microsoft, NVIDIA, Qualcomm, Samsung and TSMC [R-635], a mix of chip designers, foundry, packaging house and cloud buyers that tells you whose interests the standard will balance.
+**The landscape.** Formal standards development organizations, such as IEEE SA (Ethernet and Wi-Fi in IEEE 802), ETSI and ISO/IEC, operate under published due-process rules; cellular standards come from 3GPP, a partnership of regional standards bodies that includes ETSI. Industry bodies such as JEDEC (memory), PCI-SIG (PCIe) and the UCIe Consortium (die-to-die links) are membership organizations whose specifications are written by and for their member companies, often faster. UCIe, for example, lists its promoter members as AMD, ASE, Alibaba Cloud, Arm, Google Cloud, Intel, Meta, Microsoft, NVIDIA, Qualcomm, Samsung and TSMC [R-635], a mix of chip designers, foundries, a packaging house and cloud buyers that tells you whose interests the standard will balance.
 
 **Consensus, made measurable.** IEEE SA's rules show what "consensus" means in practice [R-632]. A draft goes to a balloting group of interested parties, and:
 
@@ -147,11 +147,11 @@ The thresholds are a supermajority, not unanimity: a determined minority can del
 
 ### 3.6 Standards and patents
 
-A standard often cannot be implemented without using patented inventions; such a patent is **standard-essential** (an SEP). Because implementers have no choice but to use it, standards bodies require patent holders to commit to licensing terms in advance.
+A standard often cannot be implemented without using patented inventions; such a patent is **standard-essential** (an SEP). Because implementers have no choice but to use it, standards bodies ask patent holders to commit to licensing terms in advance (a holder may refuse, and the standard may then have to work around the patent).
 
 **FRAND.** ETSI's IPR policy, clause 6.1, has the Director-General ask the owner of an essential IPR "to give within three months an irrevocable undertaking in writing that it is prepared to grant irrevocable licences on fair, reasonable and non-discriminatory ('FRAND') terms and conditions" [R-633].
 
-**Reasonable rates.** IEEE SA's patent policy defines a "Reasonable Rate" as "appropriate compensation to the patent holder for the practice of an Essential Patent Claim excluding the value, if any, resulting from the inclusion of that Essential Patent Claim's technology in the IEEE Standard" [R-631]. Among its optional considerations is the value the claim contributes to "the smallest saleable Compliant Implementation that practices the Essential Patent Claim or to another appropriate value level of the Compliant Implementation" [R-631]. A holder who has given an assurance "shall neither seek nor seek to enforce a Prohibitive Order" (an injunction or exclusion order) "against an implementer who is willing to negotiate in good faith for a license" [R-631].
+**Reasonable rates.** IEEE SA's patent policy defines a "Reasonable Rate" as "appropriate compensation to the patent holder for the practice of an Essential Patent Claim excluding the value, if any, resulting from the inclusion of that Essential Patent Claim's technology in the IEEE Standard" [R-631]. Among its optional considerations is the value the claim contributes to "the smallest saleable Compliant Implementation that practices the Essential Patent Claim or to another appropriate value level of the Compliant Implementation" [R-631]. A holder who has given an assurance "shall neither seek nor seek to enforce a Prohibitive Order" (an injunction or exclusion order) "based on such Essential Patent Claim(s) in a jurisdiction against an implementer who is willing to negotiate in good faith for a license" [R-631].
 
 **Royalty stacking.** If $n$ holders each charge a rate $r_i$ on the same royalty base $B$, the implementer pays
 
@@ -238,7 +238,7 @@ All examples use assumed, illustrative numbers unless a source is cited.
 
 **Units check.** Rate × dollars = dollars. ✓
 
-**Sanity check.** The same patents yield $75 or $3 depending on the base, a factor of 25 (the price ratio). That ratio is why royalty-base disputes are fought so hard, and why chip suppliers prefer licensing to happen at the device maker rather than at the component level, or the reverse, depending on which side of the license they sit.
+**Sanity check.** The same patents yield $75 or $3 depending on the base, a factor of 25 (the price ratio). That ratio is why royalty-base disputes are fought so hard: SEP holders generally argue for the end device as the base, while component suppliers that implement the standard argue for the component, the smallest saleable compliant implementation **[Contested]**.
 
 ### Example 26-02.6 · Design to the draft, or wait for the freeze? (tier C)
 
@@ -252,7 +252,7 @@ All examples use assumed, illustrative numbers unless a source is cited.
 
 **Units check.** Months × $M/month and $M add to $M. ✓
 
-**Sanity check.** Designing to a draft pays when a late change can be absorbed cheaply, which is why teams that start early keep the draft-dependent logic programmable or isolated behind firmware. The participation of the team's own engineers in the standard lowers $p$ and, more valuably, warns them which parts of the draft are still moving.
+**Sanity check.** Designing to a draft pays when a late change can be absorbed cheaply, which is why teams that start early keep the draft-dependent logic programmable or isolated behind firmware. The participation of the team's own engineers in the standard lets them judge $p$ and, more valuably, see which parts of the draft are still moving.
 
 <!-- answer-key -->
 
@@ -309,7 +309,7 @@ The lab is [labs/26-02-lab/](../labs/26-02-lab/README.md). `reviews.py` computes
 
 **Predict, then run.**
 
-1. *Predict* how the fraction found by five reviewers changes as the hidden fraction of defects grows from 0 to 50% at a fixed average detection rate, then plot it (the figure below).
+1. *Predict* how the fraction found by five reviewers changes as the hidden fraction of defects grows from 0 to 50% at a fixed average detection rate, then plot it (the notebook's Part 1; the figure below shows the related curve against the number of reviewers).
 2. *Predict* whether Chapman's estimate is biased high or low when 30% of the defects are hard to find, then simulate 20,000 pairs of reviews and compare the average estimate with the truth.
 3. *Predict* the largest balloting group in which three determined Do Not Approve voters can, on their own, block a ballot in which everyone else approves (assume full return and no abstentions), then check it.
 4. *Predict* the break-even probability in Example 26-02.6(b) when the value of time to market doubles, then compute it.
@@ -326,7 +326,7 @@ The lab is [labs/26-02-lab/](../labs/26-02-lab/README.md). `reviews.py` computes
 | Earlier specification freeze and change control | Stable target; traceable changes | Less flexibility to respond to customers and markets | Product line management |
 | Designing to a draft standard | Months of time to market | Risk of late changes (ECO or respin) | Product line and standards lead |
 | Heavier standards participation | Influence on the specification; early warning of changes; patents | Engineers' time; travel; disclosure obligations | CTO / standards strategy |
-| Licensing SEPs at the chip versus the device level | Simpler supply chain (chip) or lower base (device) | Royalty exposure moves between supplier and customer | Legal and licensing, with business units |
+| Licensing SEPs at the chip versus the device level | Lower royalty base and one licence covering every downstream customer (chip level); no royalty on the supplier's own price (device level) | Royalty exposure moves between supplier and customer | Legal and licensing, with business units |
 
 ## 7. Numbers to know
 
@@ -335,7 +335,7 @@ The lab is [labs/26-02-lab/](../labs/26-02-lab/README.md). `reviews.py` computes
 | Fraction found by $k$ independent reviewers | $1 - (1 - p)^k$ | Timeless; independence assumed |
 | Capture–recapture estimate | $\hat N = n_1n_2/m$ | Timeless; equal findability assumed |
 | IEEE SA ballot thresholds | 75% return; 75% approval of Approve + Do Not Approve; invalid at ≥30% abstentions | IEEE SA Standards Board Operations Manual, approved January 2026 [R-632] |
-| ETSI FRAND undertaking | Requested within three months of an essential IPR being brought to ETSI's attention | ETSI IPR Policy, clause 6.1 [R-633] |
+| ETSI FRAND undertaking | Requested immediately once an essential IPR is brought to ETSI's attention; the owner is asked to give the irrevocable FRAND undertaking within three months | ETSI IPR Policy, clause 6.1 [R-633] |
 | 3GPP releases | Rel-19 functional freeze September 2025, protocols stable 12 December 2025; Rel-20 projected March and June 2027 | 3GPP release table, as of November 2026 [R-634] |
 | PCIe | 7.0 (128.0 GT/s) released to members 11 June 2025; 8.0 planned by 2028 | PCI-SIG, via secondary reprints [R-273] |
 
@@ -343,7 +343,7 @@ The lab is [labs/26-02-lab/](../labs/26-02-lab/README.md). `reviews.py` computes
 
 - **Reviewing unfinished work.** A review without entry criteria becomes a status meeting; findings on work that is still changing are wasted.
 - **Counting reviewers instead of viewpoints.** Five reviewers trained alike share blind spots (Example 26-02.2(d)); one reviewer from another discipline can find more than three more of the same.
-- **Reading capture–recapture as exact.** When defects differ in difficulty the estimate is biased low; treat it as a floor.
+- **Reading capture–recapture as exact.** When defects differ in difficulty and the reviewers are trained alike, the estimate tends to run low; treat a small estimate as a weak reassurance, not a count.
 - **Letting the datasheet drift from the specification.** Changes made under change control must flow to the datasheet and errata, or customers design to the wrong part.
 - **Treating "compliant" as "certified."** Designed to a standard, tested internally against it, and passed the standard body's own compliance or interoperability testing are three different claims.
 - **Ignoring the royalty base.** A percentage royalty means nothing until the base is fixed; on an end product it can exceed the component's price.
@@ -353,9 +353,9 @@ The lab is [labs/26-02-lab/](../labs/26-02-lab/README.md). `reviews.py` computes
 
 **State of the art, as of November 2026.**
 
-- **Review practice** **[Established practice]**. Chip companies run gated programs much like the table in §3.1, with sign-off checklists at tape-out (timing, power, physical verification, reliability) and formal waiver processes. The NASA definitions quoted in §3.1 are a public reference point for what milestone reviews must decide [R-630].
+- **Review practice** **[Established]**. Chip companies run gated programs much like the table in §3.1, with sign-off checklists at tape-out (timing, power, physical verification, reliability) and formal waiver processes. The NASA definitions quoted in §3.1 are a public reference point for what milestone reviews must decide [R-630].
 - **Standards governance** **[Established]**. IEEE SA's consensus thresholds [R-632], ETSI's FRAND undertaking [R-633] and IEEE's reasonable-rate and prohibitive-order language [R-631] are the published rules. How courts and regulators interpret FRAND, the royalty base and injunctions differs by jurisdiction and continues to change **[Contested]**.
-- **Consortia shape chiplet and interconnect markets** **[Established]**. UCIe's promoters span chip designers, a foundry, a packaging house and hyperscalers [R-635]; PCI-SIG and JEDEC continue to set the cadence of server I/O and memory [R-273], [R-474].
+- **Consortia shape chiplet and interconnect markets** **[Established]**. UCIe's promoters span chip designers, foundries, a packaging house and hyperscalers [R-635]; PCI-SIG and JEDEC continue to set the cadence of server I/O and memory [R-273], [R-474].
 
 **Commercial relevance.** A standards seat is an option on the future: engineers who draft a specification learn early which parts will change and which competitors are pushing what. Essential patents can be a material asset in a transaction, but their value depends on essentiality (often disputed), on the FRAND commitments attached to them, and on the royalty base; diligence should value them on the licensing terms they can actually command, not on patent counts.
 
@@ -404,7 +404,7 @@ A peer review is an independent technical evaluation by experts without a vested
 
 <details><summary>Answer</summary>
 
-Excluding abstentions lets members who lack expertise or interest decline to judge without counting as opposition; invalidating ballots with many abstentions ensures that a standard is approved only when enough of the balloting group actually engaged with it [R-632].
+Excluding abstentions lets members who lack expertise or interest decline to judge without counting as opposition; invalidating ballots with many abstentions ensures that a standard is approved only when enough of the balloting group actually engaged with it. (This rationale is an interpretation; the rules themselves are in [R-632].)
 
 </details>
 

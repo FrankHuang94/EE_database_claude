@@ -44,7 +44,7 @@
 ## Discussion
 
 1. The uniform case fails far more often (1.77% against 66 ppm) because the same "±bound" now describes a much wider spread: σ = $b/\sqrt3$ = **0.577**$b$ against $b/3$. A bound is meaningless until its distribution and confidence level are stated. The exact tail is somewhat thinner than a Gaussian of the same σ, because a sum of six uniforms has no tail beyond the worst case (here ±1.80%).
-2. The display budget without margin (about 51 min a day) is only **8.0** minutes more than with 10% margin (42.6 min). Margin is cheap to hold early and expensive to recover late.
+2. The display budget without margin (about 51 min a day) is only **8.0** minutes more than with a 10% margin on the allocation (budget = ceiling/1.10; 42.6 min). Margin is cheap to hold early and expensive to recover late.
 3. Across the NASA ranges the saving varies by a factor of **23.8**, from 465 to **11069** units, but it is positive and large everywhere: the decision to hold a formal review does not depend on knowing the factors precisely, even though the dollar value does.
 4. The decision sweep turns a scoring argument into a single question: how much does capability matter to the customer? (§3.7)
 

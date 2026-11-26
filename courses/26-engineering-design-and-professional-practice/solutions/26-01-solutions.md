@@ -12,7 +12,7 @@ Model answers; the numbers are assumptions the writer must state and then agree 
 
 (a) "The PMIC's 1.8 V buck converter shall convert with an efficiency of at least 90% from 10 mA to 500 mA load, at an input of 3.0 to 4.4 V and 25 °C; verified by test on characterization units, with analysis (loss model, 22-06) before silicon." Assumed: which rail, the load range and the input range. "Efficient" had no number and no operating point; light-load efficiency, the hard part for wearables, would otherwise be left out.
 
-(b) "The 112 Gb/s SerDes shall achieve a bit-error ratio of at most 10⁻¹² before FEC over any channel whose insertion loss at the Nyquist frequency is at most 30 dB and whose crosstalk and return loss meet the channel template of Appendix B; verified by test on the evaluation board with a set of reference channels, and by analysis (channel simulation) for the template's corners." Assumed: the data rate, the loss limit and the template. "All customer channels" is unbounded; the requirement must define the channel class, and the customer's own channels then become a validation activity.
+(b) "The 112 Gb/s SerDes shall achieve a pre-FEC bit-error ratio of at most 10⁻⁶ (and at most 10⁻¹⁵ after the specified FEC) over any channel whose insertion loss at the Nyquist frequency is at most 30 dB and whose crosstalk and return loss meet the channel template of Appendix B; verified by test on the evaluation board with a set of reference channels, and by analysis (channel simulation) for the template's corners." Assumed: the data rate, the loss limit and the template. "All customer channels" is unbounded; the requirement must define the channel class, and the customer's own channels then become a validation activity.
 
 (c) "The NPU shall serve the reference model of Appendix C (a stated number of parameters, precision and sequence length) at a latency of at most 50 ms per token and a throughput of at least 2,000 tokens/s per chip, at the specified power limit; verified by analysis (performance model) before tape-out and by test on silicon." Assumed: the model, the precision, the batch and the power limit. "Large models fast" says neither which model nor which metric.
 
@@ -40,7 +40,7 @@ Model answers; the numbers are assumptions the writer must state and then agree 
 
 ### Solution 26-01.4
 
-(a) The unit interval is $1/(32 \times 10^9)$ = **31.25** ps, so the limit is 0.50 UI = **15.625** ps. $DJ = 4 + 3 + 2$ = **9** ps; $\sigma_{RJ} = \sqrt{0.30^2 + 0.25^2 + 0.22^2} = \sqrt{0.2009}$ = **0.448** ps; $2Q\sigma_{RJ} = 14.06 \times 0.448$ = **6.30** ps; $TJ$ = **15.30** ps (**0.490** UI), a margin of **0.32** ps.
+(a) The unit interval is $1/(32 \times 10^9)$ = **31.25** ps, so the limit is 0.50 UI = **15.625** ps. $DJ = 4 + 3 + 2$ = **9** ps; $\sigma_{RJ} = \sqrt{0.30^2 + 0.25^2 + 0.22^2} = \sqrt{0.2009}$ = **0.448** ps; $2Q\sigma_{RJ} = 2 \times 7.03 \times 0.448 = 14.06 \times 0.448$ = **6.30** ps; $TJ$ = **15.30** ps (**0.490** UI), a margin of **0.32** ps.
 
 (b) $\sqrt{4^2 + 3^2 + 2^2}$ = **5.39** ps, so $TJ$ = **11.69** ps: an apparent margin of **3.9** ps that does not exist.
 
@@ -162,6 +162,29 @@ $$
 
 (d) For example: "At least 99% of units shall operate for at least 168 h under profile UP-1 at 25 °C at 80% battery capacity, demonstrated by test on a sample sized for that confidence." "Every unit" cannot be verified by test, and the mean is not what a customer experiences; a percentile with a confidence statement is both meaningful and verifiable.
 
+### Solution 26-01.16
+
+(a) An X marks a trace (T = test, D = design element):
+
+| | T1 | T2 | T3 | T4 | T5 | T6 | D1 | D2 | D3 | D4 | D5 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| R1 (M1) | X | | | | | | X | | | X | |
+| R2 (M1) | | X | | | | | X | | | | |
+| R3 (M2) | | | X | | | | | X | | | |
+| R4 (M2) | | | | X | | | | X | | | |
+| R5 (M3) | | | | | | | | | X | | |
+| R6 (M5) | | | | | | X | | | | X | |
+| R7 (M4) | | | | | | | | | | | |
+| R8 (M3) | | | | | | | | | X | | |
+
+(b) Five of the eight requirements (R1, R2, R3, R4, R6) have a verifying test: coverage = 5/8 = **62.5**%. The **3** unverified requirements are R5, R8 and R7.
+
+(c) Only R7 has no design element: **1** childless requirement. Nothing in the architecture was chosen to meet the temperature range, so it is met, if at all, by luck.
+
+(d) **1** orphan test, T5, and **1** orphan design element, D5. The drop test suggests a missing requirement: "rugged outdoor use" (M4) clearly implies drop survival, but no PRD requirement states it, so the test has no pass criterion. The NFC module traces to no need at all: either the MRD is missing a need (contactless payment) or the module is cost (M5) with no value, and it should be challenged.
+
+(e) M3 (R5 and R8 have no test) and M4 (R7 has no test and no design element, and its drop-survival requirement is missing). M1, M2 and M5 are fully verified at this level. The matrix turns these gaps into a short list of actions: add tests for R5, R7 and R8, add a drop requirement under M4, assign a design owner for R7, and justify or remove D5.
+
 ---
 
 ## Answer key
@@ -197,6 +220,8 @@ $$
 | 26-01.4b | RSS of DJ | 5.39 | ps |
 | 26-01.4b1 | TJ with RSS DJ | 11.69 | ps |
 | 26-01.4b2 | apparent margin | 3.9 | ps |
+| 26-01.4a8 | 2Q | 14.06 | |
+| 26-01.4c2 | sum of rms RJ | 0.77 | ps |
 | 26-01.4c0 | linear RJ term | 10.83 | ps |
 | 26-01.4c | TJ with linear RJ | 19.83 | ps |
 | 26-01.4c1 | shortfall | 4.20 | ps |
@@ -216,6 +241,8 @@ $$
 | 26-01.7a3 | RSS, n = 9 | 0.333 | % |
 | 26-01.7b | ratio, n = 4 | 2 | |
 | 26-01.7b1 | ratio, n = 9 | 3 | |
+| 26-01.7c2 | remaining variance | 0.75 | %² |
+| 26-01.7c3 | variance per block | 0.25 | %² |
 | 26-01.7c | RSS, others | 0.500 | % |
 | 26-01.7c1 | worst case, others | 0.167 | % |
 | 26-01.8a | coverage | 92.4 | % |
@@ -274,3 +301,8 @@ $$
 | 26-01.15b | z | -0.700 | |
 | 26-01.15b1 | fraction short | 24.2 | % |
 | 26-01.15c | median needed | 192.4 | h |
+| 26-01.16b | test coverage | 62.5 | % |
+| 26-01.16b1 | unverified requirements | 3 | |
+| 26-01.16c | childless requirements | 1 | |
+| 26-01.16d | orphan tests | 1 | |
+| 26-01.16d1 | orphan design elements | 1 | |

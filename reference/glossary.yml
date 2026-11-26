@@ -8789,7 +8789,7 @@
   chapter: "21-12"
   see_also: [G/T (figure of merit)]
 - term: Specification freeze
-  definition: The point at which a standards release stops accepting new functionality (Stage 3) and then fixes its message encoding (ASN.1); features become real only after freeze, conformance testing, certification and deployment, often years apart.
+  definition: In a standards release, the point at which it stops accepting new functionality (Stage 3) and then fixes its message encoding (ASN.1); features become real only after freeze, conformance testing, certification and deployment, often years apart. In a chip program, the gate after which the architecture and block specifications are baselined and change only through change control (26-01, 26-02).
   chapter: "21-12"
   see_also: [Peak data rate (3GPP)]
 - term: Linear regulator
@@ -10664,7 +10664,7 @@
   definition: A documented, owned decision to accept a known deviation from a requirement or sign-off rule (for example a timing path that misses its target), with the analysis showing why the risk is acceptable.
   chapter: "26-02"
 - term: Capture–recapture estimate
-  definition: An estimate of the total number of defects from two independent reviews finding n₁ and n₂ defects with m in common, N ≈ n₁n₂/m (Lincoln–Petersen); it is biased low when defects differ in how easily they are found.
+  definition: An estimate of the total number of defects from two independent reviews finding n₁ and n₂ defects with m in common, N ≈ n₁n₂/m (Lincoln–Petersen); it tends to run low when defects differ in how easily they are found and the reviewers are alike, and high when reviewers deliberately look at different things.
   chapter: "26-02"
   see_also: [Peer review]
 - term: Change control board
@@ -10672,13 +10672,13 @@
   chapter: "26-02"
   see_also: [Specification freeze, Engineering change order (ECO)]
 - term: Standards development organization
-  definition: A body that develops standards under published due-process rules (for example IEEE SA, ETSI or ISO/IEC), as distinct from a membership consortium that writes specifications for its members (for example JEDEC, PCI-SIG or UCIe).
+  definition: A body that develops standards under published due-process rules (for example IEEE SA, ETSI or ISO/IEC); industry bodies such as JEDEC, PCI-SIG or UCIe write specifications by and for their member companies.
   chapter: "26-02"
 - term: Balloting group
   definition: The members eligible to vote on a draft standard; under IEEE SA rules at least 75% must return ballots and at least 75% of Approve plus Do Not Approve votes must approve, and 30% or more abstentions invalidate the ballot.
   chapter: "26-02"
 - term: Standard-essential patent (SEP)
-  definition: A patent that cannot be avoided when implementing a standard; standards bodies require its holder to commit in advance to license it on fair, reasonable and non-discriminatory terms.
+  definition: A patent that cannot be avoided when implementing a standard; standards bodies ask its holder to commit in advance to license it on fair, reasonable and non-discriminatory terms.
   chapter: "26-02"
   see_also: [FRAND, Royalty stacking]
 - term: FRAND

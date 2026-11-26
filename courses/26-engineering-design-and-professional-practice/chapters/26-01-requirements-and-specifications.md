@@ -47,9 +47,13 @@ flowchart TB
   V1 --> VS["Chip verification and characterization"]
   V2 --> VS
   VS --> VP["Product validation<br/>(does it meet the market need?)"]
+  V1 -. proves .-> B1
+  V2 -. proves .-> B2
+  VS -. proves .-> S
+  VP -. answers to .-> M
 ```
 
-Going down, each level answers "how will we meet the level above?" and allocates a share of each budget. Going up, each level proves that its piece meets what was allocated, and the top asks whether the product, as built, solves the original need.
+Going down, each level answers "how will we meet the level above?" and allocates a share of each budget. Going up, each level proves (the dotted links) that its piece meets what was allocated, and the top asks whether the product, as built, solves the original need.
 
 ## 3. Theory
 
@@ -63,7 +67,7 @@ Going down, each level answers "how will we meet the level above?" and allocates
 - **Block (micro-architecture) specifications:** what each block's designers build and verify against.
 - **Datasheet:** the externally published subset, with guaranteed minimums and maximums, typical values and test conditions.
 
-**Types of requirement.** A useful checklist, adapted from the NASA Systems Engineering Handbook's list of commonly overlooked areas [R-626]:
+**Types of requirement.** A useful checklist, adapted from the NASA Systems Engineering Handbook's list of commonly overlooked areas [R-626] (regulatory, cost and schedule are added here):
 
 - *functional* (what it does: "shall decode H.265");
 - *performance* (how well: latency, throughput, accuracy, power);
@@ -117,7 +121,7 @@ $$
 t_{life} = \frac{uQ}{\bar I}\quad\text{(h, with } \bar I \text{ in mA)}.
 $$
 
-The battery-life requirement therefore flows down to a ceiling on $\bar I$, which is shared among modes. The mode with the largest product $d_iI_i$, not the largest current, dominates: a display drawing 25 mA for 4% of the time costs more than a radio drawing 10 mA for 3% (Example 26-01.2). 22-09 treats the battery side (capacity, aging, cutoff) in depth.
+The battery-life requirement therefore flows down to a ceiling on $\bar I$, which is shared among modes. The mode with the largest product $d_iI_i$, not the largest current, dominates: in Example 26-01.2 the 2.0 mA sensing mode, on for 15% of the time, costs as much (0.30 mA) as the 10 mA radio on for 3%, and the display costs most of all because 25 mA × 4% is the largest product. 22-09 treats the battery side (capacity, aging, cutoff) in depth.
 
 **Worst-case stacking.** Suppose a total error $E$ is the sum of contributions $e_1, \dots, e_n$, each guaranteed to lie within $\pm b_i$. The largest possible total is reached when every contribution sits at its bound with the same sign:
 
@@ -133,7 +137,7 @@ $$
 \sigma_E^2 = \operatorname{Var}\Bigl(\sum_i e_i\Bigr) = \sum_i\sigma_i^2 \quad\Longrightarrow\quad \sigma_E = \sqrt{\sum_i\sigma_i^2} .
 $$
 
-If every bound is stated at the same confidence level, say $b_i = k\sigma_i$ with $k$ = 3, then $kσ_E = \sqrt{\sum_i b_i^2}$: the total's $k\sigma$ bound is the root-sum-square of the individual bounds. Because $\sqrt{\sum b_i^2} \le \sum b_i$, RSS always allows a smaller total than worst case, and the saving grows with the number of contributors: for $n$ equal bounds $b$, worst case gives $nb$ and RSS gives $\sqrt n\,b$.
+If every bound is stated at the same confidence level, say $b_i = k\sigma_i$ with $k$ = 3, then $k\sigma_E = \sqrt{\sum_i b_i^2}$: the total's $k\sigma$ bound is the root-sum-square of the individual bounds. Because $\sqrt{\sum b_i^2} \le \sum b_i$, RSS always allows a smaller total than worst case, and the saving grows with the number of contributors: for $n$ equal bounds $b$, worst case gives $nb$ and RSS gives $\sqrt n\,b$.
 
 > **Math refresher — the variance of a sum.** For any two random variables, $\operatorname{Var}(X + Y) = \operatorname{Var}X + \operatorname{Var}Y + 2\operatorname{Cov}(X, Y)$, where $\operatorname{Cov}(X, Y) = \rho\sigma_X\sigma_Y$ and the correlation $\rho$ lies between −1 and 1 (03-04). Independence makes the covariance zero, which is the only case in which variances simply add. For $n$ variables, $\operatorname{Var}\sum e_i = \sum_i\sum_j\rho_{ij}\sigma_i\sigma_j$, a double sum over every pair.
 
@@ -155,7 +159,7 @@ where $\Phi$ is the standard normal CDF (03-02). For $\mu$ = 0 this is $2[1 - \P
 
 **Margin.** Allocations rarely use the whole budget. A program holds back *margin* (also called reserve or contingency) at each level, because early estimates are optimistic and late discoveries consume budget. Margin is spent deliberately: when a block needs more, the system owner releases some, and the remaining margin is itself a tracked quantity. A NASA checklist question applies directly: "What is the worst thing that could happen if the tolerance was doubled or tripled?" [R-626]. A tolerance that can be doubled at no cost is margin hiding in plain sight.
 
-> **Going deeper — when Gaussian stacking misleads.** Three cases break the simple RSS picture. (1) *Few contributors with flat distributions:* the sum of two uniform errors is triangular, with no tail at all beyond the worst case; RSS at 3σ then overstates the risk. (2) *One dominant contributor:* the total inherits that contributor's distribution, so its shape, not the central limit theorem, sets the tail. (3) *Systematic errors:* a calibration offset or a design bug is not random across units; it shifts the mean $\mu$, and the formula above shows how quickly a shifted mean raises $P_{out}$ on one side. Monte Carlo over the real distributions, as in the lab and in 20-11's mismatch analysis, is the safe check.
+> **Going deeper — when Gaussian stacking misleads.** Three cases break the simple RSS picture. (1) *Few contributors with flat distributions:* the sum of two uniform errors is triangular, with no tail at all beyond the worst case, so a Gaussian built on the true σ overstates the tail. But reading a uniform half-width as a 3σ bound understates σ by a factor of √3 and the risk badly (lab Part 1). (2) *One dominant contributor:* the total inherits that contributor's distribution, so its shape, not the central limit theorem, sets the tail. (3) *Systematic errors:* a calibration offset or a design bug is not random across units; it shifts the mean $\mu$, and the formula above shows how quickly a shifted mean raises $P_{out}$ on one side. Monte Carlo over the real distributions, as in the lab and in 20-11's mismatch analysis, is the safe check.
 
 ### 3.4 Traceability
 
@@ -175,7 +179,7 @@ How a team sequences requirements, design, implementation and verification is it
 
 **Waterfall.** Phases in strict sequence: requirements, design, implementation, test, operation. It is usually attributed to Winston Royce's 1970 paper, which drew that sequence and then wrote: "I believe in this concept, but the implementation described above is risky and invites failure" [R-627]. His remedies included feedback between phases and "Do it twice": build a quick first version (in miniature) so that the delivered system is effectively the second [R-627]. The pure single-pass waterfall is the model Royce warned against.
 
-**V-model.** The waterfall folded in half, so that each level of specification on the left is paired with the level of verification that proves it on the right (system requirements with system test, architecture with integration test, block design with unit test). It is the shape of the diagram in §2, and it is widely used in automotive and aerospace processes because it makes the verification of every requirement a planned activity from the day the requirement is written.
+**V-model.** The waterfall folded in half, so that each level of specification on the left is paired with the level of verification that proves it on the right (system requirements with system test, architecture with integration test, block design with unit test). The diagram in §2 is a V unfolded: the left arm runs down from need to block specifications, the right arm climbs back up, and each verification step answers to the specification at its own level (the dotted links). It is widely used in automotive and aerospace processes because it makes the verification of every requirement a planned activity from the day the requirement is written.
 
 **Spiral.** Barry Boehm's spiral model (IEEE *Computer*, May 1988) runs the project as repeated cycles, each of which identifies the largest remaining risk, builds just enough (a prototype, a model, a test chip) to resolve it, and plans the next cycle [R-627]. It is risk-driven rather than document-driven, and test chips and FPGA prototypes are its hardware form.
 
@@ -251,7 +255,7 @@ All examples use assumed, illustrative numbers unless a source is cited.
 
 ### Example 26-01.2 · Flowing a battery-life requirement down (tier B)
 
-**Setup.** The watch has a 300 mAh battery, of which 85% is usable after aging and cutoff (assumed). The use profile UP-1 is: sleep 0.050 mA for 78% of the time, sensing 2.0 mA for 15%, radio 10 mA for 3% and display 25 mA for 4% (all assumed). (a) What average current does the 168 h requirement allow? (b) What does the profile draw, and what life does it give? (c) Which mode dominates? (d) With 10% margin held back on the current budget, how long may the display be on each day if the time saved goes to sleep?
+**Setup.** The watch has a 300 mAh battery, of which 85% is usable after aging and cutoff (assumed). The use profile UP-1 is: sleep 0.050 mA for 78% of the time, sensing 2.0 mA for 15%, radio 10 mA for 3% and display 25 mA for 4% (all assumed). (a) What average current does the 168 h requirement allow? (b) What does the profile draw, and what life does it give? (c) Which mode dominates? (d) With a 10% margin on the allocation (the allocation plus 10% must fit the ceiling, so the budget is the ceiling divided by 1.10), how long may the display be on each day if the time saved goes to sleep?
 
 **Solution.**
 
@@ -287,7 +291,7 @@ All examples use assumed, illustrative numbers unless a source is cited.
 
 - (a) $108/120$ = **90.0**%.
 - (b) $(3 \times 0.30 + 9 \times 0.05) \times 2.0$ = **1.35** × 2.0 = **$2.70 M** expected.
-- (c) Closing all 12 costs $12 \times 0.020$ = **$0.24 M**, so the expected loss is **11.3** times the cost of the tests.
+- (c) Closing all 12 costs $12 \times 0.020$ = **$0.24 M**, so the expected loss is **11.25** times the cost of the tests.
 
 **Units check.** Count × probability × $/escape = $. ✓
 
@@ -382,7 +386,7 @@ whose four terms (**2.0**, **1.8**, **12.6** and **16.8**) are the design, build
 | Ex 26-01.4b1 | high-risk expected escapes | 0.90 | |
 | Ex 26-01.4b2 | high-risk share | 67 | % |
 | Ex 26-01.4c | cost to close | 0.24 | $M |
-| Ex 26-01.4c1 | ratio | 11.3 | |
+| Ex 26-01.4c1 | ratio | 11.25 | |
 | Ex 26-01.5a | downstream average cost | 33.2 | units |
 | Ex 26-01.5a1 | design share | 2.0 | units |
 | Ex 26-01.5a2 | build share | 1.8 | units |
@@ -433,7 +437,7 @@ The lab is [labs/26-01-lab/](../labs/26-01-lab/README.md). `reqs.py` implements 
 3. *Predict* the range of Example 26-01.5's saving when each escalation factor is drawn at random from its NASA range, then sample it and plot the distribution.
 4. *Predict* the capability weight at which B overtakes A, then sweep it and plot the three scores (the figure below).
 
-![Example 26-01.3's error budget: a Monte Carlo histogram of the total error with the ±1.0% limits, the RSS 3σ band and the worst-case bound](../../../assets/figures/26-01/error-budget.svg)
+![Example 26-01.3's error budget: Monte Carlo histograms of the total error, for independent and for correlated reference and drift, with the ±1.0% limits, the RSS 3σ band and the worst-case bound](../../../assets/figures/26-01/error-budget.svg)
 
 ![Example 26-01.6's decision scores against the capability weight, with the tie points at 0.423 and 0.500](../../../assets/figures/26-01/decision-sensitivity.svg)
 
@@ -475,8 +479,8 @@ The lab is [labs/26-01-lab/](../labs/26-01-lab/README.md). `reqs.py` implements 
 
 **State of the art, as of November 2026.**
 
-- **How chip companies run requirements** **[Established practice]**. The MRD-PRD-architecture-spec hierarchy of §3.1 is common across the industry, with a formal specification freeze before RTL is finalized and with datasheets derived from the specification. Interface requirements usually cite external standards (PCIe, JEDEC memory, UCIe, 3GPP), so "compliance" is defined by documents the company does not control (26-02).
-- **What the industry's own survey says** **[Established as reported; Industry estimate for trends]**. The 2024 Wilson Research Group study found that 75% of IC/ASIC projects were behind schedule, against about 66% historically, and only 14% achieved first-silicon success [R-621]. On root causes it notes that "issues related to changing, incorrect, or incomplete specifications remain a common concern among verification engineers and project managers" [R-628]. The 2026 edition reported 5% first-silicon success, with a methodology change and small samples that make the trend fragile (25-12) [R-622].
+- **How chip companies run requirements** **[Established]**. The MRD-PRD-architecture-spec hierarchy of §3.1 is common across the industry, with a formal specification freeze before RTL is finalized and with datasheets derived from the specification. Interface requirements usually cite external standards (PCIe, JEDEC memory, UCIe, 3GPP), so "compliance" is defined by documents the company does not control (26-02).
+- **What the industry's own survey says** **[Established as reported; Industry estimate for trends]**. The 2024 Wilson Research Group study found that 75% of IC/ASIC projects were behind schedule, against about 66% historically, and only 14% achieved first-silicon success [R-621]. On root causes it notes that "issues related to changing, incorrect, or incomplete specifications remain a common concern among verification engineers and project managers" [R-628]. The 2026 edition reported 5% first-silicon success; with the recruitment change introduced in 2024 and only 320 IC/ASIC respondents, the trend is fragile (25-12) [R-622].
 - **Cost of late discovery** **[Contested for chips]**. The NASA escalation study [R-625] is the most-cited public dataset; chip-specific public data are scarce, but the mechanism (a mask set and months of delay after tape-out, 25-12) is if anything steeper than in the systems NASA studied.
 
 **Commercial relevance.** Requirements discipline shows up in three places a corporate development team can see. First, in *schedule credibility*: a team that tracks TBDs, margin and traceability can tell you which requirements are still at risk; a team that cannot is guessing. Second, in *design-win dynamics*: customers write their own requirements, and the supplier whose specification matches them, or who helps write them, wins. Third, in *post-acquisition integration*: two companies' requirement and review processes must merge, and the gaps between them are where integrated products slip.
@@ -484,7 +488,7 @@ The lab is [labs/26-01-lab/](../labs/26-01-lab/README.md). `reqs.py` implements 
 **Marketing vs Reality.**
 
 - *"Up to N days of battery life."* Every battery-life claim hides a use profile. Example 26-01.2 showed that 26% less display time is the difference between 6.48 days and seven with margin; ask for the profile, the temperature and the battery age behind the number.
-- *"Typical" specifications.* Datasheets separate guaranteed limits from typical values; a typical value is a measurement of an average part, not a requirement any part must meet. For example, TI's LM358B datasheet lists a *typical* slew rate of 0.5 V/µs [R-107]; a design that needs that slew rate on every unit must find a guaranteed minimum or add margin.
+- *"Typical" specifications.* Datasheets separate guaranteed limits from typical values; a typical value is a measurement of an average part, not a requirement any part must meet. For example, TI's LM358B datasheet lists a *typical* slew rate of 0.5 V/µs [R-025]; a design that needs that slew rate on every unit must find a guaranteed minimum or add margin.
 - *"Fully compliant with the standard."* Ask whether that means designed to the specification, verified by internal tests, or passed the standard body's own compliance or interoperability testing; these are different claims with different evidence.
 - *"Our verification covers 100% of the spec."* Coverage of the written specification says nothing about missing requirements, and coverage metrics depend on how the specification was decomposed.
 
@@ -526,7 +530,7 @@ The tests may be weak (a requirement is "covered" by a test that does not exerci
 
 <details><summary>Answer</summary>
 
-Verification proves the product meets its specification ("did we build the product right?"); validation shows the product accomplishes its intended purpose for its users ("did we build the right product?") [R-626].
+Verification proves the product meets its specification (NASA: "Did I build the product right?"); validation shows the product accomplishes its intended purpose for its users ("Am I building the right product?") [R-626].
 
 </details>
 
@@ -580,4 +584,4 @@ Problem set: [26-01 problems](../problems/26-01-problems.md) · [worked solution
 3. Royce (1970), Boehm (1988) and the Manifesto for Agile Software Development (2001): [R-627].
 4. Wilson Research Group / Siemens EDA, 2024 IC/ASIC functional verification trend report, on specifications as a root cause: [R-628]; schedule and first-silicon results: [R-621]; 2026 study: [R-622].
 5. ISO/IEC/IEEE 29148:2018, second edition, clause structure: [R-629].
-6. TI LM358B typical slew rate: [R-107].
+6. TI LM358B typical slew rate: [R-025].
