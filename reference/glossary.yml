@@ -11403,3 +11403,22 @@
 - term: Design-win funnel
   definition: The path from a customer's commitment to use a part to production revenue; its risk-adjusted value multiplies the claimed lifetime revenue by the conversion probability and discounts it for the lag before revenue arrives.
   chapter: "28-06"
+- term: Beta distribution
+  definition: A distribution on [0, 1] with density proportional to $\theta^{\alpha - 1}(1 - \theta)^{\beta - 1}$ and mean $\alpha/(\alpha + \beta)$; it is conjugate to the binomial, so a Beta prior updated with $s$ successes in $n$ trials is $\text{Beta}(\alpha + s, \beta + n - s)$.
+  chapter: "28-07"
+  see_also: [Track-record shrinkage]
+- term: Track-record shrinkage
+  definition: Estimating a team's success rate as a weighted average of the industry base rate and its own record, with weight $n/(n_0 + n)$ on $n$ projects of its own against a prior weight $n_0$; the Beta posterior mean $(\alpha_0 + s)/(n_0 + n)$.
+  chapter: "28-07"
+  see_also: [Beta distribution, First-silicon success]
+- term: Reference-class forecasting
+  definition: Forecasting a project from the outcomes of similar past projects rather than its own plan; for schedules, fitting the log of actual/plan ratios and using $T_{\text{plan}}e^{\mu}$, $\Phi(-\mu/\sigma)$ for the chance of meeting the plan, and $T_{\text{plan}}e^{\mu + 1.2816\sigma}$ for the P90.
+  chapter: "28-07"
+- term: Bench depth
+  definition: The number of people who could own a critical capability; with independent departures at probability $q$ the capability is lost only if all $k$ owners leave, $q^k$, but group departures put a floor under the risk.
+  chapter: "28-07"
+  see_also: [Key-person risk]
+- term: Retention value
+  definition: The expected value of keeping an acquired team, $NV\rho$ for $N$ engineers of replacement value $V$ each and retention fraction $\rho$; a retention package is worth $NV(\rho_1 - \rho_0)$ before its cost.
+  chapter: "28-07"
+  see_also: [Key-person risk]
