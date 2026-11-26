@@ -41,10 +41,53 @@ How chips are made, packaged, tested and qualified: process flow, lithography th
 | [25-11 · Test: ATE, Wafer Sort, Burn-In and Binning](chapters/25-11-test-ate-sort-burn-in.md) | 6 | ✅ verified | [problems](problems/25-11-problems.md) · [solutions](solutions/25-11-solutions.md) · [lab](labs/25-11-lab/README.md) · [verify](verify/verify_25_11.py) |
 | [25-12 · Post-Silicon Validation and Bring-Up](chapters/25-12-post-silicon-validation.md) | 4 | ✅ verified | [problems](problems/25-12-problems.md) · [solutions](solutions/25-12-solutions.md) · [lab](labs/25-12-lab/README.md) · [verify](verify/verify_25_12.py) |
 
+**Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/25-fabrication-packaging-test-and-reliability.csv) · [Equation sheet](../../reference/equation-sheets/25-fabrication-packaging-test-and-reliability.md)
+
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 
 <!-- END GENERATED -->
 
 ## Course notes
 
-*(Hand-written notes for this course go below the generated block.)*
+**How to approach this course.** Course 25 is planned at about 83 hours: the chapters' own estimates add to 78, plus about 5 hours of review; allow a further 4 hours for the exam. It draws on several earlier courses:
+
+- Course 09: diffusion, oxides and the MOSFET;
+- Course 19: wire delay, design for test (19-12) and mask costs (19-13);
+- Course 03: Bayes' rule, Weibull and chi-square bounds, and Wilson intervals;
+- Course 15: thermal networks (15-01);
+- Course 04: the HBM ESD model (04-02) and optics;
+- Course 23: TSVs and HBM stacks;
+- Course 24: die-to-die links (24-06).
+
+This course follows a chip from bare wafer to shipped part: how it is patterned and built, what it costs, how it is packaged and cooled, how it wears out, and how it is qualified, tested and brought up.
+
+The twelve chapters fall into four blocks:
+
+- **Making the wafer (25-01 to 25-03).** The FEOL, MOL and BEOL flow, oxidation and the wire tiers; lithography from 193 nm immersion through multipatterning to EUV and High-NA EUV, with photon noise and cost per pass; deposition, etch, CMP, implant and metrology as rate equations.
+- **Economics and the foundry (25-04 and 25-05).** Dies per wafer, defect-density yield models, cost per good die, harvesting and yield learning; foundry business models, PDKs, corners, FD-SOI and the specialty processes that do not follow the leading edge.
+- **Packaging and heat (25-06 to 25-08).** Wire bond, flip-chip, substrates and escape routing, solder fatigue; 2.5D and 3D integration, hybrid bonding, known-good die and the chiplet cost model; conduction, spreading, fins, liquid cooling and mission-profile temperatures.
+- **Making it last and proving it works (25-09 to 25-12).** Electromigration, dielectric breakdown, BTI, HCI and ESD; qualification (AEC-Q100) and functional safety (ISO 26262 metrics); ATE, sort, burn-in, binning and guard bands; post-silicon validation, shmoos, bug curves and respin decisions.
+
+Work at least the [A] and [B] problems of every chapter. The labs are of two kinds, both run in CI (the verify scripts, `run_spice.py` for the netlists' EXPECT lines, and `run_notebooks.py` for the notebooks):
+
+- ngspice netlists: wire delay on three metal tiers as RC ladders (25-01) and an HBM discharge into an ESD clamp (25-09);
+- Python models imported by their notebooks: `process.py`, `litho.py` (aerial images from diffraction orders), `units.py` (a finite-difference diffusion solver), `yieldcost.py` (a wafer-map Monte Carlo), `foundry.py` (a 1-D Laplace solve of the FD-SOI stack), `package.py`, `chiplets.py`, `thermal.py` (an axisymmetric finite-difference spreader), `reliability.py`, `qual.py` (a Monte Carlo of latent faults), `testcost.py` and `postsi.py` (a synthetic shmoo and its fit).
+
+**What to master cold.** The [equation sheet](../../reference/equation-sheets/25-fabrication-packaging-test-and-reliability.md) collects the relations; these are the ideas behind them:
+
+- oxidation is reaction-limited when thin and diffusion-limited when thick; a wafer's yield is the product of hundreds of step yields, and Little's law turns cycle time into inventory (25-01);
+- resolution is set by $\lambda/\text{NA}$ and depth of focus by $\lambda/\text{NA}^2$, so a higher NA buys resolution at the cost of focus; EUV is photon-starved, so dose, throughput and stochastic defects trade against each other (25-02);
+- each unit process runs at a rate set by its slowest step (transport or reaction); an anneal broadens an implant while conserving its dose; a gauge's own noise adds in quadrature to the process spread it measures (25-03);
+- yield falls exponentially with area × defect density, and clustering makes large dies less hopeless than Poisson predicts; cost per good die rises faster than area (25-04);
+- a corner is a shift in $V_{TH}$, and delay is most sensitive to it at low supply; specialty and mature nodes win on cost, voltage and analog, not density (25-05);
+- area arrays beat perimeter pads above a crossover die size; solder fatigue life scales as strain to the power −2, and a package is only as reliable as its weakest-link joints (25-06);
+- bond density scales as $1/\text{pitch}^2$ but overlay must shrink with pitch; chiplets win when the yield gain exceeds the added test, package and attach cost, and escapes compound across every die in a package (25-07);
+- heat flows through a series of resistances, and spreading near a hotspot, not bulk conduction, often dominates; liquid cooling removes the fluid-rise and convection limits of air (25-08);
+- acceleration factors are exponential in $E_a/k$, so a wrong activation energy or breakdown model can shift a lifetime by orders of magnitude; zero failures bound a failure rate only to a chi-square quantile over device-hours (25-09);
+- qualification proves a mission profile with accelerated stress; ISO 26262 asks for coverage of single-point faults (SPFM) and latent faults (LFM) and a bounded residual rate (PMHF), and a chip supports an ASIL rather than being one (25-10);
+- test cost is tester time × rate divided by yield; guard bands trade escapes for overkill at a price set by tester accuracy; burn-in removes a weak subpopulation at the cost of every part's stress time (25-11);
+- first silicon is validated, not just tested: shmoos map the operating window, bug-discovery curves estimate what remains, and respins are decision trees under uncertainty (25-12).
+
+**After this course.** Course 26 turns these constraints into a design process with requirements, reviews and professional practice. Course 27 assembles whole systems, where 25-07's chiplet economics and 25-08's cooling limits shape an AI accelerator. Course 28 uses 25-04's cost models, 25-09's reliability claims and 25-12's first-silicon statistics in technical diligence.
+
+> **Deeper:** see companion repo *Semiconductor Capital Equipment* for the tools behind 25-02 and 25-03 (scanners, etch, deposition and metrology systems) and their markets.
