@@ -7,7 +7,7 @@ End-to-end analyses of real product classes (smartphone SoC, wearables, PC SoC, 
 | | |
 |---|---|
 | **Term** | 7 |
-| **Study hours** | ≈ 60 |
+| **Study hours** | ≈ 63 |
 | **University equivalents** | Systems-design case-study capstone seminar |
 | **Textbook alignment** | Selected public sources (Hot Chips, ISSCC, teardown reports, company technical docs) cited per chapter |
 | **Free courses** | Hot Chips symposium presentations (public) |
@@ -26,14 +26,14 @@ End-to-end analyses of real product classes (smartphone SoC, wearables, PC SoC, 
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [27-01 · Method: Analyzing a System End to End](chapters/27-01-system-analysis-method.md) | 4 | ✅ verified | [problems](problems/27-01-problems.md) · [solutions](solutions/27-01-solutions.md) · [lab](labs/27-01-lab/README.md) · [verify](verify/verify_27_01.py) |
-| [27-02 · The Smartphone SoC](chapters/27-02-smartphone-soc.md) | 8 | ✅ verified | [problems](problems/27-02-problems.md) · [solutions](solutions/27-02-solutions.md) · [lab](labs/27-02-lab/README.md) · [verify](verify/verify_27_02.py) |
-| [27-03 · Wearables I: The Smartwatch](chapters/27-03-wearables-smartwatch.md) | 7 | ✅ verified | [problems](problems/27-03-problems.md) · [solutions](solutions/27-03-solutions.md) · [lab](labs/27-03-lab/README.md) · [verify](verify/verify_27_03.py) |
-| [27-04 · Wearables II: Earbuds and Smart Glasses / XR](chapters/27-04-wearables-earbuds-and-glasses.md) | 8 | ✅ verified | [problems](problems/27-04-problems.md) · [solutions](solutions/27-04-solutions.md) · [lab](labs/27-04-lab/README.md) · [verify](verify/verify_27_04.py) |
-| [27-05 · The PC SoC](chapters/27-05-pc-soc.md) | 6 | ✅ verified | [problems](problems/27-05-problems.md) · [solutions](solutions/27-05-solutions.md) · [lab](labs/27-05-lab/README.md) · [verify](verify/verify_27_05.py) |
-| [27-06 · Automotive E/E Architecture and ADAS Compute](chapters/27-06-automotive-ee-architecture.md) | 9 | ✅ verified | [problems](problems/27-06-problems.md) · [solutions](solutions/27-06-solutions.md) · [lab](labs/27-06-lab/README.md) · [verify](verify/verify_27_06.py) |
-| [27-07 · The AI Datacenter Server and Rack](chapters/27-07-ai-datacenter-server-and-rack.md) | 10 | ✅ verified | [problems](problems/27-07-problems.md) · [solutions](solutions/27-07-solutions.md) · [lab](labs/27-07-lab/README.md) · [verify](verify/verify_27_07.py) |
-| [27-08 · Edge AI and IoT](chapters/27-08-edge-ai-and-iot.md) | 6 | ✅ verified | [problems](problems/27-08-problems.md) · [solutions](solutions/27-08-solutions.md) · [lab](labs/27-08-lab/README.md) · [verify](verify/verify_27_08.py) |
+| [27-01 · Method: Analyzing a System End to End](chapters/27-01-system-analysis-method.md) | 7 | 🏁 reviewed | [problems](problems/27-01-problems.md) · [solutions](solutions/27-01-solutions.md) · [lab](labs/27-01-lab/README.md) · [verify](verify/verify_27_01.py) |
+| [27-02 · The Smartphone SoC](chapters/27-02-smartphone-soc.md) | 8 | 🏁 reviewed | [problems](problems/27-02-problems.md) · [solutions](solutions/27-02-solutions.md) · [lab](labs/27-02-lab/README.md) · [verify](verify/verify_27_02.py) |
+| [27-03 · Wearables I: The Smartwatch](chapters/27-03-wearables-smartwatch.md) | 7 | 🏁 reviewed | [problems](problems/27-03-problems.md) · [solutions](solutions/27-03-solutions.md) · [lab](labs/27-03-lab/README.md) · [verify](verify/verify_27_03.py) |
+| [27-04 · Wearables II: Earbuds and Smart Glasses / XR](chapters/27-04-wearables-earbuds-and-glasses.md) | 8 | 🏁 reviewed | [problems](problems/27-04-problems.md) · [solutions](solutions/27-04-solutions.md) · [lab](labs/27-04-lab/README.md) · [verify](verify/verify_27_04.py) |
+| [27-05 · The PC SoC](chapters/27-05-pc-soc.md) | 6 | 🏁 reviewed | [problems](problems/27-05-problems.md) · [solutions](solutions/27-05-solutions.md) · [lab](labs/27-05-lab/README.md) · [verify](verify/verify_27_05.py) |
+| [27-06 · Automotive E/E Architecture and ADAS Compute](chapters/27-06-automotive-ee-architecture.md) | 9 | 🏁 reviewed | [problems](problems/27-06-problems.md) · [solutions](solutions/27-06-solutions.md) · [lab](labs/27-06-lab/README.md) · [verify](verify/verify_27_06.py) |
+| [27-07 · The AI Datacenter Server and Rack](chapters/27-07-ai-datacenter-server-and-rack.md) | 10 | 🏁 reviewed | [problems](problems/27-07-problems.md) · [solutions](solutions/27-07-solutions.md) · [lab](labs/27-07-lab/README.md) · [verify](verify/verify_27_07.py) |
+| [27-08 · Edge AI and IoT](chapters/27-08-edge-ai-and-iot.md) | 6 | 🏁 reviewed | [problems](problems/27-08-problems.md) · [solutions](solutions/27-08-solutions.md) · [lab](labs/27-08-lab/README.md) · [verify](verify/verify_27_08.py) |
 
 **Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/27-system-architectures.csv) · [Equation sheet](../../reference/equation-sheets/27-system-architectures.md)
 
@@ -43,7 +43,7 @@ Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 
 
 ## Course notes
 
-**How to approach this course.** Course 27 is planned at about 60 hours: the chapters' own estimates add to 58, plus about 2 hours of review; allow a further 3 hours for the exam. It is a case-study course. Each chapter takes one product class and asks the same questions: what binds first (energy, heat, bandwidth, latency, cost or reliability), how much each block costs in that currency, and which knob moves the answer most. 27-01 teaches the method, and the other seven chapters apply it from a coin cell to a 120 kW rack. The skill is not memorizing products. It is building a small, honest budget quickly, finding the term that dominates, and knowing where the first-order model stops being true. The course draws on almost every earlier course:
+**How to approach this course.** Course 27 is planned at about 63 hours: the chapters' own estimates add to 61, plus about 2 hours of review; allow a further 3 hours for the exam. It is a case-study course. Each chapter takes one product class and asks the same questions: what binds first (energy, heat, bandwidth, latency, cost or reliability), how much each block costs in that currency, and which knob moves the answer most. 27-01 teaches the method, and the other seven chapters apply it from a coin cell to a 120 kW rack. The skill is not memorizing products. It is building a small, honest budget quickly, finding the term that dominates, and knowing where the first-order model stops being true. The course draws on almost every earlier course:
 
 - Courses 14 and 23: roofline and machine balance, caches, DRAM, HBM and the KV cache;
 - Courses 18, 21 and 22: low-power MCUs, link budgets and radios, converters, batteries and datacenter power delivery;

@@ -86,7 +86,7 @@ The full map, with university equivalents, textbook alignment, objectives and ch
 | 6 | [24 · High-Speed I/O, Signal Integrity and Photonics](courses/24-high-speed-io-signal-integrity-and-photonics/README.md) | 9 | 59 | 9/9 |
 | 6 | [25 · Semiconductor Fabrication, Packaging, Test and Reliability](courses/25-fabrication-packaging-test-and-reliability/README.md) | 12 | 83 | 12/12 |
 | 7 | [26 · Engineering Design and Professional Practice](courses/26-engineering-design-and-professional-practice/README.md) | 7 | 42 | 7/7 |
-| 7 | [27 · System Architectures (Case-Study Course)](courses/27-system-architectures/README.md) | 8 | 60 | 8/8 |
+| 7 | [27 · System Architectures (Case-Study Course)](courses/27-system-architectures/README.md) | 8 | 63 | 8/8 |
 | 7 | [28 · Technical Diligence and Engineering Leadership Fluency](courses/28-technical-diligence-and-leadership-fluency/README.md) | 10 | 62 | 0/10 |
 
 ### Prerequisite graph

@@ -127,6 +127,14 @@ The same harvest is **3**% of a smartwatch's daily drain but **60**% of the spor
 
 (d) $1.33/0.70$ = **1.90** W from the charger, of which $1.90 - 1.33$ = **0.571** W becomes heat in the coils and charger electronics, split between pad and watch in a proportion this model does not fix (plus the cell's 35 mW, all in the watch). That is nearly three times the 0.20 W sustained limit estimated in §3.9 of the chapter, so fast charging must taper or the watch must sit on a charger that spreads the heat.
 
+### Solution 27-03.15
+
+(a) The buck delivers $V_{out}I$ at efficiency $\eta$ and draws its quiescent current from the cell: $P_b = V_{out}I/\eta + V_{in}I_{q,b}$. The LDO passes the load current straight from the cell: $P_l = V_{in}(I + I_{q,l})$. Setting $P_l = P_b$: $V_{in}I - V_{out}I/\eta = V_{in}(I_{q,b} - I_{q,l})$, so $I^* = V_{in}(I_{q,b} - I_{q,l})/(V_{in} - V_{out}/\eta)$. Below $I^*$ the LDO's lower quiescent draw outweighs its poorer efficiency (Solution 27-03.9 applies it).
+
+(b) $f_sE_s + f_sE_w/N = P_{hub}$ gives $f_sE_w/N = P_{hub} - f_sE_s$, so $N^* = f_sE_w/(P_{hub} - f_sE_s)$. Larger batches beat the hub. If $f_sE_s \ge P_{hub}$ the denominator is zero or negative: no batch size helps, because the AP's per-sample work alone already costs more than the hub.
+
+(c) $P_{hub} = 0.15 + 50 \times 0.001 + 0.5/60$ = **0.2083** mW. $N^* = 50 \times 0.5/(0.2083 - 0.100)$ = **230.8**, so batches of **231** samples or more beat the hub, at a latency of **4.62** s: fine for step counting, far too slow for a wrist raise.
+
 ---
 
 <!-- answer-key -->
@@ -236,3 +244,7 @@ The same harvest is **3**% of a smartwatch's daily drain but **60**% of the spor
 | 27-03.13c4 | volume increase | 13 | % |
 | 27-03.13d1 | daily rail energy, display off plus two knobs | 503.3 | mWh |
 | 27-03.14b1 | charging current | 0.3413 | A |
+| 27-03.15a | hub power | 0.2083 | mW |
+| 27-03.15b | break-even batch | 230.8 | samples |
+| 27-03.15c | smallest winning batch | 231 | samples |
+| 27-03.15d | its latency | 4.62 | s |

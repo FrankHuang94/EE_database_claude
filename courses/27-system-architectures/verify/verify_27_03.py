@@ -582,4 +582,13 @@ v.check("Lab 27-03.d", nd)
 v.check("Lab 27-03.d1", nd / FS)
 v.assert_true("lab batch_for_power agrees", wm.batch_for_power(FS, 0.003, EW, p_hub) == nd)
 
+# Problem 27-03.15: break-even batch by root finding on the power difference, then a search
+hub15 = 0.15e-3 + 50 * 1e-6 + 0.5e-3 / 60
+p_ap = lambda n: 50 * 2e-6 + 50 * 0.5e-3 / n  # noqa: E731
+v.check("27-03.15a", 1e3 * hub15)
+v.check("27-03.15b", optimize.brentq(lambda n: p_ap(n) - hub15, 1, 1e5))
+n15 = next(n for n in range(1, 100000) if p_ap(n) < hub15)
+v.check("27-03.15c", n15)
+v.check("27-03.15d", n15 / 50)
+
 sys.exit(v.finish())

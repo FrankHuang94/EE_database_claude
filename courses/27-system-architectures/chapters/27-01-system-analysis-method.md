@@ -1,12 +1,12 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 27-01 · Method: Analyzing a System End to End
 
 | | |
 |---|---|
 | **Course** | [27 · System Architectures (Case-Study Course)](../README.md) |
-| **University equivalent** | The opening method lectures of a systems-design case-study seminar: decomposition, budget trees and bottleneck analysis, as used in senior design and computer-systems courses |
+| **University equivalent** | The opening method lectures of a systems-design case-study seminar: decomposition, budget trees and bottleneck analysis, as used in senior design and computer-systems courses (Hennessy & Patterson, *Computer Architecture: A Quantitative Approach*, chapter 1 on quantitative design principles; the roofline model of Williams, Waterman and Patterson) |
 | **Prerequisites** | [26-01](../../26-engineering-design-and-professional-practice/chapters/26-01-requirements-and-specifications.md) (requirements, duty-cycle and error budgets), [14-01](../../14-computer-organization-and-architecture/chapters/14-01-performance-power-iron-law.md) (dynamic power and $P \propto f^3$ under DVFS, Amdahl's law), [14-15](../../14-computer-organization-and-architecture/chapters/14-15-roofline-and-benchmarks.md) (roofline), [15-01](../../15-control-systems/chapters/15-01-modeling-dynamic-systems.md) (thermal RC models), [22-08](../../22-power-electronics-and-energy-conversion/chapters/22-08-pmics.md) (PMICs and power trees), [26-03](../../26-engineering-design-and-professional-practice/chapters/26-03-engineering-economics-1.md) (cost stack and margin) |
-| **Estimated study hours** | 4 |
+| **Estimated study hours** | 7 |
 | **Last verified** | 2026-11-26 |
 
 **Learning objectives.** After this chapter you can:
@@ -482,6 +482,7 @@ Problem set: [27-01 problems](../problems/27-01-problems.md) · Worked solutions
 - Hennessy and Patterson, *Computer Architecture: A Quantitative Approach*: the chapters on quantitative design principles (Amdahl's law, power and energy) and on domain-specific architectures (the roofline in practice).
 - S. Williams, A. Waterman and D. Patterson, "Roofline: An Insightful Visual Performance Model for Multicore Architectures," *Communications of the ACM*, 2009 (the original roofline paper, 14-15).
 - 22-08 and its lab for PMIC power trees, and 25-08 for thermal resistance networks.
+- Lecture videos: MIT OpenCourseWare 6.004 *Computation Structures* for the processor and memory-system basics behind the bottleneck models, and Onur Mutlu's *Computer Architecture* lectures at ETH Zürich (recorded and public) for quantitative design and the memory system.
 
 ## 14. Sources
 

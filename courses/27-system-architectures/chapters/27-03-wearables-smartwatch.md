@@ -1,10 +1,10 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 27-03 · Wearables I: The Smartwatch
 
 | | |
 |---|---|
 | **Course** | [27 · System Architectures (Case-Study Course)](../README.md) |
-| **University equivalent** | The wearable-device case study of an embedded-systems or low-power-design seminar: power domains and duty cycling, sensor hubs, display and radio energy, battery sizing and the day-in-the-life budget |
+| **University equivalent** | The wearable-device case study of an embedded-systems or low-power-design seminar: power domains and duty cycling, sensor hubs, display and radio energy, battery sizing and the day-in-the-life budget (J. Rabaey, *Low Power Design Essentials*, chapters on power management and on ultra-low-power design; this curriculum's 18-09 and 22-08 for the circuit basis) |
 | **Prerequisites** | [27-01](27-01-system-analysis-method.md) (budget trees, thermal RC), [27-02](27-02-smartphone-soc.md) (energy per instruction, the AP), [18-09](../../18-embedded-systems-and-microcontrollers/chapters/18-09-ultra-low-power-design.md) (power modes, duty cycling, reservoir capacitors), [18-10](../../18-embedded-systems-and-microcontrollers/chapters/18-10-sensors.md) (IMUs and PPG), [22-08](../../22-power-electronics-and-energy-conversion/chapters/22-08-pmics.md) (PMICs, PFM, power gating), [22-09](../../22-power-electronics-and-energy-conversion/chapters/22-09-batteries-charging-fuel-gauging.md) (batteries), [17-12](../../17-communication-systems/chapters/17-12-multiple-access-and-cellular-wifi.md) (cellular and Wi-Fi) |
 | **Estimated study hours** | 7 |
 | **Last verified** | 2026-11-26 |
@@ -647,6 +647,7 @@ Problems: [27-03 problem set](../problems/27-03-problems.md) · Solutions: [27-0
 - The Bluetooth Core Specification, Vol 6 (Low Energy Controller), Part B (Link Layer): packet format, connection events and window widening; vendor application notes on BLE power estimation (Nordic's online power profiler, TI and Silicon Labs app notes) give measured event-current profiles.
 - 3GPP TS 36.304 and TS 38.304 (idle-mode procedures) for DRX and eDRX paging.
 - Teardown reports (iFixit, TechInsights) of recent watches to see the battery, PMIC and SoC partitioning in hardware.
+- Lecture videos: the HarvardX *Tiny Machine Learning (TinyML)* series on edX for always-on sensing on microcontrollers, and MIT OpenCourseWare 6.004 *Computation Structures* for the processor side of the power budget.
 
 ## 14. Sources
 

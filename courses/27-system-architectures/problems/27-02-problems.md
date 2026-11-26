@@ -58,6 +58,14 @@ Chapter: [27-02](../chapters/27-02-smartphone-soc.md) · Worked solutions: [27-0
 
 **Memory prices and margin.** A phone's BOM is $500, of which memory is $50; other COGS add $40; the net price is $1,099. Memory prices triple, other costs unchanged. Find (a) memory's new share of the BOM, (b) the gross margin before and after, and (c) the price that would restore the original margin.
 
+### Problem 27-02.13 [B]
+
+**Where to switch cores.** Take Problem 27-02.5's mid-size core and Example 27-02.2's little core (whose maximum is 6.0 GIPS).
+
+- (a) Write each core's energy per instruction as a function of the performance $R$ it delivers (instructions per second), and show that the leakage term per instruction, $P_s/R$, does not depend on IPC.
+- (b) Find each core's energy per instruction at 1.5 and at 5.0 GIPS.
+- (c) Find the crossover performance by bisection, and say which core a scheduler should give a 2 GIPS background task.
+
 ---
 
 ## Objective coverage
@@ -65,7 +73,7 @@ Chapter: [27-02](../chapters/27-02-smartphone-soc.md) · Worked solutions: [27-0
 | Objective | Problems |
 |---|---|
 | 1. Block diagram and integration choices | 1, 10 |
-| 2. Heterogeneous cores, crossover and minimum energy | 5, 6, 11 |
+| 2. Heterogeneous cores, crossover and minimum energy | 5, 6, 11, 13 |
 | 3. Memory bandwidth, SLC and on-device models | 2, 3, 4, 7, 9 |
 | 4. Peak against sustained power | 8, 11 |
 | 5. Die cost and the BOM | 10, 12 |

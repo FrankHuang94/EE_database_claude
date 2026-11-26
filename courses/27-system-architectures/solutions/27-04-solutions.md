@@ -76,6 +76,24 @@ $\tau \le 1°/(300°/\text{s})$ = **3.33** ms. Reprojection hides the rendering 
 
 Local: $35/12$ = **2.92** h. Split: $35/5.5$ = **6.36** h, more than twice as long, at the cost of the **16** ms of encoding, network and decoding latency of Example 27-04.6, which reprojection must hide, and of a phone, PC or server doing the rendering.
 
+### Solution 27-04.14
+
+(a) $R = 1 - g\cos\phi + jg\sin\phi$, since $e^{-j\phi} = \cos\phi - j\sin\phi$. Its squared magnitude is $(1 - g\cos\phi)^2 + g^2\sin^2\phi = 1 - 2g\cos\phi + g^2(\cos^2\phi + \sin^2\phi) = 1 - 2g\cos\phi + g^2$. With $g = 1$: $|R|^2 = 2 - 2\cos\phi = 4\sin^2(\phi/2)$, using $1 - \cos\phi = 2\sin^2(\phi/2)$, so $|R| = 2|\sin(\pi f\tau)|$.
+
+(b) With $\phi = 0$: $|R|^2 = 1 - 2g + g^2 = (1 - g)^2$, so $|R| = |\varepsilon|$. Twenty decibels needs $|R| \le 0.1$: the gain must lie between 0.9 and 1.1, that is from **-0.92** dB to **+0.83** dB. Gain matching across the band is as hard a requirement as delay.
+
+(c) Substitute $g = 1 + \varepsilon$: $|R|^2 = 1 - 2(1 + \varepsilon)\cos\phi + (1 + \varepsilon)^2 = \varepsilon^2 + 2(1 + \varepsilon)(1 - \cos\phi)$. For small $\phi$, $1 - \cos\phi \approx \phi^2/2$, and dropping $\varepsilon\phi^2$ leaves $|R|^2 \approx \varepsilon^2 + \phi^2$: gain and phase errors add in quadrature. Here $\phi = 2\pi \times 500 \times 20\ \mu\text{s}$ = **0.0628** rad. Approximate: $|R| = \sqrt{0.0025 + 0.003948}$ = **0.0803**, **21.9** dB. Exact: **0.0815**, **21.8** dB.
+
+### Solution 27-04.15
+
+(a) $n = 32\,000 \times 0.0075/8$ = **30** octets. Each packet is $30 + 15 = 45$ octets on air, $8 \times 45/2$ = **180** µs, in both directions.
+
+(b) Radio on: $180 + 150 + 180$ = **510** µs per 7.5 ms, a duty cycle of **6.80**% (plus the wake-up).
+
+(c) Charge: $1.2 \times 200 + 3.6 \times (180 + 150) + 4.1 \times 180 = 240 + 1188 + 738$ = **2166** nC per event. $I_{avg} = 2166\ \text{nC}/7.5\ \text{ms}$ = **288.8** µA, and $3.0 \times 0.2888$ = **0.866** mW.
+
+(d) The battery holds $55 \times 3.85$ = **211.75** mWh. The bud draws $9.0 + 0.866$ = **9.87** mW, so it lasts **21.5** h. A two-way voice stream costs the radio about what one-way music at 96 kb/s does (Example 27-04.4), because the per-event overheads dominate.
+
 ---
 
 <!-- answer-key -->
@@ -134,3 +152,20 @@ Local: $35/12$ = **2.92** h. Split: $35/5.5$ = **6.36** h, more than twice as lo
 | 27-04.13a | life rendering locally | 2.92 | h |
 | 27-04.13b | life with split rendering | 6.36 | h |
 | 27-04.13c | added latency | 16 | ms |
+| 27-04.14a | lower gain limit | -0.92 | dB |
+| 27-04.14b | upper gain limit | 0.83 | dB |
+| 27-04.14c | phase at 500 Hz, 20 µs | 0.0628 | rad |
+| 27-04.14d | approximate residual | 0.0803 | — |
+| 27-04.14e | approximate attenuation | 21.9 | dB |
+| 27-04.14f | exact residual | 0.0815 | — |
+| 27-04.14g | exact attenuation | 21.8 | dB |
+| 27-04.15a | octets per frame | 30 | octets |
+| 27-04.15b | packet air time | 180 | µs |
+| 27-04.15c | radio on time | 510 | µs |
+| 27-04.15d | duty cycle | 6.80 | % |
+| 27-04.15e | charge per event | 2166 | nC |
+| 27-04.15f | average current | 288.8 | µA |
+| 27-04.15g | radio power | 0.866 | mW |
+| 27-04.15h | battery energy | 211.75 | mWh |
+| 27-04.15i | total draw | 9.87 | mW |
+| 27-04.15j | life | 21.5 | h |

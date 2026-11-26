@@ -1,10 +1,10 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 27-05 · The PC SoC
 
 | | |
 |---|---|
 | **Course** | [27 · System Architectures (Case-Study Course)](../README.md) |
-| **University equivalent** | The client-processor case study of a computer-architecture or SoC-design course: heterogeneous CPU, GPU and NPU integration, memory systems, power management and packaging economics |
+| **University equivalent** | The client-processor case study of a computer-architecture or SoC-design course: heterogeneous CPU, GPU and NPU integration, memory systems, power management and packaging economics (Hennessy & Patterson, *Computer Architecture: A Quantitative Approach*, chapters on memory-hierarchy design and domain-specific architectures) |
 | **Prerequisites** | [27-02](27-02-smartphone-soc.md) (heterogeneous cores, bandwidth-bound AI, die cost), [27-01](27-01-system-analysis-method.md) (thermal budgets), [14-01](../../14-computer-organization-and-architecture/chapters/14-01-performance-power-iron-law.md) (performance and power), [23-04](../../23-memory-and-storage-technology/chapters/23-04-dram-interfaces.md) (LPDDR), [19-06](../../19-digital-vlsi-design/chapters/19-06-power-and-low-power-design.md) (power gating), [25-07](../../25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md) (chiplets), [26-04](../../26-engineering-design-and-professional-practice/chapters/26-04-engineering-economics-2.md) (chiplet economics) |
 | **Estimated study hours** | 6 |
 | **Last verified** | 2026-11-26 |
@@ -446,6 +446,7 @@ Problems: [27-05 problem set](../problems/27-05-problems.md) · Solutions: [27-0
 - Vendor architecture presentations at Hot Chips and ISSCC (client SoCs are presented most years) for tile partitioning, power management and memory systems.
 - Operating-system documentation on idle states and modern standby (for example, Microsoft's hardware design guidance) for how software decides residency.
 - Chapters 25-07 and 26-04 of this curriculum for the packaging and economic side of chiplets.
+- Lecture videos: Onur Mutlu's *Computer Architecture* lectures at ETH Zürich (recorded and public) on the memory system and heterogeneous processors.
 
 ## 14. Sources
 

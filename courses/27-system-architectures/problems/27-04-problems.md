@@ -62,6 +62,23 @@ Chapter: [27-04](../chapters/27-04-wearables-earbuds-and-glasses.md) · Worked s
 
 **Battery life on the head.** A headset with a 35 Wh battery draws 12 W rendering locally and 5.5 W with split rendering. Find both battery lives and the latency the second option adds in Example 27-04.6.
 
+### Problem 27-04.14 [B]
+
+**Cancellation, derived.**
+
+- (a) Starting from the residual phasor $R = 1 - g\,e^{-j2\pi f\tau}$, derive $|R|^2 = 1 - 2g\cos\phi + g^2$ with $\phi = 2\pi f\tau$, and from it $|R| = 2|\sin(\pi f\tau)|$ for perfect gain.
+- (b) With no delay and a gain error, $g = 1 + \varepsilon$, show that $|R| = |\varepsilon|$. What gain accuracy, in dB either side of unity, does 20 dB of cancellation need?
+- (c) Show that for small $\varepsilon$ and $\phi$, $|R|^2 \approx \varepsilon^2 + \phi^2$. For $\varepsilon = 0.05$ and 20 µs at 500 Hz, compare the approximate and exact residuals and attenuations.
+
+### Problem 27-04.15 [B]
+
+**A voice call.** In a call, the earbud receives LC3 at 32 kb/s in 7.5 ms frames and, instead of an empty acknowledgment, sends its own 32 kb/s microphone frame back in the same event. Use Example 27-04.4's radio (3.6 mA receiving, 4.1 mA transmitting, a 200 µs wake-up at 1.2 mA, 3.0 V, $T_{IFS}$ = 150 µs, LE 2M PHY, encrypted). Find:
+
+- (a) the octets per frame and each packet's air time;
+- (b) the radio duty cycle;
+- (c) the charge per event, the average current and the radio power;
+- (d) the life of a 55 mAh, 3.85 V bud whose other loads draw 9.0 mW from the battery (count the radio's power as drawn from the battery too).
+
 ---
 
 ## Objective coverage
@@ -70,6 +87,6 @@ Chapter: [27-04](../chapters/27-04-wearables-earbuds-and-glasses.md) · Worked s
 |---|---|
 | 1. Architectures and binding constraints | 1, 10, 13 |
 | 2. Speaker power and the earbud budget | 2, 7 |
-| 3. ANC delay and gain limits | 4, 5 |
-| 4. LE Audio streams, battery and case | 3, 6 |
+| 3. ANC delay and gain limits | 4, 5, 14 |
+| 4. LE Audio streams, battery and case | 3, 6, 15 |
 | 5. Glasses heat and displays; headset pixels and latency | 8, 9, 11, 12, 13 |

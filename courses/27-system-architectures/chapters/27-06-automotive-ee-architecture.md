@@ -1,10 +1,10 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 27-06 · Automotive E/E Architecture and ADAS Compute
 
 | | |
 |---|---|
 | **Course** | [27 · System Architectures (Case-Study Course)](../README.md) |
-| **University equivalent** | The automotive-electronics case study of an embedded-systems or vehicle-systems course: in-vehicle networks and their timing, electrical/electronic architecture, driver-assistance compute and functional safety |
+| **University equivalent** | The automotive-electronics case study of an embedded-systems or vehicle-systems course: in-vehicle networks and their timing, electrical/electronic architecture, driver-assistance compute and functional safety (N. Navet and F. Simonot-Lion (eds.), *Automotive Embedded Systems Handbook*, the parts on in-vehicle networks; Davis et al. (2007) for CAN timing analysis) |
 | **Prerequisites** | [27-01](27-01-system-analysis-method.md) (budgets), [17-13](../../17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) (networks), [18-07](../../18-embedded-systems-and-microcontrollers/chapters/18-07-rtos-concepts.md) (real-time scheduling), [24-03](../../24-high-speed-io-signal-integrity-and-photonics/chapters/24-03-serdes-architecture.md) (SerDes), [25-10](../../25-fabrication-packaging-test-and-reliability/chapters/25-10-qualification-and-functional-safety.md) (qualification and functional safety), [26-07](../../26-engineering-design-and-professional-practice/chapters/26-07-engineering-ethics.md) (FIT budgets and fleet risk) |
 | **Estimated study hours** | 9 |
 | **Last verified** | 2026-11-26 |
@@ -476,6 +476,7 @@ Problems: [27-06 problem set](../problems/27-06-problems.md) · Solutions: [27-0
 - ISO 26262 (road vehicles, functional safety), parts 1, 5 and 9, for ASIL determination and hardware metrics; ISO 21448 (SOTIF) for performance limitations of sensing and perception.
 - SAE J3016 for the levels of driving automation.
 - Vendor technical documentation for central compute platforms and zonal controllers, and the IEEE 802.3 automotive Ethernet amendments (802.3bw, 802.3bp, 802.3cg, 802.3ch).
+- Lecture videos: we have not verified an open university lecture series on vehicle E/E architecture; CiA's "CAN knowledge" pages [R-689] are a free primer on CAN, CAN FD and CAN XL, and 18-07's references cover response-time analysis.
 
 ## 14. Sources
 

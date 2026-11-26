@@ -1,10 +1,10 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 27-08 · Edge AI and IoT
 
 | | |
 |---|---|
 | **Course** | [27 · System Architectures (Case-Study Course)](../README.md) |
-| **University equivalent** | The system-design case study of a senior IoT or embedded-machine-learning course: on-device inference on microcontrollers ("TinyML"), low-power wide-area radios, energy harvesting and device security over a product's life |
+| **University equivalent** | The system-design case study of a senior IoT or embedded-machine-learning course: on-device inference on microcontrollers ("TinyML"), low-power wide-area radios, energy harvesting and device security over a product's life (P. Warden and D. Situnayake, *TinyML*; A. G. Howard et al., *MobileNets*, for depthwise-separable networks) |
 | **Prerequisites** | [27-01](27-01-system-analysis-method.md) (budgets), [27-03](27-03-wearables-smartwatch.md) (always-on design), [14-14](../../14-computer-organization-and-architecture/chapters/14-14-ai-accelerators.md) (accelerators, quantization), [18-09](../../18-embedded-systems-and-microcontrollers/chapters/18-09-ultra-low-power-design.md) (power modes, duty cycling), [18-08](../../18-embedded-systems-and-microcontrollers/chapters/18-08-boot-and-firmware-update.md) and [18-11](../../18-embedded-systems-and-microcontrollers/chapters/18-11-hardware-security.md) (boot, updates, security), [21-11](../../21-rf-and-microwave-engineering/chapters/21-11-link-budgets.md) (link budgets), [22-09](../../22-power-electronics-and-energy-conversion/chapters/22-09-batteries-charging-fuel-gauging.md) (batteries) |
 | **Estimated study hours** | 6 |
 | **Last verified** | 2026-11-26 |
@@ -602,6 +602,7 @@ Problems: [27-08 problem set](../problems/27-08-problems.md) · Solutions: [27-0
 - A. G. Howard et al., "MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications", arXiv:1704.04861 (2017): depthwise-separable convolutions and their cost.
 - Semtech SX1276/77/78/79 data sheet, §4.1 (LoRa modem, time on air) [R-697]; the LoRa Alliance's LoRaWAN Regional Parameters (RP002) for each region's channels and limits.
 - Arm's Ethos-U and Cortex-M documentation, and the PSA Certified and Cyber Resilience Act materials cited in 18-11 [R-312].
+- Lecture videos: the HarvardX *Tiny Machine Learning (TinyML)* series on edX, and MIT 6.5940 *TinyML and Efficient Deep Learning Computing* (Song Han; recorded lectures are public).
 
 ## 14. Sources
 

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 27-07 · The AI Datacenter Server and Rack
 
 | | |
@@ -637,6 +637,7 @@ Problems: [27-07 problem set](../problems/27-07-problems.md) · Solutions: [27-0
 - J. Kaplan et al., "Scaling Laws for Neural Language Models", arXiv:2001.08361 (2020): the $6N$ FLOPs-per-token rule.
 - D. Narayanan et al., "Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM", SC21 (arXiv:2104.04473): tensor, pipeline and data parallelism combined, and pipeline schedules.
 - The Llama 3 paper's infrastructure section [R-694]: a rare public account of a 16K-GPU training system, its parallelism and its failures.
+- Lecture videos: MIT 6.5940 *TinyML and Efficient Deep Learning Computing* (Song Han; recorded lectures are public) for its lectures on distributed training and efficient inference, and Onur Mutlu's *Computer Architecture* lectures at ETH Zürich for the memory-system side.
 
 ## 14. Sources
 

@@ -1,10 +1,10 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 27-02 · The Smartphone SoC
 
 | | |
 |---|---|
 | **Course** | [27 · System Architectures (Case-Study Course)](../README.md) |
-| **University equivalent** | The mobile-SoC case study of a computer-systems or SoC-design seminar: heterogeneous multicore, DVFS and energy per task, the memory system, power and thermal envelopes, and the economics of integration |
+| **University equivalent** | The mobile-SoC case study of a computer-systems or SoC-design seminar: heterogeneous multicore, DVFS and energy per task, the memory system, power and thermal envelopes, and the economics of integration (Hennessy & Patterson, *Computer Architecture: A Quantitative Approach*, sections on energy efficiency and on heterogeneous and domain-specific architectures) |
 | **Prerequisites** | [27-01](27-01-system-analysis-method.md) (budgets, thermal RC, roofline, shadow price), [14-01](../../14-computer-organization-and-architecture/chapters/14-01-performance-power-iron-law.md) (dynamic power and DVFS), [23-04](../../23-memory-and-storage-technology/chapters/23-04-dram-interfaces.md) (LPDDR interfaces), [19-06](../../19-digital-vlsi-design/chapters/19-06-power-and-low-power-design.md) (leakage, power gating, minimum-energy operation), [25-04](../../25-fabrication-packaging-test-and-reliability/chapters/25-04-yield-and-die-cost.md) (die cost), [21-12](../../21-rf-and-microwave-engineering/chapters/21-12-modem-baseband-and-standards.md) (modems) |
 | **Estimated study hours** | 8 |
 | **Last verified** | 2026-11-26 |
@@ -438,6 +438,7 @@ Problem set: [27-02 problems](../problems/27-02-problems.md) · Worked solutions
 - Hennessy and Patterson, *Computer Architecture: A Quantitative Approach*: the sections on energy efficiency, heterogeneous and domain-specific architectures.
 - Arm's public documentation of heterogeneous (big.LITTLE and DynamIQ) CPU clusters and energy-aware scheduling, for how operating systems use the crossover.
 - Apple, "Apple Intelligence Foundation Language Models Tech Report 2025" (arXiv 2507.13575) for a vendor's account of fitting a model to a phone's memory and bandwidth [R-668].
+- Lecture videos: Onur Mutlu's *Computer Architecture* lectures at ETH Zürich (recorded and public) on heterogeneous multicore and the memory system, and MIT OpenCourseWare 6.004 *Computation Structures* for the basics.
 
 ## 14. Sources
 

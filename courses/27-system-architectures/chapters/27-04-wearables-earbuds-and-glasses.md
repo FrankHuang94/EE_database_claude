@@ -1,10 +1,10 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 27-04 · Wearables II: Earbuds and Smart Glasses / XR
 
 | | |
 |---|---|
 | **Course** | [27 · System Architectures (Case-Study Course)](../README.md) |
-| **University equivalent** | The hearables and AR/VR case study of an embedded-systems, audio-DSP or mixed-reality systems seminar: audio chains and noise cancellation, wireless audio, head-worn thermal and display limits, latency and offloaded rendering |
+| **University equivalent** | The hearables and AR/VR case study of an embedded-systems, audio-DSP or mixed-reality systems seminar: audio chains and noise cancellation, wireless audio, head-worn thermal and display limits, latency and offloaded rendering (S. M. Kuo and D. R. Morgan, *Active Noise Control Systems: Algorithms and DSP Implementations*, the chapters on feedforward and feedback ANC) |
 | **Prerequisites** | [27-03](27-03-wearables-smartwatch.md) (day budgets, BLE events, LTPO and APL), [27-01](27-01-system-analysis-method.md) (thermal budgets, bottlenecks), [11-06](../../11-signals-and-systems/chapters/11-06-continuous-time-fourier-transform.md) (delay as a linear phase), [15-08](../../15-control-systems/chapters/15-08-pid-control.md) (feedback), [25-08](../../25-fabrication-packaging-test-and-reliability/chapters/25-08-thermal-engineering.md) (convection), [04-09](../../04-physics-for-ee/chapters/04-09-waves-and-optics.md) (optics) |
 | **Estimated study hours** | 8 |
 | **Last verified** | 2026-11-26 |
@@ -527,6 +527,7 @@ Problems: [27-04 problem set](../problems/27-04-problems.md) · Solutions: [27-0
 - Vendor application notes on LE Audio and LC3 (Bluetooth SoC vendors publish power estimates for isochronous streams) and the LC3 specification for the codec's frame structure.
 - Survey papers on mixed-reality rendering (foveated rendering, reprojection, split and remote rendering) in ACM SIGGRAPH and IEEE VR proceedings, and on waveguide displays in optics journals.
 - Chapter 25-08 of this curriculum for convection and radiation coefficients behind $hA\Delta T$.
+- Lecture videos: MIT OpenCourseWare RES.6-008 *Digital Signal Processing* (Alan Oppenheim's recorded lectures) for the filtering and delay ideas behind ANC.
 
 ## 14. Sources
 

@@ -359,4 +359,37 @@ v.check("Txt 27-04.10", 4 * 0.9 * 5.670374e-8 * 303.15 ** 3)
 v.check("Txt 27-04.11", 5 / (6 * 1e-3))
 v.check("Txt 27-04.12", 1 + 0.7 * 500 * 3.85 / (2 * 50 * 3.85))
 
+# Problem 27-04.14: complex residual evaluated directly
+v.check("27-04.14a", 20 * math.log10(0.9))
+v.check("27-04.14b", 20 * math.log10(1.1))
+ph14 = 2 * math.pi * 500 * 20e-6
+v.check("27-04.14c", ph14)
+ra = math.hypot(0.05, ph14)
+re_ = abs(1 - 1.05 * np.exp(-1j * ph14))
+v.check("27-04.14d", ra)
+v.check("27-04.14e", -20 * math.log10(ra))
+v.check("27-04.14f", re_)
+v.check("27-04.14g", -20 * math.log10(re_))
+v.assert_true("|R| = 2|sin(pi f tau)| at unit gain",
+              abs(abs(1 - np.exp(-1j * ph14)) - 2 * abs(math.sin(ph14 / 2))) < 1e-14)
+
+# Problem 27-04.15: count the bits on air for each packet and integrate current over an event
+oct15 = 32000 * 0.0075 / 8
+bits_on_air = 8 * (2 + 4 + 2 + oct15 + 4 + 3)
+t15 = bits_on_air / 2e6 * 1e6
+on15 = t15 + 150 + t15
+q15 = 1.2 * 200 + 3.6 * (t15 + 150) + 4.1 * t15
+i15 = q15 / 7.5
+p15 = 3.0 * i15 / 1e3
+v.check("27-04.15a", oct15)
+v.check("27-04.15b", t15)
+v.check("27-04.15c", on15)
+v.check("27-04.15d", 100 * on15 / 7500)
+v.check("27-04.15e", q15)
+v.check("27-04.15f", i15)
+v.check("27-04.15g", p15)
+v.check("27-04.15h", 55 * 3.85)
+v.check("27-04.15i", 9.0 + p15)
+v.check("27-04.15j", 55 * 3.85 / (9.0 + p15))
+
 sys.exit(v.finish())

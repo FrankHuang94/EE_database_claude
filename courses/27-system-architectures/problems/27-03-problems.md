@@ -66,6 +66,14 @@ Chapter: [27-03](../chapters/27-03-wearables-smartwatch.md) · Worked solutions:
 
 **Fast charging heats the watch.** The 320 mAh cell of Example 27-03.1 charges from 0 to 80% in 45 min. Find (a) the average charging current and C-rate; (b) the heat in the cell's 0.30 Ω internal resistance; (c) the charging power into the cell at an average 3.9 V; and (d) the power the charger must deliver, and the total heat dissipated in the watch and the charging pad together, if the wireless link and charger are 70% efficient.
 
+### Problem 27-03.15 [B]
+
+**Two derivations.**
+
+- (a) A rail at $V_{out}$ is fed from a cell at $V_{in}$ either by a buck of efficiency $\eta$ (excluding its quiescent current $I_{q,b}$) or by an LDO with quiescent current $I_{q,l}$. Write each one's battery power at load current $I$ and derive the crossover $I^* = V_{in}(I_{q,b} - I_{q,l})/(V_{in} - V_{out}/\eta)$ below which the LDO draws less.
+- (b) Setting $P_{AP}(N) = P_{hub}$ (§3.4), derive the break-even batch $N^* = f_sE_w/(P_{hub} - f_sE_s)$, and say what happens when $f_sE_s \ge P_{hub}$.
+- (c) For Example 27-03.3's hub and an AP that spends only 2 µJ per sample (same 50 Hz and 0.5 mJ per wake), find the hub's power, $N^*$, the smallest whole batch that beats the hub, and its latency.
+
 ---
 
 ## Objective coverage
@@ -76,4 +84,4 @@ Chapter: [27-03](../chapters/27-03-wearables-smartwatch.md) · Worked solutions:
 | 2. Day budget, battery life and leverage | 2, 3, 13 |
 | 3. Display power and LTPO | 6, 7 |
 | 4. Radio energy and latency | 4, 5, 11 |
-| 5. Microwatt choices, battery and charging | 9, 10, 12, 14 |
+| 5. Microwatt choices, battery and charging | 9, 10, 12, 14, 15 |

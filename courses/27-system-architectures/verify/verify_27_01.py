@@ -271,4 +271,34 @@ v.check("Lab 27-01.c", 400e12 / 3.2e12)
 v.check("Lab 27-01.d", 100 * ((4.0 / 3.0) ** (1 / 3) - 1))
 v.check("Lab 27-01.d1", 100 * dlog)
 
+# Problem 27-01.13: budget tree arithmetic and the shadow price by numerical differentiation
+pb13 = 0.9 * 20 / 4
+pl13 = pb13 * 0.88
+soc13 = pl13 * 0.9 - (1.2 + 0.4 + 0.2 + 0.15 + 0.25)
+pd13 = soc13 - 0.3
+v.check("27-01.13a", pb13)
+v.check("27-01.13b", pl13)
+v.check("27-01.13c", 0.1 * pl13)
+v.check("27-01.13d", soc13)
+v.check("27-01.13e", pd13)
+hh = 1e-6
+price = (math.log((pd13 + hh) ** (1 / 3)) - math.log((pd13 - hh) ** (1 / 3))) / (2 * hh)
+v.check("27-01.13f", 100 * price)
+v.check("27-01.13g", 100 * price * 0.1)
+v.check("27-01.13h", 100 * (((pd13 + 0.1) / pd13) ** (1 / 3) - 1))
+
+# Problem 27-01.14: integrate the thermal ODE to the surface limit
+from scipy.integrate import solve_ivp  # noqa: E402
+
+hit = lambda t, y: y[0] - 43.0  # noqa: E731
+hit.terminal = True
+s14 = solve_ivp(lambda t, y: [(30.0 - (y[0] - 25.0) / 4.0) / 60.0], (0, 1000), [33.0], events=hit,
+                rtol=1e-11, atol=1e-11)
+tb14 = s14.t_events[0][0]
+v.check("27-01.14a", 25 + 30 * 4.0)
+v.check("27-01.14b", 4.0 * 60)
+v.check("27-01.14c", tb14)
+v.check("27-01.14d", 60 * 10 / 30)
+v.check("27-01.14e", 100 * (1 - 20.0 / tb14))
+
 sys.exit(v.finish())

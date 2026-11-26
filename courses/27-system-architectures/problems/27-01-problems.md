@@ -58,14 +58,31 @@ Chapter: [27-01](../chapters/27-01-system-analysis-method.md) · Worked solution
 
 **Sanity-check an efficiency claim.** An edge NPU is claimed to deliver 50 TOPS at 1 W. (a) What energy per operation does that imply, in femtojoules? (b) If every operation needed one byte from HBM-class memory at about 3.9 pJ/bit [R-459], what would the memory energy per operation be, and how many times the compute energy? (c) What does the claim therefore require of the design?
 
+### Problem 27-01.13 [B]
+
+**A budget tree and the price of a watt.** A handheld game console (all values assumed) has a 20 Wh battery, 90% usable, and must play for 4 h. Its converters are 88% efficient overall. Besides the SoC, its loads are the display 1.2 W, memory 0.4 W, radios 0.2 W, audio 0.15 W and other 0.25 W.
+
+- (a) Sketch its block diagram and its power budget tree, from the battery at the root to the loads at the leaves.
+- (b) Find the battery power the target allows, the load-side budget, and the SoC's allocation if 10% of the load-side budget is held back as margin.
+- (c) Starting from performance $\propto P_{dyn}^{1/3}$, derive the shadow price $d\ln(\text{perf})/dP = 1/(3P_{dyn})$. With 0.3 W of the SoC's allocation going to leakage, evaluate it, the first-order performance gain from 0.1 W more, and the exact gain.
+
+### Problem 27-01.14 [B]
+
+**Deriving the burst duration.** A device of thermal capacitance $C_{th}$ sheds heat to air at $T_a$ through $\theta_{sa}$.
+
+- (a) Write its energy balance and solve it for a step to power $P$ from temperature $T_0$.
+- (b) Derive the burst duration $t_b$ to a surface limit $T_{s,max}$.
+- (c) Show that when $T_\infty \gg T_{s,max}$, $t_b \approx C_{th}(T_{s,max} - T_0)/P$, and say what it means physically.
+- (d) Evaluate the exact and approximate durations for Example 27-01.2's device ($\theta_{sa}$ = 4.0 °C/W, $C_{th}$ = 60 J/°C, 25 °C air, starting at 33 °C, 43 °C limit) during a 30 W burst.
+
 ---
 
 ## Objective coverage
 
 | Objective | Problems |
 |---|---|
-| 1. Decomposition and budget trees | 2, 9 |
+| 1. Decomposition and budget trees | 2, 9, 13 |
 | 2. Power trees and battery life | 1, 3 |
-| 3. Sustained and burst thermal limits | 4, 5 |
+| 3. Sustained and burst thermal limits | 4, 5, 14 |
 | 4. Bottlenecks: roofline, pipelines, Amdahl, Little | 6, 7, 8, 10, 12 |
-| 5. BOM roll-up and shadow prices | 9, 11 |
+| 5. BOM roll-up and shadow prices | 9, 11, 13 |

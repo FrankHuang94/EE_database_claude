@@ -78,6 +78,20 @@ Integration is cheaper by about **$0.21** here, a small margin. The decision als
 
 ## Answer key
 
+### Solution 27-02.13
+
+(a) A core with IPC instructions per cycle delivers $R$ at $f = R/\text{IPC}$, so $V = V_0 + kR/\text{IPC}$ and
+
+$$
+E(R) = \frac{c\,(V_0 + kR/\text{IPC})^2}{\text{IPC}} + \frac{P_s}{\text{IPC}\cdot R/\text{IPC}} = \frac{c\,(V_0 + kR/\text{IPC})^2}{\text{IPC}} + \frac{P_s}{R} .
+$$
+
+The leakage per instruction is the leakage power divided by the instruction rate, $P_s/R$: IPC cancels, because a wider core runs at a lower clock for the same $R$ and leaks for the same time per instruction. With $R$ in GIPS and $c$ in nF, the mid-size core is $E = 0.6(0.45 + 0.0375R)^2/4 + 0.05/R$ and the little core $E = 0.22(0.45 + 0.12R)^2/2.5 + 0.02/R$, both in nJ.
+
+(b) At 1.5 GIPS: mid **0.0718** nJ, little **0.0483** nJ. At 5.0 GIPS: mid **0.0710** nJ, little **0.101** nJ.
+
+(c) The difference changes sign once between 1 and 6 GIPS; bisection gives **2.98** GIPS. A 2 GIPS task belongs on the little core, at **0.0519** nJ against **0.0663** nJ, **21.8**% less energy, with headroom to spare.
+
 <!-- answer-key -->
 
 | ID | Quantity | Value | Unit |
@@ -136,3 +150,11 @@ Integration is cheaper by about **$0.21** here, a small margin. The decision als
 | 27-02.12b2 | fall | 9.1 | points |
 | 27-02.12c | restoring price | 1302.52 | $ |
 | 27-02.12c1 | price rise | 203.52 | $ |
+| 27-02.13a | mid core at 1.5 GIPS | 0.0718 | nJ |
+| 27-02.13b | little core at 1.5 GIPS | 0.0483 | nJ |
+| 27-02.13c | mid core at 5.0 GIPS | 0.0710 | nJ |
+| 27-02.13d | little core at 5.0 GIPS | 0.101 | nJ |
+| 27-02.13e | crossover | 2.98 | GIPS |
+| 27-02.13f | little core at 2 GIPS | 0.0519 | nJ |
+| 27-02.13g | mid core at 2 GIPS | 0.0663 | nJ |
+| 27-02.13h | saving on the little core | 21.8 | % |

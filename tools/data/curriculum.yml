@@ -1188,7 +1188,7 @@ courses:
       - Trace a system-level requirement down to device- and circuit-level consequences.
       - Identify where value and margin accrue in each system's silicon content.
     chapters:
-      - {id: "27-01", slug: system-analysis-method, title: "Method: Analyzing a System End to End", hours: 4, topics: "Budgets (power, thermal, area, cost, BOM), block diagrams, bottleneck analysis"}
+      - {id: "27-01", slug: system-analysis-method, title: "Method: Analyzing a System End to End", hours: 7, topics: "Budgets (power, thermal, area, cost, BOM), block diagrams, bottleneck analysis"}
       - {id: "27-02", slug: smartphone-soc, title: "The Smartphone SoC", hours: 8, topics: "CPU/GPU/NPU/ISP/modem integration, memory, power and thermal envelope, process node choices"}
       - {id: "27-03", slug: wearables-smartwatch, title: "Wearables I: The Smartwatch", hours: 7, topics: "Always-on domains, sensor hubs, PMIC, battery life, display power, radios"}
       - {id: "27-04", slug: wearables-earbuds-and-glasses, title: "Wearables II: Earbuds and Smart Glasses / XR", hours: 8, topics: "Audio SoCs, LE Audio, tiny batteries, XR compute/thermal/display constraints, split rendering"}

@@ -483,18 +483,18 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 
 ### Term 7 — Design Practice, Systems and Practitioner Layer
 
-≈ 332 hours · ≈ 30 weeks · ends around program week 251 (≈ 5.5 years in, at 46 study weeks/year)
+≈ 335 hours · ≈ 30 weeks · ends around program week 252 (≈ 5.5 years in, at 46 study weeks/year)
 
 | Weeks | Course | Hours |
 |---|---|---|
 | 221–225 | [26 · Engineering Design and Professional Practice](courses/26-engineering-design-and-professional-practice/README.md) | 42 |
 | 225–229 | Capstone C1: Analog: two-stage op-amp or buck converter in ngspice | 40 |
 | 229–233 | Capstone C2: Digital: RTL to layout (OpenLane/Sky130) or Verilator + synthesis | 50 |
-| 233–239 | [27 · System Architectures (Case-Study Course)](courses/27-system-architectures/README.md) | 60 |
+| 233–239 | [27 · System Architectures (Case-Study Course)](courses/27-system-architectures/README.md) | 63 |
 | 239–242 | Capstone C3: Embedded/system: wearable sensor node design | 35 |
-| 242–247 | [28 · Technical Diligence and Engineering Leadership Fluency](courses/28-technical-diligence-and-leadership-fluency/README.md) | 62 |
-| 247–251 | Capstone C4: Practitioner: technical diligence memo on a public chip product | 35 |
-| 251 | **Term 7 checkpoint** (FE-style exam + error log review) | 8 |
+| 242–248 | [28 · Technical Diligence and Engineering Leadership Fluency](courses/28-technical-diligence-and-leadership-fluency/README.md) | 62 |
+| 248–251 | Capstone C4: Practitioner: technical diligence memo on a public chip product | 35 |
+| 251–252 | **Term 7 checkpoint** (FE-style exam + error log review) | 8 |
 
 <details><summary>Chapter-level weeks</summary>
 
@@ -510,29 +510,29 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 225 | 26 review + final exam | 2 |
 | 225–229 | Capstone C1 | 40 |
 | 229–233 | Capstone C2 | 50 |
-| 233 | 27-01 Method: Analyzing a System End to End | 4 |
+| 233–234 | 27-01 Method: Analyzing a System End to End | 7 |
 | 234 | 27-02 The Smartphone SoC | 8 |
-| 234–235 | 27-03 Wearables I: The Smartwatch | 7 |
+| 235 | 27-03 Wearables I: The Smartwatch | 7 |
 | 235–236 | 27-04 Wearables II: Earbuds and Smart Glasses / XR | 8 |
 | 236 | 27-05 The PC SoC | 6 |
 | 236–237 | 27-06 Automotive E/E Architecture and ADAS Compute | 9 |
 | 237–238 | 27-07 The AI Datacenter Server and Rack | 10 |
-| 238 | 27-08 Edge AI and IoT | 6 |
-| 238–239 | 27 review + final exam | 2 |
+| 238–239 | 27-08 Edge AI and IoT | 6 |
+| 239 | 27 review + final exam | 2 |
 | 239–242 | Capstone C3 | 35 |
-| 242 | 28-01 A Framework for Evaluating a Chip Company's Technology | 6 |
-| 242–243 | 28-02 Validating Claims: TOPS/W, Benchmarks, Tapeout Status | 6 |
+| 242–243 | 28-01 A Framework for Evaluating a Chip Company's Technology | 6 |
+| 243 | 28-02 Validating Claims: TOPS/W, Benchmarks, Tapeout Status | 6 |
 | 243 | 28-03 Maturity Scales for Silicon | 4 |
-| 243–244 | 28-04 Domain Question Banks I: Digital/CPU, AI Accelerators, Memory, Interconnect and Optics | 6 |
-| 244 | 28-05 Domain Question Banks II: Analog/Mixed-Signal, RF, Power, Packaging, Embedded | 6 |
-| 244–245 | 28-06 Red Flags and Green Flags | 4 |
+| 244 | 28-04 Domain Question Banks I: Digital/CPU, AI Accelerators, Memory, Interconnect and Optics | 6 |
+| 244–245 | 28-05 Domain Question Banks II: Analog/Mixed-Signal, RF, Power, Packaging, Embedded | 6 |
+| 245 | 28-06 Red Flags and Green Flags | 4 |
 | 245 | 28-07 Evaluating Engineering Teams | 5 |
 | 245–246 | 28-08 Post-Acquisition Integration Risk | 5 |
 | 246 | 28-09 The Business ↔ Engineering Translation Table | 3 |
 | 246–247 | 28-10 Conversation Scenarios | 15 |
-| 247 | 28 review + final exam | 2 |
-| 247–251 | Capstone C4 | 35 |
-| 251 | Term 7 checkpoint | 8 |
+| 248 | 28 review + final exam | 2 |
+| 248–251 | Capstone C4 | 35 |
+| 251–252 | Term 7 checkpoint | 8 |
 
 </details>
 
@@ -570,9 +570,9 @@ The minimum path to fluent, skeptical conversations with engineering leaders. In
 | 24 · High-Speed I/O, Signal Integrity and Photonics | [24-03](courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-03-serdes-architecture.md), [24-05](courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-05-pcie-cxl-ethernet.md), [24-06](courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-06-d2d-memory-phys-scale-up.md), [24-09](courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-09-lpo-and-cpo.md) | 14 |
 | 25 · Semiconductor Fabrication, Packaging, Test and Reliability | [25-02](courses/25-fabrication-packaging-test-and-reliability/chapters/25-02-lithography.md), [25-04](courses/25-fabrication-packaging-test-and-reliability/chapters/25-04-yield-and-die-cost.md), [25-07](courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md), [25-11](courses/25-fabrication-packaging-test-and-reliability/chapters/25-11-test-ate-sort-burn-in.md) | 17 |
 | 26 · Engineering Design and Professional Practice | all (full depth) | 42 |
-| 27 · System Architectures (Case-Study Course) | all (full depth) | 60 |
+| 27 · System Architectures (Case-Study Course) | all (full depth) | 63 |
 | 28 · Technical Diligence and Engineering Leadership Fluency | all (full depth) | 62 |
-| **Total** | | **≈ 470** |
+| **Total** | | **≈ 480** |
 
 At 11 h/week that is ≈ 43 weeks (≈ 0.9 years). Chapters skipped on the fast track can be back-filled later without re-doing anything.
 

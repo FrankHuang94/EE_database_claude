@@ -96,6 +96,28 @@ Fan on: $(100 - 35)/2.6$ = **25.0** W. Fan off: $65/6.5$ = **10.0** W. The fan m
 
 ## Answer key
 
+### Solution 27-01.13
+
+(a) Block diagram: battery → PMIC (buck and boost converters, charger) → rails feeding the SoC (CPU, GPU, NPU and media blocks), LPDDR memory, the display and its driver, the radios, the audio codec and amplifier, and the rest (sensors, buttons, storage). The budget tree has the battery power at the root, the conversion loss and the load-side budget as its two children, and the loads (with the held-back margin) as the leaves:
+
+- battery **4.5** W
+  - conversion loss 0.54 W
+  - load-side budget **3.96** W: SoC **1.364** W, display 1.2 W, memory 0.4 W, radios 0.2 W, audio 0.15 W, other 0.25 W, margin **0.396** W
+
+(b) Usable energy $0.9 \times 20 = 18$ Wh over 4 h gives **4.5** W at the battery and $4.5 \times 0.88$ = **3.96** W at the loads. The margin is **0.396** W; the other loads total 2.2 W, so the SoC may use $3.96 - 0.396 - 2.2$ = **1.364** W.
+
+(c) With $\text{perf} = aP_{dyn}^{1/3}$, $\ln(\text{perf}) = \ln a + \tfrac{1}{3}\ln P_{dyn}$, and differentiating gives $d\ln(\text{perf})/dP = 1/(3P_{dyn})$: a watt is worth a fraction $1/(3P_{dyn})$ of performance at the margin. Here $P_{dyn} = 1.364 - 0.3$ = **1.064** W, so the price is **31.3**% per watt, and 0.1 W more buys **3.13**% to first order. Exactly, $(1.164/1.064)^{1/3} - 1$ = **3.04**%: the first-order figure slightly overstates the gain, because each added watt buys less than the one before.
+
+### Solution 27-01.14
+
+(a) Heat stored plus heat lost equals heat generated: $C_{th}\,dT/dt = P - (T - T_a)/\theta_{sa}$. Multiplying by $\theta_{sa}$ and writing $\tau = \theta_{sa}C_{th}$ and $T_\infty = T_a + P\theta_{sa}$ gives $\tau\,dT/dt = T_\infty - T$, whose solution from $T_0$ is $T(t) = T_\infty - (T_\infty - T_0)e^{-t/\tau}$ (separate variables as in 15-01).
+
+(b) Setting $T(t_b) = T_{s,max}$: $e^{-t_b/\tau} = (T_\infty - T_{s,max})/(T_\infty - T_0)$, so $t_b = \tau\ln[(T_\infty - T_0)/(T_\infty - T_{s,max})]$.
+
+(c) Write the argument as $1 + x$ with $x = (T_{s,max} - T_0)/(T_\infty - T_{s,max})$. When $T_\infty \gg T_{s,max}$, $x$ is small, $\ln(1 + x) \approx x$, and $T_\infty - T_{s,max} \approx P\theta_{sa}$. Then $t_b \approx \theta_{sa}C_{th}(T_{s,max} - T_0)/(P\theta_{sa}) = C_{th}(T_{s,max} - T_0)/P$. Physically, a hard burst heats the mass so fast that almost none of the heat escapes in time: the burst lasts as long as the heat capacity takes to absorb the allowed temperature rise.
+
+(d) $T_\infty = 25 + 30 \times 4.0$ = **145** °C and $\tau$ = **240** s. Exact: $240\ln(112/102)$ = **22.4** s. Approximate: $60 \times 10/30$ = **20.0** s, **10.9**% short, because it ignores the heat that does escape.
+
 <!-- answer-key -->
 
 | ID | Quantity | Value | Unit |
@@ -155,3 +177,16 @@ Fan on: $(100 - 35)/2.6$ = **25.0** W. Fan off: $65/6.5$ = **10.0** W. The fan m
 | 27-01.12a | compute energy | 20 | fJ/op |
 | 27-01.12b | memory energy | 31.2 | pJ/op |
 | 27-01.12b1 | ratio | 1560 | |
+| 27-01.13a | battery power allowed | 4.5 | W |
+| 27-01.13b | load-side budget | 3.96 | W |
+| 27-01.13c | margin held back | 0.396 | W |
+| 27-01.13d | SoC allocation | 1.364 | W |
+| 27-01.13e | SoC dynamic power | 1.064 | W |
+| 27-01.13f | shadow price | 31.3 | %/W |
+| 27-01.13g | first-order gain from 0.1 W | 3.13 | % |
+| 27-01.13h | exact gain from 0.1 W | 3.04 | % |
+| 27-01.14a | final temperature of the burst | 145 | °C |
+| 27-01.14b | time constant | 240 | s |
+| 27-01.14c | exact burst duration | 22.4 | s |
+| 27-01.14d | approximate burst duration | 20.0 | s |
+| 27-01.14e | shortfall of the approximation | 10.9 | % |

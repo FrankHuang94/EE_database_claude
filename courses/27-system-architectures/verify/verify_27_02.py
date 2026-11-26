@@ -236,4 +236,31 @@ v.check("Lab 27-02.d", die(18500, 120, 0.10)[2])
 v.check("Lab 27-02.d1", die(30000, 120, 0.15)[2])
 v.check("Lab 27-02.d2", die(30000, 120, 0.15)[2] / die(18500, 120, 0.10)[2])
 
+# Problem 27-02.13: energy per instruction from frequency, the crossover by bisection
+def e_core(rate_gips, ipc, c_nf, v0, k, ps):
+    f = rate_gips / ipc  # GHz
+    return c_nf * (v0 + k * f) ** 2 / ipc + ps / (ipc * f)
+
+
+e_mid = lambda r: e_core(r, 4, 0.6, 0.45, 0.15, 0.05)  # noqa: E731
+e_lit = lambda r: e_core(r, 2.5, 0.22, 0.45, 0.30, 0.02)  # noqa: E731
+v.check("27-02.13a", e_mid(1.5))
+v.check("27-02.13b", e_lit(1.5))
+v.check("27-02.13c", e_mid(5.0))
+v.check("27-02.13d", e_lit(5.0))
+lo, hi = 1.0, 6.0
+for _ in range(200):
+    mid = 0.5 * (lo + hi)
+    if (e_lit(lo) - e_mid(lo)) * (e_lit(mid) - e_mid(mid)) <= 0:
+        hi = mid
+    else:
+        lo = mid
+v.check("27-02.13e", 0.5 * (lo + hi))
+v.assert_true("one crossing between 1 and 6 GIPS",
+              sum(1 for r in np.linspace(1, 5.99, 500)
+                  if (e_lit(r) - e_mid(r)) * (e_lit(r + 0.01) - e_mid(r + 0.01)) < 0) == 1)
+v.check("27-02.13f", e_lit(2.0))
+v.check("27-02.13g", e_mid(2.0))
+v.check("27-02.13h", 100 * (1 - e_lit(2.0) / e_mid(2.0)))
+
 sys.exit(v.finish())

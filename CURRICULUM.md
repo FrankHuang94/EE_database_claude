@@ -4,7 +4,7 @@
 
 The complete map of the Self-Taught BSEE: every course and chapter, with university equivalents, textbook alignment, prerequisites, learning objectives and estimated study hours. For the week-by-week schedule see [STUDY_PLAN.md](STUDY_PLAN.md). For build status see [PROGRESS.md](PROGRESS.md).
 
-**At a glance:** 29 courses · 307 chapters · 7 terms · 4 capstones · ≈ 2760 study hours in total (courses 2543 h, capstones 160 h, term checkpoints 56 h).
+**At a glance:** 29 courses · 307 chapters · 7 terms · 4 capstones · ≈ 2760 study hours in total (courses 2546 h, capstones 160 h, term checkpoints 56 h).
 
 > **About the hour estimates.** Hours cover reading, working the examples, the full problem set and the lab for each chapter, for a strong learner meeting the material for the first time. At 10–12 hours per week, the full curriculum is a multi-year undertaking; see [STUDY_PLAN.md](STUDY_PLAN.md) for the calendar and the shorter practitioner fast track.
 
@@ -39,7 +39,7 @@ The complete map of the Self-Taught BSEE: every course and chapter, with univers
 | [24 · High-Speed I/O, Signal Integrity and Photonics](#course-24) | 6 | 9 | 59 | High-Speed Digital Design / Signal Integrity + Optoelectronics (senior/graduate elective) |
 | [25 · Semiconductor Fabrication, Packaging, Test and Reliability](#course-25) | 6 | 12 | 83 | Microfabrication / IC Process Technology + Packaging and Reliability (senior elective) |
 | [26 · Engineering Design and Professional Practice](#course-26) | 7 | 7 | 42 | Senior Design / Engineering Professional Practice + Engineering Economics |
-| [27 · System Architectures (Case-Study Course)](#course-27) | 7 | 8 | 60 | Systems-design case-study capstone seminar |
+| [27 · System Architectures (Case-Study Course)](#course-27) | 7 | 8 | 63 | Systems-design case-study capstone seminar |
 | [28 · Technical Diligence and Engineering Leadership Fluency](#course-28) | 7 | 10 | 62 | No university equivalent. Draws on industry diligence practice. |
 
 ## Prerequisite graph
@@ -1143,7 +1143,7 @@ How chips are made, packaged, tested and qualified: process flow, lithography th
 
 ## Term 7 — Design Practice, Systems and Practitioner Layer
 
-Engineering economics, end-to-end system case studies and technical diligence. *Term total: ≈ 164 hours + checkpoint (8 h).*
+Engineering economics, end-to-end system case studies and technical diligence. *Term total: ≈ 167 hours + checkpoint (8 h).*
 
 <a id="course-26"></a>
 
@@ -1190,7 +1190,7 @@ End-to-end analyses of real product classes (smartphone SoC, wearables, PC SoC, 
 - **Prerequisites:** [18 · Embedded Systems and Microcontrollers](#course-18), [19 · Digital VLSI Design](#course-19), [20 · Analog and Mixed-Signal IC Design](#course-20), [21 · RF and Microwave Engineering](#course-21), [22 · Power Electronics and Energy Conversion](#course-22), [23 · Memory and Storage Technology](#course-23), [24 · High-Speed I/O, Signal Integrity and Photonics](#course-24), [25 · Semiconductor Fabrication, Packaging, Test and Reliability](#course-25)
 - **FE areas served:** —
 - **Deeper:** see companion repo(s): datacenter networking; LLM inference engineering
-- **Study hours:** ≈ 60 (58 chapter hours + 2 review/exam)
+- **Study hours:** ≈ 63 (61 chapter hours + 2 review/exam)
 
 **Learning objectives.** By the end of the course you can:
 
@@ -1201,7 +1201,7 @@ End-to-end analyses of real product classes (smartphone SoC, wearables, PC SoC, 
 
 | Chapter | Hours | Key topics |
 |---|---|---|
-| [27-01 · Method: Analyzing a System End to End](courses/27-system-architectures/chapters/27-01-system-analysis-method.md) | 4 | Budgets (power, thermal, area, cost, BOM), block diagrams, bottleneck analysis |
+| [27-01 · Method: Analyzing a System End to End](courses/27-system-architectures/chapters/27-01-system-analysis-method.md) | 7 | Budgets (power, thermal, area, cost, BOM), block diagrams, bottleneck analysis |
 | [27-02 · The Smartphone SoC](courses/27-system-architectures/chapters/27-02-smartphone-soc.md) | 8 | CPU/GPU/NPU/ISP/modem integration, memory, power and thermal envelope, process node choices |
 | [27-03 · Wearables I: The Smartwatch](courses/27-system-architectures/chapters/27-03-wearables-smartwatch.md) | 7 | Always-on domains, sensor hubs, PMIC, battery life, display power, radios |
 | [27-04 · Wearables II: Earbuds and Smart Glasses / XR](courses/27-system-architectures/chapters/27-04-wearables-earbuds-and-glasses.md) | 8 | Audio SoCs, LE Audio, tiny batteries, XR compute/thermal/display constraints, split rendering |
