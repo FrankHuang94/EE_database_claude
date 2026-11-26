@@ -2,7 +2,7 @@
 """Verify every number in chapter 25-02 (lithography), its problems and lab.
 
 Independent routes (the lab module litho.py sums diffraction orders numerically):
-- resolution limits from the pupil inequality by root-finding;
+- resolution limits from the pupil inequality by root-finding, cross-checked against the lab's aerial image (no contrast just below the cutoff pitch, contrast just above it);
 - depth of focus from the exact quarter-wave condition, solved for the defocus numerically;
 - image contrast from closed-form two- and three-beam intensities, maximized and minimized on a grid;
 - Fourier amplitudes of the grating by numerical integration;
@@ -247,5 +247,26 @@ rng = np.random.default_rng(11)
 sim = rng.binomial(rng.poisson(pe * 100, 200_000), 0.2)
 v.assert_true("simulated absorbed-photon std within 1% of sqrt(N)", abs(sim.std() / math.sqrt(n_abs) - 1) < 0.01)
 v.check("Lab 25-02.d", 3600 / (6 + t_e * 60 / 30))
+
+# ---------------------------------------------------------------- cutoff and defocus cross-checks with the lab's image model
+import importlib.util  # noqa: E402
+_spec = importlib.util.spec_from_file_location("litho", LAB / "litho.py")
+litho = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(litho)
+pc = pmin(193, 1.35, True)
+v.assert_true("aerial image: no contrast 2% below the off-axis cutoff pitch",
+              litho.image_contrast(0.98 * pc, 193, 1.35, n=1.44, poles=litho.dipole_for(0.98 * pc, 193)) < 1e-6)
+v.assert_true("aerial image: contrast appears 2% above the cutoff pitch",
+              litho.image_contrast(1.02 * pc, 193, 1.35, n=1.44, poles=litho.dipole_for(1.02 * pc, 193)) > 0.1)
+pc_on = pmin(193, 1.35, False)
+v.assert_true("aerial image: on-axis contrast vanishes below lambda/NA and appears above it",
+              litho.image_contrast(0.98 * pc_on, 193, 1.35, n=1.44) < 1e-6 < litho.image_contrast(1.02 * pc_on, 193, 1.35, n=1.44))
+# ---------------------------------------------------------------- Problem 15: edge shift by root-finding on the threshold condition
+ell = 10.0
+edge = optimize.brentq(lambda x: 1.05 * (1 - x / ell) - 1.0, -5, 5)
+v.check("25-02.15b", edge)
+v.check("25-02.15b1", 2 * edge)
+v.check("25-02.15b2", 2 * ell * 0.05)
+v.check("25-02.15c", 100 * 0.75 / ell)
 
 sys.exit(v.finish())

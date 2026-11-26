@@ -22,7 +22,7 @@
 
 ## 1. Big picture
 
-A leading-edge chip is built on a 300 mm silicon wafer by 400 to 1,400 process steps over roughly 12 to 20 weeks [R-020]. Those steps fall into three blocks. The **front end of line (FEOL)** builds the transistors in and on the silicon. The **middle of line (MOL)** makes the tiny contacts that connect each transistor's source, drain and gate to the wiring. The **back end of line (BEOL)** builds a stack of ten to twenty copper wiring layers above them. Every block is made from the same few unit processes (deposit, pattern, etch, implant, heat, polish, clean, measure), repeated in a fixed order because each step must survive everything that follows. This chapter walks the flow end to end and derives the quantitative models that matter: how fast oxide grows, how much room a gate trench leaves, what contacts and wires cost in resistance, and how step count and cycle time turn into yield and inventory. Chapters 25-02 and 25-03 then open up the unit processes one by one.
+A leading-edge chip is built on a 300 mm silicon wafer by 400 to 1,400 process steps over roughly 12 to 20 weeks [R-020]. Those steps fall into three blocks. The **front end of line (FEOL)** builds the transistors in and on the silicon. The **middle of line (MOL)** makes the tiny contacts that connect each transistor's source, drain and gate to the wiring. The **back end of line (BEOL)** builds a stack of copper wiring layers above them. Every block is made from the same few unit processes (deposit, pattern, etch, implant, heat, polish, clean, measure), repeated in a fixed order because each step must survive everything that follows. This chapter walks the flow end to end and derives the quantitative models that matter: how fast oxide grows, how much room a gate trench leaves, what contacts and wires cost in resistance, and how step count and cycle time turn into yield and inventory. Chapters 25-02 and 25-03 then open up the unit processes one by one.
 
 - **Every chip you will diligence** passes through this flow; "node", "GAA", "backside power" and "cycle time" are all statements about it.
 - **The transistor is a minority of the work.** At advanced nodes the MOL and BEOL hold most of the parasitic resistance and capacitance, and many of the masks.
@@ -32,11 +32,11 @@ A leading-edge chip is built on a 300 mm silicon wafer by 400 to 1,400 process s
 
 ## 2. Intuition first
 
-**The physical picture.** Think of the wafer as a building site where everything is done to the whole site at once. A blanket film is laid over the entire wafer; a photographic stencil (the mask, printed in photoresist by lithography) protects some areas; an etch or implant acts on the unprotected areas; the resist is stripped; the wafer is cleaned and measured. That **pattern-transfer loop** is repeated for every layer, 60 to 100 times at advanced nodes, with depositions, anneals and polishing steps in between.
+**The physical picture.** Think of the wafer as a building site where everything is done to the whole site at once. A blanket film is laid over the entire wafer; a photographic stencil (the mask, printed in photoresist by lithography) protects some areas; an etch or implant acts on the unprotected areas; the resist is stripped; the wafer is cleaned and measured. That **pattern-transfer loop** is repeated for every mask layer, about 80–85 times at 7 nm by a 2017 count [R-020], with depositions, anneals and polishing steps in between.
 
 ```mermaid
 flowchart LR
-    A[Wafer start] --> B[FEOL: isolation, wells, channels, gate, source/drain]
+    A[Wafer start] --> B[FEOL: fins or sheets, isolation, wells, gate, source/drain]
     B --> C[MOL: silicide, source/drain and gate contacts]
     C --> D[BEOL: M1 to Mn copper wires and vias]
     D --> E[Optional backside: bond, thin, backside power]
@@ -137,14 +137,14 @@ $$
 
 the sum of the parabolic-only and linear-only times.
 
-**Temperature, ambient and orientation.** Both constants follow Arrhenius laws, $B = C_1 e^{-E_1/kT}$ and $B/A = C_2 e^{-E_2/kT}$, where $k$ is Boltzmann's constant (8.617 × 10⁻⁵ eV/K) and $T$ is in kelvin. The classic coefficients for (111) silicon, from Deal and Grove's data as tabulated by Plummer, Deal and Griffin:
+**Temperature, ambient and orientation.** Both constants follow Arrhenius laws, $B = C_1 e^{-E_1/kT}$ and $B/A = C_2 e^{-E_2/kT}$, where $k$ is Boltzmann's constant (8.61733 × 10⁻⁵ eV/K) and $T$ is in kelvin. The classic coefficients for (111) silicon, from Deal and Grove's data as tabulated by Plummer, Deal and Griffin:
 
 | Ambient | $C_1$ (µm²/h) | $E_1$ (eV) | $C_2$ (µm/h) | $E_2$ (eV) |
 |---|---|---|---|---|
 | Dry O₂ | 7.72 × 10² | 1.23 | 6.23 × 10⁶ | 2.0 |
 | Wet (H₂O) | 3.86 × 10² | 0.78 | 1.63 × 10⁸ | 2.05 |
 
-For (100) silicon, divide $C_2$ by 1.68. Only $B/A$ depends on orientation, because only the interface reaction ($k_s$) depends on how many silicon bonds the surface presents; diffusion through amorphous oxide does not care. Wet oxidation is much faster because water is far more soluble in SiO₂ than oxygen is, which raises $C^*$ and with it both $B$ and $B/A$; this is why thick isolation and field oxides are grown in steam (Examples 25-01.2 and 25-01.3). Because $C^*$ is proportional to the gas's partial pressure (Henry's law), both constants also scale with pressure.
+For (100) silicon, divide $C_2$ by 1.68. Only $B/A$ depends on orientation, because only the interface reaction ($k_s$) depends on how many silicon bonds the surface presents; diffusion through amorphous oxide does not care. Wet oxidation is much faster because water is far more soluble in SiO₂ than oxygen is, which raises $C^*$ and with it both $B$ and $B/A$; this is why thick isolation and field oxides are grown in steam (Examples 25-01.2 and 25-01.3). Because $C^*$ is proportional to the gas's partial pressure (Henry's law), $B$ scales with pressure. So does $B/A$ for steam, but for dry oxygen $B/A$ rises more slowly than pressure, roughly as $P^{0.7\text{–}0.8}$ (Plummer, Deal and Griffin), a sign that the interface reaction is not a simple first-order step. The wet coefficients above are for pyrogenic steam near atmospheric pressure.
 
 **Where the model fails.** Dry oxidation grows faster than the model predicts for the first 20–30 nm. The usual patch is an effective initial thickness $x_i$ of about 25 nm, absorbed into $\tau$. Modern gate dielectrics are therefore not grown this way at all: a sub-nanometre interfacial SiO₂ layer is formed chemically and a high-k film is deposited on it by atomic-layer deposition (25-03; the equivalent oxide thickness is 04-04's).
 
@@ -160,9 +160,9 @@ Silicon's diamond lattice has 8 atoms per cubic cell of side $a$ = 0.5431 nm, so
 
 A modern logic FEOL, simplified, in order (09-12 covers the device physics of each structure):
 
-1. **Isolation.** Shallow trench isolation (STI): etch trenches between future transistors, grow a thin liner oxide, fill with deposited oxide, and polish flat by CMP. Thermal oxidation appears here as the liner.
-2. **Wells.** Implant n- and p-type dopants to set each transistor's body doping; anneal.
-3. **Channels.** For FinFETs, etch silicon fins. For nanosheets, first grow an epitaxial stack of alternating Si and SiGe layers, then etch it into fins; the SiGe layers are sacrificial.
+1. **Channels.** For nanosheets, first grow a blanket epitaxial stack of alternating Si and SiGe layers (the SiGe is sacrificial); a FinFET flow starts from the silicon itself. Pattern the fins, usually by spacer-based multipatterning (25-02), and etch them.
+2. **Isolation.** Shallow trench isolation (STI) between the fins: grow a thin liner oxide, fill with deposited oxide, polish flat by CMP, then recess the oxide to reveal the upper part of each fin. Thermal oxidation appears here as the liner. (In a planar flow, STI comes first and defines the active areas.)
+3. **Wells.** Implant n- and p-type dopants to set each transistor's body doping, and anneal; some flows implant the wells before the epitaxy instead.
 4. **Dummy gate and spacers.** Pattern a temporary polysilicon gate across the channels and wrap it in dielectric spacers that will separate gate from source and drain.
 5. **Source and drain.** Recess the channel ends and regrow them epitaxially: boron-doped SiGe for PMOS (which also compresses the channel, raising hole mobility) and phosphorus-doped Si for NMOS. Activate the dopants with a short, hot anneal.
 6. **Replacement gate.** Cover with dielectric, polish to expose the dummy gate, and remove it. For nanosheets, selectively etch the SiGe layers away, releasing the silicon sheets so the gate can wrap all around them (with "inner spacers" protecting the source and drain ends). Then deposit the real gate stack into the trench: an interfacial oxide, a high-k dielectric (HfO₂-based, by ALD), one or more work-function metals that set the threshold voltage, and a low-resistance fill metal. Polish flat.
@@ -202,10 +202,10 @@ which is source degeneration: the device behaves as if its transconductance were
 **Why the stack is tiered.** Consider a wire of width $W$, thickness $H$ and length $L$, with neighbours at spacing $S$. Its resistance per length is $\rho/(WH)$. Its capacitance per length depends only on the ratios $W/S$, $H/S$ and the distances to the layers above and below, so if every dimension scales by a factor $s$, the capacitance per length is unchanged (04-04). The distributed RC delay of 19-05 is
 
 $$
-t_{50} = 0.379\,\frac{\rho}{WH}\,\frac{C}{L}\,L^2 \;\propto\; \frac{L^2}{s^2} .
+t_{50} = 0.3787\,\frac{\rho}{WH}\,\frac{C}{L}\,L^2 \;\propto\; \frac{L^2}{s^2} .
 $$
 
-Scaling a layer's cross-section up by $s$ cuts its delay by $s^2$ at the cost of $s$ times fewer wiring tracks per micrometre. So the stack is built in tiers: tight-pitch local layers (M0–M2) for short connections inside cells, intermediate layers for blocks, and thick global layers at the top for long routes, clocks and power, with the thickest carrying the most current. Two floors bound the benefit. The size effect raises the resistivity of narrow wires well above bulk copper's 1.68 µΩ·cm (04-05), which hurts the local tiers most. And no wire is faster than light in its dielectric: the **time of flight** $L\sqrt{\varepsilon_r}/c$. When the RC delay of a fat global wire falls below that, the wire behaves as a transmission line and its delay is set by the driver and the time of flight (24-01), not by $RC$ (Example 25-01.6).
+Scaling a layer's cross-section up by $s$ cuts its delay by $s^2$ at the cost of $s$ times fewer wiring tracks per micrometre. So the stack is built in tiers: tight-pitch local layers (M0–M2) for short connections inside cells, intermediate layers for blocks, and thick global layers at the top for long routes, clocks and power, with the thickest carrying the most current. Two floors bound the benefit. The size effect raises the resistivity of narrow wires well above bulk copper's 1.68 µΩ·cm (04-05), which hurts the local tiers most. And no wire is faster than light in its dielectric: the **time of flight** $L\sqrt{\varepsilon_r}/c$. When the RC delay of a fat global wire falls below that, the wire behaves as a transmission line and its delay is set by the driver and the time of flight (24-01), not by $RC$ (Example 25-01.6). Equating $0.3787\,R'C'L^2$ with $L\sqrt{L'C'}$ shows the condition is a total wire resistance below about $2.6\,Z_0$, with $Z_0 = \sqrt{L'/C'}$; it also needs a driver whose rise time is about the time of flight or shorter.
 
 **Backside power delivery.** In a conventional flow, power and signals share the front-side stack, and current to the transistors descends through every via level, losing voltage on the way (IR drop) and occupying routing tracks. Backside power delivery builds a second, coarse wiring network under the transistors. The front side is finished, bonded face-down to a carrier wafer, and the original substrate is thinned to expose the device layer from below; nano-scale through-silicon vias or direct contacts then connect the backside power rails to the transistors. The front stack is freed for signals. Intel's PowerVia test chip reported standard-cell utilization above 90% and a frequency benefit above 5% from reduced IR drop [R-555]; 09-12 derives the IR-drop physics.
 
@@ -245,7 +245,7 @@ an area-weighted harmonic mean. Because SRAM and analog circuits have shrunk muc
 
 ## 4. Worked examples
 
-All examples use $k$ = 8.617 × 10⁻⁵ eV/K, the coefficient table of §3.2 with $C_2$ divided by 1.68 for (100) silicon, and the distributed delay $t_{50} = 0.379\,RC$ of 19-05. "Assumed" values are illustrative.
+All examples use $k$ = 8.61733 × 10⁻⁵ eV/K, $c$ = 2.998 × 10⁸ m/s, the coefficient table of §3.2 with $C_2$ divided by 1.68 for (100) silicon, and the distributed delay $t_{50} = 0.3787\,RC$ of 19-05 (usually rounded to 0.38). "Assumed" values are illustrative.
 
 ### Example 25-01.1 · The wafer and the oxide it grows (tier A)
 
@@ -267,7 +267,7 @@ All examples use $k$ = 8.617 × 10⁻⁵ eV/K, the coefficient table of §3.2 wi
 
 **Solution.**
 
-- (a) $kT = 8.617 \times 10^{-5} \times 1273.15$ = **0.1097** eV. $B = 386\,e^{-0.78/0.1097}$ = **0.315** µm²/h; $B/A = (1.63 \times 10^8/1.68)\,e^{-2.05/0.1097}$ = **0.745** µm/h; $A$ = **0.424** µm.
+- (a) $kT = 8.61733 \times 10^{-5} \times 1273.15$ = **0.109712** eV. $B = 386\,e^{-0.78/0.109712}$ = **0.315** µm²/h; $B/A = (1.63 \times 10^8/1.68)\,e^{-2.05/0.109712}$ = **0.745** µm/h; $A$ = **0.424** µm.
 - (b) $t = x^2/B + x/(B/A) = 0.25/0.315 + 0.5/0.745$ = **1.46** h.
 - (c) Linear only: **0.67** h; parabolic only: **0.79** h. Neither alone is close; at 500 nm, about $A$, the two terms are comparable.
 
@@ -281,7 +281,7 @@ All examples use $k$ = 8.617 × 10⁻⁵ eV/K, the coefficient table of §3.2 wi
 
 **Solution.**
 
-- (a) $B = 772\,e^{-1.23/0.1097}$ = **0.0104** µm²/h; $B/A = (6.23 \times 10^6/1.68)\,e^{-2.0/0.1097}$ = **0.0449** µm/h; $A$ = **0.233** µm.
+- (a) $B = 772\,e^{-1.23/0.109712}$ = **0.0104** µm²/h; $B/A = (6.23 \times 10^6/1.68)\,e^{-2.0/0.109712}$ = **0.0449** µm/h; $A$ = **0.233** µm.
 - (b) $0.25/0.0104 + 0.5/0.0449$ = **35.1** h.
 - (c) **24** times longer.
 
@@ -319,18 +319,18 @@ All examples use $k$ = 8.617 × 10⁻⁵ eV/K, the coefficient table of §3.2 wi
 
 ### Example 25-01.6 · Why the stack is tiered (tier B)
 
-**Setup.** A 1 mm route can run on three tiers (all assumed): local (20 nm wide, 40 nm thick, 2 nm barrier on sides and bottom, effective copper resistivity 4.5 µΩ·cm), intermediate (40 × 80 nm, 2 nm barrier, 2.8 µΩ·cm) or global (400 × 800 nm, 2 nm barrier, 1.9 µΩ·cm). Each has about 0.2 fF/µm of capacitance, because its spacing and layer heights scale with it. Find (a) the conducting area and resistance per µm on each tier, (b) the 1 mm delay $0.379\,RC$ on each, (c) the time of flight for $\varepsilon_r$ = 3.0, and (d) how many local tracks fit in the width of one global track at pitch twice the width.
+**Setup.** A 1 mm route can run on three tiers (all assumed): local (20 nm wide, 40 nm thick, 2 nm barrier on sides and bottom, effective copper resistivity 4.5 µΩ·cm), intermediate (40 × 80 nm, 2 nm barrier, 2.8 µΩ·cm) or global (400 × 800 nm, 2 nm barrier, 1.9 µΩ·cm). Each has about 0.2 fF/µm of capacitance, because its spacing and layer heights scale with it. Find (a) the conducting area and resistance per µm on each tier, (b) the 1 mm delay $0.3787\,RC$ on each, (c) the time of flight for $\varepsilon_r$ = 3.0, and (d) how many local tracks fit in the width of one global track at pitch twice the width.
 
 **Solution.**
 
 - (a) Local: $(20 - 4)(40 - 2)$ = **608** nm², $4.5 \times 10^{-8}\ \Omega\text{m}/608 \times 10^{-18}\ \text{m}^2$ = **74.0** Ω/µm. Intermediate: **2808** nm², **9.97** Ω/µm. Global: **3.16e5** nm², **0.0601** Ω/µm.
-- (b) With $C$ = 200 fF: local $0.379 \times 74.0\ \text{kΩ} \times 200\ \text{fF}$ = **5.61** ns; intermediate **0.755** ns; global **4.55** ps.
-- (c) $10^{-3} \times \sqrt{3.0}/(3.00 \times 10^8)$ = **5.78** ps.
+- (b) With $C$ = 200 fF: local $0.3787 \times 74.0\ \text{kΩ} \times 200\ \text{fF}$ = **5.61** ns; intermediate **0.755** ns; global **4.55** ps.
+- (c) $10^{-3} \times \sqrt{3.0}/(2.998 \times 10^8)$ = **5.78** ps.
 - (d) $800/40$ = **20** local tracks.
 
 **Units check.** (Ω·m)/m² = Ω/m; Ω × F = s. ✓
 
-**Sanity check.** The local wire is more than a thousand times slower than the global one over 1 mm, so no long signal belongs there. On the global tier the RC delay has fallen below the time of flight: that wire is a transmission line, and its delay is set by its driver and by light in the dielectric. The price of the global tier is 20 times fewer tracks, which is why only a few layers are fat.
+**Sanity check.** The local wire is 5.61 ns/4.55 ps = **1.23e3** times slower than the global one over 1 mm, so no long signal belongs there. On the global tier the RC delay has fallen below the time of flight: that wire is a transmission line, and its delay is set by its driver and by light in the dielectric. The price of the global tier is 20 times fewer tracks, which is why only a few layers are fat.
 
 ### Example 25-01.7 · Steps, cycle time and inventory (tier B)
 
@@ -371,7 +371,7 @@ All examples use $k$ = 8.617 × 10⁻⁵ eV/K, the coefficient table of §3.2 wi
 | Ex 25-01.1b2 | silicon consumed per oxide thickness | 0.44 | |
 | Ex 25-01.1c | silicon consumed by 100 nm | 44 | nm |
 | Ex 25-01.1c1 | oxide above original surface | 56 | nm |
-| Ex 25-01.2a0 | kT at 1000 C | 0.1097 | eV |
+| Ex 25-01.2a0 | kT at 1000 C | 0.109712 | eV |
 | Ex 25-01.2a | B, wet 1000 C | 0.315 | µm²/h |
 | Ex 25-01.2a1 | B/A, wet 1000 C (100) | 0.745 | µm/h |
 | Ex 25-01.2a2 | A, wet 1000 C | 0.424 | µm |
@@ -403,6 +403,7 @@ All examples use $k$ = 8.617 × 10⁻⁵ eV/K, the coefficient table of §3.2 wi
 | Ex 25-01.6b1 | intermediate 1 mm delay | 0.755 | ns |
 | Ex 25-01.6b2 | global 1 mm delay | 4.55 | ps |
 | Ex 25-01.6c | time of flight, 1 mm | 5.78 | ps |
+| Ex 25-01.6e | local over global delay | 1.23e3 | |
 | Ex 25-01.6d | local tracks per global track | 20 | |
 | Ex 25-01.7a | survival, 1,000 steps at 99.99% | 0.905 | |
 | Ex 25-01.7a1 | survival, 1,000 steps at 99.9% | 0.368 | |
@@ -418,6 +419,7 @@ All examples use $k$ = 8.617 × 10⁻⁵ eV/K, the coefficient table of §3.2 wi
 | Txt 25-01.a | oxide surface above silicon, fraction | 0.56 | |
 | Txt 25-01.b | volume expansion | 2.3 | |
 | Txt 25-01.c | drive loss for 100 ohm at 1 mS | 9.1 | % |
+| Txt 25-01.d | WIP reduction | 14 | % |
 
 ## 5. Simulate it
 
@@ -453,7 +455,7 @@ The lab is [labs/25-01-lab/](../labs/25-01-lab/README.md). `process.py` implemen
 | Lower contact resistivity (silicide, interface doping) | Drive current at small contact area | New materials, defectivity, integration risk | Process integration |
 | More fat global layers | Long-wire delay, power-grid IR drop | Masks, cost, fewer tracks per layer | Technology definition with physical design |
 | Backside power delivery | IR drop, front-side routing, cell utilization | Wafer bonding and thinning, cost, thermal path, debug access | Technology development and product architecture |
-| Faster cycle time (hot lots, fewer steps) | Learning rate, inventory | Fab utilization, cost per wafer | Fab operations |
+| Faster cycle time (hot lots, which are priority wafers that jump the queues; fewer steps) | Learning rate, inventory | Fab utilization, cost per wafer | Fab operations |
 
 ## 7. Numbers to know
 
@@ -486,8 +488,8 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 
 **State of the art (as of Nov 2026).**
 
-- *Gate-all-around in volume* [Established for the production starts]. Samsung began 3 nm GAA (MBCFET) production on 30 Jun 2022, the first GAA node in production anywhere [R-557]. TSMC's N2, its first nanosheet node, entered volume production in 4Q25 [R-552]. Intel 18A, combining RibbonFET GAA with PowerVia backside power, ramped toward high-volume production in Arizona in October 2025 [R-554]. Samsung describes the Exynos 2600 as built on "the industry's first 2nm GAA process" [R-557], a phrase that is **[Contested]** since all three companies ramped 2 nm-class GAA within months of each other.
-- *Backside power* [Industry estimate: company guidance]. Intel 18A has it now [R-554]. TSMC's first, A16 with Super Power Rail, was "ready for production in 2026" with volume expected in 2027, a slip from earlier 2H26 framing [R-553]. Samsung slates SF2Z with backside power for 2027 [R-557]. Intel's 14A adds PowerDirect, second-generation RibbonFET and High-NA EUV, with risk production planned for 2H27 and volume in 2028 [R-556].
+- *Gate-all-around in volume* [Established for the production starts]. Samsung began 3 nm GAA (MBCFET) production on 30 Jun 2022, the first GAA node in production anywhere [R-557]. TSMC's N2, its first nanosheet node, entered volume production in 4Q25 [R-552]. Intel 18A, combining RibbonFET GAA with PowerVia backside power, was in production by October 2025, and Intel said on 22 January 2026 that it had "ramped to high-volume manufacturing in Arizona and Oregon" [R-554], [R-173]. Samsung describes the Exynos 2600 as built on "the industry's first 2nm GAA process" [R-557], a phrase that is **[Contested]** since all three companies ramped 2 nm-class GAA within months of each other.
+- *Backside power* [Industry estimate: company guidance; Contested for A16 timing]. Intel 18A has it now [R-554]. TSMC's first, A16 with Super Power Rail, was "ready for production in 2026" with volume expected in 2027, a slip from earlier 2H26 framing [R-553]. Samsung slates SF2Z with backside power for 2027 [R-557]. Intel's 14A adds PowerDirect, second-generation RibbonFET and High-NA EUV, with risk production planned for 2H27 and volume in 2028 [R-556].
 - *Roadmaps* [Industry estimate]. TSMC's April 2026 roadmap runs A14 (2028), then A13 and A12 (2029), with no plan to use High-NA EUV for any of these nodes [R-553]. N2 had more than 20 customer tape-outs with over 70 in the pipeline, by TSMC's count [R-553].
 - *Flow complexity* [Industry estimate, dated]. ASML's then-CEO put EUV at "over 10" layers at N5 and "over 20" at N3 in 2020 [R-558]; no credible public total mask count exists for N3 or N2 [R-020].
 - *Scale* [Established]. TSMC's 2025 capacity exceeded 17 million 12-inch-equivalent wafers, and it shipped about 15 million [R-559].
@@ -556,7 +558,7 @@ Resistance per length falls 4×, capacitance per length is unchanged, so the RC 
 
 <details><summary>Answer</summary>
 
-By Little's law WIP = $\lambda T$, so WIP falls by 2/14, about 14%, releasing that inventory; the fab also completes more learning cycles per year.
+By Little's law WIP = $\lambda T$, so WIP falls by 2/14 = **14**%, releasing that inventory; the fab also completes more learning cycles per year.
 
 </details>
 

@@ -94,6 +94,50 @@ $\sqrt{2\ln(9.97 \times 10^{20}/10^{17})}$ = **4.29**, so $x_j = 50 + 20 \times 
 
 (c) Compression: the SiGe film's natural spacing is larger than silicon's, and it is squeezed in the plane to match.
 
+### Solution 25-03.15
+
+(a) Let $\eta = x/(2\sqrt{Dt})$, so $\partial\eta/\partial t = -\eta/(2t)$ and $\partial\eta/\partial x = 1/(2\sqrt{Dt})$. With $\operatorname{erfc}\eta = 1 - (2/\sqrt\pi)\int_0^\eta e^{-u^2}du$, its derivative is $-(2/\sqrt\pi)e^{-\eta^2}$. Then
+
+$$
+\frac{\partial C}{\partial t} = C_s\left(-\frac{2}{\sqrt\pi}e^{-\eta^2}\right)\left(-\frac{\eta}{2t}\right) = \frac{C_s\,\eta}{\sqrt\pi\,t}\,e^{-\eta^2},
+$$
+
+$$
+\frac{\partial C}{\partial x} = -\frac{C_s}{\sqrt{\pi Dt}}\,e^{-\eta^2}, \qquad
+\frac{\partial^2 C}{\partial x^2} = -\frac{C_s}{\sqrt{\pi Dt}}\,e^{-\eta^2}(-2\eta)\frac{1}{2\sqrt{Dt}} = \frac{C_s\,\eta}{\sqrt\pi\,Dt}\,e^{-\eta^2},
+$$
+
+so $D\,\partial^2C/\partial x^2 = \partial C/\partial t$. At $x = 0$, $\eta = 0$ and $\operatorname{erfc}0 = 1$, so $C = C_s$; as $t \to 0$ for $x > 0$, $\eta \to \infty$ and $C \to 0$. The dose is
+
+$$
+Q = \int_0^\infty C_s\operatorname{erfc}\frac{x}{2\sqrt{Dt}}\,dx = 2C_s\sqrt{Dt}\int_0^\infty\operatorname{erfc}u\,du = 2C_s\sqrt{Dt}\cdot\frac{1}{\sqrt\pi},
+$$
+
+using integration by parts: $\int_0^\infty\operatorname{erfc}u\,du = [u\operatorname{erfc}u]_0^\infty + (2/\sqrt\pi)\int_0^\infty ue^{-u^2}du = 0 + 1/\sqrt\pi$. Units: cm⁻³ × cm = cm⁻². ✓
+
+(b) $kT = 8.61733 \times 10^{-5} \times 1223.15$ = 0.105403 eV; $D = 0.76\,e^{-3.46/0.105403}$ = **4.21e-15** cm²/s. With $t$ = 1200 s, $\sqrt{Dt}$ = **22.5** nm. Dose $Q = 2 \times 2.5 \times 10^{20} \times 2.248 \times 10^{-6}/\sqrt\pi$ = **6.34e14** cm⁻². The junction is where $C = N_B$: $\operatorname{erfc}\eta_j = 10^{16}/2.5 \times 10^{20} = 4.0 \times 10^{-5}$, so $\eta_j$ = **2.90** (from a table or `scipy.special.erfcinv`; by hand, iterate $\eta = \sqrt{-\ln(4.0 \times 10^{-5}\sqrt\pi\,\eta)}$ from $\eta$ = 3, which uses $\operatorname{erfc}\eta \approx e^{-\eta^2}/(\eta\sqrt\pi)$ and lands within 1%). Then $x_j = 2\sqrt{Dt}\,\eta_j$ = **131** nm.
+
+(c) $kT$ = 0.118329 eV; $D = 0.76\,e^{-3.46/0.118329}$ = **1.52e-13** cm²/s; $Dt = 1.52 \times 10^{-13} \times 3600 = 5.47 \times 10^{-10}$ cm², against $5.05 \times 10^{-12}$ cm² for the predeposition: a ratio of **108**. The drive-in spreads the dopant over a length $\sqrt{Dt}$ that is $\sqrt{108}$ = **10.4** times the predeposited layer's own, so the initial shape is forgotten and only its dose matters, just as a narrow implant is treated as a sheet. (The verify script checks this by convolving the erfc profile with the reflecting-surface Green's function: the junction depth agrees with the sheet model within 1%.)
+
+(d) Surface concentration $Q/\sqrt{\pi Dt} = 6.34 \times 10^{14}/\sqrt{\pi \times 5.47 \times 10^{-10}}$ = **1.53e19** cm⁻³. Setting $C(x_j) = N_B$: $x_j = 2\sqrt{Dt\,\ln[Q/(N_B\sqrt{\pi Dt})]} = 2\sqrt{5.47 \times 10^{-10} \times \ln 1530}$ = **1.27** µm. The drive-in has lowered the surface concentration by a factor of **16.3** and pushed the junction **9.7** times deeper, which is why predeposition sets the dose and drive-in sets the depth.
+
+(e) Any two of: (1) during the predeposition the boron concentration (2.5 × 10²⁰ cm⁻³) is far above the intrinsic carrier density at 950 °C, so diffusion is concentration-enhanced, not intrinsic; (2) an oxidizing drive-in injects silicon interstitials that enhance boron diffusion (oxidation-enhanced diffusion); (3) the ramp-up and ramp-down of each furnace step add thermal budget not counted in the plateau times. (Segregation of boron into a growing oxide works the other way, removing dose from the silicon.)
+
+### Solution 25-03.16
+
+(a) $R_s = (\pi/\ln 2)V/I = 4.532 \times V/I$: after the low-temperature anneal $4.532 \times 41.7\ \text{mV}/1.00\ \text{mA}$ = **189.0** Ω/□; after the spike anneal **73.4** Ω/□.
+
+(b) A thin slice of thickness $dx$ at depth $x$ has sheet conductance $q\mu N_a(x)\,dx$, and slices conduct in parallel, so $1/R_s = q\int\mu N_a(x)\,dx = q\mu Q_a$ for uniform $\mu$ (09-03). Hence $Q_a = 1/(q\mu R_s)$:
+
+- low-temperature anneal: $1/(1.6022 \times 10^{-19} \times 50 \times 189.0)$ = **6.60e14** cm⁻², an activated fraction of **33.0**%;
+- spike anneal: **1.70e15** cm⁻², **85.0**% activated.
+
+Units: 1/(C × cm²/(V·s) × V/A) = A·s/(C·cm²) = cm⁻². ✓ The assumed mobility carries the main uncertainty: hole mobility falls with concentration (09-03), so a fab calibrates $R_s$ against dose with reference wafers rather than trusting an absolute mobility.
+
+(c) $L/W$ = 20 squares, so $R = 20 \times 73.4$ = **1.47** kΩ.
+
+(d) With two probes the measured voltage includes the contact (spreading) resistance of each metal probe on silicon, which can be comparable to or larger than the layer's own resistance and varies from touchdown to touchdown. The four-point probe forces current through the outer pair and senses voltage with the inner pair, which draws essentially no current, so the contact resistances carry no current in the sensing loop and drop out (the Kelvin connection).
+
 ---
 
 ## Answer key
@@ -136,3 +180,22 @@ $\sqrt{2\ln(9.97 \times 10^{20}/10^{17})}$ = **4.29**, so $x_j = 50 + 20 \times 
 | 25-03.13b | WFE increase | 27.0 | $B |
 | 25-03.14a | SiGe lattice constant | 0.5499 | nm |
 | 25-03.14b | mismatch | 1.25 | % |
+| 25-03.15b | D at 950 C | 4.21e-15 | cm²/s |
+| 25-03.15b1 | sqrt(Dt) predeposition | 22.5 | nm |
+| 25-03.15b2 | predeposited dose | 6.34e14 | cm⁻² |
+| 25-03.15b3 | erfc argument at junction | 2.90 | |
+| 25-03.15b4 | predeposition junction depth | 131 | nm |
+| 25-03.15c | D at 1100 C | 1.52e-13 | cm²/s |
+| 25-03.15c1 | Dt ratio drive-in/predep | 108 | |
+| 25-03.15c2 | diffusion-length ratio | 10.4 | |
+| 25-03.15d | surface concentration after drive-in | 1.53e19 | cm⁻³ |
+| 25-03.15d1 | junction depth after drive-in | 1.27 | µm |
+| 25-03.15d2 | surface concentration ratio | 16.3 | |
+| 25-03.15d3 | junction depth ratio | 9.7 | |
+| 25-03.16a | Rs low-temperature anneal | 189.0 | Ω/□ |
+| 25-03.16a1 | Rs spike anneal | 73.4 | Ω/□ |
+| 25-03.16b | active dose low-T | 6.60e14 | cm⁻² |
+| 25-03.16b1 | activated fraction low-T | 33.0 | % |
+| 25-03.16b2 | active dose spike | 1.70e15 | cm⁻² |
+| 25-03.16b3 | activated fraction spike | 85.0 | % |
+| 25-03.16c | resistor | 1.47 | kΩ |

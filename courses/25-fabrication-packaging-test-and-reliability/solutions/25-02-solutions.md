@@ -30,7 +30,7 @@ Every number is recomputed by [verify_25_02.py](../verify/verify_25_02.py).
 
 (c) $13.5/0.33$ = **40.9** nm.
 
-A 24 nm pitch is printable by EUV only with off-axis illumination, and is near its practical limit ($k_1$ = 12 × 0.33/13.5 = 0.293, just above the 0.25 floor).
+A 24 nm pitch needs off-axis illumination, and at $k_1 = 12 \times 0.33/13.5$ = **0.293** it sits below the practical single-exposure $k_1$ of about 0.32 (§3.2), though above the 0.25 floor: in production it needs Low-NA double patterning or High-NA EUV.
 
 ### Solution 25-02.4
 
@@ -94,7 +94,7 @@ $N_{abs} \ge 1/0.03^2$ = **1.11e3** absorbed photons, so $1.11 \times 10^3/(0.25
 
 (c) $10.36 \times 102/30$ = 35.2 s: $3600/41.2$ = **87.3** wph.
 
-Tripling the dose for noise cuts throughput by 60% here; this is why dose, not optics, often sets the practical limit of EUV at the smallest features.
+Raising the dose 3.4-fold for noise cuts throughput by 60% here; this is why dose, not optics, often sets the practical limit of EUV at the smallest features.
 
 ### Solution 25-02.11
 
@@ -110,7 +110,7 @@ $350 \times 10^6/(35{,}064 \times 135)$ = **€73.9** per pass, **1.30** times t
 
 (a) Exposure time falls by 600/1000 to $0.6 \times 10.36$ = 6.22 s: $3600/(6 + 6.22)$ = **295** wph, **34**% more, half the 67% power gain.
 
-(b) With overhead $t_{oh}$ and exposure time $x$ at the lower power: $t_{oh} + x = 3600/220$ = 16.36 s and $t_{oh} + 0.6x = 3600/330$ = 10.91 s. Subtracting, $0.4x$ = 5.45 s, so $x$ = **13.6** s and $t_{oh}$ = **2.7** s. A 50% throughput gain from 67% more power requires overhead to be only about a sixth of the wafer time; in practice the roadmap also assumes faster stages and other improvements.
+(b) With overhead $t_{oh}$ and exposure time $x$ at the lower power: $t_{oh} + x = 3600/220$ = 16.36 s and $t_{oh} + 0.6x = 3600/330$ = 10.91 s. Subtracting, $0.4x$ = 5.45 s, so $x$ = **13.6** s and $t_{oh}$ = **2.7** s. A 50% throughput gain from 67% more power requires overhead to be only 2.7 s of the 16.36 s wafer time; in practice the roadmap also assumes faster stages and other improvements.
 
 ### Solution 25-02.14
 
@@ -119,6 +119,14 @@ $350 \times 10^6/(35{,}064 \times 135)$ = **€73.9** per pass, **1.30** times t
 (b) The difference is **4** nm, twice the 2 nm mandrel error: one space gains the error and the other loses it.
 
 (c) ±**1** nm.
+
+### Solution 25-02.15
+
+(a) The edge sits where $DI_e(1 - x/\ell) = D_0$, so $x = \ell(1 - D_0/(DI_e))$. With $D = (1 + \delta)D_0/I_e$, $x = \ell(1 - 1/(1 + \delta)) \approx \ell\delta$ for small $\delta$; and $\lvert dI/dx\rvert/I = 1/\ell$ at the edge, so $\ell$ is the inverse image log slope.
+
+(b) Exactly, each edge moves $10(1 - 1/1.05)$ = **0.476** nm, so the space widens by **0.952** nm; to first order, $2 \times 10 \times 0.05$ = **1.00** nm.
+
+(c) ±1.5 nm on the space is ±0.75 nm per edge, so $\delta = 0.75/10$ = **7.5**%. A steeper image (smaller $\ell$, higher NILS) widens the dose latitude, which is why image log slope is the figure lithographers watch.
 
 ---
 
@@ -185,3 +193,7 @@ $350 \times 10^6/(35{,}064 \times 135)$ = **€73.9** per pass, **1.30** times t
 | 25-02.14a1 | second space | 14 | nm |
 | 25-02.14b | space difference | 4 | nm |
 | 25-02.14c | mandrel tolerance | 1 | nm |
+| 25-02.15b | edge shift, exact | 0.476 | nm |
+| 25-02.15b1 | space change, exact | 0.952 | nm |
+| 25-02.15b2 | space change, first order | 1.00 | nm |
+| 25-02.15c | dose latitude | 7.5 | % |

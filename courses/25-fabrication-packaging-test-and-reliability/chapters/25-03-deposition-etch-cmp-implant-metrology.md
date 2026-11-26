@@ -43,7 +43,7 @@ Lithography (25-02) draws a pattern in resist; everything else in the fab makes 
 
 ### 3.1 Chemical vapour deposition: two resistances in series
 
-In CVD, precursor gases react at the heated wafer surface to form a film (silicon nitride from silane and ammonia, tungsten from WF₆, oxides from TEOS). Let $C_g$ be the precursor concentration in the bulk gas (molecules/cm³), $C_s$ the concentration at the surface, $h_g$ a gas-phase mass-transfer coefficient (cm/s) and $k_s$ the surface reaction-rate constant (cm/s). The supply and consumption fluxes are
+In CVD, precursor gases react at the heated wafer surface to form a film (silicon nitride from silane and ammonia, tungsten from WF₆, oxides from TEOS, tetraethyl orthosilicate, a liquid silicon source). Let $C_g$ be the precursor concentration in the bulk gas (molecules/cm³), $C_s$ the concentration at the surface, $h_g$ a gas-phase mass-transfer coefficient (cm/s) and $k_s$ the surface reaction-rate constant (cm/s). The supply and consumption fluxes are
 
 $$
 F_1 = h_g\,(C_g - C_s), \qquad F_2 = k_s\,C_s .
@@ -60,7 +60,7 @@ where $v$ is the growth velocity and $N$ the atoms (or molecules) per cm³ of fi
 - **Reaction-limited ($k_s \ll h_g$):** $v \approx k_sC_g/N$. Since $k_s = k_0e^{-E_a/kT}$, the rate is strongly temperature dependent but insensitive to gas flow and geometry, so it is uniform across a batch of wafers and down into trenches. Low-pressure CVD (LPCVD) furnaces run here, stacking a hundred or more wafers close together.
 - **Transport-limited ($k_s \gg h_g$):** $v \approx h_gC_g/N$. The rate barely changes with temperature but depends on flow and geometry, so uniformity needs careful reactor design.
 
-Example 25-01.3's wet and dry oxidation were the same competition; Example 25-03.1 puts numbers on it.
+Thermal oxidation in 25-01 was the same competition: its linear (reaction-limited) and parabolic (diffusion-limited) regimes, compared in Example 25-01.2(c) and §3.2 of that chapter, are the oxidation versions of these two limits. Example 25-03.1 puts numbers on the CVD case.
 
 **Conformality and step coverage.** A film is conformal if it has the same thickness on the top, sidewalls and bottom of a feature. Reaction-limited processes approach that; transport-limited and line-of-sight processes do not. Step coverage, the ratio of sidewall or bottom thickness to top thickness, worsens with the feature's aspect ratio (depth over width).
 
@@ -72,7 +72,7 @@ $$
 t_{film} = n_{cycles} \times \text{GPC},
 $$
 
-so ALD is digitally controllable and conformal even in very high-aspect-ratio structures, which is why it deposits high-k gate dielectrics, work-function metals and the spacer films of SADP and SAQP (25-02). Its cost is speed: a few seconds per cycle and a few tenths of a nanometre per cycle make it practical only for films of a few nanometres to a few tens (Example 25-03.2).
+so ALD is digitally controllable and conformal even in very high-aspect-ratio structures, which is why it deposits high-k gate dielectrics, work-function metals and the spacer films of SADP and SAQP (25-02). Its cost is speed: a few seconds per cycle and about a tenth of a nanometre per cycle make it practical only for films of a few nanometres to a few tens (Example 25-03.2).
 
 ### 3.3 Physical vapour deposition, epitaxy and electroplating
 
@@ -164,7 +164,7 @@ A noisy gauge therefore makes a capable process look incapable (lower apparent $
 
 ## 4. Worked examples
 
-"Assumed" values are illustrative. $k$ = 8.617 × 10⁻⁵ eV/K.
+"Assumed" values are illustrative. $k$ = 8.61733 × 10⁻⁵ eV/K.
 
 ### Example 25-03.1 · Which CVD regime? (tier B)
 
@@ -254,7 +254,7 @@ A noisy gauge therefore makes a capable process look incapable (lower apparent $
 
 **Solution.**
 
-- (a) $D = 0.76\,e^{-3.46/0.1097}$ = **1.53e-14** cm²/s; $\sqrt{2Dt}$ = **74** nm; $\Delta R_p' = \sqrt{12^2 + 74.2^2}$ = **75** nm; the peak falls to **0.16** of its value.
+- (a) $kT = 8.61733 \times 10^{-5} \times 1273.15$ = **0.109712** eV; $D = 0.76\,e^{-3.46/0.109712}$ = **1.53e-14** cm²/s; $\sqrt{2Dt}$ = **74** nm; $\Delta R_p' = \sqrt{12^2 + 74.2^2}$ = **75** nm; the peak falls to **0.16** of its value.
 - (b) $D$ = **5.03e-14** cm²/s; $\sqrt{2Dt}$ = **3.2** nm; $\Delta R_p'$ = **12.4** nm; the peak keeps **0.97** of its value.
 
 **Units check.** cm²/s × s = cm²; √cm² = cm. ✓
@@ -267,7 +267,7 @@ A noisy gauge therefore makes a capable process look incapable (lower apparent $
 
 **Solution.**
 
-- (a) $C_{pk} = \min(21.5 - 20.3,\ 20.3 - 18.5)/(3 \times 0.40)$ = **1.00**; out of specification: $Q(3.0) + Q(4.5)$ = **1.35e-3**.
+- (a) $C_{pk} = \min(21.5 - 20.3,\ 20.3 - 18.5)/(3 \times 0.40)$ = **1.00**; out of specification: $[1 - \Phi(3.0)] + [1 - \Phi(4.5)]$ = **1.35e-3**, where $\Phi$ is the standard normal CDF (03-02).
 - (b) $\sqrt{0.40^2 + 0.15^2}$ = **0.427** nm; apparent $C_{pk}$ = **0.94**.
 - (c) $6 \times 0.15/3.0$ = **0.30**.
 
@@ -287,7 +287,7 @@ A noisy gauge therefore makes a capable process look incapable (lower apparent $
 
 **Units check.** $B ÷ $B is dimensionless. ✓
 
-**Sanity check.** Two independent trackers agree within about 1% on the total, which builds confidence in the market size; company-level figures disagree far more, because of scope (equipment against total revenue including service) and fiscal-year differences [R-569], [R-570].
+**Sanity check.** Two independent trackers agree within about 1% on the total, which builds some confidence in the market size, though not proof: SEMI's total includes test and assembly equipment, and the TechInsights excerpt read here does not spell out whether its "IC manufacturing equipment" does the same, so part of the agreement may be coincidence of scope [R-568], [R-569]. Company-level figures disagree far more, because of scope (equipment against total revenue including service) and fiscal-year differences [R-569], [R-570].
 
 <!-- answer-key -->
 
@@ -326,7 +326,7 @@ A noisy gauge therefore makes a capable process look incapable (lower apparent $
 | Ex 25-03.6b | peak concentration | 3.32e20 | cm⁻³ |
 | Ex 25-03.6c0 | square-root factor | 3.41 | |
 | Ex 25-03.6c | junction depth | 70.9 | nm |
-| Ex 25-03.7a0 | kT at 1000 C | 0.1097 | eV |
+| Ex 25-03.7a0 | kT at 1000 C | 0.109712 | eV |
 | Ex 25-03.7a | D at 1000 C | 1.53e-14 | cm²/s |
 | Ex 25-03.7a1 | added spread, furnace | 74 | nm |
 | Ex 25-03.7a2 | added spread, 3 s.f. | 74.2 | nm |
@@ -414,8 +414,8 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 **State of the art (as of Nov 2026).**
 
 - *Market size* [Established for 2025; forecasts Industry estimate]. SEMI reported record WFE of $116.9 B in 2025 and forecast $143.9 B in 2026 (+23.1%), total equipment of $165.9 B in 2026 and $229.5 B in 2028; test equipment $15.3 B and assembly and packaging equipment $6.7 B in 2026 [R-568]. TechInsights put the 2025 IC equipment market at $136.2 B, +13% [R-569].
-- *Suppliers* [Established for rankings and filings; dollar shares Contested]. The top five were unchanged in 2025: ASML, Applied Materials, Lam Research, Tokyo Electron and KLA [R-569]. Latest fiscal-year revenues: Applied Materials $34.45 B (to Oct 2026), Lam Research $23.2 B (to Jun 2026), Tokyo Electron ¥2,443.5 B (to Mar 2026), KLA $13.58 B (to Jun 2026) and ASML €32.7 B (2025) [R-570], [R-563]. Fiscal years differ by up to ten months, and some figures include service and display revenue, so they should not be added or ranked naively.
-- *Competitive map* [Established: company filings]. Lam names Applied Materials as its main deposition rival, ASM International and Wonik IPS in ALD and PECVD, Applied, Hitachi and Tokyo Electron in etch, and Screen, Semes and Tokyo Electron in wet clean [R-571]. KLA says its process-control share is about seven times its nearest competitor's and expects advanced-packaging process-control revenue to grow from about $635 M in 2025 to about $1 B in 2026 [R-571]; third-party share estimates vary with definition **[Contested]**.
+- *Suppliers* **[Industry estimate]** for the ranking, **[Established]** for the filed revenues, **[Contested]** for dollar shares. TechInsights ranked the top five of 2025 as ASML (about $27.5 B of equipment revenue), Applied Materials, Lam Research, Tokyo Electron and KLA [R-569]. Latest fiscal-year revenues from filings: Applied Materials $34.45 B (to Oct 2026), Lam Research $23.2 B (to Jun 2026), Tokyo Electron ¥2,443.5 B (to Mar 2026) and KLA $13.58 B (to Jun 2026) [R-570]; ASML's 2025 unit shipments are in [R-563]. Fiscal years differ by up to ten months, and some figures include service and display revenue, so they should not be added or ranked naively.
+- *Competitive map* [Established: company filings]. Lam names Applied Materials as its main deposition rival, ASM International and Wonik IPS in ALD and PECVD (plasma-enhanced CVD, which uses a plasma to run the reaction at lower temperature), Applied, Hitachi and Tokyo Electron in etch, and Screen, Semes and Tokyo Electron in wet clean [R-571]. KLA says its process-control share is about seven times its nearest competitor's and expects advanced-packaging process-control revenue to grow from about $635 M in 2025 to about $1 B in 2026 [R-571]; third-party share estimates vary with definition **[Contested]**.
 
 **Why it matters commercially.** Every flow change in 25-01 and 25-02 moves money between these segments. Nanosheets add selective etches, epitaxy and ALD steps; backside power adds bonding, thinning and CMP; EUV single patterning removes deposition and etch steps that SAQP needed; advanced packaging (25-07) pulls process control and CMP into back-end fabs. Lam's 10-K, for example, attributes its systems growth to "foundry equipment customer spending" [R-570]. For a diligence team, the question is how a target's tools ride these step-count shifts, and how exposed its revenue is to one region: Lam reported 34% of fiscal 2026 revenue from China [R-570].
 

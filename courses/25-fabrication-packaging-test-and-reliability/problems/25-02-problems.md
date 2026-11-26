@@ -6,7 +6,7 @@ Chapter: [25-02](../chapters/25-02-lithography.md) · Worked solutions: [25-02 s
 
 **Conventions.**
 
-- Wavelengths are vacuum values: 248 nm (KrF), 193 nm (ArF), 13.5 nm (EUV); $hc$ = 1239.84 eV·nm and 1 eV = 1.602 × 10⁻¹⁹ J.
+- Wavelengths are vacuum values: 248 nm (KrF), 193 nm (ArF), 13.5 nm (EUV); $hc$ = 1239.84 eV·nm and 1 eV = 1.6022 × 10⁻¹⁹ J.
 - Pupil coordinates $s = n\sin\theta$; orders sit at $s_0 + m\lambda/p$ and pass if $|s| \le \text{NA}$.
 - Depth of focus is twice the quarter-wave defocus limit of §3.3.
 - Cost per pass is depreciation only, five years straight-line at 80% availability, as in Example 25-02.7.
@@ -25,7 +25,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-02.2 [A]
 
-**A higher-index fluid.** A hypothetical immersion fluid has $n$ = 1.65 at 193 nm (assumed). With the same steepest angle as Example 25-02.3 ($\sin\theta$ = 0.94), find (a) the NA and (b) the half-pitch at $k_1$ = 0.25.
+**A higher-index fluid.** A hypothetical immersion fluid has $n$ = 1.65 at 193 nm (assumed). With the same steepest angle in the fluid as Example 25-02.3 ($\sin\theta$ = 0.94, and a lens glass of higher index), find (a) the NA and (b) the half-pitch at $k_1$ = 0.25.
 
 ### Problem 25-02.3 [B]
 
@@ -33,7 +33,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-02.4 [B]
 
-**Immersion's hidden benefit.** Compare the depth of focus of a dry lens and a water-immersion lens ($n$ = 1.44) at the same NA of 0.93. Find (a) each DOF and (b) the ratio.
+**Immersion's hidden benefit.** Compare the depth of focus of a dry lens and a water-immersion lens ($n$ = 1.44) at the same NA of 0.93. Find (a) the dry DOF, (b) the water DOF and (c) their ratio.
 
 ### Problem 25-02.5 [C]
 
@@ -69,11 +69,15 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-02.13 [B]
 
-**Source power and throughput.** (a) Using Problem 25-02.10's model, suppose the scanner's 220 wph is achieved with a 600 W source. What throughput does a 1,000 W source give at the same dose, and by what percentage does it rise? (b) As an illustration, suppose ASML's projected rise from 220 to about 330 wph [R-567] came only from the same 67% power increase. What overhead and exposure time would that imply?
+**Source power and throughput.** (a) Using Problem 25-02.10's model, suppose the scanner's 220 wph is achieved with a 600 W source. What throughput does a 1,000 W source give at the same dose, and by what percentage does it rise? (b) As an illustration, suppose the projected rise from today's 220 wph specification to about 330 wph [R-560], [R-567] came only from the same 67% power increase. What overhead and exposure time would that imply?
 
 ### Problem 25-02.14 [B]
 
 **Pitch walk.** SADP uses a 64 nm mandrel pitch, 16 nm spacers and a 16 nm target mandrel width, giving 16 nm lines at 32 nm pitch. (a) If the mandrels print 18 nm wide, what are the two alternating spaces? (b) How does the space difference relate to the mandrel width error? (c) What mandrel width tolerance keeps the space difference within 2 nm?
+
+### Problem 25-02.15 [B]
+
+**Dose and CD.** Near each edge of a clear space the aerial image falls linearly, $I(x) = I_e(1 - x/\ell)$ with $x$ measured outward from the nominal edge, and the resist clears where the dose times $I$ exceeds a threshold $D_0$; at nominal dose $D I_e = D_0$. (a) Show that a fractional dose change $\delta$ moves each edge outward by about $\ell\delta$, where $\ell = I/\lvert dI/dx\rvert$ is the inverse image log slope. (b) For $\ell$ = 10 nm, by how much does a 5% dose increase widen the space, exactly and to first order? (c) What dose latitude (±%) keeps the space within ±1.5 nm to first order?
 
 ---
 
@@ -82,7 +86,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Objective | Problems |
 |---|---|
 | 1. Diffraction orders and the $k_1$ limit | 1, 2, 3, 5 |
-| 2. Depth of focus and immersion | 2, 4 |
+| 2. Depth of focus and immersion | 2, 4, 15 |
 | 3. Multipatterning, overlay and pitch walk | 6, 7, 14 |
 | 4. Photon shot noise | 8, 9 |
 | 5. Throughput, cost per pass and stitching | 10, 11, 12, 13 |

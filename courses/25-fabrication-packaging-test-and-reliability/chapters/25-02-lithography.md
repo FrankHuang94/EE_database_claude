@@ -62,7 +62,7 @@ $$
 I(x) = \left|a_0 + a_1 e^{j2\pi x/p}\right|^2 = a_0^2 + a_1^2 + 2a_0a_1\cos\!\left(\frac{2\pi x}{p}\right),
 $$
 
-a sinusoid at exactly the grating's pitch. One order alone gives a constant: no image. (Problem 25-02.5 computes the contrast of two- and three-beam images.)
+a sinusoid at exactly the grating's pitch. One order alone gives a constant: no image. (Problem 25-02.5 computes the contrast of two-beam images; the lab adds the three-beam case.)
 
 **On-axis illumination.** With light arriving straight down ($s_0 = 0$), the orders sit at $0$ and $\pm\lambda/p$. The first orders fit inside the pupil only if $\lambda/p \le \text{NA}$:
 
@@ -98,7 +98,7 @@ and a depth of focus (DOF) of twice that. Two consequences follow. First, DOF fa
 
 ### 3.4 Immersion
 
-Filling the gap between the last lens and the wafer with water ($n \approx 1.44$ at 193 nm) lets beams travel at angles that would be totally internally reflected at a lens–air interface, so NA can exceed 1. With $\sin\theta$ up to about 0.94, NA reaches about 1.35, a factor of 1.44 over a dry lens with the same angles. Equivalently, light in water has a wavelength of 193/1.44 = 134 nm (Example 25-02.3). Immersion arrived in production in the mid-2000s and remains the workhorse for all but the finest layers: ASML's current ArF immersion scanner specifies 1.35 NA, ≤ 38 nm resolution and ≥ 310 wafers per hour [R-562].
+Filling the gap between the last lens and the wafer with water ($n \approx 1.44$ at 193 nm) lets beams travel at angles that would be totally internally reflected at a lens–air interface, so NA can exceed 1. With $\sin\theta$ in the water up to about 0.94, NA reaches about 1.35, a factor of 1.44 over a dry lens with the same angles. By Snell's law $n\sin\theta$ is the same in the glass and in the fluid, so NA can never exceed the smaller of the two indices: a ray steeper than that is totally reflected at the glass–fluid interface. Equivalently, light in water has a wavelength of 193/1.44 = 134 nm (Example 25-02.3). Immersion arrived in production in the mid-2000s and remains the workhorse for all but the finest layers: ASML's current ArF immersion scanner specifies 1.35 NA, ≤ 38 nm resolution and ≥ 310 wafers per hour [R-562].
 
 ### 3.5 Multipatterning
 
@@ -127,7 +127,7 @@ photons to an area $A$. Photons arrive independently, so $N$ is Poisson-distribu
 
 ### 3.7 High-NA EUV
 
-ASML's EXE platform raises NA from 0.33 to 0.55 and specifies 8 nm resolution against 13 nm for the 0.33-NA NXE:3800E [R-560], [R-561]. Steeper beams at the mask would cause shadowing and loss of multilayer reflectivity, so the optics demagnify more strongly in one direction (anamorphic optics). The price is the exposure field: "The anamorphic mirrors require an exposure field half the size of that in NXE systems" [R-561], 26 mm × 16.5 mm. A die larger than half a field must be printed in two halves and stitched, which press reports put at a throughput loss from 175 to about 125 wafers per hour [R-566]. Larger 6×12-inch masks would restore the full field; TSMC plans a pilot line for them in 2031 [R-566]. DOF also falls to about a third (Example 25-02.2), so resists must be thinner, which in turn makes stochastic noise worse.
+ASML's EXE platform raises NA from 0.33 to 0.55 and specifies 8 nm resolution against 13 nm for the 0.33-NA NXE:3800E [R-560], [R-561]. Steeper beams at the mask would cause shadowing and loss of multilayer reflectivity, so the optics demagnify more strongly in one direction (anamorphic optics). The price is the exposure field: "The anamorphic mirrors require an exposure field half the size of that in NXE systems" [R-561], 26 mm × 16.5 mm: the optics demagnify 4× across the slit but 8× along the scan, so the mask's 132 mm becomes 132/8 = 16.5 mm on the wafer. A die larger than half a field must be printed in two halves and stitched, which press reports put at a throughput loss from 175 to about 125 wafers per hour [R-566]. Larger 6×12-inch masks would restore the full field; TSMC plans a pilot line for them in 2031 [R-566]. DOF also falls to about a third (Example 25-02.2), so resists must be thinner, which in turn makes stochastic noise worse.
 
 ### 3.8 Throughput and the cost of an exposure
 
@@ -155,7 +155,7 @@ Masks are made by electron-beam writing at 4× scale. Near the resolution limit,
 
 ## 4. Worked examples
 
-All examples use the vacuum wavelengths 193 nm (ArF) and 13.5 nm (EUV), water index 1.44 at 193 nm and $hc$ = 1239.84 eV·nm. "Assumed" values are illustrative.
+All examples use the vacuum wavelengths 193 nm (ArF) and 13.5 nm (EUV), water index 1.44 at 193 nm, $hc$ = 1239.84 eV·nm and 1 eV = 1.6022 × 10⁻¹⁹ J. "Assumed" values are illustrative.
 
 ### Example 25-02.1 · Will this grating print? (tier B)
 
@@ -170,7 +170,7 @@ All examples use the vacuum wavelengths 193 nm (ArF) and 13.5 nm (EUV), water in
 
 **Units check.** $\lambda/p$ is dimensionless, as are $s$ and NA. ✓
 
-**Sanity check.** The answer to (d) sits between the 0.25 floor and the 0.27 implied by ASML's published resolution [R-562]: printable, with little margin.
+**Sanity check.** The answer to (d) sits above both the 0.25 floor and the 0.27 implied by ASML's published 38 nm resolution [R-562]: the 80 nm pitch is slightly more relaxed than the scanner's specification, so it prints with a little margin.
 
 ### Example 25-02.2 · Depth of focus across three generations (tier B)
 
@@ -189,7 +189,7 @@ All examples use the vacuum wavelengths 193 nm (ArF) and 13.5 nm (EUV), water in
 
 ### Example 25-02.3 · What water buys (tier A)
 
-**Setup.** (a) If the steepest ray in the final lens element has $\sin\theta$ = 0.94, what NA does water ($n$ = 1.44) allow? (b) What is the wavelength of 193 nm light in water? (c) By what factor does immersion improve resolution at the same angles?
+**Setup.** (a) If the steepest ray in the water has $\sin\theta$ = 0.94, what NA does water ($n$ = 1.44) allow? (b) What is the wavelength of 193 nm light in water? (c) By what factor does immersion improve resolution at the same angles?
 
 **Solution.**
 
@@ -236,14 +236,14 @@ All examples use the vacuum wavelengths 193 nm (ArF) and 13.5 nm (EUV), water in
 **Solution.**
 
 - (a) $1239.84/13.5$ = **91.8** eV and $1239.84/193$ = **6.42** eV: ratio **14.3**.
-- (b) The EUV photon carries $91.8 \times 1.602 \times 10^{-19}$ = **1.47e-17** J, so $D/E$ = $30 \times 10^{-3}\ \text{J/cm}^2/1.47 \times 10^{-17}\ \text{J} \times 10^{-14}\ \text{cm}^2/\text{nm}^2$ = **20.4** per nm² for EUV, and likewise **291** per nm² for ArF.
+- (b) The EUV photon carries $91.8 \times 1.6022 \times 10^{-19}$ = **1.47e-17** J, so $D/E$ = $30 \times 10^{-3}\ \text{J/cm}^2/1.47 \times 10^{-17}\ \text{J} \times 10^{-14}\ \text{cm}^2/\text{nm}^2$ = **20.4** per nm² for EUV, and likewise **291** per nm² for ArF.
 - (c) $20.4 \times 100$ = **2.04e3** photons; $1/\sqrt{2.04 \times 10^3}$ = **2.2**%.
 - (d) **408** absorbed; $1/\sqrt{408}$ = **5.0**%.
 - (e) 2% needs $1/0.02^2$ = **2500** absorbed photons, so 125 incident per nm², a dose of **184** mJ/cm².
 
 **Units check.** (J/cm²)/J = photons/cm²; × 10⁻¹⁴ cm²/nm² = photons/nm². ✓
 
-**Sanity check.** A 5% dose fluctuation from feature to feature is enough to move a printed edge by a nanometre or more on a steep image slope. Running at six times the dose to tame it would cut throughput severalfold (Problem 25-02.10): the core tension of EUV.
+**Sanity check.** A 5% dose fluctuation from feature to feature is enough to move a printed edge by a nanometre or more on a steep image slope. Running at the 184 mJ/cm² of (e) to tame it would cut throughput severalfold (Problem 25-02.10): the core tension of EUV.
 
 ### Example 25-02.7 · What an exposure costs (tier B)
 
@@ -358,7 +358,7 @@ The lab is [labs/25-02-lab/](../labs/25-02-lab/README.md). `litho.py` builds aer
 **Predict, then run:**
 
 1. *Predict* the pitch at which a dipole-illuminated 0.33-NA EUV system's image contrast drops to zero, then sweep it.
-2. *Predict* how the image contrast of a 90 nm pitch changes as the wafer moves 50 nm out of focus with on-axis and with dipole illumination, then compute both.
+2. *Predict* how the image contrast of a 160 nm pitch changes as the wafer moves 50 nm out of focus with on-axis and with dipole illumination, then compute both.
 3. *Predict* the spread of absorbed-photon counts in Example 25-02.6's contact, then simulate 100,000 contacts and compare with $\sqrt N$.
 4. *Predict* the throughput of a 220-wph-at-30 mJ/cm² scanner at 60 mJ/cm² with 6 s of overhead, then compute it.
 
@@ -405,9 +405,9 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 **State of the art (as of Nov 2026).**
 
 - *EUV in volume* [Established]. ASML recognized 48 EUV systems in 2025 (44 Low-NA, 4 High-NA), against 44 in 2024; DUV units fell from 374 to 279 [R-563]. It is the only EUV supplier [R-562], reported record quarterly sales of €11.7 B in Q3 2026 and guided €44–45 B for the year, warning that planned supply for 2027–2028 "will not fully meet the demand of our customers" [R-563].
-- *High-NA adoption* [Industry estimate for counts; Established for ASML's and Intel's own figures]. By September 2026, ten High-NA systems were reportedly running at four customers, with three more shipping; EXE tools had exposed over 1.35 million wafers; and a qualified EXE:5200B reportedly reached 135 wph in acceptance testing against its 175 wph specification [R-565]. Intel had processed over a million High-NA wafers (including R&D and qualification wafers) and uses High-NA on select 18A layers [R-565]; its 14A is planned around High-NA [R-556]. ASML expects the EXE platform "to start supporting high-volume manufacturing in 2027" [R-566].
+- *High-NA adoption* [Industry estimate for counts; Established for ASML's and Intel's own figures]. By September 2026, ten High-NA systems were reportedly running at four customers, with three more shipping; EXE tools had exposed over 1.35 million wafers; and a qualified EXE:5200B reportedly reached 135 wph in acceptance testing against its 175 wph specification [R-565]. Intel had processed over a million High-NA wafers (including installation, R&D and production wafers) [R-565]; its 14A is planned around High-NA [R-556]. ASML expects the EXE platform "to start supporting high-volume manufacturing in 2027" [R-566].
 - *The holdout* [Established for TSMC's statements]. TSMC plans no High-NA use through 2029 and High-NA volume production from 2030 with standard masks, moving to 6×12-inch masks around 2031–2033 [R-553], [R-566].
-- *Sources and throughput* [Industry estimate: vendor roadmap]. 1,000 W was demonstrated in 2025, with a projected ~330 wph Low-NA scanner around 2030 or later [R-567].
+- *Sources and throughput* [Industry estimate: vendor roadmap]. 1,000 W was demonstrated in 2025, with a projected scanner of up to 330 wph around 2030 or later [R-567].
 
 **Why it matters commercially.** ASML's monopoly in EUV makes lithography the single largest equipment line item at leading-edge fabs and a geopolitical control point. Every patterning decision ripples outward: multipatterning favours deposition and etch suppliers (25-03); EUV favours ASML, its optics and source suppliers, mask blank and pellicle makers, and EUV resist chemistry; High-NA adds mask-size and stitching ecosystem changes. For a diligence team, the questions are how many critical layers a node uses, which technique each gets, and how sensitive the target is to the High-NA timing split between Intel and TSMC.
 

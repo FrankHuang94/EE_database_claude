@@ -6,7 +6,7 @@ Chapter: [25-03](../chapters/25-03-deposition-etch-cmp-implant-metrology.md) · 
 
 **Conventions.**
 
-- $k$ = 8.617 × 10⁻⁵ eV/K; $q$ = 1.602 × 10⁻¹⁹ C; Faraday's constant 96,485 C/mol; 1 psi = 6,895 Pa.
+- $k$ = 8.61733 × 10⁻⁵ eV/K; $q$ = 1.6022 × 10⁻¹⁹ C; Faraday's constant 96,485 C/mol; 1 psi = 6,895 Pa.
 - Boron diffusivity $D = 0.76\,e^{-3.46/kT}$ cm²/s; implanted profiles are Gaussian and spread as $\Delta R_p'^2 = \Delta R_p^2 + 2Dt$, ignoring the surface.
 - A 300 mm wafer is 707 cm².
 - "Assumed" values are illustrative.
@@ -74,6 +74,32 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Strained SiGe.** Using Vegard's law with $a_{Si}$ = 0.5431 nm and $a_{Ge}$ = 0.5658 nm, find (a) the relaxed lattice constant of Si₀.₇Ge₀.₃ and (b) its mismatch to silicon in percent. (c) Is a SiGe film grown on silicon under tension or compression in the plane?
 
+### Problem 25-03.15 [C]
+
+**Two-step diffusion: predeposition and drive-in.** Before ion implantation, junctions were made by diffusion from the surface, and the same mathematics still describes in-diffusion from doped films and gas-phase doping. A boron predeposition holds the surface at solid solubility, $C_s$ = 2.5 × 10²⁰ cm⁻³ (assumed), for 20 min at 950 °C into an n-type wafer with $N_B$ = 1.0 × 10¹⁶ cm⁻³. The source is then removed and the wafer is driven in for 60 min at 1100 °C, with the surface treated as reflecting (no dopant leaves). Use the intrinsic boron diffusivity of the conventions throughout.
+
+(a) Show that $C(x,t) = C_s\,\operatorname{erfc}[x/(2\sqrt{Dt})]$ solves the diffusion equation $\partial C/\partial t = D\,\partial^2C/\partial x^2$ with $C(0,t) = C_s$ and $C(x,0) = 0$ for $x > 0$, and that the dose it puts in is $Q = 2C_s\sqrt{Dt/\pi}$.
+
+(b) Find $D$, $\sqrt{Dt}$, the dose and the junction depth after the predeposition.
+
+(c) Find $D$ during the drive-in and the ratio of the drive-in $Dt$ to the predeposition $Dt$. Why does that ratio justify treating the predeposited dose as a sheet at the surface?
+
+(d) For that sheet, the drive-in profile is $C(x,t) = [Q/\sqrt{\pi Dt}]\,e^{-x^2/4Dt}$. Find the surface concentration and the junction depth after the drive-in.
+
+(e) Name two reasons the real junction would be deeper than (d) predicts.
+
+### Problem 25-03.16 [B]
+
+**Did the anneal activate the implant?** A boron implant of 2.0 × 10¹⁵ cm⁻² into an n-type wafer is measured with a collinear four-point probe ([09-03](../../09-semiconductor-devices/chapters/09-03-drift-and-diffusion.md) derives $R_s = (\pi/\ln 2)\,V/I$ for a sheet much thinner than the probe spacing and much wider than the array). At a forced current of 1.00 mA the inner probes read 41.7 mV after a low-temperature anneal and 16.2 mV after a spike anneal. Assume an average hole mobility of 50 cm²/V·s in the layer and that only active (substitutional) boron conducts.
+
+(a) Find the sheet resistance after each anneal.
+
+(b) Show that a layer with active dose $Q_a$ (cm⁻²) and uniform mobility has $R_s = 1/(q\mu Q_a)$, then find the active dose and the activated fraction after each anneal.
+
+(c) A resistor 1.0 µm wide and 20 µm long is made in the spike-annealed layer. Find its resistance, ignoring the contacts.
+
+(d) Why does the fab use four probes rather than measuring $V/I$ across two?
+
 ---
 
 ## Objective coverage
@@ -83,7 +109,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. CVD regimes and ALD | 1, 2, 3 |
 | 2. Plating, etch, overetch and selectivity | 4, 5, 6 |
 | 3. CMP and pattern density | 7, 8 |
-| 4. Implant, junctions and thermal budget | 9, 10, 11 |
-| 5. Measurement noise and gauges | 12 |
+| 4. Implant, junctions and thermal budget | 9, 10, 11, 15, 16 |
+| 5. Measurement noise and gauges | 12, 16 |
 | 6. The equipment market | 13 |
 | (Epitaxy and strain, §3.3) | 14 |

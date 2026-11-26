@@ -6,9 +6,9 @@ Chapter: [25-01](../chapters/25-01-process-flow-overview.md) · Worked solutions
 
 **Conventions.**
 
-- $k$ = 8.617 × 10⁻⁵ eV/K; temperatures in kelvin are °C + 273.15.
+- $k$ = 8.61733 × 10⁻⁵ eV/K; temperatures in kelvin are °C + 273.15.
 - Deal–Grove coefficients are the chapter's table (§3.2); for (100) silicon divide $C_2$ by 1.68. Silicon consumed is 0.44 of the oxide grown.
-- Distributed RC delay is $0.379\,RC$ (19-05); a month is 30.4375 days and a year 365.25 days.
+- Distributed RC delay is $0.3787\,RC$ (19-05); a month is 30.4375 days and a year 365.25 days.
 - Drive loss from a source resistance is $1 - 1/(1 + g_mR_S)$ (first order).
 - "Assumed" values are illustrative.
 - Problems marked *(lab)* can be checked with `labs/25-01-lab/process.py`.
@@ -41,7 +41,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-01.6 [B]
 
-**Room for the work-function metal.** A gate trench is 14 nm wide and lined with 1.6 nm of HfO₂ (assumed). (a) What is the thickest work-function stack that still leaves 3.0 nm of fill? (b) If a second threshold flavour needs 1.0 nm more work-function metal than the first, how wide must the trench be to keep 3.0 nm of fill with the first flavour at its maximum from (a)?
+**Room for the work-function metal.** A gate trench is 14 nm wide and lined with 1.6 nm of HfO₂ (assumed). (a) What is the thickest work-function stack that still leaves 3.0 nm of fill? (b) If a second threshold flavour needs 1.0 nm more work-function metal than the first, how wide must the trench be to keep 3.0 nm of fill with the second flavour, whose stack is (a)'s maximum plus 1.0 nm?
 
 ### Problem 25-01.7 [A]
 
@@ -49,7 +49,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-01.8 [B]
 
-**A contact budget.** A trench contact lands on 15 nm × 30 nm (assumed). (a) What specific contact resistivity keeps $R_c$ at or below 50 Ω? (b) With $g_m$ = 1 mS (assumed), what fraction of drive does a 50 Ω source contact cost?
+**A contact budget.** A trench contact lands on 15 nm × 30 nm (assumed). (a) What specific contact resistivity keeps $R_c$ at or below 50 Ω? (b) With $g_m$ = 1 mS (assumed), what fraction of drive does a 50 Ω source contact cost? (c) What fraction of Example 25-01.5's 10⁻⁹ Ω·cm² is the required resistivity?
 
 ### Problem 25-01.9 [C]
 
@@ -79,13 +79,17 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **A wet-oxidation recipe.** *(lab)* At what temperature does wet oxidation grow 300 nm on bare (100) silicon in exactly 1.0 h? Give $B$ and $B/A$ there.
 
+### Problem 25-01.16 [B]
+
+**Putting the flow in order.** Arrange these nanosheet-logic steps in process order and justify each placement by thermal budget or by what must already exist: (a) copper dual damascene M1; (b) source/drain epitaxy and activation anneal; (c) Si/SiGe superlattice epitaxy; (d) high-k and work-function metal deposition; (e) STI fill, CMP and fin reveal; (f) dummy polysilicon gate and spacers; (g) fin patterning; (h) contact silicide; (i) SiGe release (channel release); (j) well implants and anneal.
+
 ---
 
 ## Objective coverage
 
 | Objective | Problems |
 |---|---|
-| 1. The FEOL, MOL and BEOL flow and its order | 2, 6 |
+| 1. The FEOL, MOL and BEOL flow and its order | 2, 6, 16 |
 | 2. The Deal–Grove model and silicon consumption | 2, 3, 4, 5, 15 |
 | 3. Gate-trench budget and contact resistance | 6, 8 |
 | 4. Wire tiers, delay and alternative metals | 9, 10, 13 |

@@ -121,6 +121,7 @@ for key, rc in (("Ex 25-01.5c", 1e-9 / ac), ("Ex 25-01.5c1", 1e-8 / ac)):
     frac = optimize.brentq(lambda f: f - (1 - 1e-3 * rc * f), 0, 1)
     v.check(key, 100 * (1 - frac))
 v.check("Txt 25-01.c", 100 * (1 - 1 / (1 + 1e-3 * 100)))
+v.check("Txt 25-01.d", 100 * 2 / 14)
 
 # ---------------------------------------------------------------- Example 6 (wire tiers)
 tiers = {"": (20, 40, 2, 4.5), "1": (40, 80, 2, 2.8), "2": (400, 800, 2, 1.9)}
@@ -137,6 +138,7 @@ v.check("Ex 25-01.6b1", T50 * r_um(*tiers["1"]) * 1000 * C1MM * 1e9)
 v.check("Ex 25-01.6b2", T50 * r_um(*tiers["2"]) * 1000 * C1MM * 1e12)
 tof = 1e-3 * math.sqrt(3.0) / 2.99792458e8
 v.check("Ex 25-01.6c", tof * 1e12)
+v.check("Ex 25-01.6e", r_um(*tiers[""]) / r_um(*tiers["2"]))
 v.check("Ex 25-01.6d", 800 / 40)
 
 # ---------------------------------------------------------------- Example 7 (fab flow)
@@ -167,6 +169,8 @@ v.check("25-01.3a0", kt(1100))
 v.check("25-01.3a", b3)
 v.check("25-01.3a1", ba3)
 v.check("25-01.3a2", a3)
+v.check("25-01.3a3", b3)
+v.check("25-01.3a4", ba3)
 tau3 = t_quad(0.025, 1100, "dry")  # time-equivalent of the 25 nm patch
 v.check("25-01.3b", tau3)
 v.check("25-01.3b1", 1 + tau3)
@@ -180,6 +184,8 @@ v.assert_true("ODE from 25 nm matches the tau-shifted closed form", abs(x_ode(1.
 b4, ba4, a4 = coeffs(1100, "wet")
 v.check("25-01.4a", b4)
 v.check("25-01.4a1", ba4)
+v.check("25-01.4a0", b4)
+v.check("25-01.4a2", ba4)
 t4 = t_quad(0.5, 1100, "wet")
 v.check("25-01.4b", t4)
 v.check("25-01.4c", t_quad(0.5, 1000, "wet") / t4)

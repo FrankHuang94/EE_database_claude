@@ -253,4 +253,77 @@ meas = 20.3 + rng.normal(0, 0.40, 200_000) + rng.normal(0, 0.05, 200_000)
 cpk_sim = min(21.5 - meas.mean(), meas.mean() - 18.5) / (3 * meas.std())
 v.assert_true("simulated apparent Cpk within 2% of formula", abs(cpk_sim / (1.2 / (3 * math.hypot(0.40, 0.05))) - 1) < 0.02)
 
+# Problem 15: two-step diffusion. Independent routes: numerical quadrature for the dose, root-finding
+# for the junctions, and an image-method convolution for the drive-in from the true erfc profile.
+from scipy.special import erfc as _erfc  # noqa: E402
+
+c_s, n_b = 2.5e20, 1.0e16
+d950 = 0.76 * math.exp(-3.46 / kt(950))
+t_pre = 20 * 60
+l_pre = math.sqrt(d950 * t_pre)
+v.check("25-03.15b", d950)
+v.check("25-03.15b1", l_pre * 1e7)
+q_num, _ = integrate.quad(lambda x: c_s * _erfc(x / (2 * l_pre)), 0, 60 * l_pre)
+v.assert_true("25-03.15 dose closed form equals quadrature",
+              abs(q_num - 2 * c_s * l_pre / math.sqrt(math.pi)) / q_num < 1e-8)
+v.check("25-03.15b2", q_num)
+eta_j = optimize.brentq(lambda e: _erfc(e) - n_b / c_s, 0.5, 6)
+v.check("25-03.15b3", eta_j)
+v.check("25-03.15b4", 2 * l_pre * eta_j * 1e7)
+# the PDE residual of the erfc solution, by finite differences at a few points
+for xx, tt in ((2e-6, 600.0), (5e-6, 1200.0)):
+    f = lambda x, t: c_s * _erfc(x / (2 * math.sqrt(d950 * t)))  # noqa: E731
+    hx, ht = 1e-8, 1e-2
+    dct = (f(xx, tt + ht) - f(xx, tt - ht)) / (2 * ht)
+    dcxx = (f(xx + hx, tt) - 2 * f(xx, tt) + f(xx - hx, tt)) / hx**2
+    v.assert_true(f"25-03.15 erfc satisfies diffusion eq at x={xx}", abs(dct - d950 * dcxx) / abs(dct) < 1e-3)
+d1100 = 0.76 * math.exp(-3.46 / kt(1100))
+dt_drive = d1100 * 3600
+v.check("25-03.15c", d1100)
+v.check("25-03.15c1", dt_drive / (d950 * t_pre))
+v.check("25-03.15c2", math.sqrt(dt_drive / (d950 * t_pre)))
+c_surf = q_num / math.sqrt(math.pi * dt_drive)
+v.check("25-03.15d", c_surf)
+xj_sheet = optimize.brentq(lambda x: c_surf * math.exp(-x * x / (4 * dt_drive)) - n_b, 1e-6, 1e-3)
+v.check("25-03.15d1", xj_sheet * 1e4)
+v.check("25-03.15d2", c_s / c_surf)
+v.check("25-03.15d3", xj_sheet / (2 * l_pre * eta_j))
+_eta = 3.0
+for _ in range(20):
+    _eta = math.sqrt(-math.log(n_b / c_s * math.sqrt(math.pi) * _eta))
+v.assert_true("25-03.15 asymptotic erfc iteration within 1% of exact root", abs(_eta - eta_j) / eta_j < 0.01)
+
+
+def drive_in_exact(x):
+    """Reflecting-surface drive-in of the erfc predeposition profile (method of images)."""
+    g = lambda xi: c_s * _erfc(xi / (2 * l_pre)) * (  # noqa: E731
+        math.exp(-(x - xi) ** 2 / (4 * dt_drive)) + math.exp(-(x + xi) ** 2 / (4 * dt_drive))) \
+        / math.sqrt(4 * math.pi * dt_drive)
+    return integrate.quad(g, 0, 40 * l_pre, limit=200)[0]
+
+
+xj_exact = optimize.brentq(lambda x: drive_in_exact(x) - n_b, 1e-5, 5e-4)
+v.assert_true("25-03.15 sheet approximation within 1% of exact drive-in junction",
+              abs(xj_exact - xj_sheet) / xj_exact < 0.01, f"{xj_exact*1e4:.4f} vs {xj_sheet*1e4:.4f} um")
+
+# Problem 16: four-point probe and activation. Rs from superposed point-source potentials.
+def rs_from_probe(v_meas, i_force, s=1.0):
+    # potential difference between probes 2 and 3 per unit Rs, from +I at 0 and -I at 3s
+    pot = lambda r: -math.log(r) / (2 * math.pi)  # noqa: E731
+    dv_per_rs = i_force * ((pot(s) - pot(2 * s)) - (pot(2 * s) - pot(s)))
+    return v_meas / dv_per_rs
+
+
+rs_lo = rs_from_probe(41.7e-3, 1.0e-3)
+rs_hi = rs_from_probe(16.2e-3, 1.0e-3)
+v.check("25-03.16a", rs_lo)
+v.check("25-03.16a1", rs_hi)
+qa_lo = 1 / (Q_E * 50 * rs_lo)
+qa_hi = 1 / (Q_E * 50 * rs_hi)
+v.check("25-03.16b", qa_lo)
+v.check("25-03.16b1", 100 * qa_lo / 2.0e15)
+v.check("25-03.16b2", qa_hi)
+v.check("25-03.16b3", 100 * qa_hi / 2.0e15)
+v.check("25-03.16c", 20 * rs_hi / 1e3)
+
 sys.exit(v.finish())

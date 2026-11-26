@@ -22,7 +22,7 @@ Every number is recomputed by [verify_25_01.py](../verify/verify_25_01.py).
 
 ### Solution 25-01.3
 
-(a) At 1373.15 K, $kT$ = 0.1183 eV: $B = 772\,e^{-1.23/0.1183}$ = **0.0236** µm²/h and $B/A = (6.23 \times 10^6/1.68)\,e^{-2.0/0.1183}$ = **0.169** µm/h, so $A$ = **0.139** µm.
+(a) At 1373.15 K, $kT$ = **0.11833** eV: $B = 772\,e^{-1.23/0.11833}$ = **0.0236** µm²/h (unrounded **0.023617**) and $B/A = (6.23 \times 10^6/1.68)\,e^{-2.0/0.11833}$ = **0.169** µm/h (unrounded **0.16932**), so $A = 0.023617/0.16932$ = **0.139** µm.
 
 (b) $\tau = (x_i^2 + Ax_i)/B = (0.025^2 + 0.139 \times 0.025)/0.0236$ = **0.174** h.
 
@@ -32,9 +32,9 @@ The patch matters: without it ($\tau$ = 0) the same hour would give **99** nm, *
 
 ### Solution 25-01.4
 
-(a) $B = 386\,e^{-0.78/0.1183}$ = **0.529** µm²/h; $B/A = (1.63 \times 10^8/1.68)\,e^{-2.05/0.1183}$ = **2.90** µm/h.
+(a) $B = 386\,e^{-0.78/0.11833}$ = **0.529** µm²/h (unrounded **0.52943**); $B/A = (1.63 \times 10^8/1.68)\,e^{-2.05/0.11833}$ = **2.90** µm/h (unrounded **2.9034**).
 
-(b) $t = 0.25/0.529 + 0.5/2.90$ = **0.644** h.
+(b) $t = 0.25/0.52943 + 0.5/2.9034$ = **0.644** h.
 
 (c) $1.46/0.644$ = **2.27** times faster. The linear term gained more (activation energy 2.05 eV against 0.78 eV for $B$), so at 1100 °C growth of 500 nm is mostly parabolic.
 
@@ -70,7 +70,7 @@ Multiplying by $2D$: $x^2 + Ax = B(t + \tau)$ with $A = 2D(1/k_s + 1/h)$, $B = 2
 
 (a) $80 \times 1.2$ = **96** days, **13.7** weeks.
 
-(b) $84/80$ = **1.05** days per mask layer, near the best fabs' practice [R-020].
+(b) $84/80$ = **1.05** days per mask layer, at the low end of the 1–1.5 day average (the best fabs reach about 0.8) [R-020].
 
 ### Solution 25-01.8
 
@@ -78,7 +78,7 @@ Multiplying by $2D$: $x^2 + Ax = B(t + \tau)$ with $A = 2D(1/k_s + 1/h)$, $B = 2
 
 (b) $1 - 1/(1 + 10^{-3} \times 50)$ = **4.8**%.
 
-The required $\rho_c$ is a quarter of Example 25-01.5's 10⁻⁹ Ω·cm²; contact interfaces must keep improving just to hold the resistance budget as contacts shrink.
+(c) $2.25 \times 10^{-10}/10^{-9}$ = **0.225** of Example 25-01.5's 10⁻⁹ Ω·cm², about a quarter; contact interfaces must keep improving just to hold the resistance budget as contacts shrink.
 
 ### Solution 25-01.9
 
@@ -92,9 +92,9 @@ The required $\rho_c$ is a quarter of Example 25-01.5's 10⁻⁹ Ω·cm²; conta
 
 ### Solution 25-01.10
 
-(a) $R = 9.97 \times 2000$ Ω and $C$ = 400 fF: $0.379 \times 19.94\ \text{kΩ} \times 400\ \text{fF}$ = **3.02** ns, four times the 1 mm value.
+(a) $R = 9.97 \times 2000$ Ω and $C$ = 400 fF: $0.3787 \times 19.94\ \text{kΩ} \times 400\ \text{fF}$ = **3.02** ns, four times the 1 mm value.
 
-(b) Local tier: $0.379 \times 148\ \text{kΩ} \times 400\ \text{fF}$ = **22.4** ns.
+(b) Local tier: $0.3787 \times 148\ \text{kΩ} \times 400\ \text{fF}$ = **22.4** ns.
 
 (c) Four 0.5 mm segments each take a sixteenth of the 2 mm delay: $4 \times 3.02/16$ = **0.755** ns. Real repeaters add their own delay, so the optimum number is finite (19-05).
 
@@ -128,6 +128,10 @@ A 60% logic gain reports as 23% at chip level when SRAM and analog stand still; 
 
 Solve $(0.3^2 + 0.3A)/B = 1.0$ h, with $A = B/(B/A)$, for $T$ numerically (bisection or Brent's method): $T$ = **968** °C, where $B$ = **0.262** µm²/h and $B/A$ = **0.457** µm/h. Check: $0.09/0.262 + 0.3/0.457$ = **1.00** h. ✓
 
+### Solution 25-01.16
+
+(c) superlattice epitaxy, then (g) fin patterning: the channels must exist before anything is built around them. (e) STI fill, CMP and fin reveal next: isolation surrounds the patterned fins, and its oxide densification is a hot step. (j) Wells: implant and anneal while no temperature-sensitive material is present (some flows do this before the epitaxy). (f) Dummy gate and spacers: they define where the gate will go and protect the channel during the next steps. (b) Source/drain epitaxy and activation anneal: the hottest step after isolation, which is why a sacrificial gate is used. (i) Channel release and (d) the high-k metal gate: the replacement gate goes in only after the hot steps, because metal gates on high-k cannot survive them. (h) Contact silicide, the start of the MOL, at moderate temperature. (a) Copper M1 last of these: copper and low-k dielectrics tolerate only about 400 °C.
+
 ---
 
 ## Answer key
@@ -141,7 +145,6 @@ Solve $(0.3^2 + 0.3A)/B = 1.0$ h, with $A = B/(B/A)$, for $T$ numerically (bisec
 | 25-01.1b | cost per area ratio | 0.667 | |
 | 25-01.2a | silicon consumed | 6.6 | nm |
 | 25-01.2b | oxide above original surface | 8.4 | nm |
-| 25-01.3a0 | kT at 1100 C | 0.1183 | eV |
 | 25-01.3a | B, dry 1100 C | 0.0236 | µm²/h |
 | 25-01.3a1 | B/A, dry 1100 C (100) | 0.169 | µm/h |
 | 25-01.3a2 | A, dry 1100 C | 0.139 | µm |
@@ -194,3 +197,8 @@ Solve $(0.3^2 + 0.3A)/B = 1.0$ h, with $A = B/(B/A)$, for $T$ numerically (bisec
 | 25-01.15b | B there | 0.262 | µm²/h |
 | 25-01.15b1 | B/A there | 0.457 | µm/h |
 | 25-01.15c | check time | 1.00 | h |
+| 25-01.3a0 | kT at 1100 C | 0.11833 | eV |
+| 25-01.3a3 | B, unrounded | 0.023617 | µm²/h |
+| 25-01.3a4 | B/A, unrounded | 0.16932 | µm/h |
+| 25-01.4a0 | B wet, unrounded | 0.52943 | µm²/h |
+| 25-01.4a2 | B/A wet, unrounded | 2.9034 | µm/h |
