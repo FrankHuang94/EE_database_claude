@@ -31,7 +31,7 @@ The practitioner's course: a framework for evaluating a chip company's technolog
 | [28-03 · Maturity Scales for Silicon](chapters/28-03-silicon-maturity-scales.md) | 4 | ✅ verified | [problems](problems/28-03-problems.md) · [solutions](solutions/28-03-solutions.md) · [lab](labs/28-03-lab/README.md) · [verify](verify/verify_28_03.py) |
 | [28-04 · Domain Question Banks I: Digital/CPU, AI Accelerators, Memory, Interconnect and Optics](chapters/28-04-question-banks-digital-ai-memory-interconnect.md) | 6 | ✅ verified | [problems](problems/28-04-problems.md) · [solutions](solutions/28-04-solutions.md) · [lab](labs/28-04-lab/README.md) · [verify](verify/verify_28_04.py) |
 | [28-05 · Domain Question Banks II: Analog/Mixed-Signal, RF, Power, Packaging, Embedded](chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) | 6 | ✅ verified | [problems](problems/28-05-problems.md) · [solutions](solutions/28-05-solutions.md) · [lab](labs/28-05-lab/README.md) · [verify](verify/verify_28_05.py) |
-| [28-06 · Red Flags and Green Flags](chapters/28-06-red-and-green-flags.md) | 4 | ⬜ planned | — |
+| [28-06 · Red Flags and Green Flags](chapters/28-06-red-and-green-flags.md) | 4 | ✅ verified | [problems](problems/28-06-problems.md) · [solutions](solutions/28-06-solutions.md) · [lab](labs/28-06-lab/README.md) · [verify](verify/verify_28_06.py) |
 | [28-07 · Evaluating Engineering Teams](chapters/28-07-evaluating-engineering-teams.md) | 5 | ⬜ planned | — |
 | [28-08 · Post-Acquisition Integration Risk](chapters/28-08-integration-risk.md) | 5 | ⬜ planned | — |
 | [28-09 · The Business ↔ Engineering Translation Table](chapters/28-09-business-engineering-translation.md) | 3 | ⬜ planned | — |

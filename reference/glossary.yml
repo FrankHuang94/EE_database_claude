@@ -11378,3 +11378,28 @@
   definition: A data sheet's typical value is usually the mean of characterization parts at nominal conditions; a guaranteed limit is met by every shipped part through production test or design margin. The gap depends on the spread across parts, lots and conditions, which Cpk and a confidence bound on σ describe.
   chapter: "28-05"
   see_also: ["Process capability (Cp, Cpk)"]
+- term: Red flag (diligence)
+  definition: An observation that is more common in troubled companies or programmes than in healthy ones; its evidential weight is its positive likelihood ratio, sensitivity divided by false-positive rate, so a flag common among healthy companies says little.
+  chapter: "28-06"
+  see_also: [Green flag (diligence), Positive and negative likelihood ratios]
+- term: Green flag (diligence)
+  definition: An observation more common in healthy companies than troubled ones, such as customer-run benchmarks that match claims; a signal whose likelihood ratio for trouble is below 1.
+  chapter: "28-06"
+  see_also: [Red flag (diligence)]
+- term: Positive and negative likelihood ratios
+  definition: For a test with sensitivity $s$ and false-positive rate $f$, $\text{LR}^+ = s/f$ multiplies the odds when the signal is present and $\text{LR}^- = (1 - s)/(1 - f)$ when it is absent.
+  chapter: "28-06"
+  see_also: [Likelihood ratio, Posterior odds]
+- term: Checklist false-alarm probability
+  definition: The chance that a healthy company shows at least one of $n$ independent flags, each with false-positive rate $f$, $1 - (1 - f)^n \approx 1 - e^{-nf}$; 64% for 25 flags at 4%.
+  chapter: "28-06"
+  see_also: [Red flag (diligence)]
+- term: Key-person risk
+  definition: The risk that a company's value depends on a few individuals who may leave; with $m$ key people each leaving with annual probability $q$, the chance of losing at least one in $t$ years is $1 - (1 - q)^{mt}$.
+  chapter: "28-06"
+- term: Herfindahl–Hirschman index (HHI)
+  definition: The sum of squared shares, here of a company's revenue by customer; $1/\text{HHI}$ is the effective number of equal-sized customers, and HHI is at least $1/N$ for $N$ customers.
+  chapter: "28-06"
+- term: Design-win funnel
+  definition: The path from a customer's commitment to use a part to production revenue; its risk-adjusted value multiplies the claimed lifetime revenue by the conversion probability and discounts it for the lag before revenue arrives.
+  chapter: "28-06"

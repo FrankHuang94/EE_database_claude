@@ -108,7 +108,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 >
 > 28-05 (Domain Question Banks II: Analog/Mixed-Signal, RF, Power, Packaging, Embedded) is verified: banks AM1–AM8, R1–R7, P1–P7, K1–K7 and E1–E7 with strong/evasive patterns; converter claims against the Murmann frontier and the 8kT·SNR ceiling $10\log_{10}(1/16k_BT)$ ≈ 191.8 dB (derived); jitter-limited and combined SNR; ideal class-B and Doherty efficiency at back-off (derived from half-sine Fourier components) against published GaN results; EVM in dB; converter heat, chains and power-density boundaries; pitch-squared interconnect density and compound known-good-die yield (showing a 98% figure cannot be end-to-end under stated assumptions); duty-cycled battery life with CoreMark vs while(1) and 85 °C standby; typical vs guaranteed with Cpk, normal tails and the chi-square bound on σ. 6 examples, 13 problems, verify (137 checks: Monte Carlo jitter, numerical half-sine integrals, chain power flow, event-by-event charge, quadrature tails), lab (`bankcheck.py`, notebook), 1 figure, 3 new glossary terms. No new R-entries: it reuses R-275, R-310, R-313, R-332, R-336, R-339, R-343, R-350, R-383, R-385, R-423, R-430, R-432, R-587, R-589, R-591, R-594, R-614.
 >
-> **Next: 28-06 Red Flags and Green Flags.** Then 28-07 to 28-10 in order, the Course 28 wrap-up and audit, and the **Term 7 checkpoint** (50 FE-style questions on Courses 26–28 with a verify script). Perishable facts need web searches; where search is unavailable, fetch known primary pages with curl or reuse logged R-entries.
+> 28-06 (Red Flags and Green Flags) is verified: flags as diagnostic tests with $\text{LR}^+ = s/f$ and $\text{LR}^- = (1-s)/(1-f)$ derived from Bayes; checklist false alarms $1-(1-f)^n$ and binomial count thresholds (25 flags at 4% give a healthy company a 64% chance of a false alarm; "≥3" has ratio 13, "≥5" ratio 327); technical, organizational and commercial flags with the evidence that settles each; base rates from the Wilson/Siemens studies (first-silicon success 14% in 2024, 5% in 2026; spins; 1:1 verification staffing); key-person risk $1-(1-q)^{mt}$; HHI and effective customers; risk-adjusted design-win funnels; grouping correlated flags by cause. 6 examples, 12 problems, verify (93 checks: joint-probability tables, exact binomial sums with Monte Carlo, simulated departures, explicit cash flows), lab (`flagmodel.py`, notebook), 1 figure, 7 glossary terms. Reuses R-321, R-621, R-645, R-652.
+>
+> **Next: 28-07 Evaluating Engineering Teams.** Then 28-08 to 28-10 in order, the Course 28 wrap-up and audit, and the **Term 7 checkpoint** (50 FE-style questions on Courses 26–28 with a verify script). Perishable facts need web searches; where search is unavailable, fetch known primary pages with curl or reuse logged R-entries.
 
 > Course 26 audit lessons to carry forward: (i) key every intermediate a solution displays, not just the final answers; (ii) anything defined relative to price (a percentage royalty, a margin) must move with price in a sensitivity; (iii) never publish a value that sits on a rounding tie, publish it exactly; (iv) when an answer needs iteration, teach the iteration (a Math refresher) and show the steps; (v) cite a figure only to a log entry whose recorded source contains it.
 >
@@ -219,10 +221,10 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | 25 | 12 | 12 | 12 | 12 | 75,761 | 167 | 1321 | 12 | 12 / 2 / 0 |
 | 26 | 7 | 7 | 7 | 7 | 49,840 | 100 | 1275 | 7 | 7 / 0 / 0 |
 | 27 | 8 | 8 | 8 | 8 | 61,565 | 112 | 1396 | 8 | 8 / 0 / 0 |
-| 28 | 10 | 5 | 5 | 0 | 33,220 | 65 | 497 | 5 | 5 / 0 / 0 |
-| **Total** | **307** | **302** | **302** | **297** | **2,136,389** | **4307** | **37881** | **302** | **298 / 271 / 27** |
+| 28 | 10 | 6 | 6 | 0 | 38,196 | 77 | 577 | 6 | 6 / 0 / 0 |
+| **Total** | **307** | **303** | **303** | **297** | **2,141,365** | **4319** | **37961** | **303** | **299 / 271 / 27** |
 
-Glossary terms: **3063** · Flashcards: **2799**
+Glossary terms: **3070** · Flashcards: **2799**
 
 <!-- END STATS -->
 
@@ -258,7 +260,7 @@ Glossary terms: **3063** · Flashcards: **2799**
 | 25 | 🏁 audited | ✅ 2026-11-26 | 12 chapters reviewed: 167 problems, 1,173 keyed chapter, solution and lab values plus 148 exam values (1,375 checks), 12 lab notebooks, 2 ngspice netlists; exam (12 questions, 104 points, 240 minutes), 96 flashcards, equation sheet and course notes. Five reviewers, 111 findings, all fixed. Term 6 checkpoint complete. |
 | 26 | 🏁 audited | ✅ 2026-11-26 | 7 chapters reviewed: 100 problems, 1,095 keyed chapter, solution and lab values plus 180 exam values (1,392 checks across 8 verify scripts), 7 lab notebooks; exam (12 questions, 104 points, 180 minutes), 82 flashcards, equation sheet and course notes; R-625 to R-659. Four reviewers, 111 findings, all fixed. |
 | 27 | 🏁 audited | ✅ 2026-11-26 | 8 chapters reviewed: 112 problems, 1,301 keyed chapter, solution and lab values plus 95 exam values (1,462 checks across 9 verify scripts), 8 lab notebooks; exam (12 questions, 104 points, 210 minutes), 76 flashcards, equation sheet and course notes; R-660 to R-700. Three reviewers, 161 findings, all fixed. |
-| 28 | 🔄 in progress | — | 28-01 to 28-05 verified (65 problems, 497 keyed values, 565 checks). |
+| 28 | 🔄 in progress | — | 28-01 to 28-06 verified (77 problems, 577 keyed values, 658 checks). |
 | all others | ⬜ planned (stubs only) | — | |
 
 Course status values: ⬜ planned · 🔄 in progress · ✅ complete (all chapters verified, exam + flashcards + glossary done) · 🏁 audited (independent review findings fixed).
@@ -704,3 +706,4 @@ Changes relative to the original build brief's chapter plan.
 | 2026-11-26 | Phase 2. **28-03 Maturity Scales for Silicon ✅ verified.** Silicon maturity ladder and TRL; probability, time and value multiplier by level; Arrhenius acceleration, chi-square failure-rate bounds and qualification sample sizes; the Goel–Okumoto defect-discovery model; the binding dimension. 5 examples, 12 problems, verify (66 checks), lab (`matscale.py`, notebook), 1 figure, 6 glossary terms, R-701. |
 | 2026-11-26 | Phase 2. **28-04 Domain Question Banks I ✅ verified.** Diagnostic questions with strong/partial/evasive patterns for digital/CPU, AI accelerators, memory, interconnect and optics; iso-power requirement; decode on the roofline; HBM bandwidth and power; SerDes, UCIe and CPO energy per bit; scoring an interview in odds form. 6 examples, 12 problems, verify (117 checks), lab (`qbank.py`, notebook), 1 figure, 3 glossary terms. |
 | 2026-11-26 | Phase 2. **28-05 Domain Question Banks II ✅ verified.** Banks for analog/mixed-signal, RF, power, packaging and embedded; converter FoM against the frontier and the 8kT·SNR ceiling; jitter budgets; PA efficiency at back-off; converter heat and chains; interconnect density and compound yield; battery life; typical vs guaranteed with Cpk. 6 examples, 13 problems, verify (137 checks), lab (`bankcheck.py`, notebook), 1 figure, 3 glossary terms. |
+| 2026-11-26 | Phase 2. **28-06 Red Flags and Green Flags ✅ verified.** Flags as diagnostic tests (LR+, LR−); checklist false alarms and binomial count thresholds; technical, organizational and commercial flags; key-person risk, HHI, risk-adjusted design-win funnels; correlated flags. 6 examples, 12 problems, verify (93 checks), lab (`flagmodel.py`, notebook), 1 figure, 7 glossary terms. |
