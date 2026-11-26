@@ -11310,3 +11310,23 @@
   definition: The improvement in a decision's expected value from an imperfect test, found by averaging the best decision after each possible result; zero for a test whose results could not change the decision.
   chapter: "28-01"
   see_also: [Expected value of perfect information (EVPI)]
+- term: Peak throughput
+  definition: An accelerator's datasheet rate $2N_{\text{MAC}}f$ (a MAC counted as two operations), multiplied by 2 for each halving of operand width and by 2 for 2:4 structured sparsity; one chip can be quoted at four peaks a factor of two apart.
+  chapter: "28-02"
+  see_also: [Structured sparsity, Total processing performance (TPP), Utilization (accelerator)]
+- term: Energy per operation
+  definition: The reciprocal of an efficiency, $1/(\eta \times 10^{12})$ J for $\eta$ in TOPS/W (50 TOPS/W is 20 fJ per operation); at least the arithmetic energy plus, for each memory level, its energy per byte divided by the operations per byte fetched.
+  chapter: "28-02"
+  see_also: [Peak throughput, Power boundary]
+- term: Power boundary
+  definition: Where the power behind an efficiency figure is measured (compute core, package, card, server or facility meter); the same throughput can be two or more times less efficient at the meter than at the core.
+  chapter: "28-02"
+  see_also: [Energy per operation, Power usage effectiveness (PUE)]
+- term: Geometric mean of ratios
+  definition: The $n$-th root of the product of $n$ speedups; unlike the arithmetic mean, the ranking it gives two machines does not depend on the reference machine, which is why SPEC uses it.
+  chapter: "28-02"
+  see_also: [SPEC CPU, Best-of-N selection]
+- term: Best-of-N selection
+  definition: Reporting the best of $N$ measured workloads; for log speedups spread with standard deviation $\sigma$ the headline is inflated by about $e^{\sigma\operatorname{E}[Z_{(N)}]}$, with $\operatorname{E}[Z_{(N)}]$ = 1.16, 1.54 and 1.87 for $N$ = 5, 10 and 20.
+  chapter: "28-02"
+  see_also: [Geometric mean of ratios, MLPerf]
