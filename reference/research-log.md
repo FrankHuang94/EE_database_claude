@@ -5449,3 +5449,78 @@ R&D % = R&D ÷ revenue.
 
 - "1.6T optics and 200G/lane technologies are moving from feasibility into deployment, co-packaged optics (CPO) is advancing from concept toward industrialization, new MSAs are emerging around scale-up architectures, and 400G/lane is becoming the next major development target." New MSAs named: "OCI, Open CPX, and XPO".
 - **Source:** Lumentum blog as in R-529. Checked Nov 2026.
+
+## R-552 · TSMC N2: volume production and PPA claims (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (TSMC's FY2025 Form 20-F on sec.gov, the Focus Taiwan lede and the Tom's Hardware comparison opened).* [Established for timing; PPA figures are vendor claims relayed by press]
+
+- 20-F: "Our 2-nanometer technology entered volume production in 2025. Also, the development of our 16-angstrom technology is on track, and its risk production is expected in 2026"; N2 is described as "2-nanometer Nanosheet Transistor ("N2")".
+- Focus Taiwan: TSMC "officially began volume production of its 2-nanometer chips in the fourth quarter of 2025".
+- Tom's Hardware table, N2 against N3E: power "-25% ~ -30%", performance "10% - 15%", relative density "1.15X", HVM "Q4 2025"; footnote: "Chip density published by TSMC reflects 'mixed' chip density consisting of 50% logic, 30% SRAM, and 20% analog."
+- **Derived here:** with SRAM and analog unchanged (our what-if), 1.15× mixed density needs 1.35× logic density.
+- **Sources:** [TSMC Form 20-F FY2025](https://www.sec.gov/Archives/edgar/data/1046179/000162828026025362/tsm-20251231.htm); [Focus Taiwan, 30 Dec 2025](https://focustaiwan.tw/sci-tech/202512300026); [Tom's Hardware, 10 Oct 2025](https://www.tomshardware.com/pc-components/cpus/intels-18a-production-starts-before-tsmcs-competing-n2-tech-heres-how-the-two-process-nodes-compare). Checked Nov 2026.
+
+## R-553 · TSMC's April 2026 roadmap: A16, A14, A13, A12 and High-NA (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (Tom's Hardware and Semiconductor Engineering opened; a TrendForce secondary also read).* [Established for TSMC's own statement; A16 timing Contested]
+
+- A TSMC executive: "A16 will be ready for production in 2026 ... However, actual product ramp depends on customers, and we expect volume production to begin in 2027."
+- A16 is TSMC's first node with Super Power Rail (SPR) backside power; A14 is slated for 2028; A13 (an optical shrink of A14) and A12 (A14 with SPR) for 2029; Tom's reports "the lack of plans to use High-NA EUV lithography for any nodes through 2029".
+- Semiconductor Engineering: "N2 is in production now… with more than 20 customer tape-outs received so far and over 70 in the pipeline."
+- A TrendForce item (1 Sep 2026) still said "A16 is scheduled for mass production in the second half of 2026": the difference between "production-ready" and "volume ramp" is the point.
+- **Sources:** [Tom's Hardware, 22 Apr 2026](https://www.tomshardware.com/tech-industry/semiconductors/tsmc-unveils-process-technology-roadmap-through-2029-a12-a13-n2u-announced-a16-slips-to-2027); [Semiconductor Engineering, 27 Apr 2026](https://semiengineering.com/tsmc-tech-symposium-2026-by-the-numbers/); [TrendForce, 1 Sep 2026](https://www.trendforce.com/news/2026/09/01/news-intel-cfo-says-14a-defect-reduction-fastest-since-22nm-customer-talks-reportedly-grow-ahead-of-2028-ramp/). Checked Nov 2026.
+
+## R-554 · Intel 18A: RibbonFET with PowerVia, production and density estimates (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (Tom's Hardware comparison opened).* [Established for production and features; densities Industry estimate; "first" Contested]
+
+- "18A employs Intel's RibbonFET gate-all-around transistors and PowerVia backside power delivery, two technological breakthroughs implemented simultaneously."
+- Panther Lake compute tiles "began early production" in Oregon and are "now ramping toward high-volume production in Arizona" (October 2025).
+- High-density cells, "According to TechInsights": 18A "238 MTr/mm^2 (HD)" and N2 "313 MTr/mm^2 (HD)"; Tom's adds that "18A's and N2's effective transistor densities could be very close" because backside power frees front-side area.
+- **Derived here:** 313/238 = 1.32.
+- **Source:** Tom's Hardware, 10 Oct 2025, as in R-552. Checked Nov 2026.
+
+## R-555 · PowerVia test-chip results, VLSI Symposium 2023 (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (VLSI Symposium 2023 tip sheet PDF opened).* [Established: conference paper summary]
+
+- "PowerVia Technology is a novel innovation to extend Moore's Law scaling and enables standard cell utilization exceeding 90% in large areas of the core while showing more than 5% frequency benefit in silicon due to reduced IR drop."
+- "The thermal characteristic of the PowerVia test chip is in line with higher power densities expected from logic scaling."
+- **Source:** [VLSI Symposium 2023 tip sheet, 19 May 2023](https://archive.vlsisymposium.org/23web/files/press_kit/VLSI2023_TipSheet_En_re1_230519.pdf). Checked Nov 2026.
+
+## R-556 · Intel 14A timeline (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (TrendForce report opened; the primary transcript was not).* [Industry estimate: company guidance relayed by press; mildly Contested]
+
+- "Intel plans to release the 14A 0.9 PDK in October, begin risk production in the second half of 2027, and ramp into high-volume production in 2028."
+- "14A introduces three new technologies at once: second-generation RibbonFET, PowerDirect backside power delivery, and High-NA EUV."
+- "defect density alone does not directly translate into product yield."
+- A search excerpt (unconfirmed) put 14A risk production in 2028.
+- **Source:** TrendForce, 1 Sep 2026, as in R-553. Checked Nov 2026.
+
+## R-557 · Samsung's GAA history and backside-power plans (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (Samsung newsroom releases and the Exynos 2600 product page opened).* [Established for the 2022 start; later dates are guidance; "industry's first 2nm GAA" Contested]
+
+- 30 Jun 2022: Samsung "started initial production of its 3-nanometer (nm) process node applying Gate-All-Around (GAA) transistor architecture"; versus 5 nm, "reduce power consumption by up to 45%, improve performance by 23% and reduce area by 16%".
+- Exynos 2600 product page: "Based on the industry's first 2nm GAA process".
+- SFF 2024: "The company's latest 2nm process, SF2Z, incorporates optimized backside power delivery network (BSPDN) technology… Mass production of SF2Z is slated for 2027"; SF1.4 "on track for mass production in 2027" (later press reports, unconfirmed, suggest a slip).
+- **Sources:** [Samsung, 30 Jun 2022](https://news.samsung.com/global/samsung-begins-chip-production-using-3nm-process-technology-with-gaa-architecture); [Exynos 2600 page](https://semiconductor.samsung.com/processor/mobile-processor/exynos-2600/); [Samsung, SFF 2024, 13 Jun 2024](https://news.samsung.com/global/samsung-showcases-ai-era-vision-and-latest-foundry-technologies-at-sff-2024). Checked Nov 2026.
+
+## R-558 · EUV layer counts at N5 and N3 (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (Tom's Hardware report opened).* [Industry estimate: executive statement, approximate, 2020]
+
+- ASML's then-CEO Peter Wennink: "I think, on the N5 in logic we are over 10 layers and in N3 we will be over 20 and we actually see that creeping up."
+- "TSMC's 2nd generation 7nm technology uses EUV for up to four layers".
+- No credible public total mask count for N3 or N2 was found (consistent with R-020).
+- **Source:** [Tom's Hardware, 21 Oct 2020](https://www.tomshardware.com/news/asml-and-tsmc-reveal-more-details-about-3nm-process-technology). Checked Nov 2026.
+
+## R-559 · TSMC capacity and wafer shipments, 2025 (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (TSMC's FY2025 Form 20-F opened).* [Established]
+
+- "In 2025, our annual capacity (in 12-inch equivalent wafers) exceeded 17 million wafers, compared to approximately 17 million wafers in 2024. This increase was primarily from the expansion of our 3-nanometer advanced technologies."
+- "We shipped approximately 15 million 12-inch equivalent wafers in 2025 compared to 13 million in 2024."
+- **Derived here:** at a 12-week cycle time, a fully loaded 17 million wafers a year implies about 3.9 million wafers in process (Little's law).
+- **Source:** TSMC Form 20-F FY2025, as in R-552. Checked Nov 2026.

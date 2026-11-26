@@ -10162,3 +10162,42 @@
   definition: "The number of ports or links one failure takes out; a pluggable failure removes one port, a co-packaged optical engine failure every port it serves, so availability depends on failure rate times blast radius times repair time."
   chapter: "24-09"
   see_also: [FIT (failures in time), Co-packaged optics]
+
+# ---------------------------------------------------------------- 25-01
+- term: Front end of line (FEOL)
+  definition: "The part of wafer processing that builds the transistors in and on the silicon: isolation, wells, channels, the gate stack and the source and drain. It contains the hottest steps."
+  chapter: "25-01"
+  see_also: [Middle of line (MOL), Back end of line (BEOL)]
+- term: Middle of line (MOL)
+  definition: "The silicide, contacts and local interconnect that connect each transistor's source, drain and gate to the first wiring level; at advanced nodes a major share of parasitic resistance."
+  chapter: "25-01"
+  see_also: [Specific contact resistivity, Front end of line (FEOL)]
+- term: Back end of line (BEOL)
+  definition: "The stack of metal wiring layers and vias built above the transistors, typically copper in low-k dielectric, tiered from tight local layers to thick global ones and processed at about 400 °C or below."
+  chapter: "25-01"
+  see_also: [Dual damascene, Middle of line (MOL)]
+- term: Deal–Grove model
+  definition: "The linear-parabolic law x² + Ax = B(t + τ) for thermal oxidation of silicon, derived from oxidant transport, diffusion through the oxide and reaction at the Si/SiO₂ interface; linear while the oxide is thin, parabolic once diffusion limits."
+  chapter: "25-01"
+- term: Shallow trench isolation (STI)
+  definition: "Oxide-filled trenches etched between transistors to isolate them electrically, lined with a thin thermal oxide and planarized by chemical-mechanical polishing."
+  chapter: "25-01"
+- term: Replacement metal gate (RMG)
+  definition: "A gate-last flow in which a sacrificial polysilicon gate survives the hot source/drain steps and is then removed and replaced by a high-k dielectric, work-function metals and a fill metal."
+  chapter: "25-01"
+  see_also: [High-k dielectric]
+- term: Dual damascene
+  definition: "The inlaid process for copper wiring: etch trenches and vias into the dielectric, line them with a barrier and seed, electroplate copper and polish the excess away, because copper cannot be plasma-etched."
+  chapter: "25-01"
+  see_also: [Back end of line (BEOL)]
+- term: Thermal budget
+  definition: "The cumulative time-at-temperature a wafer sees after a given step; it limits later processing because dopants keep diffusing and sensitive materials (metal gates, copper, low-k films) degrade when heated."
+  chapter: "25-01"
+- term: Days per mask layer (DPML)
+  definition: "A fab productivity metric: wafer cycle time divided by the number of mask layers, typically about 1–1.5 days; cycle time is roughly mask count times DPML."
+  chapter: "25-01"
+  see_also: [Wafer cycle time]
+- term: Work in process (WIP)
+  definition: "The wafers started but not yet finished in a fab; by Little's law it equals the start rate times the cycle time, so it is the fab's inventory."
+  chapter: "25-01"
+  see_also: [Little's law, Wafer cycle time]

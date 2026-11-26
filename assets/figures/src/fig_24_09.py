@@ -5,7 +5,7 @@ Run from anywhere:  python assets/figures/src/fig_24_09.py
 Outputs
   assets/figures/24-09/power-ladder.svg  watts per 800 Gb/s port (and pJ/bit) for retimed pluggables (16-18 W)
                                          and Broadcom's Humboldt, Bailly and Davisson CPO (6.4, 5.5, 3.5 W)
-  assets/figures/24-09/zero-failure.svg  95% upper bound on failure rate (FIT) against zero-failure device-hours
+  assets/figures/24-09/zero-failure.svg  95% upper bound on failure rate (FIT) against zero-failure unit-hours (link-hours for the Meta test)
 """
 from __future__ import annotations
 
@@ -53,7 +53,7 @@ def zero_failure() -> None:
         ax.annotate(f"{lab}: {cpo.fit_bound(h):.0f} FIT", (h, cpo.fit_bound(h)), textcoords="offset points",
                     xytext=(6, 6), fontsize=7)
     ax.axhline(100, color="0.6", ls=":", lw=1)
-    ax.set_xlabel("device-hours tested")
+    ax.set_xlabel("unit-hours tested (here link-hours)")
     ax.set_ylabel("95% upper bound on failure rate (FIT)")
     ax.legend(fontsize=7)
     ax.grid(True, which="both", alpha=0.3)
