@@ -49,7 +49,7 @@ Chapter: [28-04](../chapters/28-04-question-banks-digital-ai-memory-interconnect
 
 ### Problem 28-04.9 [B]
 
-**A chiplet link.** Two chiplets exchange 2 TB/s. Find the link power at 0.25 and 0.5 pJ/bit [R-524], and the die edge needed at UCIe-A's shoreline of 165 and 1,317 GB/s per mm.
+**A chiplet link.** Two chiplets exchange 2 TB/s in total, both directions counted (as UCIe's shoreline figures are). Find the link power at 0.25 and 0.5 pJ/bit [R-524], and the die edge needed at UCIe-A's shoreline of 165 and 1,317 GB/s per mm.
 
 ### Problem 28-04.10 [B]
 
@@ -64,8 +64,8 @@ Chapter: [28-04](../chapters/28-04-question-banks-digital-ai-memory-interconnect
 **Three derivations.**
 
 - (a) From performance $= \text{IPC} \times f$ and $P \propto Cf^3$ along the voltage–frequency line, derive the energy-per-operation reduction an iso-power claim of ratio $R$ with IPC ratio $g_{\text{IPC}}$ and capacitance ratio $g_C$ requires.
-- (b) Show that decode with $B$ sequences and $b_w$ bytes per weight has intensity $2B/b_w$ FLOP per byte of weights, and derive the batch at which it reaches a ridge point $F/B_{\text{mem}}$.
-- (c) Show that a link's power is its bit rate times its energy per bit, and that for a fixed power budget the bit rate is inversely proportional to the energy per bit.
+- (b) Show that decode with $N_b$ sequences and $b_w$ bytes per weight has intensity $2N_b/b_w$ FLOP per byte of weights, and derive the batch at which it reaches a ridge point $F/B_{\text{mem}}$.
+- (c) A UCIe-A module carries 64 data lanes each way at 32 GT/s [R-524]. Derive its bandwidth each way in GB/s, the module edge length implied by the 1,317 GB/s per mm shoreline figure if that figure counts both directions, and a general expression for the die edge needed to carry a two-way bandwidth $W$ with $m$ such modules per millimetre.
 
 ---
 

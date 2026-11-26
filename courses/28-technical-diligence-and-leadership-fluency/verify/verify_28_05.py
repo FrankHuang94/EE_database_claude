@@ -107,6 +107,7 @@ def ppm_tail(cpk):
 v.check("Txt 28-05.1", 16 * KB * 300)
 ceil = 10 * math.log10(1 / (16 * KB * 300))
 v.check("Txt 28-05.2", ceil)
+v.check("Txt 28-05.2b", 10 * math.log10(1 / (8 * 1.380649e-23 * 300)))
 for snr, fs in ((60, 1e6), (90, 1e3), (40, 1e10)):
     v.assert_true(f"ceiling independent of SNR {snr} dB and fs {fs:g}",
                   abs(schreier(snr, fs / 2, floor_w(snr, fs)) - ceil) < 1e-9)
@@ -114,6 +115,11 @@ v.check("Txt 28-05.3", 100 * eff_b_numeric(1.0))
 v.check("Txt 28-05.4", ppm_tail(1))
 v.check("Txt 28-05.5", ppm_tail(2))
 v.check("Txt 28-05.6", math.sqrt(29 / stats.chi2.ppf(0.05, 29)))
+v.check("Txt 28-05.7", 100 * (1 - (1 / 0.91 - 1) / (1 / 0.90 - 1)))
+v.check("Txt 28-05.8", 100 * (1 / 0.975 - 1))
+v.check("Txt 28-05.9", 100 * (1 / 0.98 - 1))
+v.check("Txt 28-05.10", 10 ** 0.3)
+v.check("Txt 28-05.11", 10 ** 0.15)
 
 # --- Example 28-05.1 -------------------------------------------------------------------
 en = (66 - 1.76) / 6.02
@@ -226,7 +232,10 @@ c358 = schreier(60, 5e5, floor_w(60, 1e6, 358.15))
 v.check("28-05.4a", c300)
 v.check("28-05.4b", c358)
 v.check("28-05.4c", 193 - c300)
+# 28-05.4d transcribes R-336's logged pair (202.96 dB on DR, 164.86 dB on SNDR); the paper's SNDR is not logged,
+# so the difference (= DR - SNDR at equal power and bandwidth) cannot be recomputed from primary inputs here.
 v.check("28-05.4d", 202.96 - 164.86)
+v.check("28-05.4e", 10 * math.log10(1 / (8 * 1.380649e-23 * 300)) - 193)
 
 # --- Problem 28-05.5 -------------------------------------------------------------------
 v.check("28-05.5a", 100 * eff_b_numeric(0.5))

@@ -11,7 +11,7 @@
 
 **Learning objectives.** After this chapter you can:
 
-1. For data converters and clocks, place a claim against the published figure-of-merit frontier and the thermal-noise ceiling, and compute the clock jitter an SNR claim requires.
+1. For data converters and clocks, place a claim against the published figure-of-merit frontier and the thermal-noise line, and compute the clock jitter an SNR claim requires.
 2. For RF transmitters, compute ideal efficiency at power back-off for class-B and Doherty amplifiers, convert EVM to dB, and ask for efficiency with the real modulated signal.
 3. For power conversion, turn efficiency points into watts of heat, multiply the efficiencies of a conversion chain, and check a power-density claim's boundary.
 4. For packaging and embedded systems, compute interconnect density from pitch, compound known-good-die yields, estimate battery life from a duty cycle, and test a yield or battery-life claim against them.
@@ -67,13 +67,15 @@ $$
 
 where $P$ is power in watts and $f_s$ the sample rate (for an oversampled converter, the Nyquist rate of the signal band). The Walden figure $\text{FoM}_W$, in joules per conversion step, is smaller for better converters and assumes power doubles per extra bit. The Schreier figure $\text{FoM}_S$, in dB, is larger for better converters and assumes power quadruples per extra bit, as thermal noise requires.
 
-**The thermal ceiling.** Murmann's survey plots a line $P/f_s = 8k_BT \cdot \text{SNR}$ as the energy per sample of rail-to-rail class-B circuits at the noise limit [R-336]. Substituting $P = 8k_BT \cdot \text{SNR} \cdot f_s$ into $\text{FoM}_S$ (with SNDR = SNR in dB):
+**The thermal line.** Murmann's ISSCC 2022 short course draws a line $P/f_s = 8kT \cdot \text{SNR}$ as the energy per sample of rail-to-rail class-B circuits at the noise limit, after Vittoz (1990) [R-336]. Substituting $P = 8kT \cdot \text{SNR} \cdot f_s$ into $\text{FoM}_S$ (with SNDR = SNR in dB) gives the figure a converter *on* that line would have:
 
 $$
-\text{FoM}_S \le 10\log_{10}\text{SNR} + 10\log_{10}\frac{f_s}{2 \cdot 8k_BT \cdot \text{SNR} \cdot f_s} = 10\log_{10}\frac{1}{16\,k_BT}
+\text{FoM}_S = 10\log_{10}\text{SNR} + 10\log_{10}\frac{f_s}{2 \cdot 8kT \cdot \text{SNR} \cdot f_s} = 10\log_{10}\frac{1}{16\,kT}
 $$
 
-At 300 K, $16k_BT = 6.63 \times 10^{-20}$ J and the ceiling is about 191.8 dB, independent of speed and resolution. The best published results sit a few dB below it: 189.2 dB for an oversampled noise-shaping SAR in a 1 kHz band, 186.8 dB for a Nyquist-rate converter, 173.3 dB at 1 GS/s or faster, and 159.3 dB at 10 GS/s or faster (Murmann survey, revision of Aug 2026) [R-336] **[Established: survey of ISSCC and VLSI papers]**. Two cautions from the survey itself: its tabulated power "sometimes … includes power for clocks, references, etc.; sometimes it doesn't", and for delta-sigma modulators the decimation filter's power is excluded [R-336], [R-343].
+At 300 K, $16kT = 6.63 \times 10^{-20}$ J and the line sits at about 191.8 dB, independent of speed and resolution. It is a conservative reference, not a wall: 20-06 derives the bound for an ideal class-B driver charging a sampling capacitor, and at a Nyquist-frequency input that circuit needs only $4kT \cdot \text{SNR}$ per sample, so its bound is $10\log_{10}(1/8kT)$ = **194.8** dB, 3 dB above the line. A claim above about 192 dB therefore needs an explanation (a DR-based figure, the power boundary, or a circuit the line does not model), and none should exceed about 195 dB.
+
+The best low-speed results sit 3–5 dB below the line: 189.2 dB for an oversampled noise-shaping SAR in a 1 kHz band and 186.8 dB for a Nyquist-rate converter. At high speed the frontier is far lower, 173.3 dB at 1 GS/s or faster and 159.3 dB at 10 GS/s or faster, because jitter and other speed-dependent costs, not kT/C noise, dominate there (Murmann survey, revision of Aug 2026) [R-336] **[Established: survey of ISSCC and VLSI papers]**. Two cautions from the survey itself: its tabulated power "sometimes … includes power for clocks, references, etc.; sometimes it doesn't" [R-339], and for delta-sigma modulators the decimation filter's power is excluded [R-343].
 
 **Clock jitter.** Random timing error $\sigma_t$ on a sampled sine at $f_{in}$ limits SNR to
 
@@ -81,7 +83,7 @@ $$
 \text{SNR}_j = -20\log_{10}(2\pi f_{in}\sigma_t)
 $$
 
-independent of sample rate [R-332]. Independent noise sources add in power, so a converter with thermal-and-quantization SNR $S_q$ (dB) and jitter-limited $S_j$ has total SNR $-10\log_{10}(10^{-S_q/10} + 10^{-S_j/10})$. At gigahertz inputs, a few tens of femtoseconds matter: published high-speed converters report aperture jitter of about 50–65 fs [R-332], and the best published PLLs reach about 16–21 fs of integrated jitter at 10–20 GHz [R-350]. Jitter costs power: for an oscillator-limited PLL, halving the jitter needs four times the oscillator power [R-350].
+independent of sample rate [R-332]. Independent noise sources add in power, so a converter with thermal-and-quantization SNR $S_q$ (dB) and jitter-limited $S_j$ has total SNR $-10\log_{10}(10^{-S_q/10} + 10^{-S_j/10})$. At gigahertz inputs, a few tens of femtoseconds matter: published high-speed converters report aperture jitter of about 50–65 fs [R-332], and the best published PLLs reach about 16–21 fs of integrated jitter at 10–20 GHz [R-350] **[Established: data sheets and peer-reviewed papers]**. Jitter costs power: for an oscillator-limited PLL, halving the jitter needs four times the oscillator power [R-350].
 
 | # | Question | Strong answer | Evasive answer |
 |---|---|---|---|
@@ -96,15 +98,17 @@ independent of sample rate [R-332]. Independent noise sources add in power, so a
 
 ### 3.2 RF: transmitters, receivers and their efficiency
 
+> **Math refresher — decibels.** A ratio $x$ of *powers* is $10\log_{10}x$ dB, a ratio of *amplitudes* (voltages, currents, EVM) is $20\log_{10}x$ dB, because power goes as amplitude squared: 3 dB is a factor of 2 in power and 1.41 in amplitude, 20 dB a factor of 100 in power and 10 in amplitude. dBm is power relative to 1 mW (0 dBm = 1 mW, 30 dBm = 1 W), dBc is relative to the carrier, and dBFS relative to a converter's full scale. Decibels add where ratios multiply, which is why chains of gains and losses are summed in dB.
+
 **Governing quantities.** A transmitter's power amplifier (PA) must reproduce a modulated signal whose peak power exceeds its average by the peak-to-average power ratio (PAPR), so it runs most of the time "backed off" below its peak. For an ideal class-B stage, the drain current is a half-sine of peak $I_p$; its DC component is $I_p/\pi$ and its fundamental amplitude $I_p/2$. With output voltage amplitude $V_o$ from supply $V_{DD}$:
 
 $$
 \eta = \frac{\tfrac12 V_o \cdot \tfrac12 I_p}{V_{DD} \cdot I_p/\pi} = \frac{\pi}{4}\,\frac{V_o}{V_{DD}} = \frac{\pi}{4}\,10^{-\text{BO}/20}
 $$
 
-where BO is the back-off in dB. Efficiency is 78.5% at full swing and falls in proportion to amplitude. A symmetric Doherty amplifier keeps a "carrier" amplifier at full voltage swing down to half the peak amplitude by presenting it with twice the load; below that point its efficiency is $(\pi/2)\,10^{-\text{BO}/20}$, twice class B, with a second 78.5% peak at 6 dB back-off (21-07). Real devices fall well short of these ideals. Published GaN Doherty amplifiers for base stations report 38.5–46.5% drain efficiency at 6 dB back-off and better than 38% average efficiency with a 6.5 dB-PAPR, 100 MHz OFDM signal after digital predistortion (DPD) [R-385]; a GaN-on-Si module reports 51–53% at 8 W average with a 100 MHz LTE signal [R-385] **[Established: peer-reviewed papers]**.
+where BO is the back-off in dB. Efficiency is 78.5% at full swing and falls in proportion to amplitude. A symmetric Doherty amplifier keeps a "carrier" amplifier at full voltage swing down to half the peak amplitude by presenting it with twice the load; below that point its efficiency is $(\pi/2)\,10^{-\text{BO}/20}$, twice class B, with a second 78.5% peak at 6 dB back-off (21-07). Real devices fall well short of these ideals. A published GaN MMIC Doherty (Pang et al., 2022) reports 38.5–46.5% drain efficiency at 6 dB back-off across 4.1–5.6 GHz and better than 38% average efficiency with a 6.5 dB-PAPR, 100 MHz OFDM signal after digital predistortion (DPD) [R-385]; another (Choi et al., 2022) reports 38.9–56.8% with an 8 dB-PAPR, 20 MHz LTE signal after DPD but only 38.5–50.2% with a 100 MHz NR signal without DPD, so bandwidth matters [R-385]; a GaN-on-Si module reports 51–53% at 8 W average with a 100 MHz LTE signal [R-385] **[Established: peer-reviewed papers]**.
 
-**Signal quality.** Error vector magnitude (EVM) is the RMS error of the transmitted constellation relative to its RMS amplitude. When noise-like impairments dominate, $\text{EVM}_{\text{rms}}^2 \approx 1/\text{SNR}$, so $\text{EVM}_{\text{dB}} = 20\log_{10}\text{EVM} \approx -\text{SNR}_{\text{dB}}$. 3GPP requires 3.5% for 256-QAM (−29.1 dB) and 2.5% for 1024-QAM at a base station [R-275]; Wi-Fi 7 requires −38 dB for 4096-QAM [R-383]. Out-of-band leakage is limited by the adjacent-channel leakage ratio (ACLR): 45 dB for an FR1 base station and 30 dB for a power-class-3 handset [R-383]. Linearity, efficiency and EVM trade against one another, which is why an efficiency figure without the signal, the ACLR and the EVM it was measured with is incomplete.
+**Signal quality.** Error vector magnitude (EVM) is the RMS error of the transmitted constellation relative to its RMS amplitude. When noise-like impairments dominate, $\text{EVM}_{\text{rms}}^2 \approx 1/\text{SNR}$, so $\text{EVM}_{\text{dB}} = 20\log_{10}\text{EVM} \approx -\text{SNR}_{\text{dB}}$. 3GPP requires 3.5% for 256-QAM (−29.1 dB) and 2.5% for 1024-QAM at a base station on carriers up to 4.2 GHz (2.8% above) [R-275] **[Established: standard]**; Wi-Fi 7 requires −38 dB for 4096-QAM [R-383]. Out-of-band leakage is limited by the adjacent-channel leakage ratio (ACLR), the ratio of in-channel to adjacent-channel power: at least 45 dB for an FR1 base station and 30 dB for a power-class-3 handset, often written −45 dBc and −30 dBc [R-383] **[Established: standard]**. Linearity, efficiency and EVM trade against one another, which is why an efficiency figure without the signal, the ACLR and the EVM it was measured with is incomplete.
 
 | # | Question | Strong answer | Evasive answer |
 |---|---|---|---|
@@ -124,11 +128,11 @@ $$
 P_{loss} = P_{in} - P_{out} = P_{out}\left(\frac{1}{\eta} - 1\right)
 $$
 
-Near 100%, small efficiency differences are large differences in heat: going from 97.5% to 98% cuts the loss by a fifth (Example 28-05.4). Stages in series multiply, $\eta_{\text{chain}} = \prod \eta_i$, and each stage's loss is set by the power flowing through it, so the last stage (the one at the highest current) often dominates (22-10). Power density, in W/in³ or W/L, depends on what is counted: open-frame against cased, with or without hold-up capacitors, fans and connectors.
+Near 100%, small efficiency differences are large differences in heat: going from 97.5% to 98% cuts the loss by a fifth (Example 28-05.4). Stages in series multiply, $\eta_{\text{chain}} = \prod \eta_i$, and the last stage, which converts to the lowest voltage at the highest current, usually has the lowest efficiency and so often dominates the loss even though it carries the least power (22-10). Power density, in W/in³ or W/L, depends on what is counted: open-frame against cased, with or without hold-up capacitors, fans and connectors.
 
 Published references show how much boundaries matter. A TI 65 W GaN adapter reference design reports 25.3 W/in³ without saying whether the figure is for a cased unit; a 5 kW totem-pole PFC stage reports 99% peak efficiency at 120 W/in³ open-frame, but it is a PFC stage alone [R-423]. Infineon's 8 kW AI-server supply reports 97.5% efficiency and 100 W/in³, against 32 W/in³ for an available 3 kW unit, while trade press reported 98% [R-423] **[Industry estimate; efficiency figure Contested]**.
 
-**Device supply and ruggedness.** The switches set both performance and risk. A 650 V GaN transistor has no avalanche rating, only a transient over-voltage rating under stated pulse conditions, while a 1200 V SiC MOSFET may carry a short-circuit withstand time of 3 µs [R-430] (22-06). Supply is shifting: TSMC told Navitas it would end GaN wafer foundry production by the end of July 2027 [R-432] **[Established as reported]**, and analysts describe SiC utilization near 50% upstream and 70% in device lines with the downturn expected to last until 2027–2028 [R-432] **[Industry estimate]**.
+**Device supply and ruggedness.** The switches set both performance and risk. A 650 V GaN transistor has no avalanche rating, only a transient over-voltage rating under stated pulse conditions, while a 1200 V SiC MOSFET may carry a short-circuit withstand time of 3 µs [R-430] **[Established: data sheet]** (22-06). Supply is shifting: TSMC told Navitas it would end GaN wafer foundry production by the end of July 2027 [R-432] **[Established as reported]**, and analysts describe SiC utilization near 50% upstream and 70% in device lines with the downturn expected to last until 2027–2028 [R-432] **[Industry estimate]**.
 
 | # | Question | Strong answer | Evasive answer |
 |---|---|---|---|
@@ -150,14 +154,14 @@ $$
 Y_{\text{package}} = Y_{\text{assembly}} \prod_i Y_{\text{die},i}
 $$
 
-where each die yield is the probability that a die which passed its own test (a known-good die) survives into a working package. With eight or twelve memory stacks, even 99.5% per stack costs several points. TSMC reports yields "over 98%" on 5.5-reticle CoWoS [R-587] without a public definition of what the yield covers [R-587] **[Contested: definition unstated]**; Example 28-05.5 shows why the definition decides whether the number can be an end-to-end package yield.
+where each die yield is the probability that a die which passed its own test (a known-good die) survives into a working package. With eight or twelve memory stacks, even 99.5% per stack costs several points. TSMC reports yields "over 98%" on 5.5-reticle CoWoS without a public definition of what the yield covers [R-587] **[Contested: definition unstated]**; Example 28-05.5 shows why the definition decides whether the number can be an end-to-end package yield.
 
 **Thermal.** Junction temperature is $T_j = T_{ref} + P\,\theta$, where $\theta$ is the thermal resistance from junction to the reference (case, cold plate or coolant) in K/W (25-08). At kilowatt power, a few hundredths of a kelvin per watt decide whether a part meets its junction limit.
 
 | # | Question | Strong answer | Evasive answer |
 |---|---|---|---|
 | K1 | "Yield of what: which steps, which package size, over how many units?" | A definition, the units counted and the trend | A single percentage |
-| K2 | "What pitch is in production, and what is qualified for our product?" | Production and qualified pitches, with reliability data (R-589, R-591) | The roadmap's best number |
+| K2 | "What pitch is in production, and what is qualified for our product?" | Production and qualified pitches, with reliability data [R-589], [R-591] | The roadmap's best number |
 | K3 | "What is the known-good-die test coverage for each die type, and what happens to a package with one bad die?" | Coverage, test escapes and rework or scrap policy | "All dies are tested" |
 | K4 | "What is the thermal resistance from junction to coolant, and the hot-spot temperature at full power?" | θ with its reference point, and measured hot-spot temperatures | Case temperature only |
 | K5 | "What is the warpage at reflow and over temperature for this package size?" | Measured warpage with limits | "Within spec" |
@@ -172,9 +176,9 @@ $$
 I_{avg} = I_{sleep} + \sum_k \frac{I_k\,t_k}{T_k}
 $$
 
-where event $k$ draws $I_k$ (above the sleep current) for $t_k$ every $T_k$. Battery life is capacity divided by $I_{avg}$, before derating for temperature, self-discharge and pulse loading. The headline figures that feed this sum are where the boundaries hide. TI's MSPM0G3507 data sheet gives 101 µA/MHz running CoreMark from flash and 55 µA/MHz for a `while(1)` loop; standby with RTC and SRAM retained is 1.5 µA typical (4 µA maximum) at 25 °C but 4 µA typical (40 µA maximum) at 85 °C [R-310] **[Established: data sheet]**. A CR2032 coin cell is rated at 225 mAh at a 0.2 mA continuous drain, and higher pulse currents reduce the effective capacity [R-310].
+where event $k$ draws $I_k$ (above the sleep current) for $t_k$ every $T_k$. Battery life is capacity divided by $I_{avg}$, before derating for temperature, self-discharge and pulse loading. The headline figures that feed this sum are where the boundaries hide. TI's MSPM0G3507 data sheet gives 101 µA/MHz running CoreMark from flash and 55 µA/MHz for a `while(1)` loop; standby with RTC and SRAM retained is 1.5 µA typical (4 µA maximum) at 25 °C but 4 µA typical (40 µA maximum) at 85 °C [R-310] **[Established: data sheet]**. A CR2032 coin cell is rated at 225 mAh at a 0.2 mA continuous drain (Panasonic's rating; other vendors differ), and higher pulse currents reduce the effective capacity [R-310] **[Established: data sheet]**.
 
-**Security and safety obligations.** Embedded products now carry regulatory duties that are part of their value. The EU Cyber Resilience Act requires a support period of at least five years (or the expected use time if shorter), applies from 11 December 2027, and requires reporting of actively exploited vulnerabilities from 11 September 2026 [R-313] **[Established: regulation text]**. For automotive parts, ISO 26262 sets hardware metrics by ASIL: single-point fault metric at least 90%, 97% and 99% and latent-fault metric at least 60%, 80% and 90% for ASIL B, C and D [R-614] (25-10).
+**Security and safety obligations.** Embedded products now carry regulatory duties that are part of their value. The EU Cyber Resilience Act requires a support period of at least five years (or the expected use time if shorter), applies from 11 December 2027, and requires reporting of actively exploited vulnerabilities from 11 September 2026 [R-313] **[Established: regulation text]**. For automotive parts, ISO 26262 sets hardware metrics by ASIL: single-point fault metric at least 90%, 97% and 99% and latent-fault metric at least 60%, 80% and 90% for ASIL B, C and D [R-614] **[Established: standard]** (25-10).
 
 | # | Question | Strong answer | Evasive answer |
 |---|---|---|---|
@@ -182,7 +186,7 @@ where event $k$ draws $I_k$ (above the sleep current) for $t_k$ every $T_k$. Bat
 | E2 | "What are standby current and its maximum at 85 °C, with what retained?" | Typical and maximum over temperature, with retention | 25 °C typical only |
 | E3 | "What does one wake-up cost in time and charge?" | Microseconds and microcoulombs, from a measured trace | "Instant wake" |
 | E4 | "Under which duty cycle and battery derating is the battery life claimed?" | The profile, capacity derating and temperature | "Up to 10 years" |
-| E5 | "What is your security support period, vulnerability-handling process and certification status?" | Years of support, a disclosure process and named certifications (CRA, R-313) | "Secure by design" |
+| E5 | "What is your security support period, vulnerability-handling process and certification status?" | Years of support, a disclosure process and named certifications (CRA [R-313]) | "Secure by design" |
 | E6 | "Which ASIL, and what SPFM and LFM did the analysis achieve?" | Metrics against ISO 26262 targets, with the assessor | "ASIL-ready" |
 | E7 | "Who maintains the SDK, RTOS ports and toolchain support, and for how long?" | Named owners, release cadence and support term | "Community-supported" |
 
@@ -204,7 +208,7 @@ $$
 \sigma \le s\sqrt{\frac{n-1}{\chi^2_{1-C;\,n-1}}}
 $$
 
-where $\chi^2_{1-C;\,n-1}$ is the lower $1 - C$ quantile. With 30 parts the 95% upper bound on $\sigma$ is about 1.28 times the measured $s$, which lowers the provable Cpk by the same factor (Problem 28-05.12). The diligence question is therefore not "what is the typical value?" but "how many parts, what spread, and what is guaranteed by test?".
+where $\chi^2_{1-C;\,n-1}$ is the lower $1 - C$ quantile. With 30 parts the 95% upper bound on $\sigma$ is about 1.28 times the measured $s$, which lowers the provable Cpk by the same factor (Problem 28-05.12). That bound treats the mean as known; allowing for uncertainty in the mean as well (Bissell's lower bound) lowers it slightly more. The diligence question is therefore not "what is the typical value?" but "how many parts, what spread, and what is guaranteed by test?".
 
 ## 4. Worked examples
 
@@ -219,12 +223,12 @@ All parameters are illustrative assumptions unless a source is cited.
 - (a) $(66 - 1.76)/6.02$ = **10.67** bits.
 - (b) $0.020/(10^9 \times 2^{10.67})$ = **12.3** fJ per conversion step.
 - (c) $66 + 10\log_{10}(5 \times 10^8/0.020)$ = **170.0** dB, **3.3** dB below the published best.
-- (d) $8 \times 1.380649 \times 10^{-23} \times 300 \times 10^{6.6} \times 10^9$ = **0.132** mW; the claim uses **152** times that, **21.8** dB below the 191.8 dB ceiling.
+- (d) $8 \times 1.380649 \times 10^{-23} \times 300 \times 10^{6.6} \times 10^9$ = **0.132** mW; the claim uses **152** times that, **21.8** dB below the 191.8 dB thermal line.
 - (e) $66 + 10\log_{10}(5 \times 10^8/0.002)$ = **180.0** dB.
 
 **Units check.** W ÷ (samples/s × steps) = J per step; FoM_S in dB from a dimensionless SNDR plus 10 log₁₀(Hz/W), the convention of the survey. ✓
 
-**Sanity check.** At 20 mW the claim is a few dB short of the best paper in its class, which is plausible for a product whose power includes more than a paper's core. At 2 mW it would beat every published 1 GS/s result by almost 7 dB. That does not make it false, but it moves the burden: ask for the measurement setup, the power boundary (AM2) and independent measurement. The ceiling check is a consistency test: no claim should exceed 191.8 dB at room temperature.
+**Sanity check.** At 20 mW the claim is a few dB short of the best paper in its class, which is plausible for a product whose power includes more than a paper's core. At 2 mW it would beat every published 1 GS/s result by almost 7 dB. That does not make it false, but it moves the burden: ask for the measurement setup, the power boundary (AM2) and independent measurement. The thermal line is a consistency test: a claim above about 192 dB at room temperature needs an explanation, and none should exceed the 194.8 dB ideal class-B bound.
 
 ### Example 28-05.2 · The clock behind an SNR claim (tier B)
 
@@ -239,7 +243,7 @@ All parameters are illustrative assumptions unless a source is cited.
 
 **Units check.** $2\pi f\sigma_t$ is dimensionless (Hz × s). ✓
 
-**Sanity check.** The claim needs a clock near 48 fs, about what the best published high-speed converters report as aperture jitter [R-332], before adding the PLL's contribution. A bench measurement with a laboratory clock source may meet it while the product's own PLL does not, which is question AM5.
+**Sanity check.** The 48.3 fs is the *total* timing budget: the converter's own aperture jitter and the clock's jitter add root-sum-square and together must stay at or below it. The best published high-speed converters report aperture jitter alone of about 50–65 fs [R-332], so at full scale the claim exceeds the published state of the art even with a perfect clock. The formula assumes a full-scale sine, and an SNR quoted in dBFS but measured at a backed-off input can exceed it, so ask at what input amplitude it was measured (AM1) and with which clock (AM5): a bench clock source may meet a budget that the product's own PLL does not.
 
 ### Example 28-05.3 · A PA efficiency claim at back-off (tier B)
 
@@ -253,11 +257,11 @@ All parameters are illustrative assumptions unless a source is cited.
 
 **Units check.** Efficiencies are ratios; W ÷ ratio = W. ✓
 
-**Sanity check.** The claim is within the ideal Doherty's 62.5% at this back-off and a few points above a published GaN-on-Si module at the same average power and bandwidth. That makes it ambitious but not impossible; the questions are R1 and R2: with what ACLR and EVM, after which DPD, and is the DPD's power counted? Efficiency at a single back-off point also only approximates the average over a real signal's envelope, so ask for the measured average.
+**Sanity check.** The claim is within the ideal Doherty's 62.5% at this back-off and a few points above a published GaN-on-Si module at the same average power and bandwidth. That makes it ambitious but not impossible; the questions are R1 and R2: with what ACLR and EVM, after which DPD, and is the DPD's power counted? The Choi results show that the same design loses several points when the bandwidth rises from 20 to 100 MHz. Efficiency at a single back-off point also only approximates the average over a real signal's envelope (21-07 Example 21-07.5 computes that average for OFDM), so ask for the measured average.
 
 ### Example 28-05.4 · Half a point of efficiency (tier B)
 
-**Setup.** (a) An 8 kW server power supply is quoted at 97.5% efficiency by the vendor and 98% by the trade press [R-423]. Find the loss at full load in each case, the difference, and the fractional reduction in heat. (b) Find the volume at 100 W/in³ and at the 32 W/in³ of an older 3 kW unit's density, in litres. (c) A rack delivers 1,000 W to processor cores through the supply (97.5%), a 48-to-12 V intermediate bus converter (97.5%, assumed) and core regulators (90%, assumed). Find the chain efficiency, the input power and each stage's loss.
+**Setup.** (a) An 8 kW server power supply is quoted at 97.5% efficiency by the vendor and 98% by the trade press [R-423]. Find the loss at full load in each case (assuming the quoted figure applies at full load; it is probably a peak figure, so ask for the curve, question P1), the difference, and the fractional reduction in heat. (b) Find the volume at 100 W/in³ and at the 32 W/in³ of an available 3 kW unit's density, in litres. (c) A rack delivers 1,000 W to processor cores through the supply (97.5%), a 48-to-12 V intermediate bus converter (97.5%, assumed) and core regulators (90%, assumed). Find the chain efficiency, the input power and each stage's loss.
 
 **Solution.**
 
@@ -286,7 +290,7 @@ All parameters are illustrative assumptions unless a source is cited.
 
 ### Example 28-05.6 · A battery-life claim (tier B)
 
-**Setup.** A sensor node uses an MCU with the MSPM0G3507's data-sheet figures and a Bluetooth LE radio with the CC2340R5's [R-310]. Each second the MCU wakes for 2 ms at 32 MHz; every 10 s the radio transmits for 1 ms (5.1 mA) and receives for 1 ms (5.3 mA). Sleep current is 1.5 µA (MCU) plus 0.71 µA (radio). The battery is a 225 mAh CR2032 [R-310]. Treat active currents as additions to sleep current and take a year as 8,766 hours. Find (a) the average current and battery life at 25 °C with the CoreMark figure of 101 µA/MHz, (b) the life at 85 °C, where the MCU's typical standby is 4 µA (the radio's 25 °C value is kept for lack of data), and (c) the life with the `while(1)` figure of 55 µA/MHz, and its ratio to (a).
+**Setup.** A sensor node uses an MCU with the MSPM0G3507's data-sheet figures and a Bluetooth LE radio with the CC2340R5's [R-310]. Each second the MCU wakes for 2 ms at 32 MHz; every 10 s the radio transmits for 1 ms (5.1 mA) and receives for 1 ms (5.3 mA). Sleep current is 1.5 µA (MCU) plus 0.71 µA (radio). The battery is a 225 mAh CR2032 (Panasonic's rating; other vendors differ) [R-310]. Treat active currents as additions to sleep current and take a year as 8,766 hours. Find (a) the average current and battery life at 25 °C with the CoreMark figure of 101 µA/MHz, (b) the life at 85 °C, where the MCU's typical standby is 4 µA (the radio's 25 °C value is kept for lack of data), and (c) the life with the `while(1)` figure of 55 µA/MHz, and its ratio to (a).
 
 **Solution.**
 
@@ -303,18 +307,24 @@ All parameters are illustrative assumptions unless a source is cited.
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
 | Txt 28-05.1 | 16kT at 300 K | 6.63 × 10^-20 | J |
-| Txt 28-05.2 | Schreier ceiling at 300 K | 191.8 | dB |
+| Txt 28-05.2 | Schreier figure on the 8kT·SNR line at 300 K | 191.8 | dB |
+| Txt 28-05.2b | ideal class-B bound at a Nyquist input, 300 K | 194.8 | dB |
 | Txt 28-05.3 | ideal class-B peak efficiency | 78.5 | % |
 | Txt 28-05.4 | ppm beyond a one-sided limit, Cpk = 1 | 1350 | ppm |
 | Txt 28-05.5 | ppm beyond a one-sided limit, Cpk = 2 | 0.001 | ppm |
 | Txt 28-05.6 | 95% bound on σ over s, 30 parts | 1.28 | — |
+| Txt 28-05.7 | heat cut from 90% to 91% efficiency | 11.0 | % |
+| Txt 28-05.8 | loss at 97.5% as a share of output | 2.56 | % |
+| Txt 28-05.9 | loss at 98% as a share of output | 2.04 | % |
+| Txt 28-05.10 | 3 dB as a power ratio | 2 | — |
+| Txt 28-05.11 | 3 dB as an amplitude ratio | 1.41 | — |
 | Ex 28-05.1a | ENOB | 10.67 | bits |
 | Ex 28-05.1b | Walden figure | 12.3 | fJ/conv-step |
 | Ex 28-05.1c | Schreier figure | 170.0 | dB |
 | Ex 28-05.1c1 | gap to best ≥ 1 GS/s | 3.3 | dB |
 | Ex 28-05.1d | 8kT·SNR power floor | 0.132 | mW |
 | Ex 28-05.1d1 | ratio to floor | 152 | — |
-| Ex 28-05.1d2 | gap to ceiling | 21.8 | dB |
+| Ex 28-05.1d2 | gap to the thermal line | 21.8 | dB |
 | Ex 28-05.1e | Schreier figure at 2 mW | 180.0 | dB |
 | Ex 28-05.2a | jitter for 60 dB alone | 79.6 | fs |
 | Ex 28-05.2b | SNR with 100 fs | 58.0 | dB |
@@ -361,13 +371,13 @@ All parameters are illustrative assumptions unless a source is cited.
 
 The lab is [labs/28-05-lab/](../labs/28-05-lab/README.md). `bankcheck.py` implements the checks behind the question banks:
 
-- ENOB, the Walden and Schreier figures and the thermal ceiling;
+- ENOB, the Walden and Schreier figures and the thermal line;
 - jitter-limited and combined SNR;
 - ideal class-B and Doherty efficiency against back-off;
 - converter loss and chain efficiency, area-array density and compound yield;
 - duty-cycled average current and battery life, Cpk and the confidence bound on σ.
 
-1. *Predict* the Schreier figure of Example 28-05.1's claim at 5 mW. Then plot claimed points against the published frontier and the ceiling.
+1. *Predict* the Schreier figure of Example 28-05.1's claim at 5 mW. Then plot claimed points against the published frontier and the thermal line.
 2. *Predict* the highest input frequency at which a 50 fs clock still allows 60 dB SNR. Then plot jitter-limited SNR against input frequency for 25, 50, 100 and 200 fs.
 3. *Predict* the ideal Doherty efficiency at 9 dB back-off. Then plot class-B and Doherty efficiency against back-off with the published GaN range.
 4. *Predict* Example 28-05.6's battery life if the MCU wakes every 10 s instead of every second. Then plot life against the wake interval for both µA/MHz figures and at 85 °C.
@@ -397,27 +407,27 @@ Figures are as of Nov 2026 unless dated otherwise.
 | Quantity | Value | Note |
 |---|---|---|
 | Ideal quantizer SNR | $6.02N + 1.76$ dB | 20-06 |
-| Schreier ceiling (8kT·SNR) | about 191.8 dB at 300 K | §3.1, from [R-336] |
+| Schreier figure on the 8kT·SNR line | about 191.8 dB at 300 K (ideal class-B bound 194.8 dB) | §3.1, from [R-336] and 20-06 |
 | Best published Schreier figures | 189.2 dB (oversampled, 1 kHz); 186.8 dB (Nyquist); 173.3 dB (≥ 1 GS/s); 159.3 dB (≥ 10 GS/s) | Murmann survey, Aug 2026 [R-336] |
 | Best Walden figure | 0.35 fJ/conv-step (unchanged since 2019) | [R-336] |
 | Jitter-limited SNR | $-20\log_{10}(2\pi f_{in}\sigma_t)$; 50 fs at 2 GHz gives 64.0 dB | [R-332] |
-| Best PLL jitter | about 16–21 fs integrated at 10–20 GHz | [R-350] |
+| Best PLL jitter | about 16–21 fs integrated at 10–20 GHz | [R-350] **[Established]** |
 | Ideal class-B efficiency | 78.5% at peak, $(\pi/4)\,10^{-\text{BO}/20}$ at back-off | 21-07 |
-| GaN Doherty (published) | 38.5–46.5% drain efficiency at 6 dB back-off; 51–53% at 8 W average | [R-385] |
-| 3GPP EVM | 3.5% (256-QAM), 2.5% (1024-QAM) at a base station | [R-275] |
+| GaN Doherty (published) | 38.5–46.5% drain efficiency at 6 dB back-off (one MMIC, 4.1–5.6 GHz); 51–53% at 8 W average | [R-385] **[Established]** |
+| 3GPP EVM | 3.5% (256-QAM), 2.5% (1024-QAM, carriers up to 4.2 GHz; 2.8% above) at a base station | [R-275] **[Established: standard]** |
 | 8 kW server PSU | 97.5% (vendor) or 98% (press); 100 W/in³ | [R-423] |
-| Flip-chip, microbump, hybrid-bond pitch | about 130, 50 and 9 µm; hybrid bonding to 4.5 µm by 2029 | [R-589] |
+| Flip-chip, microbump, hybrid-bond pitch | about 130, 50 and 9 µm; hybrid bonding to 4.5 µm by 2029 | [R-589] **[Industry estimate: roadmap]** |
 | MCU active current | 101 µA/MHz (CoreMark) against 55 µA/MHz (`while(1)`) | MSPM0G3507 [R-310] |
 | MCU standby | 1.5 µA typical at 25 °C, 4 µA typical at 85 °C | MSPM0G3507 [R-310] |
-| CR2032 | 225 mAh at 0.2 mA | [R-310] |
-| ISO 26262 SPFM | ≥ 90%, 97%, 99% (ASIL B, C, D) | [R-614] |
+| CR2032 | 225 mAh at 0.2 mA (Panasonic; other vendors differ) | [R-310] **[Established: data sheet]** |
+| ISO 26262 SPFM | ≥ 90%, 97%, 99% (ASIL B, C, D) | [R-614] **[Established: standard]** |
 
 ## 8. Common mistakes
 
 - **Comparing converters by SNR at different input frequencies.** SNDR near Nyquist, at the buyer's frequency, is the comparable number.
 - **Ignoring the power boundary.** A figure of merit computed from core power is not comparable with one that includes references, clocking and I/O.
 - **Quoting PA efficiency at peak power.** Modulated signals spend most of their time backed off; average efficiency with the real signal is what sets heat and battery drain.
-- **Treating efficiency points as small.** Between 97.5% and 98%, a fifth of the heat disappears; between 90% and 91%, a tenth.
+- **Treating efficiency points as small.** Between 97.5% and 98%, a fifth of the heat disappears; between 90% and 91%, about **11.0**%.
 - **Multiplying yields you have not defined.** A step yield and an end-to-end package yield are different quantities.
 - **Using typical sleep current at 25 °C for a product that lives in a warm enclosure.** Standby current can rise several-fold by 85 °C (1.5 to 4 µA typical for the MSPM0G3507 [R-310]).
 - **Taking "typical" as "guaranteed".** Ask for the spread, the number of parts and what production test enforces.
@@ -426,9 +436,9 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 **State of play (as of Nov 2026).**
 
-- **Converter efficiency is near its practical ceiling.** The best published Schreier figure (189.2 dB) is within about 3 dB of the 8kT·SNR ceiling, and the best Walden figure has not moved since 2019 [R-336] **[Established]**. Claims of large leaps in converter efficiency deserve the checks of Example 28-05.1; claims of better integration, calibration and scaling-friendly design are where most progress now lies (20-12).
+- **Low-speed converter efficiency is near its ceiling.** The best published Schreier figure (189.2 dB, a low-speed converter) is within about 3 dB of the 8kT·SNR line, while high-speed converters sit far below it, and the best Walden figure has not moved since 2019 [R-336] **[Established]**. Claims of large leaps in converter efficiency deserve the checks of Example 28-05.1; claims of better integration, calibration and scaling-friendly design are where most progress now lies (20-12).
 - **Wide-bandgap supply is in flux.** TSMC's planned exit from GaN foundry production by mid-2027 and SiC overcapacity [R-432] change the risk profile of power companies that depend on a single fab **[Established as reported; Industry estimate for utilization]**.
-- **Packaging is the new scaling axis.** Hybrid-bond pitch is heading to 4.5 µm by 2029 [R-589], HBM4 kept microbumps after JEDEC relaxed the stack-height limit from 720 to 775 µm, postponing hybrid bonding to later generations [R-594], and 5.5-reticle CoWoS is in production with yields reported above 98% under an unstated definition [R-587] **[Contested: yield definition]**.
+- **Packaging is the new scaling axis.** Hybrid-bond pitch is heading to 4.5 µm by 2029 [R-589] **[Industry estimate: roadmap]**, HBM4 kept microbumps after JEDEC relaxed the stack-height limit from 720 to 775 µm, postponing hybrid bonding to later generations [R-594] **[Established as reported]**, and 5.5-reticle CoWoS is in production with yields reported above 98% under an unstated definition [R-587] **[Contested: yield definition]**.
 - **Embedded value now includes compliance.** The Cyber Resilience Act's vulnerability reporting applies from September 2026 and its full obligations from December 2027 [R-313], so a microcontroller company's security-update process and support term are part of what a buyer acquires **[Established]**.
 
 **Commercial relevance.** In these domains the moat is often in the curve, not the point: an ADC that holds its SNDR to Nyquist, a PA that holds its efficiency at back-off, a supply that holds its efficiency at light load, an MCU that holds its standby current at 85 °C. Those properties come from design know-how, calibration IP and characterization data that a competitor cannot copy from a data sheet. Diligence that asks for curves and distributions finds that moat, or its absence; diligence that compares headline points finds marketing.
@@ -449,11 +459,11 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 ## 10. Concept check
 
-1. Why is the Schreier figure bounded at about 192 dB regardless of speed?
+1. Why does the Schreier figure of a thermal-noise-limited converter sit near 192 dB regardless of speed, and is that a hard limit?
 
    <details><summary>Answer</summary>
 
-   The 8kT·SNR line sets power proportional to SNR × sample rate, and both cancel in $\text{FoM}_S$, leaving $10\log_{10}(1/16k_BT)$, about 191.8 dB at 300 K.
+   The 8kT·SNR line sets power proportional to SNR × sample rate, and both cancel in $\text{FoM}_S$, leaving $10\log_{10}(1/16kT)$, about 191.8 dB at 300 K. It is a conservative line: the ideal class-B sampler of 20-06 at a Nyquist input does 3 dB better (194.8 dB), so a figure modestly above 192 dB calls for an explanation rather than a verdict of fraud.
 
    </details>
 
@@ -477,7 +487,7 @@ Figures are as of Nov 2026 unless dated otherwise.
 
    <details><summary>Answer</summary>
 
-   Loss is $P_{out}(1/\eta - 1)$; the step cuts the loss from 2.56% to 2.04% of output, about a fifth of the heat.
+   Loss is $P_{out}(1/\eta - 1)$; the step cuts the loss from **2.56**% to **2.04**% of output, about a fifth of the heat.
 
    </details>
 

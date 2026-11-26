@@ -88,6 +88,7 @@ v.check("Ex 28-04.1b", float(pf_freq))
 v.check("Ex 28-04.1b1", 100 * float(pf_freq - 1))
 v.check("Ex 28-04.1c", float(pf))
 v.check("Ex 28-04.1d", 100 * float(red))
+v.check("Ex 28-04.1e", 100 * (1 - 1 / 1.25))
 v.assert_true("Ex 1: root finder agrees", abs(iso_root(1.25, 1.15, 1.10) - float(red)) < 1e-9)
 v.assert_true("Ex 1: lab model agrees", abs(qb.iso_power(1.25, 1.15, 1.10)[2] - float(red)) < 1e-12)
 
@@ -134,6 +135,8 @@ v.check("Ex 28-04.5b2", 144 * (25 - 5))
 v.check("Ex 28-04.5c", 144 * 4)
 v.check("Ex 28-04.5c1", 144 * 4 // 4)
 v.check("Ex 28-04.5d", 10 ** 1.8)
+v.check("Ex 28-04.5d1", 10 ** 0.9)
+v.check("Txt 28-04.1", -math.log(0.05) / 1e6 * 1e9, tol=50)
 v.assert_true("Ex 5: 22 dB to 4 dB is an 18 dB cut", 22 - 4 == 18)
 
 # --- Example 28-04.6 ------------------------------------------------------------------
@@ -147,6 +150,8 @@ v.assert_true("Ex 6: lab posterior agrees", abs(qb.posterior(0.5, [3, 3, 0.4, 1,
 
 # --- Problem 28-04.2 ------------------------------------------------------------------
 f2, pf2, red2 = iso_exact(Fr(130, 100), Fr(112, 100))
+v.check("28-04.1a", 100 * 2 * 32 * 8e12 / 2e15)
+v.check("28-04.1b", 2 * 32 / 0.40)
 v.check("28-04.2a", float(f2))
 v.check("28-04.2b", 100 * float(f2 - 1))
 v.check("28-04.2c", float(pf2))
@@ -258,5 +263,8 @@ v.assert_true("Lab: trajectory ends at the posterior",
               abs(qb.trajectory(0.5, [3, 3, 0.4, 1, 3, 0.4])[-1] - pd) < 1e-12)
 v.assert_true("Lab: one evasion (0.4) costs less than a strong answer (3) gains", 3 * 0.4 > 1)
 v.assert_true("Lab: a 0.1 dodge undoes two strong answers", 3 * 3 * 0.1 < 1)
+
+v.check("28-04.12c", 64 * 32e9 / 8 / 1e9)
+v.check("28-04.12d", 2 * 64 * 32e9 / 8 / 1e9 / 1317)
 
 sys.exit(v.finish())

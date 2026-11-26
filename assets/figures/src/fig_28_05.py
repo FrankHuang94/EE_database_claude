@@ -35,7 +35,7 @@ bo = np.linspace(0, 12, 481)
 ax1.plot(bo, [100 * bc.eff_class_b(x) for x in bo], color=PALETTE[0], label="class B (ideal)")
 ax1.plot(bo, [100 * bc.eff_doherty(x) for x in bo], color=PALETTE[1], label="symmetric Doherty (ideal)")
 ax1.plot([6.02, 6.02], [38.5, 46.5], lw=7, color="0.35", solid_capstyle="butt",
-         label="published GaN Doherty, 6 dB")
+         label="published GaN MMIC Doherty, 6 dB")
 ax1.axvline(8, color="0.6", ls=":", lw=1)
 ax1.text(8.2, 72, "8 dB PAPR:\n62.5% Doherty\n31.3% class B", fontsize=8, color="0.35")
 ax1.set_xlim(0, 12)

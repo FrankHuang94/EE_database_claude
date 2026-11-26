@@ -45,8 +45,8 @@ Conventions:
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
-| Reduction $= 1 - 1/[g_C(R/g_{\text{IPC}})^3]$ | Energy-per-operation cut an iso-power claim of ratio $R$ needs | [28-04](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-04-question-banks-digital-ai-memory-interconnect.md) |
-| $I_{\text{decode}} = 2B/b_w$; ridge batch $B = b_wF/(2B_{\text{mem}})$ | Decode intensity with $B$ sequences and $b_w$ bytes per weight | [28-04](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-04-question-banks-digital-ai-memory-interconnect.md) |
+| Reduction $= 1 - 1/[g_C(R/g_{\text{IPC}})^3]$ | Power cut at the new operating point an iso-power claim of ratio $R$ needs (against the old product, energy per operation falls by $1 - 1/R$) | [28-04](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-04-question-banks-digital-ai-memory-interconnect.md) |
+| $I_{\text{decode}} = 2N_b/b_w$; ridge batch $N_b = b_wF/(2B_{\text{mem}})$ | Decode intensity with $N_b$ sequences and $b_w$ bytes per weight | [28-04](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-04-question-banks-digital-ai-memory-interconnect.md) |
 | Stack GB/s = bits × Gb/s ÷ 8; power = bits/s × J/bit | Memory and link bandwidth and power | [28-04](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-04-question-banks-digital-ai-memory-interconnect.md) |
 | Edge = bandwidth ÷ shoreline density; port pJ/bit = W ÷ bits/s | Die-to-die shoreline; optics per port | [28-04](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-04-question-banks-digital-ai-memory-interconnect.md) |
 | Posterior odds = prior odds × Π LR (independent answers) | Scoring an interview | [28-04](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-04-question-banks-digital-ai-memory-interconnect.md) |
@@ -56,7 +56,7 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | $\text{ENOB} = (\text{SNDR} - 1.76)/6.02$; $\text{FoM}_W = P/(f_s2^{\text{ENOB}})$; $\text{FoM}_S = \text{SNDR} + 10\log_{10}(f_s/2P)$ | Converter figures of merit | [28-05](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) |
-| $\text{FoM}_S \le 10\log_{10}(1/16k_BT) \approx 191.8$ dB at 300 K | Ceiling from the 8kT·SNR line | [28-05](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) |
+| $\text{FoM}_S = 10\log_{10}(1/16kT) \approx 191.8$ dB at 300 K (ideal class-B bound $10\log_{10}(1/8kT) \approx 194.8$ dB) | Conservative 8kT·SNR reference line; a claim above about 192 dB needs an explanation | [28-05](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) |
 | $\text{SNR}_j = -20\log_{10}(2\pi f_{in}\sigma_t)$; noises add in power | Clock jitter | [28-05](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) |
 | Class B $\eta = (\pi/4)10^{-\text{BO}/20}$; Doherty $2\times$ that below half amplitude | Ideal PA efficiency at back-off | [28-05](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) |
 | $P_{\text{loss}} = P_{\text{out}}(1/\eta - 1)$; $\eta_{\text{chain}} = \prod\eta_i$ | Converter heat and chains | [28-05](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md) |

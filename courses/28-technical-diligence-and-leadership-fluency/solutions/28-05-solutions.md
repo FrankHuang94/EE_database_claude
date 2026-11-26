@@ -9,13 +9,13 @@ Problems: [28-05 problems](../problems/28-05-problems.md) · Chapter: [28-05](..
 ### Solution 28-05.1
 
 - (a) **Evasive (a pivot):** SNR, not SNDR, and no frequency. To be strong: SNDR against input frequency, including near Nyquist, at a stated amplitude and clock.
-- (b) **Strong:** average efficiency with the signal, its PAPR and bandwidth, the ACLR, the DPD with its power counted, and a limit over temperature.
+- (b) **Strong:** average efficiency with the signal, its PAPR and bandwidth, the ACLR and EVM (both inside the 45 dB and 3.5% limits), the DPD with its power counted, and a limit over temperature.
 - (c) **Evasive:** an adjective in place of a definition. To be strong: the volume definition (cased or open-frame, with or without hold-up and connectors) and the dimensions.
 - (d) **Partial:** an honest follow-up plus a number at the wrong condition. It becomes strong when the 85 °C typical and maximum arrive, with what is retained in standby.
 
 ### Solution 28-05.2
 
-ENOB $= (70 - 1.76)/6.02$ = **11.34** bits. $\text{FoM}_W = 0.15/(2.5 \times 10^8 \times 2^{11.34})$ = **232** fJ per step. $\text{FoM}_S = 70 + 10\log_{10}(1.25 \times 10^8/0.15)$ = **159.2** dB, **22.3** dB below the 181.5 dB published result. Floor: $8k_BT \times 10^7 \times 2.5 \times 10^8$ = **0.0828** mW; the part uses **1811** times that. The large gap is consistent with a product whose power includes a buffer and references and whose design favors robustness; it is not a red flag by itself, but it shows how much of a data-sheet power figure is outside the converter core (AM2).
+ENOB $= (70 - 1.76)/6.02$ = **11.34** bits. $\text{FoM}_W = 0.15/(2.5 \times 10^8 \times 2^{11.34})$ = **232** fJ per step. $\text{FoM}_S = 70 + 10\log_{10}(1.25 \times 10^8/0.15)$ = **159.2** dB, **22.3** dB below the 181.5 dB published result. Floor: $8kT \times 10^7 \times 2.5 \times 10^8$ = **0.0828** mW; the part uses **1811** times that. The large gap is consistent with a product whose power includes a buffer and references and whose design favors robustness; it is not a red flag by itself, but it shows how much of a data-sheet power figure is outside the converter core (AM2).
 
 ### Solution 28-05.3
 
@@ -23,7 +23,7 @@ ENOB $= (70 - 1.76)/6.02$ = **11.34** bits. $\text{FoM}_W = 0.15/(2.5 \times 10^
 
 ### Solution 28-05.4
 
-At 300 K: $10\log_{10}[1/(16 \times 1.380649 \times 10^{-23} \times 300)]$ = **191.8** dB. At 358.15 K: **191.0** dB. A 193 dB claim exceeds the 300 K ceiling by **1.2** dB. The ceiling applies to rail-to-rail class-B circuits [R-336], so a result above it is possible only if the power is not all counted, the noise is not thermal-limited in the way assumed, or the figure uses dynamic range rather than SNDR (the survey records one DR-based figure 38 dB above its SNDR-based one [R-336]). Ask which SNDR or DR, which bandwidth, and what the power includes.
+At 300 K: $10\log_{10}[1/(16 \times 1.380649 \times 10^{-23} \times 300)]$ = **191.8** dB. At 358.15 K: **191.0** dB. A 193 dB claim exceeds the 300 K line by **1.2** dB but sits **1.8** dB under the 194.8 dB bound that 20-06 derives for an ideal class-B sampler at a Nyquist input. The line is a conservative reference for rail-to-rail class-B circuits [R-336], so a result above it means the power is not all counted, the noise is not thermal-limited in the way assumed, the figure uses dynamic range rather than SNDR (a DR-based Schreier figure computed from one ISSCC 2020 paper's 140 dB dynamic range, Wu et al., is 38 dB above its SNDR-based figure [R-336]), or the circuit genuinely beats the conservative line (up to 194.8 dB). Ask which SNDR or DR, which bandwidth, and what the power includes.
 
 ### Solution 28-05.5
 
@@ -63,9 +63,9 @@ At 25 °C: $2.21 + 6.464/5 + 1.04$ = **4.54** µA, life $225/0.0045428/8766$ = *
 
 ### Solution 28-05.13
 
-(a) $\text{FoM}_S = 10\log_{10}\text{SNR} + 10\log_{10}[f_s/(2P)]$. With $P = 8k_BT \cdot \text{SNR} \cdot f_s$, the second term is $10\log_{10}[1/(16k_BT \cdot \text{SNR})]$, so the sum is $10\log_{10}[1/(16k_BT)]$: $f_s$ cancels inside the fraction and SNR cancels between the terms.
+(a) $\text{FoM}_S = 10\log_{10}\text{SNR} + 10\log_{10}[f_s/(2P)]$. With $P = 8kT \cdot \text{SNR} \cdot f_s$, the second term is $10\log_{10}[1/(16kT \cdot \text{SNR})]$, so the sum is $10\log_{10}[1/(16kT)]$: $f_s$ cancels inside the fraction and SNR cancels between the terms.
 
-(b) A half-sine of peak $I_p$ has mean $I_p/\pi$ and fundamental amplitude $I_p/2$. DC power is $V_{DD}I_p/\pi$ and output power $\tfrac12 V_o (I_p/2)$, so $\eta = (\pi/4)(V_o/V_{DD})$. A carrier amplifier presented with twice the load reaches $V_o = V_{DD}$ when the output amplitude is half its peak; below that its voltage swing relative to $V_{DD}$ is twice what a class-B stage sized for full power would have at the same output, so its efficiency is $(\pi/4) \times 2a = (\pi/2)a$, twice class B, where $a$ is the output amplitude relative to the peak.
+(b) A half-sine of peak $I_p$ has mean $I_p/\pi$ and fundamental amplitude $I_p/2$. DC power is $V_{DD}I_p/\pi$ and output power $\tfrac12 V_o (I_p/2)$, so $\eta = (\pi/4)(V_o/V_{DD})$. A carrier amplifier presented with twice the load reaches $V_o = V_{DD}$ when the output amplitude is half its peak; below that its voltage swing relative to $V_{DD}$ is twice what a class-B stage sized for full power would have at the same output, so its efficiency is $(\pi/4) \times 2a = (\pi/2)a$, twice class B, where $a$ is the output amplitude relative to the peak. Two assumptions carry this result: the peaking amplifier draws no DC current below half amplitude (it is biased off), and the quarter-wave impedance inverter that doubles the carrier's load is lossless. Real peaking amplifiers conduct a little and real inverters lose some power, which is part of why published results fall short (21-07 derives the load modulation).
 
 (c) If $X \sim N(\mu, \sigma^2)$, $P(X > \text{USL}) = P[Z > (\text{USL} - \mu)/\sigma] = P(Z > 3C_{pk}) = \Phi(-3C_{pk})$. For the bound, $(n-1)s^2/\sigma^2 \sim \chi^2_{n-1}$, so $P[(n-1)s^2/\sigma^2 \ge \chi^2_{1-C;\,n-1}] = C$; rearranging the inequality gives $\sigma \le s\sqrt{(n-1)/\chi^2_{1-C;\,n-1}}$ with probability $C$.
 
@@ -85,10 +85,11 @@ At 25 °C: $2.21 + 6.464/5 + 1.04$ = **4.54** µA, life $225/0.0045428/8766$ = *
 | 28-05.3b | SNR at 1 GHz, 50 fs | 70.1 | dB |
 | 28-05.3c | SNR at 3 GHz, 50 fs | 60.5 | dB |
 | 28-05.3d | cost of tripling frequency | 9.5 | dB |
-| 28-05.4a | ceiling at 300 K | 191.8 | dB |
-| 28-05.4b | ceiling at 358.15 K | 191.0 | dB |
-| 28-05.4c | claim above the ceiling | 1.2 | dB |
+| 28-05.4a | line at 300 K | 191.8 | dB |
+| 28-05.4b | line at 358.15 K | 191.0 | dB |
+| 28-05.4c | claim above the line | 1.2 | dB |
 | 28-05.4d | DR-based over SNDR-based figure | 38 | dB |
+| 28-05.4e | claim below the ideal class-B bound | 1.8 | dB |
 | 28-05.5a | class B, half amplitude | 39.3 | % |
 | 28-05.5b | class B, 10 dB | 24.8 | % |
 | 28-05.5c | Doherty, half amplitude | 78.5 | % |

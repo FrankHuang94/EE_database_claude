@@ -19,7 +19,7 @@
 
 - A year is 8,766 hours. Boltzmann's constant is $8.617 \times 10^{-5}$ eV/K; temperatures in kelvin are °C + 273.15.
 - Dies per wafer use $\pi d^2/(4A) - \pi d/\sqrt{2A}$ for a 300 mm wafer, rounded down unless stated; yield is $e^{-AD_0}$.
-- Decode intensity is $2B/b_w$ FLOP per byte; TPP is $2 \times \text{MacTOPS} \times$ bit length.
+- Decode intensity is $2N_b/b_w$ FLOP per byte for $N_b$ sequences; TPP is $2 \times \text{MacTOPS} \times$ bit length.
 - Ideal class-B efficiency is $(\pi/4)10^{-\text{BO}/20}$; an ideal symmetric Doherty below half amplitude has twice that.
 - "Assumed" values are illustrative; sourced values carry the research-log IDs used in the chapters.
 
@@ -46,7 +46,7 @@ An NPU has 16,384 INT8 MAC units at 1.5 GHz; its brochure says "98 TOPS" and "24
 (d) How many devices would a zero-failure 1000-hour test need to bound the rate at 20 FIT with 90% confidence ($\chi^2_{0.9;2} = 4.605$)?
 
 **4 [B] · Digital and AI claims.** (28-04)
-(a) A CPU claims 18% more performance at the same power, with 8% more IPC and 4% more switched capacitance. Find the frequency ratio, the power factor and the required reduction in energy per operation.
+(a) A CPU claims 18% more performance at the same power, with 8% more IPC and 4% more switched capacitance. Find the frequency ratio, the power factor and the required power reduction at the new operating point.
 (b) An accelerator has 4 PFLOP/s of dense FP8 and 8 TB/s. Find the ridge, the decode intensity at batch 24 with FP8 weights, the attainable throughput and share of peak, and the batch at the ridge.
 (c) Find the bandwidth of one 2,048-bit HBM4 stack at 9.6 Gb/s, and of six stacks.
 (d) Find the power of six such stacks at full read bandwidth at 6.5 pJ/bit.

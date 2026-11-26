@@ -1,6 +1,6 @@
 # Lab 28-05 · Curves Behind Single-Point Claims
 
-**Objective.** Use small models to place a converter claim against the published figure-of-merit frontier and the thermal ceiling, see how clock jitter limits SNR as input frequency rises, compare class-B and Doherty efficiency across back-off, and see how battery life depends on duty cycle, code loop and temperature.
+**Objective.** Use small models to place a converter claim against the published figure-of-merit frontier and the thermal line, see how clock jitter limits SNR as input frequency rises, compare class-B and Doherty efficiency across back-off, and see how battery life depends on duty cycle, code loop and temperature.
 
 **Chapter:** [28-05 · Domain Question Banks II](../../chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md)
 
@@ -8,7 +8,7 @@
 
 The lab uses the chapter's models with its assumed parameters:
 
-- §3.1: ENOB, the Walden and Schreier figures, the 8kT·SNR ceiling $10\log_{10}(1/16k_BT)$, and jitter-limited SNR $-20\log_{10}(2\pi f_{in}\sigma_t)$.
+- §3.1: ENOB, the Walden and Schreier figures, the 8kT·SNR line $10\log_{10}(1/16kT)$ (ideal class-B bound $10\log_{10}(1/8kT)$), and jitter-limited SNR $-20\log_{10}(2\pi f_{in}\sigma_t)$.
 - §3.2: ideal class-B efficiency $(\pi/4)a$ and the ideal symmetric Doherty, $(\pi/2)a$ below half amplitude and $(\pi/2)a^2/(3a - 1)$ above it, for output amplitude $a$ relative to peak.
 - §3.3–3.5: converter loss and chains, area-array density, compound yield, duty-cycled current and battery life.
 - §3.6: Cpk, the normal tail and the chi-square bound on σ.
@@ -24,7 +24,7 @@ The lab uses the chapter's models with its assumed parameters:
 
 **Part 2 · Jitter against input frequency** (notebook). *Predict* the highest input frequency at which a 50 fs clock still allows 60 dB SNR, and the jitter-limited SNR at 2 GHz. Then plot jitter-limited SNR against input frequency for 25, 50, 100 and 200 fs.
 
-**Part 3 · Efficiency against back-off** (notebook). *Predict* the ideal Doherty and class-B efficiencies at 9 dB back-off. Then plot both against back-off from 0 to 12 dB, find the Doherty's dip between its peaks, and mark the published GaN range of 38.5–46.5% at 6 dB [R-385].
+**Part 3 · Efficiency against back-off** (notebook). *Predict* the ideal Doherty and class-B efficiencies at 9 dB back-off. Then plot both against back-off from 0 to 12 dB, find the Doherty's dip between its peaks, and mark one published GaN MMIC Doherty's range of 38.5–46.5% at 6 dB [R-385].
 
 **Part 4 · Battery life against duty cycle** (notebook). *Predict* Example 28-05.6's average current and battery life if the MCU wakes every 10 s instead of every second (25 °C, CoreMark figure). Then plot life against the wake interval for the CoreMark and `while(1)` figures at 25 °C and the CoreMark figure at 85 °C.
 

@@ -4,7 +4,7 @@ Chapter: [28-05](../chapters/28-05-question-banks-analog-rf-power-packaging-embe
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
 
-**Conventions.** Parameters are assumed unless a source is cited. $k_B = 1.380649 \times 10^{-23}$ J/K and room temperature is 300 K. $\text{ENOB} = (\text{SNDR} - 1.76)/6.02$; $\text{FoM}_W = P/(f_s 2^{\text{ENOB}})$; $\text{FoM}_S = \text{SNDR} + 10\log_{10}(f_s/2P)$. Ideal class-B efficiency is $(\pi/4)\,10^{-\text{BO}/20}$; an ideal symmetric Doherty below half amplitude has twice that. A year is 8,766 hours.
+**Conventions.** Parameters are assumed unless a source is cited. $k = 1.380649 \times 10^{-23}$ J/K and room temperature is 300 K. $\text{ENOB} = (\text{SNDR} - 1.76)/6.02$; $\text{FoM}_W = P/(f_s 2^{\text{ENOB}})$; $\text{FoM}_S = \text{SNDR} + 10\log_{10}[f_s/(2P)]$. Ideal class-B efficiency is $(\pi/4)\,10^{-\text{BO}/20}$; an ideal symmetric Doherty below half amplitude has twice that. A year is 8,766 hours.
 
 ---
 
@@ -15,7 +15,7 @@ Chapter: [28-05](../chapters/28-05-question-banks-analog-rf-power-packaging-embe
 **Strong, partial or evasive?** Classify each answer and say what would make the weaker ones strong:
 
 - (a) To "what is your ADC's SNDR near Nyquist?": "Our SNR is 72 dB."
-- (b) To "what is your PA's average efficiency with the real signal?": "47% average with a 100 MHz NR signal at 7.5 dB PAPR, ACLR −46 dBc after our DPD, whose 120 mW is included; at 85 °C it drops to 44%."
+- (b) To "what is your PA's average efficiency with the real signal?": "47% average with a 100 MHz NR signal at 7.5 dB PAPR, ACLR −46 dBc and EVM 2.1% at 256-QAM after our DPD, whose 120 mW is included; at 85 °C it drops to 44%."
 - (c) To "is your power density cased or open-frame?": "It's the highest in the industry."
 - (d) To "what is standby current at 85 °C?": "We'll pull that from characterization; at 25 °C it's 0.9 µA typical."
 
@@ -29,7 +29,7 @@ Chapter: [28-05](../chapters/28-05-question-banks-analog-rf-power-packaging-embe
 
 ### Problem 28-05.4 [B]
 
-**The ceiling.** Find the 8kT·SNR ceiling on the Schreier figure at 300 K and at 85 °C (358.15 K). A paper claims 193 dB at room temperature; by how much does it exceed the 300 K ceiling, and what would you ask?
+**The thermal line.** Find the Schreier figure on the 8kT·SNR line at 300 K and at 85 °C (358.15 K). A paper claims 193 dB at room temperature; by how much does it exceed the 300 K line, how far is it below the 194.8 dB ideal class-B bound, and what would you ask?
 
 ### Problem 28-05.5 [B]
 
@@ -71,8 +71,8 @@ Chapter: [28-05](../chapters/28-05-question-banks-analog-rf-power-packaging-embe
 
 **Three derivations.**
 
-- (a) From $P/f_s = 8k_BT \cdot \text{SNR}$, derive the ceiling on $\text{FoM}_S$ and show it does not depend on $f_s$ or SNR.
-- (b) For an ideal class-B stage with a half-sine drain current of peak $I_p$, derive $\eta = (\pi/4)(V_o/V_{DD})$; then show that a carrier amplifier that reaches full voltage swing at half the peak amplitude (the Doherty's low-power region) has twice that efficiency.
+- (a) From $P/f_s = 8kT \cdot \text{SNR}$, derive the value of $\text{FoM}_S$ on that line and show it does not depend on $f_s$ or SNR.
+- (b) For an ideal class-B stage with a half-sine drain current of peak $I_p$, derive $\eta = (\pi/4)(V_o/V_{DD})$; then show that a carrier amplifier that reaches full voltage swing at half the peak amplitude (the Doherty's low-power region) has twice that efficiency. State the assumptions about the peaking amplifier and the impedance inverter that this needs.
 - (c) Show that a normally distributed parameter with capability $C_{pk}$ against a one-sided upper limit has a fraction $\Phi(-3C_{pk})$ beyond the limit, and that $\sigma \le s\sqrt{(n-1)/\chi^2_{1-C;\,n-1}}$ with confidence $C$.
 
 ---

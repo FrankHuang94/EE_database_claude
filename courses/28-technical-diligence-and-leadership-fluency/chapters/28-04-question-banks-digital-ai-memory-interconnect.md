@@ -37,7 +37,8 @@ Where the analogy breaks down: financial statements are audited and standardized
 **Three answer patterns.**
 
 - **Strong:** a number with its conditions, a mechanism ("the gain comes from the larger reorder buffer and the new branch predictor, measured on SPECrate base"), and an honest limit ("on pointer-chasing workloads it is flat").
-- **Partial:** the right kind of answer with missing conditions, or a number offered with an offer to follow up with data. Neither moves belief much until the follow-up arrives.
+- **Partial:** the right kind of answer with missing conditions, or a number with a promise of data to follow. Neither moves belief much until the follow-up arrives.
+- **Deferred for confidentiality:** "that is customer-confidential; it can go to the clean team" or "it is in the data room under NDA", naming the data and the channel. Before a clean-team process a supplier often *cannot* disclose per-customer qualifications or contract terms, so this is not evasion: score it near 1 and score the answer itself when it is produced.
 - **Evasive:** an adjective instead of a number, a pivot to a different metric, an appeal to authority ("our customers are very happy"), or a number that cannot be reconciled with the identities.
 
 ```mermaid
@@ -57,15 +58,15 @@ Each section gives the governing quantities, the checks, and a question bank. Th
 
 ### 3.1 Digital logic and CPUs
 
-**Governing quantities.** Performance is instructions per second, $\text{IPC} \times f$ (14-01). Dynamic power is $\alpha CV^2f$, and along a voltage–frequency line $V$ rises roughly in proportion to $f$, so at fixed design $P \propto f^3$ (27-01 §3.6). A gain in IPC usually costs switched capacitance (wider structures, more speculation). Process nodes are quoted as power reductions at the same speed or speed gains at the same power: TSMC's N2 against N3E, for example, is reported as 25–30% lower power or 10–15% higher performance [R-552] **[Established: vendor claims relayed by press]**.
+**Governing quantities.** Performance is instructions per second, $\text{IPC} \times f$ (14-01). Dynamic power is $\alpha CV^2f$, and along a voltage–frequency line $V$ rises roughly in proportion to $f$, so at fixed design $P \propto f^3$ (27-01 §3.6). A gain in IPC usually costs switched capacitance (wider structures, more speculation). Process nodes are quoted as power reductions at the same speed or speed gains at the same power: TSMC's N2 against N3E, for example, is reported as 25–30% lower power or 10–15% higher performance [R-552] **[Industry estimate: vendor claim relayed by press]**.
 
-**The iso-power check.** A claim of a performance ratio $R$ at the same power, with an IPC ratio $g_{\text{IPC}}$, needs a frequency ratio $R/g_{\text{IPC}}$, which costs a power factor $(R/g_{\text{IPC}})^3$ at fixed design. If the IPC changes also raise switched capacitance by a factor $g_C$, the energy per operation at the same voltage must fall by
+**The iso-power check.** A claim of a performance ratio $R$ at the same power, with an IPC ratio $g_{\text{IPC}}$, needs a frequency ratio $R/g_{\text{IPC}}$, which costs a power factor $(R/g_{\text{IPC}})^3$ at fixed design. If the IPC changes also raise switched capacitance by a factor $g_C$, the power at the new frequency (equivalently, the energy per operation at the new operating point, against the new design run there unimproved) must fall by
 
 $$
 1 - \frac{1}{g_C\,(R/g_{\text{IPC}})^3}
 $$
 
-for the power to stay flat (Example 28-04.1). Set that against what the node offers; whatever remains must come from design (clock gating, voltage optimization, better cells), and should be explained.
+for the power to stay flat (Example 28-04.1). Measured against the *previous* product, energy per operation falls only by $1 - 1/R$, because the same power now buys $R$ times the work; the larger number above is what the node and design must deliver at the new, faster operating point. Set that against what the node offers; whatever remains must come from design (clock gating, voltage optimization, better cells), and should be explained.
 
 | # | Question | Strong answer | Evasive answer |
 |---|---|---|---|
@@ -83,10 +84,10 @@ for the power to stay flat (Example 28-04.1). Set that against what the node off
 **Governing quantities.** Peak throughput is $2N_{\text{MAC}}f$ times precision and sparsity factors (28-02 §3.1); the machine balance, or **ridge point**, is $F_{\text{peak}}/B_{\text{mem}}$ in FLOP per byte (14-15, 27-07 §3.1). Language-model decode reads every weight once per step and uses each for one MAC per sequence in the batch, so with weights of $b_w$ bytes per parameter its arithmetic intensity is about
 
 $$
-I_{\text{decode}} \approx \frac{2B}{b_w}\ \text{FLOP per byte},
+I_{\text{decode}} \approx \frac{2N_b}{b_w}\ \text{FLOP per byte},
 $$
 
-for a batch of $B$ sequences, ignoring the KV cache (which lowers it further). Decode is memory-bound until $I_{\text{decode}}$ reaches the ridge, that is until $B \approx b_w F_{\text{peak}}/(2B_{\text{mem}})$. Memory capacity bounds the model and the batch: weights plus KV caches must fit (27-07 §3.7).
+for a batch of $N_b$ sequences, ignoring the KV cache (which lowers it further). Decode is memory-bound until $I_{\text{decode}}$ reaches the ridge, that is until $N_b \approx b_w F_{\text{peak}}/(2B_{\text{mem}})$. Memory capacity bounds the model and the batch: weights plus KV caches must fit (27-07 §3.7).
 
 | # | Question | Strong answer | Evasive answer |
 |---|---|---|---|
@@ -101,7 +102,7 @@ for a batch of $B$ sequences, ignoring the KV cache (which lowers it further). D
 
 ### 3.3 Memory
 
-**Governing quantities.** Bandwidth per device is interface width × pin rate ÷ 8. HBM3E stacks use a 1,024-bit interface, and Micron's run at up to 9.2 GT/s, about 1.2 TB/s [R-475]; JEDEC's HBM4 doubles the width to 2,048 bits at up to 8 Gb/s, about 2 TB/s per stack [R-520], and vendors have announced HBM4 at 11.7 Gb/s and up to 13 Gb/s, "up to 3.3 TB/s" per stack [R-475] **[Established as announcements]**. Power is bits per second × energy per bit: about 3.9 pJ/bit for HBM2 [R-459], and a 2026 measurement put HBM3E power at about 248 W, roughly 35% of an H200's 700 W, at 4.52 TB/s of reads [R-459] **[Industry estimate: preprint]**. Capacity is dies × die density × stack height (up to 64 GB per HBM4 stack in the standard [R-520]).
+**Governing quantities.** Bandwidth per device is interface width × pin rate ÷ 8. HBM3E stacks use a 1,024-bit interface, and Micron's run at up to 9.2 GT/s, about 1.2 TB/s [R-475]; JEDEC's HBM4 doubles the width to 2,048 bits at up to 8 Gb/s, about 2 TB/s per stack [R-520] **[Established: standard]**, and vendors have announced HBM4 at 11.7 Gb/s and up to 13 Gb/s, "up to 3.3 TB/s" per stack [R-475] **[Established as announcements]**. Power is bits per second × energy per bit: about 3.9 pJ/bit for HBM2 [R-459], and a 2026 measurement put HBM3E power at about 248 W, roughly 35% of an H200's 700 W, at 4.52 TB/s of reads [R-459] **[Industry estimate: preprint]**. The two energy figures have different boundaries: the 3.9 pJ/bit is a 2017 model of the DRAM access alone **[Established, modelled]**, while dividing the measured 248 W by the read rate gives an all-in figure that includes background power, refresh and the host side (Example 28-04.3(e)), so the larger number does not mean energy per bit got worse. Capacity is die density × the number of dies in the stack: sixteen 32 Gb dies give 64 GB, the HBM4 standard's maximum [R-520].
 
 | # | Question | Strong answer | Evasive answer |
 |---|---|---|---|
@@ -115,7 +116,7 @@ for a batch of $B$ sequences, ignoring the KV cache (which lowers it further). D
 
 ### 3.4 Electrical interconnect
 
-**Governing quantities.** A port's rate is lanes × lane rate; a 1.6 Tb/s port is eight lanes at a 200 Gb/s class rate. SerDes power is aggregate bit rate × energy per bit; published 200 Gb/s-class transceivers report about 2–3 pJ/bit of analog power alone over 40–55 dB of channel loss [R-509] **[Established: peer-reviewed abstracts]**, with the DSP extra. Die-to-die links in advanced packages are far cheaper: UCIe's targets are 0.5 pJ/bit for standard packages and 0.25 pJ/bit for advanced ones, with shoreline bandwidth of 28–224 and 165–1,317 GB/s per mm respectively [R-524] **[Established as targets]**. Reach is set by channel loss in dB at the Nyquist frequency (24-01) and error rates are quoted before forward error correction (24-04).
+**Governing quantities.** A port's rate is lanes × lane rate; a 1.6 Tb/s port is eight lanes at a 200 Gb/s class rate, the class the OIF's CEI-224G electrical interfaces are being written for [R-271] **[Established: OIF current work]**. SerDes power is aggregate bit rate × energy per bit; published 200 Gb/s-class transceivers report about 2–3 pJ/bit of analog power alone over 40–55 dB of channel loss [R-509] **[Established: peer-reviewed abstracts]**, with the DSP extra. Die-to-die links in advanced packages are far cheaper: UCIe's targets are 0.5 pJ/bit for standard packages and 0.25 pJ/bit for advanced ones, with shoreline bandwidth of 28–224 and 165–1,317 GB/s per mm respectively, counting both directions [R-524] **[Established as targets]**. Reach is set by channel loss in dB at the Nyquist frequency (24-01) and error rates are quoted before forward error correction (24-04).
 
 | # | Question | Strong answer | Evasive answer |
 |---|---|---|---|
@@ -128,13 +129,13 @@ for a batch of $B$ sequences, ignoring the KV cache (which lowers it further). D
 
 ### 3.5 Optics
 
-**Governing quantities.** Port power ÷ port rate gives energy per bit; NVIDIA's comparison of 25 W per port for pluggable transceivers against 5 W with co-packaged optics (CPO) is 15.6 against 3.1 pJ/bit if the port is 1.6 Tb/s, and it attributes part of the saving to reducing electrical loss from "up to 22 dB" to "~4 dB" and to "one laser per four lanes instead of one per lane" [R-543] **[Industry estimate: vendor claims]**. External lasers for CPO have a standard form factor, the OIF's field-replaceable ELSFP, with power classes up to 26 dBm per fiber core [R-548]. Reliability evidence is still building: Broadcom reports "one million link hours without a single link flap" in Meta's lab testing [R-546] **[Contested: lab against field]**.
+**Governing quantities.** Port power ÷ port rate gives energy per bit; NVIDIA's comparison of 25 W per port for pluggable transceivers against 5 W with co-packaged optics (CPO) is 15.6 against 3.125 pJ/bit if the port is 1.6 Tb/s, and it attributes part of the saving to reducing electrical loss from "up to 22 dB" to "~4 dB" and to "one laser per four lanes instead of one per lane" [R-543] **[Industry estimate: vendor claims]**. External lasers for CPO have a standard form factor, the OIF's field-replaceable ELSFP, with power classes up to 26 dBm per fiber core [R-548] **[Established: OIF implementation agreement]**. Reliability evidence is still building: Broadcom reports "one million link hours without a single link flap" in Meta's lab testing [R-546] **[Contested: lab against field]**. Even read as device-hours, $10^6$ hours with zero failures bounds the failure rate only at $-\ln 0.05/10^6$ per hour, about **3000** FIT at 95% confidence (28-03 §3.3), and link-hours across several devices per link are not device-hours.
 
 | # | Question | Strong answer | Evasive answer |
 |---|---|---|---|
 | O1 | "What is the power per port, at which port speed, including lasers and DSP?" | Watts per port with the boundary, and pJ/bit | "5× more efficient" |
 | O2 | "How many lasers per lane, where are they, and can they be replaced in the field?" | Laser count, location (external or on-package) and replacement procedure | "Highly reliable lasers" |
-| O3 | "What field reliability data do you have, in device-hours, and how does it compare with pluggables in the field?" | Field data with failure counts and confidence (28-03 §3.3) | Lab data only, unlabelled |
+| O3 | "What field reliability data do you have, in device-hours, and how does it compare with pluggables in the field?" | Field data with failure counts converted to a FIT upper bound with its confidence (28-03 §3.3) | Lab data only, unlabelled |
 | O4 | "What happens operationally when an optical engine fails inside a switch?" | Blast radius, replacement time and spares strategy | "It won't fail" |
 | O5 | "What is your link budget: launch power, losses and receiver sensitivity, and the margin at end of life?" | dB budget with margin (24-07) | "Meets spec" |
 | O6 | "Who supplies the lasers, modulators and packaging, and how many qualified sources are there?" | Named suppliers, second sources and capacity | "Strategic partners" |
@@ -152,7 +153,7 @@ All parameters are illustrative assumptions unless a source is cited.
 
 ### Example 28-04.1 · "+25% at the same power" (tier B)
 
-**Setup.** A CPU vendor claims 25% more performance than its previous generation at the same power, and says IPC rose 15%. Assume $P \propto f^3$ along the voltage–frequency line and that the IPC changes raised switched capacitance by 10%. Find (a) the frequency gain needed, (b) the power cost of that frequency at fixed design, (c) the total power factor, and (d) the reduction in energy per operation the node and design must deliver. Compare with N2's reported 25–30% power reduction against N3E [R-552].
+**Setup.** A CPU vendor claims 25% more performance than its previous generation at the same power, and says IPC rose 15%. Assume $P \propto f^3$ along the voltage–frequency line and that the IPC changes raised switched capacitance by 10%. Find (a) the frequency gain needed, (b) the power cost of that frequency at fixed design, (c) the total power factor, (d) the power reduction at the new operating point that the node and design must deliver, and (e) the fall in energy per operation against the previous product. Compare with N2's reported 25–30% power reduction against N3E [R-552].
 
 **Solution.**
 
@@ -160,10 +161,11 @@ All parameters are illustrative assumptions unless a source is cited.
 - (b) $1.087^3$ = **1.284**, **28.4**% more power.
 - (c) $1.10 \times 1.284$ = **1.413**.
 - (d) $1 - 1/1.413$ = **29.2**%.
+- (e) $1 - 1/1.25$ = **20.0**%.
 
 **Units check.** Ratios throughout. ✓
 
-**Sanity check.** The claim needs a 29% cut in energy per operation, at the top of the 25–30% that N2 is reported to give against N3E. If the product moved from N3E to N2, the claim is plausible but leaves no room for anything else to cost power; if it stayed on the same node, the design must deliver all 29% itself. Question D1 separates the two.
+**Sanity check.** The claim needs a 29% power cut at the new operating point, at the top of the 25–30% iso-speed power reduction that N2 is reported to give against N3E (the comparison is like for like, since both are power at a given speed). If the product moved from N3E to N2, the claim is plausible but leaves no room for anything else to cost power; if it stayed on the same node, the design must deliver all 29% itself. Question D1 separates the two.
 
 ### Example 28-04.2 · Where decode sits on the roofline (tier B)
 
@@ -171,18 +173,18 @@ All parameters are illustrative assumptions unless a source is cited.
 
 **Solution.**
 
-- (a) $2 \times 10^{15}/8 \times 10^{12}$ = **250** FLOP/byte.
+- (a) $2 \times 10^{15}/(8 \times 10^{12})$ = **250** FLOP/byte.
 - (b) $I = 2 \times 16/1$ = **32** FLOP/byte, so $32 \times 8 \times 10^{12}$ = **256** TFLOP/s, **12.8**% of peak.
-- (c) $B = 250/2$ = **125** sequences.
+- (c) $N_b = 250/2$ = **125** sequences.
 - (d) $70 \times 10^9 \times 1$ byte = **70** GB.
 
 **Units check.** FLOP/s ÷ (byte/s) = FLOP/byte; FLOP/byte × byte/s = FLOP/s. ✓
 
-**Sanity check.** At a batch of 16 the device uses an eighth of its compute; it needs about 125 concurrent sequences to use it all, with KV caches for each, and every user then waits for the larger batch. That is why questions A1–A3 ask for utilization at the buyer's batch and latency, not peak.
+**Sanity check.** At a batch of 16 the device uses an eighth of its compute; it needs about 125 concurrent sequences to use it all, with KV caches for each. In this weight-only model the step time stays near the weight-read time whatever the batch, up to the ridge; in practice the KV-cache reads, which grow with batch × context, raise per-token latency and memory use and cap the batch first. That is why questions A1–A3 ask for utilization at the buyer's batch and latency, not peak.
 
 ### Example 28-04.3 · An HBM4 stack's bandwidth and power (tier B)
 
-**Setup.** Find the bandwidth per stack of (a) HBM3E at 1,024 bits and 9.6 Gb/s, (b) JEDEC HBM4 at 2,048 bits and 8 Gb/s [R-520], and (c) a vendor's HBM4 at 11.7 and 13 Gb/s [R-475]. (d) At an assumed 6.5 pJ/bit (within the range modelled for HBM4 in [R-459]), what does one 11.7 Gb/s stack draw at full read bandwidth? (e) What energy per bit does the measured H200 figure imply (248 W at 4.52 TB/s), and what share of 700 W is it [R-459]?
+**Setup.** Find the bandwidth per stack of (a) HBM3E at 1,024 bits and 9.6 Gb/s [R-475], (b) JEDEC HBM4 at 2,048 bits and 8 Gb/s [R-520], and (c) a vendor's HBM4 at 11.7 and 13 Gb/s [R-475]. (d) At an assumed 6.5 pJ/bit (within the range modelled for HBM4 in [R-459]), what does one 11.7 Gb/s stack draw at full read bandwidth? (e) What energy per bit does the measured H200 figure imply (248 W at 4.52 TB/s), and what share of 700 W is it [R-459]?
 
 **Solution.**
 
@@ -198,7 +200,7 @@ All parameters are illustrative assumptions unless a source is cited.
 
 ### Example 28-04.4 · What links cost (tier B)
 
-**Setup.** (a) A 102.4 Tb/s switch uses SerDes at 3 pJ/bit (analog only [R-509]); find its SerDes power. (b) Two chiplets exchange 4 TB/s (32 Tb/s). Find the link power at UCIe's 0.5 and 0.25 pJ/bit targets [R-524] and with a 3 pJ/bit long-reach SerDes. (c) Find the die edge needed for 4 TB/s at UCIe-A's shoreline range of 165–1,317 GB/s per mm [R-524].
+**Setup.** (a) A 102.4 Tb/s switch uses SerDes at 3 pJ/bit (analog only [R-509]); find its SerDes power. (b) Two chiplets exchange 4 TB/s (32 Tb/s) in total, counting both directions, as UCIe's shoreline figures do. Find the link power at UCIe's 0.5 and 0.25 pJ/bit targets [R-524] and with a 3 pJ/bit long-reach SerDes. (c) Find the die edge needed for 4 TB/s at UCIe-A's shoreline range of 165–1,317 GB/s per mm [R-524].
 
 **Solution.**
 
@@ -219,11 +221,11 @@ All parameters are illustrative assumptions unless a source is cited.
 - (a) At 1.6 Tb/s: **15.6** and **3.125** pJ/bit; at 800 Gb/s: **31.25** and **6.25** pJ/bit.
 - (b) $144 \times 25$ = **3600** W against $144 \times 5$ = **720** W, a saving of **2880** W.
 - (c) $144 \times 4$ = **576** lasers at one per lane, **144** at one per four lanes.
-- (d) $10^{18/10}$ = **63.1**.
+- (d) $10^{18/10}$ = **63.1**, a power ratio (the voltage ratio is $10^{18/20}$ = **7.94**); the SerDes power does not fall by that factor, because driver power depends on far more than the channel loss.
 
 **Units check.** W ÷ (bits/s) = J/bit; dB ratio $10^{\text{dB}/10}$. ✓
 
-**Sanity check.** The saving is real and large at switch scale, but the claim leaves the port speed unstated, which changes the energy per bit by a factor of two, and it compares a new product with an older baseline. Questions O1–O4 turn the claim into the numbers a buyer needs: power at a stated port speed, laser count and replaceability, and field reliability.
+**Sanity check.** The saving is real and large at switch scale, but the claim leaves the port speed unstated, which changes the energy per bit by a factor of two, and it compares against a vendor-chosen baseline whose port speed and generation are unstated. Questions O1–O4 turn the claim into the numbers a buyer needs: power at a stated port speed, laser count and replaceability, and field reliability.
 
 ### Example 28-04.6 · Scoring an interview (tier C)
 
@@ -239,12 +241,14 @@ All parameters are illustrative assumptions unless a source is cited.
 
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
+| Txt 28-04.1 | zero-failure 95% bound from 10⁶ hours | 3000 | FIT |
 | Ex 28-04.1a | frequency ratio | 1.087 | — |
 | Ex 28-04.1a1 | frequency gain | 8.70 | % |
 | Ex 28-04.1b | power factor from frequency | 1.284 | — |
 | Ex 28-04.1b1 | power increase from frequency | 28.4 | % |
 | Ex 28-04.1c | total power factor | 1.413 | — |
-| Ex 28-04.1d | required energy reduction | 29.2 | % |
+| Ex 28-04.1d | required power reduction at the new operating point | 29.2 | % |
+| Ex 28-04.1e | energy-per-operation fall against the previous product | 20.0 | % |
 | Ex 28-04.2a | ridge point | 250 | FLOP/byte |
 | Ex 28-04.2b | decode intensity at batch 16 | 32 | FLOP/byte |
 | Ex 28-04.2b1 | attainable throughput | 256 | TFLOP/s |
@@ -273,7 +277,8 @@ All parameters are illustrative assumptions unless a source is cited.
 | Ex 28-04.5b2 | saving | 2880 | W |
 | Ex 28-04.5c | lasers at one per lane | 576 | lasers |
 | Ex 28-04.5c1 | lasers at one per four lanes | 144 | lasers |
-| Ex 28-04.5d | 18 dB as a ratio | 63.1 | — |
+| Ex 28-04.5d | 18 dB as a power ratio | 63.1 | — |
+| Ex 28-04.5d1 | 18 dB as a voltage ratio | 7.94 | — |
 | Ex 28-04.6a | posterior odds | 10.8 | — |
 | Ex 28-04.6b | posterior probability | 91.5 | % |
 | Ex 28-04.6c | odds counting the repeat once | 3.6 | — |
@@ -339,9 +344,9 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 **State of play (as of Nov 2026).**
 
-- **Memory sets the pace of AI accelerators.** HBM4 moved from JEDEC's 8 Gb/s baseline [R-520] to announced shipments at 11.7 Gb/s and samples of HBM4E at 14 Gb/s within about a year [R-475] **[Established as announcements]**, and measured memory power already reaches about a third of an accelerator's budget [R-459]. Diligence on an accelerator start-up is in large part diligence on its HBM access.
+- **Memory sets the pace of AI accelerators.** HBM4 moved from JEDEC's 8 Gb/s baseline [R-520] to announced shipments at 11.7 Gb/s and samples of HBM4E at 14 Gb/s within about a year [R-475] **[Established as announcements]**, and measured memory power already reaches about a third of an accelerator's budget [R-459] **[Industry estimate: preprint]**. Diligence on an accelerator start-up is in large part diligence on its HBM access.
 - **I/O energy is the new battleground.** 200 Gb/s-class SerDes report 2–3 pJ/bit analog [R-509]; UCIe's die-to-die targets sit an order of magnitude lower [R-524]; and NVIDIA's CPO claims cut optics power per port fivefold [R-543] **[Industry estimate]**. Each claim needs its boundary and its baseline.
-- **Process gains are smaller than they were.** N2's reported 25–30% power reduction against N3E [R-552] is the whole budget for a typical generational claim (Example 28-04.1); design must carry more of the improvement, which is why D1 matters.
+- **A node step now offers about 25–30% iso-speed power.** N2's reported 25–30% power reduction against N3E [R-552] **[Industry estimate: vendor claim]** is about the whole budget of a typical generational claim (Example 28-04.1); design must carry more of the improvement, which is why D1 matters.
 - **Optics reliability evidence is early.** Lab results of a million link-hours without a flap [R-546] are encouraging, but field data at scale, compared with pluggables in the field, are what an operator will ask for **[Contested]**.
 
 **Commercial relevance.** These banks are written for the meetings that set price and structure. For an acquirer, the questions that matter most are those tied to the value drivers of 28-01: utilization and software for an accelerator start-up, qualified pin rate and yield for a memory supplier, energy per bit and interoperability for an interconnect company, field reliability and serviceability for an optics supplier. The analyst's pre-computed checks also protect the buyer after the deal: they become the integration milestones of 28-08.
@@ -351,7 +356,7 @@ Figures are as of Nov 2026 unless dated otherwise.
 - *"X% more performance per watt."* Ask for the decomposition into IPC, frequency, node and design (Example 28-04.1).
 - *"Highest bandwidth memory."* Ask for qualified pin rate by customer, energy per bit and yield.
 - *"Lowest-power SerDes."* Ask whether the pJ/bit is analog only, at what loss and BER, and with which DSP and FEC.
-- *"5× more efficient optics."* Ask for watts per port at a stated port speed and the baseline it is compared with.
+- *"5× more efficient optics."* Ask for watts per port at a stated port speed and the baseline it is compared with. The same vendor's ratio moved from "3.5x more power efficiency" (March 2025) to "5x" on its product page within about a year [R-543]; ask what changed, the product or the baseline.
 
 **Questions for engineering leaders.** The banks in §3.1–3.5 are the questions; three that work across all five domains are:
 
@@ -361,7 +366,7 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 ## 10. Concept check
 
-1. Why does an iso-power performance claim need a large cut in energy per operation?
+1. Why does an iso-power performance claim need a large power cut at the new operating point?
 
    <details><summary>Answer</summary>
 

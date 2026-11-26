@@ -11355,19 +11355,19 @@
   chapter: "28-03"
   see_also: [Bug-discovery curve]
 - term: Diagnostic question
-  definition: A diligence question whose strong and weak answers differ in a way the asker can check, because it asks for a number with its conditions, a mechanism or an artifact; its value is the likelihood ratio between the answer a capable team gives and the answer a struggling team gives.
+  definition: "A diligence question whose strong and weak answers differ in a way the asker can check, because it asks for a number with its conditions, a mechanism or an artifact; its value is its likelihood ratio: how much more probable the strong answer is if the claim is true than if it is false."
   chapter: "28-04"
   see_also: [Likelihood ratio, Posterior odds]
 - term: Iso-power claim
-  definition: A claim of more performance at the same power; with performance IPC × frequency and dynamic power rising as $f^3$ along the voltage–frequency line, a ratio $R$ with IPC ratio $g_{\text{IPC}}$ and capacitance ratio $g_C$ needs energy per operation to fall by $1 - 1/[g_C(R/g_{\text{IPC}})^3]$.
+  definition: A claim of more performance at the same power; with performance IPC × frequency and dynamic power rising as $f^3$ along the voltage–frequency line, a ratio $R$ with IPC ratio $g_{\text{IPC}}$ and capacitance ratio $g_C$ needs the power at the new operating point to fall by $1 - 1/[g_C(R/g_{\text{IPC}})^3]$; against the previous product, energy per operation falls only by $1 - 1/R$.
   chapter: "28-04"
   see_also: [Dynamic power]
 - term: Decode arithmetic intensity
-  definition: The FLOP per byte of weights in a language model's token-by-token decode, $2B/b_w$ for $B$ sequences and $b_w$ bytes per weight (KV cache ignored); far below an accelerator's ridge point at small batch, which makes decode memory-bound.
+  definition: The FLOP per byte of weights in a language model's token-by-token decode, $2N_b/b_w$ for $N_b$ sequences and $b_w$ bytes per weight (KV cache ignored); far below an accelerator's ridge point at small batch, which makes decode memory-bound.
   chapter: "28-04"
   see_also: [Ridge point, Prefill and decode]
 - term: Thermal-noise ceiling (ADC)
-  definition: The bound $10\log_{10}(1/16k_BT)$, about 191.8 dB at 300 K, on the Schreier figure of merit implied by the survey line $P/f_s = 8k_BT \cdot \text{SNR}$ for rail-to-rail class-B circuits; it is independent of speed and resolution, and the best published converters sit a few dB below it.
+  definition: The value $10\log_{10}(1/16kT)$, about 191.8 dB at 300 K, of the Schreier figure of merit on the survey line $P/f_s = 8kT \cdot \text{SNR}$ for rail-to-rail class-B circuits. It is a conservative reference rather than a hard limit (an ideal class-B sampler at a Nyquist-frequency input reaches 194.8 dB); the best low-speed converters sit 3–5 dB below it and high-speed converters far below.
   chapter: "28-05"
   see_also: [Schreier figure of merit, Walden figure of merit]
 - term: Output back-off

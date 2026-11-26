@@ -8,7 +8,7 @@
 
 The lab uses the chapter's models with its assumed parameters:
 
-- §3.1: an iso-power claim of ratio $R$ with IPC ratio $g_{\text{IPC}}$ and capacitance ratio $g_C$ needs energy per operation to fall by $1 - 1/[g_C(R/g_{\text{IPC}})^3]$.
+- §3.1: an iso-power claim of ratio $R$ with IPC ratio $g_{\text{IPC}}$ and capacitance ratio $g_C$ needs the power at the new operating point to fall by $1 - 1/[g_C(R/g_{\text{IPC}})^3]$ (energy per operation against the previous product falls only by $1 - 1/R$).
 - §3.2: decode intensity $2B/b_w$ FLOP per byte against the ridge point $F/B_{\text{mem}}$.
 - §3.3–3.5: power = bits per second × energy per bit.
 - §3.6: posterior odds = prior odds × the likelihood ratio of each answer.
@@ -48,8 +48,8 @@ The lab uses the chapter's models with its assumed parameters:
 
 ## Discussion
 
-1. With 20% more IPC the frequency rises only **1.042** times, the power factor is **1.243** and the claim needs a **19.6**% cut in energy per operation, well within a node step. Each point of IPC the vendor can show lowers the burden on the process, so question D1 asks for the split between IPC, frequency and node.
-2. With 4-bit weights the ridge is reached at batch **62.5**, and at batch 16 decode uses **25.6**% of peak, twice the 8-bit share. Halving the bytes per weight doubles decode throughput on a memory-bound machine, which is why quantization claims must come with accuracy at that precision (question A2).
+1. With 20% more IPC the frequency rises only **1.042** times, the power factor is **1.243** and the claim needs a **19.6**% power cut at the new operating point, well within a node step. Each point of IPC the vendor can show lowers the burden on the process, so question D1 asks for the split between IPC, frequency and node.
+2. With 4-bit weights the ridge is reached at batch **62.5**, and at batch 16 decode uses **25.6**% of peak, twice the 8-bit share. Halving the bytes per weight doubles decode throughput on a memory-bound machine, which is why quantization claims must come with accuracy at that precision (question A1, "the precision our models use").
 3. One stack at 11.7 Gb/s draws about **156** W at full read bandwidth and eight draw **1246** W, more than most accelerators' whole budget; between 5.5 and 7.5 pJ/bit the single-stack figure moves from **132** W to **180** W. Real workloads do not read at full bandwidth all the time, but the sensitivity shows why the energy per bit at the shipping pin rate (M2) is a first-order question.
 4. A sixth, evasive answer takes the odds from 10.8 to **4.32** and the probability from 91.5% to **81.2**%. One evasion costs less than one strong answer gains only because $0.4 > 1/3$; a likelihood ratio near 0.1 for a dodge on the central question would undo two strong answers.
 
