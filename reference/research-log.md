@@ -6101,3 +6101,40 @@ R&D % = R&D ÷ revenue.
 - Aehr (14 Jul 2026): "Our lead AI production customer is significantly ramping capacity … They are shifting their burn-in from system-level to all wafer-level for their AI accelerators used for training and inference applications"; "Net revenue was $50.0 million, compared to $59.0 million in fiscal 2025"; "projected fiscal 2027 revenue of $130 million to $150 million".
 - Call: management "is evaluating a development agreement for high-bandwidth memory (HBM) and NAND flash".
 - **Sources:** [Aehr FY2026 results release](https://finviz.com/news/368117/aehr-test-systems-reports-fiscal-2026-fourth-quarter-and-full-year-financial-results-with-record-quarterly-bookings-and-100-million-effective-backlog); [The Motley Fool, Aehr Q4 FY2026 call](https://www.fool.com/earnings/call-transcripts/2026/07/14/aehr-test-systems-aehr-q4-2026-earnings-call-transcript/). Checked Nov 2026.
+
+## R-621 · Wilson Research Group / Siemens EDA 2024 IC/ASIC study and its methodology change (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (the 2024 report PDF and Siemens blog posts opened).* [Established as reported; Contested for trends across 2022–2024]
+
+- 2024 report: "only 14 percent of IC/ASIC projects achieved first silicon success … marking the lowest value recorded in the past twenty years"; "Historically, about 66 percent of IC/ASIC projects were behind schedule. However, in 2024, this figure increased to 75 percent"; "'Logic or functional flaws' remain the leading cause of bugs"; final sample "597 eligible participants (n=597)" (IC/ASIC and FPGA).
+- 2022 study (blog, 9 Jan 2023): "Historically, for the past 20 years, about 30% of all IC/ASIC projects were able to achieve first silicon success. However, for 2022, only about 24 percent".
+- Methodology: Siemens's 2026 material describes a "recruitment-methodology transition between the historical 2007–2022 studies and the current 2024–2026 study period", introduced in 2024; the 24% → 14% change therefore mixes a trend with a sampling change.
+- **Sources:** [2024 Wilson Research Group IC/ASIC report](https://static.sw.cdn.siemens.com/siemens-disw-assets/public/1NyfMZJ3nuPhMGQCGFDITG/en-US/ic-asic-functional-verification-trend-report-wp-86424-d3.pdf); [Verification Horizons, 9 Jan 2023](https://blogs.sw.siemens.com/verificationhorizons/2023/01/09/part-12-the-2022-wilson-research-group-functional-verification-study/); [Verification Horizons, 8 Sep 2026](https://blogs.sw.siemens.com/verificationhorizons/2026/09/08/the-2026-functional-verification-study/). Checked Nov 2026. See also R-018.
+
+## R-622 · Wilson Research Group / Siemens EDA 2026 study (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Siemens blog posts and the Verification Academy executive findings opened).* [Established as reported; statistically fragile]
+
+- "Among IC/ASIC respondents, only 5% reported first-silicon success in 2026, compared with 14.4% in 2024"; "604 qualified participants: 320 working on IC/ASIC projects and 284 working on FPGA projects"; "approximately three out of four IC/ASIC and FPGA projects are missing their original schedules"; "Logic and functional errors remain important and continue to be a major contributor to ASIC respins"; "The study does not establish that processor content, AI acceleration, safety, security, DFT integration, or any other individual factor causes lower first-silicon success"; the study uses "the same qualified recruitment approach introduced in 2024", with "particularly strong participation from CPU, GPU, and AI accelerator-class projects".
+- **Derived here:** taking 16 of 320, the 95% Wilson interval is 3.1%–8.0%; the denominator may be smaller if not all respondents answered.
+- **Sources:** [Verification Horizons, 8 Sep 2026](https://blogs.sw.siemens.com/verificationhorizons/2026/09/08/the-2026-functional-verification-study/); [Verification Academy, Executive Findings](https://verificationacademy.com/topics/planning-measurement-and-analysis/wrg-industry-data-and-trends/2026-functional-verification-study-executive-findings-paper/); [Verification Horizons, 28 Oct 2026](https://blogs.sw.siemens.com/verificationhorizons/2026/10/28/are-we-looking-beyond-the-numbers-in-the-2026-functional-verification-study/). Checked Nov 2026.
+
+## R-623 · Mask-set and design-cost estimates (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (SemiAnalysis, Silicon Analysts, GCN, Tom's Hardware and SemiEngineering pages opened).* [Industry estimate; Contested]
+
+- SemiAnalysis (24 Jul 2022): "With 7nm, the cost increases beyond $10M, and now, as we cross the 3nm barrier, mask sets will begin to push into the $40M range"; startups built "leading edge chips on TSMC 7nm $50M to $75M" including software.
+- Silicon Analysts (1 Mar 2026): "Leading Edge (3nm - 5nm) … Mask set: $10M - $20M … Total NRE: $30M - $100M+".
+- GCN (28 Oct 2026): "A complete reticle set for a new product at 3nm node costs $20-30 million, requiring 60-100 individual reticles"; "A single EUV reticle costs $300,000-500,000" (low-confidence outlet citing suppliers).
+- SemiEngineering (16 Apr 2020): "The design cost for a 3nm chip is $650 million, compared to $436.3 million for a 5nm device, and $222.3 million for 7nm, according to IBS." Tom's Hardware (31 Aug 2023): "the development of a fairly large 2nm chip will total $725 million", for a chip built "from scratch by a company that does not have any IP".
+- **Caveat:** no foundry publishes mask prices.
+- **Sources:** [SemiAnalysis, 24 Jul 2022](https://newsletter.semianalysis.com/p/the-dark-side-of-the-semiconductor); [Silicon Analysts, 1 Mar 2026](https://siliconanalysts.com/analysis/fabless-startup-tapeout-cost-guide); [GCN, 28 Oct 2026](https://gcn.com/single-stack-glass-plates-one-advanced/22828/); [SemiEngineering, 16 Apr 2020](https://semiengineering.com/making-chips-at-3nm-and-beyond); [Tom's Hardware, 31 Aug 2023](https://www.tomshardware.com/news/firm-estimates-a-2nm-chip-now-costs-dollar725-million-to-design). Checked Nov 2026. See also R-019.
+
+## R-624 · Post-silicon validation effort (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Mitra, Seshia and Nicolici's DAC 2010 paper and an arXiv paper opened).* [Established qualitatively; Contested quantitatively]
+
+- Mitra, Seshia and Nicolici (DAC 2010): "Unlike manufacturing testing where the primary objective is to detect defects, post-silicon validation involves localizing, root-causing and fixing bugs. Bug localization generally dominates post-silicon validation effort and costs [Josephson 06]."
+- arXiv 1602.03095: "According to recent reports, post-silicon validation effort comprises more than 50% of the overall development effort of an 65nm SoC." The claim gives no primary source and is not relied on.
+- **Caveat:** vendor anecdotes about bring-up speed could not be verified (pages blocked or no source).
+- **Sources:** [Mitra, Seshia and Nicolici, DAC 2010](https://people.eecs.berkeley.edu/~sseshia/pubdir/postSi-dac10.pdf); [arXiv 1602.03095](https://arxiv.org/pdf/1602.03095). Checked Nov 2026.

@@ -10567,3 +10567,31 @@
 - term: Speed binning
   definition: "Sorting tested parts into grades by the highest frequency (or lowest voltage) at which they pass, so that process variation becomes a price ladder rather than scrap."
   chapter: "25-11"
+
+# ---------------------------------------------------------------- 25-12
+- term: Bring-up
+  definition: "The first phase of post-silicon validation: bringing first silicon from power-on through clocks, reset, debug access and boot to running real software, usually on a purpose-built validation board."
+  chapter: "25-12"
+  see_also: [Post-silicon validation]
+- term: Trace buffer
+  definition: "An on-chip memory that records selected internal signals every cycle around a programmable trigger; its window is only depth divided by clock frequency, so signal selection and triggering decide what can be seen."
+  chapter: "25-12"
+  see_also: [Scan dump]
+- term: Scan dump
+  definition: "Stopping a chip's clocks and shifting out every scan flip-flop to capture a complete snapshot of internal state at one instant, a key post-silicon debug tool."
+  chapter: "25-12"
+  see_also: [Trace buffer]
+- term: Shmoo plot
+  definition: "A pass/fail map of a chip over two swept conditions, usually supply voltage and frequency; its boundary is the operating envelope, and holes or bends in it point to marginal circuits."
+  chapter: "25-12"
+  see_also: [Minimum operating voltage (Vmin)]
+- term: Errata
+  definition: "A vendor's published list of known silicon bugs in a product revision, with their effects and workarounds."
+  chapter: "25-12"
+- term: Chicken bit
+  definition: "A configuration bit designed in before tape-out to disable or alter a feature, so that a bug found in silicon can be worked around without a hardware fix."
+  chapter: "25-12"
+  see_also: [Errata]
+- term: Reliability-growth model
+  definition: "A model of how fast bugs or failures are found and removed over time, such as the Goel–Okumoto curve m(t) = a(1 − e^(−bt)), used to estimate the total and the bugs still hidden."
+  chapter: "25-12"
