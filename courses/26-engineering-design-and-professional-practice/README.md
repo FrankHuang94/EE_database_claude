@@ -44,10 +44,12 @@ Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 
 
 **How to approach this course.** Course 26 is planned at about 42 hours: the chapters' own estimates add to 40, plus about 2 hours of review; allow a further 3 hours for the exam. It is the least physical course in the curriculum and the one closest to your day job, so the risk is reading it too quickly. Every chapter turns a judgment call (how many reviewers, which node, when to tape out, how big a team) into a model with a few parameters, and the skill is knowing which parameter drives the answer and how badly the model fails when its assumption does. It draws on several earlier courses:
 
-- Course 03: expectation, the normal distribution, variance of a sum with correlation (03-04) and the chi-square bound (03-05);
+- Course 01: optimization (01-04) and the geometric series behind the interest factors (01-08);
+- Course 03: the binomial and independence (03-02), variance of a sum with correlation and the central limit theorem (03-04), and confidence bounds (03-05);
 - Course 06: error budgets for one circuit (06-07), which 26-01 scales up to a product;
 - Course 05: traceability and version control for software (05-09);
-- Courses 19 and 25: pre-silicon verification (19-13), dies per wafer, yield and cost per good die (25-04), chiplet packaging cost (25-07), functional safety and FIT targets (25-10) and post-silicon bug curves (25-12);
+- Course 14: Amdahl's law (14-01), which 26-04 applies to die area;
+- Courses 19 and 25: pre-silicon verification (19-13), dies per wafer, yield and cost per good die (25-04), chiplet packaging cost (25-07), FIT rates (25-09), functional safety (25-10), test cost (25-11), and ECOs, bring-up and respin decisions (25-12);
 - Course 22: power usage effectiveness (22-10) for datacenter TCO.
 
 The seven chapters fall into four blocks:
@@ -59,9 +61,9 @@ The seven chapters fall into four blocks:
 
 Work at least the [A] and [B] problems of every chapter; the [C] problems are where the models meet a messy decision. The FE exam tests 26-03's interest factors and 26-07's ethics topics directly, so drill those until they are automatic. The labs are Python models imported by their notebooks, all run in CI:
 
-- `reqs.py`: battery-life flow-down, error budgets with a Monte Carlo of correlated sources, and the escalation model (26-01);
-- `reviews.py`: reviewer detection with shared blind spots, the cost-optimal team, a Monte Carlo of capture–recapture bias, ballot checks and royalty stacks (26-02);
-- `econ.py`: the cost stack, interest factors, NPV and IRR, and the slip model (26-03);
+- `reqs.py`: battery-life flow-down, error budgets with a Monte Carlo of correlated and non-Gaussian sources, the escalation model and decision matrices with their tie weights (26-01);
+- `reviews.py`: reviewer detection with shared blind spots, the cost-optimal team, a Monte Carlo of capture–recapture bias, ballot checks, royalty stacks and the value of designing to a draft standard (26-02);
+- `econ.py`: the cost stack, interest factors, NPV and IRR, the slip model and a tornado sensitivity analysis (26-03);
 - `sourcing.py`: license against build, royalty forms, node choice, chiplet families and accelerator TCO (26-04, importing `econ.py`);
 - `risk.py`: PERT and beta-PERT Monte Carlo schedules, tape-out counts, the risk register and the optimal tape-out time (26-05);
 - `team.py`: flat and hierarchical team output, Brooks finish times and the staffing newsvendor (26-06);

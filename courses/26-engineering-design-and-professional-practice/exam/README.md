@@ -1,13 +1,14 @@
 # Course 26 · Final Exam (Engineering Design and Professional Practice)
 
 **Time limit:** 180 minutes, best taken in two sittings of about 90 minutes: Questions 1–6, then Questions 7–12.
-**Allowed:** a scientific calculator and the [Course 26 equation sheet](../../../reference/equation-sheets/26-engineering-design-and-professional-practice.md) printed without its chapter links. No notes, no Python and no spreadsheet.
+**Allowed:** a scientific calculator, the FE Reference Handbook's unit normal table (or the calculator's normal-distribution function), and the [Course 26 equation sheet](../../../reference/equation-sheets/26-engineering-design-and-professional-practice.md) printed without its chapter links. No notes, no Python and no spreadsheet.
 
 **Instructions.**
 
 - Answer all 12 questions and show every step.
 - Questions 1–10 [B] are worth 8 points each (2 per part), and Questions 11 and 12 [C] 12 each (3 per part): 104 points in total. 73 or more (70%) is a strong pass.
-- Give numerical answers to 3 significant figures, with units, unless a part asks otherwise. Money is in dollars unless stated.
+- Give numerical answers to 3 significant figures, with units, unless a part asks otherwise (interest factors and dollar amounts may carry more). Money is in dollars unless stated.
+- Carry intermediate values at full calculator precision and round only final answers.
 - A few parts need a short iteration on the calculator (bisection is fine); say what you iterated on.
 - Question 11(a) asks for a derivation: a result quoted from the equation sheet earns no credit unless derived. Question 12(d) has a short written part; its rubric is at the end of the solutions.
 - Solutions are in a separate file, [solutions.md](solutions.md). Open it only after you finish.
@@ -27,11 +28,11 @@
 (a) A wearable spends 2% of the time active at 12 mA, 5% in radio bursts at 4 mA and the rest asleep at 15 µA. Find its average current, and its life on a 200 mAh battery of which 80% is usable.
 (b) Three independent error sources have standard deviations of 0.5%, 0.3% and 0.4%. Find the worst-case sum of their ±3σ bounds and the RSS 3σ total.
 (c) If the first two sources are correlated with $\rho$ = 0.6, find the new 3σ total.
-(d) With the independent sources of (b), zero mean and a specification of ±2%, what fraction of units falls outside the specification, in ppm?
+(d) With the independent sources of (b), zero mean, a Gaussian total and a specification of ±2%, what fraction of units falls outside the specification, in ppm?
 
 **2 [B] · When errors are found, and choosing.** (26-01)
 (a) A program has 50 specification defects. The specification review finds each with probability 0.4 at a cost of $1k per defect. Defects it misses are found at the next stage with probability 0.5 ($10k each), then at the next with probability 0.6 ($100k each), and any left are found in the field ($1,000k each). Find the expected downstream cost per missed defect and the total expected cost.
-(b) Find $\partial C/\partial p_1$, and the saving from raising the review's detection probability by 0.01.
+(b) With $C$ the total expected cost and $p_1$ the specification review's detection probability, find $\partial C/\partial p_1$, and the saving from raising the review's detection probability by 0.01.
 (c) Option $a$ scores 9 and option $b$ 5 on criterion $c$; their weighted averages over the other criteria are 6.0 and 7.5. Above what weight on $c$ does option $a$ win?
 (d) Of 200 requirements, 8% have no test traced to them; each untraced requirement has a 25% chance of hiding a defect that costs $150k. Find the expected cost of the gaps.
 
@@ -49,8 +50,8 @@
 
 **5 [B] · Time value and a program's NPV.** (26-03)
 (a) Find $(P/A, 8\%, 6)$ and $(A/P, 8\%, 6)$, and the annual payment that repays a $250,000 tester over 6 years at 8%.
-(b) A program spends $40 M of NRE at years 0 and 1 and earns $35 M a year in years 2 to 5 (assumed). Find its NPV at 12% and its IRR.
-(c) Find its simple payback.
+(b) A program spends $40 M of NRE in each of years 0 and 1 and earns $35 M a year in years 2 to 5 (assumed). Find its NPV at 12% and its IRR.
+(c) Find its simple payback, interpolating within the year in which cumulative cash turns positive.
 (d) A one-year slip delays every sales year, and the market window closes after year 5 so the last year is lost. Find the new NPV and the value lost.
 
 **6 [B] · License or build.** (26-04)
@@ -73,9 +74,9 @@
 
 **9 [B] · Schedules and tape-outs.** (26-05)
 (a) Path A is verification closure (6, 8, 14 weeks) then regression (2, 3, 5); path B is place and route (5, 7, 11) then signoff (3, 4, 7). Find each path's mean and standard deviation.
-(b) Find the chance that each path, and both, finish within 14 weeks, and the date with a 90% chance (iterate).
+(b) Taking the paths as independent, find the chance that each path, and both, finish within 14 weeks, and the date by which both finish with a 90% chance (iterate).
 (c) Spins succeed with probabilities 0.3, 0.8 and then 1. Find the expected number of tape-outs, the distribution, and the expected delay at 16 weeks per respin.
-(d) A process has 85 mask layers, the last 28 of them metal and via, at 1.3 days per layer. Find the fab time of a full respin and of a metal-only ECO, in weeks.
+(d) A process has 85 mask layers, the last 28 of them metal and via, at 1.3 days per layer. Find the fab time of a full respin and of a metal-only ECO restarted from wafers held at the contact layer (before the first metal layer), in weeks.
 
 **10 [B] · Risk register and when to tape out.** (26-05)
 (a) Risks (probability, impact $ M): R1 (0.2, 25), R2 (0.3, 10), R3 (0.1, 40). Mitigations (cost $ M, probability after): R1 (2.0, 0.05), R2 (1.0, 0.15), R3 (1.5, 0.03). Find the EMV, each mitigation's net benefit, and the best set with a $3 M budget.
@@ -86,11 +87,11 @@
 **11 [C] · Teams.** (26-06)
 (a) Derive the flat team size that maximizes $O(n) = n[1 - c(n - 1)]$, show it is a maximum, and evaluate the best integer size and its output for $c$ = 0.035.
 (b) 64 people are organized as 8 teams of 7 engineers plus a lead; $c$ = 0.035 within teams and $c_x$ = 0.02 per other team. Find the output and the output per head.
-(c) A team of 12 ($c$ = 0.02) can add 6 engineers who need 2.5 months of ramp, each taking half an experienced engineer's time meanwhile. Find the remaining work, in person-months, below which adding them lengthens the project (iterate), and the time it represents at the current rate.
+(c) A team of 12 ($c$ = 0.02) can add 6 engineers who need 2.5 months of ramp, each taking half an experienced engineer's time meanwhile. Find the remaining work, in person-months, below which adding them lengthens the project, and the time it represents at the current rate.
 (d) Verification needs 12, 18, 30, 45, 45, 30, 18 and 12 engineers in eight quarters; employees cost $80,000 a quarter and contractors $120,000. Find the newsvendor base and its total cost, and compare with a base of 12 and of 30.
 
 **12 [C] · Safety, evidence and export rules.** (26-07)
 (a) An ASIL B part at its 100 FIT target goes into 5 million vehicles that run 1.5 hours a day for 15 years. Find the hours per vehicle, the expected fleet failures and the probability per vehicle.
-(b) Two protection channels each fail on demand with probability $5 \times 10^{-4}$, with a common-cause fraction $\beta$ = 0.03. Find the probability that both fail and the factor by which the common cause raises it over independence.
-(c) A part has $2 \times 10^8$ failure-free device-hours. Find the 95% upper bound on its rate in FIT, and how many times more failure-free hours are needed to support 10 FIT.
+(b) Two protection channels each fail on demand with probability $5 \times 10^{-4}$, with a common-cause fraction $\beta$ = 0.03. Find the probability that both fail and the factor by which the common cause raises it over independence. What design choice lowers $\beta$?
+(c) A part has $2 \times 10^8$ failure-free device-hours. Find the 95% upper bound on its rate in FIT, and the total failure-free hours needed to support 10 FIT, as a multiple of the hours so far. What does this say about a clean field record as evidence?
 (d) A datacenter accelerator delivers 220 TFLOPS dense at 16 bits on a 520 mm² die. Find its TPP and performance density, and which 2023 ECCN 3A090 criterion it meets. Marketing wants to describe it to an overseas prospect as "below US export thresholds". Which NSPE canons apply, and what should the engineer do?
