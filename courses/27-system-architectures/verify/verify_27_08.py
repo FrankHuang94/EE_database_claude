@@ -140,7 +140,11 @@ raw = 16000 * 16
 v.check("Ex 27-08.2a", raw)
 v.check("Ex 27-08.2a1", 1e3 * raw * 20e-9)
 v.check("Ex 27-08.2a2", raw * 20e-9 / p_npu)
-v.check("Ex 27-08.2b", raw / 9380)
+r_sf7 = 7 * 0.8 / (2 ** 7 / 125e3)  # SF bits per symbol x coding rate / symbol time
+v.check("Ex 27-08.2b1", r_sf7 / 1e3)
+v.check("Ex 27-08.2b", raw / r_sf7)
+v.check("Ex 27-08.2a3", 1e3 * (raw * 20e-9 + 0.305e-3))
+v.check("Ex 27-08.2a4", (raw * 20e-9 + 0.305e-3) / p_npu)
 v.check("Ex 27-08.2c", 1e9 * 20 * 8 * 20e-9 / 60)
 
 # ---------------------------------------------------------------------------
@@ -190,6 +194,8 @@ v.check("Ex 27-08.3e3", math.floor(30 / t12))
 v.check("Txt 27-08.5", 0.01 * 3600)
 v.check("Txt 27-08.6", 5 * 2.5)
 v.check("Txt 27-08.7", 10 ** (12.5 / 20))
+v.check("Txt 27-08.10", 10 ** (12.5 / 40))
+v.check("Txt 27-08.11", 10 ** (12.5 / 30))
 
 # ---------------------------------------------------------------------------
 # Example 27-08.4 · battery life, integrated day by day
@@ -237,6 +243,8 @@ v.check("Ex 27-08.4c", sd_day)
 v.check("Ex 27-08.4c1", life_years(d7))
 v.check("Ex 27-08.4c2", life_years(d12))
 v.check("Ex 27-08.4c3", 100 * sd_day / (d7 + sd_day))
+v.check("Txt 27-08.12", life_years(d7, False) / life_years(d12, False))
+v.check("Txt 27-08.13", life_years(d7) / life_years(d12))
 v.check("Ex 27-08.4d", 96 * t7)
 v.check("Ex 27-08.4d1", 96 * t12)
 
@@ -255,6 +263,8 @@ e_wk = p_avg * 62 * 3600
 v.check("Ex 27-08.5c", e_wk)
 C = 2 * e_wk / (4.0 ** 2 - 2.2 ** 2)
 v.check("Ex 27-08.5c1", C)
+v.check("Ex 27-08.5c2", 2 * C)
+v.check("Txt 27-08.14", 1e6 * (300 / 300) * 1e-4 * 0.2 * 0.8)
 # simulate: C dV/dt = -P/V from 4.0 V for 62 h; the end voltage should be 2.2 V
 sol = integrate.solve_ivp(lambda t, vv: [-p_avg / (C * vv[0])], (0, 62 * 3600), [4.0], rtol=1e-10, atol=1e-12)
 v.assert_true(f"supercap ends at {sol.y[0, -1]:.4f} V after 62 h", abs(sol.y[0, -1] - 2.2) < 1e-4)
@@ -376,5 +386,17 @@ v.check("Lab 27-08.c2", life_years(d10))
 e72 = p_avg * 72 * 3600
 v.check("Lab 27-08.d", e72)
 v.check("Lab 27-08.d1", 2 * e72 / (4.0 ** 2 - 2.2 ** 2))
+v.check("Lab 27-08.d2", 2 * 2 * e72 / (4.0 ** 2 - 2.2 ** 2))
+
+# Problem 27-08.14: count MACs of explicit layers; integrate the capacitor's discharge
+hh, ww, cin, cout, kk = 8, 8, 32, 128, 5
+std14 = hh * ww * cout * kk * kk * cin
+ds14 = hh * ww * cin * kk * kk + hh * ww * cin * cout
+v.check("27-08.14a", ds14 / std14)
+v.check("27-08.14b", std14 / ds14)
+v.assert_true("ratio equals 1/Cout + 1/k^2", abs(ds14 / std14 - (1 / cout + 1 / kk ** 2)) < 1e-15)
+for key, vmax, vmin in [("27-08.14c", 4.0, 2.2), ("27-08.14d", 2.0, 1.0)]:
+    e_del, _ = integrate.quad(lambda vv: 1.0 * vv, vmin, vmax)  # dE = C V dV with C = 1 F
+    v.check(key, 100 * e_del / (0.5 * 1.0 * vmax ** 2))
 
 sys.exit(v.finish())

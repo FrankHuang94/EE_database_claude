@@ -34,7 +34,7 @@ Most of the world's connected devices are not phones or servers. They are sensor
 
 **Send the answer, not the data.** A microphone produces 256 kb/s. Sending that over a radio costs milliwatts, all the time. Deciding locally that someone said "lights on" costs microjoules a few times a second, and the message that follows is a few bytes (Example 27-08.2). Edge AI is, first of all, data compression with a purpose. The analogy is a branch office that sends headquarters a summary rather than every receipt. It breaks down when headquarters needs the receipts later: a device that throws raw data away cannot be re-analysed, which is why many systems keep a small buffer or send raw data occasionally.
 
-**Range is bought with time.** A LoRa radio reaches kilometres by spreading each bit over many chirps. Each step in spreading factor doubles the time on air and buys about 2.5 dB of sensitivity [R-274]. Time on air is energy, and in Europe's unlicensed bands it is also rationed by law (Example 27-08.3). Coverage, battery life and message rate form a three-way trade, and the network setting that chooses the spreading factor moves all three at once.
+**Range is bought with time.** A LoRa radio reaches kilometres by spreading each bit over many chirps. Each step in spreading factor roughly doubles the time on air and buys about 2.5 dB of sensitivity [R-274]. Time on air is energy, and in Europe's unlicensed bands it is also rationed by law (Example 27-08.3). Coverage, battery life and message rate form a three-way trade, and the network setting that chooses the spreading factor moves all three at once.
 
 ```mermaid
 flowchart LR
@@ -141,7 +141,7 @@ $$
 E_{\text{day}} = N\,E_{\text{msg}} + P_{\text{sleep}}\cdot 86\,400\ \text{s}, \qquad \text{life} = \frac{\eta_{\text{usable}}\,E_{\text{batt}}}{E_{\text{day}} + E_{\text{self-discharge, day}}}.
 $$
 
-Primary lithium cells lose a little capacity every year whatever the load. For a node that sends a few messages a day, this **self-discharge** can rival the load itself, and the cell's shelf life, not the electronics, ends the product (Example 27-08.4). A ten-year claim must therefore state the reporting interval, the radio settings and the cell's self-discharge.
+Here $E_{\text{self-discharge, day}} = s\,E_{\text{batt}}/365$, where $s$ is the fraction of the cell's capacity lost per year; the linear form is a first approximation, and $s$ rises with temperature. Primary lithium cells lose a little capacity every year whatever the load. For a node that sends a few messages a day, this **self-discharge** can rival the load itself, and the cell's shelf life, not the electronics, ends the product (Example 27-08.4). A ten-year claim must therefore state the reporting interval, the radio settings and the cell's self-discharge.
 
 **Harvesting.** A harvester converts light, heat, vibration or radio waves into electrical power. Indoor light is the most common source, and its power follows from photometry. Illuminance $E_v$ (lux, lumens per square metre) becomes irradiance $E_e = E_v/K$ (W/m²), where $K$ is the luminous efficacy of the light's spectrum. $K$ is at most 683 lm/W, the SI definition for green light at 540 THz; a white light source's broader spectrum gives less. A photovoltaic cell of area $A$ and efficiency $\eta_{pv}$ behind a converter of efficiency $\eta_{c}$ delivers
 
@@ -149,7 +149,7 @@ $$
 P_h = \frac{E_v}{K}\,A\,\eta_{pv}\,\eta_c .
 $$
 
-A few hundred lux of office light on a few square centimetres yields hundreds of microwatts at best (Example 27-08.5). That is plenty for a periodic sensor and not enough for always-on listening.
+A few hundred lux of office light yields only about **16** µW per square centimetre after the cell and converter (Example 27-08.5), so a few hundred microwatts needs a few tens of square centimetres. That is plenty for a periodic sensor and not enough for always-on listening.
 
 **Energy neutrality.** Over each light–dark cycle, harvested energy must exceed consumed energy, and storage must carry the load through the dark:
 
@@ -215,25 +215,25 @@ The device runs 10 inferences a second, its front end draws 0.300 mW and it slee
 
 **Units check.** MAC ÷ (MAC/cycle × cycle/s) = s; W × s = J; J ÷ W = s. ✓
 
-**Sanity check.** The model is of the same order as MLPerf Tiny's reference keyword spotter, 38.6K parameters in a 52.5 KB file [R-696]. The NPU's 21-fold speed-up is far below its 85-fold peak ratio of MACs per cycle, because the depthwise layers leave it idle. Its energy saving is close to Arm's "up to 90%". The system gain is only 4.4 times, because after the NPU the front end dominates.
+**Sanity check.** Coin-cell capacity is rated at a light, steady drain; with inference pulses near 13 mA a real CR2032 delivers less, so treat these lives as upper bounds and check the cell's pulse data. The model is of the same order as MLPerf Tiny's reference keyword spotter, 38.6K parameters in a 52.5 KB file [R-696]. The NPU's 21-fold speed-up is far below its 85-fold peak ratio of MACs per cycle, because the depthwise layers leave it idle. Its energy saving is close to Arm's "up to 90%". The system gain is only 4.4 times, because after the NPU the front end dominates.
 
 ### Example 27-08.2 · Send the answer, not the data (tier A)
 
 **Setup.** The device of Example 27-08.1 could instead stream its raw audio, 16 kHz at 16 bits, over a radio costing 20 nJ per bit all-in. Find:
 
-- (a) the raw rate and the radio power, and the ratio to the NPU node's 0.471 mW;
-- (b) how many times too slow LoRa's fastest 125 kHz rate, 9,380 b/s [R-274], would be;
+- (a) the raw rate and the radio power, its ratio to the NPU node's 0.471 mW, and the whole streaming node's power with the same 0.305 mW front end and sleep floor;
+- (b) how many times too slow LoRaWAN's fastest 125 kHz setting, SF7, would be, at a raw rate of $SF$ bits per symbol times the coding rate 4/5 divided by the symbol time;
 - (c) the average radio power of reporting a 20-byte event once a minute instead.
 
 **Solution.**
 
-- (a) $16\,000 \times 16$ = **256000** b/s; $256\,000 \times 20\ \text{nJ}$ = **5.12** mW, **10.9** times the local-inference node.
-- (b) $256\,000/9380$ = **27.3** times too slow.
+- (a) $16\,000 \times 16$ = **256000** b/s; $256\,000 \times 20\ \text{nJ}$ = **5.12** mW, **10.9** times the local-inference node for the radio alone. With the front end and sleep floor the streaming node draws $5.12 + 0.305$ = **5.43** mW, **11.5** times.
+- (b) $7 \times 0.8/1.024\ \text{ms}$ = **5.47** kb/s, so $256\,000/5469$ = **46.8** times too slow.
 - (c) $160 \times 20\ \text{nJ}/60\ \text{s}$ = **53.3** nW.
 
 **Units check.** b/s × J/b = W. ✓
 
-**Sanity check.** Streaming costs ten times more energy on a short-range radio and is impossible on a long-range one. Reporting events costs a hundred-thousandth of streaming. This is why voice assistants keep wake-word detection on the device, and why long-range sensors send features or decisions.
+**Sanity check.** Streaming costs more than ten times the power on a short-range radio and is impossible on a long-range one. Reporting events costs a hundred-thousandth of streaming. This is why voice assistants keep wake-word detection on the device, and why long-range sensors send features or decisions.
 
 ### Example 27-08.3 · LoRa airtime and the duty-cycle budget (tier B)
 
@@ -253,7 +253,7 @@ The device runs 10 inferences a second, its front end draws 0.300 mW and it slee
 
 **Units check.** chips ÷ (chips/s) = s; s × A × V = J. ✓
 
-**Sanity check.** The five SF steps buy 12.5 dB of demodulator margin, about four times the range in free space, and cost 23 times the airtime and energy. A node pushed to SF12 by distance can send fewer than one packet an hour on a community network. Adaptive data rate, which gives every node the fastest SF its link allows, is the most important energy setting in a LoRaWAN deployment.
+**Sanity check.** The five SF steps buy 12.5 dB of demodulator margin, about four times the range in free space (only about **2.1** to **2.6** times with the path-loss exponents of 4 to 3 common near the ground), and cost 23 times the airtime and energy. A node pushed to SF12 by distance can send fewer than one packet an hour on a community network. Adaptive data rate, which gives every node the fastest SF its link allows, is the most important energy setting in a LoRaWAN deployment.
 
 ### Example 27-08.4 · Ten years on a battery? (tier B)
 
@@ -279,7 +279,7 @@ All of this is at 3.3 V, and the node sleeps at 10 µW. Its lithium–thionyl ch
 
 **Units check.** mA × V × s = mJ; J ÷ (J/day) = days. ✓
 
-**Sanity check.** At SF7 the battery outlasts any plausible product life, and self-discharge consumes 38% of the cell. At SF12 the same node lasts under five years and breaks a community network's fair-use rule. The gateway's position, through the SF it forces, is the battery-life specification.
+**Sanity check.** Bobbin-type lithium–thionyl chloride cells are built for small currents, so the 29 mA transmit pulses may need a buffer capacitor or a hybrid cell; check the cell's data sheet. At SF7 the battery outlasts any plausible product life, and self-discharge consumes 38% of the usable energy. At SF12 the same node lasts under five years and breaks a community network's fair-use rule. The gateway's position, through the SF it forces, is the battery-life specification.
 
 ### Example 27-08.5 · Running on office light (tier C)
 
@@ -294,7 +294,7 @@ All of this is at 3.3 V, and the node sleeps at 10 µW. Its lithium–thionyl ch
 
 - (a) $300/300$ = 1 W/m² = **100** µW/cm². Then $20\ \text{cm}^2 \times 100\ \mu\text{W/cm}^2 \times 0.2 \times 0.8$ = **320** µW, and $320\ \mu\text{W} \times 36\,000\ \text{s}$ = **11.5** J a day.
 - (b) $1.50\ \text{J}/86\,400\ \text{s}$ = **17.3** µW; the margin is $11.52/1.50$ = **7.69**.
-- (c) $17.3\ \mu\text{W} \times 62 \times 3600\ \text{s}$ = **3.87** J; $C = 2 \times 3.87/(4.0^2 - 2.2^2)$ = **0.694** F, so a 1 F part.
+- (c) $17.3\ \mu\text{W} \times 62 \times 3600\ \text{s}$ = **3.87** J; $C = 2 \times 3.87/(4.0^2 - 2.2^2)$ = **0.694** F of effective capacitance. A single supercapacitor cell is rated at about 3 V or less (its electrolyte's limit), so a 4.0 V store needs two cells in series, each of at least **1.39** F because series halves the capacitance, or a lithium-ion capacitor. The part's leakage current, assumed zero here, must come from its data sheet: over 62 hours it may not be negligible against a 17 µW load.
 - (d) The node needs $0.471\ \text{mW} \times 86\,400$ = **40.7** J a day, **3.53** times the harvest, so it cannot. It would need **70.7** cm² of cell.
 
 **Units check.** lm/m² ÷ lm/W = W/m²; J ÷ V² = F. ✓
@@ -313,7 +313,7 @@ A 128 KiB update must then be delivered. Find:
 
 - (d) the receive energy over a radio at 20 nJ per bit;
 - (e) over LoRa at SF7 in 50-byte fragments (63-byte frames with headers): the frames, time on air per frame, total airtime, receive energy at 10.8 mA and 3.3 V, and that energy in days of Example 27-08.4's SF7 budget;
-- (f) the gateway time at a 10% duty cycle, and the days needed at 10 downlinks a day [R-698].
+- (f) the minimum elapsed time for the gateway to send it under a 10% sub-band duty cycle, and the days needed at 10 downlinks a day [R-698].
 
 (All costs are assumed except where cited.)
 
@@ -324,7 +324,7 @@ A 128 KiB update must then be delivered. Find:
 - (c) $(0.246 + 0.0625) \times 10\ \text{mW}$ = **3.08** mJ in software; **0.789** mJ with the engine.
 - (d) $131\,072 \times 8 \times 20\ \text{nJ}$ = **21.0** mJ.
 - (e) $\lceil 131\,072/50 \rceil$ = **2622** frames of **118.0** ms each, **309** s of airtime and $309 \times 0.0108 \times 3.3$ = **11.0** J, **7.36** days of the node's energy.
-- (f) $309/0.10$ s = **51.6** min of gateway time; at 10 downlinks a day, **262** days.
+- (f) $309/0.10$ s = **51.6** min of elapsed time at the gateway's 10% limit; at 10 downlinks a day, **262** days.
 
 **Units check.** bytes × cycles/byte ÷ cycles/s = s; s × A × V = J. ✓
 
@@ -361,7 +361,10 @@ A 128 KiB update must then be delivered. Find:
 | Ex 27-08.2a | raw audio rate | 256000 | b/s |
 | Ex 27-08.2a1 | streaming radio power | 5.12 | mW |
 | Ex 27-08.2a2 | ratio to local inference | 10.9 | — |
-| Ex 27-08.2b | shortfall of LoRa's fastest rate | 27.3 | — |
+| Ex 27-08.2a3 | streaming node power | 5.43 | mW |
+| Ex 27-08.2a4 | streaming node over local node | 11.5 | — |
+| Ex 27-08.2b1 | LoRa SF7 raw rate | 5.47 | kb/s |
+| Ex 27-08.2b | shortfall of LoRa's SF7 rate | 46.8 | — |
 | Ex 27-08.2c | event reporting power | 53.3 | nW |
 | Ex 27-08.3a | symbol time, SF7 | 1.024 | ms |
 | Ex 27-08.3a1 | symbol time, SF12 | 32.768 | ms |
@@ -399,6 +402,7 @@ A 128 KiB update must then be delivered. Find:
 | Ex 27-08.5b1 | harvest margin | 7.69 | — |
 | Ex 27-08.5c | weekend energy | 3.87 | J |
 | Ex 27-08.5c1 | supercapacitor | 0.694 | F |
+| Ex 27-08.5c2 | each of two series cells | 1.39 | F |
 | Ex 27-08.5d | always-listening daily energy | 40.7 | J |
 | Ex 27-08.5d1 | ratio to harvest | 3.53 | — |
 | Ex 27-08.5d2 | cell area needed | 70.7 | cm² |
@@ -424,6 +428,11 @@ A 128 KiB update must then be delivered. Find:
 | Txt 27-08.7 | free-space range factor for 12.5 dB | 4.2 | — |
 | Txt 27-08.8 | 2048 MACs at 200 MHz | 0.82 | TOPS |
 | Txt 27-08.9 | 128 MACs at 200 MHz | 0.05 | TOPS |
+| Txt 27-08.10 | range factor for 12.5 dB, exponent 4 | 2.1 | — |
+| Txt 27-08.11 | range factor for 12.5 dB, exponent 3 | 2.6 | — |
+| Txt 27-08.12 | life ratio SF7 to SF12, no self-discharge | 9.5 | — |
+| Txt 27-08.13 | life ratio SF7 to SF12, with self-discharge | 6.2 | — |
+| Txt 27-08.14 | harvest per cm² at 300 lux | 16 | µW |
 
 ## 5. Simulate it
 
@@ -439,7 +448,7 @@ The lab is [labs/27-08-lab/](../labs/27-08-lab/README.md). `edgemodel.py` implem
 3. *Predict* Example 27-08.4's battery life at SF10. Then plot life against reporting interval for SF7 and SF12.
 4. *Predict* the supercapacitor for three days of darkness in Example 27-08.5. Then plot the harvest margin against illuminance.
 
-![Left: LoRa time on air of a 20-byte packet against spreading factor on a logarithmic axis, doubling with each step, with packets per hour under a 1% duty cycle; right: battery life against reporting interval for SF7 and SF12, flattening at long intervals where sleep and self-discharge dominate](../../../assets/figures/27-08/lora-life.svg)
+![Left: LoRa time on air of a 20-byte packet against spreading factor on a logarithmic axis, roughly doubling with each step, with packets per hour under a 1% duty cycle; right: battery life against reporting interval for SF7 and SF12, flattening at long intervals where sleep and self-discharge dominate](../../../assets/figures/27-08/lora-life.svg)
 
 *Figure 1. LoRa airtime and duty-cycle capacity against spreading factor (Example 27-08.3), and sensor battery life against reporting interval (Example 27-08.4's assumptions).*
 
@@ -477,7 +486,7 @@ The lab is [labs/27-08-lab/](../labs/27-08-lab/README.md). `edgemodel.py` implem
 - **Quoting TOPS for a microcontroller workload.** Small models with depthwise layers use a fraction of an NPU's peak; compare microjoules and milliseconds per inference on the actual model (MLPerf Tiny measures exactly this).
 - **Optimizing the inference and forgetting the front end.** After an NPU, the microphone, amplifier and feature extraction can dominate the always-on budget (Example 27-08.1).
 - **Comparing radios by data rate or range alone.** Energy per delivered message, network ownership and regulation decide the choice.
-- **Assuming the spreading factor is fixed.** It follows the link; a node that moves out of range, or loses its nearest gateway, can see its battery life fall tenfold (Example 27-08.4).
+- **Assuming the spreading factor is fixed.** It follows the link; a node that moves out of range, or loses its nearest gateway, can see its battery life fall six- to tenfold (Example 27-08.4: **9.5** times without self-discharge, **6.2** times with it).
 - **Ignoring duty-cycle and fair-use rules.** A design that works in the lab can be illegal or throttled in the field.
 - **Quoting battery life without self-discharge, temperature and reporting interval.** For low-duty nodes, the cell, not the electronics, sets the life.
 - **Sizing harvest storage for one night.** Weekends, holidays and dark winters set the store (Example 27-08.5).
@@ -487,7 +496,7 @@ The lab is [labs/27-08-lab/](../labs/27-08-lab/README.md). `edgemodel.py` implem
 
 **State of play (as of Nov 2026).**
 
-- **NPUs are reaching microcontrollers.** Arm's third-generation Ethos-U85 scales from 128 to 2048 MAC units, "up to 4 TOPs of performance at 1 GHz", and adds transformer support. Arm says it is 20% more energy efficient than the Ethos-U55 and U65 [R-695]. The Ethos-U55 with a Cortex-M55 is marketed as a "480 times uplift in ML performance over existing Cortex-M based systems" and "up to 90% energy reduction in about 0.1mm²" [R-695].
+- **NPUs are reaching microcontrollers** (vendor claims). Arm's Ethos-U85 scales from 128 to 2048 MAC units, "up to 4 TOPs of performance at 1 GHz", and adds transformer support. Arm says it is 20% more energy efficient than the Ethos-U55 and U65 [R-695]. The Ethos-U55 with a Cortex-M55 is marketed as a "480 times uplift in ML performance over existing Cortex-M based systems" and "up to 90% energy reduction in about 0.1mm²" [R-695] **[Established as manufacturer claims]**.
 - **Benchmarks exist.** MLPerf Tiny measures accuracy, latency and energy in microjoules per inference on four tasks, with reference models from a 52.5 KB keyword spotter to a 325 KB visual-wake-words network [R-696].
 - **Connectivity is fragmented.** IoT Analytics counted Wi-Fi in 32% of IoT connections and Bluetooth in 24%, with 21.1 billion connected devices expected at the end of 2025 [R-699] **[Industry estimate]**. LPWAN and cellular IoT serve the long-range, low-rate tail.
 - **Regulation is arriving.** The EU Cyber Resilience Act's reporting obligations applied from September 2026, and its main obligations apply from December 2027 [R-312].
@@ -500,8 +509,8 @@ The lab is [labs/27-08-lab/](../labs/27-08-lab/README.md). `edgemodel.py` implem
 
 **Marketing vs Reality.**
 
-- *"480 times uplift in ML performance"* [R-695]. Against "existing Cortex-M based systems", meaning a CPU without an NPU. Our keyword spotter shows a 21-fold speed-up at realistic utilization, and the system power fell only 4.4 times. Ask for MLPerf Tiny latency and energy on named parts.
-- *"Up to 4 TOPs"* [R-695]. At 1 GHz and the largest configuration; at a 200 MHz microcontroller clock the same 2048 MACs give 0.82 TOPS, and the smallest configuration 0.05 TOPS (Problem 27-08.13).
+- *"480 times uplift in ML performance"* [R-695]. Against "existing Cortex-M based systems", meaning a CPU without an NPU. Our keyword spotter shows a 21-fold speed-up at an assumed 25% utilization, and the system power fell only 4.4 times. Ask for MLPerf Tiny latency and energy on named parts.
+- *"Up to 4 TOPs"* [R-695]. At 1 GHz and the largest configuration. The clock is the SoC designer's choice: if a microcontroller runs the NPU at 200 MHz, the same 2048 MACs give 0.82 TOPS, and the smallest configuration 0.05 TOPS (Problem 27-08.13).
 - *"10-year battery life."* True only for a stated reporting interval, spreading factor, temperature and cell; Example 27-08.4 spans 4.89 to 30.5 years for one design.
 - *"Under a milliwatt"* [R-696]. An average over a duty cycle, not the active power; check what the sensor front end adds.
 - *"Secure by design."* Ask which certification level (PSA Certified level, SESIP) and how keys are provisioned, and what the update path costs on the deployed radio.

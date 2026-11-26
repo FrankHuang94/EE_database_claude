@@ -12,7 +12,7 @@ Chapter: [27-05](../chapters/27-05-pc-soc.md) · Worked solutions: [27-05 soluti
 
 ### Problem 27-05.1 [A]
 
-**Which engine?** Name the block best suited to each task and why in a phrase: (a) decoding a 4K video stream; (b) live captions during a call; (c) compiling code; (d) rendering a 3D game; (e) running a 70-billion-parameter model that is too large for the NPU's supported formats.
+**Which engine?** Name the block best suited to each task and why in a phrase: (a) decoding a 4K video stream; (b) live captions during a call; (c) compiling code; (d) rendering a 3D game; (e) running a 70-billion-parameter model in a format the NPU runtime does not support.
 
 ### Problem 27-05.2 [A]
 
@@ -28,7 +28,7 @@ Chapter: [27-05](../chapters/27-05-pc-soc.md) · Worked solutions: [27-05 soluti
 
 ### Problem 27-05.5 [B]
 
-**What fits?** A laptop can give 24 GB of its memory to a model. (a) What is the largest model (in billions of parameters) it can hold at 4 bits and at 8 bits? (b) Find the decode bound for a 32-billion-parameter 4-bit model on a 136.5 GB/s bus.
+**What fits?** A laptop can give 24 GB of its memory to a model. (a) What is the largest model (in billions of parameters) it can hold at 4 bits and at 8 bits? (b) Find the decode bound (weights only, dense model) for a 32-billion-parameter 4-bit model on a 136.5 GB/s bus.
 
 ### Problem 27-05.6 [B]
 
@@ -40,7 +40,7 @@ Chapter: [27-05](../chapters/27-05-pc-soc.md) · Worked solutions: [27-05 soluti
 
 ### Problem 27-05.8 [B]
 
-**A big die.** Compare a 400 mm² monolithic die on a 3 nm-class wafer at $18,500 with $D_0$ = 0.10 cm⁻² against two 200 mm² tiles on the same wafer type in a $10 package with 97% assembly yield. Find both costs and their ratio.
+**A big die.** Compare a 400 mm² monolithic die on a 3 nm-class wafer at $18,500 with $D_0$ = 0.10 cm⁻² against two 200 mm² tiles on the same wafer type in a $10 package with 97% assembly yield, assuming the split adds no interface area. Find both costs and their ratio.
 
 ### Problem 27-05.9 [B]
 
@@ -56,7 +56,15 @@ Chapter: [27-05](../chapters/27-05-pc-soc.md) · Worked solutions: [27-05 soluti
 
 ### Problem 27-05.12 [C]
 
-**Does turbo matter for long tasks?** A task takes 60 s at the sustained 28 W. With the turbo of Example 27-05.2 (13.8 s at 64 W from an idle start, speed scaling as the cube root of power, then back to 28 W), how long does it take, and how much faster is it?
+**Does turbo matter for long tasks?** A task takes 60 s at the sustained 28 W. With the turbo of Example 27-05.2 (13.8 s at 64 W from an idle start, speed scaling as the cube root of power, then back to 28 W), how long does it take, and how much less time does it need?
+
+### Problem 27-05.13 [B]
+
+**Deriving the turbo duration.** The averaged power $y(t)$ obeys $\tau\,dy/dt = P - y$, and during turbo the package draws $P = P_2$.
+
+- (a) Solve the equation by separating variables, from $y(0) = P_0$.
+- (b) Set $y = P_1$ and derive $t_{turbo} = \tau\ln[(P_2 - P_0)/(P_2 - P_1)]$.
+- (c) Show that for $P_0$ close to $P_1$, $t_{turbo} \approx \tau(P_1 - P_0)/(P_2 - P_1)$. Evaluate the exact and approximate durations for $P_1$ = 28 W, $P_2$ = 64 W, $\tau$ = 28 s and $P_0$ = 25 W, and the approximation's error.
 
 ---
 
@@ -66,6 +74,6 @@ Chapter: [27-05](../chapters/27-05-pc-soc.md) · Worked solutions: [27-05 soluti
 |---|---|
 | 1. Laptop SoC blocks and how they differ from a phone's | 1 |
 | 2. Battery life from residency | 3, 11 |
-| 3. Turbo under an averaged limit | 4, 12 |
+| 3. Turbo under an averaged limit | 4, 12, 13 |
 | 4. Unified memory, local models, NPU vs GPU | 2, 5, 6, 7 |
 | 5. Chiplets, links and memory-on-package | 8, 9, 10 |

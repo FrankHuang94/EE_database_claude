@@ -40,7 +40,7 @@
 1. Raising deep-idle residency from 70% to 85% lowers the SoC's average to **0.697** W and lengthens life from 18.2 to **18.9** h; the curve is flat because the display dominates, but losing deep idle altogether costs hours (Example 27-05.1d).
 2. Doubling $\tau$ doubles the turbo to **27.7** s; vendors tune $\tau$ to the chassis's real thermal time constant, so a thin laptop with a large $\tau$ overheats and throttles thermally instead.
 3. At 256 GB/s a 4-bit model of up to **51.2** billion parameters decodes at 10 tokens/s or faster; capacity, not bandwidth, is usually what excludes larger ones.
-4. With these assumptions, two tiles beat one die from about **225** mm² of total area; below that the package cost and assembly loss outweigh the yield gain. Moving part of the design to a cheaper node (Example 27-05.5) moves the break-even far lower.
+4. With these assumptions (and no interface area), two tiles beat one die from about **225** mm² of total area; below that the package cost and assembly loss outweigh the yield gain. Moving part of the design to a cheaper node (Example 27-05.5) moves the break-even far lower.
 
 ## Optional hardware
 

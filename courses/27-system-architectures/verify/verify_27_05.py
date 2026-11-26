@@ -259,6 +259,18 @@ v.check("27-05.12e", 60 - done)
 total = t_turbo + (60 - done)
 v.check("27-05.12b", total)
 v.check("27-05.12c", 100 * (60 - total) / 60)
+v.check("27-05.12f", 100 * (60 / total - 1))
+
+# Problem 27-05.13: integrate the averaging ODE numerically until y reaches P1
+from scipy.integrate import solve_ivp  # noqa: E402
+
+ev = lambda t, y: y[0] - 28.0  # noqa: E731
+ev.terminal = True
+sol13 = solve_ivp(lambda t, y: [(64.0 - y[0]) / 28.0], (0, 100), [25.0], events=ev, rtol=1e-11, atol=1e-11)
+t13 = sol13.t_events[0][0]
+v.check("27-05.13a", t13)
+v.check("27-05.13b", 28 * 3 / 36)
+v.check("27-05.13c", 100 * (28 * 3 / 36 / t13 - 1))
 
 # ---------------------------------------------------------------------------
 # Lab

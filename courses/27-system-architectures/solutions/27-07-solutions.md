@@ -32,7 +32,7 @@ $6 \times 70 \times 10^9 \times 15 \times 10^{12}$ = **6.3e24** FLOP. Time: $6.3
 
 (b) $100.8/135.7$ = **74.3**%.
 
-(c) $100\,000/(135.7 \times 1.2) = 614.2$, so **614** racks and **44208** GPUs, 11% fewer than with 1.2 kW GPUs. A faster, hotter GPU must be faster by more than its power ratio to win at a power-limited site.
+(c) $100\,000/(135.7 \times 1.2) = 614.2$, so **614** racks and **44208** GPUs, 11% fewer than with 1.2 kW GPUs. A faster, hotter GPU must be faster by more than its all-in power ratio to win at a power-limited site: here $49\,608/44\,208$ = **1.12**, not the chip ratio $1.4/1.2$ = **1.17**, because the rest of the rack does not grow with the GPU.
 
 ### Solution 27-07.5
 
@@ -56,7 +56,7 @@ $B = 2 \times (1151/1152) \times 10\ \text{GB}/24.5\ \text{ms}$ = **815** GB/s =
 
 (d) 30.1% of 419 is **126**. With 126 faulty-GPU interruptions, the GPU share is $(126 + 120)/419$ = **58.7**%, the text's figure, but then the counts would sum to 397, not 419.
 
-The printed count, percentage and GPU share cannot all be right. The percentages also sum to 94.9%, not 100%. Most likely one figure is a typesetting error. The conclusion that GPUs and their memory dominate holds either way. Foot every table before quoting it.
+The printed count, percentage and GPU share cannot all be right, and the percentages settle which is wrong. They sum to **94.9**%, **5.1** points short of 100%, which matches the **5.2**-point gap between 35.3% and the printed 30.1% to within rounding. So the faulty-GPU percentage is the misprint: the count 148 agrees with the 419 total, and the text's 58.7% GPU share was computed from the wrong percentage (the counts give 64.0%). The conclusion that GPUs and their memory dominate holds either way. Foot every table before quoting it.
 
 ### Solution 27-07.8
 
@@ -98,7 +98,7 @@ The printed count, percentage and GPU share cannot all be right. The percentages
 
 Annual cost is unchanged at $750\,000 + 109\,325 = 859\,325$ dollars.
 
-At 60%: tokens $3.29 \times 10^5 \times 0.6 \times 3.15 \times 10^7 = 6.22 \times 10^{12}$ a year, so **0.138** dollars per million tokens.
+At 60%: tokens $3.29 \times 10^5 \times 0.6 \times 3.1536 \times 10^7 = 6.22 \times 10^{12}$ a year, so **0.138** dollars per million tokens.
 
 At 30%: **0.276** dollars per million tokens.
 
@@ -106,7 +106,15 @@ Relaxing the latency target from 409 to 50 tokens/s per user cut the cost per to
 
 ### Solution 27-07.13
 
-The GPU power step is $16\,384 \times 600\ \text{W}$ = **9.83** MW, and **14.7** MW at the facility. That is a large fraction of the site's load switching within milliseconds to seconds, in step, repeatedly. It stresses upstream converters, generators and the grid connection, and calls for energy storage and ramp control at rack or site level (22-10, Example 22-10.8). Meta reports swings "on the order of tens of megawatts" [R-694].
+The GPU power step is $16\,384 \times 600\ \text{W}$ = **9.83** MW, and $9.83/0.97$ = **10.1** MW at the rack inputs. Multiplying by the all-in factor 1.5 instead gives **14.7** MW, but that assumes the CPUs, NICs, switches and fans drop in proportion, which they largely do not, so it is an upper bound; cooling load also follows more slowly than the electrical step. That is a large fraction of the site's load switching within milliseconds to seconds, in step, repeatedly. It stresses upstream converters, generators and the grid connection, and calls for energy storage and ramp control at rack or site level (22-10, Example 22-10.8). Meta reports swings "on the order of tens of megawatts" [R-694].
+
+### Solution 27-07.14
+
+(a) $df/d\tau = -\delta/\tau^2 + 1/(2M)$. Setting it to zero gives $\tau^2 = 2\delta M$, so $\tau^* = \sqrt{2\delta M}$. There the save term is $\delta/\tau^* = \delta/\sqrt{2\delta M} = \sqrt{\delta/(2M)}$ and the rework term is $\tau^*/(2M) = \sqrt{2\delta M}/(2M) = \sqrt{\delta/(2M)}$: equal, with sum $2\sqrt{\delta/(2M)} = \sqrt{2\delta/M}$. The second derivative is $d^2f/d\tau^2 = 2\delta/\tau^3 > 0$ for every $\tau > 0$, so the stationary point is the minimum. The restart term $R/M$ does not depend on $\tau$ and drops out of the derivative.
+
+(b) $M = 14\,400$ s. $\tau^* = \sqrt{2 \times 30 \times 14\,400}$ = **929.5** s = **15.5** min. Checkpoint loss $\sqrt{60/14\,400}$ = **6.45**%; restart loss $300/14\,400$ = **2.08**%; total **8.54**%.
+
+(c) In the memory-bound region $1/s = (W + BK)/(\eta B_{\text{mem}})$, so $BK = \eta B_{\text{mem}}/s - W$ and $B = (\eta B_{\text{mem}}/s - W)/K$. Multiplying by $s$: $\Theta = Bs = \eta B_{\text{mem}}/K - (W/K)s$, a straight line in $s$. With $\eta B_{\text{mem}}$ = 288 TB/s, $W$ = 0.5 TB and $K$ = 0.8 GB: at $s \to 0$, $\Theta = 288 \times 10^{12}/0.8 \times 10^9$ = **3.60 × 10⁵** tokens/s (the KV-cache ceiling); $\Theta = 0$ at $s = \eta B_{\text{mem}}/W$ = **576** tokens/s (a batch of nearly zero, reading only the weights); slope $W/K$ = **625** tokens/s of throughput per token/s of per-user speed.
 
 ---
 
@@ -167,4 +175,17 @@ The GPU power step is $16\,384 \times 600\ \text{W}$ = **9.83** MW, and **14.7**
 | 27-07.12d | cost per million tokens at 30% | 0.276 | $ |
 | 27-07.12e | cost reduction from relaxed latency | 3.1 | — |
 | 27-07.13a | GPU power step | 9.83 | MW |
-| 27-07.13b | facility power step | 14.7 | MW |
+| 27-07.13b | step at the rack inputs | 10.1 | MW |
+| 27-07.13c | upper bound with the all-in factor | 14.7 | MW |
+| 27-07.4i | all-in break-even speed-up | 1.12 | — |
+| 27-07.4j | chip power ratio | 1.17 | — |
+| 27-07.7i | shortfall of printed percentages | 5.1 | points |
+| 27-07.7j | gap between computed and printed share | 5.2 | points |
+| 27-07.14a | Young's interval | 929.5 | s |
+| 27-07.14b | Young's interval | 15.5 | min |
+| 27-07.14c | checkpoint loss | 6.45 | % |
+| 27-07.14d | restart loss | 2.08 | % |
+| 27-07.14e | total loss | 8.54 | % |
+| 27-07.14f | throughput at zero speed | 3.60e5 | tokens/s |
+| 27-07.14g | per-user speed at zero throughput | 576 | tokens/s |
+| 27-07.14h | frontier slope | 625 | — |

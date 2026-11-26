@@ -219,9 +219,9 @@ v.check("Ex 27-07.5a", M / 3600)
 v.check("Ex 27-07.5a1", M)
 m_gpu_h = 16384 * M / 3600
 v.check("Ex 27-07.5b", m_gpu_h)
-v.check("Ex 27-07.5b1", m_gpu_h / 8766)
+v.check("Ex 27-07.5b1", m_gpu_h / 8760)
 v.check("Ex 27-07.5b2", 1e9 / m_gpu_h)
-v.check("Txt 27-07.6", m_gpu_h / 8766)
+v.check("Txt 27-07.6", m_gpu_h / 8760)
 
 
 def lost(tau, delta, mtbf, restart):
@@ -331,6 +331,8 @@ v.assert_true("cost model matches the lab module",
 # ---------------------------------------------------------------------------
 v.check("Txt 27-07.2", 9216 * 4614e12 / 1e18)
 v.check("Txt 27-07.3", 42.5 / 1.7)
+v.check("Txt 27-07.16", 9216 * 4614e12 / 1e18 / 1.809)
+v.check("Txt 27-07.17", 9216 * 4614e12 / 1e18 / 2.198)
 v.check("Txt 27-07.4", 42.5 / 16.680)
 v.check("Txt 27-07.5", 100 * (125 / 90 - 1))
 v.check("Txt 27-07.13", 7)
@@ -367,6 +369,8 @@ r4 = math.floor(100e3 / (i4 * 1.2))
 v.check("27-07.4f", r4)
 v.check("27-07.4g", r4 * 72)
 v.check("27-07.4h", 100 * (1 - r4 * 72 / (racks * 72)))
+v.check("27-07.4i", racks * 72 / (r4 * 72))
+v.check("27-07.4j", 1.4 / 1.2)
 
 v.check("27-07.5a", 2 * 7 / 8 * 4)
 v.check("27-07.5b", 1e3 * ring_time_executed(4e9, 8, 450e9))
@@ -396,6 +400,8 @@ v.check("27-07.7e", alt)
 v.check("27-07.7f", 100 * (gsum - 148 + alt) / tot)
 v.check("27-07.7g", tot - 148 + alt)
 v.check("27-07.7h", sum(printed))
+v.check("27-07.7i", 100 - sum(printed))
+v.check("27-07.7j", 100 * 148 / tot - 30.1)
 v.assert_true("HBM3 share 72/419 matches the printed 17.2%", round(100 * 72 / tot, 1) == 17.2)
 
 M8 = 16384 * M / 100000
@@ -439,7 +445,26 @@ v.check("27-07.12d", annual / (thr11 * 0.3 * 8760 * 3600 / 1e6))
 v.check("27-07.12e", cost / c60)
 
 v.check("27-07.13a", 16384 * 600 / 1e6)
-v.check("27-07.13b", 16384 * 600 * 1.5 / 1e6)
+v.check("27-07.13b", 16384 * 600 / 0.97 / 1e6)
+v.check("27-07.13c", 16384 * 600 * 1.5 / 1e6)
+
+# Problem 27-07.14: Young's interval by numerical minimization, frontier by a line fit
+M14, d14, R14 = 4 * 3600, 30, 300
+r14 = optimize.minimize_scalar(lambda t: d14 / t + (t / 2 + R14) / M14, bounds=(1, M14), method="bounded",
+                               options={"xatol": 1e-8})
+v.check("27-07.14a", r14.x)
+v.check("27-07.14b", r14.x / 60)
+v.check("27-07.14c", 100 * (d14 / r14.x + r14.x / (2 * M14)))
+v.check("27-07.14d", 100 * R14 / M14)
+v.check("27-07.14e", 100 * r14.fun)
+v.assert_true("save and rework terms are equal at the optimum", abs(d14 / r14.x - r14.x / (2 * M14)) < 1e-6)
+bs = np.arange(64, 8000, 64)
+spd = np.array([1 / ((W + b * K) / (ETA * BW)) for b in bs])
+thr_line = bs * spd
+slope, icept = np.polyfit(spd, thr_line, 1)
+v.check("27-07.14f", icept)
+v.check("27-07.14g", -icept / slope)
+v.check("27-07.14h", -slope)
 
 # ---------------------------------------------------------------------------
 # Lab
@@ -456,6 +481,9 @@ v.check("Lab 27-07.b1", rb.x)
 v.check("Lab 27-07.b2", rb.x / 60)
 v.check("Lab 27-07.b3", 100 * rb.fun)
 v.check("Lab 27-07.b4", 100 * (1 - rb.fun))
+v.check("Lab 27-07.b5", 100 * 60 / rb.x)
+v.check("Lab 27-07.b6", 100 * (60 / rb.x + rb.x / (2 * Mb)))
+v.check("Lab 27-07.b7", 100 * 600 / Mb)
 s1024 = step(1024)[0]
 v.check("Lab 27-07.c", 1e3 * s1024)
 v.check("Lab 27-07.c1", 1024 / s1024)

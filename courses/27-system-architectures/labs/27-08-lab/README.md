@@ -48,13 +48,14 @@ The lab uses the chapter's models with its assumed parameters:
 | Lab 27-08.c2 | life at SF10 with self-discharge | 13.3 | years |
 | Lab 27-08.d | energy for 72 h | 4.49 | J |
 | Lab 27-08.d1 | supercapacitor | 0.805 | F |
+| Lab 27-08.d2 | each of two series cells | 1.61 | F |
 
 ## Discussion
 
 1. Doubling the NPU's utilization halves its latency to **0.208** ms and its energy to **8.30** µJ, but the life rises only from 59.7 to **72.5** days: at **0.388** mW the front end is now **77**% of the power.
 2. At SF9 the packet takes **185** ms, with **33** payload symbols. Each step in SF roughly doubles the airtime; the payload symbol count falls slowly because each symbol carries more bits.
 3. At SF10 a message costs **39.2** mJ and the node uses **4.63** J a day, lasting **13.3** years. The life falls steeply between SF7 and SF12, so each gateway that lowers a node's SF buys years.
-4. Three dark days need **4.49** J, and a **0.805** F supercapacitor. That is still a single 1 F part, so long dark spells cost little for a periodic sensor.
+4. Three dark days need **4.49** J, and a **0.805** F supercapacitor. At 4.0 V that means two series cells of at least **1.61** F each (series halves the capacitance) or a lithium-ion capacitor, plus the parts' leakage, which the model ignores. Long dark spells still cost little for a periodic sensor.
 
 ## Optional hardware
 

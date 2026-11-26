@@ -22,7 +22,7 @@
 
 ## 1. Big picture
 
-The AI datacenter has made the rack, not the chip, the unit of design and sale. NVIDIA's GB200 NVL72 joins 72 GPUs and 36 CPUs in one liquid-cooled rack whose NVLink network lets the GPUs behave as one large accelerator [R-690]. Google sells its Ironwood TPUs in pods of 256 or 9,216 chips, the larger spanning nearly 10 MW [R-693]. Such a rack draws 120–142 kW, depending on the definition [R-098], [R-600], and the industry is preparing 800 V DC distribution for 1 MW racks from 2027 [R-691]. Every earlier course meets here: the accelerator (14-14), HBM (23-05), SerDes and optics (24-03 to 24-09), power delivery (22-10), cooling (25-08) and reliability physics (25-09). This chapter puts them together and asks the system questions: how long does training take, what limits scaling, how often does the job fail, and what does a token cost?
+The AI datacenter has made the rack, not the chip, the unit of design and sale. NVIDIA's GB200 NVL72 joins 72 GPUs and 36 CPUs in one liquid-cooled rack whose 72-GPU NVLink domain, in NVIDIA's words, "acts as a single, massive GPU" [R-690]. Google sells its Ironwood TPUs in pods of 256 or 9,216 chips, the larger spanning nearly 10 MW [R-693]. Such a rack draws 120–142 kW, depending on generation and definition [R-098], [R-600], and NVIDIA is leading a move to 800 V DC distribution for 1 MW racks from 2027 [R-691]. Every earlier course meets here: the accelerator (14-14), HBM (23-05), SerDes and optics (24-03 to 24-09), power delivery (22-10), cooling (25-08) and reliability physics (25-09). This chapter puts them together and asks the system questions: how long does training take, what limits scaling, how often does the job fail, and what does a token cost?
 
 - **Why it exists:** training and serving large models need more compute and memory than any chip can hold, so thousands of accelerators must cooperate as tightly as one.
 - **Where it shows up:** hyperscale and "neocloud" datacenters, sovereign AI clusters and enterprise inference racks; the accelerators of NVIDIA and AMD, the in-house designs of the largest cloud companies, and the suppliers of their switches, optics, power and cooling.
@@ -31,7 +31,7 @@ The AI datacenter has made the rack, not the chip, the unit of design and sale. 
 
 ## 2. Intuition first
 
-**A bandwidth ladder.** Think of an AI cluster as a set of steps, each about ten times narrower than the one above. A GPU reads its own HBM at about 8 TB/s. It reaches the other GPUs in its rack over NVLink at 0.9 TB/s in each direction. Beyond the rack it talks over the network at a fraction of that, about 0.1 TB/s for one 800 Gb/s port (Example 27-07.1). Almost every design decision in this chapter follows from the ladder. Work that exchanges data constantly is kept on the upper steps. Only what must cross racks goes down to the network, and it is arranged so that every port carries a small share.
+**A bandwidth ladder.** Think of an AI cluster as a set of steps, each about ten times narrower than the one above. A GPU reads its own HBM at about 8 TB/s. It reaches the other GPUs in its rack over NVLink at 0.9 TB/s in each direction. Beyond the rack it talks over the network at a fraction of that, about 0.1 TB/s for one 800 Gb/s port (an assumed port speed; Example 27-07.1). Almost every design decision in this chapter follows from the ladder. Work that exchanges data constantly is kept on the upper steps. Only what must cross racks goes down to the network, and it is arranged so that every port carries a small share.
 
 ```mermaid
 flowchart TB
@@ -70,9 +70,9 @@ A rack-scale system has five parts:
 
 1. **Direction.** NVLink's "1.8 TB/s" per GPU counts both directions (24-06). One GPU can send at 0.9 TB/s while it receives at 0.9 TB/s.
 2. **Precision.** Halving the bits per operand roughly doubles the peak rate: FP4 is about twice FP8, which is twice BF16.
-3. **Sparsity.** With 2:4 structured sparsity, hardware skips two of every four weights and the peak doubles again, for models pruned to that pattern. AMD's MI355X page lists OCP-FP8 at 5 PFLOPs dense and 10.1 PFLOPs "with Structured Sparsity" [R-692]. NVIDIA's GB200 table footnotes its Tensor Core rows and lists NVFP4 as "1,440 | 720 PFLOPS"; the footnote's text did not appear on the page as read [R-690], so dense or sparse must be asked.
+3. **Sparsity.** With 2:4 structured sparsity, hardware skips two of every four weights and the peak doubles again, for models pruned to that pattern. AMD's MI355X page lists OCP-FP8 at 5 PFLOPs dense and 10.1 PFLOPs "with Structured Sparsity" [R-692]. NVIDIA's GB200 table footnotes its Tensor Core rows and lists NVFP4 as "1,440 | 720 PFLOPS"; the footnote's text did not appear on the page as read [R-690], so dense or sparse must be asked. Our reading **[Contested]**: if the lower NVFP4 figure, 720 PFLOPS, is dense, the 2× rule of item 2 puts dense FP8 near 360 PFLOPS, so the table's single FP8 figure of 720 PFLOPS must include sparsity. Dense FP8 is then about 5 PFLOP/s per GPU and 625 FLOP/byte (Example 27-07.1).
 
-The figure that matters for most AI work is the **machine balance**: peak compute over memory bandwidth, in FLOP per byte (23-01; the roofline's ridge point, 14-15). A kernel with lower arithmetic intensity than the balance is memory-bound. Example 27-07.1 shows that three rival accelerators, compared at dense FP8, sit at nearly the same balance, about 625 FLOP/byte, because they share HBM technology.
+The figure that matters for most AI work is the **machine balance**: peak compute over memory bandwidth, in FLOP per byte (23-01; the roofline's ridge point, 14-15). A kernel with lower arithmetic intensity than the balance is memory-bound. Example 27-07.1 shows that three rival accelerators, compared at dense FP8 (our reading of NVIDIA's figures), sit at nearly the same balance, about 625 FLOP/byte. HBM sets the bandwidth each can buy (23-05); how much compute to put against it is a design choice, and the three designers made almost the same one.
 
 ### 3.2 The power and heat budget
 
@@ -82,9 +82,9 @@ $$
 P_{\text{in}} = \frac{\sum_k n_k P_k + P_{\text{fans}}}{\eta_{\text{conv}}}
 $$
 
-with $n_k$ devices of kind $k$ drawing $P_k$ (W) each, fans and pumps $P_{\text{fans}}$, and the power shelf's efficiency $\eta_{\text{conv}}$. Accelerators dominate, but CPUs, memory, NICs, switches, regulators and conversion losses add a third or more (Example 27-07.2). The facility then multiplies by its **power usage effectiveness** (PUE), total facility power over IT power. Google reports a fleet PUE of 1.09; an industry survey average for 2025 was 1.54 [R-445]. The number that sizes a campus is the **all-in power per accelerator**, rack input times PUE divided by accelerator count. In Example 27-07.2 it is 1.40 times the chip's own rating at the rack input and 1.68 times at the facility meter.
+with $n_k$ devices of kind $k$ drawing $P_k$ (W) each, fans and pumps $P_{\text{fans}}$, and the power shelf's efficiency $\eta_{\text{conv}}$. Accelerators dominate, but CPUs, memory, NICs, switches, regulators and conversion losses add a third or more (Example 27-07.2). The facility then multiplies by its **power usage effectiveness** (PUE), total facility power over IT power. Google reports a fleet PUE of 1.09; an industry survey average for 2025 was 1.54 [R-445] **[Industry estimate]**. The number that sizes a campus is the **all-in power per accelerator**, rack input times PUE divided by accelerator count. In Example 27-07.2 it is 1.40 times the chip's own rating at the rack input and 1.68 times at the facility meter.
 
-How that power is delivered at 48–54 V or 800 V, and how the heat is carried away by about 90% liquid and 10% air, are the subjects of 22-10 and 25-08; the numbers here only need their results. One subtlety matters at system level: **provisioned** power differs from **average** power. NVIDIA's power-smoothing work lowers the provisioned power of a GB200 NVL72 rack from 125 kW to 90 kW, which it says fits 39% more racks in the same envelope [R-601]. Our check: 125/90 is 38.9% more. For a site with a fixed grid connection, provisioning, not average consumption, sets the rack count.
+How that power is delivered at 48–54 V or 800 V, and how the heat is carried away by about 90% liquid and 10% air, are the subjects of 22-10 and 25-08; the numbers here only need their results. One subtlety matters at system level: **provisioned** power differs from **average** power. NVIDIA says its MaxLPS feature lowers the provisioned power of a GB200 NVL72 rack from 125 kW to 90 kW, fitting 39% more racks in the same envelope "while preserving workload throughput" [R-601] **[Established as a vendor claim]**; the source does not describe the mechanism. Our check: 125/90 is 38.9% more. For a site with a fixed grid connection, provisioning, not average consumption, sets the rack count.
 
 > **Deeper:** see companion repo *Datacenter Networking* for fabric topologies, scale-up and scale-out networks, and how operators deploy and service them at cluster scale.
 
@@ -100,7 +100,7 @@ Training each token costs three such products per layer:
 - **Gradient for the input.** $\partial L/\partial\mathbf{x} = \mathbf{W}^{\mathsf T}\,\partial L/\partial\mathbf{y}$, which back-propagates the error: another 2 FLOPs per weight.
 - **Gradient for the weights.** $\partial L/\partial\mathbf{W} = (\partial L/\partial\mathbf{y})\,\mathbf{x}^{\mathsf T}$, accumulated over the tokens: another 2.
 
-So a model with $N$ parameters costs $6N$ FLOPs per training token, and a run over $D$ tokens costs
+So a dense model with $N$ parameters costs $6N$ FLOPs per training token (in a mixture-of-experts model only the $N_{\text{act}}$ parameters a token uses do this work, so use $6N_{\text{act}}$), and a run over $D$ tokens costs
 
 $$
 C_{\text{train}} \approx 6ND \quad \text{(FLOP)}.
@@ -114,7 +114,7 @@ $$
 t = \frac{6ND}{n\,F_{\text{peak}}\,u},
 $$
 
-where $u$ is the **model FLOPs utilization (MFU)**: the useful model FLOPs actually achieved, as a fraction of peak. MFU absorbs everything that is not useful math: memory stalls, communication not hidden behind compute, pipeline bubbles and load imbalance. Meta reports 38–43% BF16 MFU for Llama 3 405B, 400–430 TFLOP/s per H100 [R-694]. A 2× faster chip at half the MFU buys nothing, which is why MFU at scale is the first number to ask for.
+where $u$ is the **model FLOPs utilization (MFU)**: the useful model FLOPs actually achieved, as a fraction of peak. MFU absorbs everything that is not useful math: memory stalls, communication not hidden behind compute, pipeline bubbles and load imbalance. Meta reports 38–43% BF16 MFU for Llama 3 405B, 380–430 TFLOP/s per H100 [R-694]. A 2× faster chip at half the MFU buys nothing, which is why MFU at scale is the first number to ask for.
 
 **Energy.** The energy is power times time:
 
@@ -150,7 +150,7 @@ $$
 T_{\text{ring}} = 2(p-1)\left(\alpha + \frac{S}{pB}\right) = 2\,\frac{p-1}{p}\,\frac{S}{B} + 2(p-1)\,\alpha .
 $$
 
-The bandwidth term barely depends on $p$. Each device sends $2(p-1)/p \approx 2$ times its vector, whatever the ring's size: for $p = 72$ the factor is 1.97. It cannot be beaten by much: in the reduce-scatter, each device's final chunk needs contributions from the $p - 1$ others, $(p-1)S/p$ bytes in, and the all-gather must deliver the $p - 1$ chunks it lacks, another $(p-1)S/p$. Patarasuk and Yuan prove the bound in general (§13). The latency term, by contrast, grows linearly with $p$, which is why very large flat rings are slow even for small messages.
+The bandwidth term barely depends on $p$. Each device sends $2(p-1)/p \approx 2$ times its vector, whatever the ring's size: for $p = 72$ the factor is 1.97. It cannot be beaten by much. Intuitively, if each chunk is finished on one device, every device must send out the $(p-1)S/p$ bytes of its vector that belong to chunks finished elsewhere, since it cannot fold them into anything it keeps; and it must then receive the $p - 1$ finished chunks it lacks, another $(p-1)S/p$. (Counting what a device receives during the reduction is not enough: contributions can arrive already summed, so only $S/p$ need arrive.) Patarasuk and Yuan prove the bound in general (§13). The latency term, by contrast, grows linearly with $p$, which is why very large flat rings are slow even for small messages.
 
 **Hierarchical all-reduce.** Group the $p = p_1 p_2$ devices into $p_2$ scale-up domains of $p_1$ devices, with bandwidth $B_1$ inside a domain and $B_2$ per device across domains. Then:
 
@@ -170,7 +170,7 @@ The network term is divided by $p_1$. Every device's port carries only its own $
 
 ### 3.6 Reliability at scale and checkpointing
 
-**Why big jobs fail often.** Suppose each of $N$ components fails independently with a constant rate $\lambda = 1/m$, an exponential lifetime of mean $m$ (03-02). A synchronous job stops at the first failure.
+**Why big jobs fail often.** Suppose each of $N$ components fails independently with a constant rate $\lambda = 1/m$, an exponential lifetime of mean $m$ (03-02; this $m$ is unrelated to the micro-batch count of §3.4). A synchronous job stops at the first failure.
 
 > **Math refresher — the minimum of exponentials.** The probability that one component survives to time $t$ is $e^{-\lambda t}$. All $N$ survive with probability $(e^{-\lambda t})^N = e^{-N\lambda t}$, which is again exponential, with rate $N\lambda$. So the job's mean time between failures is
 >
@@ -192,7 +192,7 @@ $$
 \tau^{*} = \sqrt{2\delta M}, \qquad f(\tau^{*}) = \sqrt{\frac{2\delta}{M}} + \frac{R}{M}.
 $$
 
-At the optimum the two checkpoint terms are equal. The overhead grows only as the square root of the failure rate, but the restart term $R/M$ grows linearly: at large scale, restart time dominates. The **effective training time**, Meta's term for useful training time over elapsed time, is $1 - f$. Meta reports more than 90% for Llama 3, while sustaining at least one interruption a day from automated maintenance [R-694]. Example 27-07.5 shows what that requires: saves of under a minute and restarts of about ten minutes.
+At the optimum the two checkpoint terms are equal. The overhead grows only as the square root of the failure rate, but the restart term $R/M$ grows linearly: at large scale, restart time dominates. The **effective training time**, Meta's term for useful training time over elapsed time, is $1 - f$. Meta reports more than 90% for Llama 3, while sustaining at least one interruption a day from automated maintenance [R-694]. Example 27-07.5 shows what that requires: saves of about ten seconds and restarts under ten minutes.
 
 > **Going deeper — beyond first order.** Daly's higher-order estimate (§13) corrects $\tau^*$ when $\delta$ is not small compared with $M$. Production systems also checkpoint asynchronously (copying state to host memory and writing it out in the background), keep redundant in-memory copies on peer nodes, and swap in spare nodes, all to shrink $\delta$ and $R$ rather than tune $\tau$.
 
@@ -200,7 +200,7 @@ Two more scale effects belong in the reliability budget. Meta saw a 1–2% day-n
 
 ### 3.7 Serving a model from a rack
 
-In decoding, each step produces one token for each of the $B$ sequences in a batch (14-14, 23-01). The step must read the weights once, $W$ bytes shared by the whole batch, and every sequence's KV cache, $K$ bytes each. It must also compute $2N_{\text{act}}$ FLOPs per token, where $N_{\text{act}}$ is the number of parameters a token actually uses: all of them in a dense model, the routed experts in an MoE model. With aggregate memory bandwidth $B_{\text{mem}}$, achieved fraction $\eta$ and peak compute $F$,
+In decoding, each step produces one token for each of the $B$ sequences in a batch (14-14, 23-01); here $B$ is the batch size, not a link bandwidth as in §3.5. The step must read the weights once, $W$ bytes shared by the whole batch, and every sequence's KV cache, $K$ bytes each. It must also compute $2N_{\text{act}}$ FLOPs per token, where $N_{\text{act}}$ is the number of parameters a token actually uses: all of them in a dense model, the routed experts in an MoE model. With aggregate memory bandwidth $B_{\text{mem}}$, achieved fraction $\eta$ and peak compute $F$,
 
 $$
 t_{\text{step}} = \max\!\left(\frac{W + BK}{\eta B_{\text{mem}}},\; \frac{2N_{\text{act}}B}{F}\right).
@@ -212,7 +212,7 @@ For large models the memory term usually wins by a wide margin. From the step ti
 - **Per-user speed** $1/t_{\text{step}}$, tokens per second for each sequence (its "interactivity").
 - **Energy per token** $P_{\text{rack}}/\Theta$.
 
-As $B$ grows, the weight reads are amortized and $\Theta$ climbs toward the ceiling $\eta B_{\text{mem}}/K$ set by the KV cache. Meanwhile each step lengthens, so every user's speed falls. Memory capacity $C$ caps the batch at $B_{\max} = \lfloor (C - W)/K \rfloor$. The resulting curve of throughput against per-user speed is the **throughput–interactivity frontier**. In the memory-bound region it is a straight line. Writing $s = 1/t_{\text{step}}$ for the per-user speed, the step-time equation gives $B = (\eta B_{\text{mem}}/s - W)/K$, so
+As $B$ grows, the weight reads are amortized and $\Theta$ climbs toward the ceiling $\eta B_{\text{mem}}/K$ set by the KV cache. Meanwhile each step lengthens, so every user's speed falls. Memory capacity $C$ (not the training compute $C_{\text{train}}$ of §3.3) caps the batch at $B_{\max} = \lfloor (C - W)/K \rfloor$. The resulting curve of throughput against per-user speed is the **throughput–interactivity frontier**. In the memory-bound region it is a straight line. Writing $s = 1/t_{\text{step}}$ for the per-user speed, the step-time equation gives $B = (\eta B_{\text{mem}}/s - W)/K$, so
 
 $$
 \Theta = Bs = \frac{\eta B_{\text{mem}}}{K} - \frac{W}{K}\,s .
@@ -223,13 +223,13 @@ Each token per second of per-user speed costs $W/K$ tokens per second of rack th
 - **MoE weights.** For an MoE model at large batch, nearly every expert is touched in each step, so $W$ is close to the full weight size even though each token uses only a few experts.
 - **What it ignores.** Communication between the devices that share the model is left out. The rack's NVLink domain keeps it small, but not zero.
 
-**Cost per token.** A rack's annual cost is its capital $K_{\text{cap}}$ spread over its life $L$ years, plus energy:
+**Cost per token.** A rack's annual cost is its capital $K_{\text{cap}}$ (not the KV-cache size $K$) spread over its life $L$ years, plus energy:
 
 $$
-\text{cost per } 10^6 \text{ tokens} = \frac{K_{\text{cap}}/L + P_{\text{rack}}\,\text{PUE}\cdot 8760\ \text{h}\cdot c_e}{\Theta\,U\cdot 3.15\times 10^{7}\ \text{s}/10^6},
+\text{cost per } 10^6 \text{ tokens} = \frac{K_{\text{cap}}/L + P_{\text{rack}}\,\text{PUE}\cdot 8760\ \text{h}\cdot c_e}{\Theta\,U\cdot 3.1536\times 10^{7}\ \text{s}/10^6},
 $$
 
-with electricity price $c_e$ per kWh and utilization $U$. With realistic assumptions the capital term is several times the energy term (Example 27-07.6), so the levers that matter most are utilization and batch, then power. This is the total-cost-of-ownership logic of 26-04 applied to tokens.
+with electricity price $c_e$ per kWh, utilization $U$, and a year of 8760 h, or 3.1536 × 10⁷ s, in both terms. With realistic assumptions the capital term is several times the energy term (Example 27-07.6), so the levers that matter most are utilization and batch, then power. This is the total-cost-of-ownership logic of 26-04 applied to tokens.
 
 ## 4. Worked examples
 
@@ -240,7 +240,7 @@ All parameters below are illustrative assumptions unless a source is cited; §7 
 **Setup.** NVIDIA's GB200 NVL72 table lists, for the whole rack, 72 GPUs, 13.4 TB of HBM3E at 576 TB/s, 130 TB/s of NVLink bandwidth and 720 PFLOPS at FP8 [R-690]. Find per GPU:
 
 - (a) the HBM capacity, (b) its bandwidth, (c) the NVLink bandwidth and (d) the FP8 rate;
-- (e) the machine balance at the listed FP8 rate, and at half of it (in case the listed figure includes 2:4 sparsity). Compare with the dense FP8 balance of MI355X (5 PFLOP/s, 8 TB/s) [R-692] and of Ironwood (4,614 TFLOP/s FP8, 7.37 TB/s) [R-693];
+- (e) the machine balance at the listed FP8 rate, and at half of it, the dense rate our reading in §3.1 implies **[Contested]**. Compare with the dense FP8 balance of MI355X (5 PFLOP/s, 8 TB/s) [R-692] and of Ironwood (4,614 TFLOP/s FP8, 7.37 TB/s) [R-693];
 - (f) the bandwidth ratios from HBM to NVLink (0.9 TB/s per direction) and from NVLink to an 800 Gb/s (0.1 TB/s) network port per GPU (assumed), and from HBM to network.
 
 **Solution.**
@@ -251,7 +251,7 @@ All parameters below are illustrative assumptions unless a source is cited; §7 
 
 **Units check.** TB ÷ devices = TB per device; FLOP/s ÷ (bytes/s) = FLOP/byte. ✓
 
-**Sanity check.** Compared at dense FP8, three designs from three companies land within 0.2% of the same balance. HBM technology sets the bandwidth available per FLOP for everyone (23-05), and the designs differ in how much silicon they spend on each. The factor-of-two ambiguity in (e) is the difference between memory-bound and compute-bound for a kernel at 1000 FLOP/byte, so "dense or sparse?" is not a pedantic question. Each step down the ladder in (f) costs about a factor of nine, which is why §3.4 places parallelism by communication frequency.
+**Sanity check.** Compared at dense FP8, with NVIDIA's figure halved as §3.1 reads it, three designs from three companies land within 0.2% of the same balance. HBM technology sets the bandwidth available per chip (23-05); the compute put against it is each designer's choice, and here the three chose almost alike. The factor-of-two ambiguity in (e) is the difference between memory-bound and compute-bound for a kernel at 1000 FLOP/byte, so "dense or sparse?" is not a pedantic question. Each step down the ladder in (f) costs about a factor of nine, which is why §3.4 places parallelism by communication frequency.
 
 ### Example 27-07.2 · A rack's power budget (tier B)
 
@@ -336,18 +336,18 @@ Find (a) the busbar load and the input power, (b) the GPU share of input power a
 **Solution.**
 
 - (a) $54 \times 24\ \text{h}/419$ = **3.09** h = **11135** s.
-- (b) $16\,384 \times 3.093$ h = **5.07 × 10⁴** h = **5.78** years; $10^9/50\,677$ = **1.97 × 10⁴** FIT.
+- (b) $16\,384 \times 3.093$ h = **5.07 × 10⁴** h = **5.79** years (8760 h each); $10^9/50\,677$ = **1.97 × 10⁴** FIT.
 - (c) $\tau^* = \sqrt{2 \times 60 \times 11\,135}$ = **1156** s = **19.3** min.
 - (d) $\delta/\tau^* = 60/1156$ = **5.19**%, equal to $\tau^*/(2M)$, together **10.4**%. Restarts add $600/11\,135$ = **5.39**%, a total of **15.8**% and an effective training time of **84.2**%.
 - (e) $\sqrt{2\delta/M} \le 0.10$ gives $\delta \le 0.01\,M/2$ = **55.7** s. With δ = 10 s the checkpoint overhead is $\sqrt{20/11\,135}$ = **4.24**%, leaving $(0.10 - 0.0424) \times 11\,135$ = **642** s = **10.7** min for restarts.
 
 **Units check.** h × GPUs = GPU-hours per failure; √(s × s) = s. ✓
 
-**Sanity check.** An MTBF of five to six years per GPU's share of the system is respectable, yet 16,384 of them stop the job every three hours. Meta's more than 90% is only reachable with saves of well under a minute and restarts of about ten minutes, which is why fast asynchronous checkpointing and automated recovery are as much a part of a training system as the accelerators.
+**Sanity check.** An MTBF of five to six years per GPU's share of the system is respectable, yet 16,384 of them stop the job every three hours. By (e), Meta's more than 90% needs saves of about ten seconds with restarts under ten minutes (a 55.7 s save leaves no room for restarts at all), which is why fast asynchronous checkpointing and automated recovery are as much a part of a training system as the accelerators.
 
 ### Example 27-07.6 · Serving a large model from one rack (tier C)
 
-**Setup.** An MoE model has 1.0 × 10¹² parameters, 4.0 × 10¹⁰ active per token, stored at 4 bits (0.5 byte per parameter), and a KV cache of 0.8 GB per sequence (all assumed). It runs on one NVL72-class rack with 576 TB/s and 13.4 TB of HBM and 720 PFLOP/s at FP4 (the lower of the listed NVFP4 figures) [R-690]. Assume the rack achieves 50% of peak bandwidth and draws 130 kW, within the vendors' range [R-098]. Find:
+**Setup.** An MoE model has 1.0 × 10¹² parameters, 4.0 × 10¹⁰ active per token, stored at 4 bits (0.5 byte per parameter), and a KV cache of 0.8 GB per sequence (all assumed). It runs on one NVL72-class rack with 576 TB/s and 13.4 TB of HBM and 720 PFLOP/s at FP4 (the lower of the listed NVFP4 figures, read as dense [R-690] **[Contested]**). Assume the rack achieves 50% of peak bandwidth and draws 130 kW, within the vendors' range [R-098]. Find:
 
 - (a) the weight bytes, and the time to read them at the achieved and at the peak bandwidth;
 - (b) at B = 256: the memory and compute times per step, and their ratio;
@@ -361,7 +361,7 @@ Find (a) the busbar load and the input power, (b) the GPU share of input power a
 - (b) $t_{\text{mem}} = (0.5 + 256 \times 0.0008)\ \text{TB}/288\ \text{TB/s}$ = **2.45** ms; $t_{\text{cmp}} = 2 \times 4 \times 10^{10} \times 256/7.2 \times 10^{17}$ = **0.0284** ms; memory-bound by a factor of **86**.
 - (c) $\Theta = 256/2.447\ \text{ms}$ = **1.05 × 10⁵** tokens/s; per user $1/2.447\ \text{ms}$ = **409** tokens/s; $130\ \text{kW}/1.046 \times 10^5$ = **1.24** J per token.
 - (d) $B_{\max} = \lfloor (13.4 - 0.5)\ \text{TB}/0.8\ \text{GB} \rfloor$ = **16125**. Then $t = (0.5 + 12.9)/288$ s = **46.5** ms, $\Theta$ = **3.47 × 10⁵** tokens/s and **21.5** tokens/s per user. The ceiling is $\eta B_{\text{mem}}/K = 288 \times 10^{12}/0.8 \times 10^9$ = **3.60 × 10⁵** tokens/s. Against (c), throughput rises **3.31** times while per-user speed falls **19.0** times.
-- (e) Capital $3.0\ \text{M}/4$ = **750000** dollars a year; energy $130 \times 1.2 \times 8760 \times 0.08$ = **109325** dollars a year; tokens $1.046 \times 10^5 \times 0.6 \times 3.15 \times 10^7$ = **1.98 × 10¹²** a year. Cost $859\,325/1.98 \times 10^6$ = **0.434** dollars per million tokens, of which energy is **12.7**%.
+- (e) Capital $3.0\ \text{M}/4$ = **750000** dollars a year; energy $130 \times 1.2 \times 8760 \times 0.08$ = **109325** dollars a year; tokens $1.046 \times 10^5 \times 0.6 \times 3.1536 \times 10^7$ = **1.98 × 10¹²** a year. Cost $859\,325/1.98 \times 10^6$ = **0.434** dollars per million tokens, of which energy is **12.7**%.
 
 **Units check.** bytes ÷ (bytes/s) = s; W ÷ (tokens/s) = J/token; dollars ÷ (millions of tokens) = dollars per million tokens. ✓
 
@@ -413,7 +413,7 @@ Find (a) the busbar load and the input power, (b) the GPU share of input power a
 | Ex 27-07.5a | mean time between interruptions | 3.09 | h |
 | Ex 27-07.5a1 | mean time between interruptions | 11135 | s |
 | Ex 27-07.5b | MTBF per GPU-equivalent | 5.07e4 | h |
-| Ex 27-07.5b1 | MTBF per GPU-equivalent | 5.78 | years |
+| Ex 27-07.5b1 | MTBF per GPU-equivalent | 5.79 | years |
 | Ex 27-07.5b2 | failure rate per GPU-equivalent | 1.97e4 | FIT |
 | Ex 27-07.5c | Young's interval | 1156 | s |
 | Ex 27-07.5c1 | Young's interval | 19.3 | min |
@@ -462,6 +462,8 @@ Find (a) the busbar load and the input power, (b) the GPU share of input power a
 | Txt 27-07.13 | MI355X Infinity Fabric links | 7 | links |
 | Txt 27-07.14 | MI355X Infinity Fabric link bandwidth | 144 | GB/s |
 | Txt 27-07.15 | weights over KV cache, frontier slope | 625 | — |
+| Txt 27-07.16 | Ironwood pod over El Capitan's 1.809 | 23.5 | — |
+| Txt 27-07.17 | Ironwood pod over LineShine's 2.198 | 19.3 | — |
 
 ## 5. Simulate it
 
@@ -472,9 +474,9 @@ The lab is [labs/27-07-lab/](../labs/27-07-lab/README.md). `rackmodel.py` implem
 3. *Predict* the throughput and per-user speed of Example 27-07.6 at B = 1024. Then plot the throughput–interactivity frontier.
 4. *Predict* the cost per million tokens of Example 27-07.6 if electricity doubles to $0.16/kWh. Then plot cost against utilization.
 
-![Left: per-user decode speed against rack throughput as the batch grows, a falling straight line that ends at the memory-capacity limit just short of the KV-cache throughput ceiling, with B = 256, B = 6575 and the limit marked; right: effective training time against checkpoint interval for 10 s and 60 s saves, each peaking at Young's interval](../../../assets/figures/27-07/inference-goodput.svg)
+![Left: per-user decode speed against rack throughput as the batch grows, a falling straight line that ends at the memory-capacity limit just short of the KV-cache throughput ceiling, with B = 256, B = 6575 (the batch that keeps every user at 50 tokens/s, derived in Problem 27-07.11) and the limit marked; right: effective training time against checkpoint interval for 10 s and 60 s saves, each peaking at Young's interval](../../../assets/figures/27-07/inference-goodput.svg)
 
-*Figure 1. The throughput–interactivity frontier of Example 27-07.6's rack, and effective training time against checkpoint interval for Example 27-07.5's interruption rate with a 10-minute restart (assumed parameters).*
+*Figure 1. The throughput–interactivity frontier of Example 27-07.6's rack, and effective training time against checkpoint interval for Example 27-07.5's interruption rate with a 10-minute restart (assumed parameters). The B = 6575 marker is Problem 27-07.11's answer; try that problem before reading it off the figure.*
 
 ## 6. Engineering tradeoffs
 
@@ -522,9 +524,9 @@ The lab is [labs/27-07-lab/](../labs/27-07-lab/README.md). `rackmodel.py` implem
 
 **State of play (as of Nov 2026).**
 
-- **The rack is the product.** NVIDIA ships GB200 and GB300 NVL72 racks of 72 GPUs and 36 CPUs in one NVLink domain, fully liquid-cooled in the GB300 case [R-690]. Its next generation is described as entirely liquid-cooled with 45 °C coolant [R-601]. Google offers Ironwood in pods of 256 or 9,216 chips joined by ICI [R-693]. AMD's MI355X is an OAM module with 288 GB of HBM3E at 1400 W [R-692]. NVL72-class racks draw 120–142 kW [R-098], [R-600], and NVIDIA plans 800 V DC for 1 MW racks from 2027 [R-691].
-- **Power is the site-level constraint.** With a fixed grid connection, the metric is useful work per megawatt, which is why power smoothing and lower provisioned power (125 kW to 90 kW per rack in NVIDIA's account) translate directly into more racks [R-601]. Synchronized training can swing site load by tens of megawatts [R-694]. The IEA's base case has data-centre electricity roughly doubling between 2024 and 2030 [R-099] **[Industry estimate]**.
-- **Reliability is a design target.** Meta's Llama 3 report is a rare public account of failures at scale: an unexpected interruption every 3.09 hours on 16K GPUs, about 78% hardware-related, with GPUs and HBM the largest share, and more than 90% effective training time through automation [R-694]. Its root-cause table does not add up, which is itself a useful reminder to foot every table (Problem 27-07.7).
+- **The rack is the product.** NVIDIA ships GB200 and GB300 NVL72 racks of 72 GPUs and 36 CPUs in one NVLink domain, fully liquid-cooled in the GB300 case [R-690]. Its next generation is described as entirely liquid-cooled with 45 °C coolant [R-601]. Google offers Ironwood in pods of 256 or 9,216 chips joined by ICI [R-693]. AMD's MI355X is an OAM module with 288 GB of HBM3E at 1400 W [R-692]. NVL72-class racks draw 120–142 kW [R-098], [R-600] (R-098 is a search-excerpt reading), and NVIDIA plans 800 V DC for 1 MW racks from 2027 [R-691]. All are vendor specifications and plans **[Established as manufacturer claims]**.
+- **Power is the site-level constraint.** With a fixed grid connection, the metric is useful work per megawatt, which is why lower provisioned power (125 kW to 90 kW per rack with NVIDIA's MaxLPS, a vendor claim) translates directly into more racks [R-601]. Synchronized training can swing site load by tens of megawatts [R-694]. The IEA's base case has data-centre electricity roughly doubling between 2024 and 2030 [R-099] **[Industry estimate; read from search excerpts]**.
+- **Reliability is a design target.** Meta's Llama 3 report is a rare public account of failures at scale: an unexpected interruption every 3.09 hours on 16K GPUs, about 78% hardware-related, with GPUs and HBM the largest share, and more than 90% effective training time through automation [R-694] **[Established as Meta's reported figures]**. Its root-cause table does not add up, which is itself a useful reminder to foot every table (Problem 27-07.7).
 
 **Commercial relevance.** Value in AI infrastructure has spread from the accelerator die to the system around it:
 
@@ -541,8 +543,8 @@ Customers buy tokens per megawatt and dollars per token, not FLOPS. That shifts 
 
 - *"130 TB/s of NVLink bandwidth"* [R-690]. The sum over 72 GPUs and both directions; one GPU sends at 0.9 TB/s (Example 27-07.1).
 - *"1,440 PFLOPS"* of NVFP4 [R-690]. The higher of two listed FP4 figures, with a footnote whose text the page as read did not show. Compare dense figures at the same precision. AMD lists dense and sparse separately, a factor of two apart [R-692].
-- *"More than 24x the compute power of the world's largest supercomputer"* [R-693]. 9,216 × 4,614 TFLOP/s is 42.5 EFLOP/s of FP8 peak, and 42.5/1.7 = 25. But El Capitan's figure is HPL, a double-precision measured benchmark (R-038). Against El Capitan's mixed-precision HPL-MxP result of 16.680 EFLOP/s [R-055] the ratio is 2.55, and that still sets a peak against a measurement **[Contested]**.
-- *"30x faster real-time LLM inference vs H100"* [R-690]. Measured at one operating point: 50 ms between output tokens, 5 s to the first token, 32,768 input and 1,024 output tokens, against H100 servers "scaled over InfiniBand". That is where a 72-GPU NVLink domain helps most. Ask for the whole throughput–interactivity curve.
+- *"More than 24x the compute power of the world's largest supercomputer"* [R-693]. Google's claim of April 2025: 9,216 × 4,614 TFLOP/s is 42.5 EFLOP/s of FP8 peak, and 42.5/1.7 = 25 against El Capitan as Google quoted it. As of Nov 2026 El Capitan is No. 2 at 1.809 EFLOP/s and LineShine No. 1 at 2.198 EFLOP/s [R-038], so the same arithmetic gives 23.5 and 19.3. Either way the denominator is HPL, a double-precision measured benchmark [R-038]. Against El Capitan's mixed-precision HPL-MxP result of 16.680 EFLOP/s [R-055] the ratio is 2.55, and that still sets a peak against a measurement **[Contested]**.
+- *"LLM Inference 30x vs. NVIDIA H100 GPU"* [R-690]. Measured at one operating point: 50 ms between output tokens, 5 s to the first token, 32,768 input and 1,024 output tokens, against H100 servers "scaled over InfiniBand". That is where a 72-GPU NVLink domain helps most. Ask for the whole throughput–interactivity curve.
 - *"1400W typical board power"* [R-692] versus a "TDP" [R-694]. Vendors define power differently (25-08); compare all-in rack and facility power per accelerator.
 - *"Higher than 90% effective training time"* [R-694]. Defined as useful training time over elapsed time. Ask how rework after a restart is counted.
 
@@ -593,7 +595,7 @@ Customers buy tokens per megawatt and dollars per token, not FLOPS. That shifts 
 
    <details><summary>Answer</summary>
 
-   It balances save overhead $\delta/\tau$, falling as $1/\tau$, against rework $\tau/(2M)$, rising as $\tau$. The two are equal at $\tau^* = \sqrt{2\delta M}$, a geometric mean of the save time and the failure interval.
+   It balances save overhead $\delta/\tau$, falling as $1/\tau$, against rework $\tau/(2M)$, rising as $\tau$. The two are equal at $\tau^* = \sqrt{2\delta M}$, the geometric mean of $2\delta$ and $M$.
 
    </details>
 

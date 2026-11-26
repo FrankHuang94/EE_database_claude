@@ -40,7 +40,7 @@ NPU: $5 \times 10^{13}/(20 \times 10^{12})$ = **2.50** s; energy $5 \times 10^{1
 
 ### Solution 27-05.8
 
-Monolithic: **143** dies per wafer, yield $e^{-0.40}$ = **0.670**, cost **$193.00**. Tiles: 200 mm² gives **306** dies per wafer at yield 0.819, **$73.84** each; package $(2 \times 73.84 + 10)/0.97$ = **$162.56**. Ratio **0.842**: on the same node, splitting a large die still saves 16% because yield falls exponentially with area.
+Monolithic: **143** dies per wafer, yield $e^{-0.40}$ = **0.670**, cost **$193.00**. Tiles: 200 mm² gives **306** dies per wafer at yield 0.819, **$73.84** each; package $(2 \times 73.84 + 10)/0.97$ = **$162.56**. Ratio **0.842**: on the same node and with no interface area, splitting a large die still saves 16% because yield falls exponentially with area.
 
 ### Solution 27-05.9
 
@@ -58,7 +58,19 @@ $B = 1\ \text{W}/(8 \times 2 \times 10^{-12})$ = **62.5** GB/s of sustained traf
 
 ### Solution 27-05.12
 
-Turbo runs 13.83 s at speed $(64/28)^{1/3} = 1.317$, completing $13.83 \times 1.317$ = **18.2** s of sustained-equivalent work. The remaining 41.8 s run at 28 W: total **55.6** s, **7.3**% faster. Turbo transforms short tasks and barely moves long ones.
+Turbo runs 13.83 s at speed $(64/28)^{1/3} = 1.317$, completing $13.83 \times 1.317$ = **18.2** s of sustained-equivalent work. The remaining 41.8 s run at 28 W: total **55.6** s, **7.3**% less time (a speed gain of **7.9**%). Turbo transforms short tasks and barely moves long ones.
+
+### Solution 27-05.13
+
+(a) With $P = P_2$ constant, $\tau\,dy/dt = P_2 - y$. Separating, $dy/(P_2 - y) = dt/\tau$. Integrating from $P_0$ at $t = 0$ to $y$ at $t$: $-\ln[(P_2 - y)/(P_2 - P_0)] = t/\tau$, so
+
+$$
+y(t) = P_2 - (P_2 - P_0)\,e^{-t/\tau}.
+$$
+
+(b) Turbo ends when $y = P_1$: $P_2 - P_1 = (P_2 - P_0)e^{-t_{turbo}/\tau}$. Taking logarithms, $t_{turbo} = \tau\ln[(P_2 - P_0)/(P_2 - P_1)]$.
+
+(c) Write the argument as $1 + x$ with $x = (P_1 - P_0)/(P_2 - P_1)$. For small $x$, $\ln(1 + x) \approx x$ (Taylor series), so $t_{turbo} \approx \tau(P_1 - P_0)/(P_2 - P_1)$: the headroom $P_1 - P_0$ is spent at the rate $P_2 - P_1$, scaled by $\tau$. Here $x = 3/36$. Exact: $28\ln(39/36)$ = **2.24** s. Approximate: $28 \times 3/36$ = **2.33** s, **4.1**% too long, because $\ln(1 + x) < x$.
 
 ---
 
@@ -105,6 +117,10 @@ Turbo runs 13.83 s at speed $(64/28)^{1/3} = 1.317$, completing $13.83 \times 1.
 | 27-05.11d | equation coefficient | 0.704 | W |
 | 27-05.12a | turbo work done | 18.2 | s |
 | 27-05.12b | total time | 55.6 | s |
-| 27-05.12c | speedup | 7.3 | % |
+| 27-05.12c | time saved | 7.3 | % |
+| 27-05.12f | speed gain | 7.9 | % |
+| 27-05.13a | exact turbo duration | 2.24 | s |
+| 27-05.13b | linearized duration | 2.33 | s |
+| 27-05.13c | linearization error | 4.1 | % |
 | 27-05.12d | turbo speed factor | 1.317 | — |
 | 27-05.12e | remaining time | 41.8 | s |

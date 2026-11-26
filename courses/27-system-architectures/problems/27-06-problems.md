@@ -56,7 +56,23 @@ Chapter: [27-06](../chapters/27-06-automotive-ee-architecture.md) · Worked solu
 
 ### Problem 27-06.12 [C]
 
-**CAN FD.** Approximate a CAN FD frame with 64 data bytes as 30 bits at the 500 kb/s arbitration rate plus $8 \times 64 + 30$ bits at a 2 Mb/s data rate, ignoring stuffing. Find its time and compare with sending the same 64 bytes as eight worst-case classic 8-byte frames at 500 kb/s.
+**CAN FD.** Approximate a CAN FD frame with 64 data bytes as 30 bits at the 500 kb/s arbitration rate plus $8 \times 64 + 30$ bits at a 2 Mb/s data rate, ignoring stuffing. Find its time and compare with sending the same 64 bytes as eight classic 8-byte frames at 500 kb/s, first with worst-case stuffing and then without stuffing, so that both sides are treated alike.
+
+### Problem 27-06.13 [B]
+
+**Deriving the stuffing bound.** A transmitter inserts one opposite bit after every five identical bits, and the stuff bit counts toward the next run.
+
+- (a) Show that in the worst case the first stuff bit follows the fifth original bit and each later one follows four more, so the $k$-th stuff bit follows original bit $4k + 1$. Hence show that a stuffed region of $N$ bits gains at most $\lfloor (N - 1)/4 \rfloor$ stuff bits.
+- (b) Use the bound to find the worst-case stuff bits of 0-, 4- and 8-byte classic frames (stuffed region $34 + 8n$ bits).
+- (c) What share of an 8-byte frame's stuffed region, and of its 135-bit worst-case frame, do the stuff bits make up?
+
+### Problem 27-06.14 [B]
+
+**A response time by hand.** For Example 27-06.1's bus at 250 kb/s:
+
+- (a) find $\tau_{bit}$ and the worst-case 8-, 4- and 2-byte frame times;
+- (b) iterate the lowest-priority message's queuing time by hand from $w = 0$, showing every pass, and find its response time;
+- (c) find the level-$i$ busy period, by iterating $t = \sum_{j \le i} \lceil t/T_j \rceil C_j$ from $t = C_i$, and say why it shows the single-instance analysis is valid here.
 
 ---
 
@@ -65,7 +81,7 @@ Chapter: [27-06](../chapters/27-06-automotive-ee-architecture.md) · Worked solu
 | Objective | Problems |
 |---|---|
 | 1. Architectures and zonal wiring | 11 |
-| 2. CAN frames, load, response; choosing links | 1, 2, 3, 4, 12 |
+| 2. CAN frames, load, response; choosing links | 1, 2, 3, 4, 12, 13, 14 |
 | 3. Sensor bandwidth, compute and range | 5, 6, 7 |
 | 4. Latency, stopping distance and safety budgets | 8, 9 |
 | 5. Software-defined vehicles and updates | 10 |

@@ -21,7 +21,7 @@
 
 ## 1. Big picture
 
-A modern car carries dozens of electronic control units, kilometres of wiring, a handful of networks and, increasingly, a central computer that rivals a datacenter accelerator card in AI throughput. Its electronics must survive fifteen years of heat, cold and vibration, meet functional-safety standards for anything that can steer or brake, and accept software updates over the air. Driver-assistance computers are rated in tens to hundreds of TOPS: Mobileye's EyeQ 6 High is 34 int8 TOPS, and its highest system tier uses four or more of them [R-688].
+A modern car carries dozens of electronic control units, kilometres of wiring, a handful of networks and, increasingly, a central computer rated at hundreds of int8 TOPS (NVIDIA quotes up to 1,000 for DRIVE AGX Thor [R-700]), still a fraction of one datacenter accelerator (27-07). Its electronics must survive fifteen years of heat, cold and vibration, meet functional-safety standards for anything that can steer or brake, and accept software updates over the air. Driver-assistance computers are rated in tens to hundreds of TOPS: Mobileye's EyeQ 6 High is 34 int8 TOPS, and its highest system tier is quoted as "> 4x" of them [R-688].
 
 - **Why it exists:** features (driver assistance, infotainment, electrification) arrived one control unit at a time; the resulting complexity, wiring weight and software fragmentation now push the industry to consolidate into a few powerful computers.
 - **Where it shows up:** every new vehicle; most visibly in electric vehicles and in driver-assistance and automated-driving systems.
@@ -84,12 +84,12 @@ $$
 **Bus load and response time.** A set of periodic messages $i$ with frame times $C_i$ and periods $T_i$ loads the bus to $U = \sum C_i/T_i$. Because the bus is a fixed-priority non-preemptive scheduler, a message's worst-case response time (18-07's response-time analysis) is
 
 $$
-R_i = B_i + C_i + \sum_{j \in hp(i)} \left\lceil \frac{w_i + \tau_{bit}}{T_j} \right\rceil C_j ,
+w_i = B_i + \sum_{j \in hp(i)} \left\lceil \frac{w_i + \tau_{bit}}{T_j} \right\rceil C_j , \qquad R_i = w_i + C_i .
 $$
 
-solved by iterating on the queuing time $w_i$ (the bracketed sum is evaluated with the current $w_i$, starting from $w_i = B_i$). Here $B_i$ is the longest lower-priority frame, which may have just started (non-preemption), and $hp(i)$ are the higher-priority messages. As $U$ approaches 1, the response times of low-priority messages grow far faster than $U$ (Example 27-06.1), which is why designers keep CAN loads well below saturation.
+The **queuing time** $w_i$ runs from the worst-case release until message $i$ wins arbitration; it is found by iteration, starting from $w_i = B_i$ and evaluating the right side with the current $w_i$ until it stops changing. Here $B_i$ is the longest lower-priority frame, which may have just started (non-preemption); $hp(i)$ are the higher-priority messages; and $\tau_{bit}$ is one bit time (the reciprocal of the bit rate), the margin that counts a higher-priority message released just as message $i$'s arbitration begins, which still beats it. This single-instance form is exact when the **level-$i$ busy period** (the longest stretch the bus stays busy with message $i$ and higher-priority traffic) is no longer than $T_i$ and messages have no release jitter; otherwise later instances of message $i$ must be checked too (Davis et al., §13). In Example 27-06.1 the busy period at 125 kb/s is 39.9 ms, well inside the 100 ms period. As $U$ approaches 1, the response times of low-priority messages grow far faster than $U$ (Example 27-06.1), which is why designers keep CAN loads well below saturation.
 
-**Beyond classic CAN.** **CAN FD** keeps arbitration at the classic rate but switches to a faster data phase and allows up to 64 data bytes; **CAN XL** goes further in both. **Automotive Ethernet** carries the backbone and higher-rate data over single twisted pairs: 10BASE-T1S (a multidrop bus that can replace CAN in zones), 100BASE-T1 and 1000BASE-T1, and multi-gigabit links. Cameras need still more and usually use point-to-point **SerDes** links (24-03) that carry raw video in one direction and control in the other. CAN XL reaches 20 Mb/s and beyond with data fields of up to 2048 bytes; 10BASE-T1S was standardized in IEEE 802.3cg-2019 and multi-gigabit automotive Ethernet in 802.3ch-2020 [R-689].
+**Beyond classic CAN.** **CAN FD** keeps arbitration at the classic rate but switches to a faster data phase and allows up to 64 data bytes; **CAN XL** goes further in both. **Automotive Ethernet** carries the backbone and higher-rate data over single twisted pairs: 10BASE-T1S (a multidrop bus that can replace CAN in zones), 100BASE-T1 and 1000BASE-T1, and multi-gigabit links. Cameras need still more and usually use point-to-point **SerDes** links (24-03) that carry raw video in one direction and control in the other. CAN XL reaches 20 Mb/s and beyond with data fields of up to 2048 bytes; 10BASE-T1S was standardized in IEEE 802.3cg-2019 multi-gigabit automotive Ethernet in 802.3ch-2020 [R-689], and 25 Gb/s automotive Ethernet in 802.3cy-2023 [R-700].
 
 ### 3.3 Sensor bandwidth
 
@@ -137,7 +137,7 @@ $$
 \lambda_{res} = \lambda\,(1 - DC).
 $$
 
-Budgets are shared among an item's parts, so a large SoC needs high coverage to fit its share (Example 27-06.6). Systems that must keep working after a fault (higher automation levels, where the driver is not an immediate fallback) need **fail-operational** designs: redundant compute and power paths, with independent failure modes, not just detection. A central computer that consolidates many functions inherits the strictest of their ASILs unless it isolates them (mixed-criticality partitioning in hardware and software).
+Two refinements matter in practice. The formula applies to the safety-related part of $\lambda$ and counts single-point and residual faults, the ones that violate the safety goal at once; **latent faults**, which stay hidden until a second fault, are measured by a separate latent-fault metric. And the hardware targets (26-07) exist for ASIL B to D; the sources used here give none for ASIL A [R-614]. Budgets are shared among an item's parts, so a large SoC needs high coverage to fit its share (Example 27-06.6). Systems that must keep working after a fault (higher automation levels, where the driver is not an immediate fallback) need **fail-operational** designs: redundant compute and power paths, with independent failure modes, not just detection. A central computer that consolidates many functions inherits the strictest of their ASILs unless it isolates them (mixed-criticality partitioning in hardware and software).
 
 ### 3.7 Software-defined vehicles and updates
 
@@ -154,12 +154,20 @@ All parameters below are illustrative assumptions of realistic size unless a sou
 **Solution.**
 
 - (a) $34 + 64 + 13 + \lfloor 97/4 \rfloor = 111 + 24$ = **135** bits, **270** µs at 500 kb/s. Payload efficiency $64/135$ = **47.4**%.
-- (b) Summing $C_i/T_i$: **23.9**% at 500 kb/s, **47.9**% at 250 kb/s and **95.7**% at 125 kb/s.
-- (c) The highest-priority message waits at most for one lower-priority frame already on the bus, then sends: $0.27 + 0.27$ = **0.54** ms at 500 kb/s. The lowest-priority message, iterating the response-time equation: **3.04** ms at 500 kb/s, **7.16** ms at 250 kb/s and **39.9** ms at 125 kb/s.
+- (b) Summing $C_i/T_i$ by period group at 500 kb/s: **10.8**% (5 ms), **8.1**% (10 ms), **3.65**% (20 ms), **0.84**% (50 ms) and **0.54**% (100 ms), a total of **23.9**%. Halving the bit rate doubles every frame time, so the load is **47.9**% at 250 kb/s and **95.7**% at 125 kb/s.
+- (c) The highest-priority message waits at most for one lower-priority frame already on the bus, then sends: $0.27 + 0.27$ = **0.54** ms at 500 kb/s.
+
+  For the lowest-priority message $B = 0$ (nothing ranks below it). At 125 kb/s, $\tau_{bit}$ = **8** µs and the frames take $C$ = **1.08** ms (8 bytes), **0.76** ms (4 bytes) and **0.60** ms (2 bytes). Starting from $w = 0$, the first pass counts each of the eleven higher-priority messages once: $9 \times 1.08 + 0.76 + 0.60$ = **11.08** ms. Each later pass counts, for every higher-priority message, the instances released before $w + \tau_{bit}$: at $w$ = 11.08 ms that is three of each 5 ms message and two of each 10 ms message, giving **18.64** ms. The iteration runs
+
+  $$
+  w:\ 0 \to 11.08 \to 18.64 \to 20.80 \to 29.12 \to 31.28 \to 36.68 \to 38.84 \to 38.84\ \text{ms},
+  $$
+
+  so $R = 38.84 + 1.08$ = **39.9** ms at 125 kb/s. The same iteration gives **3.04** ms at 500 kb/s and **7.16** ms at 250 kb/s (Problem 27-06.14 does the 250 kb/s case by hand).
 
 **Units check.** bits ÷ (bits/s) = s; ms ÷ ms dimensionless. ✓
 
-**Sanity check.** Halving the bit rate doubles the load but more than doubles the worst-case delay; at 96% load the lowest-priority message waits thirteen times longer than at 24%. It still meets its 100 ms deadline here, but a slightly busier bus, or an error frame or two, would not. This is why CAN networks are budgeted at well under full load, and why new traffic moves to CAN FD or Ethernet.
+**Sanity check.** Halving the bit rate doubles the load but more than doubles the worst-case delay; at 96% load the lowest-priority message waits thirteen times longer than at 24%. It still meets its 100 ms deadline here, but the margin is thinner than 39.9 ms suggests. Charging each error 31 bit times plus a retransmitted 8-byte frame, one error frame raises the response to **61.0** ms and three to **99.7** ms; a fourth makes it **101.0** ms, a miss. Two more 8-byte messages every 100 ms raise it to **79.8** ms, and four more push the load past 100%, so no response time is bounded at all. This is why CAN networks are budgeted at well under full load, and why new traffic moves to CAN FD or Ethernet.
 
 ### Example 27-06.2 · How much data comes in? (tier A)
 
@@ -173,7 +181,7 @@ All parameters below are illustrative assumptions of realistic size unless a sou
 
 **Units check.** pixels/frame × frames/s × bits/pixel = bits/s. ✓
 
-**Sanity check.** Cameras dominate by two orders of magnitude, so camera links (one SerDes lane per camera) and on-chip image processing are where the data problem lives; radar and lidar fit on ordinary Ethernet links.
+**Sanity check.** The cameras carry about **65** times the data of the radars and lidar together (one camera carries about **144** times a 20 Mb/s radar's data and **11** times the lidar's), so camera links (one SerDes lane per camera) and on-chip image processing are where the data problem lives; radar and lidar fit on ordinary Ethernet links.
 
 ### Example 27-06.3 · Sizing the ADAS computer (tier B)
 
@@ -206,12 +214,12 @@ All parameters below are illustrative assumptions of realistic size unless a sou
 
 ### Example 27-06.5 · Wiring by geography (tier C)
 
-**Setup.** A 4.5 m × 1.8 m car has four clusters of 12 endpoints (lights, sensors, actuators) near its corners, centred at (0.5, 0.3), (0.5, 1.5), (4.0, 0.3) and (4.0, 1.5) m, with the endpoints at offsets of ±0.2 m and 0 along the car and ±0.15 m across it, plus a second set at half those along-car offsets and double the across-car offsets. In the domain design each endpoint is wired to one of three domain controllers at (1.5, 0.9), (2.0, 0.9) and (2.5, 0.9) m, taking them in turn. In the zonal design each endpoint is wired to a zone controller at its cluster centre, and each zone has one backbone link to central compute at (2.25, 0.9) m. Wires run along the car's axes (Manhattan distance). Find the total wire length of each design and the saving.
+**Setup.** A 4.5 m × 1.8 m car has four clusters of 12 endpoints (lights, sensors, actuators) near its corners, centred at (0.5, 0.3), (0.5, 1.5), (4.0, 0.3) and (4.0, 1.5) m, with the endpoints at offsets of ±0.2 m and 0 along the car and ±0.15 m across it, plus a second set at half those along-car offsets and double the across-car offsets. In the domain design each endpoint is wired to one of three domain controllers at (1.5, 0.9), (2.0, 0.9) and (2.5, 0.9) m, each cluster's twelve endpoints being shared four to each controller. In the zonal design each endpoint is wired to a zone controller at its cluster centre, and each zone has one backbone link to central compute at (2.25, 0.9) m. Wires run along the car's axes (Manhattan distance). Find the total wire length of each design and the saving.
 
 **Solution.**
 
-- Domain: summing the 48 Manhattan distances to the assigned controllers gives **112.8** m.
-- Zonal: endpoint wiring **15.6** m plus backbone $4 \times (1.75 + 0.6)$ = **9.4** m, total **25.0** m.
+- Domain: every endpoint lies on one side of all three controllers, so the along-car distances simply add, and which four endpoints go to which controller does not matter. Each front cluster's along-car wiring is $4 \times (1.5 + 2.0 + 2.5) - 12 \times 0.5 = 24 - 6$ = **18** m, each rear cluster's $12 \times 4.0 - 24$ = **24** m. Across the car, a cluster centred 0.6 m from the controllers' line has endpoints at 0.75, 0.45, 0.9 and 0.3 m from it, three of each: $3 \times 2.4$ = **7.2** m per cluster. The total is $2 \times (18 + 7.2) + 2 \times (24 + 7.2)$ = **112.8** m.
+- Zonal: each cluster's endpoints lie $2 \times (0.35 + 0.15 + 0.35) + 2 \times (0.4 + 0.3 + 0.4)$ = **3.9** m from its zone controller, so the endpoint wiring is **15.6** m; each zone is $1.75 + 0.6$ = **2.35** m from central compute, so the backbone is $4 \times (1.75 + 0.6)$ = **9.4** m, total **25.0** m.
 - Saving $1 - 25.0/112.8$ = **77.8**%.
 
 **Units check.** Sums of metres. ✓
@@ -250,6 +258,29 @@ All parameters below are illustrative assumptions of realistic size unless a sou
 | Ex 27-06.1c2 | lowest-priority response at 250 kb/s | 7.16 | ms |
 | Ex 27-06.1c3 | lowest-priority response at 125 kb/s | 39.9 | ms |
 | Ex 27-06.1c4 | ratio of lowest-priority delays, 125 to 500 kb/s | 13 | — |
+| Ex 27-06.1b3 | load of 5 ms messages at 500 kb/s | 10.8 | % |
+| Ex 27-06.1b4 | load of 10 ms messages | 8.1 | % |
+| Ex 27-06.1b5 | load of 20 ms messages | 3.65 | % |
+| Ex 27-06.1b6 | load of 50 ms messages | 0.84 | % |
+| Ex 27-06.1b7 | load of 100 ms messages | 0.54 | % |
+| Ex 27-06.1t | bit time at 125 kb/s | 8 | µs |
+| Ex 27-06.1t1 | 8-byte frame at 125 kb/s | 1.08 | ms |
+| Ex 27-06.1t2 | 4-byte frame at 125 kb/s | 0.76 | ms |
+| Ex 27-06.1t3 | 2-byte frame at 125 kb/s | 0.60 | ms |
+| Ex 27-06.1w1 | queuing time, pass 1 | 11.08 | ms |
+| Ex 27-06.1w2 | queuing time, pass 2 | 18.64 | ms |
+| Ex 27-06.1w3 | queuing time, pass 3 | 20.80 | ms |
+| Ex 27-06.1w4 | queuing time, pass 4 | 29.12 | ms |
+| Ex 27-06.1w5 | queuing time, pass 5 | 31.28 | ms |
+| Ex 27-06.1w6 | queuing time, pass 6 | 36.68 | ms |
+| Ex 27-06.1w7 | converged queuing time | 38.84 | ms |
+| Ex 27-06.1e1 | response with one error frame | 61.0 | ms |
+| Ex 27-06.1e3 | response with three error frames | 99.7 | ms |
+| Ex 27-06.1e4 | response with four error frames | 101.0 | ms |
+| Ex 27-06.1m2 | response with two more 100 ms messages | 79.8 | ms |
+| Ex 27-06.2d | cameras against radars and lidar | 65 | — |
+| Ex 27-06.2d1 | one camera against one radar | 144 | — |
+| Ex 27-06.2d2 | one camera against the lidar | 11 | — |
 | Ex 27-06.2a | one camera | 2.88 | Gb/s |
 | Ex 27-06.2a1 | eight cameras | 23.04 | Gb/s |
 | Ex 27-06.2b | radars | 0.10 | Gb/s |
@@ -271,6 +302,11 @@ All parameters below are illustrative assumptions of realistic size unless a sou
 | Ex 27-06.5b1 | zonal backbone | 9.4 | m |
 | Ex 27-06.5b2 | zonal total | 25.0 | m |
 | Ex 27-06.5c | saving | 77.8 | % |
+| Ex 27-06.5d | along-car wiring, front cluster | 18 | m |
+| Ex 27-06.5d1 | along-car wiring, rear cluster | 24 | m |
+| Ex 27-06.5d2 | across-car wiring per cluster | 7.2 | m |
+| Ex 27-06.5d3 | zonal endpoint wiring per cluster | 3.9 | m |
+| Ex 27-06.5d4 | one backbone link | 2.35 | m |
 | Ex 27-06.6a | distance in 100 ms at 130 km/h | 3.61 | m |
 | Ex 27-06.6b0 | braking distance | 81.5 | m |
 | Ex 27-06.6b | stopping distance, 100 ms | 85.1 | m |
@@ -284,6 +320,7 @@ All parameters below are illustrative assumptions of realistic size unless a sou
 | Txt 27-06.2 | distance per 100 ms at 130 km/h | 3.6 | m |
 | Txt 27-06.3 | 8-byte frame time at 500 kb/s (table) | 270 | µs |
 | Txt 27-06.4 | camera raw rate (table) | 2.88 | Gb/s |
+| Txt 27-06.5 | level-i busy period at 125 kb/s | 39.9 | ms |
 
 ## 5. Simulate it
 
@@ -296,7 +333,7 @@ The lab is [labs/27-06-lab/](../labs/27-06-lab/README.md). `automodel.py` implem
 
 ![Left: worst-case response time of the lowest-priority CAN message against bus load, rising steeply near full load; right: fraction of driving range lost to 100 W and 500 W compute loads against speed](../../../assets/figures/27-06/can-range.svg)
 
-*Figure 1. CAN response time against load for Example 27-06.1's message set, and the range cost of compute against speed (Example 27-06.4's consumption model, assumed parameters).*
+*Figure 1. CAN response time against load for Example 27-06.1's message set, and the range cost of compute against speed, with consumption assumed to rise linearly from 140 Wh/km at 20 km/h to 190 Wh/km at 130 km/h (close to, but not the same as, Example 27-06.4's two points).*
 
 ## 6. Engineering tradeoffs
 
@@ -314,15 +351,22 @@ The lab is [labs/27-06-lab/](../labs/27-06-lab/README.md). `automodel.py` implem
 
 ## 7. Numbers to know
 
+Product and market figures are as of Nov 2026.
+
 | Quantity | Value | Note |
 |---|---|---|
 | Classic CAN | up to 135 bits per 8-byte frame; 270 µs at 500 kb/s | Arithmetic from the frame format (§3.2) |
 | CAN FD | up to 64 data bytes, faster data phase | §3.2 |
 | CAN XL | 20 Mb/s and higher; 1–2048 data bytes | CiA [R-689] |
-| Automotive Ethernet standards | 10BASE-T1S in IEEE 802.3cg-2019; 2.5/5/10 Gb/s in 802.3ch-2020 | IEEE [R-689] |
+| Automotive Ethernet standards | 10BASE-T1S in IEEE 802.3cg-2019; multi-gigabit PHYs in 802.3ch-2020; 25 Gb/s in 802.3cy-2023 | IEEE [R-689, R-700] |
+| Camera link standard | MIPI A-PHY v2.1 (Sep 2026): up to 15 m, 24 and 32 Gb/s gears; IEEE 2977-2021 | MIPI [R-700] |
 | ADAS SoC | 34 TOPS int8, 7 nm (EyeQ 6 High); 5 TOPS (EyeQ 6 Lite) | Mobileye [R-688] |
-| Automated-driving tiers | 2, ≥ 3, ≥ 4 EyeQ 6 High chips (SuperVision, Chauffeur, Drive) | Mobileye [R-688] |
+| Automated-driving tiers | "2x", "> 3x", "> 4x" EyeQ 6 High (SuperVision, Chauffeur, Drive), as Mobileye writes them | Mobileye [R-688] |
 | Robotaxi compute | dual DRIVE AGX Thor SoCs (Hyperion) | NVIDIA [R-688] |
+| Central-compute SoC | up to 1,000 INT8 TOPS, 64 GB LPDDR5X, up to 273 GB/s (DRIVE AGX Thor); up to 400 TOPS on 3 nm (Renesas R-Car X5H, sampling) | NVIDIA, Renesas [R-700] |
+| ECU and harness consolidation | 17 → 7 ECUs and 2.6 km less wiring (Rivian R1, 2024); harness about 600 m shorter and about 30% lighter (BMW iX3, 2026) | Rivian; Infineon [R-700] |
+| Automotive semiconductor market | US$ 74.4 B in 2025 (2024: 69.9 B) | TechInsights via Infineon [R-700] **[Industry estimate]** |
+| Cyber-security and update rules | UN R155 and R156 in force 22 Jan 2021 | EU Official Journal [R-700] |
 | Camera raw data | 2.88 Gb/s for 8 MP, 30 fps, 12-bit | Arithmetic (§3.3) |
 | ASIL hardware targets | < 100 FIT (ASIL B, C), < 10 FIT (ASIL D) | ISO 26262-5 via 26-07 [R-614] |
 | Distance per 100 ms | **1.4** m at 50 km/h, **3.6** m at 130 km/h | Arithmetic (§3.5) |
@@ -341,15 +385,16 @@ The lab is [labs/27-06-lab/](../labs/27-06-lab/README.md). `automodel.py` implem
 
 **State of play (as of Nov 2026).**
 
-- **Compute is tiered by multiplying chips.** Mobileye sells one EyeQ 6 High (34 int8 TOPS, 7 nm) for premium driver assistance, two for its hands-off SuperVision, three or more for eyes-off Chauffeur and four or more for driverless Drive [R-688]. NVIDIA's robotaxi platform pairs two DRIVE AGX Thor SoCs [R-688]. The pattern matches §3.4 and §3.6: more autonomy means more perception, more planning and redundancy for fail-operational behaviour.
-- **Networks are being re-plumbed.** CAN remains for control; CAN XL (20 Mb/s and higher, up to 2048-byte frames) targets backbones and sub-backbones, 10BASE-T1S multidrop Ethernet targets zones, and multi-gigabit automotive Ethernet (802.3ch) carries backbones and high-rate sensors [R-689].
-- **Architecture is consolidating.** The industry direction is zonal controllers plus central compute (§3.1), with software platforms that can be updated over the air (§3.7); the hardware consequences (headroom, dual images, secure boot) are now part of SoC requirements.
+- **Compute is tiered by multiplying chips** (vendor claims). Mobileye sells one EyeQ 6 High (34 int8 TOPS, 7 nm) for premium driver assistance, "2x" for its hands-off SuperVision, "> 3x" for eyes-off Chauffeur and "> 4x" for driverless Drive [R-688] **[Established as manufacturer claims]**. NVIDIA's robotaxi platform pairs two DRIVE AGX Thor SoCs, each quoted at up to 1,000 INT8 TOPS; Renesas's R-Car X5H, sampling since Dec 2025, claims up to 400 TOPS on 3 nm with chiplet acceleration [R-688, R-700] **[Established as manufacturer claims]**. The pattern matches §3.4 and §3.6: more autonomy means more perception, more planning and redundancy for fail-operational behaviour.
+- **Networks are being re-plumbed.** CAN remains for control; CAN XL (20 Mb/s and higher, data fields of up to 2048 bytes) targets backbones and sub-backbones, 10BASE-T1S multidrop Ethernet targets zones, and multi-gigabit automotive Ethernet (802.3ch, and 25 Gb/s in 802.3cy) carries backbones and high-rate sensors [R-689, R-700] **[Established]**. Long camera links have their own standard, MIPI A-PHY, now at v2.1 with 24 and 32 Gb/s gears over up to 15 m [R-700].
+- **Architecture is consolidating, and it shows in production.** Rivian's second-generation R1 cut 17 ECUs to 7 and removed 2.6 km of wiring per vehicle; Infineon reports the BMW iX3's harness about 600 m shorter and about 30% lighter than its predecessors' [R-700] **[Established as company statements]**. Software platforms that can be updated over the air (§3.7) come with regulation: UN R155 (cyber security) and R156 (software updates) entered into force on 22 Jan 2021 [R-700] **[Established]**, and the hardware consequences (headroom, dual images, secure boot) are now part of SoC requirements.
 
-**Commercial relevance.** Automotive semiconductors are a long-cycle, high-barrier market: qualification (25-10), functional safety (ISO 26262) and supply commitments of a decade or more. The shift to zonal architectures moves value from many small ECUs (and their microcontrollers) toward fewer zone controllers, a few high-end SoCs and networking silicon (Ethernet switches and PHYs, SerDes for cameras); the shift to automation moves value into AI compute and sensors. For an investor or acquirer, the questions are which supplier owns the central compute socket and the software stack on it, and who supplies the zones.
+**Commercial relevance.** Automotive semiconductors are a long-cycle, high-barrier market, about US$ 74.4 billion in 2025 by TechInsights' count [R-700] **[Industry estimate]**; NVIDIA's automotive segment, for scale, reported US$ 2.3 billion for its fiscal 2026 [R-700]. The market is defined by qualification (25-10), functional safety (ISO 26262) and supply commitments of a decade or more. The shift to zonal architectures moves value from many small ECUs (and their microcontrollers) toward fewer zone controllers, a few high-end SoCs and networking silicon (Ethernet switches and PHYs, SerDes for cameras); the shift to automation moves value into AI compute and sensors. For an investor or acquirer, the questions are which supplier owns the central compute socket and the software stack on it, and who supplies the zones.
 
 **Marketing vs Reality.**
 
 - *"34 DL TOPS"* [R-688]. Peak int8 operations; ask for the utilization on the vendor's own perception stack and the frame rate per camera it sustains.
+- *"Up to 2,000 FP4 (1,000 INT8) TFOPS"* (sic) [R-700]. The FP4 figure is twice the INT8 one because FP4 operands are half the width; compare chips at the same precision, and ask whether the figure assumes sparsity.
 - *"Level 4-capable"* [R-688]. A capability of a hardware platform, not a certified product; the safety case, operating domain and validation miles decide what the vehicle may do.
 - *"20 Mbit/s and higher"* [R-689]. "Depends on the physical network design": cable length, number of nodes and transceivers set the real rate.
 - *"Software-defined vehicle."* Ask how much compute and memory headroom ships at launch, how updates are validated against functional safety, and how long the hardware will be supported.
@@ -392,7 +437,7 @@ The lab is [labs/27-06-lab/](../labs/27-06-lab/README.md). `automodel.py` implem
 
    <details><summary>Answer</summary>
 
-   Data rate is pixels × frame rate × bits per pixel: an 8 MP camera at 30 fps and 12 bits is 2.88 Gb/s, two orders of magnitude more than a radar or lidar.
+   Data rate is pixels × frame rate × bits per pixel: an 8 MP camera at 30 fps and 12 bits is 2.88 Gb/s, about 144 times a 20 Mb/s radar and 11 times a 0.256 Gb/s lidar; eight cameras carry about 65 times the data of all the other sensors together (Example 27-06.2).
 
    </details>
 
@@ -423,7 +468,7 @@ Problems: [27-06 problem set](../problems/27-06-problems.md) · Solutions: [27-0
 - **Previous:** [27-05 The PC SoC](27-05-pc-soc.md): heterogeneous compute and memory bandwidth, now under safety and lifetime constraints.
 - **Next:** [27-07 The AI Datacenter Server and Rack](27-07-ai-datacenter-server-and-rack.md): the same AI accelerators at the other end of the power scale.
 - **Prerequisites used here:** response-time analysis ([18-07](../../18-embedded-systems-and-microcontrollers/chapters/18-07-rtos-concepts.md)); SerDes ([24-03](../../24-high-speed-io-signal-integrity-and-photonics/chapters/24-03-serdes-architecture.md)); qualification and safety ([25-10](../../25-fabrication-packaging-test-and-reliability/chapters/25-10-qualification-and-functional-safety.md)); FIT budgets and fleet risk ([26-07](../../26-engineering-design-and-professional-practice/chapters/26-07-engineering-ethics.md)).
-- **Used later:** latency budgets and failure-rate arithmetic return in 27-07 (fleet-scale reliability of accelerators) and 27-08 (edge devices in the field).
+- **Used later:** failure-rate arithmetic returns in 27-07 (interruptions of a training job across tens of thousands of accelerators); secure boot and over-the-air updates return at microcontroller scale in 27-08.
 
 ## 13. Further study
 

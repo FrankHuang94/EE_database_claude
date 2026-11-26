@@ -83,7 +83,7 @@ Unless stated otherwise, use the keyword spotter and parameters of Example 27-08
 
 ### Problem 27-08.12 [C]
 
-**Gateways or batteries?** A utility deploys 10,000 nodes like Example 27-08.4's for ten years. With its current gateways they run at SF12 (life 4.89 years, from Example 27-08.4). A battery-replacement visit costs $60 (assumed). Adding 20 gateways at $1,000 each (assumed) would let every node run at SF7. Find:
+**Gateways or batteries?** A utility deploys 10,000 nodes like Example 27-08.4's for ten years. With its current gateways they run at SF12 (life 4.89 years, from Example 27-08.4). A battery-replacement visit costs $60 (assumed). Adding 20 gateways at an installed and operated cost of $1,000 each over the ten years (assumed; it must cover installation, backhaul and upkeep) would let every node run at SF7. Find:
 
 - (a) the replacements per node and the total replacement cost over ten years at SF12;
 - (b) the gateway cost and the saving.
@@ -94,14 +94,21 @@ What does this say about who should pay for network density?
 
 **Reading the NPU claim.** Arm says the Ethos-U85 scales from 128 to 2048 MACs and gives "up to 4 TOPs of performance at 1 GHz" [R-695]. Counting two operations per MAC, find the peak at 1 GHz for the smallest and largest configurations, and at a 200 MHz microcontroller clock for both.
 
+### Problem 27-08.14 [B]
+
+**Two derivations.**
+
+- (a) Derive the ratio of the MACs of a depthwise-separable convolution ($k \times k$ depthwise, then $1 \times 1$ pointwise) to those of a standard $k \times k$ convolution with the same input and output shapes. Evaluate it, and the reduction factor, for $k = 5$ and $C_{\text{out}} = 128$.
+- (b) Starting from a capacitor's stored energy $\tfrac{1}{2}CV^2$, derive the energy it can deliver between $V_{\max}$ and $V_{\min}$ and hence the sizing formula $C = 2E/(V_{\max}^2 - V_{\min}^2)$. Show that the usable fraction of the full stored energy is $1 - (V_{\min}/V_{\max})^2$, and evaluate it for 4.0 V to 2.2 V and for a window of 2:1.
+
 ---
 
 ## Objective coverage
 
 | Objective | Problems |
 |---|---|
-| 1. MACs, memory, latency and energy per inference | 2, 4, 13 |
+| 1. MACs, memory, latency and energy per inference | 2, 4, 13, 14 |
 | 2. Edge compute against sending data | 5 |
 | 3. LoRa time on air, duty cycle and radio choice | 1, 3, 6, 7 |
-| 4. Battery life, harvesting and storage | 8, 9, 10, 12 |
+| 4. Battery life, harvesting and storage | 8, 9, 10, 12, 14 |
 | 5. Secure boot, updates and claims | 11, 13 |

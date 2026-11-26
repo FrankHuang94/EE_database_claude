@@ -90,7 +90,19 @@ Network density is a battery-life investment. Whoever bears the maintenance visi
 - At 1 GHz: $128 \times 2 \times 10^9$ = **0.256** TOPS and $2048 \times 2 \times 10^9$ = **4.10** TOPS, matching "256 GOP/s up to 4 TOPs".
 - At 200 MHz: **0.0512** and **0.819** TOPS.
 
-A microcontroller's clock, not the NPU's datasheet clock, sets what a product can claim.
+The clock the SoC designer gives the NPU, often a microcontroller-class clock well below 1 GHz, sets what a product can claim, not the clock in the IP's headline.
+
+### Solution 27-08.14
+
+(a) For an $H \times W$ output with $C_{\text{in}}$ input and $C_{\text{out}}$ output channels, a standard convolution computes, at each output position and for each output channel, a $k \times k$ window over every input channel: $HWC_{\text{out}}k^2C_{\text{in}}$ MACs. The depthwise step applies one $k \times k$ filter to each input channel separately, $HWC_{\text{in}}k^2$ MACs, and the pointwise step mixes channels with a $1 \times 1$ convolution, $HWC_{\text{in}}C_{\text{out}}$ MACs. The ratio is
+
+$$
+\frac{HWC_{\text{in}}k^2 + HWC_{\text{in}}C_{\text{out}}}{HWC_{\text{out}}k^2C_{\text{in}}} = \frac{1}{C_{\text{out}}} + \frac{1}{k^2}.
+$$
+
+For $k = 5$ and $C_{\text{out}} = 128$: $1/128 + 1/25$ = **0.0478**, a reduction of **20.9** times. The $1/k^2$ term dominates, so the saving is set mostly by the kernel size.
+
+(b) A capacitor at $V$ stores $\tfrac{1}{2}CV^2$. Discharging from $V_{\max}$ to $V_{\min}$ releases the difference, $E = \tfrac{1}{2}C(V_{\max}^2 - V_{\min}^2)$; the same result follows from integrating $P = VI$ with $I = -C\,dV/dt$, since $dE = -CV\,dV$. Solving for $C$ gives $C = 2E/(V_{\max}^2 - V_{\min}^2)$. Dividing $E$ by the full store $\tfrac{1}{2}CV_{\max}^2$ gives the usable fraction $1 - (V_{\min}/V_{\max})^2$. From 4.0 V to 2.2 V that is $1 - 0.3025$ = **69.75**%; for a 2:1 window, $1 - 1/4$ = **75.0**%. The energy below $V_{\min}$ is stranded because the converter cannot run from it, which is why a wide input range is worth as much as extra farads.
 
 ---
 
@@ -150,3 +162,7 @@ A microcontroller's clock, not the NPU's datasheet clock, sets what a product ca
 | 27-08.13b | largest at 1 GHz | 4.10 | TOPS |
 | 27-08.13c | largest at 200 MHz | 0.819 | TOPS |
 | 27-08.13d | smallest at 200 MHz | 0.0512 | TOPS |
+| 27-08.14a | depthwise-separable ratio, k = 5, 128 channels | 0.0478 | — |
+| 27-08.14b | reduction factor | 20.9 | — |
+| 27-08.14c | usable fraction, 4.0 to 2.2 V | 69.75 | % |
+| 27-08.14d | usable fraction, 2:1 window | 75.0 | % |

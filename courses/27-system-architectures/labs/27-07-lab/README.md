@@ -48,6 +48,9 @@ The lab uses the chapter's models, with its assumed parameters:
 | Lab 27-07.b2 | Young's interval | 13.6 | min |
 | Lab 27-07.b3 | lost fraction | 25.5 | % |
 | Lab 27-07.b4 | effective training time | 74.5 | % |
+| Lab 27-07.b5 | save or rework loss each | 7.3 | % |
+| Lab 27-07.b6 | checkpoint loss | 14.7 | % |
+| Lab 27-07.b7 | restart loss | 10.8 | % |
 | Lab 27-07.c | step time at B = 1024 | 4.58 | ms |
 | Lab 27-07.c1 | throughput at B = 1024 | 2.24e5 | tokens/s |
 | Lab 27-07.c2 | per-user speed at B = 1024 | 218 | tokens/s |
@@ -59,7 +62,7 @@ The lab uses the chapter's models, with its assumed parameters:
 ## Discussion
 
 1. With 8-GPU servers the all-reduce takes **44.3** ms, against 24.5 ms with 72-GPU racks. The in-server phases (**19.4** ms) barely change, but the network now carries 1/8 of the gradient per GPU instead of 1/72, and its share (**24.8** ms) dominates.
-2. Doubling the job halves the mean time between interruptions to **5568** s. Young's interval shrinks only by √2, to **817** s (**13.6** min), but the lost fraction rises to **25.5**%, leaving **74.5**% effective training time. The 10-minute restart becomes the largest loss.
+2. Doubling the job halves the mean time between interruptions to **5568** s. Young's interval shrinks only by √2, to **817** s (**13.6** min), but the lost fraction rises to **25.5**%, leaving **74.5**% effective training time. The 10-minute restart, **10.8**%, is now the largest single loss once the **14.7**% checkpoint term is split into its equal save and rework halves (**7.3**% each).
 3. At B = 1024 a step takes **4.58** ms, so the rack produces **2.24 × 10⁵** tokens/s at **218** tokens/s per user: **2.14** times Example 27-07.6's throughput at **0.534** of its per-user speed.
 4. Doubling the electricity price raises the cost per million tokens from $0.434 to **$0.489**, **12.7**% more: exactly the energy share of the original cost. Halving utilization would double it.
 

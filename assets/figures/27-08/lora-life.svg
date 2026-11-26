@@ -947,8 +947,8 @@ L 323.604741 238.270099
 " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_11">
-    <!-- Each SF step doubles the airtime -->
-    <g transform="translate(107.012331 16.8875) scale(0.1 -0.1)">
+    <!-- Each SF step roughly doubles the airtime -->
+    <g transform="translate(87.784206 16.8875) scale(0.1 -0.1)">
      <defs>
       <path id="Inter-Regular-5f" d="M 563 0 
 L 3428 0 
@@ -1048,25 +1048,33 @@ z
      <use xlink:href="#Inter-Regular-267" transform="translate(496.484375 0)"/>
      <use xlink:href="#Inter-Regular-34d" transform="translate(554.78125 0)"/>
      <use xlink:href="#Inter-Regular-6eb" transform="translate(616.015625 0)"/>
-     <use xlink:href="#Inter-Regular-256" transform="translate(644.140625 0)"/>
-     <use xlink:href="#Inter-Regular-318" transform="translate(705.375 0)"/>
-     <use xlink:href="#Inter-Regular-395" transform="translate(765.34375 0)"/>
-     <use xlink:href="#Inter-Regular-243" transform="translate(824.46875 0)"/>
-     <use xlink:href="#Inter-Regular-2e2" transform="translate(885.703125 0)"/>
-     <use xlink:href="#Inter-Regular-267" transform="translate(909.921875 0)"/>
-     <use xlink:href="#Inter-Regular-369" transform="translate(968.21875 0)"/>
-     <use xlink:href="#Inter-Regular-6eb" transform="translate(1021 0)"/>
-     <use xlink:href="#Inter-Regular-37b" transform="translate(1049.125 0)"/>
-     <use xlink:href="#Inter-Regular-29f" transform="translate(1081.84375 0)"/>
-     <use xlink:href="#Inter-Regular-267" transform="translate(1140.96875 0)"/>
-     <use xlink:href="#Inter-Regular-6eb" transform="translate(1199.265625 0)"/>
-     <use xlink:href="#Inter-Regular-1fc" transform="translate(1227.390625 0)"/>
-     <use xlink:href="#Inter-Regular-2b2" transform="translate(1283.546875 0)"/>
-     <use xlink:href="#Inter-Regular-356" transform="translate(1307.765625 0)"/>
-     <use xlink:href="#Inter-Regular-37b" transform="translate(1346.96875 0)"/>
-     <use xlink:href="#Inter-Regular-2b2" transform="translate(1379.6875 0)"/>
-     <use xlink:href="#Inter-Regular-300" transform="translate(1403.90625 0)"/>
-     <use xlink:href="#Inter-Regular-267" transform="translate(1491.5 0)"/>
+     <use xlink:href="#Inter-Regular-356" transform="translate(644.140625 0)"/>
+     <use xlink:href="#Inter-Regular-318" transform="translate(680.125 0)"/>
+     <use xlink:href="#Inter-Regular-395" transform="translate(740.09375 0)"/>
+     <use xlink:href="#Inter-Regular-293" transform="translate(799.21875 0)"/>
+     <use xlink:href="#Inter-Regular-29f" transform="translate(860.546875 0)"/>
+     <use xlink:href="#Inter-Regular-2e2" transform="translate(919.671875 0)"/>
+     <use xlink:href="#Inter-Regular-3e8" transform="translate(944.375 0)"/>
+     <use xlink:href="#Inter-Regular-6eb" transform="translate(1000.578125 0)"/>
+     <use xlink:href="#Inter-Regular-256" transform="translate(1028.703125 0)"/>
+     <use xlink:href="#Inter-Regular-318" transform="translate(1089.9375 0)"/>
+     <use xlink:href="#Inter-Regular-395" transform="translate(1149.90625 0)"/>
+     <use xlink:href="#Inter-Regular-243" transform="translate(1209.03125 0)"/>
+     <use xlink:href="#Inter-Regular-2e2" transform="translate(1270.265625 0)"/>
+     <use xlink:href="#Inter-Regular-267" transform="translate(1294.484375 0)"/>
+     <use xlink:href="#Inter-Regular-369" transform="translate(1352.78125 0)"/>
+     <use xlink:href="#Inter-Regular-6eb" transform="translate(1405.5625 0)"/>
+     <use xlink:href="#Inter-Regular-37b" transform="translate(1433.6875 0)"/>
+     <use xlink:href="#Inter-Regular-29f" transform="translate(1466.40625 0)"/>
+     <use xlink:href="#Inter-Regular-267" transform="translate(1525.53125 0)"/>
+     <use xlink:href="#Inter-Regular-6eb" transform="translate(1583.828125 0)"/>
+     <use xlink:href="#Inter-Regular-1fc" transform="translate(1611.953125 0)"/>
+     <use xlink:href="#Inter-Regular-2b2" transform="translate(1668.109375 0)"/>
+     <use xlink:href="#Inter-Regular-356" transform="translate(1692.328125 0)"/>
+     <use xlink:href="#Inter-Regular-37b" transform="translate(1731.53125 0)"/>
+     <use xlink:href="#Inter-Regular-2b2" transform="translate(1764.25 0)"/>
+     <use xlink:href="#Inter-Regular-300" transform="translate(1788.46875 0)"/>
+     <use xlink:href="#Inter-Regular-267" transform="translate(1876.0625 0)"/>
     </g>
    </g>
    <g id="legend_1">

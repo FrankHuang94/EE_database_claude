@@ -104,6 +104,58 @@ v.check("Ex 27-06.1c1", r500)
 v.check("Ex 27-06.1c2", simulate_response(11, MSGS, 250))
 v.check("Ex 27-06.1c3", r125)
 v.check("Ex 27-06.1c4", r125 / r500)
+def rta_chain(index, msgs, kbps, extra_ms=0.0):
+    """Our own response-time iteration, returning every queuing-time pass; extra_ms adds
+    a fixed error-recovery overhead inside the queuing time."""
+    c = [frame_ms(n, kbps) for n, _ in msgs]
+    t_per = [p for _, p in msgs]
+    tau = 1.0 / kbps
+    b = max(c[index + 1:]) if c[index + 1:] else 0.0
+    w, chain = b, [b]
+    while True:
+        wn = b + extra_ms + sum(math.ceil((w + tau) / t_per[j] - 1e-12) * c[j] for j in range(index))
+        chain.append(wn)
+        if abs(wn - w) < 1e-12 or wn > 1e4:
+            return chain, wn + c[index]
+        w = wn
+
+
+def busy_period(index, msgs, kbps):
+    c = [frame_ms(n, kbps) for n, _ in msgs]
+    t_per = [p for _, p in msgs]
+    b = max(c[index + 1:]) if c[index + 1:] else 0.0
+    t, chain = c[index], []
+    while True:
+        tn = b + sum(math.ceil(t / t_per[j] - 1e-12) * c[j] for j in range(index + 1))
+        chain.append(tn)
+        if abs(tn - t) < 1e-12:
+            return chain, tn
+        t = tn
+
+
+per_group = {}
+for n, p in MSGS:
+    per_group[p] = per_group.get(p, 0.0) + frame_ms(n, 500) / p
+for k, p in [("b3", 5), ("b4", 10), ("b5", 20), ("b6", 50), ("b7", 100)]:
+    v.check(f"Ex 27-06.1{k}", 100 * per_group[p])
+v.check("Ex 27-06.1t", 1e3 / 125)
+for k, n in [("t1", 8), ("t2", 4), ("t3", 2)]:
+    v.check(f"Ex 27-06.1{k}", frame_ms(n, 125))
+chain125, rr125 = rta_chain(11, MSGS, 125)
+for k in range(1, 7):
+    v.check(f"Ex 27-06.1w{k}", chain125[k])
+v.check("Ex 27-06.1w7", chain125[-1])
+v.assert_true("hand iteration matches the simulated 125 kb/s response", abs(rr125 - r125) < 1e-9)
+err = 31 / 125 + frame_ms(8, 125)  # 31 bit times of error signalling plus one 8-byte retransmission
+for k, ne in [("e1", 1), ("e3", 3), ("e4", 4)]:
+    v.check(f"Ex 27-06.1{k}", rta_chain(11, MSGS, 125, ne * err)[1])
+mm2 = MSGS + [(8, 100)] * 2
+v.check("Ex 27-06.1m2", rta_chain(13, mm2, 125)[1])
+v.assert_true("four more 100 ms messages push the 125 kb/s load past 100%",
+              sum(frame_ms(n, 125) / p for n, p in MSGS + [(8, 100)] * 4) > 1)
+_, bp125 = busy_period(11, MSGS, 125)
+v.check("Txt 27-06.5", bp125)
+v.assert_true("busy period at 125 kb/s is within the 100 ms period", bp125 <= 100)
 v.assert_true("analytic response iteration agrees with simulation",
               all(abs(am.can_response_time_ms(i, MSGS, br) - simulate_response(i, MSGS, br)) < 1e-9
                   for i in range(len(MSGS)) for br in (500, 250, 125)))
@@ -120,6 +172,9 @@ v.check("Ex 27-06.2b1", lid)
 tot = 8 * cam + 0.1 + lid
 v.check("Ex 27-06.2c", tot)
 v.check("Ex 27-06.2c1", 100 * 8 * cam / tot)
+v.check("Ex 27-06.2d", 8 * cam / (0.1 + lid))
+v.check("Ex 27-06.2d1", cam / 0.020)
+v.check("Ex 27-06.2d2", cam / lid)
 sus = 8 * 30 * 80e9 / 1e12
 v.check("Ex 27-06.3a", sus)
 v.check("Ex 27-06.3b", sus / 0.30)
@@ -154,6 +209,16 @@ v.check("Ex 27-06.5b", loc)
 v.check("Ex 27-06.5b1", bb)
 v.check("Ex 27-06.5b2", loc + bb)
 v.check("Ex 27-06.5c", 100 * (1 - (loc + bb) / dom))
+front = eps[:12]
+rear = eps[24:36]
+v.check("Ex 27-06.5d", sum(abs(x - ecus[i % 3][0]) for i, (x, _) in enumerate(front)))
+v.check("Ex 27-06.5d1", sum(abs(x - ecus[i % 3][0]) for i, (x, _) in enumerate(rear)))
+v.check("Ex 27-06.5d2", sum(abs(y - 0.9) for _, y in front))
+v.check("Ex 27-06.5d3", sum(abs(x - 0.5) + abs(y - 0.3) for x, y in front))
+v.check("Ex 27-06.5d4", abs(0.5 - 2.25) + abs(0.3 - 0.9))
+v.assert_true("domain wiring does not depend on which controller each endpoint gets",
+              all(abs(sum(abs(x - ecus[(i + s) % 3][0]) + abs(y - 0.9) for i, (x, y) in enumerate(eps)) - dom)
+                  < 1e-9 for s in range(3)))
 
 # ---------------------------------------------------------------------------
 # Example 27-06.6: integrate the motion
@@ -234,6 +299,28 @@ v.check("27-06.12a", arb + dat)
 cl = 8 * 1e3 * frame_ms(8, 500)
 v.check("27-06.12b", cl)
 v.check("27-06.12c", cl / (arb + dat))
+cl0 = 8 * stuffed_length(8, worst=False) / 500e3 * 1e6
+v.check("27-06.12d", cl0)
+v.check("27-06.12e", cl0 / (arb + dat))
+v.check("27-06.11d", sum(abs(x - 0.5) for x, _ in eps[:12]))
+v.check("27-06.11e", sum(abs(y - 0.9) for _, y in eps[:12]))
+v.check("27-06.11f", sum(abs(x - 0.5) + abs(y - 0.9) for x, y in eps[:12]))
+for k, n in [("a", 0), ("b", 4), ("c", 8)]:
+    stuff = stuffed_length(n) - stuffed_length(n, worst=False)
+    v.assert_true(f"stuffing bound floor((N-1)/4) holds for {n} bytes", stuff == (34 + 8 * n - 1) // 4)
+    v.check(f"27-06.13{k}", stuff)
+v.check("27-06.13d", 100 * 24 / 98)
+v.check("27-06.13e", 100 * 24 / stuffed_length(8))
+v.check("27-06.14a", 1e3 / 250)
+for k, n in [("b", 8), ("c", 4), ("d", 2)]:
+    v.check(f"27-06.14{k}", frame_ms(n, 250))
+ch250, r250 = rta_chain(11, MSGS, 250)
+v.check("27-06.14e", ch250[1])
+v.check("27-06.14f", ch250[-1])
+v.check("27-06.14g", simulate_response(11, MSGS, 250))
+bch, bp250 = busy_period(11, MSGS, 250)
+v.check("27-06.14h", bch[0])
+v.check("27-06.14i", bp250)
 
 # ---------------------------------------------------------------------------
 # Lab

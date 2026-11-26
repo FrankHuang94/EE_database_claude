@@ -28,7 +28,7 @@ Chapter: [27-07](../chapters/27-07-ai-datacenter-server-and-rack.md) · Worked s
 
 ### Problem 27-07.2 [A]
 
-**A newer rack.** NVIDIA says GB300 NVL72 has "1.5x larger HBM3E memory" and "1.5x more dense FP4 Tensor Core FLOPS" than Blackwell [R-690]. Take GB200 NVL72's 13.4 TB and 720 PFLOPS dense FP4 as the baseline. Find GB300 NVL72's rack HBM and dense FP4, and both per GPU.
+**A newer rack.** NVIDIA says GB300 NVL72 has "1.5x larger HBM3E memory" and "1.5x more dense FP4 Tensor Core FLOPS" than Blackwell [R-690]. Take GB200 NVL72's 13.4 TB and 720 PFLOPS of FP4, read as dense (§3.1) **[Contested]**, as the baseline. Find GB300 NVL72's rack HBM and dense FP4, and both per GPU.
 
 ### Problem 27-07.3 [A]
 
@@ -106,7 +106,15 @@ Why is (a) larger than Example 27-07.3's 18.4 GWh?
 
 ### Problem 27-07.13 [C]
 
-**A synchronized pause.** 16,384 GPUs drop from 700 W to 100 W together while they wait for a checkpoint. Find the step in GPU power, and the step at the facility with the all-in factor 1.5. Why does this matter to the power-delivery engineer?
+**A synchronized pause.** 16,384 GPUs drop from 700 W to 100 W together while they wait for a checkpoint. Find the step in GPU power and the step at the rack inputs through 97%-efficient power shelves. Why is scaling the step by the all-in factor 1.5 only an upper bound, and why does the step matter to the power-delivery engineer?
+
+### Problem 27-07.14 [B]
+
+**Two derivations.**
+
+- (a) Starting from the lost fraction $f(\tau) = \delta/\tau + (\tau/2 + R)/M$, derive Young's interval. Show that the save and rework terms are equal there, that their sum is $\sqrt{2\delta/M}$, and that the stationary point is a minimum.
+- (b) Apply it to δ = 30 s, M = 4 h and R = 5 min: find $\tau^*$, the checkpoint and restart parts of the loss, and the total.
+- (c) From the memory-bound step time $t_{\text{step}} = (W + BK)/(\eta B_{\text{mem}})$, with per-user speed $s = 1/t_{\text{step}}$ and throughput $\Theta = Bs$, derive the frontier line $\Theta = \eta B_{\text{mem}}/K - (W/K)s$. For Example 27-07.6's rack and model, find the throughput at $s \to 0$, the per-user speed at which throughput falls to zero, and the slope.
 
 ---
 
@@ -118,5 +126,5 @@ Why is (a) larger than Example 27-07.3's 18.4 GWh?
 | 2. Power budget and accelerators per megawatt | 4, 13 |
 | 3. Training compute, time and energy | 3, 10 |
 | 4. Ring and hierarchical all-reduce | 1, 5, 6 |
-| 5. Interruptions, checkpoints and effective training time | 7, 8, 9 |
-| 6. Inference throughput, energy and cost per token | 11, 12 |
+| 5. Interruptions, checkpoints and effective training time | 7, 8, 9, 14 |
+| 6. Inference throughput, energy and cost per token | 11, 12, 14 |
