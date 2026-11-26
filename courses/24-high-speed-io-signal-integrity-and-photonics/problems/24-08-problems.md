@@ -71,6 +71,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Optics in a fabric.** Each GPU has one 800 Gb/s scale-out port. In a two-tier leaf-spine fabric each port's traffic crosses two links (GPU to leaf, leaf to spine), and in a three-tier fabric three; each link has a 16 W module at both ends (all assumed). Find (a) the optics power per GPU in each case, (b) the totals for 100,000 GPUs, and (c) what a 25% cut in module power (Example 24-08.8) saves in the three-tier fabric.
 
+### Problem 24-08.14 [C]
+
+**Tolerances from the coupling formula (derivation).** (a) Let the second mode be $w_2 = w_1(1 + \epsilon)$ with no offset. Show from the coupling formula in the conventions that $\eta = 1 - \epsilon^2 + O(\epsilon^3)$, so the loss is about $4.34\epsilon^2$ dB. (b) What fractional mismatch costs 0.1 dB by this approximation, and exactly, for a larger and for a smaller second mode? (c) For equal modes of radius $w$, derive the lateral offset that costs 0.1 dB, and evaluate it for $w$ = 4.6 µm and 2.0 µm. (d) What does (c) imply for placing a chip against a fiber with and without a spot-size converter?
+
 ---
 
 ## Objective coverage
@@ -78,7 +82,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | Objective | Problems |
 |---|---|
 | 1. Silicon, germanium and III-V materials | 1 |
-| 2. Waveguides, coupling and alignment | 2, 3 |
+| 2. Waveguides, coupling and alignment | 2, 3, 14 |
 | 3. Grating couplers | 4, 12 |
 | 4. Laser budgets and driver parasitics | 5, 6 |
 | 5. The DSP, retimed and linear links | 7, 10 |

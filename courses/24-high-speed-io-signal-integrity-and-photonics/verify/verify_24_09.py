@@ -203,4 +203,38 @@ v.check("24-09.10a", 100 * 1.0 / 3.25)
 v.check("24-09.10b", 100 * 4.5 / 5.5)
 v.check("24-09.10c", 1.0 + 2 * 2.25 + 2 * 2.25)
 
+# ---------------------------------------------------------------- audit additions: text, Example 7(c), Problem 13
+v.check("Txt 24-09.f", pj(20 - 15, 1600))
+v.check("Txt 24-09.g", 4 * 3.2)
+chi6 = stats.chi2.ppf(0.95, 6)
+v.check("Txt 24-09.h", chi6)
+v.check("Txt 24-09.i", chi6 / 20)  # 2 failures in 10T: chi2_{0.95,6}/(2 x 10T)
+v.assert_true("2 failures at rate chi6/(20T) over 10T has P(N<=2) = 5%",
+              abs(stats.poisson.cdf(2, chi6 / 20 * 10) - 0.05) < 1e-9)
+v.check("Txt 24-09.j", 3.5 / (1 - 0.70))
+v.check("Txt 24-09.k", 3.5 / (1 - 0.70) / 3.5)
+c_swap = lost(400, 128, 24, 8)
+v.check("Ex 24-09.7d", c_swap)
+v.check("Ex 24-09.7d1", c_swap / p_lost)
+v.check("Ex 24-09.7d2", c_swap * 60)
+# switch view: 16 engines' failures, each downing all 128 ports, spread over 128 ports
+v.assert_true("switch-swap loss equals 16 engines x 128 ports x 24 h / 128 ports",
+              abs(lost(16 * 400, 128, 24, 128) - c_swap) < 1e-12)
+mu1 = optimize.brentq(lambda m: math.exp(-m) * (1 + m) - 0.05, 0.1, 20)
+v.check("24-09.13a", mu1)
+v.check("24-09.13a1", stats.chi2.ppf(0.95, 4) / 2)
+v.check("24-09.13a", poisson_bound(1e6, 1) * 1e6)  # second route: generic Poisson bound
+lam_sw = 16 * 400e-9
+u_sw = lam_sw * 24
+v.check("24-09.13c0", lam_sw)
+v.check("24-09.13c", u_sw)
+v.check("24-09.13c1", u_sw / (1 + u_sw))
+v.check("24-09.13c2", u_sw * YEAR)
+# simulate an alternating renewal process to confirm the down fraction
+rng = np.random.default_rng(7)
+up = rng.exponential(1 / lam_sw, 200_000)
+down = np.full_like(up, 24.0)
+v.assert_true("simulated down fraction matches lambda*MTTR/(1+lambda*MTTR) within 2%",
+              abs(down.sum() / (up.sum() + down.sum()) / (u_sw / (1 + u_sw)) - 1) < 0.02)
+
 sys.exit(v.finish())

@@ -52,7 +52,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 24-09.9 [B]
 
-**LRO and LPO at cluster scale.** A cluster uses 100,000 modules of 1.6 Tb/s. Using Semtech's figures of about 20 W for digital modules, under 15 W for LRO [R-535] and 50–60% savings for LPO against retimed modules [R-535], find the power saved by (a) LRO and (b) LPO at each end of its range.
+**LRO and LPO at cluster scale.** A cluster uses 100,000 modules of 1.6 Tb/s. Using Semtech's figures of about 20 W for digital modules and under 15 W for LRO [R-535], and its 50–60% savings against retimed modules, which it quotes for LPO and LRO together [R-535] (apply them here to LPO), find the power saved by (a) LRO and (b) LPO at each end of its range.
 
 ### Problem 24-09.10 [B]
 
@@ -66,6 +66,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Checking the baselines.** (a) Against what pluggable power would Davisson's 3.5 W be exactly a 70% reduction? (b) What pluggable power does NVIDIA's "5x" with 5 W per port imply? (c) Explain why the two vendors' claims cannot be ranked from these figures alone.
 
+### Problem 24-09.13 [C]
+
+**Failure bounds and availability from first principles (derivation).** Units fail independently at a constant rate $\lambda$, so the number of failures in $T$ unit-hours is Poisson with mean $\mu = \lambda T$. (a) Derive the 95% upper bound for a test that saw one failure: show that it solves $e^{-\mu}(1 + \mu) = 0.05$, solve for $\mu$, and compare with $\chi^2_{0.95,4}/2$. (b) A unit alternates between up periods of mean $1/\lambda$ and repairs of mean MTTR. Show that it is down a fraction $\lambda\,\text{MTTR}/(1 + \lambda\,\text{MTTR})$ of the time, and that this is about $\lambda\,\text{MTTR}$ when $\lambda\,\text{MTTR} \ll 1$. (c) Apply (b) to Example 24-09.7(c): the switch's 16 engines fail at 400 FIT each, and every failure takes all ports down for 24 h. Find the unavailability, exactly and approximately, and the port-hours lost per port per year. (d) Why does the approximation let §3.4's formula treat each failure source separately?
+
 ---
 
 ## Objective coverage
@@ -76,5 +80,5 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 2. Linear budgets and 200 Gb/s lanes | 3, 4 |
 | 3. Converting vendor claims to energy per bit | 8, 12 |
 | 4. External laser sources | 2, 5, 11 |
-| 5. Reliability bounds and blast radius | 6, 7 |
+| 5. Reliability bounds and blast radius | 6, 7, 13 |
 | 6. Ecosystem, timing and deal economics | 10 |

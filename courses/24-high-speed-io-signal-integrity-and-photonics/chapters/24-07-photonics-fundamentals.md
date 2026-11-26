@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 24-07 · Photonics Fundamentals
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The intensity-modulated direct-detection lectures of an optical-communications course: fiber loss and dispersion, laser and modulator choices, Mach–Zehnder and ring modulators, photodetection and receiver sensitivity, link budgets and wavelength multiplexing (Agrawal, *Fiber-Optic Communication Systems*, chapters on fibers, transmitters, receivers and system design; Saleh & Teich, *Fundamentals of Photonics*, chapters on modulators and detectors) |
 | **Prerequisites** | [04-09](../../04-physics-for-ee/chapters/04-09-waves-and-optics.md) (waves, refraction, fiber acceptance), [04-10](../../04-physics-for-ee/chapters/04-10-intro-quantum-mechanics.md) (photons, responsivity), [09-14](../../09-semiconductor-devices/chapters/09-14-optoelectronic-devices.md) (photodiodes and laser diodes), [24-02](24-02-eye-diagrams-jitter-ber.md) (Q and BER), [24-06](24-06-d2d-memory-phys-scale-up.md) (the energy ladder) |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-25 |
+| **Last verified** | 2026-11-26 |
 
 **Learning objectives.** After this chapter you can:
 

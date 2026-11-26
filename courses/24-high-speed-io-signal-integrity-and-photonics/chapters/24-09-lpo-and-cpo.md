@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 24-09 · Linear-Drive and Co-Packaged Optics
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | A graduate seminar or industry short course on datacenter optical interconnect architecture: linear and retimed optical links, co-packaged optics, external laser sources, and the reliability and serviceability analysis that decides between them (no single textbook; the closest are conference tutorials at OFC and ECOC and the OIF and LPO MSA specifications) |
 | **Prerequisites** | [24-08](24-08-silicon-photonics.md) (pluggables, the DSP, retimed against linear links), [24-07](24-07-photonics-fundamentals.md) (link budgets), [24-03](24-03-serdes-architecture.md) (SerDes equalization), [24-01](24-01-signal-integrity-fundamentals.md) (channel loss in dB), [03-05](../../03-probability-statistics-and-random-variables/chapters/03-05-estimation-and-hypothesis-testing.md) (confidence bounds and the rule of three) |
 | **Estimated study hours** | 4 |
-| **Last verified** | 2026-11-25 |
+| **Last verified** | 2026-11-26 |
 
 **Learning objectives.** After this chapter you can:
 
@@ -22,11 +22,11 @@
 
 ## 1. Big picture
 
-24-08 found that a retimed pluggable transceiver costs about 20 pJ/bit and that a cluster of 100,000 GPUs can spend megawatts on optics. There are two ways to cut that. **Linear pluggable optics (LPO)** keep the pluggable form factor but remove its DSP, letting the switch's own SerDes equalize the whole link; **linear receive optics (LRO)** remove only the receive half. **Co-packaged optics (CPO)** go further: they move the optical engines onto the switch package, a few millimetres from the ASIC, so the long electrical trace to the front panel disappears, and they feed the engines from shared, replaceable external lasers. Each step saves power and costs flexibility, serviceability or ecosystem maturity. This chapter quantifies both sides.
+24-08 found that a retimed pluggable transceiver costs about 20 pJ/bit (Example 24-08.8) and that a cluster of 100,000 GPUs can spend megawatts on optics (Problem 24-08.13). There are two ways to cut that. **Linear pluggable optics (LPO)** keep the pluggable form factor but remove its DSP, letting the switch's own SerDes equalize the whole link; **linear receive optics (LRO)** remove only the receive half. **Co-packaged optics (CPO)** go further: they move the optical engines onto the switch package, a few millimetres from the ASIC, so the long electrical trace to the front panel disappears, and they feed the engines from shared, replaceable external lasers. Each step saves power and costs flexibility, serviceability or ecosystem maturity. This chapter quantifies both sides.
 
 - **Every AI fabric switch** is a candidate: 102.4 Tb/s switches have 512 lanes of 200 Gb/s.
 - **NVIDIA and Broadcom** announced CPO switches in production or shipping in 2025–2026; LPO has a multi-source agreement with published specifications.
-- **The savings are large** (4.6 to 5.1 times less optics power per port by Broadcom's figures, Example 24-09.1), but the evidence on reliability and serviceability is thin.
+- **The savings are large** (3.3 to 5.1 times less optics power per port by Broadcom's figures, depending on the pluggable baseline; Example 24-09.1), but the evidence on reliability and serviceability is thin.
 - **The business model changes**: pluggables are a competitive, multi-vendor market; CPO ties the optics to the switch vendor's package and supply chain.
 - **Acquisitions follow**: Marvell's purchase of Celestial AI priced optical interconnect for scale-up at billions of dollars.
 
@@ -61,7 +61,7 @@ $$
 E_{bit} \approx E_{SerDes}(\text{channel loss}) + E_{DSP} + E_{driver/TIA} + E_{laser},
 $$
 
-where the host SerDes energy grows with the loss it must equalize (24-03, 24-04), the module DSP costs several pJ/bit (24-08), and the optical front end and laser add the rest.
+where the host SerDes energy grows with the loss it must equalize (24-03, 24-04), the module DSP costs a few pJ/bit (Semtech's figures in Example 24-08.8, about 20 W for a digital 1.6 Tb/s module against under 15 W for linear receive, put the receive-side DSP functions at about 3.1 pJ/bit), and the optical front end and laser add the rest.
 
 **Reading decibels.** Electrical loss in dB is a power ratio: 22 dB to 4 dB is an 18 dB reduction, a factor of $10^{1.8}$ = 63.1 in power and 7.94 in amplitude. NVIDIA's "63x greater signal integrity" is this ratio [R-543]. Its later Rubin material says "64x" and "optical loss" for the same 22-to-4 dB change [R-550]: 64 would be 18.06 dB, and the loss in question is the electrical channel's. Small inconsistencies like these are normal in marketing copy and worth noticing.
 
@@ -70,12 +70,12 @@ where the host SerDes energy grows with the loss it must equalize (24-03, 24-04)
 An **LPO** module keeps linear drivers, modulators, photodiodes and TIAs but has no DSP and no clock recovery. The host SerDes's transmit FFE pre-distorts for the host trace, the module and the optics together, and the far host's receiver (CTLE, FFE, DFE, CDR) equalizes everything in between. Three consequences follow.
 
 1. **The segments' impairments add.** As 24-08 derived, noise-like impairments of a linear chain add as $1/Q^2 = \sum_i 1/Q_i^2$, so each segment's budget shrinks.
-2. **The module must be linear.** A retimed module can use limiting (saturating) amplifiers; a linear one must preserve the PAM4 levels' spacing end to end, which costs some of the power saved.
+2. **The module must be linear.** In a retimed module the DSP can pre-distort its own driver and equalize its own TIA, so the analog parts need only be linear enough for that local correction. A linear module has no such correction: its drivers and TIAs must keep the four PAM4 levels evenly spaced across the whole chain, to a specified linearity, which costs some of the power saved.
 3. **Host and module are co-qualified.** The link works only if this host's SerDes can equalize this module's response. Interoperability therefore needs a specification of the module's linear behaviour, which is what the LPO multi-source agreement (MSA) provides.
 
 The **LPO MSA** formed on 21 March 2024 with 12 founders, including AMD, Arista, Broadcom, Cisco, Intel and NVIDIA. It published 100G-DR-LPO (100 Gb/s per lane, single-mode, up to 800 GbE) in March 2025 and 400G-FR4-LPO (four WDM lanes) in September 2025 [R-541].
 
-**Why 200 Gb/s per lane is harder.** At twice the rate the host channel loses more, the optics' bandwidth is tighter and each segment's $Q$ falls; Example 24-09.3 shows the linear margin shrinking by more than a decibel when only the optical segment degrades. This is the main argument for **LRO** (linear receive optics), which keeps a DSP in the transmit path, so the module retimes what it sends but passes received signals linearly to the host. Juniper describes LRO as offering "roughly half the power and cost savings compared to LPO", and an IEEE overview argues it is the better near-term choice at 200 Gb/s per lane, where initial 1.6 Tb/s LPO needed over 30 W against below 20 W promised for LRO [R-542].
+**Why 200 Gb/s per lane is harder.** At twice the rate the host channel loses more, the optics' bandwidth is tighter and each segment's $Q$ falls; Example 24-09.3 shows the linear margin shrinking by more than a decibel when only the optical segment degrades. This is the main argument for **LRO** (linear receive optics), which keeps a DSP in the transmit path, so the module retimes what it sends but passes received signals linearly to the host. Juniper describes LRO as offering "roughly half the power and cost savings compared to LPO", and an IEEE overview argues it is the better near-term choice at 200 Gb/s per lane, because initial 1.6 Tb/s modules needed over 30 W, against below 20 W promised for LRO [R-542].
 
 ### 3.3 Co-packaged optics
 
@@ -87,17 +87,17 @@ A **CPO** switch places **optical engines** (a PIC stacked with its EIC, 24-08) 
 
 | Generation | Switch | Watts per 800G port |
 |---|---|---|
-| TH4-Humboldt | 25.6 Tb/s, 4 × 3.2 Tb/s engines | ≈ 6.4 |
+| TH4-Humboldt | 25.6 Tb/s, 4 × 3.2 Tb/s engines (12.8 Tb/s: only half the switch's capacity was co-packaged) | ≈ 6.4 |
 | TH5-Bailly | 51.2 Tb/s, 8 × 6.4 Tb/s engines | 5.5 |
 | TH6-Davisson | 102.4 Tb/s, 16 × 6.4 Tb/s engines, 200 Gb/s lanes, ELSFP lasers | ≈ 3.5 |
 
-against about 16–18 W for pluggables on the same switch, consistent with 24-08's 16 W module [R-533]. Example 24-09.1 converts these to energy per bit.
+against about 16–18 W for 800 Gb/s pluggables, as quoted with the Humboldt figures [R-545] and consistent with 24-08's 16 W module [R-533]. Example 24-09.1 converts these to energy per bit.
 
 ### 3.4 Reliability and serviceability
 
 A pluggable that fails is pulled from the front panel and replaced in minutes, and the failure takes out one port. A failed CPO engine may take out every port it serves and, unless the design allows otherwise, require replacing the switch. Two quantities matter:
 
-- **The failure rate** $\lambda$, often quoted in **FIT** (failures per 10⁹ device-hours).
+- **The failure rate** $\lambda$, often quoted in **FIT** (failures per 10⁹ unit-hours, where the unit is whatever is counted: a module, an engine or, below, a link).
 - **The blast radius and repair time**: how many ports one failure removes, and for how long.
 
 With constant failure rates, the expected port-hours lost per port per year is
@@ -106,21 +106,21 @@ $$
 U = \lambda \times 8766\ \text{h} \times \frac{(\text{ports lost per failure}) \times \text{MTTR}}{\text{ports per failing unit}},
 $$
 
-where MTTR is the mean time to repair and 8766 h is an average year. A larger blast radius and longer repair multiply directly; a lower failure rate must compensate.
+where MTTR is the mean time to repair and 8766 h is an average year. When a failure takes down exactly the ports its unit serves, the port counts cancel and $U = \lambda_{unit} \times 8766\ \text{h} \times \text{MTTR}$: every port suffers the failure rate of the whole unit it shares. The blast radius therefore acts through $\lambda_{unit}$, which grows with the ports and components one unit carries, and through collateral damage: a failure that forces a switch swap takes down more ports than the failing unit serves. Repair time multiplies directly.
 
-**What a zero-failure test proves.** If $N$ devices run for a total of $T$ device-hours with no failures, and failures are exponential with rate $\lambda$, the probability of seeing none is $e^{-\lambda T}$. The rate at which that probability is only 5% is the 95% upper confidence bound:
+**What a zero-failure test proves.** If $N$ units run for a total of $T$ unit-hours with no failures, and each fails independently at a constant rate $\lambda$, the number of failures is Poisson with mean $\lambda T$, so the probability of seeing none is $e^{-\lambda T}$. The rate at which that probability is only 5% is the 95% upper confidence bound:
 
 $$
 e^{-\lambda_U T} = 0.05 \quad\Longrightarrow\quad \lambda_U = \frac{-\ln 0.05}{T} = \frac{3.00}{T}.
 $$
 
-This is the rule of three of 03-05. Broadcom reported one million cumulative device-hours of flap-free CPO operation at Meta in a high-temperature lab [R-546]; Example 24-09.6 shows this bounds the failure rate only to about 3,000 FIT, and that a claim of 100 FIT needs 30 million device-hours without failure. The comparison was also asymmetric: pluggable failure rates came from field data, CPO's from lab stress [R-546].
+This is the rule of three of 03-05. Broadcom reported one million cumulative link-hours without a link flap (a link dropping and retraining) in testing at Meta, in a high-temperature lab [R-546]. The unit is the link, so the bound is per link: Example 24-09.6 shows it bounds the link failure rate only to about 3,000 FIT, and that a claim of 100 FIT per link needs 30 million link-hours without failure. The comparison was also asymmetric: pluggable failure rates came from field data, CPO's from lab stress [R-546].
 
-> **Going deeper — the chi-square form.** With $r$ failures in $T$ device-hours, the two-sided machinery gives $\lambda_U = \chi^2_{0.95,\,2r+2}/(2T)$. For $r$ = 0, $\chi^2_{0.95,2}$ = 5.99, so $\lambda_U = 3.00/T$, the same rule of three. Each observed failure raises the bound, which is why reliability engineers prefer long tests with a few failures to short ones with none.
+> **Going deeper — the chi-square form.** For a time-terminated test (stopped at a fixed $T$ unit-hours) with $r$ failures, the one-sided 95% upper bound is $\lambda_U = \chi^2_{0.95,\,2r+2}/(2T)$, where $\chi^2_{0.95,\,k}$ is the 95th percentile of the chi-square distribution with $k$ degrees of freedom. It is the rate at which $r$ or fewer failures would occur only 5% of the time; the identity $P(\text{Poisson}(\mu) \le r) = P(\chi^2_{2r+2} > 2\mu)$ turns that condition into a chi-square percentile. For $r$ = 0, $\chi^2_{0.95,2}$ = 5.99, so $\lambda_U = 3.00/T$, the same rule of three. Exposure dominates: 2 failures in $10T$ give $\chi^2_{0.95,6}/(20T)$ = 12.59/(20T) = $0.63/T$, a tighter bound than $3.00/T$ from none in $T$. Failures also give a rate estimate ($r/T$) and a mechanism to fix, which a zero-failure test cannot.
 
 ### 3.5 Ecosystem and economics
 
-**Pluggables** are a mature multi-vendor market: standard form factors, many suppliers, a switch vendor that need not make optics, and an operator that can buy optics separately, mix suppliers and replace failures at the faceplate. **LPO** keeps the form factor but couples host and module qualification. **CPO** changes the industry structure: the optical engines become part of the switch's package and bill of materials, so the switch vendor and its foundry and packaging partners capture the optical value, and the operator gives up mixing suppliers. NVIDIA named a five-vendor chain for its CPO switch in August 2026: TSMC for silicon photonics, SPIL for packaging and test, Lumentum for laser chips, TFC Communication for laser subassemblies and Foxconn for system assembly [R-544]. One analysis calls CPO "an architectural commitment" rather than a component choice [R-549].
+**Pluggables** are a mature multi-vendor market: standard form factors, many suppliers, a switch vendor that need not make optics, and an operator that can buy optics separately, mix suppliers and replace failures at the faceplate. **LPO** keeps the form factor but couples host and module qualification. **CPO** changes the industry structure: the optical engines become part of the switch's package and bill of materials, so the switch vendor and its foundry and packaging partners capture the optical value, and the operator gives up mixing suppliers. In August 2026, as reported by StorageReview, NVIDIA's CPO switch had a five-vendor chain: TSMC for silicon photonics, SPIL for packaging and test, Lumentum for laser chips, TFC Communication for laser subassemblies and Foxconn for system assembly [R-544]. One analysis calls CPO "an architectural commitment" rather than a component choice [R-549].
 
 **Scale-up is the next battleground.** Copper still carries most scale-up links inside a rack (24-06), but optical scale-up is where several companies place their bets. Marvell's acquisition of Celestial AI (signed 2 December 2025, closed 2 February 2026) paid about $3.25 B upfront for a photonic-fabric chiplet claimed at 16 Tb/s, with up to $2.25 B more contingent on revenue [R-547]. Example 24-09.8 works out the multiples.
 
@@ -134,12 +134,12 @@ This is the rule of three of 03-05. Broadcom reported one million cumulative dev
 
 - $6.4/800$ Gb/s = **8.0** pJ/bit; Bailly **6.9**; Davisson **4.4** pJ/bit.
 - Pluggables: **20** to **22.5** pJ/bit.
-- Davisson against pluggables: $1 - 3.5/16$ = **78**% to $1 - 3.5/18$ = **81**%, consistent with Broadcom's "~70% reduction".
+- Davisson against pluggables: $1 - 3.5/16$ = **78**% to $1 - 3.5/18$ = **81**%, more than Broadcom's own "~70% reduction" (see the sanity check).
 - Davisson against Humboldt: $1 - 3.5/6.4$ = **45**%.
 
 **Units check.** W ÷ (Gb/s) = nJ/bit; × 1000 = pJ/bit. ✓
 
-**Sanity check.** Each CPO generation improved, but most of the saving came with the first step off the faceplate. Note that a "~70%" claim against a 16–18 W baseline is conservative arithmetic, a rare case of marketing understating.
+**Sanity check.** Each CPO generation improved, but most of the saving came with the first step off the faceplate. Broadcom's "~70%" does not match a 16–18 W baseline: 3.5 W is a 70% cut only from about 11.7 W, a ratio of 3.3 (Problem 24-09.12). The sources here do not state Broadcom's baseline; a newer pluggable, for example one built on 200 Gb/s lanes, is one possibility. Ask which pluggable before comparing.
 
 ### Example 24-09.2 · Reading NVIDIA's claims (tier B)
 
@@ -148,7 +148,7 @@ This is the rule of three of 03-05. Broadcom reported one million cumulative dev
 **Solution.**
 
 - (a) At 1.6 Tb/s: **15.6** and **3.1** pJ/bit. At 800 Gb/s: **31** and **6.25** pJ/bit.
-- (b) $9 \times 3.5$ = **31.5** W, a different accounting from 2026's 25 W.
+- (b) Pairing the two figures is our inference (NVIDIA quoted them in separate releases): $9 \times 3.5$ = **31.5** W, a different accounting from 2026's 25 W.
 - (c) $10^{1.8}$ = **63.1** in power; $10^{0.9}$ = **7.94** in amplitude.
 
 **Units check.** W ÷ (bit/s) = J/bit. ✓
@@ -200,31 +200,34 @@ This is the rule of three of 03-05. Broadcom reported one million cumulative dev
 
 ### Example 24-09.6 · What zero failures prove (tier B)
 
-**Setup.** CPO links ran one million device-hours at Meta without a failure [R-546]. Assuming exponential lifetimes, find (a) the 95% upper bound on the failure rate in FIT, (b) the corresponding lower bound on MTBF, (c) the test's length in device-years, and (d) the zero-failure device-hours needed to claim 100 FIT at 95% confidence.
+**Setup.** CPO links ran one million link-hours at Meta without a failure [R-546]. Assuming exponential lifetimes, find (a) the 95% upper bound on the failure rate in FIT, (b) the corresponding lower bound on MTBF, (c) the test's length in device-years, and (d) the zero-failure device-hours needed to claim 100 FIT at 95% confidence.
 
 **Solution.**
 
 - (a) $\lambda_U = 3.00/10^6$ h = **3.0e3** FIT.
 - (b) MTBF ≥ $10^6/3.00$ = **3.3e5** h.
-- (c) $10^6/8766$ = **114** device-years.
-- (d) $3.00/(100 \times 10^{-9})$ = **30** million device-hours.
+- (c) $10^6/8766$ = **114** link-years.
+- (d) $3.00/(100 \times 10^{-9})$ = **30** million link-hours.
 
-**Units check.** FIT = failures per 10⁹ device-hours. ✓
+**Units check.** FIT = failures per 10⁹ unit-hours, here link-hours. ✓
 
-**Sanity check.** A million hours sounds long, but spread over many devices it is about 114 device-years; with no failures it rules out only failure rates above about 3,000 FIT. Reliability claims need orders of magnitude more exposure, or failures to measure.
+**Sanity check.** A million hours sounds long, but spread over many links it is about 114 link-years; with no failures it rules out only failure rates above about 3,000 FIT. Reliability claims need orders of magnitude more exposure, or failures to measure.
 
 ### Example 24-09.7 · Blast radius (tier B)
 
-**Setup.** Illustrative values (public field data are scarce): a pluggable fails at 200 FIT, takes out one port and is replaced in 1 h; a CPO engine serving 8 ports of 800 Gb/s fails at 400 FIT and takes 24 h to restore. Find (a) the port-hours lost per port per year in each case and (b) their ratio.
+**Setup.** Illustrative values (public field data are scarce): a pluggable fails at 200 FIT, takes out one port and is replaced in 1 h; a CPO engine serving 8 ports of 800 Gb/s fails at 400 FIT and takes 24 h to restore. Find (a) the port-hours lost per port per year in each case and (b) their ratio. (c) Repeat for the CPO port if every engine failure forces a switch swap that takes all 128 ports of a 102.4 Tb/s switch down for the 24 h.
+
+Note that 400 FIT per engine is 50 FIT per port served, four times better per port than the pluggable: an assumption favourable to CPO, chosen so that the comparison isolates blast radius and repair time.
 
 **Solution.**
 
-- (a) Pluggable: $200 \times 10^{-9} \times 8766 \times 1$ = **1.75e-3** port-hours. CPO: $400 \times 10^{-9} \times 8766 \times 8 \times 24/8$ = **0.084** port-hours.
-- (b) **48**.
+- (a) Pluggable: $200 \times 10^{-9} \times 8766 \times 1$ = **1.75e-3** port-hours. CPO: each engine failure costs 8 ports × 24 h, shared by the 8 ports the engine serves, so $400 \times 10^{-9} \times 8766 \times 8 \times 24/8$ = **0.084** port-hours. The 8s cancel, as §3.4 noted: each port sees the engine's whole failure rate.
+- (b) $0.084/1.75 \times 10^{-3}$ = **48**: 2 from the engine's higher rate times 24 from the repair time.
+- (c) Now 128 ports are lost per engine failure: $400 \times 10^{-9} \times 8766 \times 128 \times 24/8$ = **1.35** port-hours, **768** times the pluggable's. Equivalently, the switch's 16 engines fail at 16 × 400 FIT, and each such failure takes down every port for 24 h.
 
 **Units check.** (failures/h) × h/yr × (port-hours per failure)/port = port-hours per port-year. ✓
 
-**Sanity check.** Even at 48 times the pluggable's, the CPO port is unavailable for about 5 minutes a year; the real question is whether the fabric routes around a lost engine and whether the failure is in a replaceable part. ELSFP makes the lasers field-replaceable for exactly this reason [R-548].
+**Sanity check.** Even at 48 times the pluggable's, the CPO port is unavailable for about 5 minutes a year, and about 81 minutes with switch swaps; the real question is whether the fabric routes around a lost engine and whether the failure is in a replaceable part. ELSFP makes the lasers field-replaceable for exactly this reason [R-548].
 
 ### Example 24-09.8 · Pricing an optical-interconnect acquisition (tier A)
 
@@ -286,12 +289,15 @@ This is the rule of three of 03-05. Broadcom reported one million cumulative dev
 | Ex 24-09.6a0 | -ln(0.05) | 3.00 | |
 | Ex 24-09.6a | FIT bound | 3.0e3 | FIT |
 | Ex 24-09.6b | MTBF bound | 3.3e5 | h |
-| Ex 24-09.6c | device-years | 114 | |
+| Ex 24-09.6c | link-years | 114 | |
 | Ex 24-09.6d | hours for 100 FIT | 30 | million h |
 | Ex 24-09.7a | pluggable port-hours lost | 1.75e-3 | port-h/yr |
 | Ex 24-09.7a1 | CPO port-hours lost | 0.084 | port-h/yr |
 | Ex 24-09.7b | ratio | 48 | |
 | Ex 24-09.7c | CPO minutes per year | 5 | min |
+| Ex 24-09.7d | CPO port-hours lost, switch swap | 1.35 | port-h/yr |
+| Ex 24-09.7d1 | ratio, switch swap | 768 | |
+| Ex 24-09.7d2 | minutes per year, switch swap | 81 | min |
 | Ex 24-09.8a | implied share price | 82.7 | $ |
 | Ex 24-09.8b | maximum consideration | 5.5 | $B |
 | Ex 24-09.8c | upfront over FY2028 target | 6.5 | |
@@ -302,6 +308,12 @@ This is the rule of three of 03-05. Broadcom reported one million cumulative dev
 | Txt 24-09.c | margin lost at 200G | 1.3 | dB |
 | Txt 24-09.d | pluggable over Davisson at 16 W | 4.6 | |
 | Txt 24-09.e | pluggable over Davisson at 18 W | 5.1 | |
+| Txt 24-09.f | receive-side DSP energy, Semtech | 3.1 | pJ/bit |
+| Txt 24-09.g | Humboldt co-packaged capacity | 12.8 | Tb/s |
+| Txt 24-09.h | chi-square 95%, 6 dof | 12.59 | |
+| Txt 24-09.i | bound from 2 failures in 10T | 0.63 | 1/T |
+| Txt 24-09.j | baseline for exactly 70% | 11.7 | W |
+| Txt 24-09.k | pluggable over Davisson at 11.7 W | 3.3 | |
 
 ## 5. Simulate it
 
@@ -311,9 +323,9 @@ The lab is [labs/24-09-lab/](../labs/24-09-lab/README.md). `cpo.py` computes lin
 
 *Figure 1. Power per 800 Gb/s port by vendor figures: retimed pluggables (16–18 W) and Broadcom's Humboldt, Bailly and Davisson CPO (6.4, 5.5 and 3.5 W) [R-545]. The right axis gives energy per bit.*
 
-![Ninety-five percent upper bound on failure rate in FIT against zero-failure device-hours, with one, fifteen and fifty million hours marked](../../../assets/figures/24-09/zero-failure.svg)
+![Ninety-five percent upper bound on failure rate in FIT against zero-failure unit-hours, with one, fifteen and fifty million hours marked](../../../assets/figures/24-09/zero-failure.svg)
 
-*Figure 2. What a zero-failure test proves: the 95% upper bound on failure rate falls as 3.00/T. One million device-hours bounds the rate at about 3,000 FIT; 100 FIT needs 30 million.*
+*Figure 2. What a zero-failure test proves: the 95% upper bound on failure rate falls as 3.00/T. One million link-hours bounds the rate at about 3,000 FIT per link; 100 FIT needs 30 million.*
 
 **Predict, then run:**
 
@@ -327,30 +339,32 @@ The lab is [labs/24-09-lab/](../labs/24-09-lab/README.md). `cpo.py` computes lin
 |---|---|---|---|
 | LPO instead of retimed pluggable | Power, latency, module cost | Link margin, host–module co-qualification, harder at 200G | Network architect with switch and optics vendors |
 | LRO instead of LPO | Robustness of the transmit side | About half of LPO's savings | Network architect |
-| CPO instead of pluggables | Power (4.6–5.1× per port by vendor figures), signal integrity | Serviceability, blast radius, supplier choice | Switch vendor and hyperscaler |
+| CPO instead of pluggables | Power (3.3–5.1× per port by vendor figures, depending on the baseline), signal integrity | Serviceability, blast radius, supplier choice | Switch vendor and hyperscaler |
 | More lanes per external laser | Fewer lasers, lower cost | Laser power, larger blast radius of a laser failure | Optical engine architect |
 | Field-replaceable ELSFP lasers | Serviceability of the laser | Front-panel space, fiber between laser and engine | Switch system architect |
 | Longer qualification before deployment | Confidence in failure rates | Time to market | Reliability engineering and operator |
 
 ## 7. Numbers to know
 
-| Quantity | Value | Source |
-|---|---|---|
-| Pluggable electrical path at 200 Gb/s | up to ≈ 22 dB; CPO ≈ 4 dB | [R-543] |
-| Retimed pluggable, 800 Gb/s | 16–18 W per port, 20–22.5 pJ/bit | [R-533], [R-545] |
-| Broadcom CPO per 800G port | 6.4 → 5.5 → 3.5 W (Humboldt → Bailly → Davisson) | [R-545] |
-| LPO MSA specifications | 100G-DR-LPO (Mar 2025), 400G-FR4-LPO (Sep 2025) | [R-541] |
-| ELSFP power classes | 11 to 26 dBm per wavelength per core | [R-548] |
-| Spectrum-6 / Davisson switch | 102.4 Tb/s, 512 lanes of 200 Gb/s | [R-550], [R-545] |
-| Zero-failure 95% bound | $\lambda_U = 3.00/T$ | §3.4 |
-| Next lane rate | 400 Gb/s per lane in development (OFC 2026) | [R-551] |
+Perishable rows are as of Nov 2026; the date column gives the source's own date.
+
+| Quantity | Value | Dated | Source |
+|---|---|---|---|
+| Pluggable electrical path at 200 Gb/s | up to ≈ 22 dB; CPO ≈ 4 dB | NVIDIA, Aug 2025 | [R-543] |
+| Retimed pluggable, 800 Gb/s | 16–18 W per port, 20–22.5 pJ/bit | datasheet read Nov 2026; press Oct 2025 | [R-533], [R-545] |
+| Broadcom CPO per 800G port | 6.4 → 5.5 → 3.5 W (Humboldt → Bailly → Davisson) | Oct 2025 | [R-545] |
+| LPO MSA specifications | 100G-DR-LPO, 400G-FR4-LPO | Mar 2025, Sep 2025 | [R-541] |
+| ELSFP power classes | 11 to 26 dBm per wavelength per core | OIF-ELSFP-02.0, Jan 2025 | [R-548] |
+| Spectrum-6 / Davisson switch | 102.4 Tb/s, 512 lanes of 200 Gb/s | 2026 / Oct 2025 | [R-550], [R-545] |
+| Zero-failure 95% bound | $\lambda_U = 3.00/T$ | timeless | §3.4 |
+| Next lane rate | 400 Gb/s per lane in development | OFC 2026 | [R-551] |
 
 ## 8. Common mistakes
 
 - **Quoting a power multiplier without its baseline.** "5×" against a 25 W port is a different claim from "3.5×" against 31.5 W.
 - **Assuming "per port" means the same speed everywhere.** Convert to pJ/bit with an explicit rate.
 - **Treating a linear link's segments as independent.** Their impairments add in $1/Q^2$; budgets must be shared.
-- **Reading zero failures as zero failure rate.** With $T$ device-hours, the 95% bound is $3/T$, not zero.
+- **Reading zero failures as zero failure rate.** With $T$ unit-hours, the 95% bound is $3/T$, not zero.
 - **Comparing lab-stress CPO data with field pluggable data** as if they were like for like.
 - **Ignoring the blast radius.** A failure that removes 8 or 16 ports and needs a switch swap costs more than eight pluggable failures.
 - **Confusing optical and electrical loss** in vendor material: the 22-to-4 dB reduction is the electrical channel's.
@@ -361,10 +375,10 @@ The lab is [labs/24-09-lab/](../labs/24-09-lab/README.md). `cpo.py` computes lin
 
 - *LPO and LRO* [Established for the MSA; savings contested]. The LPO MSA has published 100G-DR-LPO and 400G-FR4-LPO and had over 50 members by September 2025 [R-541]. For 200 Gb/s lanes, LRO is argued to be the near-term choice; estimates of the savings differ: Semtech claims 50–60% for LPO/LRO against retimed modules, and Juniper puts LRO at about half of LPO's savings [R-535], [R-542].
 - *NVIDIA CPO* [Established that production was announced; performance is vendor-stated]. Spectrum-X Ethernet Photonics entered full production in August 2026 with the five-vendor supply chain above; NVIDIA has not disclosed volumes [R-544]. Its claims evolved from "3.5x" power efficiency (March 2025) to "5x" (2026), and from "10x" to "15x" resiliency [R-543]. Spectrum-6 switches 102.4 Tb/s with 200 Gb/s SerDes [R-550].
-- *Broadcom CPO* [Industry estimate: vendor figures relayed by press]. TH6-Davisson (102.4 Tb/s, 16 × 6.4 Tb/s engines, ELSFP lasers on TSMC COUPE) was announced as shipping on 8 Oct 2025, though press accounts also describe early-access sampling with general availability to follow; a fourth generation at 400 Gb/s per channel is in development [R-545].
-- *Reliability* [Contested]. One million flap-free device-hours at Meta, lab-based and relayed by the vendor and press; later, larger figures are unconfirmed [R-546].
+- *Broadcom CPO* [Industry estimate: vendor figures relayed by press]. TH6-Davisson (102.4 Tb/s, 16 × 6.4 Tb/s engines on TSMC COUPE, fed by ELSFP lasers) was announced as shipping on 8 Oct 2025, though press accounts also describe early-access sampling with general availability to follow; a fourth generation at 400 Gb/s per channel is in development [R-545].
+- *Reliability* [Contested]. One million flap-free link-hours at Meta, lab-based and relayed by the vendor and press; later, larger figures are unconfirmed [R-546].
 - *Timing views* [Contested]. Cignal AI (March 2025) expected large-scale CPO deployment in 3–5 years; LightCounting (March 2024) expected retimed pluggables to dominate for at least five years, while forecasting LPO and CPO above 30% of 800G and 1.6T ports deployed in 2026–2028 [R-549].
-- *Deals and roadmaps* [Established for deal terms]. Marvell closed its Celestial AI acquisition on 2 Feb 2026 [R-547]. At OFC 2026, 400 Gb/s per lane became the next development target, and new MSAs (OCI, Open CPX, XPO) appeared around CPO and scale-up [R-551].
+- *Deals and roadmaps* [Established for deal terms; the OFC read-out is Industry estimate: Lumentum's view]. Marvell closed its Celestial AI acquisition on 2 Feb 2026 [R-547]. At OFC 2026, in Lumentum's read-out, 400 Gb/s per lane became the next development target, and new MSAs (OCI, Open CPX, XPO) appeared around CPO and scale-up [R-551].
 
 **Why it matters commercially.** LPO keeps value with module vendors but shifts the burden of qualification to host SerDes vendors; CPO moves value to whoever owns the switch package, its foundry and its laser supply. For a corporate-development team, the questions are which layer each target occupies, whether its customers are committed to CPO or hedging with LPO/LRO, and how exposed it is to a slower-than-promised transition.
 
@@ -372,14 +386,14 @@ The lab is [labs/24-09-lab/](../labs/24-09-lab/README.md). `cpo.py` computes lin
 
 - *"5x better power efficiency."* Against what pluggable, at what port speed, including the host SerDes or not [R-543]?
 - *"63x (or 64x) better signal integrity."* That is 18 dB of electrical loss; it says nothing about BER margin after equalization.
-- *"One million hours without a failure."* About 114 device-years, bounding the failure rate only to about 3,000 FIT, in a lab [R-546].
+- *"One million hours without a failure."* About 114 link-years, bounding the link failure rate only to about 3,000 FIT, in a lab [R-546].
 - *"Now shipping."* To whom, in what volume, and is it general availability or early access [R-545]?
-- *"~70% lower optics power."* Against 16–18 W pluggables the arithmetic gives 78–81%: check the baseline before celebrating or doubting.
+- *"~70% lower optics power."* Against 16–18 W pluggables the arithmetic gives 78–81%; exactly 70% implies an unstated baseline of about 11.7 W. Ask for the baseline before celebrating or doubting.
 
 **Questions for engineering leaders.**
 
 1. **"What happens operationally when an optical engine fails?"** *Strong:* ports affected, whether traffic reroutes, what is field-replaceable, and the measured repair time. *Evasive:* "CPO is more reliable than pluggables."
-2. **"What field reliability data do you have, in device-hours and failures?"** *Strong:* device-hours, failures observed, confidence bounds, field against lab. *Evasive:* "zero failures in testing."
+2. **"What field reliability data do you have, in unit-hours and failures?"** *Strong:* module-, engine- or link-hours, failures observed, confidence bounds, field against lab. *Evasive:* "zero failures in testing."
 3. **"How much link margin does your LPO solution leave at 200 Gb/s per lane, with which host SerDes?"** *Strong:* a named host, measured BER before FEC, margin across temperature. *Evasive:* "it is MSA compliant."
 4. **"Who supplies your lasers and engines, and can a second source drop in?"** *Strong:* named suppliers, ELSFP interoperability, qualified alternates. *Evasive:* "we have strategic partners."
 5. **"What is your power per port, at what speed, against which pluggable baseline?"** *Strong:* watts, rate, and whether host SerDes power is included. *Evasive:* a multiplier.
@@ -418,11 +432,11 @@ The laser is removed from the hot switch package, and it becomes field-replaceab
 
 </details>
 
-**Q5.** One million device-hours passed without failure. What failure rate can you claim at 95% confidence?
+**Q5.** One million link-hours passed without failure. What failure rate can you claim at 95% confidence?
 
 <details><summary>Answer</summary>
 
-At most $3.00/10^6$ h, about 3,000 FIT. Claiming 100 FIT would need about 30 million failure-free device-hours.
+At most $3.00/10^6$ h, about 3,000 FIT. Claiming 100 FIT per link would need about 30 million failure-free link-hours.
 
 </details>
 

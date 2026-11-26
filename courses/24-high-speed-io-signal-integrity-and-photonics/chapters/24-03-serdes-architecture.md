@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 24-03 · SerDes Architecture and Equalization
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The transceiver-architecture lectures of a graduate high-speed links course: transmitter drivers and feed-forward equalization, CTLE design, decision-feedback equalization and its timing, equalizer adaptation, clock-and-data recovery and clocking (Palermo, Texas A&M ECEN 720 lecture notes; Razavi, *Design of Integrated Circuits for Optical Communications*, chapters on CDR and equalization; Dally & Poulton, *Digital Systems Engineering*, chapters on signalling and timing) |
 | **Prerequisites** | [24-02](24-02-eye-diagrams-jitter-ber.md) (cursors, eyes, jitter tolerance), [17-04](../../17-communication-systems/chapters/17-04-baseband-digital-transmission.md) (ISI, zero-forcing equalizers, NRZ against PAM4), [12-01](../../12-electronics-2/chapters/12-01-differential-pairs.md) (differential pairs and CML), [11-08](../../11-signals-and-systems/chapters/11-08-laplace-transform-and-system-functions.md) (poles, zeros and the reference CTLE), [20-10](../../20-analog-and-mixed-signal-ic-design/chapters/20-10-plls-and-jitter.md) (PLLs) |
 | **Estimated study hours** | 8 |
-| **Last verified** | 2026-11-25 |
+| **Last verified** | 2026-11-26 |
 
 **Learning objectives.** After this chapter you can:
 

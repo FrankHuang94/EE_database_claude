@@ -19,7 +19,7 @@
 
 **Part 2 · Laser sharing** (notebook). *Predict* how many lanes UHP (23 dBm) and SHP (26 dBm) sources can feed with Example 24-09.4's losses, then compute them.
 
-**Part 3 · Zero-failure tests** (notebook). Set the true failure rate equal to the rule-of-three bound for one million device-hours. *Predict* the fraction of simulated tests that see no failures, then simulate 100,000 tests. Then compute the chi-square bounds for 0, 1 and 2 failures.
+**Part 3 · Zero-failure tests** (notebook). Set the true failure rate equal to the rule-of-three bound for one million link-hours. *Predict* the fraction of simulated tests that see no failures, then simulate 100,000 tests. Then compute the chi-square bounds for 0, 1 and 2 failures.
 
 **Part 4 · Blast radius** (notebook). *Predict* the repair time at which a CPO port (400 FIT, 8 ports per engine) loses no more port-hours than a pluggable (200 FIT, 1 h repair), then sweep the repair time.
 

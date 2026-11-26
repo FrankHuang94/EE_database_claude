@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 24-08 · Silicon Photonics and Optical Transceivers
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The integrated-photonics and transceiver lectures of a graduate photonics or optical-communications course: waveguides and their single-mode conditions, fiber-to-chip couplers, photonic integration, transmitter and receiver budgets and transceiver architecture (Chrostowski & Hochberg, *Silicon Photonics Design*, chapters on waveguides, grating and edge couplers, modulators and detectors; Agrawal, *Fiber-Optic Communication Systems*, chapters on transmitters, receivers and system design) |
 | **Prerequisites** | [24-07](24-07-photonics-fundamentals.md) (fiber, modulators, receivers, link budgets), [24-06](24-06-d2d-memory-phys-scale-up.md) (hybrid bonding, shoreline density), [24-04](24-04-dsp-serdes-and-fec.md) (DSP SerDes and FEC), [24-02](24-02-eye-diagrams-jitter-ber.md) (Q and BER), [09-14](../../09-semiconductor-devices/chapters/09-14-optoelectronic-devices.md) (band gaps, photodiodes, lasers), [04-09](../../04-physics-for-ee/chapters/04-09-waves-and-optics.md) (Snell's law, total internal reflection) |
 | **Estimated study hours** | 6 |
-| **Last verified** | 2026-11-25 |
+| **Last verified** | 2026-11-26 |
 
 **Learning objectives.** After this chapter you can:
 

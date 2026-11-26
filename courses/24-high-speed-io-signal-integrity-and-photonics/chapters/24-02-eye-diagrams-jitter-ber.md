@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 24-02 · Eye Diagrams, Jitter and BER
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The link-margin lectures of a graduate high-speed links course: pulse responses and peak-distortion analysis, statistical eyes, jitter decomposition and the dual-Dirac model, bathtub curves, clock-and-data-recovery jitter tolerance and BER testing (Dally & Poulton, *Digital Systems Engineering*, chapters on noise and timing; Palermo, Texas A&M ECEN 720 lecture notes on link modeling and jitter; Bogatin, *Signal and Power Integrity — Simplified*, chapter on eyes) |
 | **Prerequisites** | [24-01](24-01-signal-integrity-fundamentals.md) (channel loss, crosstalk), [17-04](../../17-communication-systems/chapters/17-04-baseband-digital-transmission.md) (ISI, eye diagrams), [17-05](../../17-communication-systems/chapters/17-05-matched-filters-and-detection.md) (Q-function error probabilities), [20-10](../../20-analog-and-mixed-signal-ic-design/chapters/20-10-plls-and-jitter.md) (phase noise and jitter), [03-02](../../03-probability-statistics-and-random-variables/chapters/03-02-random-variables-and-distributions.md) (Gaussian tails) |
 | **Estimated study hours** | 6 |
-| **Last verified** | 2026-11-25 |
+| **Last verified** | 2026-11-26 |
 
 **Learning objectives.** After this chapter you can:
 

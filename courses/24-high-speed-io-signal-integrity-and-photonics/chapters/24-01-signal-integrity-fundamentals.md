@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 24-01 · Signal Integrity Fundamentals
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The opening lectures of a senior or graduate high-speed digital design and signal-integrity course: lossy interconnect, conductor and dielectric loss, S-parameters, discontinuities, crosstalk on coupled lines, return paths and the link to power integrity (Bogatin, *Signal and Power Integrity — Simplified*, chapters on loss, crosstalk and S-parameters; Hall & Heck, *Advanced Signal Integrity for High-Speed Digital Designs*, chapters on lossy lines and crosstalk) |
 | **Prerequisites** | [13-05](../../13-electromagnetics/chapters/13-05-plane-waves.md) (skin depth, surface resistance, dielectric loss), [13-07](../../13-electromagnetics/chapters/13-07-transmission-lines-time-domain.md) (reflections), [13-08](../../13-electromagnetics/chapters/13-08-transmission-lines-sinusoidal-steady-state.md) (propagation constant, low-loss attenuation), [19-05](../../19-digital-vlsi-design/chapters/19-05-interconnect.md) (on-chip coupling), [23-04](../../23-memory-and-storage-technology/chapters/23-04-dram-interfaces.md) (termination and ISI on DRAM buses) |
 | **Estimated study hours** | 7 |
-| **Last verified** | 2026-11-25 |
+| **Last verified** | 2026-11-26 |
 
 **Learning objectives.** After this chapter you can:
 

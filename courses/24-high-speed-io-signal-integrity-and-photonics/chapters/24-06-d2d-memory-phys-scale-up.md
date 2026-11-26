@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 24-06 · Die-to-Die Links, Memory PHYs and Scale-Up Fabrics
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The short-reach and package-level interconnect lectures of a graduate high-speed links or advanced-packaging course: parallel source-synchronous links, energy of unterminated wires, bump pitch and bandwidth density, chiplet interface standards, memory PHYs and accelerator scale-up fabrics (Dally & Poulton, *Digital Systems Engineering*, chapters on signalling energy; Lau, *Chiplet Design and Heterogeneous Integration Packaging*, chapters on die-to-die interfaces) |
 | **Prerequisites** | [24-05](24-05-pcie-cxl-ethernet.md) (standards, scale-up context), [24-03](24-03-serdes-architecture.md) (energy per bit, SerDes power), [23-05](../../23-memory-and-storage-technology/chapters/23-05-hbm-in-depth.md) (HBM and its wire energy), [19-02](../../19-digital-vlsi-design/chapters/19-02-cmos-inverter-dynamic.md) ($CV^2$ switching energy, RC delay) |
 | **Estimated study hours** | 6 |
-| **Last verified** | 2026-11-25 |
+| **Last verified** | 2026-11-26 |
 
 **Learning objectives.** After this chapter you can:
 

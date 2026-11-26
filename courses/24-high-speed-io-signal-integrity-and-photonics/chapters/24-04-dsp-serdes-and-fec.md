@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 24-04 · DSP-Based SerDes and FEC
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The ADC-based receiver and link-coding lectures of a graduate high-speed links course: converter requirements for wireline receivers, digital equalization, maximum-likelihood sequence detection, and forward error correction with its latency (Palermo, Texas A&M ECEN 720 lecture notes on ADC-based links; Proakis & Salehi, *Digital Communications*, chapters on equalization and MLSE; Lin & Costello, *Error Control Coding*, on Reed–Solomon and concatenated codes) |
 | **Prerequisites** | [24-03](24-03-serdes-architecture.md) (FFE, DFE, error propagation), [20-07](../../20-analog-and-mixed-signal-ic-design/chapters/20-07-nyquist-adcs.md) (time-interleaved ADCs), [17-08](../../17-communication-systems/chapters/17-08-channel-coding.md) (Reed–Solomon codes, the Viterbi algorithm, coding gain), [03-04](../../03-probability-statistics-and-random-variables/chapters/03-04-joint-distributions-and-clt.md) (RS(544,514) failure probability) |
 | **Estimated study hours** | 5 |
-| **Last verified** | 2026-11-25 |
+| **Last verified** | 2026-11-26 |
 
 **Learning objectives.** After this chapter you can:
 

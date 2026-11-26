@@ -308,4 +308,24 @@ v.check("Txt 24-07.o", 100 * s_shot ** 2 / sig7 ** 2)
 
 v.check("Lab 24-07.l", 10 ** 0.3)
 v.check("Lab 24-07.m", er_pen(10 ** 0.3))
+# ---------------------------------------------------------------- Problem 14 (MZM linearity derivation)
+def mzm(vd, vpi=1.0, pin=1.0):
+    return pin * np.cos((np.pi / 2 + np.pi * vd / vpi) / 2) ** 2
+
+
+v.check("24-07.14a", mzm(-0.25) - mzm(0.25))
+x14s = math.sqrt(0.6)
+v.check("24-07.14b0", x14s)
+x14 = optimize.brentq(lambda x: math.sin(x) - 0.9 * x, 0.1, 1.5)
+v.check("24-07.14b", x14)
+v.check("24-07.14b1", 2 * x14 / math.pi)
+v.assert_true("OMA from cos^2 at Vpp = 2x/pi is 90% of the linear value",
+              abs((mzm(-x14 / math.pi) - mzm(x14 / math.pi)) / x14 - 0.9) < 1e-9)
+lv = [mzm(k * 0.5 / 6) for k in (-3, -1, 1, 3)]  # Vpp = Vpi/2, levels at +-Vpp/6 and +-Vpp/2
+inner, outer = lv[1] - lv[2], lv[0] - lv[1]
+v.check("24-07.14c", outer / inner)
+v.assert_true("outer/inner equals cos(pi Vpp / 3 Vpi)", abs(outer / inner - math.cos(math.pi * 0.5 / 3)) < 1e-12)
+v.assert_true("upper and lower outer eyes are equal", abs((lv[2] - lv[3]) - outer) < 1e-12)
+v.check("24-07.14c1", 100 * (1 - outer / inner))
+
 sys.exit(v.finish())

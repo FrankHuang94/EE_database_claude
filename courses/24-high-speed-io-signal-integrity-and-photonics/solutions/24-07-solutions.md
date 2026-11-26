@@ -94,6 +94,22 @@ $\lambda^2\Delta f/c$ = **0.572** nm; 16 channels span 15 spacings, **8.59** nm.
 
 $(ER + 1)/(ER - 1) = 10^{0.1}$ gives $ER$ = **8.72**, or **9.41** dB.
 
+### Solution 24-07.14
+
+(a) $\cos^2(\Delta\phi/2) = (1 + \cos\Delta\phi)/2$ and $\cos(\pi/2 + u) = -\sin u$, so $P_{out} = \tfrac{1}{2}P_{in}[1 - \sin(\pi v/V_\pi)]$. At $v = \mp V_{pp}/2$ the levels are $\tfrac{1}{2}P_{in}[1 \pm \sin(\pi V_{pp}/2V_\pi)]$, and their difference is the OMA, $P_{in}\sin(\pi V_{pp}/2V_\pi)$. Check: $V_{pp} = V_\pi/2$ gives $\sin(\pi/4)$ = **0.707**, Example 24-07.5's OMA.
+
+(b) Write $x = \pi V_{pp}/2V_\pi$. Since $\sin x = x - x^3/6 + \dots$, the OMA tends to $P_{in}x$, linear in $V_{pp}$. The true OMA is 10% below that when $\sin x = 0.9x$; the series gives a first estimate from $x^2/6 = 0.1$, $x$ = **0.775**, and solving numerically gives $x$ = **0.787** rad, so $V_{pp}/V_\pi = 2x/\pi$ = **0.50**. Example 24-07.5's half-$V_\pi$ swing already sits at 10% compression.
+
+(c) Let $\theta = \pi V_{pp}/6V_\pi$. The drive levels are $-3, -1, 1, 3$ in units of $V_{pp}/6$, so the optical levels are $\tfrac{1}{2}P_{in}[1 - \sin k\theta]$ for $k = -3, -1, 1, 3$. The inner eye is $\tfrac{1}{2}P_{in}[\sin\theta - \sin(-\theta)] = P_{in}\sin\theta$; an outer eye is $(P_{in}/2)(\sin 3\theta - \sin\theta)$. With $\sin 3\theta = 3\sin\theta - 4\sin^3\theta$, the ratio is
+
+$$
+\frac{\sin 3\theta - \sin\theta}{2\sin\theta} = 1 - 2\sin^2\theta = \cos 2\theta = \cos\!\left(\frac{\pi V_{pp}}{3V_\pi}\right).
+$$
+
+At $V_{pp} = V_\pi/2$, $\cos(\pi/6)$ = **0.866**: the outer eyes are **13**% smaller than the inner one.
+
+(d) A retimed module's DSP can space its drive levels unequally (pre-distort) so that the optical eyes come out equal. A linear module passes the host's levels straight through, so the compression reaches the far host as unequal eyes, which it must tolerate unless the near host pre-distorts for a module it does not control. This is part of why linear-drive specifications constrain the module's linearity (24-09).
+
 ---
 
 ## Answer key
@@ -150,3 +166,9 @@ $(ER + 1)/(ER - 1) = 10^{0.1}$ gives $ER$ = **8.72**, or **9.41** dB.
 | 24-07.12c | new BER | 2.1e-4 | |
 | 24-07.13a | extinction ratio | 8.72 | |
 | 24-07.13b | extinction ratio in dB | 9.41 | dB |
+| 24-07.14a | OMA at half-Vpi swing | 0.707 | |
+| 24-07.14b0 | series estimate of x | 0.775 | rad |
+| 24-07.14b | x for 10% compression | 0.787 | rad |
+| 24-07.14b1 | Vpp/Vpi for 10% compression | 0.50 | |
+| 24-07.14c | outer over inner eye | 0.866 | |
+| 24-07.14c1 | outer-eye shortfall | 13 | % |

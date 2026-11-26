@@ -130,6 +130,22 @@ Better lanes cut the saving, but a module with 16 lanes still discards one assem
 
 At these scales optics power is a facilities question, and a quarter off every module is worth megawatts.
 
+### Solution 24-08.14
+
+(a) With $w_2 = w_1(1 + \epsilon)$ the amplitude factor is
+
+$$
+\frac{2w_1w_2}{w_1^2 + w_2^2} = \frac{2(1 + \epsilon)}{2 + 2\epsilon + \epsilon^2} = \frac{1}{1 + \epsilon^2/[2(1 + \epsilon)]} = 1 - \frac{\epsilon^2}{2} + O(\epsilon^3),
+$$
+
+using $1/(1 + u) = 1 - u + O(u^2)$ with $u = \epsilon^2/[2(1 + \epsilon)] = \epsilon^2/2 + O(\epsilon^3)$. Squaring gives $\eta = 1 - \epsilon^2 + O(\epsilon^3)$. Since $-\ln(1 - u) \approx u$, the loss is $-10\log_{10}\eta \approx 10\log_{10}(e)\,\epsilon^2$ = **4.34** $\epsilon^2$ dB. There is no first-order term: coupling is stationary at a perfect match, so small mismatches are cheap.
+
+(b) By the approximation, $\epsilon = \sqrt{0.1/4.34}$ = **0.152**, about 15%. Solving the exact formula numerically gives **0.164** for a larger second mode and **−0.141** for a smaller one; the $O(\epsilon^3)$ term makes the tolerance asymmetric.
+
+(c) With $w_1 = w_2 = w$, $\eta = \exp(-d^2/w^2)$ and the loss is $10\log_{10}(e)\,d^2/w^2$ dB. Setting it to 0.1 dB gives $d = w\sqrt{0.1/4.34} = 0.152\,w$: **0.70** µm for $w$ = 4.6 µm and **0.30** µm for $w$ = 2.0 µm.
+
+(d) Offset tolerance scales with the mode radius. A spot-size converter that enlarges the chip's mode **2.3** times to match the fiber also buys 2.3 times the placement tolerance for the same loss, which can decide between passive placement and active alignment.
+
 ---
 
 ## Answer key
@@ -191,3 +207,10 @@ At these scales optics power is a facilities question, and a quarter off every m
 | 24-08.13b | two-tier total | 6.4 | MW |
 | 24-08.13b1 | three-tier total | 9.6 | MW |
 | 24-08.13c | saving | 2.4 | MW |
+| 24-08.14a | loss coefficient | 4.34 | dB |
+| 24-08.14b | mismatch for 0.1 dB, approximate | 0.152 | |
+| 24-08.14b1 | mismatch for 0.1 dB, larger mode | 0.164 | |
+| 24-08.14b2 | mismatch for 0.1 dB, smaller mode | -0.141 | |
+| 24-08.14c | offset for 0.1 dB, w = 4.6 um | 0.70 | µm |
+| 24-08.14c1 | offset for 0.1 dB, w = 2.0 um | 0.30 | µm |
+| 24-08.14d | mode-radius ratio | 2.3 | |

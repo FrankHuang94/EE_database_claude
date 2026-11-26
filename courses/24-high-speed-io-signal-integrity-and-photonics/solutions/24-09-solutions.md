@@ -94,7 +94,7 @@ Paying mostly in stock means the sellers share in the acquirer's fortunes, and t
 
 (e) $170/448$ = **38**%.
 
-On these assumptions the lasers are over a third of the CPO optics' power budget, which is why laser efficiency and lanes per laser matter.
+On these assumptions the lasers are over a third of the CPO optics' power budget, which is why laser efficiency and lanes per laser matter. The sources do not say whether Davisson's 3.5 W per port includes the external lasers; if it does not, this power comes on top of the 448 W rather than out of it.
 
 ### Solution 24-09.12
 
@@ -103,6 +103,28 @@ On these assumptions the lasers are over a third of the CPO optics' power budget
 (b) $5 \times 5$ = **25** W.
 
 (c) The baselines (11.7 W, 16–18 W, 25 W), port speeds and inclusion of host SerDes power differ. Ranking needs each vendor's watts per port at a stated rate on the same basis.
+
+### Solution 24-09.13
+
+(a) The bound is the rate at which seeing one failure or none would be only 5% likely:
+
+$$
+P(N \le 1) = e^{-\mu} + \mu e^{-\mu} = e^{-\mu}(1 + \mu) = 0.05 .
+$$
+
+The left side falls steadily as $\mu$ grows (its derivative is $-\mu e^{-\mu}$), so there is one root. Solving numerically, $\mu$ = **4.74**, so $\lambda_U = 4.74/T$. The chi-square form gives $\chi^2_{0.95,4}/2$ = **4.74**, the same number, as the identity in §3.4 of the chapter promises (Solution 24-09.6 used it).
+
+(b) Over a long run of $n$ failure-and-repair cycles, the total up time is close to $n/\lambda$ and the total down time close to $n\,\text{MTTR}$ (law of large numbers). The down fraction is
+
+$$
+\frac{n\,\text{MTTR}}{n/\lambda + n\,\text{MTTR}} = \frac{\lambda\,\text{MTTR}}{1 + \lambda\,\text{MTTR}},
+$$
+
+which is $1 - \text{MTBF}/(\text{MTBF} + \text{MTTR})$ with MTBF $= 1/\lambda$. For small $u = \lambda\,\text{MTTR}$, $u/(1 + u) = u - u^2 + \dots \approx u$.
+
+(c) $\lambda = 16 \times 400$ FIT = **6.4e-6** per hour. Approximately, $u = 6.4 \times 10^{-6} \times 24$ = **1.5360e-4**; exactly, $u/(1 + u)$ = **1.5358e-4**. Port-hours lost per port per year: $1.536 \times 10^{-4} \times 8766$ = **1.35**, as in Example 24-09.7(c).
+
+(d) When each source's down fraction is small, the chance that two sources are down at once is of order $u^2$, negligible, so the down fractions (and port-hours) of separate failure sources simply add and each can be computed alone as $\lambda \times$ MTTR. The approximation fails only when repairs are long compared with the time between failures.
 
 ---
 
@@ -150,3 +172,9 @@ On these assumptions the lasers are over a third of the CPO optics' power budget
 | 24-09.11e | share of optics power | 38 | % |
 | 24-09.12a | baseline for 70% | 11.7 | W |
 | 24-09.12b | baseline for 5x | 25 | W |
+| 24-09.13a | Poisson root, one failure | 4.74 | |
+| 24-09.13a1 | chi-square 95%, 4 dof, halved | 4.74 | |
+| 24-09.13c0 | switch failure rate | 6.4e-6 | 1/h |
+| 24-09.13c | unavailability, approximate | 1.5360e-4 | |
+| 24-09.13c1 | unavailability, exact | 1.5358e-4 | |
+| 24-09.13c2 | port-hours per port per year | 1.35 | port-h/yr |

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 24-05 · Interconnect Standards: PCIe, CXL and Ethernet
 
 | | |
@@ -7,7 +7,7 @@
 | **University equivalent** | The I/O-interconnect and datacenter-network lectures of a senior computer-systems course: layered serial protocols, line coding and framing overheads, credit-based flow control, cache-coherent and memory-semantic interconnects, Ethernet PHY structure and switch fabrics (Hennessy & Patterson, *Computer Architecture*, appendix on interconnection networks; Dally & Towles, *Principles and Practices of Interconnection Networks*, chapters on flow control and topology) |
 | **Prerequisites** | [24-04](24-04-dsp-serdes-and-fec.md) (FEC, flits and retry), [17-13](../../17-communication-systems/chapters/17-13-computer-networks-fundamentals.md) (layering, Ethernet framing), [23-04](../../23-memory-and-storage-technology/chapters/23-04-dram-interfaces.md) (DDR bandwidth) |
 | **Estimated study hours** | 6 |
-| **Last verified** | 2026-11-25 |
+| **Last verified** | 2026-11-26 |
 
 **Learning objectives.** After this chapter you can:
 

@@ -320,4 +320,22 @@ v.check("Txt 24-08.o", db((hi_d / lo_d + 1) / (hi_d / lo_d - 1)))
 v.check("24-08.3e0", 4.6 / 2.0)
 v.check("24-08.3e", (2 / 2.0 ** 2) / (2 / 4.6 ** 2))
 
+# ---------------------------------------------------------------- Problem 14 (tolerance derivation)
+def eta_mm(eps):
+    return (2 * (1 + eps) / (1 + (1 + eps) ** 2)) ** 2
+
+
+k14 = 10 / math.log(10)
+v.check("24-08.14a", k14)
+for e in (1e-3, -1e-3):
+    v.assert_true(f"eta = 1 - eps^2 + O(eps^3) at eps = {e}", abs((1 - eta_mm(e)) / e**2 - 1) < 2e-3)
+v.check("24-08.14b", math.sqrt(0.1 / k14))
+loss = lambda e: -10 * math.log10(eta_mm(e))  # noqa: E731
+v.check("24-08.14b1", optimize.brentq(lambda e: loss(e) - 0.1, 0.01, 0.5))
+v.check("24-08.14b2", optimize.brentq(lambda e: loss(e) - 0.1, -0.5, -0.01))
+for key, w in (("24-08.14c", 4.6), ("24-08.14c1", 2.0)):
+    d = optimize.brentq(lambda d: -10 * math.log10(math.exp(-2 * d**2 / (2 * w**2))) - 0.1, 1e-3, w)
+    v.check(key, d)
+v.check("24-08.14d", 4.6 / 2.0)
+
 sys.exit(v.finish())

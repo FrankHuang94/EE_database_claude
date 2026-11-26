@@ -72,6 +72,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **How good must the extinction ratio be?** What extinction ratio keeps its penalty at or below 1 dB? Give it as a ratio and in dB.
 
+### Problem 24-07.14 [C]
+
+**MZM linearity (derivation).** An MZM obeys $P_{out} = P_{in}\cos^2(\Delta\phi/2)$ and is biased at quadrature, so that $\Delta\phi = \pi/2 + \pi v/V_\pi$ for a drive $v$ about the bias. (a) Show that $P_{out} = \tfrac{1}{2}P_{in}[1 - \sin(\pi v/V_\pi)]$ and that a drive between $\pm V_{pp}/2$ gives an OMA of $P_{in}\sin(\pi V_{pp}/2V_\pi)$. (b) Show that for small swings the OMA tends to $P_{in}\pi V_{pp}/(2V_\pi)$, and find the $V_{pp}/V_\pi$ at which the true OMA is 10% below this linear value. (c) A PAM4 drive uses levels equally spaced in voltage, at $\pm V_{pp}/6$ and $\pm V_{pp}/2$. Derive in closed form the ratio of an outer eye's optical height to the inner eye's, and evaluate it at $V_{pp} = V_\pi/2$. (d) Why does this compression matter more in a linear (LPO) module than in a retimed one?
+
 ---
 
 ## Objective coverage
@@ -80,7 +84,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 |---|---|
 | 1. Wavelength windows and fiber types | 3, 4, 5 |
 | 2. Loss, latency and dispersion | 3, 4, 5 |
-| 3. Modulators | 6, 7 |
+| 3. Modulators | 6, 7, 14 |
 | 4. Receiver sensitivity and penalties | 1, 2, 8, 12, 13 |
 | 5. Link budgets and WDM | 9, 11 |
 | 6. TIA design | 10 |
