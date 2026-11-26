@@ -11440,6 +11440,6 @@
   chapter: "28-09"
   see_also: [Dies per wafer, Gross margin]
 - term: Area budget
-  definition: The largest die area that meets a margin target: allowed unit cost = selling price × (1 − target margin), less package and test, inverted through the die-cost model.
+  definition: "The largest die area that meets a margin target: allowed unit cost = selling price × (1 − target margin), less package and test, inverted through the die-cost model."
   chapter: "28-09"
   see_also: [Cost elasticity of die area]
