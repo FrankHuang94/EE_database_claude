@@ -10986,3 +10986,31 @@
   definition: The value of one more unit of a binding constraint in the units of the objective; under a power cap with dynamic power proportional to f³, a watt is worth 1/(3P_dyn) of performance at the margin.
   chapter: "27-01"
   see_also: [Sustained power]
+- term: Application processor (AP)
+  definition: A phone's or tablet's main SoC, integrating CPU clusters, GPU, NPU, image and video processors, display engines, security and often the cellular modem, sharing one memory interface and one thermal budget.
+  chapter: "27-02"
+  see_also: [Heterogeneous multicore, System-level cache (SLC)]
+- term: Heterogeneous multicore
+  definition: A processor that mixes core types of different size and efficiency (large, mid-size and small cores) so that the scheduler can run each thread on the core with the lowest energy per instruction for the performance it needs.
+  chapter: "27-02"
+  see_also: [Energy per instruction, Dynamic voltage and frequency scaling (DVFS)]
+- term: Energy per instruction
+  definition: The energy a core spends per executed instruction, dynamic switching energy cV²/IPC plus leakage power divided by throughput; it has a minimum at a frequency set by the balance of the two.
+  chapter: "27-02"
+  see_also: [Minimum-energy point, Race to idle]
+- term: System-level cache (SLC)
+  definition: A last-level cache shared by all the clients of an SoC (CPU, GPU, NPU, display, camera) in front of the DRAM controller; it cuts both DRAM bandwidth and the energy of memory accesses.
+  chapter: "27-02"
+  see_also: [Application processor (AP)]
+- term: Neural processing unit (NPU)
+  definition: An accelerator for neural-network inference built from arrays of low-precision multiply–accumulate units with local memory; its useful speed is often bounded by memory bandwidth rather than its peak operations per second.
+  chapter: "27-02"
+  see_also: [Application processor (AP)]
+- term: Image signal processor (ISP)
+  definition: A fixed-function pipeline that turns raw camera-sensor data into images (demosaicing, noise reduction, tone mapping, multi-frame merging) at far lower energy than a general-purpose processor.
+  chapter: "27-02"
+  see_also: [Application processor (AP)]
+- term: Integrated modem
+  definition: A cellular modem built into the application processor die rather than supplied as a separate chip; integration saves the chip-to-chip link's power, area and package cost, while a separate modem decouples schedules and process nodes.
+  chapter: "27-02"
+  see_also: [Application processor (AP)]

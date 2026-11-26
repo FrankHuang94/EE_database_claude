@@ -6452,3 +6452,89 @@ R&D % = R&D ÷ revenue.
 - ECCN 3A090 as revised (88 FR 73502–73503): "a. Integrated circuits having one or more digital processing units having either of the following: a.1. a 'total processing performance' of 4800 or more, or a.2. a 'total processing performance' of 1600 or more and a 'performance density' of 5.92 or more. b. … b.1. a 'total processing performance' of 2400 or more and less than 4800 and a 'performance density' of 1.6 or more and less than 5.92, or b.2. a 'total processing performance' of 1600 or more and a 'performance density' of 3.2 or more and less than 5.92." Technical notes: "'Total processing performance' ('TPP') is 2 × 'MacTOPS' × 'bit length of the operation', aggregated over all processing units on the integrated circuit"; "'Performance density' is 'TPP' divided by 'applicable die area'" (mm²); the threshold of 4800 "can be met with 600 tera integer operations (or 2 × 300 'MacTOPS') at 8 bits or 300 tera FLOPS (or 2 × 150 'MacTOPS') at 16 bits"; "Note 2 to 3A090: 3A090 does not apply to items that are not designed or marketed for use in datacenters and do not have a 'total processing performance' of 4800 or more."
 - Later changes (Federal Register records): "Framework for Artificial Intelligence Diffusion", 90 FR 4544 (15 Jan 2025); "Revision to License Review Policy for Advanced Computing Commodities", 91 FR 1684 (15 Jan 2026), changing review for exports to China and Macau of "the Nvidia H200 and its equivalents" from "a presumption of denial to a case-by-case review"; "Addressing Remote Access to Advanced Semiconductors", 91 FR 74970 (interim final rule, published and effective 19 Nov 2026), which restricts exports to "overseas data centers that remotely supply significant volumes of compute to companies headquartered in Country Group D:5 or Macau" and "formally rescinds the regulations implementing the Biden-era AI Diffusion Rule", whose rescission BIS "announced in May 2025".
 - **Sources:** [87 FR 62186](https://www.federalregister.gov/d/2022-21658); [88 FR 73458 (GPO PDF)](https://www.govinfo.gov/content/pkg/FR-2023-10-25/pdf/2023-23055.pdf); [88 FR 73424](https://www.federalregister.gov/d/2023-23049); [91 FR 1684](https://www.federalregister.gov/d/2026-00789); [91 FR 74970](https://www.federalregister.gov/d/2026-23529). Checked Nov 2026.
+
+## R-660 · Apple A19, A19 Pro, A20 Pro and the C1, C1X and C2 modems (Course 27)
+
+*Read on 26 Nov 2026 from Apple Newsroom pages fetched through the session proxy; quotes checked against the saved text. A research subagent's search-extract leads were used only to find the pages.* [Established: company statements]
+
+- iPhone 17 (9 Sep 2025): A19 is "Built on third-generation 3-nanometer technology".
+- iPhone 17 Pro (9 Sep 2025): "When paired with the Apple-designed vapor chamber, A19 Pro enables iPhone 17 Pro and iPhone 17 Pro Max to deliver up to 40 percent better sustained performance than the previous generation"; "The 6-core CPU is the fastest CPU in any smartphone, and the 6-core GPU architecture includes Neural Accelerators built into each GPU core, a larger cache, and more memory than A18 Pro. The GPU works in tandem with the new 16-core Neural Engine".
+- iPhone Air (9 Sep 2025): "C1X is up to 2x faster than C1, and for the same cellular technologies, it is even faster than the modem in iPhone 16 Pro, while using 30 percent less energy overall"; Neural Accelerators bring "up to 3x the peak GPU compute over the previous generation"; A19 Pro "with a 5-core GPU".
+- iPhone 16e (19 Feb 2025): "C1 is the first modem designed by Apple and the most power-efficient modem ever on an iPhone".
+- iPhone 18 Pro (9 Sep 2026): A20 Pro is "Built using the latest 2-nanometer process technology"; "Featuring 50 percent more memory bandwidth than A19 Pro, the new 6-core CPU features integrated Neural Accelerators"; "the new 7-core GPU design is up to 40 percent faster than A19 Pro"; "a new Dual 16-core Neural Engine … 32 total cores for double the AI processing power of A19 Pro"; "custom packaging inspired by M-series Apple silicon that places the silicon die side by side with the memory, removing the memory from the thermal path of the chip and allowing A20 Pro to attach directly to a next-generation vapor chamber. With new materials and three times more surface area than the previous generation"; "C2 delivers meaningfully faster uploads when compared to C1X while consuming 15 percent less energy, and now supports mmWave in the U.S."
+- **Not disclosed by Apple:** clock speeds, transistor counts, NPU TOPS, DRAM capacity. A press report that the US iPhone 18 Pro Max uses a Qualcomm modem (9to5Mac citing a teardown) was not read; treat as unverified.
+- **Sources:** [iPhone 17](https://www.apple.com/newsroom/2025/09/apple-debuts-iphone-17/); [iPhone 17 Pro](https://www.apple.com/newsroom/2025/09/apple-unveils-iphone-17-pro-and-iphone-17-pro-max/); [iPhone Air](https://www.apple.com/newsroom/2025/09/introducing-iphone-air-a-powerful-new-iphone-with-a-breakthrough-design/); [iPhone 16e](https://www.apple.com/newsroom/2025/02/apple-debuts-iphone-16e-a-powerful-new-member-of-the-iphone-16-family/); [iPhone 18 Pro](https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/). Checked Nov 2026.
+
+## R-661 · Qualcomm Snapdragon 8 Elite Gen 5 and Gen 6 product briefs (Course 27)
+
+*Read on 26 Nov 2026 from Qualcomm's product-brief PDFs fetched through the session proxy (text extracted with pdftotext).* [Established: vendor specifications]
+
+- 8 Elite Gen 5 (announced Sep 2025): process "3nm"; "2 Prime core, up to 4.74GHz" and "6 Performance cores, up to 3.62GHz"; "37% faster Hexagon NPU"; NPU "12 scalar + 8 vector + 1 accelerator configuration"; "Triple 20-bit AI-ISPs"; integrated "Qualcomm® X85" modem; storage UFS 4.1. The brief gives no NPU TOPS figure. The foundry (TSMC N3P) is a press and teardown attribution, not stated in the brief.
+- 8 Elite Gen 6 (Sep 2026): process "2nm"; "2 Prime cores, up to 5.0 GHz"; "6 Performance cores, up to 4.0 GHz"; "Support for LP-DDR5x/6, up to 5300 MHz"; integrated "Qualcomm® X105" modem; "Hexagon NPU with up to 20% better performance-per-watt".
+- **Sources:** [Gen 5 brief](https://www.qualcomm.com/content/dam/qcomm-martech/dm-assets/documents/Snapdragon-8-Elite-Gen-5-product-brief.pdf); [Gen 6 brief](https://www.qualcomm.com/content/dam/qcomm-martech/dm-assets/documents/Snapdragon-8-Elite-Gen-6-Product-Brief.pdf). Checked Nov 2026.
+
+## R-662 · MediaTek Dimensity 9500 and 9600 Pro (Course 27)
+
+*Read on 26 Nov 2026 from MediaTek's press releases and product page.* [Established: vendor statements]
+
+- Dimensity 9500 (press release, Sep 2025): "combining a 4.21GHz ultra core, three premium cores, and four performance cores, with four-lane UFS 4.1 storage"; "the latest TSMC N3P process". Product page: "16MB L3 cache 10MB SLC"; "Memory Type LPDDR5X 10667"; cellular "3GPP-R17, Sub-6GHz (FR1)" (integrated in the SoC's specification).
+- Dimensity 9600 Pro (press release, 15 Sep 2026): "Advanced 2nm SoC"; "61% reduction in multi-core power consumption"; "two C2-Ultra cores with clock speeds up to 4.55GHz, three C2-Pro big cores at 4.35GHz, and three C2-Pro big cores at 3.1GHz"; "a larger 34.5MB cache and, for the first time, LPDDR6 memory and UFS 5.0 storage"; the NPU 1090 "supports complex on-device applications, including models up to 30B parameters".
+- A "100 TOPS" figure reported for the Dimensity 9500 by an analyst was not found on MediaTek's pages read here.
+- **Sources:** [Dimensity 9500 release](https://www.mediatek.com/press-room/mediatek-dimensity-9500-unleashes-best-in-class-performance-ai-experiences-and-power-efficiency-for-the-next-generation-of-mobile-devices); [Dimensity 9500 product page](https://www.mediatek.com/products/smartphones/mediatek-dimensity-9500); [Dimensity 9600 Pro release](https://www.mediatek.com/press-room/mediatek-dimensity-9600-pro-sets-new-standard-for-flagship-smartphone-chips). Checked Nov 2026.
+
+## R-663 · Samsung Exynos 2600 and Google Tensor G5 (Course 27)
+
+*Read on 26 Nov 2026 from Samsung Semiconductor's product page and Google's blog.* [Established: vendor statements]
+
+- Exynos 2600: "Based on the industry's first 2nm GAA"; "Deca-core CPU with the latest Arm® v9.3 architecture"; its NPU "improves generative AI performance by 113% compared to its predecessor"; the page lists a "Heat Path Block Package".
+- Tensor G5 (Aug 2025): "designed in the leading 3 nm process node from TSMC"; "an up to 60% more powerful TPU and 34% faster on average CPU"; "Gemini Nano runs 2.6x faster and 2x more efficiently". Whether the node is N3E or N3P is contested in press reports and not stated by Google.
+- **Sources:** [Exynos 2600](https://semiconductor.samsung.com/processor/mobile-processor/exynos-2600/); [Tensor G5](https://blog.google/products-and-platforms/devices/pixel/tensor-g5-pixel-10/). Checked Nov 2026.
+
+## R-664 · Smartphone SoC die areas and measured power (Course 27)
+
+*Read on 26 Nov 2026 from Notebookcheck articles (die areas measured by an independent analyst from die photographs; power measured by the Geekerwan channel).* [Industry estimate: third-party measurements]
+
+- A19 Pro: Apple "reduced its die area from 105 mm² to 98.6 mm²" (A18 Pro to A19 Pro), attributed to TSMC N3P (Notebookcheck, Dec 2025, citing KurnalSalts).
+- Snapdragon 8 Elite Gen 5: "a die area of ~126.20 mm2, about the same as its last-gen counterpart"; "Its memory bus is still 64-bit, standard for smartphone SoCs" (Notebookcheck, 26 Sep 2025).
+- Dimensity 9500: "At 140.79 mm2, the chip is measurably larger than the Dimensity 9400, which measured ~126.26 mm2" (Notebookcheck, 1 Oct 2025).
+- Power (Notebookcheck citing Geekerwan, Sep–Oct 2025): "the Snapdragon 8 Gen 5 Elite consumes around 19 watts of power at full CPU load, compared to the 12 watts of the Apple A19 Pro or the 17 watts of the Snapdragon 8 Elite"; in 3DMark Steel Nomad Light, "At around 12 watts, the Snapdragon 8 Gen 5 Elite consumes 1 to 3 watts less than its competitors from Apple and MediaTek".
+- **Sources:** [A19 Pro die](https://www.notebookcheck.net/Apple-A19-Pro-die-shot-showcases-smaller-profile-chip-with-minimal-design-changes.1164948.0.html); [8 Elite Gen 5 die](https://www.notebookcheck.net/Snapdragon-8-Elite-Gen-5-die-shot-highlights-minor-upgrades-and-GPU-improvements.1124373.0.html); [Dimensity 9500 die](https://www.notebookcheck.net/MediaTek-Dimensity-9500-die-shot-showcases-noticeably-larger-chip-and-incremental-upgrades-to-CPU-and-NPU.1128763.0.html); [efficiency](https://www.notebookcheck.net/Qualcomm-Snapdragon-8-Elite-Gen-5-vs-Dimensity-9500-and-Apple-A19-Pro-in-efficiency-analysis.1123883.0.html). Checked Nov 2026.
+
+## R-665 · Smartphone BOM shares and the 2026 memory price spike (Course 27)
+
+*Read on 26 Nov 2026 from TechInsights' teardown blog and TrendForce press releases. Counterpoint pages returned HTTP 403 and were not read.* [Industry estimate: teardown and analyst models]
+
+- TechInsights, iPhone 17 Pro Max teardown (2025): "the camera subsystem is the largest cost contributor, accounting for more than 27% of total manufacturing cost. The A19 Pro processor is the second-largest contributor, representing approximately 15% of the estimated BOM"; "the iPhone 17 Pro Max carries an estimated BOM that is approximately 3% higher than the Samsung Galaxy S25" Ultra.
+- TrendForce, 11 Feb 2026: "Memory, which historically accounted for around 10–15% of a smartphone's BOM, has now surged to 30–40%."
+- TrendForce, 10 Aug 2026: for the 256 GB iPhone Pro models, "memory's share of total BOM cost has risen dramatically—from around 10% a year ago to approximately 34% in 3Q26, and is expected to exceed 40% in 1H27. This marks a fundamental shift, where the application processor (AP) and display were once the dominant cost drivers"; the 256 GB iPhone 18 Pro's BOM is estimated "approximately 38% higher than that of its 2025 predecessor".
+- **Sources:** [TechInsights](https://www.techinsights.com/blog/apple-iphone-17-pro-max-teardown-a19-pro-new-mmwave-system-bom-analysis); [TrendForce, 11 Feb 2026](https://www.trendforce.com/presscenter/news/20260211-12922.html); [TrendForce, 10 Aug 2026](https://www.trendforce.com/presscenter/news/20260810-13172.html). Checked Nov 2026.
+
+## R-666 · Smartphone shipments, 2025 (Course 27)
+
+*Read on 26 Nov 2026 from IDC's press release (preliminary data). Omdia's release did not load and Counterpoint returned 403; application-processor vendor shares were not read from a primary page.* [Industry estimate]
+
+- IDC, 13 Jan 2026: "The total number of smartphones shipped reached 1.26 billion units in 2025", "a solid 1.9% year-over-year" growth; fourth-quarter shipments "336.3 million units", up 2.3%.
+- **Source:** [IDC](https://www.idc.com/resource-center/press-releases/q425mobilephonetop5/). Checked Nov 2026.
+
+## R-667 · LPDDR6 (Course 27)
+
+*Read on 26 Nov 2026 from Tom's Hardware's report of JEDEC's announcement (jedec.org was not read).* [Established as reported]
+
+- Tom's Hardware (10 Jul 2025), "JEDEC publishes first LPDDR6 standard": "LPDDR6 will have a data rate between 10,667 and 14,400 MT/s, which translates to an effective bandwidth of around 28.5 to 38.4 GB/s"; "LPDDR6 improves this by using four 24-bit sub-channels, resulting in lower latency and higher concurrency"; lower voltage and "Dynamic Voltage Frequency Scaling for Low Power (DVFSL)".
+- MediaTek's Dimensity 9600 Pro is the first of its SoCs to support LPDDR6 [R-662]; Qualcomm's 8 Elite Gen 6 lists "LP-DDR5x/6" [R-661].
+- **Source:** [Tom's Hardware](https://www.tomshardware.com/pc-components/dram/jedec-publishes-first-lpddr6-standard-new-interface-promises-double-the-effective-bandwidth-of-current-gen). Checked Nov 2026.
+
+## R-668 · On-device language models (Course 27)
+
+*Read on 26 Nov 2026 from arXiv and Google's blog.* [Established: technical report and vendor statement]
+
+- Apple Intelligence Foundation Language Models Tech Report 2025 (arXiv 2507.13575, 17 Jul 2025): "a 3B-parameter on-device model optimized for Apple silicon through architectural innovations such as KV-cache sharing and 2-bit quantization-aware training".
+- Google (Aug 2025): on Tensor G5, "Gemini Nano runs 2.6x faster and 2x more efficiently" [R-663].
+- **Sources:** [arXiv 2507.13575](https://arxiv.org/abs/2507.13575); [Google](https://blog.google/products-and-platforms/devices/pixel/tensor-g5-pixel-10/). Checked Nov 2026.
+
+## R-669 · Flagship phone battery capacity (Course 27)
+
+*Read on 26 Nov 2026 from MacRumors' report of Apple's figures.* [Established as reported]
+
+- iPhone 17 Pro Max: "5,088 mAh (+8.6% over iPhone 16 Pro Max)", for eSIM-only models; iPhone 17 Pro 4,252 mAh; iPhone Air 3,149 mAh; "Apple says eSIM-only models of the new iPhones are equipped with a larger battery".
+- **Source:** [MacRumors, 9 Sep 2025](https://www.macrumors.com/2025/09/09/iphone-17-and-17-pro-battery-capacities/). Checked Nov 2026.
