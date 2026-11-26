@@ -10528,3 +10528,42 @@
   definition: "Running two identical processor cores on the same instructions, often offset in time and separated physically, with a comparator that flags any difference; a common safety mechanism with very high diagnostic coverage."
   chapter: "25-10"
   see_also: [Diagnostic coverage]
+
+# ---------------------------------------------------------------- 25-11
+- term: Automatic test equipment (ATE)
+  definition: "A production tester with hundreds to thousands of precisely timed channels that drive and compare a chip's pins and measure its parametrics; the market is dominated by Advantest and Teradyne."
+  chapter: "25-11"
+  see_also: [Wafer sort, Final test]
+- term: Wafer sort
+  definition: "Testing every die on the wafer through a probe card before dicing, so bad dies are not packaged; it also produces the wafer maps used for yield learning."
+  chapter: "25-11"
+  see_also: [Probe card, Known-good die (KGD)]
+- term: Probe card
+  definition: "The fixture of fine needles or micro-springs that contacts a die's pads at wafer sort, connecting them to the tester; fine pitch, many sites and high current make advanced probe cards costly."
+  chapter: "25-11"
+  see_also: [Wafer sort]
+- term: Final test
+  definition: "Testing packaged parts, often at temperature and at speed, to catch assembly damage, test what wafer sort could not and assign speed or voltage bins."
+  chapter: "25-11"
+- term: Multisite efficiency
+  definition: "The fraction of ideal parallel speed-up achieved when testing N parts at once: 1 − (T_N − T_1)/((N − 1)T_1); shared instruments and the slowest site lower it."
+  chapter: "25-11"
+  see_also: [Automatic test equipment (ATE)]
+- term: Burn-in
+  definition: "Operating parts at elevated temperature and voltage for hours so that weak parts with latent defects fail before shipment, cutting early-life field failures at the cost of capacity, power and handling."
+  chapter: "25-11"
+  see_also: [Wafer-level burn-in (WLBI), Bathtub curve]
+- term: Wafer-level burn-in (WLBI)
+  definition: "Burn-in performed on whole wafers before dicing and packaging, so weak dies are removed before they consume a package or a multi-die module."
+  chapter: "25-11"
+  see_also: [Burn-in]
+- term: System-level test (SLT)
+  definition: "Testing a packaged part by booting and running real software on an application-like board, catching timing-marginal and functional defects that structural tests miss."
+  chapter: "25-11"
+- term: Test guard band
+  definition: "A margin added to a test limit to allow for measurement error; widening it reduces escapes but increases overkill and pushes parts into lower bins."
+  chapter: "25-11"
+  see_also: [Overkill]
+- term: Speed binning
+  definition: "Sorting tested parts into grades by the highest frequency (or lowest voltage) at which they pass, so that process variation becomes a price ladder rather than scrap."
+  chapter: "25-11"

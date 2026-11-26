@@ -6058,3 +6058,46 @@ R&D % = R&D ÷ revenue.
 - Infineon (current page): "we deliver Zero Defect for all but the last 3 seconds of a year"; "sub ppm quality levels"; "90% of our products are already Zero Defect".
 - **Derived here:** 1 − (1 − 10⁻⁶)^10,000 = 0.995%; 3 s per year ≈ 0.095 ppm. An older vendor figure of about 50 ppb and a "1 DPM / 0.1 DPM" quote were not found on the pages opened and are not used.
 - **Sources:** [Amkor, 6 Jun 2022](https://amkor.com/blog/the-drive-toward-zero-defects/); [Electronic Design, 28 Dec 2011](https://www.electronicdesign.com/technologies/test-measurement/article/21794591/achieve-0-ppm-in-your-automotive-testing); [Infineon, Automotive Quality](https://www.infineon.com/cms/en/product/promopages/automotive-quality/). Checked Nov 2026.
+
+## R-616 · Advantest results and tester-share estimates (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Advantest results briefing, integrated annual report and FY2026 Q2 results opened).* [Established for financials; Industry estimate for shares]
+
+- Integrated Annual Report 2026: "Further expanded our market share in the semiconductor tester (ATE) market (CY2024: 58%; CY2025: 65%)"; FY2025 (to Mar 2026) sales ¥1,128.6 B (record), operating income ¥499.1 B (record), 44.2% operating margin, net income ¥375.4 B; FY2024 sales ¥779.7 B.
+- FY2025 briefing (27 Apr 2026): "In the SoC tester market, we estimate that our market share reached 66%, an increase of approximately 10 percentage points YoY"; memory-tester share about 60%.
+- FY2026 Q2 (28 Oct 2026): first-half "net sales were (Y) 845.2 billion (60.5% increase…), and operating income was (Y) 456.8 billion (96.5% increase…)"; full-year forecast raised to "net sales … (Y) 1,863.0 billion from (Y) 1,714.0 billion; operating income of (Y) 967.0 billion from (Y) 846.0 billion".
+- **Sources:** [Advantest FY2025 briefing note, 27 Apr 2026](https://www.advantest.com/document/en/investors/ir-library/result/JE_BIZ_260427_note.pdf); [Integrated Annual Report 2026](https://www.advantest.com/document/en/investors/ir-library/annual/E_all_IAR2026.pdf); [FY2026 Q2 results](https://www.advantest.com/en/news/2026/mpd9kn0000000gii-att/E_FR_FY2026_2Q.pdf). Checked Nov 2026.
+
+## R-617 · Teradyne results and compute-test share (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Teradyne releases, annual report on SEC EDGAR and a call transcript opened).* [Established for financials; Industry estimate for the share]
+
+- Release (2 Feb 2026): "Revenue of $3.19 billion in 2025, up 13% from 2024". Annual report: "The Semiconductor Test Group … growing revenue by 19% year-over-year. This group now represents nearly 80% of our total revenue".
+- Call (3 Feb 2026): "we believe that we maintained about 50% market share in the VIP compute market in 2025"; "compute is now the largest part of our SoC portfolio, eclipsing our historical stronghold of mobile"; "the overall memory TAM was down about 4% from 2024, and we are able to gain a little share."
+- Q3 2026 (27 Oct 2026): "revenue of $1,306 million for the third quarter of 2026 of which $1,072 million was in Semiconductor Test"; Q3 2025 revenue $769 million; Q4 2026 guidance $1,250–1,350 million.
+- **Sources:** [Teradyne release, 2 Feb 2026](https://investors.teradyne.com/news-events/press-releases/detail/433); [Teradyne ARS FY2025](https://www.sec.gov/Archives/edgar/data/97210/000119312526127510/2025_ter-ars.pdf); [Teradyne Q3 2026, Form 8-K Ex. 99.1](https://www.sec.gov/Archives/edgar/data/0000097210/000119312526434981/ter-ex99_1.htm); [The Motley Fool, Q4 2025 call transcript](https://www.fool.com/earnings/call-transcripts/2026/04/21/teradyne-ter-q4-2025-earnings-transcript/). Checked Nov 2026.
+
+## R-618 · ATE market size and the cost of test (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Wing VC and two SemiEngineering articles opened).* [Established for the historical 2%; Industry estimate and Contested for the rest]
+
+- SemiEngineering (10 Mar 2020): "For decades, test was limited to a flat 2% of total manufacturing cost". SemiEngineering (11 May 2021): "For decades, test was limited to a flat 2% of the cost of designing and manufacturing a chip … the real cost of test now needs to be computed based on volume, complexity, and the cost of a failure."
+- Wing VC (May 2026): "CY25 ATE TAM: $9.0B, +50% YoY"; "Combined duopoly share: ~90%+"; "cost of test as a percentage of chip ASP has roughly tripled on leading-edge AI parts — from historical levels of <2% toward 5–7% on the most complex packages."
+- **Caveat:** the 5–7% and $9.0 B figures come from a single venture-capital source.
+- **Sources:** [Wing VC, May 2026](https://wing.vc/content/the-chip-testing-bottleneck); [SemiEngineering, 10 Mar 2020](https://semiengineering.com/test-costs-spiking); [SemiEngineering, 11 May 2021](https://semiengineering.com/recalculating-the-cost-of-test). Checked Nov 2026.
+
+## R-619 · Probe cards: FormFactor and the supplier ranking (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (FormFactor's results on SEC EDGAR and a TrendForce summary opened).* [Established for FormFactor; Industry estimate for the ranking]
+
+- FormFactor (4 Feb 2026): "Record Revenue of $785.0 Million in FY25 Driven by Growth in High Bandwidth Memory"; "revenues of $785.0 million, up 2.8% from $763.6 million in fiscal 2024"; Q4 "Another record quarter in DRAM revenue driven by the increase in non-HBM DRAM applications like DDR4 and DDR5".
+- TrendForce (26 Jun 2026): "FormFactor, Technoprobe, and MJC dominate"; "Technoprobe poised to overtake FormFactor as the top global supplier."
+- **Sources:** [FormFactor Form 8-K Ex. 99.1](https://www.sec.gov/Archives/edgar/data/1039399/000103939926000004/ex9901-earningsreleasexq425.htm); [TrendForce research summary](https://www.trendforce.com/research/download/RP260626XO3). Checked Nov 2026.
+
+## R-620 · Wafer-level burn-in for AI accelerators (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Aehr's FY2026 results release and call transcript opened).* [Industry estimate; vendor claims]
+
+- Aehr (14 Jul 2026): "Our lead AI production customer is significantly ramping capacity … They are shifting their burn-in from system-level to all wafer-level for their AI accelerators used for training and inference applications"; "Net revenue was $50.0 million, compared to $59.0 million in fiscal 2025"; "projected fiscal 2027 revenue of $130 million to $150 million".
+- Call: management "is evaluating a development agreement for high-bandwidth memory (HBM) and NAND flash".
+- **Sources:** [Aehr FY2026 results release](https://finviz.com/news/368117/aehr-test-systems-reports-fiscal-2026-fourth-quarter-and-full-year-financial-results-with-record-quarterly-bookings-and-100-million-effective-backlog); [The Motley Fool, Aehr Q4 FY2026 call](https://www.fool.com/earnings/call-transcripts/2026/07/14/aehr-test-systems-aehr-q4-2026-earnings-call-transcript/). Checked Nov 2026.
