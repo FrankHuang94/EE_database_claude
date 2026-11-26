@@ -6725,3 +6725,62 @@ R&D % = R&D ÷ revenue.
 - **IEEE P802.3cg (10 Mb/s Single Pair Ethernet):** the task force "completed with the approval of IEEE Std 802.3cg-2019 by the IEEE-SA Standards Boards on November 7, 2019" (the standard that includes 10BASE-T1S).
 - **IEEE P802.3ch (Multi-Gig Automotive Ethernet PHY):** "completed with the approval of IEEE Std 802.3ch-2020 by the IEEE-SA Standards Boards on June 4, 2020".
 - **Sources:** [CiA CAN XL](https://www.can-cia.org/can-knowledge/can-xl); [IEEE 802.3cg](https://www.ieee802.org/3/cg/); [IEEE 802.3ch](https://www.ieee802.org/3/ch/). Checked Nov 2026.
+
+## R-690 · NVIDIA GB200 NVL72 and GB300 NVL72 rack specifications (Course 27)
+
+*Read on 26 Nov 2026 on NVIDIA's GB200 NVL72 and GB300 NVL72 product pages.* [Established as manufacturer claims]
+
+- **GB200 NVL72:** "connects 36 Grace CPUs and 72 Blackwell GPUs in a rack-scale, liquid-cooled design. It boasts a 72-GPU NVIDIA NVLink™ domain that acts as a single, massive GPU"; fifth-generation NVLink "provides 1.8 TB/s of GPU-to-GPU interconnect".
+- **GB200 NVL72 specification table** (rack column, then the Grace Blackwell Superchip column: 1 Grace CPU and 2 Blackwell GPUs): "NVFP4 Tensor Core² 1,440 | 720 PFLOPS" and "40 | 20 PFLOPS"; "FP8/FP6 Tensor Core² 720 PFLOPS" and "20 PFLOPS"; "FP16/BF16 Tensor Core² 360 PFLOPS" and "10 PFLOPS"; "GPU Memory | Bandwidth 13.4 TB HBM3E | 576 TB/s" and "372 GB HBM3E | 16 TB/s"; "NVLink Bandwidth 130 TB/s" and "3.6 TB/s"; "2,592 Arm® Neoverse V2 cores".
+- **Footnote ²:** its text did not appear on the page as read. Whether the Tensor Core rows are dense or with sparsity is therefore not stated in the text we could read [Contested: our reading, from the two NVFP4 figures and the GB300 page's "dense FP4" wording, is that the lower NVFP4 figure is dense].
+- **Headline claims:** "LLM Inference 30x vs. NVIDIA H100 GPU"; "LLM Training 4x vs. H100"; "Energy Efficiency 25x vs. H100". Footnote: "LLM inference and energy efficiency: TTL = 50 milliseconds (ms) real time, FTL = 5s, 32,768 input/1,024 output, NVIDIA HGX™ H100 scaled over InfiniBand (IB) vs. GB200 NVL72".
+- **GB300 NVL72:** "a fully liquid-cooled, rack-scale architecture that integrates 72 NVIDIA Blackwell Ultra GPUs and 36 Arm®-based NVIDIA Grace™ CPUs"; "1.5x more dense FP4 Tensor Core FLOPS and 2x higher attention performance compared to NVIDIA Blackwell GPUs"; "1.5x larger HBM3E memory".
+- **Derived (ours):** per GPU, 13.4 TB/72 = 186 GB, 576 TB/s ÷ 72 = 8.00 TB/s and 130 TB/s ÷ 72 = 1.81 TB/s, consistent with the 1.8 TB/s per-GPU figure.
+- **Sources:** [GB200 NVL72](https://www.nvidia.com/en-us/data-center/gb200-nvl72/); [GB300 NVL72](https://www.nvidia.com/en-us/data-center/gb300-nvl72/). Checked Nov 2026.
+
+## R-691 · NVIDIA 800 VDC architecture, read on the page (Course 27)
+
+*Read on 26 Nov 2026 on the NVIDIA Technical Blog post of 20 May 2025 (page metadata: modified 14 Jan 2026). This direct reading supersedes the search-excerpt version of the same post in R-098.* [Established as NVIDIA's statements and claims]
+
+- "Traditional 54 V in-rack power distribution, designed for kilowatt (KW)-scale racks, isn't designed to support the megawatt (MW)-scale racks coming soon."
+- "NVIDIA is leading the transition to 800 VDC data center power infrastructure to support 1 MW IT racks and beyond, starting in 2027."
+- "using the same 54 VDC power distribution would mean power shelves would consume up to 64 U of rack space for Kyber at MW scale, leaving no room for compute."
+- "Row-level 800 VDC busways enable 85% more power transmission through the same conductor size while reducing copper requirements by 45% compared to 415 VAC distribution." (22-10 §3.2 shows that the per-conductor gain depends on the conductor count and power factor assumed.)
+- NVIDIA and partners "are actively studying the CapEx and, OpEx, and safety implications of both traditional transformer-based and solid-state transformer (SST) approaches".
+- **Source:** [NVIDIA Technical Blog, 20 May 2025](https://developer.nvidia.com/blog/nvidia-800-v-hvdc-architecture-will-power-the-next-generation-of-ai-factories/). Checked Nov 2026.
+
+## R-692 · AMD Instinct MI355X specifications (Course 27)
+
+*Read on 26 Nov 2026 on AMD's MI355X product page.* [Established as manufacturer specifications]
+
+- "288GB HBM3E memory, 8TB/s bandwidth"; "Peak Memory Bandwidth 8 TB/s"; "Lithography TSMC 3nm | 6nm FinFET"; "Compute Units 256"; "Peak Engine Clock 2400 MHz".
+- "Peak Microscaling Four-bit Precision Matrix (MXFP4) Performance 10.1 PFLOPs"; OCP-FP8 "5 PFLOPs", and "with Structured Sparsity" "10.1 PFLOPs"; bfloat16 "2.5 PFLOPs", and "5 PFLOPs" with structured sparsity; FP64 "78.6 TFLOPs".
+- "Transistor Count 185 Billion"; "Typical Board Power (TBP) 1400W"; "Last Level Cache (LLC) 256 MB"; "GPU Form Factor OAM Module"; "Bus Type PCIe® 5.0 x16"; "Infinity Fabric™ Links 7"; "Peak Infinity Fabric™ Link Bandwidth 144 GB/s".
+- **Derived (ours):** dense OCP-FP8 over bandwidth, 5 PFLOP/s ÷ 8 TB/s = 625 FLOP/byte. The page lists structured sparsity as exactly twice the dense rate.
+- **Source:** [AMD Instinct MI355X](https://www.amd.com/en/products/accelerators/instinct/mi350/mi355x.html). Checked Nov 2026.
+
+## R-693 · Google Ironwood TPU (Course 27)
+
+*Read on 26 Nov 2026 on Google's blog post of 9 Apr 2025.* [Established as Google's specifications; the supercomputer comparison is Contested, see Course 27 chapter 27-07 §9]
+
+- "Ironwood: The first Google TPU for the age of inference"; seventh-generation TPU.
+- "comes in two sizes based on AI workload demands: a 256 chip configuration and a 9,216 chip configuration."
+- "When scaled to 9,216 chips per pod for a total of 42.5 Exaflops, Ironwood supports more than 24x the compute power of the world's largest supercomputer – El Capitan – which offers just 1.7 Exaflops per pod."
+- "Each individual chip boasts peak compute of 4,614 TFLOPs." The figure captions give the precision: "FP8 peak TFlops emulated for v4 and v5p, but natively supported for Ironwood"; power efficiency is "Measured by peak FP8 flops delivered per watt of thermal design power per chip package".
+- "Ironwood offers 192 GB per chip, 6x that of Trillium"; HBM bandwidth "7.37 TB/s per chip, 4.5x of Trillium's"; ICI bandwidth "increased to 1.2 TBps bidirectional, 1.5x of Trillium's"; "Ironwood perf/watt is 2x relative to Trillium".
+- "It scales up to 9,216 liquid cooled chips linked with breakthrough Inter-Chip Interconnect (ICI) networking spanning nearly 10 MW."
+- **Derived (ours):** 9,216 × 4,614 TFLOP/s = 42.5 EFLOP/s (FP8 peak), matching the stated total. About 10 MW ÷ 9,216 = 1.09 kW per chip, all-in. 42.5/1.7 = 25. El Capitan's TOP500 figure is HPL, a double-precision benchmark (R-038), so the comparison sets FP8 peak against FP64.
+- **Source:** [Google blog, 9 Apr 2025](https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/ironwood-tpu-age-of-inference/). Checked Nov 2026.
+
+## R-694 · Llama 3 405B training: compute, utilization and interruptions (Course 27)
+
+*Read on 26 Nov 2026 in the paper's PDF (arXiv 2407.21783v3).* [Established as Meta's reported figures]
+
+- **Compute:** "pre-trained using 3.8 × 10²⁵ FLOPs"; "a flagship model with 405B trainable parameters on 15.6T text tokens"; "trained on up to 16K H100 GPUs, each running at 700W TDP with 80GB HBM3, using Meta's Grand Teton AI server platform"; "Each server is equipped with eight GPUs and two CPUs. Within a server, the eight GPUs are connected via NVLink"; RoCE and InfiniBand clusters "leverage 400 Gbps" interconnects.
+- **Parallelism and utilization (Table 4):** on 8,192 GPUs, TP 8, PP 16, DP 64, 430 TFLOPs/GPU, 43% BF16 MFU. On 16,384 GPUs, DP 128, 400 TFLOPs/GPU, 41%. With context parallelism 16 at 131,072-token sequences, 380 TFLOPs/GPU, 38%. Text: "an overall BF16 Model FLOPs Utilization (MFU …) of 38-43%".
+- **Checkpoints and storage:** "Checkpointing saves each GPU's model state, ranging from 1 MB to 4 GB per GPU"; the storage fabric "supports a sustainable throughput of 2 TB/s and a peak throughput of 7 TB/s".
+- **Reliability:** "we achieved higher than 90% effective training time"; "During a 54-day snapshot period of pre-training, we experienced a total of 466 job interruptions. Of these, 47 were planned … The remaining 419 were unexpected interruptions"; "Approximately 78% of the unexpected interruptions are attributed to confirmed hardware issues … or suspected hardware-related issues"; "GPU issues are the largest category, accounting for 58.7% of all unexpected issues"; "significant manual intervention was required only three times".
+- **Table 5:** Faulty GPU 148 (30.1%); GPU HBM3 Memory 72 (17.2%); Software Bug 54 (12.9%); Network Switch/Cable 35 (8.4%); Host Maintenance (unplanned) 32 (7.6%); GPU SRAM Memory 19 (4.5%); GPU System Processor 17 (4.1%); NIC 7 (1.7%); NCCL Watchdog Timeouts 7 (1.7%); Silent Data Corruption 6 (1.4%); GPU Thermal Interface + Sensor 6 (1.4%); SSD 3; Power Supply 3; Server Chassis 2; IO Expansion Board 2; Dependency 2; CPU 2; System Memory 2.
+- **Environment and power:** "a diurnal 1-2% throughput variation based on time-of-day … the result of higher mid-day temperatures impacting GPU dynamic voltage and frequency scaling"; synchronized power changes "on the order of tens of megawatts, stretching the limits of the power grid".
+- **Consistency check (ours) [Contested: internal inconsistency in the table].** The counts sum to 419, but 148/419 = 35.3%, not the printed 30.1%. The printed percentages sum to 94.9%. The GPU categories sum to 64.0% using the 148 count, but to 58.7% (the text's figure) if the faulty-GPU count is 126, which matches 30.1% of 419. One of the printed figures is wrong. GPUs and HBM dominate either way.
+- **Source:** [Llama Team, AI @ Meta, "The Llama 3 Herd of Models", arXiv:2407.21783v3 (23 Nov 2024)](https://arxiv.org/abs/2407.21783). Checked Nov 2026.

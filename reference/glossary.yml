@@ -11178,3 +11178,51 @@
   definition: A vehicle whose features are defined mainly by software running on central compute with headroom, a service-oriented platform and over-the-air updates, so behaviour can change over the vehicle's life.
   chapter: "27-06"
   see_also: [Central compute (vehicle), Over-the-air (OTA) update]
+- term: Rack-scale system
+  definition: "An AI system designed and sold as a whole rack rather than as servers, with dozens of accelerators joined by one scale-up fabric, shared power shelves and liquid cooling, so that the rack behaves as one large accelerator."
+  chapter: "27-07"
+  see_also: [Scale-up fabric, NVLink]
+- term: Model FLOPs utilization (MFU)
+  definition: "The useful model FLOPs a training or inference job achieves per second, as a fraction of the hardware's peak; it absorbs memory stalls, unhidden communication, pipeline bubbles and load imbalance, and is typically well under half at large scale."
+  chapter: "27-07"
+  see_also: [Roofline model]
+- term: Data parallelism
+  definition: "Splitting training data across replicas of a model, each computing gradients on its own batch, with the gradients averaged once per step by an all-reduce; its traffic is large but infrequent, so it can cross the scale-out network."
+  chapter: "27-07"
+  see_also: [All-reduce, Tensor parallelism]
+- term: Tensor parallelism
+  definition: "Splitting each layer's weight matrices across devices, which then exchange activations several times per layer on the critical path; it needs the bandwidth and latency of a scale-up fabric."
+  chapter: "27-07"
+  see_also: [Data parallelism, Pipeline parallelism, Scale-up fabric]
+- term: Pipeline parallelism
+  definition: "Placing consecutive layers of a model on different devices and streaming micro-batches through them; activations pass point to point between stages, and idle bubbles of (p − 1)/(m + p − 1) of the time arise for p stages and m micro-batches."
+  chapter: "27-07"
+  see_also: [Tensor parallelism]
+- term: Mixture of experts (MoE)
+  definition: "A model in which a router sends each token through a few of many expert sub-networks, so only a fraction of the parameters is active per token; it cuts compute per token but not the memory to hold all experts, and spreads experts across devices with all-to-all traffic."
+  chapter: "27-07"
+  see_also: [KV cache]
+- term: All-reduce
+  definition: "A collective operation that leaves every one of p devices holding the elementwise sum (or average) of all their vectors; it synchronizes gradients in data-parallel training."
+  chapter: "27-07"
+  see_also: [Ring all-reduce, Hierarchical all-reduce]
+- term: Ring all-reduce
+  definition: "An all-reduce in which devices in a ring pass chunks of size S/p to their neighbours, first summing (reduce-scatter) then distributing (all-gather), taking 2(p − 1)/p · S/B plus 2(p − 1) start-up latencies; its bandwidth term is nearly independent of p."
+  chapter: "27-07"
+  see_also: [All-reduce]
+- term: Hierarchical all-reduce
+  definition: "An all-reduce that reduce-scatters inside each scale-up domain, all-reduces the resulting shards across domains over the network, then all-gathers inside each domain, dividing the network traffic per device by the domain size."
+  chapter: "27-07"
+  see_also: [All-reduce, Scale-up fabric]
+- term: Young's checkpoint interval
+  definition: "The first-order optimal time between checkpoints, the square root of 2δM for a save time δ and a mean time between failures M; it balances time spent saving against work lost to failures, leaving a lost fraction of the square root of 2δ/M plus restarts."
+  chapter: "27-07"
+  see_also: [Effective training time, Mean time between failures (MTBF)]
+- term: Effective training time
+  definition: "The fraction of a training job's elapsed time spent on useful training, after time lost to checkpoints, rework after failures and restarts; Meta reported more than 90% for Llama 3 on up to 16,384 GPUs."
+  chapter: "27-07"
+  see_also: [Young's checkpoint interval]
+- term: Throughput–interactivity frontier
+  definition: "The tradeoff between a serving system's total tokens per second and each user's tokens per second as the batch grows; in the memory-bound region it is a straight line whose slope is the ratio of weight bytes to one sequence's KV-cache bytes."
+  chapter: "27-07"
+  see_also: [KV cache, Decode and prefill]
