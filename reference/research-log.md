@@ -6353,3 +6353,44 @@ R&D % = R&D ÷ revenue.
 - Siemens Aprisa blog (vendor, 26 Apr 2022): "two types of ECOs: base layer and metal layer"; for a metal ECO "the base layer is frozen and only the metal layers are permitted any changes".
 - **Not found:** a quantified time or mask-count saving from a reputable source.
 - **Sources:** [ISPD 2008 paper (University of Michigan)](https://web.eecs.umich.edu/~imarkov/pubs/conf/ispd08-spare.pdf); [Synopsys ECO Kits](https://www.synopsys.com/designware-ip/memories-logic-libraries/eco-kits.html); [Siemens Aprisa blog](https://blogs.sw.siemens.com/aprisa/2022/04/26/a-cure-for-eco-headaches-aprisa-automates-metal-eco/). Checked Nov 2026.
+
+## R-649 · Conway's law, original statement (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent from the author's reprint (melconway.com); quote spot-checked.* [Established]
+
+- M. E. Conway, "How Do Committees Invent?", *Datamation*, April 1968 (reprint "by permission of Datamation magazine"), Conclusion: "The basic thesis of this article is that organizations which design systems (in the broad sense used here) are constrained to produce designs which are copies of the communication structures of these organizations." Just before it: "This is one reason why military-style organizations design systems which look like their organization charts."
+- **Source:** [Conway, reprint](https://www.melconway.com/research/committees.html). Checked Nov 2026.
+
+## R-650 · Brooks's law and the intercommunication formula (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent from a course-hosted scan of chapter 2 of the anniversary edition (Duke CompSci 408 reading); quotes spot-checked; the text layer renders n(n−1)/2 as "n(n-I)/2".* [Established; informal copy]
+
+- F. P. Brooks, *The Mythical Man-Month*, anniversary ed. (Addison-Wesley, 1995), ch. 2: "Intercommunication is worse. If each part of the task must be separately coordinated with each other part, the effort increases as n(n-1)/2. Three workers require three times as much pairwise intercommunication as two; four require six times as much as two"; on training: "This training cannot be partitioned, so this part of the added effort varies linearly with the number of workers"; "Oversimplifying outrageously, we state Brooks's Law: Adding manpower to a late software project makes it later."
+- **Sources:** [Duke course reading (scan)](https://courses.cs.duke.edu/compsci408/fall16/readings/mythical_man_month.pdf); the publisher's listing (InformIT) gives the anniversary edition's date as 2 Aug 1995. Checked Nov 2026.
+
+## R-651 · Design and verification engineers, 2022 Wilson Research Group study (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent (Siemens Verification Horizons blog, Part 8, 12 Dec 2022, H. Foster); quotes spot-checked.* [Industry estimate: sponsored survey]
+
+- "While, on average, the demand for IC/ASIC design engineers grew at about a 2.7 percent CAGR between 2007 and 2022, the demand for IC/ASIC verification engineers grew at a 6.2 percent CAGR. Today, on average, across most market segments, we find about a one-to-one ratio in terms of mean peak number of verification and design engineers. However, in some market segments, such as processors, it is not unusual to find a 5-to-1 ratio." (The direction of the 5-to-1 ratio is implied, verification to design.)
+- "In 2022, design engineers spent on average 51 percent of their time involved in design activities and 49 percent of their time in verification."
+- The mean peak headcounts appear only in a chart (about 12 design and 12 verification engineers in 2022, read by eye); not used.
+- **Source:** [Part 8 of the 2022 study](https://blogs.sw.siemens.com/verificationhorizons/2022/12/12/part-8-the-2022-wilson-research-group-functional-verification-study/). Checked Nov 2026.
+
+## R-652 · ASIC design-services companies: revenue and NRE (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent from investor-relations documents; GUC and Socionext figures spot-checked.* [Established: company results]
+
+- **GUC** (Global Unichip), 4Q25 investor presentation (29 Jan 2026): 2025 revenue NT$34,141 M (+36%); NRE NT$8,032 M (24%) against NT$8,436 M (34%) in 2024; turnkey NT$25,736 M (75%) against NT$16,161 M (64%).
+- **Socionext**, results for the year ended 31 Mar 2026 (28 Apr 2026): net sales ¥200,834 M (+6.5%); NRE revenue ¥38,325 M (down 6.6%), product revenue ¥161,792 M; NRE is "revenue received from customers based on costs incurred in scheduled milestones during the design and development process".
+- **Alchip**, 4Q25 investor deck: 2025 revenue US$991.9 M against US$1,618.4 M in 2024; "NRE revenue accounted for more than 50% of total revenue in 4Q". Its annual report's service categories define NRE differently, so no comparable full-year NRE share is given here.
+- **Derived here:** Socionext's NRE was 19.1% of net sales.
+- **Sources:** [GUC 4Q25 presentation](https://www.guc-asic.com/upload/2026_01_29/8_202601291836496m6uxgSAL3.pdf); [Socionext FY2025 results](https://www.socionext.com/en/ir/pdf/sn_ir20260428_03e.pdf); [Alchip 4Q25 deck](https://www.alchip.com/upload/2026_03_06/6_20260306133200wpnwgmeSL1.pdf). Checked Nov 2026.
+
+## R-653 · Team size behind a leading-edge GPU (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent (NVIDIA press release).* [Established: company statement, qualitative]
+
+- NVIDIA, 10 May 2017, Volta launch: "Thousands of NVIDIA engineers spent over three years crafting Volta". No exact headcount was found from a primary or peer-reviewed source; a widely repeated development-cost figure appears only in press coverage and is not used.
+- **Not read:** the US Bureau of Labor Statistics occupational pages (HTTP 403), so the chapter's loaded engineering cost is an assumption.
+- **Source:** [NVIDIA, 10 May 2017](https://nvidianews.nvidia.com/news/nvidia-launches-revolutionary-volta-gpu-platform-fueling-next-era-of-ai-and-high-performance-computing). Checked Nov 2026.

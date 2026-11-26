@@ -10868,3 +10868,40 @@
 - term: Bug-discovery curve
   definition: The number of bugs found per week (or cumulatively) during verification; a curve flattening toward zero, with coverage closed, is the evidence a tape-out review looks for.
   chapter: "26-05"
+
+# ---------------------------------------------------------------- 26-06
+- term: Communication overhead
+  definition: The share of a team's time spent coordinating rather than producing; with n people there are n(n − 1)/2 possible pairwise channels, so it grows faster than headcount.
+  chapter: "26-06"
+- term: Brooks's law
+  definition: Fred Brooks's observation (1975) that adding people to a late project makes it later, because new people need training and add communication channels before they contribute.
+  chapter: "26-06"
+  see_also: [Communication overhead]
+- term: Conway's law
+  definition: Melvin Conway's observation (1968) that organizations design systems whose structure copies their own communication structure; in chips, team boundaries become block interfaces.
+  chapter: "26-06"
+- term: Functional organization
+  definition: An organization in which engineers report by discipline (design, verification, physical design), giving deep expertise and flexible staffing but no single owner below the top for each product.
+  chapter: "26-06"
+  see_also: [Program organization, Matrix organization]
+- term: Program organization
+  definition: An organization in which each product or program has its own dedicated team of every discipline, giving clear ownership at the cost of duplicated methods and idle specialists between peaks.
+  chapter: "26-06"
+- term: Matrix organization
+  definition: An organization in which engineers report both to a functional manager (skills, methods) and to a program manager (priorities, dates).
+  chapter: "26-06"
+- term: Platform team
+  definition: A shared team that builds IP, methodology or tools used by several product programs; the organizational form of reuse.
+  chapter: "26-06"
+- term: Span of control
+  definition: The number of people reporting directly to one manager; N people need about N/(s − 1) managers in about log_s N layers for a span s.
+  chapter: "26-06"
+- term: Newsvendor rule
+  definition: The staffing (or stocking) rule that adds capacity while the probability it will be used exceeds the ratio of its cost to the cost of covering the shortfall another way.
+  chapter: "26-06"
+- term: Break-even utilization
+  definition: The fraction of time an in-house resource must be busy for it to cost less than buying the same work when needed; for a fixed cost per period C_e and a pay-per-use cost C_c it is C_e/C_c.
+  chapter: "26-06"
+- term: Loaded cost
+  definition: The full cost of an employee to the company per period, including salary, benefits, taxes, tools, facilities and overhead, not just salary.
+  chapter: "26-06"
