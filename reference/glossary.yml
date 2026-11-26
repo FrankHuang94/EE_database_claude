@@ -11422,3 +11422,16 @@
   definition: The expected value of keeping an acquired team, $NV\rho$ for $N$ engineers of replacement value $V$ each and retention fraction $\rho$; a retention package is worth $NV(\rho_1 - \rho_0)$ before its cost.
   chapter: "28-07"
   see_also: [Key-person risk]
+- term: Synergy realization
+  definition: The fraction of planned acquisition synergies actually achieved, and when; a plan of $S$ a year for $n$ years realized at fraction $\rho$ after a delay of $d$ years is worth $\rho(1 + r)^{-d}$ of its planned present value.
+  chapter: "28-08"
+- term: Flow freeze
+  definition: Keeping a design team on its existing EDA tools, scripts, libraries and methodology until its current tape-out, and migrating to the acquirer's flow between projects; it trades a period of duplicated tools for avoiding a mid-project delay.
+  chapter: "28-08"
+- term: Parallel-path strategy
+  definition: Keeping two development programs for the same goal so that at least one is more likely to succeed; with a socket worth $W$ the second program adds $W[1 - P(\text{both fail}) - \max(p_1, p_2)]$, which correlation between failures reduces.
+  chapter: "28-08"
+- term: Change-of-control clause
+  definition: A contract term that changes, requires consent for, or terminates a license or agreement when the licensee is acquired; for processor, EDA and other IP licenses it can turn an acquisition into a renegotiation.
+  chapter: "28-08"
+  see_also: [Architecture license]

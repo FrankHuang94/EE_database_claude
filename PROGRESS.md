@@ -112,7 +112,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 >
 > 28-07 (Evaluating Engineering Teams) is verified: track records shrunk toward the survey base rate with a conjugate Beta prior (derived; posterior mean as a weighted average), credible intervals; reference-class schedule calibration with lognormal overruns ($\Phi(-\mu/\sigma)$, P90); composition and verification effort (time split, not head count); bench depth $q^k$ and the group-departure floor; tooling and regression capacity; culture interview bank T1–T7; team scorecards with gates; retention value $NV\rho$. 6 examples, 12 problems, verify (87 checks: grid-integrated posteriors, quadrature normal tails, Monte Carlo departures), lab (`teameval.py`, notebook), 1 figure, 5 glossary terms. Reuses R-321, R-621, R-650, R-651, R-653.
 >
-> **Next: 28-08 Post-Acquisition Integration Risk.** Then 28-09 and 28-10, the Course 28 wrap-up and audit, and the **Term 7 checkpoint** (50 FE-style questions on Courses 26–28 with a verify script). Perishable facts need web searches; where search is unavailable, fetch known primary pages with curl or reuse logged R-entries.
+> 28-08 (Post-Acquisition Integration Risk) is verified: the value equation with synergies and dis-synergies; synergy annuities with delay and realization (derived), fixed versus shifted windows; tool/flow/process migration cost against delay cost and the flow-freeze rule; roadmap overlap as parallel paths with correlated failures; retention around vesting cliffs; licensing (Arm models, royalties, the Qualcomm/Nuvia dispute), RISC-V, and export controls (3A090 TPP and density thresholds); expected-loss risk registers and earn-outs (Marvell–Celestial AI terms). 6 examples, 12 problems, verify (81 checks: explicit cash flows, Monte Carlo joint outcomes, survival simulation), lab (`integrate.py`, notebook), 1 figure, 4 glossary terms. Reuses R-203, R-204, R-547, R-639, R-659.
+>
+> **Next: 28-09 The Business ↔ Engineering Translation Table.** Then 28-10, the Course 28 wrap-up and audit, and the **Term 7 checkpoint** (50 FE-style questions on Courses 26–28 with a verify script). Perishable facts need web searches; where search is unavailable, fetch known primary pages with curl or reuse logged R-entries.
 
 > Course 26 audit lessons to carry forward: (i) key every intermediate a solution displays, not just the final answers; (ii) anything defined relative to price (a percentage royalty, a margin) must move with price in a sensitivity; (iii) never publish a value that sits on a rounding tie, publish it exactly; (iv) when an answer needs iteration, teach the iteration (a Math refresher) and show the steps; (v) cite a figure only to a log entry whose recorded source contains it.
 >
@@ -223,10 +225,10 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | 25 | 12 | 12 | 12 | 12 | 75,761 | 167 | 1321 | 12 | 12 / 2 / 0 |
 | 26 | 7 | 7 | 7 | 7 | 49,840 | 100 | 1275 | 7 | 7 / 0 / 0 |
 | 27 | 8 | 8 | 8 | 8 | 61,565 | 112 | 1396 | 8 | 8 / 0 / 0 |
-| 28 | 10 | 7 | 7 | 0 | 43,001 | 89 | 650 | 7 | 7 / 0 / 0 |
-| **Total** | **307** | **304** | **304** | **297** | **2,146,170** | **4331** | **38034** | **304** | **300 / 271 / 27** |
+| 28 | 10 | 8 | 8 | 0 | 47,528 | 101 | 719 | 8 | 8 / 0 / 0 |
+| **Total** | **307** | **305** | **305** | **297** | **2,150,697** | **4343** | **38103** | **305** | **301 / 271 / 27** |
 
-Glossary terms: **3075** · Flashcards: **2799**
+Glossary terms: **3079** · Flashcards: **2799**
 
 <!-- END STATS -->
 
@@ -262,7 +264,7 @@ Glossary terms: **3075** · Flashcards: **2799**
 | 25 | 🏁 audited | ✅ 2026-11-26 | 12 chapters reviewed: 167 problems, 1,173 keyed chapter, solution and lab values plus 148 exam values (1,375 checks), 12 lab notebooks, 2 ngspice netlists; exam (12 questions, 104 points, 240 minutes), 96 flashcards, equation sheet and course notes. Five reviewers, 111 findings, all fixed. Term 6 checkpoint complete. |
 | 26 | 🏁 audited | ✅ 2026-11-26 | 7 chapters reviewed: 100 problems, 1,095 keyed chapter, solution and lab values plus 180 exam values (1,392 checks across 8 verify scripts), 7 lab notebooks; exam (12 questions, 104 points, 180 minutes), 82 flashcards, equation sheet and course notes; R-625 to R-659. Four reviewers, 111 findings, all fixed. |
 | 27 | 🏁 audited | ✅ 2026-11-26 | 8 chapters reviewed: 112 problems, 1,301 keyed chapter, solution and lab values plus 95 exam values (1,462 checks across 9 verify scripts), 8 lab notebooks; exam (12 questions, 104 points, 210 minutes), 76 flashcards, equation sheet and course notes; R-660 to R-700. Three reviewers, 161 findings, all fixed. |
-| 28 | 🔄 in progress | — | 28-01 to 28-07 verified (89 problems, 650 keyed values, 745 checks). |
+| 28 | 🔄 in progress | — | 28-01 to 28-08 verified (101 problems, 719 keyed values, 826 checks). |
 | all others | ⬜ planned (stubs only) | — | |
 
 Course status values: ⬜ planned · 🔄 in progress · ✅ complete (all chapters verified, exam + flashcards + glossary done) · 🏁 audited (independent review findings fixed).
@@ -710,3 +712,4 @@ Changes relative to the original build brief's chapter plan.
 | 2026-11-26 | Phase 2. **28-05 Domain Question Banks II ✅ verified.** Banks for analog/mixed-signal, RF, power, packaging and embedded; converter FoM against the frontier and the 8kT·SNR ceiling; jitter budgets; PA efficiency at back-off; converter heat and chains; interconnect density and compound yield; battery life; typical vs guaranteed with Cpk. 6 examples, 13 problems, verify (137 checks), lab (`bankcheck.py`, notebook), 1 figure, 3 glossary terms. |
 | 2026-11-26 | Phase 2. **28-06 Red Flags and Green Flags ✅ verified.** Flags as diagnostic tests (LR+, LR−); checklist false alarms and binomial count thresholds; technical, organizational and commercial flags; key-person risk, HHI, risk-adjusted design-win funnels; correlated flags. 6 examples, 12 problems, verify (93 checks), lab (`flagmodel.py`, notebook), 1 figure, 7 glossary terms. |
 | 2026-11-26 | Phase 2. **28-07 Evaluating Engineering Teams ✅ verified.** Beta-binomial track-record shrinkage; reference-class schedule calibration; composition, verification effort and bench depth with group departures; regression capacity; interview bank; team scorecards; retention value. 6 examples, 12 problems, verify (87 checks), lab (`teameval.py`, notebook), 1 figure, 5 glossary terms. |
+| 2026-11-26 | Phase 2. **28-08 Post-Acquisition Integration Risk ✅ verified.** Synergy value with delay and realization; flow migration against delay and the flow freeze; roadmap overlap as parallel paths; retention cliffs; licensing, royalties and export controls; risk registers and earn-outs. 6 examples, 12 problems, verify (81 checks), lab (`integrate.py`, notebook), 1 figure, 4 glossary terms. |
