@@ -6236,3 +6236,18 @@ R&D % = R&D ÷ revenue.
 
 - "The promoter members of UCIe are Advanced Micro Devices (AMD), Advanced Semiconductor Engineering, Inc. (ASE), Alibaba Cloud, Arm Limited, Google Cloud, Intel, Meta, Microsoft, NVIDIA, Qualcomm, Samsung, and Taiwan Semiconductor Manufacturing Company."
 - **Source:** [UCIe membership](https://www.uciexpress.org/membership). Checked Nov 2026.
+
+## R-636 · NCEES FE Electrical and Computer specification: Engineering Economics topics (Course 26)
+
+*Read on 26 Nov 2026 (NCEES specification PDF, 3 pages).* [Established]
+
+- Knowledge area 4, "Engineering Economics", 5–8 questions: "A. Time value of money (e.g., present value, future value, annuities) B. Cost estimation C. Risk identification D. Analysis (e.g., cost-benefit, trade-off, break-even)".
+- **Source:** [NCEES FE Electrical and Computer CBT specification](https://ncees.org/wp-content/uploads/FE-Electrical-and-Computer-CBT-specs.pdf). Checked Nov 2026. See also R-001.
+
+## R-637 · NVIDIA fourth-quarter and fiscal-2026 results (Course 26)
+
+*Read on 26 Nov 2026 (NVIDIA press release, 25 Feb 2026).* [Established: company results]
+
+- "NVIDIA (NASDAQ: NVDA) today reported record revenue for the fourth quarter ended January 25, 2026, of $68.1 billion, up 20% from the previous quarter and up 73% from a year ago. For fiscal 2026, revenue was $215.9 billion, up 65% from a year ago. For the quarter, GAAP and non-GAAP gross margins were 75.0% and 75.2%, respectively. For fiscal 2026, GAAP and non-GAAP gross margins were 71.1% and 71.3%, respectively."
+- Fiscal 2025 GAAP gross margin was 75.0% (summary table).
+- **Source:** [NVIDIA, 25 Feb 2026](https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2026). Checked Nov 2026.

@@ -10697,3 +10697,64 @@
   definition: A reviewed and approved version of a document or design that changes only through a controlled process (change requests approved by a change control board); specification freeze establishes the baseline that design and verification work to.
   chapter: "26-02"
   see_also: [Change control board, Specification freeze]
+
+# ---------------------------------------------------------------- 26-03
+- term: Cost of goods sold (COGS)
+  definition: The per-unit cost of making and delivering a product (die, package, assembly, test, royalties), with each yield loss carried by the surviving units; fixed costs such as NRE are excluded.
+  chapter: "26-03"
+  see_also: [Gross margin]
+- term: Gross margin
+  definition: (ASP − COGS)/ASP, the fraction of each sale left after the cost of making the unit; it funds R&D, sales and administration, and profit.
+  chapter: "26-03"
+  see_also: [Markup, Cost of goods sold (COGS)]
+- term: Markup
+  definition: (ASP − COGS)/COGS, profit as a fraction of cost rather than of price; markup = GM/(1 − GM), so a 60% gross margin is a 150% markup.
+  chapter: "26-03"
+  see_also: [Gross margin]
+- term: Contribution margin
+  definition: ASP − COGS per unit, the amount each sale contributes toward fixed costs (NRE, overhead) and profit; break-even volume is NRE divided by it.
+  chapter: "26-03"
+  see_also: [Break-even volume]
+- term: Fully loaded cost
+  definition: COGS plus the NRE amortized over lifetime volume (NRE/V); it falls toward COGS as volume grows.
+  chapter: "26-03"
+  see_also: [Non-recurring engineering (NRE)]
+- term: Break-even volume
+  definition: The lifetime volume at which total contribution covers NRE, V* = NRE/(ASP − COGS), ignoring the time value of money.
+  chapter: "26-03"
+  see_also: [Contribution margin]
+- term: Interest factor
+  definition: A multiplier (X/Y, i, n) converting a cash amount of one form into an equivalent amount of another at rate i over n periods, such as (F/P) = (1 + i)ⁿ or (P/A) = [1 − (1 + i)⁻ⁿ]/i; the notation of the FE Reference Handbook.
+  chapter: "26-03"
+  see_also: [Capital recovery factor]
+- term: Capital recovery factor
+  definition: (A/P, i, n) = i(1 + i)ⁿ/[(1 + i)ⁿ − 1], which converts a present cost into the equal end-of-period payments that repay it with interest; with salvage S, the annual cost is P(A/P) − S(A/F).
+  chapter: "26-03"
+  see_also: [Interest factor, Equivalent uniform annual cost (EUAC)]
+- term: Effective interest rate
+  definition: The actual annual growth rate of money for a nominal rate r compounded m times a year, (1 + r/m)ᵐ − 1, approaching eʳ − 1 for continuous compounding.
+  chapter: "26-03"
+- term: Net present value (NPV)
+  definition: The sum of a project's cash flows, each discounted to the present at the minimum attractive rate of return; a project is worth doing if its NPV is positive.
+  chapter: "26-03"
+  see_also: [Internal rate of return (IRR), Minimum attractive rate of return (MARR)]
+- term: Internal rate of return (IRR)
+  definition: The discount rate at which a project's NPV is zero, found by iteration; a project is attractive if its IRR exceeds the MARR, though NPV is the safer basis for comparing projects.
+  chapter: "26-03"
+  see_also: [Net present value (NPV)]
+- term: Payback period
+  definition: The time until a project's cumulative cash flow turns positive; it ignores discounting and everything after payback, so it measures liquidity and risk rather than value.
+  chapter: "26-03"
+- term: Minimum attractive rate of return (MARR)
+  definition: The lowest rate of return an organization accepts on an investment, used as the discount rate for NPV and annual-worth comparisons.
+  chapter: "26-03"
+- term: Equivalent uniform annual cost (EUAC)
+  definition: All of an alternative's costs converted to an equal annual amount at the MARR; it ranks equal-life alternatives the same way as NPV and handles different lives under the repeatability assumption.
+  chapter: "26-03"
+  see_also: [Capital recovery factor]
+- term: Straight-line depreciation
+  definition: Spreading an asset's cost less salvage evenly over its life, D = (P − S)/n a year; depreciation is not a cash flow but lowers taxable income.
+  chapter: "26-03"
+- term: Sensitivity (tornado) analysis
+  definition: Varying each input of a model by a set amount, one at a time, and ranking the inputs by the swing they cause in the output; the chart of sorted bars is called a tornado.
+  chapter: "26-03"
