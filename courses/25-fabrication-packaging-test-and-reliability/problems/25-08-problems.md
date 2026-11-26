@@ -26,7 +26,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-08.2 [B]
 
-**A bigger hotspot.** (a) Spread Example 25-08.2's 2 W over a disk 2 mm in diameter. Find the power density, the centre rise and the average spreading resistance. (b) Keep instead the original 2.55 W/mm² over the 2 mm disk. What power is that, and what is the centre rise?
+**A bigger hotspot.** (a) Spread Example 25-08.2's 2 W of excess power over a disk 2 mm in diameter. Find the excess flux, the centre rise and the average spreading resistance. (b) Keep instead the original 2.55 W/mm² of excess flux over the 2 mm disk. What excess power is that, and what is the centre rise?
 
 ### Problem 25-08.3 [B]
 
@@ -72,6 +72,10 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 **Why heat pipes work.** Water's latent heat of evaporation is about 2.26 MJ/kg. (a) What mass flow of evaporating water carries 100 W? (b) How many times more heat does a kilogram of evaporating water carry than a kilogram warming by 10 K?
 
+### Problem 25-08.14 [B]
+
+**Finer channels.** Repeat Example 25-08.9(a)–(e) with 200 channels 0.15 mm wide, keeping the depth, length and total flow. By what factors do $h$, the ideal-wall resistance and the pressure drop change?
+
 ---
 
 ## Objective coverage
@@ -81,6 +85,6 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 | 1. Junction-to-coolant budgets | 1, 6, 7 |
 | 2. Hotspots and spreading | 2, 3 |
 | 3. Fins and air cooling | 4, 5 |
-| 4. Coolant flow and cold plates | 6, 7, 8, 13 |
+| 4. Coolant flow and cold plates | 6, 7, 8, 13, 14 |
 | 5. Mission profiles and Arrhenius | 11 |
 | 6. Reading power and cooling claims | 8, 9, 10, 12 |

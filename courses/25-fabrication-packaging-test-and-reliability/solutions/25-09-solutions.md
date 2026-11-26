@@ -18,13 +18,13 @@ $AF = \exp[(E_a/k)(1/358.15 - 1/423.15)]$: (a) **32.6**; (b) **145**. The higher
 
 (b) $200 \times 8.40 \times 10^5$ = **1.68e8** h = **1.92e4** years.
 
-(c) For a lognormal life, $\ln t$ is Gaussian with standard deviation σ, so the time at failure fraction $F$ is $t_{50}e^{z_F\sigma}$ with $z_F = \Phi^{-1}(F)$. For $F = 10^{-4}$, $z$ = **−3.72**, the factor is $e^{-3.72 \times 0.4}$ = **0.226**, and the time is **4.33e3** years. The ppm-level life is a quarter of the median, and a chip has many such lines.
+(c) For a lognormal life, $\ln t$ is Gaussian with standard deviation σ, so the time at failure fraction $F$ is $t_{50}e^{z_F\sigma}$ with $z_F = \Phi^{-1}(F)$. For $F = 10^{-4}$, $z$ = **−3.72**, the factor is $e^{-3.72 \times 0.4}$ = **0.226** (unrounded **0.2259**), and the time is $0.2259 \times 1.68 \times 10^8$ h = **4.33e3** years. The ppm-level life is a quarter of the median, and a chip has many such lines.
 
 ### Solution 25-09.3
 
 (a) $\ln MTTF = \ln(Bj^{-2} + Cj^{-1})$, so $d\ln MTTF/d\ln j = j\,(-2Bj^{-3} - Cj^{-2})/(Bj^{-2} + Cj^{-1})$, and $n = -d\ln MTTF/d\ln j = (2Bj^{-2} + Cj^{-1})/(Bj^{-2} + Cj^{-1})$. Dividing through by $Cj^{-1}$ and writing $x = jC/B = j/j^*$ gives $n = (2 + x)/(1 + x)$.
 
-(b) $(2 + x)/(1 + x) = 1.25$ gives $x$ = **3**. (c) $1.75$ gives $x$ = **0.333**. The exponent spans most of its range within one decade of $j$ around $j^*$.
+(b) $(2 + x)/(1 + x) = 1.25$ gives $x$ = **3**. (c) $1.75$ gives $x$ = **0.333**. Between $x = 1/3$ and $x = 3$, one decade of $j$ around $j^*$, the exponent covers half of its range from 2 to 1.
 
 ### Solution 25-09.4
 
@@ -68,7 +68,7 @@ $N = 1.833/(2 \times 1000 \times 78.6 \times 10^{-8})$ = 1165.8, so **1166** uni
 
 ### Solution 25-09.12
 
-Total **224** FIT; single-$E_a$ estimate **158** FIT; underestimate **29**%. The error grows with the distance from the reference temperature.
+The acceleration factors from 55 °C to 105 °C are $\exp[(E_a/k)(1/328.15 - 1/378.15)]$ = **67.2** at 0.9 eV, **26.4** at 0.7 eV and **10.4** at 0.5 eV. The total is $2 \times 67.2 + 3 \times 26.4 + 1 \times 10.4$ = **224** FIT; scaling all 6 FIT with 0.7 eV gives $6 \times 26.4$ = **158** FIT; the underestimate is **29**%. The error grows with the distance from the reference temperature.
 
 ### Solution 25-09.13
 
@@ -122,3 +122,7 @@ The number of failures is Poisson with mean $\lambda NtAF$. At the bound, $\lamb
 | 25-09.13a | pass probability at bound | 0.40 | |
 | 25-09.13a0 | Poisson mean at bound | 0.916 | |
 | 25-09.13b | pass probability at half | 0.632 | |
+| 25-09.2c2 | percentile factor, unrounded | 0.2259 | |
+| 25-09.12a0 | AF, 0.9 eV | 67.2 | |
+| 25-09.12a1 | AF, 0.7 eV | 26.4 | |
+| 25-09.12a2 | AF, 0.5 eV | 10.4 | |

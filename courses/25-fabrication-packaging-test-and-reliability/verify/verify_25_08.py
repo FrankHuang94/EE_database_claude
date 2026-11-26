@@ -92,7 +92,8 @@ v.check("Ex 25-08.1d1", 150 / 5)
 v.assert_true("Bessel integral equals 4/(3 pi)", abs(J12 - 4 / (3 * math.pi)) < 1e-6)
 v.check("Ex 25-08.2a", 2 / (math.pi * 0.5**2))
 v.check("Ex 25-08.2a0", 1000 / 800)
-v.check("Ex 25-08.2a1", (2 / (math.pi * 0.25)) / 1.25)
+v.check("Ex 25-08.2a2", 2 / (math.pi * 0.25) + 1.25)
+v.check("Ex 25-08.2a1", (2 / (math.pi * 0.25) + 1.25) / 1.25)
 v.check("Ex 25-08.2b", centre_rise(2, 0.5e-3, 150))
 v.check("Ex 25-08.2c", r_avg(0.5e-3, 150))
 v.check("Ex 25-08.2d", 2 * r_avg(0.5e-3, 150))
@@ -220,5 +221,60 @@ for key, t in (("a", 1e-3), ("a1", 10e-3)):
 v.check("Lab 25-08.b", eta_cu)
 v.check("Lab 25-08.c", p2)
 v.check("Lab 25-08.d", t_eq(prof_t, prof_w, 1.0))
+
+# ---------------------------------------------------------------- lab solvers asserted (finite volume, fin ODE)
+import importlib.util  # noqa: E402
+_spec = importlib.util.spec_from_file_location("thermal", LAB / "thermal.py")
+thermal = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(thermal)
+r_fd = thermal.spreader_fd(0.016, 0.035, 3e-3, 400)
+r_fd2 = thermal.spreader_fd(0.016, 0.035, 3e-3, 400, nr=320, nz=96)
+v.assert_true("Ex 25-08.3d: finite-volume spreading resistance agrees with the series within 0.5%", abs(r_fd / r_ex - 1) < 5e-3,
+              f"{r_fd * 1e3:.4f} vs {r_ex * 1e3:.4f} mK/W")
+v.assert_true("finite-volume result changes by under 0.2% when the grid is doubled", abs(r_fd2 / r_fd - 1) < 2e-3)
+for h_, kf, tf, Lf in ((60, 200, 0.8e-3, 0.030), (5265, 400, 3e-4, 2e-3)):
+    v.assert_true(f"fin ODE matches tanh(mL)/mL within 0.1% (h={h_})",
+                  abs(thermal.fin_efficiency_ode(h_, kf, tf, Lf) / fin_eta(h_, kf, tf, Lf) - 1) < 1e-3)
+
+# ---------------------------------------------------------------- Example 9 and Problem 14: microchannels
+rho_w, mu_w, kf_w, cp_w = 1000.0, 0.65e-3, 0.63, 4180.0
+
+
+def channels(n, w, d=2e-3, length=0.040, flow=2.0 / 60_000):
+    ac, pw = w * d, 2 * (w + d)
+    dh = 4 * ac / pw
+    vel = flow / n / ac
+    re = rho_w * vel * dh / mu_w
+    h_ = 4.36 * kf_w / dh
+    area = n * pw * length
+    dp = 32 * mu_w * length * vel / dh**2          # Hagen-Poiseuille form of f = 64/Re
+    return dh, vel, re, h_, area, 1 / (h_ * area), dp, dp * flow
+
+
+dh9, v9, re9, h9, a9, r9, dp9, pp9 = channels(100, 0.3e-3)
+v.check("Ex 25-08.9a", dh9 * 1e3)
+v.check("Ex 25-08.9b", v9)
+v.check("Ex 25-08.9b1", re9)
+v.check("Ex 25-08.9c", h9)
+v.check("Ex 25-08.9d", a9)
+v.check("Ex 25-08.9d1", r9)
+v.check("Ex 25-08.9e", dp9 / 1e3)
+v.check("Ex 25-08.9e1", pp9)
+v.assert_true("Hagen-Poiseuille drop equals f(L/D)(rho v^2/2) with f = 64/Re",
+              abs(dp9 / ((64 / re9) * (0.040 / dh9) * rho_w * v9**2 / 2) - 1) < 1e-12)
+eta9 = thermal.fin_efficiency_ode(h9, 400, 3e-4, 2e-3)
+v.check("Ex 25-08.9f", math.sqrt(2 * h9 / (400 * 3e-4)) * 2e-3)
+v.check("Ex 25-08.9f1", eta9)
+v.check("Ex 25-08.9f2", 1 / (h9 * 100 * 0.040 * (2 * 0.3e-3 + 2 * 2e-3 * eta9)))
+pr9 = mu_w * cp_w / kf_w
+v.check("Ex 25-08.9g", pr9)
+v.check("Ex 25-08.9g1", 0.05 * re9 * pr9 * dh9 * 100)
+d14 = channels(200, 0.15e-3)
+for key, val in zip(("a", "b", "b1", "c", "d", "d1", "e", "e1"),
+                    (d14[0] * 1e3, d14[1], d14[2], d14[3], d14[4], d14[5], d14[6] / 1e3, d14[7])):
+    v.check(f"25-08.14{key}", val)
+v.check("25-08.14f", d14[3] / h9)
+v.check("25-08.14f1", r9 / d14[5])
+v.check("25-08.14f2", d14[6] / dp9)
 
 sys.exit(v.finish())

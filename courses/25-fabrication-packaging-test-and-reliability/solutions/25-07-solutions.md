@@ -46,11 +46,13 @@ Every number is recomputed by [verify_25_07.py](../verify/verify_25_07.py).
 
 ### Solution 25-07.6
 
-(a) $\sqrt{5^2 + 5^2}$ = **7.07** mm.
+(a) The error along $x$ is $\theta\lvert y\rvert$ and along $y$ is $\theta\lvert x\rvert$, largest at the half-width $\lvert x\rvert$ or $\lvert y\rvert$ = **5** mm: every pad on the outermost rows and columns, corners included, has error $5\theta$ on one axis or both.
 
-(b) $\theta = 1.5 \times 10^{-3}\ \text{mm}/7.07\ \text{mm}$ = **212** µrad.
+(b) $\theta = (p/4)/5\ \text{mm} = 1.5 \times 10^{-3}\ \text{mm}/5\ \text{mm}$ = **300** µrad.
 
-(c) $212 \times 10^{-6} \times 180/\pi$ = **0.0122**°. Die rotation must be held to about a hundredth of a degree; on a 10 mm die it uses the whole overlay budget at the corners, so translation and rotation must share it.
+(c) $300 \times 10^{-6} \times 180/\pi$ = **0.0172**°.
+
+(d) The corner pads are $\sqrt{5^2 + 5^2}$ = **7.07** mm out, so $\theta = 1.5 \times 10^{-3}/7.07$ = **212** µrad. Either way, die rotation must be held to about a hundredth of a degree, and on a 10 mm die it alone uses the whole overlay budget, so translation and rotation must share it.
 
 ### Solution 25-07.7
 
@@ -74,11 +76,11 @@ As $c \to 1$ the second term of the denominator vanishes, leaving $e \approx (1 
 
 ### Solution 25-07.9
 
-(a) $Y_{pkg} = 0.998^{14}(1 - 0.00249)^2(0.995)^{12}$ = **0.911**.
+(a) $Y_{pkg} = 0.998^{14}(1 - 0.00249)^2(0.995)^{12}$ = **0.911** (unrounded **0.91104**, used below).
 
-(b) $5400/0.911$ = **$5.93e3**.
+(b) $5400/0.91104$ = **$5.93e3**.
 
-(c) $5400(1/0.911 - 1)$ = **$527**. Four more stacks add four attaches and four chances of an escape, and each failure scraps a more expensive kit: scrap rises from $283 to $527.
+(c) $5400(1/0.91104 - 1)$ = **$527**. Four more stacks add four attaches and four chances of an escape, and each failure scraps a more expensive kit: scrap rises from $283 to $527.
 
 ### Solution 25-07.10
 
@@ -88,11 +90,11 @@ Solve $C_M(A) = C_C(A)$ for $A$ numerically:
 
 ### Solution 25-07.11
 
-(a) $Y_M = (1 + 0.8/2)^{-2}$ = **0.510**; $Y_C = (1 + 0.22/2)^{-2}$ = **0.812**.
+(a) $Y_M = (1 + 0.8/2)^{-2}$ = **0.510**; $Y_C = (1 + 0.22/2)^{-2}$ = **0.812** (unrounded **0.8116**).
 
-(b) $C_M = [(240 + 3)/0.510 + 50]/0.99$ = **$532**; $C_C = [4(66 + 3)/0.812 + 110]/0.99^4$ = **$469**.
+(b) $C_M = [(240 + 3)/0.510 + 50]/0.99$ = **$532** (unrounded **$531.6**); $C_C = [4(66 + 3)/0.8116 + 110]/0.99^4$ = **$469** (unrounded **$468.5**).
 
-(c) $469/532$ = **0.881**: a **12**% saving instead of **21**%.
+(c) $468.5/531.6$ = **0.881**: a **12**% saving instead of **21**%.
 
 (d) The break-even rises to **0.067** cm⁻². Clustering helps the large die more than the small ones, so it narrows the chiplet advantage.
 
@@ -112,7 +114,7 @@ Solve $C_M(A) = C_C(A)$ for $A$ numerically:
 
 (a) $z = 3.48$ for 99.9%, so $\sigma = (4.5/4)/3.48$ = **0.323** µm, or 3σ = **0.970** µm.
 
-(b) With $\sigma = 0.5/3 = 0.167$ µm, each pad must tolerate $3.48\sigma$ = **0.580** µm. On a 1 µm pitch that exceeds half the pitch (0.5 µm): pads would have to be wider than the space between them allows, so no pad design reaches 99.9% with this tool. Sub-micrometre die-to-wafer bonding needs better placement, which is why the finest pitches are wafer-to-wafer.
+(b) With $\sigma = 0.5/3$ µm, each pad must tolerate $3.48\sigma = 3.48 \times 0.5/3$ = **0.580** µm. On a 1 µm pitch that exceeds half the pitch (0.5 µm): pads would have to be wider than the space between them allows, so no pad design reaches 99.9% with this tool. Sub-micrometre die-to-wafer bonding needs better placement, which is why the finest pitches are wafer-to-wafer.
 
 ---
 
@@ -149,9 +151,11 @@ Solve $C_M(A) = C_C(A)$ for $A$ numerically:
 | 25-07.5e1 | substrate per package, 2 million | 6.0e3 | mm² |
 | 25-07.5e2 | side, 3 million | 63 | mm |
 | 25-07.5e3 | side, 2 million | 77 | mm |
-| 25-07.6a | corner distance | 7.07 | mm |
-| 25-07.6b | rotation budget | 212 | µrad |
-| 25-07.6c | rotation budget | 0.0122 | ° |
+| 25-07.6a | largest lever arm per axis | 5 | mm |
+| 25-07.6b | rotation budget, per axis | 300 | µrad |
+| 25-07.6c | rotation budget, per axis | 0.0172 | ° |
+| 25-07.6d | corner distance | 7.07 | mm |
+| 25-07.6d1 | rotation budget, radial | 212 | µrad |
 | 25-07.7a | rise, 3 nm on 0.5 µm | 364 | K |
 | 25-07.7b | largest recess | 3.71 | nm |
 | 25-07.8b | escape, Y 0.5 | 0.990 | % |
@@ -159,6 +163,7 @@ Solve $C_M(A) = C_C(A)$ for $A$ numerically:
 | 25-07.8c | escape, Y 0.95 | 0.0526 | % |
 | 25-07.8c1 | ratio of escape rates | 19 | |
 | 25-07.9a | package yield, 12 stacks | 0.911 | |
+| 25-07.9a0 | package yield, unrounded | 0.91104 | |
 | 25-07.9b | cost per good package | 5.93e3 | $ |
 | 25-07.9c | scrap overhead | 527 | $ |
 | 25-07.10a | break-even area, 0.1 | 562 | mm² |
@@ -166,8 +171,11 @@ Solve $C_M(A) = C_C(A)$ for $A$ numerically:
 | 25-07.10c | break-even area, 0.05 | 882 | mm² |
 | 25-07.11a | monolithic yield, clustered | 0.510 | |
 | 25-07.11a1 | chiplet yield, clustered | 0.812 | |
+| 25-07.11a2 | chiplet yield, unrounded | 0.8116 | |
 | 25-07.11b | monolithic cost | 532 | $ |
 | 25-07.11b1 | chiplet cost | 469 | $ |
+| 25-07.11b0 | monolithic cost, unrounded | 531.6 | $ |
+| 25-07.11b2 | chiplet cost, unrounded | 468.5 | $ |
 | 25-07.11c | ratio | 0.881 | |
 | 25-07.11c1 | saving, clustered | 12 | % |
 | 25-07.11c2 | saving, Poisson | 21 | % |

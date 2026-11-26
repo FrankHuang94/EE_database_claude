@@ -8,7 +8,7 @@ Chapter: [25-07](../chapters/25-07-advanced-packaging-and-chiplets.md) · Worked
 
 - Reticle 26 mm × 33 mm = 858 mm² unless another basis is given.
 - Shoreline wires per mm $N_{edge} = L/(w + s)$; bond density $1/p^2$.
-- Hybrid-bond pads are $p/2$ wide and need $|e| \le p/4$ on each axis; die bond yield $[\operatorname{erf}(p/(4\sigma\sqrt{2}))]^2$.
+- Hybrid-bond pads are $p/2$ wide and need $\lvert\varepsilon\rvert \le p/4$ on each axis; die bond yield $[\operatorname{erf}(p/(4\sigma\sqrt{2}))]^2$.
 - Anneal rise $\Delta T = \delta/[(\alpha_{Cu} - \alpha_d)t]$ with 17 and 0.5 ppm/K.
 - Test escape $e = (1 - Y)(1 - c)/[Y + (1 - Y)(1 - c)]$; package yield $y_a^n\prod(1 - e_i)$.
 - Cost per good package $[\sum(cA_i + t)/Y_i + P]/y_a^n$, with Example 25-07.9's values unless stated.
@@ -43,7 +43,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-07.6 [B]
 
-**Rotation.** A 10 mm × 10 mm die is hybrid-bonded at 6 µm pitch. (a) How far is a corner pad from the die centre? (b) What rotation, in microradians, moves that pad by the whole $p/4$ budget? (c) Express it in degrees.
+**Rotation.** A 10 mm × 10 mm die is hybrid-bonded at 6 µm pitch. A small rotation $\theta$ moves a pad at $(x, y)$ from the die centre by $\theta(-y, x)$. (a) What is the largest error along either axis, and which pads have it? (b) What rotation, in microradians, uses the whole $p/4$ budget on each axis? (c) Express it in degrees. (d) If round pads instead needed the total displacement within $p/4$, how far is the worst pad from the centre and what is the budget?
 
 ### Problem 25-07.7 [B]
 
@@ -71,7 +71,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-07.13 [B]
 
-**Bridges for a 5.5-reticle package.** A 5.5-reticle package uses six 3 mm × 18 mm bridges instead of a full silicon interposer. Find (a) the ratio of silicon area and (b) the bridge sets per wafer, using Example 25-07.3's count.
+**Bridges for a 5.5-reticle package.** A 5.5-reticle package uses six 3 mm × 18 mm bridges instead of a full silicon interposer. Find (a) the ratio of silicon area and (b) the bridge sets per wafer, using Example 25-07.3's count. (c) How many 55 mm × 86 mm silicon interposers, of about the same area as the 5.5-reticle package, would a wafer give (exact count)?
 
 ### Problem 25-07.14 [C]
 
@@ -83,9 +83,9 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 | Objective | Problems |
 |---|---|
-| 1. Reticle limits and interposer sizes | 1, 12 |
+| 1. Reticle limits and interposer sizes | 1 |
 | 2. Interposers, RDL and bridges | 2, 3, 4, 13 |
-| 3. 3D stacking and hybrid bonding | 6, 7, 14 |
+| 3. 3D stacking and hybrid bonding | 6, 7, 12, 14 |
 | 4. Test escapes and package yield | 8, 9 |
 | 5. Chiplet cost and break-even | 10, 11 |
 | 6. Reading capacity and roadmap claims | 1, 5 |

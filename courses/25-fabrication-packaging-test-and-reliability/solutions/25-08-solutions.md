@@ -14,7 +14,7 @@ $R = 100 \times 10^{-6}/(80 \times 8.0 \times 10^{-4})$ = **0.00156** K/W, **4.0
 
 ### Solution 25-08.2
 
-(a) $q = 2/(\pi \times 1^2)$ = **0.637** W/mm²; $\Delta T_{centre} = qa/k = 0.637 \times 10^6 \times 10^{-3}/150$ = **4.24** K; $R_{sp} = 8/(3\pi^2 \times 150 \times 10^{-3})$ = **1.80** K/W. Doubling the radius at fixed power halves the rise.
+(a) Excess flux $q = 2/(\pi \times 1^2)$ = **0.637** W/mm²; $\Delta T_{centre} = qa/k = 0.637 \times 10^6 \times 10^{-3}/150$ = **4.24** K; $R_{sp} = 8/(3\pi^2 \times 150 \times 10^{-3})$ = **1.80** K/W. Doubling the radius at fixed power halves the rise.
 
 (b) $2.55 \times \pi \times 1^2$ = **8.0** W; $\Delta T_{centre} = 2.546 \times 10^6 \times 10^{-3}/150$ = **17.0** K. At fixed power density the rise doubles with the radius: large high-density blocks are the hardest to cool.
 
@@ -26,7 +26,7 @@ $R = 100 \times 10^{-6}/(80 \times 8.0 \times 10^{-4})$ = **0.00156** K/W, **4.0
 
 (c) The finite-difference solve (and the verify script's series) give **66.3** mK/W.
 
-(d) $(59.7 - 66.3)/66.3$ = **−10**%. With a smaller source the lid is thick relative to the die, the heat spreads further than 45°, and the simple rule misses by more; it also no longer matches the "thin lid" condition.
+(d) $(59.7 - 66.3)/66.3$ = **−10**%. With a smaller source the lid is thick relative to the die, and the heat spreads less than the 45° cone assumes: the rule underestimates the resistance, here by 10%, so it is optimistic. It also no longer matches the "thin lid" condition.
 
 ### Solution 25-08.4
 
@@ -84,6 +84,12 @@ $1.10/1.20 - 1$ = **−8.3**%: the higher profile buys throughput at worse effic
 
 (b) $2.26 \times 10^6/(4180 \times 10)$ = **54** times. A small vapor flow moves large heat with almost no temperature drop, which is why a vapor chamber spreads better than solid copper.
 
+### Solution 25-08.14
+
+(a) $A_c$ = 0.3 mm², $P_w$ = 4.3 mm, $D_h = 4 \times 0.3/4.3$ = **0.279** mm. (b) The flow per channel halves with the area, so $v$ stays **0.556** m/s and $Re$ = **239**. (c) $h = 4.36 \times 0.63/2.79 \times 10^{-4}$ = **9.84e3** W/(m²·K). (d) $A = 200 \times 4.3 \times 40$ mm² = **0.0344** m² and $R$ = **0.00295** K/W. (e) $\Delta p$ = **5.94** kPa and the pump power **0.198** W.
+
+Halving the width raises $h$ by **1.87** times and, with nearly twice the wetted area, cuts the ideal-wall resistance by **3.5** times, but the pressure drop rises **3.5** times. The thinner walls would also be poorer fins, so part of the thermal gain is lost.
+
 ---
 
 ## Answer key
@@ -132,3 +138,14 @@ $1.10/1.20 - 1$ = **−8.3**%: the higher profile buys throughput at worse effic
 | 25-08.13a | evaporating mass flow | 4.4e-5 | kg/s |
 | 25-08.13a1 | evaporating mass flow | 44 | mg/s |
 | 25-08.13b | latent against sensible | 54 | |
+| 25-08.14a | hydraulic diameter | 0.279 | mm |
+| 25-08.14b | velocity | 0.556 | m/s |
+| 25-08.14b1 | Reynolds number | 239 | |
+| 25-08.14c | heat transfer coefficient | 9.84e3 | W/(m²·K) |
+| 25-08.14d | wetted area | 0.0344 | m² |
+| 25-08.14d1 | resistance | 0.00295 | K/W |
+| 25-08.14e | pressure drop | 5.94 | kPa |
+| 25-08.14e1 | pump power | 0.198 | W |
+| 25-08.14f | h ratio | 1.87 | |
+| 25-08.14f1 | resistance ratio | 3.5 | |
+| 25-08.14f2 | pressure ratio | 3.5 | |

@@ -6,7 +6,7 @@
 
 ## Background
 
-§3.3 converted interposer wafers into packages, $W n_{wafer} Y_{pkg}$, with $n_{wafer}$ counted like dies per wafer (25-04). §3.5 derived the overlay budget $|e| \le p/4$ for pads half the pitch wide and the die bond yield $[\operatorname{erf}(p/(4\sigma\sqrt{2}))]^2$. §3.6 derived test escapes, and §3.7 the cost of a good package, $[\sum(cA_i + t)/Y_i + P]/y_a^n$.
+§3.3 converted interposer wafers into packages, $W n_{wafer} Y_{pkg}$, with $n_{wafer}$ counted like dies per wafer (25-04). §3.5 derived the overlay budget $\lvert\varepsilon\rvert \le p/4$ for pads half the pitch wide and the die bond yield $[\operatorname{erf}(p/(4\sigma\sqrt{2}))]^2$. §3.6 derived test escapes, and §3.7 the cost of a good package, $[\sum(cA_i + t)/Y_i + P]/y_a^n$.
 
 ## Files
 

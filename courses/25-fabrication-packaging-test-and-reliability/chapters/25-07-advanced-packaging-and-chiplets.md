@@ -4,7 +4,7 @@
 | | |
 |---|---|
 | **Course** | [25 · Semiconductor Fabrication, Packaging, Test and Reliability](../README.md) |
-| **University equivalent** | Advanced packaging and heterogeneous integration (graduate electronic-packaging electives; Tummala, *Fundamentals of Device and Systems Packaging*, chapters on 2.5D and 3D integration; Lau, *Chiplet Design and Heterogeneous Integration Packaging*) |
+| **University equivalent** | Advanced packaging and heterogeneous integration, at the level of a senior survey (the 2.5D/3D units of electronic-packaging electives; Tummala, *Fundamentals of Device and Systems Packaging*, chapters on 2.5D and 3D integration; Lau, *Chiplet Design and Heterogeneous Integration Packaging*) |
 | **Prerequisites** | [25-06](25-06-packaging-fundamentals.md) (flip-chip, substrates, joint strain), [25-04](25-04-yield-and-die-cost.md) (dies per wafer, yield, cost per good die), [23-05](../../23-memory-and-storage-technology/chapters/23-05-hbm-in-depth.md) (TSVs, HBM stacks, height and thermal budgets), [24-06](../../24-high-speed-io-signal-integrity-and-photonics/chapters/24-06-d2d-memory-phys-scale-up.md) (die-to-die links, bump density, UCIe), [03-02](../../03-probability-statistics-and-random-variables/chapters/03-02-random-variables-and-distributions.md) (package yield as a product of die yields) |
 | **Estimated study hours** | 7 |
 | **Last verified** | 2026-11-26 |
@@ -102,7 +102,7 @@ $$
 n_{bond} = \frac{1}{p^2}.
 $$
 
-Halving the pitch quadruples the density. TSMC reported at its 2026 symposium about 14,000 signals per square millimetre for face-to-face hybrid bonding against roughly 1,500 for face-to-back TSV stacking [R-589]. As reported from AMD's Hot Chips 2021 talk, standard C4 bumps sit at about 130 µm pitch, microbump 3D at 50 µm and AMD's hybrid-bonded cache at 9 µm [R-589]; Example 25-07.5 computes the densities along TSMC's 9 → 6 → 4.5 µm roadmap. Thermocompression bonding bottoms out at a pitch of around 25 µm [R-592]; below that, solder bridges and gap control fail, and hybrid bonding takes over.
+Halving the pitch quadruples the density. TSMC reported at its 2026 symposium about 14,000 signals per square millimetre for face-to-face hybrid bonding against roughly 1,500 for face-to-back TSV stacking [R-589]. As reported from AMD's Hot Chips 2021 talk, standard C4 bumps sit at about 130 µm pitch, microbump 3D at 50 µm and AMD's hybrid-bonded cache at 9 µm [R-589]; Example 25-07.5 computes the densities along TSMC's 9 → 6 → 4.5 µm roadmap. Samsung, as reported by ZDNet, puts the minimum pitch of existing thermocompression-bonded chips at around 25 µm [R-592] **[Industry estimate]**; below that, hybrid bonding takes over.
 
 ### 3.5 Hybrid bonding: process, overlay and anneal
 
@@ -116,10 +116,10 @@ $$
 
 Units: m/(K⁻¹ · m) = K. ✓ With copper at about 17 ppm/K and oxide at about 0.5 ppm/K, a 5 nm recess on a 1 µm pad closes about 300 K above room temperature (Example 25-07.7). The model is first order: a pad constrained sideways by its dielectric expands more vertically than a free one, and copper creep and diffusion at temperature also help, so real anneals can be somewhat cooler. The design lesson holds: the recess must be controlled to nanometres, thicker pads lower the anneal temperature, and the anneal must stay within the thermal budget of both dies' back-end stacks.
 
-**Overlay.** The two sets of pads must land on each other. Take square pads of width $p/2$ on pitch $p$ (assumed), and require at least half of each pad's width to overlap its partner along each axis. A misalignment $e$ along one axis reduces the overlap from $p/2$ to $p/2 - |e|$, so the requirement is
+**Overlay.** The two sets of pads must land on each other. Take square pads of width $p/2$ on pitch $p$ (assumed), and require at least half of each pad's width to overlap its partner along each axis. A misalignment $\varepsilon$ along one axis reduces the overlap from $p/2$ to $p/2 - \lvert\varepsilon\rvert$, so the requirement is
 
 $$
-|e| \le \frac{p}{4}\quad\text{on each axis}.
+\lvert\varepsilon\rvert \le \frac{p}{4}\quad\text{on each axis}.
 $$
 
 At that limit the gap between a pad and its neighbour's partner is still $p/2 - p/4 = p/4$, so the same budget also protects against shorts. This reproduces the industry rule of thumb that overlay must be about a quarter of the pitch [R-593]. In die-to-wafer (D2W) bonding, each die is placed by a pick-and-place tool with its own random placement error. If the error on each axis is Gaussian with standard deviation $\sigma$ and the axes are independent, the probability that a die bonds within budget is
@@ -128,7 +128,7 @@ $$
 Y_{bond} = \left[\operatorname{erf}\!\left(\frac{p/4}{\sigma\sqrt{2}}\right)\right]^2,
 $$
 
-because $P(|e| \le a) = \operatorname{erf}(a/(\sigma\sqrt{2}))$ for a zero-mean Gaussian. With $\sigma = p/12$ (so the budget is 3σ) one die in about 185 fails (Example 25-07.6). Rotation adds a displacement $\theta r$ at distance $r$ from the die centre, largest at the corners (Problem 25-07.6). Wafer-to-wafer (W2W) bonding aligns whole wafers at once and reaches much finer overlay, but cannot select known-good dies: every bad die on either wafer is bonded to something.
+because $P(\lvert\varepsilon\rvert \le a) = \operatorname{erf}(a/(\sigma\sqrt{2}))$ for a zero-mean Gaussian. With $\sigma = p/12$ (so the budget is 3σ) one die in about 185 fails (Example 25-07.6). A small rotation $\theta$ moves a pad at $(x, y)$ from the die centre by $\theta(-y, x)$: its error is $\theta\lvert y\rvert$ along $x$ and $\theta\lvert x\rvert$ along $y$. Under the per-axis budget, every pad on the outermost rows is as exposed as a corner pad; only the total displacement $\theta r$ peaks at the corners (Problem 25-07.6). Wafer-to-wafer (W2W) bonding aligns whole wafers at once and reaches much finer overlay, but cannot select known-good dies: every bad die on either wafer is bonded to something.
 
 > **Math refresher — the error function.** For a Gaussian variable of mean 0 and standard deviation $\sigma$, $P(|X| \le a) = \operatorname{erf}\big(a/(\sigma\sqrt{2})\big)$, where $\operatorname{erf}(x) = \frac{2}{\sqrt{\pi}}\int_0^x e^{-u^2}du$. At $a = \sigma, 2\sigma, 3\sigma$ it gives about 0.683, 0.954 and 0.997 (03-02). To find the $\sigma$ that meets a target probability $P$, invert: $a/\sigma = \sqrt{2}\,\operatorname{erf}^{-1}(P)$.
 
@@ -150,7 +150,7 @@ Because a failed package scraps all of its contents, the cost of a good package 
 
 ### 3.7 Chiplet economics: when does splitting pay?
 
-Let the silicon cost $c$ per square millimetre of wafer (wafer cost divided by usable area; edge loss is ignored here and handled in the lab), a test cost $t$ per die tested, a package cost $P$, and an attach yield $y_a$ per die. A die of area $A_i$ with yield $Y_i$ costs $(cA_i + t)/Y_i$ per good, tested die: every die is paid for and tested, but only $Y_i$ of them are good. The cost of a good package of $n$ dies is
+Let the silicon cost $c$ per square millimetre of wafer (wafer cost divided by usable area; edge loss is ignored here and left to lab discussion question 4), a test cost $t$ per die tested, a package cost $P$, and an attach yield $y_a$ per die. A die of area $A_i$ with yield $Y_i$ costs $(cA_i + t)/Y_i$ per good, tested die: every die is paid for and tested, but only $Y_i$ of them are good. The cost of a good package of $n$ dies is
 
 $$
 C = \frac{\sum_{i=1}^{n}(cA_i + t)/Y_i + P}{y_a^{\,n}}.
@@ -180,7 +180,7 @@ Stacking dies concentrates power: a cache die on a processor, or a 16-high HBM s
 
 **Units check.** Multiples are dimensionless, so areas stay in mm².
 
-**Sanity check.** The two bases differ by 3.4%, which is the whole spread between quoted CoWoS-S sizes of about 2,700 and 2,830 mm² [R-586]. When a roadmap quotes "×reticle", ask which reticle.
+**Sanity check.** The two bases differ by 3.4%, which explains the difference between the two 3.3-reticle figures, about 2,740 and 2,830 mm², within the quoted CoWoS-S range [R-586]. When a roadmap quotes "×reticle", ask which reticle.
 
 ### Example 25-07.2 · Wires per millimetre of shoreline (tier A)
 
@@ -241,7 +241,7 @@ Stacking dies concentrates power: a cache die on a processor, or a 16-high HBM s
 
 ### Example 25-07.6 · Die-to-wafer bond yield and placement accuracy (tier B)
 
-**Setup.** Pads of width $p/2$ need $|e| \le p/4$ on each axis (§3.5). (a) Find the die bond yield when $\sigma = p/12$. (b) At 6 µm pitch, what $\sigma$ (and 3σ) gives 99.9% die yield? (c) A bonder places dies with 0.5 µm (3σ) per axis, the next-generation capability CEA-Leti cites [R-593]. What is the smallest pitch it supports at 99.9%, and (d) what die yield does it give at 1 µm pitch?
+**Setup.** Pads of width $p/2$ need $\lvert\varepsilon\rvert \le p/4$ on each axis (§3.5). (a) Find the die bond yield when $\sigma = p/12$. (b) At 6 µm pitch, what $\sigma$ (and 3σ) gives 99.9% die yield? (c) A bonder places dies with 0.5 µm (3σ) per axis, the next-generation capability CEA-Leti cites [R-593]. What is the smallest pitch it supports at 99.9%, and (d) what die yield does it give at 1 µm pitch?
 
 **Solution.**
 
@@ -275,8 +275,8 @@ Stacking dies concentrates power: a cache die on a processor, or a 16-high HBM s
 **Solution.**
 
 - (a) $e = 0.2 \times 0.01/(0.8 + 0.002)$ = **0.249**%.
-- (b) $Y_{pkg} = 0.998^{10}(1 - 0.00249)^2(0.995)^8$ = **0.937**. Cost per good package $4200/0.937$ = **$4.48e3**, of which the scrap overhead is $4200(1/0.937 - 1)$ = **$283**.
-- (c) $e = 0.2 \times 0.001/(0.8 + 0.0002)$ = **0.0250**%; $Y_{pkg}$ = **0.941**; the cost per good package falls by **$20.1**.
+- (b) $Y_{pkg} = 0.998^{10}(1 - 0.00249)^2(0.995)^8$ = **0.937**. Cost per good package $4200/0.93696$ = **$4.48e3**, of which the scrap overhead is $4200(1/0.93696 - 1)$ = **$283** (using the unrounded yield **0.93696**).
+- (c) $e = 0.2 \times 0.001/(0.8 + 0.0002)$ = **0.0250**%; $Y_{pkg}$ = **0.941** (unrounded **0.94118**); the cost per good package falls by $4200/0.93696 - 4200/0.94118$ = **$20.1**.
 
 **Units check.** Yields and escape rates are probabilities; dollars divided by a probability give dollars per good package. ✓
 
@@ -288,7 +288,7 @@ Stacking dies concentrates power: a cache die on a processor, or a 16-high HBM s
 
 **Solution.**
 
-- (a) $Y_M = e^{-0.8}$ = **0.449**; $Y_C = e^{-0.22}$ = **0.803**.
+- (a) $Y_M = e^{-0.8}$ = **0.449**; $Y_C = e^{-0.22}$ = **0.803** (unrounded **0.8025**, used below).
 - (b) $C_M = [(0.30 \times 800 + 3)/0.449 + 50]/0.99$ = **$597**.
 - (c) $C_C = [4(0.30 \times 220 + 3)/0.803 + 110]/0.99^4$ = **$473**.
 - (d) $473/597$ = **0.792**, a saving of about a fifth.
@@ -348,13 +348,16 @@ Stacking dies concentrates power: a cache die on a processor, or a 16-high HBM s
 | Ex 25-07.7c | rise, 5 nm on 2 µm | 152 | K |
 | Ex 25-07.8a | compute escape, 99% coverage | 0.249 | % |
 | Ex 25-07.8b | package yield | 0.937 | |
+| Ex 25-07.8b0 | package yield, unrounded | 0.93696 | |
 | Ex 25-07.8b1 | cost per good package | 4.48e3 | $ |
 | Ex 25-07.8b2 | scrap overhead | 283 | $ |
 | Ex 25-07.8c | compute escape, 99.9% coverage | 0.0250 | % |
 | Ex 25-07.8c1 | package yield | 0.941 | |
+| Ex 25-07.8c0 | package yield, unrounded | 0.94118 | |
 | Ex 25-07.8c2 | saving per good package | 20.1 | $ |
 | Ex 25-07.9a | monolithic yield | 0.449 | |
 | Ex 25-07.9a1 | chiplet yield | 0.803 | |
+| Ex 25-07.9a0 | chiplet yield, unrounded | 0.8025 | |
 | Ex 25-07.9b | monolithic cost | 597 | $ |
 | Ex 25-07.9c | chiplet cost | 473 | $ |
 | Ex 25-07.9d | cost ratio | 0.792 | |
@@ -379,7 +382,7 @@ The lab is [labs/25-07-lab/](../labs/25-07-lab/README.md). `chiplets.py` counts 
 **Predict, then run:**
 
 1. *Predict* how many 50 mm × 65 mm interposers fit on a 300 mm wafer, then count them exactly and compare with the 25-04 formula.
-2. *Predict* the die bond yield at 6 µm pitch with a placement σ of 0.5 µm, then compute it by formula and by Monte Carlo.
+2. *Predict* the die bond yield at 6 µm pitch with a placement σ of 0.6 µm, then compute it by formula and by Monte Carlo.
 3. *Predict* the break-even defect density for Example 25-07.9 with clustered defects (α = 2), then solve for it.
 4. *Predict* the logic area at which four chiplets break even at $D_0$ = 0.1 cm⁻², then find it and plot both costs.
 
@@ -410,7 +413,7 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 | SoIC hybrid-bond pitch | 9 µm (2023) → 6 µm (2025) → 4.5 µm (2029) | Apr 2026 | [R-589] |
 | Foveros Direct | 9 µm shipping (1H26); 3 µm described | Sep 2026 | [R-590] |
 | EMIB bump pitch | 55 → 45 µm; 35 µm validated, 25 µm in test | Jul 2026 | [R-591] |
-| Thermocompression bonding floor | ≈ 25 µm pitch | Nov 2026 | [R-592] |
+| Thermocompression bonding floor | ≈ 25 µm pitch (Samsung via ZDNet) **[Industry estimate]** | Nov 2026 | [R-592] |
 | Research hybrid bonding | W2W 200 nm (overlay < 40 nm); D2W 1 µm | May 2026 | [R-593] |
 | HBM stack height limit | 720 → 775 µm; ≈ 900 µm under discussion | 2026 | [R-594] |
 | Copper and oxide expansion | ≈ 17 and ≈ 0.5 ppm/K | timeless | §3.5 |
@@ -445,7 +448,7 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 
 - *"Yield above 98%."* Undefined: package assembly yield, interposer yield or final yield? On which products? It is TSMC's own statement [R-587].
 - *"Capacity of X wafers per month."* TSMC only or industry, run rate or average, which vintage, and which interposer size [R-588] (Example 25-07.4)?
-- *"14× reticle by 2028."* Roadmaps have moved both ways: the 2027 target grew three times, while SoIC's pitch roadmap slowed [R-587], [R-589].
+- *"14× reticle by 2028."* Roadmaps have moved both ways: the 2027 target grew twice (8 → 9 → 9.5 reticles), while SoIC's pitch roadmap slowed [R-587], [R-589].
 - *"Chiplets cut cost by X%."* At what defect density and die area, with Poisson or clustered yields, and including test, interface area and assembly losses (Example 25-07.9)?
 - *"Hybrid bonding at 1 µm."* A research demonstration with yield limited by alignment, not a production pitch [R-593].
 

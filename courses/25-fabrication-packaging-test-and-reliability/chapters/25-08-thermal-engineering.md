@@ -89,7 +89,7 @@ $$
 R_{sp} = \frac{\Delta T_{avg}}{Q} = \frac{8}{3\pi^2 k a} \approx \frac{0.270}{ka}.
 $$
 
-Two lessons follow. At a fixed flux, a hotspot's rise grows with its radius ($qa/k$), so large hot regions are worse than small ones at the same power density. At a fixed power, the rise falls as $1/a$: spreading the same watts over twice the radius halves the rise. A 2 W hotspot 1 mm across in silicon runs about 8 K above its surroundings (Example 25-08.2), on top of the die's average rise.
+Two lessons follow. At a fixed flux, a hotspot's rise grows with its radius ($qa/k$), so large hot regions are worse than small ones at the same power density. At a fixed power, the rise falls as $1/a$: spreading the same watts over twice the radius halves the rise. A block that dissipates 2 W more than the background over a disk 1 mm across runs about 8 K above its surroundings (Example 25-08.2), on top of the die's average rise. By superposition only the excess flux matters: the background flux raises the hotspot and its surroundings together. The half-space model assumes the silicon is thick compared with the source radius; on a die under a millimetre thick it is an estimate, and the heat sink below makes the real rise somewhat smaller.
 
 > **Going deeper — the average over the disk.** In cylindrical coordinates the half-space solution for flux $q$ over $r < a$ is $T(r, 0) = (qa/k)\int_0^\infty J_0(\lambda r)J_1(\lambda a)\,d\lambda/\lambda$, built from Bessel functions $J_0$ and $J_1$ (the radial modes of the Laplace equation). Averaging over the disk, $\frac{2}{a^2}\int_0^a T\,r\,dr$, and using $\int_0^a J_0(\lambda r)\,r\,dr = aJ_1(\lambda a)/\lambda$ gives $\Delta T_{avg} = (2qa/k)\int_0^\infty J_1^2(x)/x^2\,dx = (2qa/k)\cdot 4/(3\pi)$. The verify script evaluates the integral numerically.
 
@@ -141,13 +141,27 @@ $$
 
 with density $\rho$ and volume flow $\dot{V}$. Water's volumetric heat capacity $\rho c_p$, about 4.18 × 10⁶ J/(m³·K), is about 3,470 times air's, so a trickle of water does the work of a gale of air (Example 25-08.5).
 
-A **cold plate** is a copper block with fine internal channels, clamped to the package lid through a TIM, with coolant pumped through it (direct-to-chip liquid cooling). Small channels give a large wetted area and a high $h$, so the convective resistance falls to around 0.01 K/W for a large accelerator (assumed in the examples). The junction temperature is
+**Convection inside a channel.** In a cold plate the coolant flows through channels, and $h$ follows from the flow. The channel's size enters through its **hydraulic diameter** $D_h = 4A_c/P_w$ (four times the cross-section area over the wetted perimeter; for a round tube, its diameter), and the flow regime through the Reynolds number $Re = \rho vD_h/\mu$, with velocity $v$ and viscosity $\mu$. Below about 2,300 the flow is laminar. For fully developed laminar flow in a tube heated at constant flux, the Nusselt number $Nu = hD_h/k_f$ is the constant 4.36, with $k_f$ the fluid's conductivity; rectangular channels give values of the same order that depend on their aspect ratio. In laminar flow, then,
+
+$$
+h = \frac{Nu\,k_f}{D_h},
+$$
+
+which grows as the channels shrink; this is why cold plates use fine channels. (In turbulent flow, above about 10⁴, the Dittus–Boelter correlation $Nu = 0.023Re^{0.8}Pr^{0.4}$ applies, with $Pr$ the fluid's Prandtl number.) The price is pressure. The laminar friction factor is $f = 64/Re$, and the pressure drop along a channel of length $L$ is
+
+$$
+\Delta p = f\,\frac{L}{D_h}\,\frac{\rho v^2}{2},
+$$
+
+so at a fixed velocity it grows as $1/D_h^2$; the pump power is $\Delta p\,\dot V$. Two corrections matter: near the inlet the flow is still developing and $h$ is higher, and the walls between channels act as fins (§3.3). The result is a first design number (Example 25-08.9).
+
+A **cold plate** is a copper block with fine internal channels, clamped to the package lid through a TIM, with coolant pumped through it (direct-to-chip liquid cooling). Small channels give a large wetted area and a high $h$, so the convective resistance falls to around 0.01–0.02 K/W for a large accelerator (Example 25-08.9 estimates it; Example 25-08.6 assumes 0.015 K/W). The junction temperature is
 
 $$
 T_J \approx T_{in} + \frac{\Delta T_{fluid}}{2} + P\,(R_{JC} + R_{TIM2} + R_{cp}),
 $$
 
-using the mean coolant temperature along the plate. Two observations shape modern designs. First, every kelvin of inlet temperature is a kelvin of junction temperature, so warmer coolant needs lower resistances: at 45 °C inlet, a 2,300 W GPU needs a total junction-to-coolant resistance of about 0.0225 K/W to stay at 105 °C (Example 25-08.6). Second, warm coolant is valuable to the facility: at 45 °C the heat can be rejected to outside air by dry coolers in many climates without chillers, which cuts the cooling share of the facility's power (PUE, 22-10) [R-601].
+using the mean coolant temperature along the plate. Two observations shape modern designs. First, every kelvin of inlet temperature is a kelvin of junction temperature, so warmer coolant needs lower resistances: at 45 °C inlet, a 2,300 W GPU needs a total junction-to-coolant resistance of about 0.0225 K/W to stay at 105 °C (Example 25-08.6). Second, warm coolant is valuable to the facility: at 45 °C the heat can be rejected to outside air by dry coolers in favourable climates without chillers, which cuts the cooling share of the facility's power (PUE, 22-10) [R-601].
 
 **Immersion cooling** submerges whole servers in a dielectric liquid. Single-phase immersion circulates an oil or synthetic fluid; two-phase immersion boils a low-boiling-point fluid on the hot surfaces and condenses it above, using latent heat. Two-phase systems historically used fluorinated fluids, and 3M, a major supplier, completed its exit from PFAS manufacturing at the end of 2025 [R-603]. Direct-to-chip cold plates are the dominant path for AI accelerators [R-600], [R-601].
 
@@ -157,12 +171,12 @@ Datasheets give a maximum operating junction temperature, often 95, 105 or 125 �
 
 - **Leakage.** Subthreshold leakage rises steeply with temperature, so hot chips waste power and can run away if the cooling cannot keep up (02-02, 15-01).
 - **Performance.** Throttling (15-12) holds the junction at its limit by cutting frequency; a better thermal path buys sustained clock rate.
-- **Lifetime.** Most wear-out mechanisms accelerate with temperature roughly as an Arrhenius factor $e^{-E_a/kT}$ (25-09). Vendors therefore trade lifetime against temperature with a **mission profile**: Texas Instruments rates an AM625 processor for 100,000 power-on hours at commercial and industrial junction temperatures but 20,000 hours for its automotive range, defined as 5% of the time at −40 °C, 65% at 70 °C, 20% at 110 °C and 10% at 125 °C [R-604].
+- **Lifetime.** Most wear-out mechanisms accelerate with temperature roughly as an Arrhenius factor $e^{-E_a/k_BT}$ (25-09), with $k_B$ Boltzmann's constant (here $k$ is reserved for thermal conductivity). Vendors therefore trade lifetime against temperature with a **mission profile**: Texas Instruments rates an AM625 processor for 100,000 power-on hours at commercial and industrial junction temperatures but 20,000 hours for its automotive range, defined as 5% of the time at −40 °C, 65% at 70 °C, 20% at 110 °C and 10% at 125 °C [R-604].
 
 Because the damage rate is exponential in $1/T$, the hot part of a profile dominates. The **Arrhenius-equivalent temperature** $T_{eq}$ is the constant temperature that does the same damage:
 
 $$
-e^{-E_a/kT_{eq}} = \sum_i w_i\,e^{-E_a/kT_i}\quad\Rightarrow\quad T_{eq} = \frac{-E_a}{k\ln\sum_i w_i e^{-E_a/kT_i}},
+e^{-E_a/k_BT_{eq}} = \sum_i w_i\,e^{-E_a/k_BT_i}\quad\Rightarrow\quad T_{eq} = \frac{-E_a}{k_B\ln\sum_i w_i e^{-E_a/k_BT_i}},
 $$
 
 with time fractions $w_i$ and absolute temperatures $T_i$. For the AM625 automotive profile with an activation energy of 0.7 eV (assumed), the time-weighted mean is 78 °C but the damage-equivalent temperature is 97 °C, and the 30% of the time spent at 110 °C and above causes 88% of the damage (Example 25-08.8).
@@ -189,18 +203,18 @@ At rack scale, heat removal becomes a facility problem. NVIDIA describes a GB200
 
 ### Example 25-08.2 · A hotspot in silicon (tier B)
 
-**Setup.** A 2 W block occupies a disk 1 mm in diameter on a large die ($k$ = 150 W/(m·K)), on top of an average power density of 1,000 W over 800 mm² (assumed). Find (a) its power density and the ratio to the average, (b) its centre temperature rise above its surroundings, (c) its spreading resistance and (d) its average rise.
+**Setup.** A block on a large die ($k$ = 150 W/(m·K)) occupies a disk 1 mm in diameter and dissipates 2 W more than the die's average power density, 1,000 W over 800 mm² (assumed), would put there. Find (a) its excess flux, its total power density and the ratio to the average, (b) its centre temperature rise above its surroundings, (c) the spreading resistance seen by the excess power and (d) the average rise over the block.
 
 **Solution.**
 
-- (a) $q = 2/(\pi \times 0.5^2)$ = **2.55** W/mm², against 1.25 W/mm² average, a ratio of **2.04**.
-- (b) $\Delta T_{centre} = qa/k = 2.546 \times 10^6 \times 5 \times 10^{-4}/150$ = **8.49** K.
+- (a) Excess $q = 2/(\pi \times 0.5^2)$ = **2.55** W/mm² on top of the **1.25** W/mm² average, so the block runs at **3.80** W/mm², a ratio of **3.04**.
+- (b) Only the excess flux raises the block above its surroundings: $\Delta T_{centre} = qa/k = 2.546 \times 10^6 \times 5 \times 10^{-4}/150$ = **8.49** K.
 - (c) $R_{sp} = 8/(3\pi^2 \times 150 \times 5 \times 10^{-4})$ = **3.60** K/W.
 - (d) $\Delta T_{avg} = 2 \times 3.60$ = **7.2** K.
 
 **Units check.** (W/m²)(m)/(W/(m·K)) = K. ✓
 
-**Sanity check.** A hotspot only twice the average density adds 8 K at its centre. Thermal sensors placed away from such blocks read low, which is why throttling controllers either sit sensors at known hotspots or add a modelled offset.
+**Sanity check.** A hotspot three times the average density adds 8 K at its centre. Thermal sensors placed away from such blocks read low, which is why throttling controllers either sit sensors at known hotspots or add a modelled offset.
 
 ### Example 25-08.3 · Spreading through a lid (tier B)
 
@@ -280,20 +294,37 @@ At rack scale, heat removal becomes a facility problem. NVIDIA describes a GB200
 
 ### Example 25-08.8 · Lifetime and the hottest hours (tier C)
 
-**Setup.** The AM625 automotive profile is 5% of the time at −40 °C, 65% at 70 °C, 20% at 110 °C and 10% at 125 °C [R-604]. With an activation energy of 0.7 eV (assumed) and $k$ = 8.617 × 10⁻⁵ eV/K, find (a) the time-weighted mean temperature, (b) the Arrhenius-equivalent temperature, (c) the share of damage done at 125 °C and (d) at 110 °C and above; (e) the ratio of the commercial to automotive power-on-hour ratings.
+**Setup.** The AM625 automotive profile is 5% of the time at −40 °C, 65% at 70 °C, 20% at 110 °C and 10% at 125 °C [R-604]. With an activation energy of 0.7 eV (assumed) and $k_B$ = 8.617 × 10⁻⁵ eV/K, find (a) the time-weighted mean temperature, (b) the Arrhenius-equivalent temperature, (c) the share of damage done at 125 °C and (d) at 110 °C and above; (e) the ratio of the commercial to automotive power-on-hour ratings.
 
 **Solution.**
 
 - (a) $0.05(-40) + 0.65(70) + 0.20(110) + 0.10(125)$ = **78.0** °C.
-- (b) Summing $w_ie^{-E_a/kT_i}$ with $T_i$ in kelvin and inverting gives $T_{eq}$ = **97.1** °C.
-- (c) $0.10e^{-E_a/k(398.15)}/\sum$ = **46.6**%.
+- (b) Summing $w_ie^{-E_a/k_BT_i}$ with $T_i$ in kelvin and inverting gives $T_{eq}$ = **97.1** °C.
+- (c) $0.10e^{-E_a/k_B(398.15)}/\sum$ = **46.6**%.
 - (d) Adding the 110 °C term, **88.5**%.
 - (e) $100{,}000/20{,}000$ = **5**.
 
-**Units check.** $E_a/kT$ is (eV)/(eV/K · K), dimensionless. ✓
+**Units check.** $E_a/k_BT$ is (eV)/(eV/K · K), dimensionless. ✓
 
 **Sanity check.** A tenth of the time at 125 °C does nearly half the damage. The equivalent temperature is 19 K above the mean, so designing reliability margins from average temperature would badly overstate life. The shorter automotive rating reflects the hotter profile; the exact ratio depends on the mechanisms TI models, which 25-09 introduces.
 
+### Example 25-08.9 · Microchannels in a cold plate (tier C)
+
+**Setup.** A cold plate has 100 parallel channels, each 0.3 mm wide, 2 mm deep and 40 mm long, separated by 0.3 mm copper walls ($k$ = 400 W/(m·K)) and sharing 2.0 L/min of water ($\rho$ = 1,000 kg/m³, $\mu$ = 0.65 mPa·s, $k_f$ = 0.63 W/(m·K), $c_p$ = 4,180 J/(kg·K) near 40 °C; geometry and properties assumed). Using the tube values $Nu$ = 4.36 and $f = 64/Re$ as estimates, find (a) $D_h$, (b) the velocity and $Re$, (c) $h$, (d) the wetted area and the convective resistance if every wetted surface were at the base temperature, (e) the pressure drop and pump power, (f) the fin efficiency of the side walls and the corrected resistance, and (g) the thermal entrance length $0.05\,Re\,Pr\,D_h$.
+
+**Solution.**
+
+- (a) $A_c = 0.3 \times 2$ = 0.6 mm², $P_w = 2(0.3 + 2)$ = 4.6 mm, so $D_h = 4 \times 0.6/4.6$ = **0.522** mm.
+- (b) Each channel carries $3.33 \times 10^{-5}/100$ m³/s through 0.6 mm², so $v$ = **0.556** m/s and $Re = 1000 \times 0.556 \times 5.22 \times 10^{-4}/6.5 \times 10^{-4}$ = **446**: laminar.
+- (c) $h = 4.36 \times 0.63/5.22 \times 10^{-4}$ = **5.26e3** W/(m²·K).
+- (d) $A = 100 \times 4.6\ \text{mm} \times 40\ \text{mm}$ = **0.0184** m², so $R = 1/(hA)$ = **0.0103** K/W.
+- (e) $f = 64/446$ and $\Delta p = f(L/D_h)(\rho v^2/2)$ = **1.70** kPa; the pump power is $\Delta p\,\dot V$ = **0.0566** W.
+- (f) Each 2 mm side wall is a fin wetted on both faces with $m = \sqrt{2h/(kt_f)}$ with (c)'s $h$, $k$ = 400 W/(m·K) and $t_f$ = 0.3 mm, giving $mL$ = **0.59** and $\eta_f$ = **0.90**. Counting the side walls at $\eta_f$ and the top and bottom at full effect, $R$ = **0.0113** K/W.
+- (g) $Pr = \mu c_p/k_f$ = **4.31**, so the entrance length is $0.05 \times 446 \times 4.31 \times 0.522$ mm = **5.0** cm, longer than the channel.
+
+**Units check.** $\rho vD_h/\mu$: (kg/m³)(m/s)(m)/(Pa·s) is dimensionless; $Nu\,k_f/D_h$: (W/(m·K))/m = W/(m²·K); $\Delta p\,\dot V$: Pa · m³/s = W. ✓
+
+**Sanity check.** The estimate lands near the 0.01–0.015 K/W assumed in Example 25-08.6, at a channel pressure drop under 2 kPa; real plates lose more in manifolds and fittings. The flow never fully develops in 4 cm, so the real $h$ is higher and the estimate is conservative. Finer channels raise $h$ as $1/D_h$ but the pressure drop as $1/D_h^2$ (Problem 25-08.14), which is the cold-plate designer's central trade.
 <!-- answer-key -->
 
 | ID | Quantity | Value | Unit |
@@ -307,7 +338,8 @@ At rack scale, heat removal becomes a facility problem. NVIDIA describes a GB200
 | Ex 25-08.1d1 | silicon-to-TIM conductivity ratio | 30 | |
 | Ex 25-08.2a | hotspot power density | 2.55 | W/mm² |
 | Ex 25-08.2a0 | average power density | 1.25 | W/mm² |
-| Ex 25-08.2a1 | ratio to average | 2.04 | |
+| Ex 25-08.2a2 | block power density | 3.80 | W/mm² |
+| Ex 25-08.2a1 | ratio to average | 3.04 | |
 | Ex 25-08.2b | centre rise | 8.49 | K |
 | Ex 25-08.2c | spreading resistance | 3.60 | K/W |
 | Ex 25-08.2d | average rise | 7.2 | K |
@@ -352,6 +384,19 @@ At rack scale, heat removal becomes a facility problem. NVIDIA describes a GB200
 | Ex 25-08.8f | equivalent minus mean | 19 | K |
 | Txt 25-08.b | pod power per chip | 1.09 | kW |
 | Ex 25-08.6c0 | half the coolant rise, 2,300 W | 8.25 | K |
+| Ex 25-08.9a | hydraulic diameter | 0.522 | mm |
+| Ex 25-08.9b | velocity | 0.556 | m/s |
+| Ex 25-08.9b1 | Reynolds number | 446 | |
+| Ex 25-08.9c | heat transfer coefficient | 5.26e3 | W/(m²·K) |
+| Ex 25-08.9d | wetted area | 0.0184 | m² |
+| Ex 25-08.9d1 | resistance, ideal walls | 0.0103 | K/W |
+| Ex 25-08.9e | pressure drop | 1.70 | kPa |
+| Ex 25-08.9e1 | pump power | 0.0566 | W |
+| Ex 25-08.9f | fin parameter mL | 0.59 | |
+| Ex 25-08.9f1 | wall fin efficiency | 0.90 | |
+| Ex 25-08.9f2 | resistance with fin walls | 0.0113 | K/W |
+| Ex 25-08.9g | Prandtl number | 4.31 | |
+| Ex 25-08.9g1 | thermal entrance length | 5.0 | cm |
 
 ## 5. Simulate it
 
@@ -395,7 +440,7 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 | Convection coefficient | forced air ≈ 25–250; forced liquid ≈ 10²–2 × 10⁴ W/(m²·K) | timeless | [S1] |
 | Water against air, per volume | ≈ 3,470× the heat capacity | timeless | §3.4 |
 | NVIDIA B200 (HGX) | configurable up to 1,000 W per GPU | undated datasheet | [R-596] |
-| NVIDIA B300 / GB300 | up to 1,100 W (HGX, cloud listing) / ≈ 1,400 W (report) | 2024–2025 | [R-596] |
+| NVIDIA B300 | up to 1,100 W (HGX, cloud listing); ≈ 1,400 W (report) | 2024–2025 | [R-596] |
 | NVIDIA Rubin GPU | 1.8 kW and 2.3 kW power profiles (reported) | Feb 2026 | [R-597] |
 | AMD MI350X / MI355X / MI455X | 1,000 W air / 1,400 W liquid / up to 2,500 W liquid (TBP) | 2025–2026 | [R-598] |
 | AI racks (NVL72 class) | ≈ 120–142 kW; Rubin up to ≈ 230 kW reported | 2024–2026 | [R-600], [R-601] |
@@ -416,7 +461,7 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 
 **State of the art (as of Nov 2026).**
 
-- *Accelerator power* [Established for B200 and AMD; Industry estimate for the rest]. NVIDIA's HGX B200 datasheet gives each GPU a maximum TDP "configurable up to 1000 W". A cloud provider lists HGX B300 at up to 1,100 W, while a December 2024 report put GB300 at 1,400 W, 200 W above GB200; NVIDIA has not published per-GPU B300 figures [R-596]. Rubin was first guided at about 1.8 kW and later reported at 2.3 kW; SemiAnalysis describes 2,300 W and 1,800 W as software power profiles, not separate parts, and says the higher profile raises rack power 20% for a smaller performance gain [R-597]. AMD lists 1,000 W typical board power for the air-cooled MI350X, 1,400 W for the liquid-cooled MI355X, and a maximum of 2,500 W for the liquid-cooled MI455X, 72 to a rack [R-598]. Google's Ironwood TPU pod of 9,216 liquid-cooled chips spans "nearly 10 MW", about **1.09** kW per chip including all overheads; Google does not state a chip TDP [R-599].
+- *Accelerator power* [Established for B200 and AMD; Industry estimate for the rest]. NVIDIA's HGX B200 datasheet gives each GPU a maximum TDP "configurable up to 1000 W". A cloud provider lists HGX B300 at up to 1,100 W, while a December 2024 report put B300 at 1,400 W, 200 W above GB200; NVIDIA has not published per-GPU B300 figures [R-596]. Rubin was first guided at about 1.8 kW and later reported at 2.3 kW; SemiAnalysis describes 2,300 W and 1,800 W as software power profiles, not separate parts, and says the higher profile raises rack power 20% for a smaller performance gain [R-597]. AMD lists 1,000 W typical board power for the air-cooled MI350X, 1,400 W for the liquid-cooled MI355X, and a maximum of 2,500 W for the liquid-cooled MI455X, 72 to a rack [R-598]. Google's Ironwood TPU pod of 9,216 liquid-cooled chips spans "nearly 10 MW", about **1.09** kW per chip including all overheads; Google does not state a chip TDP [R-599].
 - *Racks* [Established for vendor figures; Contested for Rubin]. NVIDIA puts a GB200 NVL72 rack at about 120 kW; Lenovo rates GB300 NVL72 at 135 kW (155 kW peak) and Vertiv at up to 142 kW [R-600]. NVIDIA says the Rubin generation is fully liquid-cooled with no fans and designed for 45 °C inlet coolant; its power-provisioning software cuts provisioned rack power from 136 to 101 kW for Vera Rubin NVL72, while third-party figures run to about 230 kW at the maximum profile [R-601].
 - *Adoption* [Industry estimate]. TrendForce projects liquid-cooling penetration among AI chips rising from about 33% in 2025 to 53% in 2026 and nearly 60% in 2027, with Google using liquid cooling in more than 80% of its AI servers; an earlier TrendForce series measured penetration of AI data centers instead, so the two should not be joined [R-602].
 - *Immersion* [Established for 3M; qualitative otherwise]. 3M completed its exit from PFAS manufacturing at the end of 2025, affecting fluorinated two-phase fluids; immersion remains a niche next to cold plates [R-603].
@@ -462,7 +507,7 @@ Cooler. The spreading resistance falls as $1/a$, so at fixed power the rise fall
 
 <details><summary>Answer</summary>
 
-That heat spreads at 45° through the lid, so the conducting area grows as $(a + z)^2$. It works for lids thin compared with the source and with good cooling below; it underestimates spreading when cooling below is weak and cannot apply once the cone reaches the lid's edge.
+That heat spreads at 45° through the lid, so the conducting area grows as $(a + z)^2$. It works for lids thin compared with the source and with good cooling below; it underestimates spreading when cooling below is weak and cannot apply once the cone reaches the lid's edge. Over an isothermal sink it errs the other way as the lid thickens: it assumes more spreading than occurs, so it underestimates the resistance (Problem 25-08.3).
 
 </details>
 

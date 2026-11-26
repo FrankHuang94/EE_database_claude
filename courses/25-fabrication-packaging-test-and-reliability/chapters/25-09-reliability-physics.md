@@ -65,7 +65,7 @@ $$
 
 with current density $j$, a current exponent $n$ and a constant $A$ that depends on geometry and materials. Black's original work implied $n = 2$; later studies found $n$ between about 1 and 3, and both $n$ and $E_a$ are fits valid only for the configuration tested [R-605]. For electromigration along the copper/SiCN cap interface, 0.90 eV is the commonly reported activation energy; a test of more than 1.1 million structures found an early-failure mode at 0.83 eV that "may control the chip lifetime at operating conditions" [R-606].
 
-**Where $n$ comes from.** Failure takes two phases: a void must nucleate, which requires the electromigration-driven stress to build to a critical value, and then grow until it opens the line. A simple analysis gives a nucleation time proportional to $j^{-2}$ (the stress builds at a rate proportional to $j$, and the time to reach a critical stress scales as its square) and a growth time proportional to $j^{-1}$ (a void grows at the drift velocity, proportional to $j$). With constants $B$ and $C$ at fixed temperature [R-605],
+**Where $n$ comes from.** Failure takes two phases: a void must nucleate, which requires the electromigration-driven stress to build to a critical value, and then grow until it opens the line. A simple analysis gives a nucleation time proportional to $j^{-2}$: the back-stress builds by diffusion, so near a blocking boundary it grows as $\sigma \propto j\sqrt t$ (Korhonen's model), and reaching a critical stress $\sigma_c$ takes $t_{nuc} \propto (\sigma_c/j)^2$ and a growth time proportional to $j^{-1}$ (a void grows at the drift velocity, proportional to $j$). With constants $B$ and $C$ at fixed temperature [R-605],
 
 $$
 MTTF = Bj^{-2} + Cj^{-1}.
@@ -101,7 +101,7 @@ A gate oxide (or a low-k dielectric between wires) under a steady field slowly a
 - **1/E model** (anode hole injection): electrons tunnelling through the oxide release holes at the anode that create defects, $t_{BD} = \tau_0\,e^{G/E}$.
 - **Power law in voltage** (anode hydrogen release): for ultrathin oxides, $t_{BD} \propto V^{-m}$.
 
-All three can fit accelerated data taken over a narrow range of high fields, yet they diverge at use fields. Fitted through the same two stress points, they can disagree by many orders of magnitude at a use field half the stress field (Example 25-09.4). The E model is the most conservative; Padovani and co-authors note that industry typically disregards it "in favor of the power-law model (and, less often, of the 1/E model, that is overly relaxed)" because it gives larger design margins [R-607]. Which model is right is **[Contested]**, and the choice directly sets the maximum operating voltage a technology can promise.
+All three can fit accelerated data taken over a narrow range of high fields, yet they diverge at use fields. Fitted through the same two stress points, they can disagree by many orders of magnitude at a use field a third of the stress field (Example 25-09.4). The E model is the most conservative; Padovani and co-authors note that industry typically disregards it "in favor of the power-law model (and, less often, of the 1/E model, that is overly relaxed)" because it gives larger design margins [R-607]. Which model is right is **[Contested]**, and the choice directly sets the maximum operating voltage a technology can promise.
 
 **From a test capacitor to a chip.** Breakdown is a weakest-link process (25-06): a chip fails when the first of its many oxide regions breaks. If breakdown times follow a Weibull distribution of shape $\beta$ and scale $\eta$ for a test capacitor of area $A_{test}$, a chip with total oxide area $A_{chip}$ has scale $\eta\,(A_{chip}/A_{test})^{-1/\beta}$ (the weakest-link result of 25-06 with $M = A_{chip}/A_{test}$). And the time to reach a small failure fraction $F$ is $\eta(-\ln(1 - F))^{1/\beta}$, far below the median. Together,
 
@@ -109,7 +109,7 @@ $$
 t_F^{chip} = \eta_{test}\left(\frac{A_{chip}}{A_{test}}\right)^{-1/\beta}\left[-\ln(1 - F)\right]^{1/\beta}.
 $$
 
-For thin oxides $\beta$ is small, so both factors are large and a test capacitor's characteristic life must exceed the product target by orders of magnitude (Example 25-09.5).
+For thin oxides $\beta$ is small, so both factors are strong reductions (in Example 25-09.5, 3.2 × 10⁻² for the area and 1.0 × 10⁻² for the 100 ppm target), and a test capacitor's characteristic life must exceed the product target by orders of magnitude.
 
 ### 3.4 Bias-temperature instability and hot carriers
 
@@ -120,6 +120,8 @@ $$
 $$
 
 and partly recovers when the stress is removed. The exponent is the crux. Reaction–diffusion theory predicts $n_t$ = 1/2, 1/4 or 1/6 depending on whether protons, hydrogen atoms or hydrogen molecules diffuse away from the interface; measured exponents depend strongly on how long the measurement takes after the stress ends (recovery begins at once), and delayed measurements give values around 0.2–0.3, rising with temperature [R-608]. Whether BTI is better described by hydrogen diffusion or by charge trapping in pre-existing defects is **[Contested]**. Because ten years is about 3 × 10⁵ times a 1,000 s test, the exponent's uncertainty compounds into a factor of about three in the predicted end-of-life shift (Example 25-09.6), which feeds directly into the timing margin through the alpha-power delay law (25-05).
+
+> **Going deeper — where the reaction–diffusion exponents come from.** Interface traps form as Si–H bonds break, releasing hydrogen that diffuses into the oxide, while hydrogen left at the interface can re-passivate traps. After a short transient the two rates balance, so $N_{IT}N_H(0) \approx$ constant, with $N_{IT}$ the trap density and $N_H(0)$ the hydrogen density at the interface. Every trap released one hydrogen, which now sits in a diffusion profile about $\sqrt{Dt}$ deep, so $N_{IT} \approx \tfrac12N_H(0)\sqrt{Dt}$. Eliminating $N_H(0)$ gives $N_{IT}^2 \propto \sqrt t$, so $N_{IT} \propto t^{1/4}$ for neutral atoms. If pairs of atoms form H₂, the balance involves the square root of the molecular density, and the same steps give $N_{IT}^{3/2} \propto \sqrt t$, so $t^{1/6}$. If the species is a proton that drifts in the oxide field, the profile depth grows as $t$ rather than $\sqrt t$, giving $t^{1/2}$. The exponent therefore encodes the transport mechanism, which is why measured values are argued over.
 
 **HCI.** Carriers accelerated by the high lateral field near the drain gain enough energy to create interface states or be injected into the oxide, degrading drive current over time. For long-channel NMOS the worst case is at the bias of maximum substrate current, usually with the gate at about 0.4–0.5 of the drain voltage; for long-channel PMOS it is at maximum gate current [R-608]. In short-channel devices the worst case moves toward high gate voltage as energy-driven mechanisms take over, and in digital logic HCI acts only during switching transitions, so its impact scales with activity.
 
@@ -133,7 +135,7 @@ $$
 
 and the current decays with time constant $(R_{HBM} + R_{on})C_{HBM}$. The design requirement is $V_{pad}$ below the short-pulse breakdown voltage of whatever the pad connects to; solving for $R_{on}$ gives the clamp's size (Example 25-09.7, confirmed in ngspice). The charged-device model (CDM) is faster and sharper, a nanosecond-scale discharge of the package's own charge through one pin, and drives clamp placement close to the protected circuit.
 
-**Latch-up.** Every CMOS inverter contains a parasitic pnp and npn transistor connected as a thyristor (09-07) between supply and ground. If a transient injects enough current to turn one on, each feeds the other's base; when the product of their current gains, reduced by the shunting well and substrate resistances, exceeds one, the loop latches and conducts a destructive supply-to-ground current until power is removed. Well and substrate taps close to devices and guard rings around I/O (19-09, 20-11) lower the shunt resistances so the loop gain stays below one.
+**Latch-up.** Every CMOS inverter contains a parasitic pnp and npn transistor connected as a thyristor ([20-11](../../20-analog-and-mixed-signal-ic-design/chapters/20-11-layout-matching-pvt.md)) between supply and ground. If a transient injects enough current to turn one on, each feeds the other's base; when the product of their current gains, reduced by the shunting well and substrate resistances, exceeds one, the loop latches and conducts a destructive supply-to-ground current until power is removed. Well and substrate taps close to devices and guard rings around I/O (19-09, 20-11) lower the shunt resistances so the loop gain stays below one.
 
 ### 3.6 From test to FIT: HTOL
 
@@ -143,7 +145,7 @@ $$
 \lambda_U = \frac{\chi^2_{CL,\,2f+2}}{2NtAF},
 $$
 
-in failures per hour (multiply by 10⁹ for FIT), from the Poisson–chi-square argument of 03-05. Industrial calculations commonly use 60% confidence [R-610]. Texas Instruments' worked example for a BAW oscillator ran 7,859 units for 1,000 h at 125 °C with no failures and, with $E_a$ = 0.7 eV, reported about 1.5 FIT at 55 °C (Example 25-09.8) [R-610]. Two cautions apply. The result is only as good as the single activation energy assumed for every mechanism the test could reveal. And "60% confidence" means that a product whose true rate equals the bound would pass such a test 40% of the time.
+in failures per hour (multiply by 10⁹ for FIT), from the Poisson–chi-square argument of 03-05. Industrial calculations commonly use 60% confidence [R-610]. A Texas Instruments application note's worked example ran 7,859 units for 1,000 h at 125 °C with no failures and, with $E_a$ = 0.7 eV, reported about 1.5 FIT at 55 °C (Example 25-09.8) [R-610]. Two cautions apply. The result is only as good as the single activation energy assumed for every mechanism the test could reveal. And "60% confidence" means that a product whose true rate equals the bound would pass such a test 40% of the time.
 
 ### 3.7 Many mechanisms at once
 
@@ -158,8 +160,8 @@ A chip fails when its first mechanism does. If the mechanisms act independently 
 **Solution.**
 
 - (a) $AF_T = \exp[(0.90/8.617 \times 10^{-5})(1/378.15 - 1/573.15)]$ = **1.20e4**.
-- (b) $100 \times 1.20 \times 10^4 \times 5^2$ = **3.01e7** h = **3.44e3** years.
-- (c) $100 \times 1.20 \times 10^4 \times 5$ = **6.02e6** h = **687** years.
+- (b) With the unrounded $AF_T$ = **1.2048e4**, $100 \times 1.2048 \times 10^4 \times 5^2$ = **3.01e7** h = **3.44e3** years.
+- (c) $100 \times 1.2048 \times 10^4 \times 5$ = **6.02e6** h = **687** years.
 - (d) **5.80e3**; ratio **2.08**.
 
 **Units check.** Exponent: eV/(eV/K) × 1/K, dimensionless. ✓
@@ -214,7 +216,7 @@ A chip fails when its first mechanism does. If the mechanisms act independently 
 **Solution.**
 
 - (a) $1000^{-1/2} \times (-\ln(1 - 10^{-4}))^{1/2} = 0.0316 \times 0.0100$ = **3.16e-4**.
-- (b) $10 \times 3.156 \times 10^7/3.16 \times 10^{-4}$ = **9.98e11** s.
+- (b) With the unrounded factor **3.162e-4**, $10 \times 3.156 \times 10^7/3.162 \times 10^{-4}$ = **9.98e11** s.
 - (c) The E model (1.0 × 10⁸ s) fails; the power law passes with margin $2.67 \times 10^{12}/9.98 \times 10^{11}$ = **2.68**; the 1/E model passes by an enormous margin.
 
 **Units check.** The factor is dimensionless; seconds divided by it remain seconds.
@@ -261,7 +263,7 @@ A chip fails when its first mechanism does. If the mechanisms act independently 
 - (b) $\chi^2_{0.60,\,2}$ = **1.833**.
 - (c) $1.833 \times 10^9/(2 \times 1000 \times 7859 \times 78.6)$ = **1.48** FIT, which TI reports as 1.5.
 - (d) **77.6** and **1.50** FIT.
-- (e) $10^9/1.48$ = **6.74e8** h.
+- (e) $10^9/1.483$ = **6.74e8** h, using the unrounded **1.483** FIT. Because it is the reciprocal of an upper bound on the rate, this is a lower bound on the MTBF at 60% confidence.
 - (f) $16.7 \times \exp[(0.7/k)(1/328.15 - 1/348.15)]$ = **69.2** FIT, matching TI's calculator.
 
 **Units check.** Unit-hours × AF in the denominator; the result × 10⁹ is failures per 10⁹ hours. ✓
@@ -287,6 +289,7 @@ A chip fails when its first mechanism does. If the mechanisms act independently 
 
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
+| Ex 25-09.1a0 | thermal AF, unrounded | 1.2048e4 | |
 | Ex 25-09.1a | thermal AF, 0.90 eV | 1.20e4 | |
 | Ex 25-09.1b | use median life, n = 2 | 3.01e7 | h |
 | Ex 25-09.1b1 | in years | 3.44e3 | years |
@@ -309,6 +312,7 @@ A chip fails when its first mechanism does. If the mechanisms act independently 
 | Ex 25-09.4d1 | power-law life | 2.67e12 | s |
 | Ex 25-09.4d2 | 1/E life | 1.0e22 | s |
 | Ex 25-09.5a | scale factor | 3.16e-4 | |
+| Ex 25-09.5a2 | area-and-percentile factor, unrounded | 3.162e-4 | |
 | Ex 25-09.5a0 | area factor | 0.0316 | |
 | Ex 25-09.5a1 | percentile factor | 0.0100 | |
 | Ex 25-09.5b | required characteristic life | 9.98e11 | s |
@@ -327,6 +331,7 @@ A chip fails when its first mechanism does. If the mechanisms act independently 
 | Ex 25-09.7e | largest on-resistance | 2.26 | Ω |
 | Ex 25-09.8a | AF, TI constants | 78.6 | |
 | Ex 25-09.8b | chi-square, 60%, 2 dof | 1.833 | |
+| Ex 25-09.8c0 | FIT, unrounded | 1.483 | FIT |
 | Ex 25-09.8c | FIT | 1.48 | FIT |
 | Ex 25-09.8d | AF, exact constants | 77.6 | |
 | Ex 25-09.8d1 | FIT, exact constants | 1.50 | FIT |
@@ -405,10 +410,10 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 **State of the art (as of Nov 2026).**
 
 - *Standards* [Established]. JEDEC's JEP122H (September 2016, 114 pages) remains the current list of failure mechanisms with their activation energies and acceleration factors for estimating field failure rates from accelerated tests [R-609]. JESD47, the stress-test qualification standard, is covered in 25-10.
-- *Electromigration* [Established]. Copper EM at use conditions runs mainly along grain boundaries and the cap interface; 0.90 eV is the usual activation energy for the Cu/SiCN interface, but a 1.1-million-sample study found a 0.83 eV early-failure mode likely to control life at operating conditions [R-605], [R-606].
+- *Electromigration* [Established]. Copper EM at use conditions runs mainly along grain boundaries and the cap interface; 0.90 eV is the usual activation energy for the Cu/SiCN interface, but a 1.1-million-sample study found a 0.83 eV early-failure mode that "may control the chip lifetime at operating conditions" [R-605], [R-606].
 - *Dielectric breakdown* [Contested]. The E, 1/E and power-law models remain in use; industry typically uses the power law, regarding the E model as too conservative and the 1/E model as overly relaxed [R-607].
 - *BTI and HCI* [Established for the forms; Contested for mechanism and exponent]. BTI exponent values depend on measurement delay; HCI worst-case bias conditions are well characterized for long channels [R-608].
-- *FIT practice* [Established]. Vendors compute FIT from zero-failure HTOL at 60% confidence with a single activation energy, typically 0.7 eV, under JEDEC's constant-failure-rate methods [R-610].
+- *FIT practice* [Industry estimate: one vendor's description]. A TI application note computes FIT from a zero-failure HTOL at 60% confidence with a single 0.7 eV activation energy, calls 60% "typical for industrial calculations", and notes that most JEDEC JESD85 methods "only apply to constant failure rates" [R-610].
 
 **Why it matters commercially.** Reliability margins set how hard a chip can be pushed: its maximum voltage, temperature and current density, and therefore its performance. A technology whose TDDB model allows a higher supply sells faster products; a datacenter operator running accelerators at higher power for longer must know whether the warranty's reliability model covers it. For automotive and industrial products, reliability is the product. A diligence team should ask how lifetime claims were derived, under which models, and with what field data to confirm them.
 

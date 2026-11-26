@@ -80,7 +80,7 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | $N_{edge} = L/(w + s)$ per layer | Wires per mm of die edge (with $w + s$ in mm) | [25-07](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md) |
-| $n_{bond} = 1/p^2$; overlay budget $\lvert e\rvert \le p/4$ per axis | Hybrid-bond density and alignment for pads $p/2$ wide | [25-07](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md) |
+| $n_{bond} = 1/p^2$; overlay budget $\lvert\varepsilon\rvert \le p/4$ per axis | Hybrid-bond density and alignment for pads $p/2$ wide | [25-07](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md) |
 | $Y_{bond} = [\operatorname{erf}(p/(4\sigma\sqrt2))]^2$ | Gaussian placement error $\sigma$ per axis | [25-07](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md) |
 | $\Delta T_{close} = \delta/[(\alpha_{Cu} - \alpha_d)t]$ | Anneal to close a copper recess $\delta$ in a pad of thickness $t$ | [25-07](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md) |
 | $e = (1 - Y)(1 - c)/[Y + (1 - Y)(1 - c)]$ | Test escapes among passing dies, coverage $c$ | [25-07](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md) |

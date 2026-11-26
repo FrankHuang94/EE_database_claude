@@ -39,7 +39,7 @@ The numerical fin solution agrees with $\tanh(mL)/mL$ to better than 0.1%, and t
 
 ## Discussion
 
-1. Why does the 45° rule underestimate spreading more for thicker lids, and what would happen with a poorly cooled underside instead of an isothermal one?
+1. Why does the 45° rule underestimate the spreading resistance more for thicker lids (it assumes more spreading than occurs), and what would happen with a poorly cooled underside instead of an isothermal one?
 2. Part 2's fin efficiency barely depends on the fin's depth. Why, and what does set how deep a heat sink should be?
 3. Part 3 shows the flow matters little at 2 L/min. At what flow would the coolant rise become the dominant term?
 4. How would you choose an activation energy for Part 4 when several wear-out mechanisms act at once (25-09)?
