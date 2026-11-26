@@ -11366,3 +11366,15 @@
   definition: The FLOP per byte of weights in a language model's token-by-token decode, $2B/b_w$ for $B$ sequences and $b_w$ bytes per weight (KV cache ignored); far below an accelerator's ridge point at small batch, which makes decode memory-bound.
   chapter: "28-04"
   see_also: [Ridge point, Prefill and decode]
+- term: Thermal-noise ceiling (ADC)
+  definition: The bound $10\log_{10}(1/16k_BT)$, about 191.8 dB at 300 K, on the Schreier figure of merit implied by the survey line $P/f_s = 8k_BT \cdot \text{SNR}$ for rail-to-rail class-B circuits; it is independent of speed and resolution, and the best published converters sit a few dB below it.
+  chapter: "28-05"
+  see_also: [Schreier figure of merit, Walden figure of merit]
+- term: Output back-off
+  definition: How far, in dB, an amplifier's output power sits below its peak; signals with a high peak-to-average power ratio force a PA to run backed off most of the time, where ideal class-B efficiency falls as $(\pi/4)\,10^{-\text{BO}/20}$.
+  chapter: "28-05"
+  see_also: [Peak-to-average power ratio (PAPR), Doherty amplifier]
+- term: Typical and guaranteed specifications
+  definition: A data sheet's typical value is usually the mean of characterization parts at nominal conditions; a guaranteed limit is met by every shipped part through production test or design margin. The gap depends on the spread across parts, lots and conditions, which Cpk and a confidence bound on σ describe.
+  chapter: "28-05"
+  see_also: ["Process capability (Cp, Cpk)"]
