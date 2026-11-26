@@ -26,7 +26,7 @@ A smartphone's application processor (AP) is the most integrated consumer chip e
 - **Why it exists:** a phone must do bursts of heavy work (launching an app, taking a photo, running a model) inside a battery and a hand-held thermal envelope. Specialized, integrated blocks do each task at a fraction of the energy a general CPU would need.
 - **Where it shows up:** every flagship phone; its blocks reappear in tablets, laptops (27-05), watches (27-03), cars (27-06) and edge AI devices (27-08).
 - **What decides it:** energy per task (not peak speed), memory bandwidth (shared by everything), sustained power (set by the hand, not the silicon) and cost per die at the newest node.
-- **Why it matters to a business reader:** the AP is one of the two or three largest items in a flagship's BOM [R-665], the reason phone makers design their own silicon, and the first customer of each new process node.
+- **Why it matters to a business reader:** the AP is one of the two or three largest items in a flagship's BOM [R-665], the reason phone makers design their own silicon, and typically among the first products on each new process node.
 
 ## 2. Intuition first
 
@@ -62,16 +62,16 @@ All the 2025–2026 flagship APs share the same skeleton (as of Nov 2026):
 
 | SoC (year) | Node (vendor's words) | CPU | Notable | Source |
 |---|---|---|---|---|
-| Apple A19 Pro (2025) | "third-generation 3-nanometer" (A19) | 6 cores | 6-core GPU with Neural Accelerators; 16-core Neural Engine; modem outside the AP | [R-660] |
+| Apple A19 Pro (2025) | "third-generation 3-nanometer" (A19) | 6 cores | 6-core GPU with Neural Accelerators (5-core in iPhone Air); 16-core Neural Engine; Apple modems are separate chips (§3.1) | [R-660] |
 | Apple A20 Pro (2026) | "latest 2-nanometer" | 6 cores | 7-core GPU; "Dual 16-core Neural Engine"; memory moved beside the die | [R-660] |
 | Qualcomm 8 Elite Gen 5 (2025) | "3nm" | 2 prime to 4.74 GHz + 6 to 3.62 GHz | integrated X85 modem; triple 20-bit ISPs | [R-661] |
 | Qualcomm 8 Elite Gen 6 (2026) | "2nm" | 2 prime to 5.0 GHz + 6 to 4.0 GHz | integrated X105 modem; LPDDR5X or LPDDR6 | [R-661] |
 | MediaTek Dimensity 9500 (2025) | "TSMC N3P" | 1 at 4.21 GHz + 3 + 4 | LPDDR5X-10667; 10 MB SLC; integrated sub-6 GHz 5G | [R-662] |
 | MediaTek Dimensity 9600 Pro (2026) | "2nm" | 2 to 4.55 GHz + 3 + 3 | first LPDDR6 support; "models up to 30B parameters" | [R-662] |
-| Samsung Exynos 2600 (2025) | "industry's first 2nm GAA" | deca-core | "Heat Path Block" package | [R-663] |
+| Samsung Exynos 2600 | "industry's first 2nm GAA" (vendor claim, **[Contested]** [R-557]) | deca-core | "Heat Path Block" package | [R-663] |
 | Google Tensor G5 (2025) | "3 nm process node from TSMC" | — | "up to 60% more powerful TPU" | [R-663] |
 
-Four patterns stand out. **Heterogeneous CPUs:** every design mixes a few large, fast cores with smaller ones (§3.2). **Specialized accelerators:** the NPU, ISP and video codecs do fixed-function work at far lower energy than the CPU. **A shared memory system:** all blocks share one LPDDR interface, typically 64 bits wide [R-664], behind a system-level cache (§3.3). **The node schedule:** 2025's flagships were 3 nm-class, 2026's moved to 2 nm-class, with Samsung's first 2 nm gate-all-around part arriving first [R-660–R-663].
+Four patterns stand out. **Heterogeneous CPUs:** every design mixes a few large, fast cores with smaller ones (§3.2). **Specialized accelerators:** the NPU, ISP and video codecs do fixed-function work at far lower energy than the CPU. **A shared memory system:** all blocks share one LPDDR interface, typically 64 bits wide [R-664], behind a system-level cache (§3.3). **The node schedule:** 2025's flagships were 3 nm-class and 2026's moved to 2 nm-class; Samsung markets its Exynos 2600 as "the industry's first 2nm GAA" [R-663], a claim of priority that is contested [R-557].
 
 **Integrated or discrete modem?** Qualcomm and MediaTek integrate the 5G modem into the AP [R-661, R-662]; Apple ships its own modems (C1, C1X, C2) as separate chips [R-660]. Integration saves the chip-to-chip link's power, area and package cost and lets the modem share the SLC and power management. A separate modem decouples schedules and process nodes, avoids putting a large, RF-adjacent block on the most expensive node, and for Apple replaces a supplier's part with its own, a strategic rather than purely technical choice.
 
@@ -85,13 +85,13 @@ $$
 
 Units: F × V² = J; W ÷ (instructions/s) = J/instruction. ✓
 
-The first term rises with frequency (higher voltage), the second falls (less time leaking). Their sum has a **minimum-energy frequency** $f^*$ where $dE/df = 0$:
+The first term rises with frequency (higher voltage), the second falls (less time leaking). Their sum has a **minimum-energy frequency** $f^*$ where $dE/df = 0$. Differentiating,
 
 $$
-2ck(V_0 + kf^*) = \frac{P_s}{f^{*2}} ,
+\frac{dE}{df} = \frac{2ck(V_0 + kf)}{\text{IPC}} - \frac{P_s}{\text{IPC}\,f^2} = 0 \quad\Rightarrow\quad 2ck(V_0 + kf^*) = \frac{P_s}{f^{*2}} ,
 $$
 
-a cubic in $f^*$ solved numerically (Example 27-02.3). Running faster than $f^*$ costs energy for speed; running slower wastes energy in leakage. When leakage is high (a hot die), $f^*$ moves up: this is the physics behind **race to idle**, finishing quickly and power-gating, which wins when leakage dominates and loses when it does not (19-06).
+so IPC cancels and $f^*$ solves the cubic $2ck^2f^3 + 2ckV_0f^2 - P_s = 0$, done numerically (Example 27-02.3). The model treats $P_s$ as independent of $V$ and $f$; real leakage falls with supply voltage, which would lower $f^*$ somewhat. Running faster than $f^*$ costs energy for speed; running slower wastes energy in leakage. When leakage is high (a hot die), $f^*$ moves up. For a task with a deadline, the lowest-energy plan is to run at the higher of $f^*$ and the deadline frequency and then power-gate: **race to idle** is its extreme case, which approaches the optimum only when leakage is high enough to push $f^*$ toward the maximum frequency (Problem 27-02.11, 19-06).
 
 **Why mix core sizes.** A large core has a high IPC but switches much more capacitance per cycle; a small core has a low IPC and low capacitance. At a low performance target the small core can run near its efficient voltage while the large core, even slowed down, carries its large $c$ and leakage, so the small core uses less energy per instruction. At a high target the small core must be pushed to a high voltage (its $V$ rises steeply near its maximum), and the large core, running relaxed, becomes more efficient. The two curves cross at a **crossover performance** (Example 27-02.2), and the operating system's scheduler moves threads across it. Phones therefore carry a few large "prime" cores for bursts, several mid-size cores and, in some designs, small efficiency cores for background work.
 
@@ -103,7 +103,7 @@ $$
 \beta = \frac{R\,w}{8} \quad \text{bytes/s} .
 $$
 
-A 64-bit LPDDR5X-10667 interface gives about 85 GB/s (Example 27-02.1); LPDDR6 raises the data rate range to 10,667–14,400 MT/s and reorganizes the channel into more, narrower sub-channels for concurrency [R-667]. Apple's claim that A20 Pro has "50 percent more memory bandwidth than A19 Pro" [R-660] can come from a faster data rate, a wider bus or both; the claim alone does not say which (Problem 27-02.7).
+A 64-bit LPDDR5X-10667 interface gives about 85 GB/s (Example 27-02.1); LPDDR6 raises the data rate range to 10,667–14,400 MT/s and organizes each channel as four 24-bit sub-channels for concurrency; the reported effective bandwidth of 28.5–38.4 GB/s per channel is below the raw 24 bits × data rate (32.0–43.2 GB/s), so it includes overhead the report does not detail [R-667]. The 64-bit LPDDR6 cases in this chapter's problems are hypothetical equal-width comparisons with LPDDR5X. Apple's claim that A20 Pro has "50 percent more memory bandwidth than A19 Pro" [R-660] can come from a faster data rate, a wider bus or both; the claim alone does not say which (Problem 27-02.7).
 
 **Demand.** Every client draws on the same bus: the display engine reads each frame (and the compositor writes and reads layers), the camera pipeline moves raw frames through DRAM (27-01 Example 27-01.4), the GPU streams textures and render targets, the CPU and NPU stream data and weights. The total must fit within a practical fraction of the peak, since real DRAM efficiency is well below 100% once refresh, bank conflicts and read–write turnarounds are counted (23-04).
 
@@ -119,13 +119,13 @@ and every byte kept on chip also saves the far higher energy of a DRAM access (2
 
 ### 3.4 Power and thermal envelope
 
-Independent measurements put a flagship AP's CPU at about 12 W (A19 Pro) to 19 W (Snapdragon 8 Elite Gen 5) at full multi-core load, and its GPU at about 12 W in a graphics benchmark [R-664] **[Industry estimate]**. A phone can shed only a few watts indefinitely through its case (27-01 Example 27-01.2), so these are burst powers. Under sustained load the SoC must lower voltage and frequency until its power fits the envelope, and because power falls faster than frequency ($P \propto f^3$ near the top of the DVFS range, 14-01), a large cut in power costs a smaller cut in speed (Example 27-02.4).
+Independent measurements put a flagship AP's CPU at about 12 W (A19 Pro) to 19 W (Snapdragon 8 Elite Gen 5) at full multi-core load, and its GPU at about 12 W (Snapdragon 8 Elite Gen 5) in a graphics benchmark, with Apple's and MediaTek's drawing 1 to 3 W more [R-664] **[Industry estimate]**. A phone can shed only a few watts indefinitely through its case (27-01 Example 27-01.2), so these are burst powers. Under sustained load the SoC must lower voltage and frequency until its power fits the envelope, and because power falls faster than frequency ($P \propto f^3$ when voltage scales in proportion to frequency, 14-01; with this chapter's $V = V_0 + kf$ the exponent is lower, about 2 over the top of the range), a large cut in power costs a smaller cut in speed (Example 27-02.4). The shadow price of 27-01 generalizes from $1/(3P)$ to $1/(nP)$ for $P \propto f^n$.
 
 Phone makers attack the envelope from the package outward: Apple credits a vapor chamber with "up to 40 percent better sustained performance" on iPhone 17 Pro, and for A20 Pro moved the DRAM from on top of the die to beside it, "removing the memory from the thermal path" so the die can touch the vapor chamber directly [R-660]; Samsung's Exynos 2600 adds a "Heat Path Block" in its package [R-663]. Package-on-package (PoP) memory saves board area and shortens the memory wires, but it puts a DRAM die, which must stay cool, between the processor and the heat spreader; side-by-side packaging trades area for a better thermal path.
 
 ### 3.5 Node, die cost and the bill of materials
 
-**Die cost.** With the dies-per-wafer and yield models of 25-04, a ~99 mm² die (A19 Pro measures 98.6 mm² [R-664]) on a 3 nm-class wafer reported at about $18,500 [R-575] costs a few tens of dollars (Example 27-02.6). The same die on a 2 nm wafer, reported at over $30,000 [R-575], costs about 70% more before any shrink, so a move to 2 nm pays only if density, power or performance gains (or a smaller die) cover it. Die sizes differ markedly between vendors: about 98.6 mm² (A19 Pro), 126.2 mm² (Snapdragon 8 Elite Gen 5) and 140.8 mm² (Dimensity 9500) [R-664], reflecting different choices of cache size, GPU size and integrated modem.
+**Die cost.** With the dies-per-wafer and yield models of 25-04, a ~99 mm² die (A19 Pro measures 98.6 mm² [R-664]) on a 3 nm-class wafer reported at about $18,500 [R-575] (press reports, Oct 2024, **[Industry estimate]**) costs a few tens of dollars (Example 27-02.6). The same die on a 2 nm wafer, reported at over $30,000 [R-575], costs 62% more from the wafer price alone and about 70% more with an assumed early defect density, before any shrink, so a move to 2 nm pays only if density, power or performance gains (or a smaller die) cover it. Die sizes differ markedly between vendors: about 98.6 mm² (A19 Pro), 126.2 mm² (Snapdragon 8 Elite Gen 5) and 140.8 mm² (Dimensity 9500) [R-664], reflecting different choices of cache size, GPU size and integrated modem.
 
 **The BOM.** TechInsights estimated that in the iPhone 17 Pro Max the camera subsystem was the largest cost (more than 27%) and the A19 Pro the second (about 15%) [R-665]. In 2026 memory prices changed the ranking: TrendForce reported memory rising from about 10% of a Pro iPhone's BOM to about 34% in 3Q26, overtaking the AP and the display, and a BOM about 38% higher than the previous model's [R-665] **[Industry estimate]**. As 27-01 §3.4 showed, a component's dollars, not its share, move the margin, and memory's dollars moved most.
 
@@ -145,7 +145,7 @@ All core, cache and DRAM-energy parameters below are **assumed** for teaching; s
 
 **Units check.** transfers/s × bits ÷ 8 = bytes/s. ✓
 
-**Sanity check.** Using 59% of peak is already near the practical limit of a DRAM interface (23-04), so the SLC is what leaves headroom for an AI model running at the same time.
+**Sanity check.** 59% of peak is already a large share of what mixed traffic can sustain, since refresh, bank conflicts and read–write turnarounds cost efficiency (23-04), so the SLC is what leaves headroom for an AI model running at the same time.
 
 ### Example 27-02.2 · When does the big core win? (tier B)
 
@@ -186,7 +186,7 @@ All core, cache and DRAM-energy parameters below are **assumed** for teaching; s
 
 **Units check.** nF × V² × GHz = W. ✓
 
-**Sanity check.** Cutting a big core's power from 4.7 W to 1.5 W (a factor of 3.1) costs only a factor of 1.9 in frequency, because voltage falls with frequency. That is why sustained phone performance is roughly half of the peak, not a third.
+**Sanity check.** Cutting a big core's power from 4.7 W to 1.5 W (a factor of 3.1) costs only a factor of 1.9 in frequency, because voltage falls with frequency. In this model, then, sustained performance is roughly half of the peak, not a third; the parameters are assumed, so this illustrates the mechanism rather than measuring a phone.
 
 ### Example 27-02.5 · How fast can a phone run a 3-billion-parameter model? (tier B)
 
@@ -223,7 +223,7 @@ All core, cache and DRAM-energy parameters below are **assumed** for teaching; s
 **Solution.**
 
 - (a) With other costs fixed at 0.90 of the old BOM, memory $m$ satisfies $m/(m + 0.90) = 0.34$, so $m$ = 0.464: **4.64** times its earlier 0.10, and the BOM is **1.364** times the old, **36.4**% higher.
-- (b) The memory spike alone accounts for 36.4 of the reported 38 points; the remaining **1.6** points must come from other components, such as the move to a 2 nm AP.
+- (b) The memory spike alone accounts for 36.4 of the reported 38 points, leaving **1.6** points. The analyst's shares are rounded ("around 10%", "approximately 34%"), and moving either by half a point shifts the memory-only rise between about 35.6% and 37.4%, so the remainder is within the rounding: memory explains essentially all of the increase.
 
 **Units check.** Shares are dimensionless. ✓
 
@@ -291,6 +291,8 @@ All core, cache and DRAM-energy parameters below are **assumed** for teaching; s
 | Ex 27-02.7a3 | BOM increase | 36.4 | % |
 | Ex 27-02.7b | unexplained points | 1.6 | points |
 | Txt 27-02.1 | 2 nm die cost premium | 70 | % |
+| Txt 27-02.2 | 2 nm premium from wafer price alone | 62 | % |
+| Txt 27-02.3 | power exponent, big core, 2.25 to 4.2 GHz | 2 | — |
 
 ## 5. Simulate it
 
@@ -339,16 +341,16 @@ The lab is [labs/27-02-lab/](../labs/27-02-lab/README.md). `socmodel.py` impleme
 - **Assuming slower is always more efficient.** Below the minimum-energy frequency, leakage makes slow operation cost more energy (Example 27-02.3).
 - **Counting compute TOPS for on-device AI and ignoring bandwidth.** Decode speed is bounded by bytes per token and bus bandwidth.
 - **Reading "50% more bandwidth" as a data-rate claim.** It may be a wider bus; ask which.
-- **Comparing die costs without the wafer price and yield.** The same area costs about 70% more on an early 2 nm wafer (Example 27-02.6).
+- **Comparing die costs without the wafer price and yield.** The same area costs about 70% more on an early 2 nm wafer with an assumed defect density (Example 27-02.6).
 - **Using one year's BOM shares.** Memory's share moved from about 10% to about 34% within a year [R-665].
 
 ## 9. Practitioner lens
 
 **State of play (as of Nov 2026).**
 
-- **2 nm arrived in phones in 2026.** Apple's A20 Pro ("latest 2-nanometer"), Qualcomm's 8 Elite Gen 6 ("2nm") and MediaTek's Dimensity 9600 Pro ("Advanced 2nm SoC") followed Samsung's Exynos 2600 ("industry's first 2nm GAA") [R-660–R-663] **[Established: vendor statements]**. Google's Tensor G5 stayed on a TSMC 3 nm node [R-663].
-- **Apple is replacing its last major external chips.** C1 (2025), C1X and C2 (2026) are Apple-designed modems, C2 with mmWave "in the U.S." [R-660]; whether every model and region uses C2 should be checked against teardowns **[Contested in press]**.
-- **Memory is now the cost story.** Memory's share of a Pro iPhone's BOM rose to about 34% in 3Q26 [R-665] **[Industry estimate]**, and analysts tie 2026's weaker shipment outlook to memory prices.
+- **2 nm arrived in phones in 2026.** Apple's A20 Pro ("latest 2-nanometer"), Qualcomm's 8 Elite Gen 6 ("2nm") and MediaTek's Dimensity 9600 Pro ("Advanced 2nm SoC") are 2 nm-class [R-660–R-662] **[Established: vendor statements]**; Samsung markets its Exynos 2600 as "industry's first 2nm GAA" [R-663] **[Contested]** [R-557]. Google's 2025 Tensor G5 is on a TSMC 3 nm node [R-663].
+- **Apple is replacing external chips with its own.** C1 and C1X (2025) and C2 (2026) are Apple-designed modems, C2 with mmWave "in the U.S." [R-660]; whether every model and region uses C2 should be checked against teardowns **[Contested in press]**.
+- **Memory is now the cost story.** Memory's share of a Pro iPhone's BOM rose to about 34% in 3Q26 [R-665] **[Industry estimate]**.
 - **On-device AI is bandwidth-shaped.** Vendors quote model sizes ("models up to 30B parameters" [R-662]; Apple's ~3B, 2-bit model [R-668]) and speedups ("Gemini Nano runs 2.6x faster" [R-668]); the governing physics is bytes per token against bus bandwidth (Example 27-02.5).
 
 **Commercial relevance.** The AP decides much of a phone's differentiation and a sizeable share of its cost, and it is where vertical integration pays: Apple's in-house CPUs, GPUs, NPUs and now modems, Google's Tensor and Samsung's Exynos all exist to capture margin and control the roadmap. For a semiconductor company, the phone AP market rewards node leadership, IP breadth (modem, GPU, NPU) and the ability to ship a new chip every year without slipping.

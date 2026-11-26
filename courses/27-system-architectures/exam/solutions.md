@@ -5,7 +5,7 @@ Questions: [README.md](README.md). Every number is recomputed, mostly by a secon
 ---
 
 **1 · A power and thermal budget.**
-(a) The LDO's efficiency is $1.8/3.8 = 47.4\%$. Then $P_{batt} = 1.2/0.9 + 0.6/0.85 + 0.15/0.474 = 1.333 + 0.706 + 0.317$ = **2.36** W. The system efficiency is $1.95/2.36$ = **82.8**%, and the loss is **0.406** W, almost half of it in the LDO for a 0.15 W load.
+(a) The LDO's efficiency is $1.8/3.8 = 47.4\%$. Then $P_{batt} = 1.2/0.9 + 0.6/0.85 + 0.15/0.474 = 1.333 + 0.706 + 0.317$ = **2.36** W. The system efficiency is $1.95/2.356$ = **82.8**%, and the loss is **0.406** W, about two-fifths of it (0.167 W) in the LDO for a 0.15 W load.
 (b) $0.9 \times 15/2.356$ = **5.73** h.
 (c) $P_{sus} = (43 - 25)/9$ = **2.00** W.
 (d) $T_\infty = 25 + 6 \times 9 = 79$ °C and $T_0 = 25 + 1 \times 9 = 34$ °C, so $t_b = 300\ln[(79 - 34)/(79 - 43)]$ = **66.9** s. The duty cycle is $d = (2.0 - 1.0)/(6.0 - 1.0)$ = **20.0**%.
@@ -13,7 +13,7 @@ Questions: [README.md](README.md). Every number is recomputed, mostly by a secon
 **2 · Bottlenecks.**
 (a) $\beta = 8\ \text{B} \times 8533 \times 10^6$ = **68.3** GB/s. The decode bound is $68.26 \times 10^9/(3 \times 10^9 \times 0.5)$ = **45.5** tokens/s.
 (b) $1/(0.6 + 0.4/10)$ = **1.56**.
-(c) By Little's law, $68.26\ \text{GB/s} \times 120\ \text{ns}$ = **8.19e3** bytes, that is **128** cache lines in flight.
+(c) By Little's law, $68.26\ \text{GB/s} \times 120\ \text{ns}$ = **8.19 × 10³** bytes, that is **128** cache lines in flight.
 (d) $d\ln(\text{perf}) = dP/(3P_{dyn}) = 0.3/9.0$ = **3.33**%.
 
 **3 · Energy per instruction and memory traffic.**
@@ -25,29 +25,29 @@ Questions: [README.md](README.md). Every number is recomputed, mostly by a secon
 **4 · A smartwatch's day.**
 (a) $P = \pi L_vA\,\text{APL}/\eta_v = \pi \times 400 \times 9 \times 10^{-4} \times 0.2/5$ = **45.2** mW.
 (b) $Q = 2 \times 0.4 + 5 \times 0.25 + 6 \times 0.1$ = **2.65** µC (mA × ms = µC). Then $I = 3 + 2.65/0.1$ = **29.5** µA.
-(c) $E_b = 0.300 \times 3.85$ = **1.155** Wh. $E_{day} = 0.0452 \times 2 + (0.020 + 0.003 + 0.005) \times 24$ = **0.762** Wh. $L = 24 \times 0.9 \times 0.9 \times 1.155/0.762$ = **29.4** h.
+(c) $E_b = 0.300 \times 3.85$ = **1.155** Wh. $E_{day} = 0.04524 \times 2 + (0.020 + 0.003 + 0.005) \times 24 = 0.7625$ = **0.762** Wh at the rails. $L = 24 \times 0.9 \times 0.9 \times 1.155/0.7625$ = **29.4** h.
 (d) $50 \times 20\ \mu\text{J} + 50 \times 2\ \text{mJ}/100$ = **2.00** mW batched; **101** mW unbatched.
 
 **5 · Earbuds.**
 (a) $-20\log_{10}[2\sin(\pi f\tau)]$: **28.5** dB at 200 Hz and **14.5** dB at 1 kHz.
-(b) $1/(6\tau)$ = **5.56** kHz.
-(c) $-20\log_{10}(0.03)$ = **30.5** dB.
+(b) $1/(6\tau)$ = **5.56** kHz. (The residual exceeds 1 while $\sin(\pi f\tau) > 1/2$, that is up to $5/(6\tau)$ = **27.8** kHz, above the audio band, so every audible frequency above 5.56 kHz is amplified.)
+(c) $\theta_{err} = \omega\tau = 200 \times 0.012$ = **2.4**°. For 1°, $\tau \le 1/200$ s = **5.00** ms.
 (d) $E_b = 55 \times 3.85 = 211.75$ mWh. Life $= 211.75 \times 0.85/18$ = **10.0** h. Recharges $= 0.70 \times 500 \times 3.85/(2 \times 211.75)$ = **3.18**.
 
 **6 · A laptop SoC.**
 (a) $0.6 \times 0.5 + 0.3 \times 3 + 0.1 \times 15$ = **2.70** W; $60/(2.70 + 2.5)$ = **11.5** h.
 (b) $28\ln[(55 - 5)/(55 - 28)]$ = **17.3** s.
-(c) $16\ \text{B} \times 8533 \times 10^6$ = **136.5** GB/s; $136.5/(8 \times 0.5)$ = **34.1** tokens/s.
-(d) $2 \times 8 \times 10^9 \times 2000/(45 \times 10^{12} \times 0.3)$ = **2.37** s.
+(c) $32\ \text{B} \times 8000 \times 10^6$ = **256** GB/s; $256/(14 \times 0.5)$ = **36.6** tokens/s.
+(d) $2 \times 14 \times 10^9 \times 4000/(50 \times 10^{12} \times 0.35)$ = **6.40** s.
 
 **7 · A car.**
-(a) $34 + 32 + 13 + \lfloor 65/4 \rfloor$ = **95** bits, taking **190** µs.
-(b) $8.3 \times 10^6 \times 30 \times 12$ = **2.99** Gb/s.
-(c) $v$ = 27.78 m/s. Then $27.78 \times 0.15 + 27.78^2/14$ = **59.3** m, of which **4.17** m is latency.
+(a) $34 + 48 + 13 + \lfloor 81/4 \rfloor$ = **115** bits, taking **230** µs.
+(b) $\lambda(1 - DC) \le 8$ with $\lambda$ = 800 FIT gives $DC \ge 1 - 8/800$ = **99.0**%. At 98%, the residual is $800 \times 0.02$ = **16.0** FIT, twice the budget.
+(c) $v$ = 33.33 m/s. Then $33.33 \times 0.25 + 33.33^2/13$ = **93.8** m, of which **8.33** m is latency.
 (d) $P_d = 150 \times 50$ = 7.5 kW, so $300/(300 + 7500)$ = **3.85**%.
 
 **8 · Training at scale.**
-(a) $6 \times 70 \times 10^9 \times 2 \times 10^{12}$ = **8.4e23** FLOP. Time: $8.4 \times 10^{23}/(1024 \times 0.4 \times 10^{15})$ s = **23.7** days.
+(a) $6 \times 70 \times 10^9 \times 2 \times 10^{12}$ = **8.40 × 10²³** FLOP. Time: $8.4 \times 10^{23}/(1024 \times 0.4 \times 10^{15})$ s = **23.7** days.
 (b) $2 \times (7/8) \times 2\ \text{GB}/200\ \text{GB/s}$ = **17.5** ms.
 (c) The shard is $2/8$ GB. Cross-server: $2 \times (127/128) \times 0.25/50$ s = **9.92** ms; total **27.4** ms.
 (d) $2 \times (1023/1024) \times 2/50$ s = **79.9** ms, **2.91** times slower.
@@ -56,10 +56,10 @@ Questions: [README.md](README.md). Every number is recomputed, mostly by a secon
 (a) $60\,000/20\,000$ = **3.00** h.
 (b) $\sqrt{2 \times 30 \times 10\,800}$ = **805** s.
 (c) $\sqrt{60/10\,800} + 300/10\,800$ = **10.2**%, so **89.8**% effective.
-(d) $W = 140$ GB. Step time: $(140 + 64 \times 0.5)\ \text{GB}/(0.6 \times 64\ \text{TB/s})$ = **4.48** ms. Throughput: $64/4.48\ \text{ms}$ = **1.43e4** tokens/s. Per user: **223** tokens/s. Energy: $60\ \text{kW}/1.43 \times 10^4$ = **4.20** J per token.
+(d) $W = 140$ GB. Step time: $(140 + 64 \times 0.5)\ \text{GB}/(0.6 \times 64\ \text{TB/s})$ = **4.48** ms. Throughput: $64/4.48\ \text{ms}$ = **1.43 × 10⁴** tokens/s. Per user: **223** tokens/s. Energy: $60\ \text{kW}/1.43 \times 10^4$ = **4.20** J per token.
 
 **10 · At the edge.**
-(a) $16 \times 16 \times 32 \times 9 \times 16$ = **1.18e6** MACs.
+(a) $16 \times 16 \times 32 \times 9 \times 16$ = **1.18 × 10⁶** MACs.
 (b) CPU: **11.8** ms and **118** µJ. NPU: $1.18 \times 10^6/(64 \times 0.3 \times 10^8)$ = **0.614** ms and **9.22** µJ.
 (c) $T_s = 256/125\ \text{kHz}$ = **2.048** ms. Payload: $8 + \lceil(96 - 32 + 28 + 16)/32\rceil \times 5$ = **28** symbols. Time on air: $(12.25 + 28) \times 2.048$ = **82.4** ms. Packets: $\lfloor 36/0.0824 \rfloor$ = **436** an hour.
 (d) Streaming: $8000 \times 12 \times 50\ \text{nJ}$ = **4.80** mW. Local: $10 \times 9.22\ \mu\text{J} + 0.2\ \text{mW}$ = **0.292** mW, **16.4** times less.
@@ -72,25 +72,27 @@ Questions: [README.md](README.md). Every number is recomputed, mostly by a secon
 $$
 Pt = C\int_{V_{min}}^{V_{max}} V\,dV = \tfrac12 C(V_{max}^2 - V_{min}^2), \qquad t = \frac{C(V_{max}^2 - V_{min}^2)}{2P}.
 $$
-For 10 F: $t = 10 \times 18.75/(2 \times 0.522 \times 10^{-3})$ = **1.80e5** s = **49.9** h. That is short of the 72 h in (c), as expected from the 14.4 F it needs.
+For 10 F: $t = 10 \times 18.75/(2 \times 0.522 \times 10^{-3})$ = **1.80 × 10⁵** s = **49.9** h. That is short of the 72 h in (c), as expected from the 14.4 F it needs.
 
 **12 · Rack decisions.**
-(a) Split each device's vector into $p$ chunks of $S/p$ bytes and arrange the devices in a ring. In the reduce-scatter, step $k$ ($k = 1, \dots, p - 1$) has each device send one chunk to its neighbour, which adds it to its own copy. After $p - 1$ steps, each device holds one chunk summed over all $p$ devices. In the all-gather, $p - 1$ further steps circulate the reduced chunks until every device has all of them. Every step sends and receives $S/p$ bytes on every link at once (full duplex), taking $\alpha + S/(pB)$. Hence
+(a) Split each device's vector into $p$ chunks of $S/p$ bytes and arrange the devices in a ring. In the reduce-scatter, step $k$ ($k = 1, \dots, p - 1$) has each device send one partial-sum chunk to its neighbour, which adds it to its own copy of that chunk. The partial sum a device forwards at step $k$ already holds $k$ contributions, so after it is added it holds $k + 1$; after $p - 1$ steps each device holds one chunk summed over all $p$ devices. Assume the additions take negligible time and every link runs in both directions at once. In the all-gather, $p - 1$ further steps circulate the reduced chunks until every device has all of them. Every step sends and receives $S/p$ bytes on every link at once (full duplex), taking $\alpha + S/(pB)$. Hence
 $$
 T = 2(p - 1)\left(\alpha + \frac{S}{pB}\right) = 2\frac{p - 1}{p}\frac{S}{B} + 2(p - 1)\alpha .
 $$
 (b) Bandwidth: $2 \times (71/72) \times 4\ \text{GB}/900\ \text{GB/s}$ = **8.77** ms. Latency: $2 \times 71 \times 2\ \mu\text{s}$ = **0.284** ms. Total **9.05** ms.
-(c) Capital **900000** dollars a year. Energy: $140 \times 1.25 \times 8760 \times 0.07$ = **107310** dollars. Tokens: $1.2 \times 10^5 \times 0.5 \times 3.15 \times 10^7$ = **1.89e12** a year. Cost: $1\,007\,310/1.892 \times 10^6$ = **0.532** dollars per million tokens, of which energy is **10.7**%.
+(c) Capital **900000** dollars a year. Energy: $140 \times 1.25 \times 8760 \times 0.07$ = **107310** dollars. Tokens: $1.2 \times 10^5 \times 0.5 \times 8760 \times 3600 = 1.2 \times 10^5 \times 0.5 \times 3.1536 \times 10^7$ = **1.89 × 10¹²** a year (1.892 × 10¹²). Cost: $1\,007\,310/1.892 \times 10^6$ = **0.532** dollars per million tokens, of which energy is **10.7**%.
 (d) See the rubric below.
 
 ---
 
-**Rubric for 12(d)** (3 points, one per question with a credible answer).
+**Rubric for 11(d) and 12(a)** (3 points each). 11(d): 1 for $P\,dt = -CV\,dV$, 1 for the integral and the closed form, 1 for the number. 12(a): 1 for the chunking and the $2(p - 1)$ step count, 1 for the per-step time $\alpha + S/(pB)$ with its assumptions, 1 for the final form.
+
+**Rubric for 12(d)** (3 points: one per question with a credible-answer criterion; ½ point for a pertinent question without one).
 
 - **Which operating point?** Throughput at what per-user speed and latency target, model, precision, context length and batch, compared with the old rack at the same per-user speed. Credible: the full throughput–interactivity curves of both racks, with the 3× at a stated, useful point.
 - **Same power measured how?** Rack input or facility power, including networking and cooling, measured or nameplate. Credible: measured all-in power at both operating points, or tokens per joule at the meter.
 - **What changed to produce 3×?** Lower precision, sparsity, a larger scale-up domain, more HBM, or software alone. Credible: a decomposition that adds up (for example 2× from FP4 against FP8 and 1.5× from batching enabled by more memory), with any accuracy cost of lower precision stated.
-- **Also accept:** whether the old rack ran the same, current software (a fair baseline); and what the cost per million tokens is, since a 3× throughput at a much higher price may not lower cost.
+- **Also accept:** whether the old rack ran the same, current software (a fair baseline); whether the benchmark was run independently or by the vendor; and what the cost per million tokens is, since a 3× throughput at a much higher price may not lower cost.
 
 ---
 
@@ -130,22 +132,25 @@ $$
 | X27.5a | attenuation at 200 Hz | 28.5 | dB |
 | X27.5a1 | attenuation at 1 kHz | 14.5 | dB |
 | X27.5b | amplification threshold | 5.56 | kHz |
-| X27.5c | attenuation with 3% gain error | 30.5 | dB |
+| X27.5b1 | upper end of amplification | 27.8 | kHz |
+| X27.5c | registration error | 2.4 | deg |
+| X27.5c1 | latency for 1° | 5.00 | ms |
 | X27.5d | bud life | 10.0 | h |
 | X27.5d1 | recharges | 3.18 | — |
 | X27.6a | average SoC power | 2.70 | W |
 | X27.6a1 | battery life | 11.5 | h |
 | X27.6b | turbo time | 17.3 | s |
-| X27.6c | bandwidth | 136.5 | GB/s |
-| X27.6c1 | decode bound | 34.1 | tokens/s |
-| X27.6d | prefill time | 2.37 | s |
-| X27.7a | frame length | 95 | bits |
-| X27.7a1 | frame time | 190 | µs |
-| X27.7b | camera rate | 2.99 | Gb/s |
-| X27.7c | stopping distance | 59.3 | m |
-| X27.7c1 | latency distance | 4.17 | m |
+| X27.6c | bandwidth | 256 | GB/s |
+| X27.6c1 | decode bound | 36.6 | tokens/s |
+| X27.6d | prefill time | 6.40 | s |
+| X27.7a | frame length | 115 | bits |
+| X27.7a1 | frame time | 230 | µs |
+| X27.7b | diagnostic coverage required | 99.0 | % |
+| X27.7b1 | residual at 98% | 16.0 | FIT |
+| X27.7c | stopping distance | 93.8 | m |
+| X27.7c1 | latency distance | 8.33 | m |
 | X27.7d | range share | 3.85 | % |
-| X27.8a | training compute | 8.4e23 | FLOP |
+| X27.8a | training compute | 8.40e23 | FLOP |
 | X27.8a1 | training time | 23.7 | days |
 | X27.8b | in-server all-reduce | 17.5 | ms |
 | X27.8c | cross-server all-reduce | 9.92 | ms |

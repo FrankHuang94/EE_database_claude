@@ -28,7 +28,7 @@ Chapter: [27-03](../chapters/27-03-wearables-smartwatch.md) · Worked solutions:
 
 ### Problem 27-03.5 [B]
 
-**Choosing the interval.** For the BLE link of the conventions: (a) find the connection interval that gives an average current of 10 µA; (b) find the average current with a 30 ms interval and a peripheral latency of 9, and the worst-case delay of a message from the phone and from the watch; (c) find the average current at a 10 s interval and explain why it is not a tenth of the 1 s value (3.32 µA).
+**Choosing the interval.** For the BLE link of the conventions: (a) find the connection interval that gives an average current of 10 µA; (b) find the average current with a 30 ms interval and a peripheral latency of 9, and the worst-case delay of a message from the phone and from the watch; (c) find the average current when the watch attends one event every 10 s (a 1 s interval with peripheral latency 9; BLE caps the connection interval itself at a few seconds) and explain why it is not a tenth of the 1 s value (3.32 µA).
 
 ### Problem 27-03.6 [B]
 
@@ -64,7 +64,7 @@ Chapter: [27-03](../chapters/27-03-wearables-smartwatch.md) · Worked solutions:
 
 ### Problem 27-03.14 [B]
 
-**Fast charging heats the watch.** The 320 mAh cell of Example 27-03.1 charges from 0 to 80% in 45 min. Find (a) the average charging current and C-rate; (b) the heat in the cell's 0.30 Ω internal resistance; (c) the charging power into the cell at an average 3.9 V; and (d) the power the charger must deliver, and the heat dissipated in the watch, if the wireless link and charger are 70% efficient.
+**Fast charging heats the watch.** The 320 mAh cell of Example 27-03.1 charges from 0 to 80% in 45 min. Find (a) the average charging current and C-rate; (b) the heat in the cell's 0.30 Ω internal resistance; (c) the charging power into the cell at an average 3.9 V; and (d) the power the charger must deliver, and the total heat dissipated in the watch and the charging pad together, if the wireless link and charger are 70% efficient.
 
 ---
 

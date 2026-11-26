@@ -16,7 +16,7 @@ Chapter: [27-02](../chapters/27-02-smartphone-soc.md) · Worked solutions: [27-0
 
 ### Problem 27-02.2 [A]
 
-**LPDDR6 bandwidth.** Find the peak bandwidth of a 64-bit interface at 14,400 MT/s and at 10,667 MT/s (the ends of LPDDR6's range [R-667]), and their ratio.
+**LPDDR6 bandwidth.** For a hypothetical 64 data-bit interface (an equal-width comparison with LPDDR5X; LPDDR6 itself uses 24-bit sub-channels [R-667]), find the peak bandwidth at 14,400 MT/s and at 10,667 MT/s, the ends of LPDDR6's range, and their ratio.
 
 ### Problem 27-02.3 [B]
 
@@ -24,7 +24,7 @@ Chapter: [27-02](../chapters/27-02-smartphone-soc.md) · Worked solutions: [27-0
 
 ### Problem 27-02.4 [B]
 
-**What the SLC saves.** Clients demand 60 GB/s, of which 45 GB/s comes from clients whose traffic the SLC catches 35% of the time. Find the DRAM traffic and, at 4.0 pJ/bit of DRAM energy, the power saved.
+**What the SLC saves.** Clients demand 60 GB/s, of which 45 GB/s comes from clients whose traffic hits in the SLC with a 35% hit rate (ignore the SLC's own access energy). Find the DRAM traffic and, at 4.0 pJ/bit of DRAM energy, the power saved.
 
 ### Problem 27-02.5 [B]
 
@@ -44,7 +44,7 @@ Chapter: [27-02](../chapters/27-02-smartphone-soc.md) · Worked solutions: [27-0
 
 ### Problem 27-02.9 [B]
 
-**A bigger model.** A 7-billion-parameter model with 4-bit weights runs on a 64-bit LPDDR6 interface at 14,400 MT/s. Find (a) the bytes per token and the bandwidth-bound decode speed, and (b) the share of a 12 GB DRAM that the weights occupy.
+**A bigger model.** A 7-billion-parameter model with 4-bit weights runs on a hypothetical 64 data-bit interface at LPDDR6's top data rate, 14,400 MT/s. Find (a) the bytes per token and the bandwidth-bound decode speed, and (b) the share of a 12 GB DRAM that the weights occupy.
 
 ### Problem 27-02.10 [B]
 
@@ -52,7 +52,7 @@ Chapter: [27-02](../chapters/27-02-smartphone-soc.md) · Worked solutions: [27-0
 
 ### Problem 27-02.11 [C]
 
-**Race or pace?** A task of 2 × 10⁹ instructions must finish within 1 s on the big core of the conventions. Option A paces the core at the slowest frequency that meets the deadline and leaves it on for the full second. Option B runs at 4.2 GHz and then power-gates the core (no leakage afterwards). (a) Find each option's energy. (b) Repeat with a hot die, $P_s$ = 0.6 W. (c) What decides which option wins?
+**Race or pace?** A task of 2 × 10⁹ instructions must finish within 1 s on the big core of the conventions. Option A paces the core at the slowest frequency that meets the deadline and leaves it on for the full second. Option B runs at 4.2 GHz and then power-gates the core (no leakage afterwards). (a) Find each option's energy. (b) Repeat with a hot die, $P_s$ = 0.6 W. (c) What decides which option wins? (d) Option C runs at the higher of the minimum-energy frequency $f^*$ and the deadline frequency, then power-gates. Find $f^*$ and Option C's energy for both dies.
 
 ### Problem 27-02.12 [C]
 

@@ -32,7 +32,7 @@ Chapter: [27-01](../chapters/27-01-system-analysis-method.md) · Worked solution
 
 ### Problem 27-01.6 [B]
 
-**An NPU on a roofline.** A phone NPU peaks at 40 TOPS (INT8) with 64 GB/s of memory bandwidth. Find (a) its ridge point, (b) the rate for a convolution layer of intensity 900 operations/byte, (c) the rate and fraction of peak for a transformer decode step of intensity 2 operations/byte, and (d) the decode speed of a 3-billion-parameter model with 4-bit weights.
+**An NPU on a roofline.** A phone NPU peaks at 40 TOPS (INT8) with 64 GB/s of memory bandwidth. Find (a) its ridge point, (b) the rate for a convolution layer of intensity 900 operations/byte, (c) the rate and fraction of peak for a transformer decode step of intensity 2 operations/byte (8-bit weights), and (d) the bandwidth-bound decode speed of a 3-billion-parameter model with 4-bit weights (intensity 4 operations/byte), weights only.
 
 ### Problem 27-01.7 [B]
 

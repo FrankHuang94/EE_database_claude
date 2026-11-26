@@ -4,7 +4,7 @@ Chapter: [27-04](../chapters/27-04-wearables-earbuds-and-glasses.md) · Worked s
 
 **Tiers:** **[A]** concept/recall · **[B]** standard exam level · **[C]** challenge/design.
 
-**Conventions.** All device parameters are assumed unless a source is cited. Speaker power is $P = 1\ \text{mW} \times 10^{(\text{SPL} - S)/10}$; ANC attenuation with delay $\tau$ and gain $g$ is $-20\log_{10}|1 - g\,e^{-j2\pi f\tau}|$; LE packets on the 2M PHY carry 15 octets of overhead when encrypted (2 preamble, 4 access address, 2 header, 4 MIC, 3 CRC) and take $8 \times \text{octets}/2$ µs; heat shed is $hA\Delta T$; waveguide display power is $L_v\,\text{APL}/(\eta_{wg}\eta_{src})$; registration error is $\omega\tau$.
+**Conventions.** All device parameters are assumed unless a source is cited. Speaker power is $P = 1\ \text{mW} \times 10^{(\text{SPL} - S)/10}$; ANC attenuation with delay $\tau$ and gain $g$ is $-20\log_{10}|1 - g\,e^{-j2\pi f\tau}|$; LE packets on the 2M PHY carry 15 octets of overhead when encrypted (2 preamble, 4 access address, 2 header, 4 MIC, 3 CRC) and take $8 \times \text{octets}/2$ µs; heat shed is $hA\Delta T$; waveguide display power is $L_v\,\text{APL}/(\eta_{wg}\eta_{src})$ for an emissive source; registration error is $\omega\tau$.
 
 ---
 
@@ -44,7 +44,7 @@ Chapter: [27-04](../chapters/27-04-wearables-earbuds-and-glasses.md) · Worked s
 
 ### Problem 27-04.9 [B]
 
-**How bright can it be?** A display-glasses waveguide delivers 500 nits per lumen and the projector 15 lm/W. Within a 50 mW display budget, find the largest luminance at APL 0.10.
+**How bright can it be?** A display-glasses waveguide delivers 500 nits per lumen and the emissive (micro-LED) projector 15 lm/W. Within a 50 mW display budget, find the largest luminance at APL 0.10.
 
 ### Problem 27-04.10 [B]
 

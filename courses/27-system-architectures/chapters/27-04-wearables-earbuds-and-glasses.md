@@ -71,7 +71,7 @@ $$
 P_{el} = 1\ \text{mW} \times 10^{(\text{SPL} - S)/10}.
 $$
 
-With $S$ of about 100–110 dB/mW, comfortable listening at 80–85 dB SPL needs only microwatts (Example 27-04.2). What costs power is everything around the driver: the amplifier's quiescent draw (biasing, switching even at idle), the decoder and the audio DSP, noise cancellation, and the radio.
+With $S$ of about 100–110 dB/mW (an assumed typical range for earbud drivers), comfortable listening at 80–85 dB SPL needs only microwatts (Example 27-04.2). What costs power is everything around the driver: the amplifier's quiescent draw (biasing, switching even at idle), the decoder and the audio DSP, noise cancellation, and the radio.
 
 **Class-D efficiency at low output.** A class-D amplifier switches its output stage at hundreds of kilohertz to megahertz and filters the result. Its efficiency is $P_{out}/(P_{out}/\eta_{sw} + P_q)$, where $\eta_{sw}$ covers conduction and switching losses that scale with output and $P_q$ is the fixed draw. At microwatt outputs $P_q$ dominates, so the amplifier's efficiency at realistic listening levels is a few percent, however good its full-power figure (22-08 met the same effect in PMICs at light load).
 
@@ -94,16 +94,16 @@ $$
 Three consequences follow.
 
 1. **Delay limits bandwidth.** For a target attenuation $A$ at frequency $f$, the delay must satisfy $2\sin(\pi f\tau) \le 10^{-A/20}$, so $\tau \le \arcsin(10^{-A/20}/2)/(\pi f)$. Twenty decibels at 500 Hz allows only about 32 µs (Example 27-04.3).
-2. **Too much delay makes noise louder.** $|R| > 1$ whenever $\sin(\pi f\tau) > 1/2$, that is above $f = 1/(6\tau)$. A 1 ms delay, typical of block-based audio processing, amplifies noise above 167 Hz.
+2. **Too much delay makes noise louder.** $|R| > 1$ whenever $\sin(\pi f\tau) > 1/2$, that is for $1/(6\tau) < f < 5/(6\tau)$, and again in each later band of width $2/(3\tau)$; between those bands the residual dips below 1 but never reliably. Averaged over broadband noise, $|R|^2 = 4\sin^2(\pi f\tau)$ averages 2, so the noise power doubles (+3 dB). A 1 ms delay, typical of block-based audio processing, amplifies noise from 167 Hz to 833 Hz and over most of the band above it.
 3. **Gain error limits depth.** At $\tau = 0$ the residual is $|1 - g|$: a 5% gain error caps cancellation at 26 dB, however small the delay.
 
-This is why ANC runs on dedicated low-latency hardware filters fed by microphones sampled at hundreds of kilohertz, not on the block-based audio path that decodes music, and why ANC works best at low frequencies (engine rumble) and is supplemented by passive sealing (ear tips) at high ones.
+This is why ANC runs on dedicated low-latency hardware filters fed by microphones sampled far faster than the audio rate, not on the block-based audio path that decodes music, and why ANC works best at low frequencies (engine rumble) and is supplemented by passive sealing (ear tips) at high ones.
 
 > **Math refresher — delay is a linear phase.** A delay of $\tau$ multiplies a signal's Fourier transform by $e^{-j2\pi f\tau}$ (11-06): its magnitude is untouched and its phase falls linearly with frequency. A fixed delay is therefore a small phase error at low frequency and a large one at high frequency, which is exactly the shape of the ANC limit.
 
 ### 3.3 LE Audio: frames, packets and duty cycle
 
-Classic Bluetooth audio (A2DP over BR/EDR) streams a continuous codec bitstream. **LE Audio** carries audio over Bluetooth Low Energy using **connected isochronous streams (CIS)**: at fixed intervals equal to the codec's frame duration, the phone sends one packet per earbud and the earbud acknowledges. Its standard codec, **LC3** (low-complexity communication codec), works in frames of 10 ms or 7.5 ms at sample rates up to 48 kHz, and Android makes it the default codec, replacing SBC for media [R-678].
+Classic Bluetooth audio (A2DP over BR/EDR) streams a continuous codec bitstream. **LE Audio** carries audio over Bluetooth Low Energy using **connected isochronous streams (CIS)**: at fixed intervals equal to the codec's frame duration, the phone sends one packet per earbud and the earbud acknowledges. Its standard codec, **LC3** (low-complexity communication codec), works in frames of 10 ms or 7.5 ms at sample rates up to 48 kHz; it is LE Audio's default codec, in the role SBC plays in classic A2DP, and Android supports LE Audio and broadcast audio [R-678].
 
 At bit rate $B$ and frame duration $T_f$, each frame carries
 
@@ -117,7 +117,7 @@ $$
 I_{avg} = \frac{I_{pre}t_{pre} + I_{rx}(t + T_{IFS}) + I_{tx}t_{ack}}{T_f} .
 $$
 
-The radio duty cycle is under 10% at typical music bit rates (Example 27-04.4), which is why LE Audio's radio costs about a milliwatt and the audio DSP, not the radio, dominates an earbud's budget. Shorter frames lower latency (gaming, conversation) but repeat the fixed overheads more often. Broadcast isochronous streams, marketed as **Auracast**, send the same audio to any number of receivers with no acknowledgment, so one transmitter can serve a whole venue.
+The radio duty cycle is under 10% at typical music bit rates (Example 27-04.4), which is why LE Audio's radio costs about a milliwatt and the audio DSP, not the radio, dominates an earbud's budget. Shorter frames lower latency (gaming, conversation) but repeat the fixed overheads more often. Broadcast isochronous streams (Auracast is the Bluetooth SIG's brand for broadcast audio) send the same audio to any number of receivers with no acknowledgment, so one transmitter can serve a whole venue.
 
 ### 3.4 Batteries and the case
 
@@ -127,7 +127,7 @@ $$
 N = \frac{\eta_tE_{case}}{2E_b}
 $$
 
-full recharges of a pair, and the total listening time is $(1 + N)L$. Tiny cells pay the packaging penalty of 27-03 §3.8 even more severely, and button-shaped rechargeable lithium cells are common because they fit a rounded housing.
+full recharges of a pair, and the total listening time is $(1 + N)L$. Tiny cells pay the packaging penalty of 27-03 §3.8 even more severely, and button-shaped rechargeable lithium cells are a natural fit for a rounded housing.
 
 ### 3.5 Glasses: the heat a frame can shed
 
@@ -137,9 +137,9 @@ $$
 P = hA\,\Delta T,
 $$
 
-where $h$ is a combined heat-transfer coefficient (about 5–10 W/m²·K for still air plus radiation from a warm surface), $A$ the area that is warm and $\Delta T$ the allowed rise above ambient. A frame offers some tens of square centimetres and a modest comfortable rise, so the sustained budget is of the order of a watt: a Meta research paper puts it at about 1–2 W for a touch limit near 40 °C, and a slimmer frame held to a stricter rise allows a few hundred milliwatts (Example 27-04.5) [R-682]. Energy is often the tighter limit: the same paper notes that all-day use on a 3 Wh battery means an average of about 200 mW for the whole system. With 27-01's thermal RC model, bursts above it (taking a video, running a vision model) last minutes, not hours, before the frame reaches its limit.
+where $h$ is a combined heat-transfer coefficient. Radiation alone gives about $4\varepsilon\sigma T^3$, which is 5.7 W/m²·K for an emissivity of 0.9 near 30 °C, and still-air natural convection adds a few W/m²·K more, so $h$ of about 5–10 W/m²·K is a reasonable range for a warm frame; $A$ the area that is warm and $\Delta T$ the allowed rise above ambient. A frame offers some tens of square centimetres and a modest comfortable rise, so the sustained budget is of the order of a watt: a Meta research paper puts it at about 1–2 W for a touch limit near 40 °C, [R-682]; a slimmer frame held to a stricter rise allows a few hundred milliwatts (Example 27-04.5). Energy is often the tighter limit: the same paper notes that all-day use on a 3 Wh battery means an average of about 200 mW for the whole system. With 27-01's thermal RC model, bursts above it (taking a video, running a vision model) last minutes, not hours, before the frame reaches its limit.
 
-The consequences shape the product. Heavy compute is sent to the phone (or a separate compute puck) over Bluetooth or Wi-Fi; the glasses' own processor is a low-power SoC optimized for always-on sensing, camera capture and the radio; and the battery is split between the two temples to balance weight.
+The consequences shape the product. Heavy compute is sent to the phone (or a separate compute puck) over Bluetooth or Wi-Fi; the glasses' own processor is a low-power SoC optimized for always-on sensing, camera capture and the radio; and placing the battery in the temples can balance the weight.
 
 ### 3.6 Display glasses: waveguides waste light
 
@@ -149,7 +149,7 @@ $$
 P = \frac{L_v\,\text{APL}}{\eta_{wg}\,\eta_{src}},
 $$
 
-with $L_v$ the required luminance (high outdoors, where the display competes with daylight seen through the lens), $\eta_{wg}$ in nits/lm and $\eta_{src}$ the source's luminous efficacy in lm/W. With plausible values a full-white image would consume most of the frame's thermal budget, so display glasses show sparse content (a few lines of text, an arrow) at low APL (Example 27-04.5).
+with $L_v$ the required luminance (high outdoors, where the display competes with daylight seen through the lens), $\eta_{wg}$ in nits/lm and $\eta_{src}$ the source's luminous efficacy in lm/W. This form holds for **emissive** sources (micro-LED, micro-OLED), which light only the pixels in use. An **LCoS** panel is lit across its whole area by LEDs and blocks the light it does not need, so its source power follows the peak luminance, $P \approx L_{v,peak}/(\eta_{wg}\eta_{src})$, and falls with content only if the LEDs are dimmed when the whole image is dim. With plausible values a full-white image would consume most of the frame's thermal budget, so display glasses show sparse content (a few lines of text, an arrow) at low APL (Example 27-04.5).
 
 ### 3.7 Headsets: pixels, foveation and latency
 
@@ -192,7 +192,7 @@ All parameters below are illustrative assumptions of realistic size; they are no
 
 **Units check.** mAh × V = mWh; mWh/mW = h. ✓
 
-**Sanity check.** The radio, which dominated classic Bluetooth earbuds' budgets, is under 5% here; the DSP and ANC are **84**%. That is why earbud chips race to better process nodes and dedicated audio accelerators, and why a vendor that can run ANC and spatial audio in fewer milliwatts wins hours of battery life in the same ear. The case triples or quadruples the "battery life" on the box.
+**Sanity check.** The radio, which dominated classic Bluetooth earbuds' budgets, is under 5% here; the DSP and ANC are **84**%. That is why earbud chips race to better process nodes and dedicated audio accelerators, and why a vendor that can run ANC and spatial audio in fewer milliwatts wins hours of battery life in the same ear. The case multiplies the "battery life" on the box several times: 4.5 times here.
 
 ### Example 27-04.2 · What loudness costs (tier A)
 
@@ -210,7 +210,7 @@ All parameters below are illustrative assumptions of realistic size; they are no
 
 ### Example 27-04.3 · How fast must ANC be? (tier B)
 
-**Setup.** An ANC path cancels noise with perfect gain but a total delay $\tau$ (electronics plus acoustic path). (a) With $\tau = 50$ µs, find the attenuation at 100 Hz, 500 Hz, 1 kHz and 3 kHz. (b) Find the largest delay that gives 20 dB at 500 Hz. (c) A designer proposes running ANC on the music DSP with 1 ms of block latency. Find the attenuation at 100 Hz and 500 Hz and the frequency above which it amplifies noise. (d) With $\tau = 50$ µs and a 5% gain error, find the attenuation at 100 Hz.
+**Setup.** An ANC path cancels noise with perfect gain but a delay $\tau$ (the excess of the anti-noise path, electronics plus driver and acoustic path, over the noise's own acoustic path from the feedforward microphone to the ear). (a) With $\tau = 50$ µs, find the attenuation at 100 Hz, 500 Hz, 1 kHz and 3 kHz. (b) Find the largest delay that gives 20 dB at 500 Hz. (c) A designer proposes running ANC on the music DSP with 1 ms of block latency. Find the attenuation at 100 Hz and 500 Hz and the frequency above which it amplifies noise. (d) With $\tau = 50$ µs and a 5% gain error, find the attenuation at 100 Hz.
 
 **Solution.**
 
@@ -240,7 +240,7 @@ All parameters below are illustrative assumptions of realistic size; they are no
 
 ### Example 27-04.5 · Glasses that must stay cool (tier B)
 
-**Setup.** A pair of display glasses has 60 cm² of warm surface with a combined heat-transfer coefficient of 8 W/m²·K, and may run 8 K above ambient; its thermal time constant is 300 s. (a) Find the sustained power. (b) Its waveguide delivers 300 nits per lumen and its projector 10 lm/W; outdoors the image must reach 1000 nits. Find the display power at APL 0.05 (a few lines of text) and at full white, and the full-white share of the thermal budget. (c) The glasses idle at 0.10 W and start recording video at 0.60 W. How long until the frame reaches its limit?
+**Setup.** A pair of display glasses has 60 cm² of warm surface with a combined heat-transfer coefficient of 8 W/m²·K, and may run 8 K above ambient; its thermal time constant is 300 s. (a) Find the sustained power. (b) Its waveguide delivers 300 nits per lumen and its emissive (micro-LED) projector 10 lm/W; outdoors the image must reach 1000 nits. Find the display power at APL 0.05 (a few lines of text) and at full white, and the full-white share of the thermal budget. (c) The glasses idle at 0.10 W and start recording video at 0.60 W. How long until the frame reaches its limit?
 
 **Solution.**
 
@@ -250,11 +250,11 @@ All parameters below are illustrative assumptions of realistic size; they are no
 
 **Units check.** W/(m²·K) × m² × K = W; nits ÷ (nits/lm) = lm; lm ÷ (lm/W) = W. ✓
 
-**Sanity check.** A few hundred milliwatts is the whole budget, and a bright, full-screen image would use most of it before any compute. Sparse content, low APL and offload to the phone are physics, not product taste; continuous video capture is thermally limited to minutes.
+**Sanity check.** A few hundred milliwatts is the whole budget, and a bright, full-screen image would use most of it before any compute. Sparse content, low APL and offload to the phone are physics, not product taste; continuous video capture is thermally limited to minutes. With an LCoS projector the sparse-content saving disappears unless the LEDs dim with the content: the panel is lit for the brightest pixel shown.
 
 ### Example 27-04.6 · A headset's pixels and latency (tier C)
 
-**Setup.** A headset has two 3660 × 3200 displays at 90 Hz, a 100° field of view and eye tracking. Its on-device pipeline has 2 ms of tracking, one 90 Hz frame of rendering, half a frame of average scan-out and 1 ms of display response. (a) Find the pixel rate. (b) Find the shading work with a 20° fovea at full resolution and the periphery at a quarter of the linear resolution. (c) Find the motion-to-photon latency and the registration error for a 200°/s head turn at 30 pixels per degree. (d) Split rendering adds 3 ms of encoding, 10 ms of network round trip and 3 ms of decoding: find the latency and error. (e) With late-stage reprojection on the headset (2 ms), find the perceived latency and error. (f) Local rendering draws 8 W; streaming at 100 Mb/s costs 10 nJ/bit of radio energy plus 0.5 W of decoding. Find the streaming power.
+**Setup.** A headset has two 3660 × 3200 displays at 90 Hz, a 100° field of view and eye tracking. Its on-device pipeline has 2 ms of tracking, one 90 Hz frame of rendering, half a frame of average scan-out and 1 ms of display response. (a) Find the pixel rate. (b) Find the shading work with a 20° fovea at full resolution and the periphery at a quarter of the linear resolution. (c) Find the motion-to-photon latency and the registration error for a 200°/s head turn at an assumed 30 pixels per degree (a simple average of 3660 pixels over 100° would give 37; the effective figure depends on the lens). (d) Split rendering adds 3 ms of encoding, 10 ms of network round trip and 3 ms of decoding: find the latency and error. (e) With late-stage reprojection on the headset (2 ms), find the perceived latency and error. (f) Local rendering draws 8 W; streaming at 100 Mb/s costs 10 nJ/bit of radio energy plus 0.5 W of decoding. Find the streaming power.
 
 **Solution.**
 
@@ -267,7 +267,7 @@ All parameters below are illustrative assumptions of realistic size; they are no
 
 **Units check.** pixels × Hz = pixels/s; deg/s × s = deg; Mb/s × nJ/bit = mW × 10³. ✓
 
-**Sanity check.** Split rendering takes 6.5 W off the face but nearly doubles the latency; only reprojection, which uses the latest head pose at the last moment, makes it tolerable. Foveation's tenfold saving is why eye tracking is in high-end headsets: it pays for itself in GPU power.
+**Sanity check.** Split rendering takes 6.5 W off the face but nearly doubles the latency; only reprojection, which uses the latest head pose at the last moment, makes it tolerable. Foveation's tenfold saving in idealized shading work, an upper bound on the GPU power saved since geometry, memory traffic and display power do not shrink with it, is why eye tracking is in high-end headsets. The 20° full-resolution region is far wider than the eye's few-degree fovea, to leave margin for eye-tracking error and latency.
 
 <!-- answer-key -->
 
@@ -361,6 +361,9 @@ All parameters below are illustrative assumptions of realistic size; they are no
 | Txt 27-04.7 | ANC power increase, Google ratings | 50 | % |
 | Txt 27-04.8 | average-power cut, Ray-Ban Meta Gen 1 to Gen 2 | 34 | % |
 | Txt 27-04.9 | Galaxy XR pixels | 27 | million |
+| Txt 27-04.10 | radiative heat-transfer coefficient | 5.7 | W/m²·K |
+| Txt 27-04.11 | upper end of first amplification band, 1 ms | 833 | Hz |
+| Txt 27-04.12 | case multiple of one charge | 4.5 | — |
 
 ## 5. Simulate it
 
@@ -415,7 +418,7 @@ The lab is [labs/27-04-lab/](../labs/27-04-lab/README.md). `headworn.py` impleme
 - **Assuming a higher bit rate doubles the radio's cost.** Per-frame overheads (wake-up, turnaround, acknowledgment) are fixed; air time scales with the payload only.
 - **Reading "battery life with case" as earbud battery life.** The case multiplies the listening time; the earbud's own life per charge is what a listener feels in a long flight or a workday of calls.
 - **Designing glasses around a phone processor.** A frame sheds at most a watt or two and an all-day battery allows about 200 mW on average; anything sustained above that must move to the phone or be duty-cycled.
-- **Quoting display brightness without APL.** A waveguide display's power scales with the fraction of the field lit; full-white specifications describe a mode no product sustains.
+- **Quoting display brightness without APL and source type.** An emissive waveguide display's power scales with the fraction of the field lit, an LCoS display's with its peak brightness; full-white specifications describe a mode no product sustains.
 - **Ignoring latency in split rendering.** Moving rendering off the head saves watts but adds a network round trip; without reprojection and pose prediction the world swims.
 
 ## 9. Practitioner lens
@@ -423,8 +426,8 @@ The lab is [labs/27-04-lab/](../labs/27-04-lab/README.md). `headworn.py` impleme
 **State of play (as of Nov 2026).**
 
 - **Earbuds have converged on about 6–8 hours with ANC.** AirPods Pro 3 and Pixel Buds Pro 2 are rated at 8 hours with ANC, Galaxy Buds4 Pro at 6 hours from a 61 mAh cell [R-677]. Vendors differ on what ANC costs: Samsung rates 6 hours on and 7 off, Google 8 on and 12 off [R-677]. The difference is design and measurement profile, and a reason to ask for the profile.
-- **The compute inside the bud keeps growing.** Qualcomm's S7 Pro Gen 1 pairs a 64 GOPS NPU with three DSP cores and supports LE Audio and its own Wi-Fi-based audio link (XPAN) [R-678] **[Industry estimate: vendor]**; Apple's H2 and Google's Tensor A1 are in-house equivalents [R-677]. Hearing-aid, heart-rate and translation features are what that compute is for.
-- **LE Audio is the default on Android.** LC3 "replaces the SBC codec used for A2DP" in Android's LE Audio stack, and broadcast audio is supported [R-678]. Adoption on the phone side decides how fast earbuds can rely on it.
+- **The compute inside the bud keeps growing.** Qualcomm's S7 Pro Gen 1 pairs a 64 GOPS NPU with three DSP cores and supports LE Audio and its own Wi-Fi-based audio link (XPAN) [R-678] **[Industry estimate: vendor]**; Apple's H2 and Google's Tensor A1 are in-house equivalents [R-677]. Features such as hearing assistance, heart-rate sensing and live translation are examples of what that compute can run.
+- **LE Audio is supported on Android.** LC3 "replaces the SBC codec used for A2DP" in Android's LE Audio stack, and broadcast audio is supported [R-678]. Adoption on the phone side decides how fast earbuds can rely on it.
 - **Glasses are the growth story, and audio glasses are most of it.** IDC counts 35.3% growth for XR headsets and glasses in Q2 2026, with display-less audio glasses 70.3% of shipments and display glasses 14.3% [R-681] **[Industry estimate]**. Meta's Ray-Ban Display uses Qualcomm's AR1 platform, a 600 × 600 LCoS panel and a 960 mWh battery for 6 hours of mixed use [R-679].
 - **Battery chemistry did not double glasses' life; system design did.** Meta's cell grew from 160 to 210 mAh between generations "yet the product shipped with claims of double the runtime ... The extra gains came from system-level efficiency improvements" [R-679]: about **34**% less average power.
 - **Headsets remain heavy and short-lived.** Vision Pro (M5) weighs 750–800 g plus a 353 g battery and lasts 2.5 hours; Galaxy XR 545 g plus 302 g for 2 hours [R-680].

@@ -44,7 +44,7 @@ Fan on: $(100 - 35)/2.6$ = **25.0** W. Fan off: $65/6.5$ = **10.0** W. The fan m
 
 (c) $2 \times 64$ = **128** GOPS, **0.32**% of peak.
 
-(d) $3 \times 10^9 \times 0.5$ = **1.5** GB per token; $64/1.5$ = **42.7** tokens/s.
+(d) $3 \times 10^9 \times 0.5$ = **1.5** GB per token; $64/1.5$ = **42.7** tokens/s. With 4-bit weights the intensity doubles to 4 operations/byte, still far below the ridge, so the step stays bandwidth-bound.
 
 ### Solution 27-01.7
 
@@ -90,7 +90,7 @@ Fan on: $(100 - 35)/2.6$ = **25.0** W. Fan off: $65/6.5$ = **10.0** W. The fan m
 
 (b) $8 \times 3.9$ = **31.2** pJ per operation, **1560** times the compute energy.
 
-(c) Almost all operands must come from on-chip memory: each byte fetched from DRAM must be reused about 1,560 times just for memory energy to equal compute energy. The claim is plausible only for workloads with high reuse (convolutions with weights held on chip), at the lowest precision and peak utilization; it says nothing about memory-bound workloads such as decode.
+(c) Almost all operands must come from on-chip memory: each byte fetched from DRAM must be reused about 1,560 times just for memory energy to equal compute energy, and since the 20 fJ per operation is the whole 1 W budget, the reuse must be well above that. HBM's 3.9 pJ/bit is also optimistic for an edge NPU, which would use LPDDR at a higher energy per bit, so the 1,560 is a lower bound. The claim is plausible only for workloads with high reuse (convolutions with weights held on chip), at the lowest precision and peak utilization; it says nothing about memory-bound workloads such as decode.
 
 ---
 

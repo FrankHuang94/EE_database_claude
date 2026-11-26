@@ -151,6 +151,8 @@ v.check("Ex 27-02.6c", y2)
 v.check("Ex 27-02.6c1", c2)
 v.check("Ex 27-02.6c2", c2 / die(18500, 98.6, 0.10)[2])
 v.check("Txt 27-02.1", 100 * (c2 / die(18500, 98.6, 0.10)[2] - 1))
+v.check("Txt 27-02.2", 100 * (30000 / 18500 - 1))
+v.check("Txt 27-02.3", math.log(power(BIG, 4.2) / power(BIG, 2.25)) / math.log(4.2 / 2.25))
 
 # ---------------------------------------------------------------- Example 7 (BOM shift)
 m = optimize.brentq(lambda x: x / (x + 0.90) - 0.34, 0.0, 10.0)
@@ -209,6 +211,13 @@ v.check("27-02.11a2", n_inst * epi(BIG, 4.2) * 1e-9)
 v.check("27-02.11a3", n_inst / (6 * 4.2e9))
 v.check("27-02.11b", n_inst * epi(dict(BIG, ps=0.6), f_pace) * 1e-9)
 v.check("27-02.11b1", n_inst * epi(dict(BIG, ps=0.6), 4.2) * 1e-9)
+for tag, ps in (("", 0.10), ("2", 0.6)):
+    core_d = dict(BIG, ps=ps)
+    opt = optimize.minimize_scalar(lambda f: epi(core_d, f), bounds=(0.05, BIG["fmax"]), method="bounded",
+                                   options={"xatol": 1e-9})
+    f_c = max(opt.x, f_pace)
+    v.check("27-02.11d" + tag, opt.x)
+    v.check("27-02.11d" + ("1" if tag == "" else "3"), n_inst * epi(core_d, f_c) * 1e-9)
 v.check("27-02.12a", 100 * 150 / (450 + 150))
 gm0, gm1 = (1099 - 540) / 1099, (1099 - 640) / 1099
 v.check("27-02.12b", 100 * gm0)

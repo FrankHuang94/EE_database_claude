@@ -19,7 +19,7 @@
 
 **Part 2 · Leakage and the best frequency** (notebook). *Predict* how the big core's minimum-energy frequency moves as leakage rises from 0.05 to 1.0 W. Then plot it.
 
-**Part 3 · LPDDR6 and on-device models** (notebook). *Predict* the decode bound for the 3-billion-parameter, 2-bit model on a 64-bit LPDDR6 interface at 14,400 MT/s. Then plot tokens/s against bits per weight for LPDDR5X-10667 and LPDDR6-14400.
+**Part 3 · LPDDR6 and on-device models** (notebook). *Predict* the decode bound for the 3-billion-parameter, 2-bit model on a hypothetical 64 data-bit interface at LPDDR6's 14,400 MT/s. Then plot tokens/s against bits per weight for LPDDR5X-10667 and LPDDR6-14400.
 
 **Part 4 · Die cost by node** (notebook). *Predict* the cost per good die of a 120 mm² die at 3 nm ($18,500, $D_0$ = 0.10) and 2 nm ($30,000, $D_0$ = 0.15). Then plot cost against area for both.
 

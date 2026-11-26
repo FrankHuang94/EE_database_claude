@@ -100,7 +100,9 @@ def att_sim(f, tau=30e-6, g=1.0):
 v.check("X27.5a", att_sim(200))
 v.check("X27.5a1", att_sim(1000))
 v.check("X27.5b", optimize.brentq(lambda f: att_sim(f), 3000, 8000) / 1e3)
-v.check("X27.5c", att_sim(200, tau=0.0, g=0.97))
+v.check("X27.5b1", optimize.brentq(lambda f: att_sim(f), 20000, 30000) / 1e3)
+v.check("X27.5c", 200 * 0.012)
+v.check("X27.5c1", optimize.brentq(lambda t: 200 * t - 1.0, 1e-4, 0.1) * 1e3)
 Ebud = 55 * 3.85
 v.check("X27.5d", Ebud * 0.85 / 18)
 v.check("X27.5d1", 0.70 * 500 * 3.85 / (2 * Ebud))
@@ -114,10 +116,10 @@ while y < 28.0:
     y += (55.0 - y) * dt / 28.0
     tt += dt
 v.check("X27.6b", tt)
-bw6 = 128 / 8 * 8533e6
+bw6 = 256 / 8 * 8000e6
 v.check("X27.6c", bw6 / 1e9)
-v.check("X27.6c1", bw6 / (8e9 * 0.5))
-v.check("X27.6d", 2 * 8e9 * 2000 / (45e12 * 0.3))
+v.check("X27.6c1", bw6 / (14e9 * 0.5))
+v.check("X27.6d", 2 * 14e9 * 4000 / (50e12 * 0.35))
 
 # ---------------------------------------------------------------- Q7
 def stuffed(nbytes):
@@ -138,15 +140,16 @@ def stuffed(nbytes):
     return region + 13 + stuff
 
 
-nb = stuffed(4)
+nb = stuffed(6)
 v.check("X27.7a", nb)
 v.check("X27.7a1", 1e6 * nb / 500e3)
-v.check("X27.7b", 8.3e6 * 30 * 12 / 1e9)
-vv = 100 / 3.6
-s = integrate.solve_ivp(lambda t, z: [z[1], -7.0 if t > 0.15 else 0.0], (0, 10), [0, vv],
+v.check("X27.7b", 100 * optimize.brentq(lambda dc: 800 * (1 - dc) - 8, 0.5, 1.0))
+v.check("X27.7b1", 800 * (1 - 0.98))
+vv = 120 / 3.6
+s = integrate.solve_ivp(lambda t, z: [z[1], -6.5 if t > 0.25 else 0.0], (0, 15), [0, vv],
                         events=lambda t, z: z[1], max_step=1e-3, rtol=1e-9, atol=1e-9)
 v.check("X27.7c", s.y_events[0][0][0])
-v.check("X27.7c1", vv * 0.15)
+v.check("X27.7c1", vv * 0.25)
 v.check("X27.7d", 100 * 300 / (300 + 150 * 50))
 
 # ---------------------------------------------------------------- Q8 (executed ring)

@@ -48,7 +48,7 @@ Octets = preamble + 4 + 2 + payload + MIC + 3.
 
 (b) With latency 9 the watch listens every $10 \times 30$ ms = 0.3 s: $I_{avg} = 1.86 + 1.456/0.3$ = **6.71** µA. A message from the phone can wait up to **300** ms for an event the watch attends. A message from the watch goes at the next 30 ms event, since peripheral latency lets the watch wake for any event when it has data: up to **30** ms.
 
-(c) $1.86 + 1.456/10$ = **2.01** µA, not 0.33 µA. The sleep current (1.5 µA) and the window-widening current (0.36 µA, proportional to the interval and so constant per second) do not fall with the interval; only the event term does.
+(c) With events attended every 10 s, $1.86 + 1.456/10$ = **2.01** µA, not 0.33 µA. The sleep current (1.5 µA) and the window-widening current (0.36 µA, proportional to the interval and so constant per second) do not fall with the interval; only the event term does.
 
 ### Solution 27-03.6
 
@@ -125,7 +125,7 @@ The same harvest is **3**% of a smartwatch's daily drain but **60**% of the spor
 
 (c) $0.3413 \times 3.9$ = **1.33** W.
 
-(d) $1.33/0.70$ = **1.90** W from the charger, of which $1.90 - 1.33$ = **0.571** W becomes heat in the coils and charger (plus the cell's 35 mW). That is nearly three times the 0.20 W sustained limit estimated in §3.9 of the chapter, so fast charging must taper or the watch must sit on a charger that spreads the heat.
+(d) $1.33/0.70$ = **1.90** W from the charger, of which $1.90 - 1.33$ = **0.571** W becomes heat in the coils and charger electronics, split between pad and watch in a proportion this model does not fix (plus the cell's 35 mW, all in the watch). That is nearly three times the 0.20 W sustained limit estimated in §3.9 of the chapter, so fast charging must taper or the watch must sit on a charger that spreads the heat.
 
 ---
 

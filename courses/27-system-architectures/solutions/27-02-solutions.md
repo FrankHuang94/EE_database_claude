@@ -36,7 +36,7 @@ Solve $2ck(V_0 + kf)f^2 = P_s$: $0.18(0.45 + 0.15f)f^2 = 0.05$, numerically $f^*
 
 ### Solution 27-02.7
 
-(a) $1.5 \times 9600$ = **14,400** MT/s at 64 bits. (b) $1.5 \times 64$ = **96** bits at 9,600 MT/s. (c) $1.5 \times 76.8$ = **115.2** GB/s either way. Option (a) sits at the top of LPDDR6's 10,667–14,400 MT/s range; option (b) needs a wider package. The claim alone does not say which was done.
+(a) $1.5 \times 9600$ = **14,400** MT/s at 64 bits. (b) $1.5 \times 64$ = **96** bits at 9,600 MT/s. (c) $1.5 \times 76.8$ = **115.2** GB/s either way. Option (a) sits at the top of LPDDR6's 10,667–14,400 MT/s range, while the assumed 9,600 MT/s of (b) is below that range, so (b) means a wider LPDDR5X-class bus and package. The claim alone does not say which was done.
 
 ### Solution 27-02.8
 
@@ -62,7 +62,9 @@ Integration is cheaper by about **$0.21** here, a small margin. The decision als
 
 (b) With $P_s$ = 0.6 W: pacing **0.696** J (leakage for the whole second dominates); racing **0.412** J.
 
-(c) The leakage. With low leakage, pacing at low voltage wins; with high leakage, finishing fast and power-gating wins. The minimum-energy frequency (Example 27-02.3) marks the boundary for a given leakage.
+(c) The leakage. With low leakage, pacing at low voltage beats racing; with high leakage, finishing fast and power-gating beats pacing. Neither is optimal in general (part d).
+
+(d) Minimizing $E_{inst}(f)$: cool die $f^*$ = **0.798** GHz, above the 0.333 GHz deadline frequency, so Option C runs at $f^*$, finishes in 0.418 s and power-gates: $2 \times 10^9 \times 0.0805$ nJ = **0.161** J, less than pacing (0.196 J) or racing (0.372 J). Hot die: $f^*$ = **1.77** GHz and **0.289** J, less than racing (0.412 J). Even with high leakage, $f^*$ stays well below 4.2 GHz, so pure racing is an approximation to the optimum, not the optimum itself.
 
 ### Solution 27-02.12
 
@@ -124,6 +126,10 @@ Integration is cheaper by about **$0.21** here, a small margin. The decision als
 | 27-02.11a3 | race time | 0.0794 | s |
 | 27-02.11b | paced energy, hot | 0.696 | J |
 | 27-02.11b1 | race energy, hot | 0.412 | J |
+| 27-02.11d | minimum-energy frequency, cool | 0.798 | GHz |
+| 27-02.11d1 | Option C energy, cool | 0.161 | J |
+| 27-02.11d2 | minimum-energy frequency, hot | 1.77 | GHz |
+| 27-02.11d3 | Option C energy, hot | 0.289 | J |
 | 27-02.12a | memory share | 25 | % |
 | 27-02.12b | margin before | 50.9 | % |
 | 27-02.12b1 | margin after | 41.8 | % |

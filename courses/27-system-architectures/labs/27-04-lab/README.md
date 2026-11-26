@@ -37,7 +37,7 @@
 
 ## Discussion
 
-1. A 50 µs delay leaves 10 dB of cancellation at **1.01** kHz and less above; at 1 ms the curve crosses 0 dB at 167 Hz and amplifies everything above it. Delay, not filter cleverness, sets ANC's bandwidth.
+1. A 50 µs delay leaves 10 dB of cancellation at **1.01** kHz and less above; at 1 ms the curve crosses 0 dB at 167 Hz and amplifies noise up to 833 Hz and over most of the band above, with narrow dips near multiples of 1 kHz. Delay, not filter cleverness, sets ANC's bandwidth.
 2. At 192 kb/s the 240-octet frames raise the radio current to **463** µA, still well under 2 mW at 3.0 V. Doubling the bit rate does not double the current, because wake-up, turnaround and acknowledgment are fixed per frame.
 3. Shedding 0.5 W at an 8 K rise needs **78.1** cm² of warm surface, more than a slim frame offers, which is why glasses keep their sustained power to a few hundred milliwatts.
 4. A 30° fovea with a quarter-scale periphery needs **0.147** of the full-resolution work; the saving shrinks as the fovea grows, so eye-tracking accuracy (how small a fovea is safe) sets the gain.

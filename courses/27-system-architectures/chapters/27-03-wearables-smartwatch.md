@@ -21,7 +21,7 @@
 
 ## 1. Big picture
 
-A smartwatch is a phone's worth of functions (a processor that runs apps, a high-resolution display, Bluetooth, Wi-Fi, often cellular and satellite links, GNSS, a dozen sensors) squeezed around a battery of one to two and a half watt-hours (1.461 Wh in an Apple Watch Series 12, 2.444 Wh in an Ultra 4 [R-671]), roughly a tenth of a flagship phone's [R-669]. The engineering problem is not speed but **energy per day**: every block must be asleep almost all the time, and the few that cannot sleep (the clock face, the step counter, the heart-rate sensor, the link to the phone) must run on milliwatts or less.
+A smartwatch is a phone's worth of functions (a processor that runs apps, a high-resolution display, Bluetooth, Wi-Fi, often cellular and satellite links, GNSS, a dozen sensors) squeezed around a battery of about one to three watt-hours (1.461 Wh in an Apple Watch Series 12, 2.444 Wh in an Ultra 4 [R-671]), roughly a tenth of a flagship phone's [R-669] at similar cell voltages. The engineering problem is not speed but **energy per day**: every block must be asleep almost all the time, and the few that cannot sleep (the clock face, the step counter, the heart-rate sensor, the link to the phone) must run on milliwatts or less.
 
 - **Why it exists:** health and fitness sensing needs a device worn continuously against the skin; notifications and payments need one that is always at hand. Both need a day or more of battery life in a few cubic centimetres.
 - **Where it shows up:** smartwatches and fitness bands, and the same always-on techniques in phones (27-02), earbuds and glasses (27-04), and IoT and edge-AI nodes (27-08).
@@ -35,7 +35,7 @@ A smartwatch is a phone's worth of functions (a processor that runs apps, a high
 
 ```mermaid
 flowchart LR
-  BAT["Li-ion cell<br/>(~0.3–1.3 Wh)"] --> PMIC["PMIC<br/>bucks, LDOs, charger, fuel gauge"]
+  BAT["Li-ion cell<br/>(~1–3 Wh)"] --> PMIC["PMIC<br/>bucks, LDOs, charger, fuel gauge"]
   PMIC --> AP
   PMIC --> AON
   PMIC --> RF
@@ -140,7 +140,7 @@ $$
 
 and the frame rate must stay above about $1/t_{hold}$. Low-temperature polysilicon (LTPS) TFTs have high mobility (good for the drive transistor that sets the pixel current) but leak too much to hold for a second. Oxide-semiconductor TFTs leak orders of magnitude less. An **LTPO** (low-temperature polycrystalline oxide) backplane uses both: LTPS for driving and an oxide switch for holding. That lets the panel refresh at as little as 1 Hz for a static always-on face (Problem 27-03.7).
 
-> **Going deeper — reflective and memory-in-pixel displays.** A memory-in-pixel (MIP) LCD stores each pixel's state in a small latch under the pixel and reflects ambient light rather than emitting its own, so a static image costs almost nothing and sunlight makes it more readable rather than less. The price is color depth, contrast and resolution; sports watches that advertise multi-week battery lives have historically used them (§9).
+> **Going deeper — reflective and memory-in-pixel displays.** A memory-in-pixel (MIP) LCD stores each pixel's state in a small latch under the pixel and reflects ambient light rather than emitting its own, so a static image costs almost nothing and sunlight makes it more readable rather than less. The price is color depth, contrast and resolution; sports watches that advertise multi-week battery lives have historically used them.
 
 ### 3.4 Sensor path: AP batching against an always-on hub
 
@@ -190,7 +190,7 @@ $$
 I_{avg}(T) = I_{sl} + I_{rx}\,s + \frac{Q_{ev}}{T}.
 $$
 
-The last term falls as $1/T$; the first two set a floor that no interval removes. Lengthening the interval saves energy but delays messages from the phone. **Peripheral latency** $k$ lets the watch skip up to $k$ events when it has nothing to send ($T = (k+1)T_{ci}$ for the receive side) while still answering at once when it does: the watch keeps fast uplink and sleeps through most events. Data itself is cheap: a full 251-octet packet carries 2008 bits for a few microjoules, so the daily cost of keeping the link alive usually exceeds the cost of the data it carries (Example 27-03.4).
+The last term falls as $1/T$; the first two set a floor that no interval removes. Lengthening the interval saves energy but delays messages from the phone. **Peripheral latency** $k$ lets the watch skip up to $k$ events when it has nothing to send ($T = (k+1)T_{ci}$ for the receive side) while still answering at once when it does: the watch keeps fast uplink and sleeps through most events. Data itself is cheap: a full 251-octet packet carries 2008 bits for under 20 µJ (Example 27-03.4), so the daily cost of keeping the link alive usually exceeds the cost of the data it carries (Example 27-03.4).
 
 ### 3.6 Cellular and Wi-Fi: paging
 
@@ -200,7 +200,7 @@ $$
 I_{avg} = I_{sl} + \frac{Q_p}{T_c}.
 $$
 
-LTE cycles of a few hundred milliseconds to 2.56 s are standard, and **extended DRX (eDRX)** stretches the cycle to tens of seconds or more for devices that can tolerate the delay (17-12). The trade is again power against reachability: an incoming call can wait up to one cycle (Problem 27-03.11). Wi-Fi's equivalent is waking for the access point's beacons (every DTIM period). Watches keep Wi-Fi and cellular off whenever the phone is reachable over Bluetooth, because the phone link is the cheapest radio on the device.
+LTE paging cycles of a few hundred milliseconds to a few seconds are typical, and **extended DRX (eDRX)** stretches the cycle much further for devices that can tolerate the delay; the allowed cycle lengths are set in the 3GPP idle-mode specifications and are not reproduced here. The trade is again power against reachability: an incoming call can wait up to one cycle (Problem 27-03.11). Wi-Fi's equivalent is waking for the access point's beacons (every DTIM period). A watch therefore has a strong incentive to keep Wi-Fi and cellular off whenever the phone is reachable over Bluetooth, because the phone link is the cheapest radio on the device.
 
 ### 3.7 The always-on floor
 
@@ -221,7 +221,7 @@ $$
 f = \prod_{k=1}^{3}\left(1 - \frac{t_k}{a_k}\right) \approx 1 - \sum_k \frac{t_k}{a_k}\quad (t_k \ll a_k),
 $$
 
-and the cell's energy density is $f$ times the active stack's. The overheads stay fixed while the dimensions shrink, so a watch cell gives up a far larger fraction of its volume than a phone cell (Example 27-03.6). Watch batteries are custom-shaped for that reason, and makers reach for higher-density chemistries (silicon-rich anodes) first in small devices.
+and the cell's energy density is $f$ times the active stack's. The overheads stay fixed while the dimensions shrink, so a watch cell gives up a far larger fraction of its volume than a phone cell (Example 27-03.6). Watch batteries are custom-shaped for that reason, and higher-density chemistries (silicon-rich anodes) are especially attractive in small devices.
 
 **Small cells sag more.** A cell's internal resistance $R_{int}$ scales roughly inversely with its electrode area, so a small cell has a large $R_{int}$, and $R_{int}$ rises steeply in the cold (22-09). A burst of current $I$ (a cellular transmission, the AP and display at full power) drops the terminal voltage to
 
@@ -255,7 +255,7 @@ All parameters below are illustrative assumptions chosen to be of realistic size
 
 **Units check.** mAh × V = mWh; mW × h = mWh; mWh/mWh is dimensionless, times 24 h gives hours. ✓
 
-**Sanity check.** Average battery power of 35 mW matches a watch that lasts "a day and a half new, a day when old", the usual design target. No single item dominates. The fixed floor costs as much as the workout, and the always-on display, which reviewers blame first, is only 16% of the energy. Turning it off buys **6.7** hours.
+**Sanity check.** Average battery power of 35 mW gives a watch that lasts about a day and a half new and a day when old. Apple's rating of "up to 24 hours" on 1.461 Wh implies at most about 61 mW on its test profile [R-671], so the assumed powers here are illustrative and lower than that conservative "up to" figure. No single item dominates. The fixed floor costs as much as the workout, and the always-on display, which reviewers blame first, is only 16% of the energy. Turning it off buys **6.7** hours.
 
 ### Example 27-03.2 · What a pixel costs (tier B)
 
@@ -271,7 +271,7 @@ All parameters below are illustrative assumptions chosen to be of realistic size
 
 **Units check.** cd/m² × m² × (sr) = lm; lm ÷ (lm/W) = W; mJ × Hz = mW. ✓
 
-**Sanity check.** The always-on display in Example 27-03.1 was 7 mW: this panel's 5.6 mW plus about **1.4** mW for touch scanning and the hub's once-a-minute face updates. Outdoor brightness nearly triples the power, which is why watches boost brightness only when the ambient-light sensor demands it, and why an always-on display needs both a dark face (OLED) and a low refresh rate (LTPO). Without either it would cost more than the floor.
+**Sanity check.** The always-on display in Example 27-03.1 was 7 mW: this panel's 5.6 mW plus about **1.4** mW for the hub's once-a-minute face updates and the display's other overheads (touch scanning is counted in the floor, Example 27-03.5). Outdoor brightness nearly triples the power, which is why watches boost brightness only when the ambient-light sensor demands it, and why an always-on display needs both a dark face (OLED) and a low refresh rate (LTPO). Without either it would cost more than the floor.
 
 ### Example 27-03.3 · Who watches the wrist? (tier B)
 
@@ -290,7 +290,7 @@ All parameters below are illustrative assumptions chosen to be of realistic size
 
 ### Example 27-03.4 · Keeping the phone link alive (tier B)
 
-**Setup.** A watch's BLE radio (3.0 V supply) draws 1.2 mA for 250 µs of wake-up before each event, 3.6 mA receiving and 4.1 mA transmitting at 0 dBm, and 1.5 µA asleep; the two sleep clocks total 100 ppm. Each idle event exchanges empty packets on the 1M PHY. Find (a) the charge per event, (b) the average current at connection intervals of 30 ms, 100 ms and 1 s, and at 30 ms with a peripheral latency of 4, (c) the power and daily energy at 30 ms, and (d) the energy to upload 100 kB of health data on the 2M PHY with 251-octet encrypted packets, each acknowledged by an empty packet.
+**Setup.** A watch's BLE radio (3.0 V supply) draws 1.2 mA for 250 µs of wake-up before each event, 3.6 mA receiving and 4.1 mA transmitting at 0 dBm, and 1.5 µA asleep; the two sleep clocks total 100 ppm. Each idle event exchanges empty packets on the 1M PHY. Find (a) the charge per event, (b) the average current at connection intervals of 30 ms, 100 ms and 1 s, and at 30 ms with a peripheral latency of 4, (c) the power and daily energy at 30 ms, and (d) the energy to upload 100 kB of health data on the 2M PHY with 251-octet encrypted packets, each acknowledged by an empty packet (the 251 octets are the link-layer payload, of which 7 are L2CAP and ATT headers; for simplicity count all 251 as data).
 
 **Solution.**
 
@@ -310,7 +310,7 @@ All parameters below are illustrative assumptions chosen to be of realistic size
 - AP in retention with LPDDR self-refresh: 2.0 mW; 80%.
 - Background AP wakes, 60 per hour of 0.5 s at 120 mW; 88%.
 - The always-on hub of Example 27-03.3, 0.208 mW; 75%.
-- The accelerometer in low-power mode, 10 µA at 1.8 V; 75%.
+- The accelerometer in low-power mode, 10 µA at 1.8 V (the data sheet's 25 Hz figure; streaming at 50 Hz as in Example 27-03.3 would draw somewhat more); 75%.
 - The BLE link of Example 27-03.4 at 30 ms, 0.151 mW; 85%.
 - Touch controller idle scanning, 0.5 mW; 85%.
 - Wi-Fi beacon listening (averaged over the hours the phone is out of range), 0.8 mW; 85%.
@@ -328,7 +328,7 @@ Find (a) the battery-side total, (b) the margin against the budget, (c) the shar
 
 **Units check.** mW ÷ (efficiency) = mW; mA × V = mW; per-hour counts × s × mW ÷ 3600 s/h = mW. ✓
 
-**Sanity check.** The microwatt blocks that dominate datasheet marketing are **8**% of this floor; the AP's sleep state and its background activity are **60**%. Coalescing wakes, the batching idea of Example 27-03.3 applied to software, saves more than the hub, accelerometer and BLE link draw combined. An audit also shows where the budget's margin is, and here it is comfortable.
+**Sanity check.** The microwatt blocks that dominate datasheet marketing are **8**% of this floor; the AP's sleep state and its background activity are **60**%. Coalescing wakes, the batching idea of Example 27-03.3 applied to software, saves about three-quarters of what the hub, accelerometer and BLE link draw combined (0.364 against 0.480 mW at the battery). An audit also shows where the budget's margin is, and here it is comfortable.
 
 ### Example 27-03.6 · The cell: geometry and the cold (tier C)
 
@@ -406,6 +406,7 @@ Find (a) the battery-side total, (b) the margin against the budget, (c) the shar
 | Ex 27-03.5c1 | microwatt items share | 7.9 | % |
 | Ex 27-03.5d | coalesced background power | 0.68 | mW |
 | Ex 27-03.5d1 | battery-side saving | 0.364 | mW |
+| Ex 27-03.5d3 | hub, accelerometer and BLE, battery side | 0.480 | mW |
 | Ex 27-03.6a | active fraction, watch cell | 0.727 | — |
 | Ex 27-03.6a1 | watch cell energy | 1.23 | Wh |
 | Ex 27-03.6a2 | watch cell capacity | 320 | mAh |
@@ -477,7 +478,8 @@ Find (a) the battery-side total, (b) the margin against the budget, (c) the shar
 | Txt 27-03.10 | life multiplier for a 20% energy cut | 1.25 | — |
 | Txt 27-03.11 | life increase for a 20% energy cut | 25 | % |
 | Txt 27-03.12 | white-face emission multiplier | 6.7 | — |
-| Txt 27-03.13 | current at a 10 s interval | 2.0 | µA |
+| Txt 27-03.13 | current at a 10 s event spacing | 2.0 | µA |
+| Txt 27-03.14 | power implied by Apple's rating | 61 | mW |
 
 ## 5. Simulate it
 
@@ -486,7 +488,7 @@ The lab is [labs/27-03-lab/](../labs/27-03-lab/README.md). `watchmodel.py` imple
 1. *Predict* the battery life of Example 27-03.1 if the floor drops from 6 to 4 mW and the always-on display stays on, then sweep the floor from 2 to 10 mW and plot life against it.
 2. *Predict* the connection interval at which the BLE link's average current is twice its floor ($I_{sl} + I_{rx}s$), then plot average current against interval on log axes.
 3. *Predict* the always-on display power at 10 Hz, then plot display power against refresh rate for APL 0.15 and 1.0.
-4. *Predict* the batch size at which the AP's batched power equals the hub's for an AP with $E_s = 2$ µJ, then plot both against $N$.
+4. *Predict* the batch size at which the AP's batched power equals the hub's for an AP with $E_s = 3$ µJ, then plot both against $N$.
 
 ![Left: the daily energy of Example 27-03.1 by item; right: the BLE link's average current against connection interval, approaching the floor set by sleep and window-widening current](../../../assets/figures/27-03/watch-budget-ble.svg)
 
@@ -521,10 +523,10 @@ The lab is [labs/27-03-lab/](../labs/27-03-lab/README.md). `watchmodel.py` imple
 | Watch application processors | Exynos W1000 (5 cores, 3 nm); Qualcomm SDW6100 (5 cores, 3 nm); W5+ Gen 1 (4 nm SoC with a 22 nm always-on co-processor) | [R-672, R-673] |
 | Display share of watch BOM | 22.6–32.3% (four Android watches) | TechInsights, Jun 2026 [R-675] **[Industry estimate]** |
 | AP share of a watch's visible BOM | 15.9% ($23.90 of $150.38, Series 11 5G) | TechInsights [R-675] **[Industry estimate]** |
-| Smartwatch shipments | 34.8 million in Q1 2025 (+4.8%); about 37 million in Q2 2026 (−4.2%) | IDC [R-675] **[Industry estimate]** |
+| Smartwatch shipments | 34.8 million in Q1 2025 (+4.8%); about 37 million in Q2 2026 (−4.2%; derived from IDC's share and total) | IDC [R-675] **[Industry estimate]**; the two figures come from different IDC trackers whose definitions may differ |
 | BLE timing | empty packet 80 µs (1M PHY); inter-frame space 150 µs; payload up to 251 octets | [R-676] (physics of the standard: stable) |
 | Sleep-clock accuracy | at most ±500 ppm allowed; about 50 ppm with a crystal | [R-676] |
-| BLE radio currents | about 3.6–5.3 mA receiving, 4.1–5.1 mA transmitting at 0 dBm | Vendor data sheets [R-406] |
+| BLE radio currents | about 3.6–5.3 mA receiving, 4.1–6.4 mA transmitting at 0 dBm | Vendor data sheets [R-406] |
 | Accelerometer, low-power mode | about 10 µA (accelerometer only, 25 Hz) | Bosch BMI270 data sheet [R-074] |
 
 ## 8. Common mistakes
@@ -542,13 +544,13 @@ The lab is [labs/27-03-lab/](../labs/27-03-lab/README.md). `watchmodel.py` imple
 
 **State of play (as of Nov 2026).**
 
-- **Two processors per watch is the norm.** Qualcomm's W5+ Gen 1 paired a 4 nm application SoC with a 22 nm always-on co-processor (QCC5100) that takes "display, sensors, audio ... and notifications offload", and claimed "30-60% lower power on typical use cases" [R-673] **[Industry estimate: vendor claim]**. Google's Pixel Watch 4 lists a "Snapdragon® W5 Gen 2" with a "Cortex-M55 co-processor" [R-672]. The partition of §3.1 is the industry's answer, not just a textbook one.
+- **Two processors per watch is common.** Qualcomm's W5+ Gen 1 paired a 4 nm application SoC with a 22 nm always-on co-processor (QCC5100) that takes "display, sensors, audio ... and notifications offload", and claimed "30-60% lower power on typical use cases" [R-673] **[Industry estimate: vendor claim]**. Google's Pixel Watch 4 lists a "Snapdragon® W5 Gen 2" with a "Cortex-M55 co-processor" [R-672]. The partition of §3.1 is the industry's answer, not just a textbook one.
 - **Application processors moved to 3 nm.** Samsung's Galaxy Watch8 uses its "Exynos W1000 (5 Core, 3nm)" and the 2026 Watch9 a "Qualcomm SDW6100 (Penta-Core, 3nm)" from the Snapdragon Wear Elite platform [R-672]. Apple's specification page gives the S11's cores and Neural Engine but no node [R-670]; press reports of a 2 nm S11 are unconfirmed **[Contested]**.
-- **Battery life is stuck near a day for slim watches.** Apple's Series 12 is rated "up to 24 hours" on a 1.461 Wh cell, as the Series 11 was [R-670, R-671]; the larger Ultra 4 reaches 50 hours on 2.444 Wh; Google rates the Pixel Watch 4 at 30 or 40 hours with the always-on display [R-672]. Gains come from bigger cells in larger cases and faster charging ("15 minutes now gets up to 12 hours" [R-670]) more than from lower power.
+- **Battery life is stuck near a day for slim watches.** Apple's Series 12 is rated "up to 24 hours" on a 1.461 Wh cell, as the Series 11 was [R-670, R-671]; the larger Ultra 4 reaches 50 hours on 2.444 Wh; Google rates the Pixel Watch 4 at 30 or 40 hours with the always-on display [R-672]. In these examples, gains come from bigger cells in larger cases and faster charging ("15 minutes now gets up to 12 hours" [R-670]) more than from lower power.
 - **The display decides multi-day designs.** Garmin's fēnix 8 AMOLED 47 mm lasts "16 days with Gesture" but "7 days with Always On Display" [R-674]: when the floor is tiny, the always-on display is most of the power (more than half here), unlike Example 27-03.1, where the floor and active use dominate.
 - **Cellular and satellite are spreading.** Apple's cellular Series 12 "Supports RedCap for 5G" [R-670]; the Ultra 4 includes "Emergency SOS, Find My, and Messages via satellite" [R-670]; Apple's first MediaTek baseband (MT6815W) appeared in the Series 11 5G [R-675]. Each adds peak current (§3.8) and antenna volume.
 
-**Commercial relevance.** A watch's silicon is a portfolio: an application processor at an advanced node, an always-on co-processor at a mature one, a PMIC, a cellular modem and RF front end, a BLE/Wi-Fi combo, sensor analog front ends and a display driver. The display subsystem is the largest BOM item in teardown comparisons (22.6–32.3% across four watches) and the AP the largest single chip ($23.90 of $150.38 visible in a Series 11 5G, 15.9%) [R-675] **[Industry estimate]**. Volumes are a few tens of millions of units per quarter and no longer growing fast: IDC estimates smartwatch shipments fell 4.2% in Q2 2026 to about 37 million (25.0% of about 148 million wearables) [R-675] **[Industry estimate]**. For a chip company, the attractive positions are the always-on and sensing silicon (where power is the spec), the cellular modem (where few can compete) and the PMIC.
+**Commercial relevance.** A watch's silicon is a portfolio: an application processor at an advanced node, an always-on co-processor at a mature one, a PMIC, a cellular modem and RF front end, a BLE/Wi-Fi combo, sensor analog front ends and a display driver. The display subsystem is the largest BOM item in teardown comparisons (22.6–32.3% across four watches) and the AP costs $23.90 of $150.38 visible in a Series 11 5G (15.9%) [R-675] **[Industry estimate]**. Volumes are a few tens of millions of units per quarter and no longer growing fast: IDC estimates smartwatch shipments fell 4.2% in Q2 2026, to a 25.0% share of about 148 million wearables, which we compute as about 37 million (25.0% of about 148 million wearables) [R-675] **[Industry estimate]**. For a chip company, the attractive positions are the always-on and sensing silicon (where power is the spec), the cellular modem (where few can compete) and the PMIC.
 
 **Marketing vs Reality.**
 
@@ -593,7 +595,7 @@ The lab is [labs/27-03-lab/](../labs/27-03-lab/README.md). `watchmodel.py` imple
 
    </details>
 
-4. The BLE link's average current at a 1 s interval is 3.3 µA. Why does lengthening the interval to 10 s not cut it to a tenth?
+4. The BLE link's average current at a 1 s interval is 3.3 µA. Why does stretching the spacing of attended events to 10 s (a 1 s interval with peripheral latency 9) not cut it to a tenth?
 
    <details><summary>Answer</summary>
 

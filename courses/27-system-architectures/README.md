@@ -43,7 +43,7 @@ Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 
 
 ## Course notes
 
-**How to approach this course.** Course 27 is planned at about 60 hours: the chapters' own estimates add to 58, plus about 2 hours of review; allow a further 3 hours for the exam. It is a case-study course. Each chapter takes one product class and asks the same questions: what binds first (energy, heat, bandwidth, latency, cost or reliability), how much each block costs in that currency, and which knob moves the answer most. 27-01 teaches the method, and the other seven chapters apply it from a coin cell to a 100 kW rack. The skill is not memorizing products. It is building a small, honest budget quickly, finding the term that dominates, and knowing where the first-order model stops being true. The course draws on almost every earlier course:
+**How to approach this course.** Course 27 is planned at about 60 hours: the chapters' own estimates add to 58, plus about 2 hours of review; allow a further 3 hours for the exam. It is a case-study course. Each chapter takes one product class and asks the same questions: what binds first (energy, heat, bandwidth, latency, cost or reliability), how much each block costs in that currency, and which knob moves the answer most. 27-01 teaches the method, and the other seven chapters apply it from a coin cell to a 120 kW rack. The skill is not memorizing products. It is building a small, honest budget quickly, finding the term that dominates, and knowing where the first-order model stops being true. The course draws on almost every earlier course:
 
 - Courses 14 and 23: roofline and machine balance, caches, DRAM, HBM and the KV cache;
 - Courses 18, 21 and 22: low-power MCUs, link budgets and radios, converters, batteries and datacenter power delivery;
@@ -78,10 +78,10 @@ Work at least the [A] and [B] problems of every chapter; the [C] problems are wh
 - a delay of $\tau$ caps active noise cancellation, and gain error caps it at low frequency (27-04);
 - local AI on a laptop or phone is bounded by memory bandwidth for decode and by compute for prefill (27-05);
 - worst-case response time, not average load, is the safety number on a shared bus; latency is distance at speed (27-06);
-- normalize rack datasheets per device, per direction and per precision before comparing; machine balance converges because HBM is shared technology (27-07);
+- normalize rack datasheets per device, per direction and per precision before comparing; at dense FP8, rival accelerators land near the same machine balance (27-07);
 - the bandwidth ladder (HBM, scale-up, scale-out) decides which parallelism runs where; a bigger scale-up domain divides network traffic (27-07);
 - large jobs fail in proportion to their size; checkpoints are tuned by a square root, but restart time dominates at scale (27-07);
 - inference trades throughput against per-user speed along a frontier, and capital, through utilization, dominates token cost (27-07);
 - at the edge, send the answer, not the data; range is bought with airtime, and the network's density is a battery-life specification (27-08).
 
-**After this course.** Course 28 turns these case studies into technical diligence: evaluating a technology, validating claims, judging silicon maturity, and asking each chapter's Practitioner-lens questions. Capstone C3 (a wearable sensor node) applies 27-01, 27-03 and 27-08 directly. The Term 7 FE checkpoint follows Course 28.
+**After this course.** Course 28 turns these case studies into technical diligence: evaluating a technology, validating claims, judging silicon maturity, and asking each chapter's Practitioner-lens questions. Capstone C3 (a wearable sensor node) is planned to draw on 27-01, 27-03 and 27-08. The Term 7 FE checkpoint follows Course 28.

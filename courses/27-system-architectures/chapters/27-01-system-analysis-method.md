@@ -125,7 +125,7 @@ Four models locate most bottlenecks.
 **Roofline (14-15).** A processor with peak rate $\Pi$ (operations per second) and memory bandwidth $\beta$ (bytes per second) runs a kernel of arithmetic intensity $I$ (operations per byte moved) at
 
 $$
-P_{att} = \min(\Pi, I\beta) .
+\Pi_{att} = \min(\Pi, I\beta) .
 $$
 
 Below the **ridge point** $I^* = \Pi/\beta$ the kernel is memory bound and only bandwidth helps; above it, only compute helps. Generating text with a large language model one token at a time reads every weight once per token, so its intensity is about two operations (a multiply and an add) per weight, divided by the bytes per weight: about 1 operation per byte at 16-bit precision. Decode is therefore far below the ridge of any modern accelerator, and its speed is set by bandwidth:
@@ -140,7 +140,7 @@ with $N_p$ parameters of $b$ bytes each. Serving $B$ users together reuses each 
 
 **Amdahl's law (14-01).** If a fraction $f_k$ of the original time is sped up by $s_k$, the overall speedup is $1/\sum_k (f_k/s_k)$. An accelerator that makes 40% of a workload 20 times faster gives only 1.61× overall, and an infinitely fast one only 1.67×.
 
-**Little's law (14-08).** In any stable system, the average number of items in flight equals the arrival rate times the time each spends inside: $L = \lambda W$. It sizes buffers (frames in a camera pipeline, packets in a switch, requests in a memory controller) without any assumption about distributions.
+**Little's law (14-08).** In any stable system, the average number of items in flight equals the arrival rate times the time each spends inside: $L = \lambda W$. It gives the **mean** occupancy (frames in a camera pipeline, packets in a switch, requests in a memory controller) with no assumption about distributions; the peak, which is what sizes a buffer, does depend on how arrivals and service times vary.
 
 ### 3.6 Sensitivity and the shadow price
 
@@ -175,7 +175,7 @@ All component values below are **assumed** for teaching unless a source is cited
 
 ### Example 27-01.1 · Where does the battery go? (tier A)
 
-**Setup.** A handheld device's loads in its main use mode are: the SoC 1.8 W through a buck converter of 88% efficiency; DRAM 0.4 W through a 90% buck; the display 1.2 W through an 85% boost; the radio 0.6 W through a 90% buck; and sensors 0.2 W at 1.8 V through an LDO from the 3.7 V battery rail. The battery is 5,000 mAh at a nominal 3.85 V, 90% usable. Find (a) the battery-side power and the system efficiency, (b) the loss in each converter, (c) the run time, and (d) the run time if the LDO is replaced by a 90% buck.
+**Setup.** A handheld device's loads in its main use mode are: the SoC 1.8 W through a buck converter of 88% efficiency; DRAM 0.4 W through a 90% buck; the display 1.2 W through an 85% boost; the radio 0.6 W through a 90% buck; and sensors 0.2 W at 1.8 V through an LDO from the battery rail, which sits at 3.7 V under this load. The battery is 5,000 mAh at a nominal 3.85 V (its average over a discharge), 90% usable. Find (a) the battery-side power and the system efficiency, (b) the loss in each converter, (c) the run time, and (d) the run time if the LDO is replaced by a 90% buck.
 
 **Solution.**
 
@@ -184,7 +184,7 @@ All component values below are **assumed** for teaching unless a source is cited
 - (c) Energy $5.0 \times 3.85$ = **19.25** Wh, **17.325** Wh usable; run time $17.325/4.98$ = **3.48** h.
 - (d) A buck saves $0.411 - 0.222$ = **0.189** W, giving **3.62** h, **8.2** minutes more.
 
-**Units check.** A ÷ (dimensionless) = A; W ÷ W = efficiency; Wh ÷ W = h. ✓
+**Units check.** W ÷ (dimensionless) = W; W ÷ W = efficiency; Wh ÷ W = h. ✓
 
 **Sanity check.** The converter losses are about a sixth of the battery power, and every watt of them also heats the device (Example 27-01.2). The cheapest fix is often the smallest load's converter.
 
@@ -226,7 +226,7 @@ All component values below are **assumed** for teaching unless a source is cited
 
 - (a) Storage manages $40/0.5$ = **80** frames/s; the minimum is the encoder's **60** frames/s.
 - (b) The NPU becomes the bottleneck at **72** frames/s: a 2× encoder buys 20%.
-- (c) $L = \lambda W = 60 \times 0.080$ = **4.8** frames in flight, so five buffers of 12 MB, **60** MB of DRAM.
+- (c) $L = \lambda W = 60 \times 0.080$ = **4.8** frames in flight. With deterministic arrivals and service the peak equals the mean, so five buffers suffice; budgeting them all at the raw 12 MB (the compressed frames after the encoder are far smaller) gives **60** MB of DRAM, a conservative figure.
 - (d) $3 \times 2 \times 12 \times 60$ = **4.32** GB/s, about **5.6**% of the 76.8 GB/s peak of a 64-bit LPDDR5X-9600 interface [R-490] (23-04), which the memory budget must carry alongside everything else.
 
 **Units check.** frames/s × s = frames; MB × frames/s = MB/s. ✓
@@ -246,7 +246,7 @@ All component values below are **assumed** for teaching unless a source is cited
 
 **Units check.** $ ÷ $ = dimensionless. ✓
 
-**Sanity check.** A memory price swing moves the margin more than twice as much as a meaningful SoC saving, because $\Delta\text{GM} = -\Delta c/\text{ASP}$ depends on dollars, not shares. This is why phone makers' margins track the memory cycle.
+**Sanity check.** A memory price swing moves the margin more than twice as much as a meaningful SoC saving, because $\Delta\text{GM} = -\Delta c/\text{ASP}$ depends on dollars, not shares. This is why a memory-price swing shows up so directly in a phone maker's gross margin.
 
 ### Example 27-01.6 · The shadow price of a watt (tier C)
 
