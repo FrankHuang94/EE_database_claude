@@ -26,7 +26,7 @@ The practitioner's course: a framework for evaluating a chip company's technolog
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [28-01 · A Framework for Evaluating a Chip Company's Technology](chapters/28-01-technology-evaluation-framework.md) | 6 | ⬜ planned | — |
+| [28-01 · A Framework for Evaluating a Chip Company's Technology](chapters/28-01-technology-evaluation-framework.md) | 6 | ✅ verified | [problems](problems/28-01-problems.md) · [solutions](solutions/28-01-solutions.md) · [lab](labs/28-01-lab/README.md) · [verify](verify/verify_28_01.py) |
 | [28-02 · Validating Claims: TOPS/W, Benchmarks, Tapeout Status](chapters/28-02-validating-claims.md) | 6 | ⬜ planned | — |
 | [28-03 · Maturity Scales for Silicon](chapters/28-03-silicon-maturity-scales.md) | 4 | ⬜ planned | — |
 | [28-04 · Domain Question Banks I: Digital/CPU, AI Accelerators, Memory, Interconnect and Optics](chapters/28-04-question-banks-digital-ai-memory-interconnect.md) | 6 | ⬜ planned | — |

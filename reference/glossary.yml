@@ -11270,3 +11270,43 @@
   definition: "Regulation (EU) 2024/2847, which sets cybersecurity requirements for products with digital elements sold in the EU, including vulnerability reporting and security updates over a support period of at least five years in most cases."
   chapter: "27-08"
   see_also: [Secure boot, Over-the-air (OTA) update]
+- term: Technical due diligence
+  definition: The examination of a target company's technology (architecture, implementation, IP, team, roadmap, software and supply) that turns its claims into evidence and the evidence into probabilities a deal can price.
+  chapter: "28-01"
+  see_also: [Weighted scorecard, Knockout gate, Likelihood ratio]
+- term: Weighted scorecard
+  definition: A total score $S = \sum w_i s_i$ over dimensions scored $s_i$ with weights $w_i$ summing to 1; its variance from independent score errors is $\sum w_i^2\sigma_i^2$, so heavily weighted, poorly evidenced dimensions dominate its uncertainty.
+  chapter: "28-01"
+  see_also: [Weighted geometric score, Halo effect]
+- term: Weighted geometric score
+  definition: The product $\prod s_i^{w_i}$ of scores raised to their weights; never larger than the weighted arithmetic score, and lower the more the scores spread, so a weak dimension is penalized rather than compensated.
+  chapter: "28-01"
+  see_also: [Weighted scorecard]
+- term: Knockout gate
+  definition: A condition that must hold before any score counts (rights to essential IP, permission to export, a path to wafers and packaging, a required safety standard); a failure stops or restructures a deal rather than lowering a score.
+  chapter: "28-01"
+  see_also: [Weighted scorecard]
+- term: Halo effect
+  definition: The tendency of an evaluator impressed by one attribute (often a founder) to score unrelated attributes high too; it correlates score errors and makes a scorecard far less certain than it looks.
+  chapter: "28-01"
+  see_also: [Weighted scorecard]
+- term: Likelihood ratio
+  definition: $P(E \mid T)/P(E \mid \bar T)$, how much more likely evidence $E$ is if a claim $T$ is true than if it is false; it multiplies the prior odds to give the posterior odds, and evidence a failing team could easily produce has a ratio near 1.
+  chapter: "28-01"
+  see_also: [Posterior odds, Bayes' rule]
+- term: Posterior odds
+  definition: The odds $P/(1 - P)$ of a claim after evidence, equal to the prior odds times the likelihood ratio of each conditionally independent piece of evidence.
+  chapter: "28-01"
+  see_also: [Likelihood ratio]
+- term: Earn-out
+  definition: Contingent consideration in an acquisition, paid only if a milestone (a revenue level, a product release) is met by a date; worth $pX/(1 + r)^t$ to a risk-neutral party, so buyer and seller value it at their own probabilities.
+  chapter: "28-01"
+  see_also: [Technical due diligence]
+- term: Expected value of perfect information (EVPI)
+  definition: The improvement in a decision's expected value if the uncertain outcome were known before deciding; an upper bound on what any diligence step is worth.
+  chapter: "28-01"
+  see_also: [Expected value of sample information (EVSI)]
+- term: Expected value of sample information (EVSI)
+  definition: The improvement in a decision's expected value from an imperfect test, found by averaging the best decision after each possible result; zero for a test whose results could not change the decision.
+  chapter: "28-01"
+  see_also: [Expected value of perfect information (EVPI)]
