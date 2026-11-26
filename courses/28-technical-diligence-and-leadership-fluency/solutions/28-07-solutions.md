@@ -39,7 +39,7 @@ Weighted $0.3 \times 5 + 0.25 \times 4 + 0.25 \times 1 + 0.2 \times 4$ = **3.55*
 
 ### Solution 28-07.8
 
-Without: $40 \times 1.2 \times 0.65$ = **31.2** $M; with: **38.4** $M; gain **7.2** $M. Break-even: $1/(40 \times 1.2)$ = **2.08** points of retention per $1M.
+Without: $40 \times 1.2 \times 0.65$ = **31.2** \$M; with: **38.4** \$M; gain **7.2** \$M. Break-even: $1/(40 \times 1.2)$ = **2.08** points of retention per $1M.
 
 ### Solution 28-07.9
 

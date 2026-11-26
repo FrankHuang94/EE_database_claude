@@ -36,7 +36,7 @@ $\text{HHI} = 0.09 + 0.0625 + 0.0225 + 3 \times 0.01$ = **0.205**; effective num
 
 ### Solution 28-06.7
 
-Factor $\tfrac13(1.1^{-1} + 1.1^{-2} + 1.1^{-3})$ = **0.829**; risk-adjusted revenue $60 \times 0.35 \times 2$ = **42** $M; present value **34.8** $M; ratio $120/34.8$ = **3.45**.
+Factor $\tfrac13(1.1^{-1} + 1.1^{-2} + 1.1^{-3})$ = **0.829**; risk-adjusted revenue $60 \times 0.35 \times 2$ = **42** \$M; present value **34.8** \$M; ratio $120/34.8$ = **3.45**.
 
 ### Solution 28-06.8
 

@@ -15,11 +15,11 @@ Problems: [28-08 problems](../problems/28-08-problems.md) · Chapter: [28-08](..
 
 ### Solution 28-08.2
 
-Annuity $[1 - 1.12^{-4}]/0.12$ = **3.037**; planned $30 \times 3.037$ = **91.1** $M. One year late at 75%: $0.75 \times 91.1/1.12$ = **61.0** $M; two years: **54.5** $M. Losses $1 - 0.75/1.12$ = **33.0**% and $1 - 0.75/1.12^2$ = **40.2**%.
+Annuity $[1 - 1.12^{-4}]/0.12$ = **3.037**; planned $30 \times 3.037$ = **91.1** \$M. One year late at 75%: $0.75 \times 91.1/1.12$ = **61.0** \$M; two years: **54.5** \$M. Losses $1 - 0.75/1.12$ = **33.0**% and $1 - 0.75/1.12^2$ = **40.2**%.
 
 ### Solution 28-08.3
 
-$40 \times 6 \times 0.022$ = **5.28** $M; lost revenue $90 \times 4/12$ = **30** $M.
+$40 \times 6 \times 0.022$ = **5.28** \$M; lost revenue $90 \times 4/12$ = **30** $M.
 
 ### Solution 28-08.4
 
@@ -33,11 +33,11 @@ Revenue $30 \times 10^6 \times 12$ = $360M; royalty **5.4** $M at 1.5% and **10.
 
 ### Solution 28-08.6
 
-Contingent share $0.8/2.0$ = **40**%. At $p = 0.5$: contingent $0.5 \times 0.8/1.1^2$ = **0.331** $B; deal **1.53** $B. At $p = 0.7$: deal **1.66** $B.
+Contingent share $0.8/2.0$ = **40**%. At $p = 0.5$: contingent $0.5 \times 0.8/1.1^2$ = **0.331** \$B; deal **1.53** \$B. At $p = 0.7$: deal **1.66** $B.
 
 ### Solution 28-08.7
 
-$10 + 12 + 15 + 4.5$ = **41.5** $M; largest **15** $M (the tail risk). With the review: $41.5 - 15 + 3$ = **29.5** $M; saving **12** $M.
+$10 + 12 + 15 + 4.5$ = **41.5** \$M; largest **15** \$M (the tail risk). With the review: $41.5 - 15 + 3$ = **29.5** $M; saving **12** $M.
 
 ### Solution 28-08.8
 
@@ -49,7 +49,7 @@ $0.8 \times 189.5/1.1^2$ = **125.3** $M; loss **33.9**%.
 
 ### Solution 28-08.10
 
-Fixed window: years 2–5 only, $50 \times [1 - 1.1^{-4}]/0.1 \times 1.1^{-1}$ = **144.1** $M, a loss of **24.0**%. Shifted window: $189.5/1.1$ = **172.3** $M, a loss of **9.09**%. Losing a year of a fixed window costs more than two and a half times as much as shifting it.
+Fixed window: years 2–5 only, $50 \times [1 - 1.1^{-4}]/0.1 \times 1.1^{-1}$ = **144.1** \$M, a loss of **24.0**%. Shifted window: $189.5/1.1$ = **172.3** $M, a loss of **9.09**%. Losing a year of a fixed window costs more than two and a half times as much as shifting it.
 
 ### Solution 28-08.11
 

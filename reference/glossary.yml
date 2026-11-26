@@ -11443,3 +11443,17 @@
   definition: "The largest die area that meets a margin target: allowed unit cost = selling price × (1 − target margin), less package and test, inverted through the die-cost model."
   chapter: "28-09"
   see_also: [Cost elasticity of die area]
+- term: Live reconciliation
+  definition: Computing a governing identity's check in front of the speaker during a technical conversation and asking for help squaring any gap; it exposes missing conditions immediately and signals that numbers will be checked.
+  chapter: "28-10"
+  see_also: [Diagnostic question]
+- term: Debrief ratio sheet
+  definition: A written record, made within hours of a meeting, of each answer's likelihood ratio grouped by underlying fact, the resulting posterior odds for each claim, and the follow-ups with owners and dates.
+  chapter: "28-10"
+  see_also: [Likelihood ratio, Posterior odds]
+- term: Anchoring
+  definition: The tendency of an estimate to stay close to a number offered first; in a diligence conversation, stating your own estimate before asking for theirs contaminates their answer as evidence.
+  chapter: "28-10"
+- term: Brier score
+  definition: The mean squared difference between forecast probabilities and outcomes (1 if the event happened, 0 if not); 0 is perfect and 0.25 is the score of always saying 50%, and as a proper scoring rule it is minimized in expectation by reporting one's true belief.
+  chapter: "28-10"

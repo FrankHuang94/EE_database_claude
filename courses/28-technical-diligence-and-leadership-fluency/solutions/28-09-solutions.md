@@ -31,7 +31,7 @@ Lost revenue $120 \times 5/12$ = **50** $M; lost gross profit **25** $M; total w
 
 ### Solution 28-09.6
 
-$0.7 \times 1.2 \times 43830 \times 0.12$ = **4418** $; 600 W: **3787** $; saving **631** $. Capacity: $0.7/0.6 - 1$ = **16.7**% more devices.
+$0.7 \times 1.2 \times 43830 \times 0.12$ = **4418** \$; 600 W: **3787** \$; saving **631** \$. Capacity: $0.7/0.6 - 1$ = **16.7**% more devices.
 
 ### Solution 28-09.7
 

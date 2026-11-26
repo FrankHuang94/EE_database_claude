@@ -196,7 +196,7 @@ All base rates, prior weights, departure rates, scores and financial values are 
 
 **Setup.** An acquirer values each of 60 engineers at $1.5M of replacement value (assumed). Without a retention package, 70% stay two years; a package costing $8M raises that to 85%. Find the expected retained value with and without the package, the gain, the net value of the package, and the retention gain needed per $1M of package cost to break even.
 
-**Solution.** Without: $60 \times 1.5 \times 0.70$ = **63** $M. With: **76.5** $M. Gain **13.5** $M; net of cost **5.5** $M. Each $1M of cost must raise retention by $1/(60 \times 1.5)$ = **1.11** points to break even.
+**Solution.** Without: $60 \times 1.5 \times 0.70$ = **63** \$M. With: **76.5** \$M. Gain **13.5** \$M; net of cost **5.5** \$M. Each \$1M of cost must raise retention by $1/(60 \times 1.5)$ = **1.11** points to break even.
 
 **Units check.** Engineers × $M per engineer × fraction = $M. ✓
 
@@ -394,7 +394,7 @@ Problems: [28-07 problem set](../problems/28-07-problems.md) · Solutions: [28-0
 - A. Gelman et al., *Bayesian Data Analysis*: the chapter on single-parameter models (the beta-binomial model and conjugate priors).
 - F. P. Brooks, *The Mythical Man-Month* (anniversary edition), chapters 2 and 3 [R-650].
 - B. Flyvbjerg's published work on reference-class forecasting in large projects (journal articles are public).
-- Lecture videos: MIT OpenCourseWare 18.05 *Introduction to Probability and Statistics* (recorded and public), the units on Bayesian updating with conjugate priors.
+- Lecture videos: MIT OpenCourseWare 6.041/6.431 *Probabilistic Systems Analysis and Applied Probability* (recorded and public), the lectures on Bayesian statistical inference.
 
 ## 14. Sources
 

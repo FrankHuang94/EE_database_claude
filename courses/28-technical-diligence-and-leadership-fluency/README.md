@@ -35,7 +35,7 @@ The practitioner's course: a framework for evaluating a chip company's technolog
 | [28-07 · Evaluating Engineering Teams](chapters/28-07-evaluating-engineering-teams.md) | 5 | ✅ verified | [problems](problems/28-07-problems.md) · [solutions](solutions/28-07-solutions.md) · [lab](labs/28-07-lab/README.md) · [verify](verify/verify_28_07.py) |
 | [28-08 · Post-Acquisition Integration Risk](chapters/28-08-integration-risk.md) | 5 | ✅ verified | [problems](problems/28-08-problems.md) · [solutions](solutions/28-08-solutions.md) · [lab](labs/28-08-lab/README.md) · [verify](verify/verify_28_08.py) |
 | [28-09 · The Business ↔ Engineering Translation Table](chapters/28-09-business-engineering-translation.md) | 3 | ✅ verified | [problems](problems/28-09-problems.md) · [solutions](solutions/28-09-solutions.md) · [lab](labs/28-09-lab/README.md) · [verify](verify/verify_28_09.py) |
-| [28-10 · Conversation Scenarios](chapters/28-10-conversation-scenarios.md) | 15 | ⬜ planned | — |
+| [28-10 · Conversation Scenarios](chapters/28-10-conversation-scenarios.md) | 15 | ✅ verified | [problems](problems/28-10-problems.md) · [solutions](solutions/28-10-solutions.md) · [lab](labs/28-10-lab/README.md) · [verify](verify/verify_28_10.py) |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 

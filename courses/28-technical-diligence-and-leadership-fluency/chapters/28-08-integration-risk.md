@@ -147,7 +147,7 @@ All synergies, costs, probabilities and impacts are illustrative assumptions unl
 
 **Setup.** Migrating a 25-engineer team to the buyer's flow takes 4 months at $25k per engineer-month (loaded). Doing it now, mid-project, is expected to delay the current product by 3 months; the product earns $60M a year in a market window that ends at a fixed date. Find the migration's direct cost and the lost revenue from the delay.
 
-**Solution.** Direct cost $25 \times 4 \times 0.025$ = **2.5** $M. Lost revenue $60 \times 3/12$ = **15** $M.
+**Solution.** Direct cost $25 \times 4 \times 0.025$ = **2.5** \$M. Lost revenue $60 \times 3/12$ = **15** $M.
 
 **Units check.** engineers × months × $M per engineer-month = $M; $M/year × years = $M. ✓
 
@@ -157,7 +157,7 @@ All synergies, costs, probabilities and impacts are illustrative assumptions unl
 
 **Setup.** After a merger, the buyer's program succeeds with probability 0.6 and the target's with 0.5 (independent). The socket is worth $200M. Keeping the second program costs $30M. Find the probability that at least one succeeds, the expected value with both and with the better one alone, and the decision.
 
-**Solution.** $P = 1 - 0.4 \times 0.5$ = **0.8**; value with both $200 \times 0.8$ = **160** $M; better alone $200 \times 0.6$ = **120** $M; gain **40** $M against a cost of $30M, so keep both.
+**Solution.** $P = 1 - 0.4 \times 0.5$ = **0.8**; value with both $200 \times 0.8$ = **160** \$M; better alone $200 \times 0.6$ = **120** $M; gain **40** $M against a cost of $30M, so keep both.
 
 **Units check.** Probabilities × $M = $M. ✓
 

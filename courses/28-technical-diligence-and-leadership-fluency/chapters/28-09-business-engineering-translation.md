@@ -123,7 +123,7 @@ Wafer prices are from [R-575]; other parameters are illustrative assumptions. Di
 
 ### Example 28-09.1 · What 20% more area costs (tier B)
 
-**Setup.** A die on an $18,500 N3 wafer [R-575] grows from 100 mm² to 120 mm²; $D_0$ = 0.1 per cm² (0.001 per mm², assumed). Find the dies per wafer, yield and cost per good die for each, the percentage cost increase, and the implied average elasticity.
+**Setup.** A die on an \$18,500 N3 wafer [R-575] grows from 100 mm² to 120 mm²; $D_0$ = 0.1 per cm² (0.001 per mm², assumed). Find the dies per wafer, yield and cost per good die for each, the percentage cost increase, and the implied average elasticity.
 
 **Solution.**
 
@@ -139,7 +139,7 @@ Wafer prices are from [R-575]; other parameters are illustrative assumptions. Di
 
 **Setup.** A product will sell at $60 with $8 of package and test cost, and must reach 60% gross margin. Find the maximum unit cost, the maximum die cost, and the largest die area that meets it on the same wafer and defect density (dies per wafer unrounded).
 
-**Solution.** Unit cost $60 \times 0.40$ = **24** $; die cost $24 - 8$ = **16** $. Solving $18500/(\text{DPW}(A)e^{-0.001A}) = 16$ gives $A$ = **53.9** mm².
+**Solution.** Unit cost $60 \times 0.40$ = **24** \$; die cost $24 - 8$ = **16** \$. Solving $18500/(\text{DPW}(A)e^{-0.001A}) = 16$ gives $A$ = **53.9** mm².
 
 **Units check.** $ − $ = $; area in mm². ✓
 
@@ -149,7 +149,7 @@ Wafer prices are from [R-575]; other parameters are illustrative assumptions. Di
 
 **Setup.** A product earning $300M a year at 60% gross margin, in a fixed market window, needs a full-layer respin: a new mask set at about $40M [R-321] and a 4-month delay. Find the lost revenue, the lost gross profit, and the total profit impact.
 
-**Solution.** Lost revenue $300 \times 4/12$ = **100** $M; lost gross profit $100 \times 0.6$ = **60** $M; with masks, **100** $M.
+**Solution.** Lost revenue $300 \times 4/12$ = **100** \$M; lost gross profit $100 \times 0.6$ = **60** $M; with masks, **100** $M.
 
 **Units check.** $M/year × years = $M. ✓
 
@@ -177,7 +177,7 @@ Wafer prices are from [R-575]; other parameters are illustrative assumptions. Di
 
 ### Example 28-09.6 · Which knob moves margin most? (tier C)
 
-**Setup.** Base case: ASP $90, die 100 mm² on an $18,500 wafer with $D_0$ = 0.001 per mm², package and test $8. Find the base gross margin and the change in margin (percentage points) when each of ASP, die area, wafer price, defect density and package cost rises by 10% with the others fixed.
+**Setup.** Base case: ASP \$90, die 100 mm² on an \$18,500 wafer with $D_0$ = 0.001 per mm², package and test $8. Find the base gross margin and the change in margin (percentage points) when each of ASP, die area, wafer price, defect density and package cost rises by 10% with the others fixed.
 
 **Solution.** Base: die $31.95, unit cost $39.95, margin **55.6**%. Changes: ASP **+4.0** points; die area **−4.1**; wafer price **−3.5**; defect density **−0.36**; package cost **−0.89**.
 
