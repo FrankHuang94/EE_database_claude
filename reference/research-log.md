@@ -6661,3 +6661,49 @@ R&D % = R&D ÷ revenue.
 - **LiKamWa et al., Google Glass characterization (arXiv 1404.1320, 2014):** "Video capture 2963 mW 43 min."; "Video chat 2960 mW 43 min."; under sustained load the device "reach[ed] a stable 51.9◦ C (124◦ F)" [Established, historical].
 - **Elbamby et al., "Toward Low-Latency and Ultra-Reliable Virtual Reality" (IEEE Network 2018; arXiv 1801.07587):** "There is broad consensus in setting the upper bound for MTP to less than 15-20 ms"; "the loopback latency of 4G under ideal operation conditions is 25 ms" [Established].
 - **Sources:** [arXiv 2512.16045](https://arxiv.org/abs/2512.16045); [arXiv 1404.1320](https://arxiv.org/abs/1404.1320); [arXiv 1801.07587](https://arxiv.org/abs/1801.07587). Checked Nov 2026.
+
+## R-683 · Apple M5, M5 Pro/Max and M6 MacBook Pro (Course 27)
+
+*Read on 26 Nov 2026 on Apple newsroom releases and the MacBook Pro technical specifications page.* [Established as manufacturer claims]
+
+- **M5 (newsroom, 15 Oct 2025):** "Built using third-generation 3-nanometer technology, M5 introduces a next-generation 10-core GPU architecture with a Neural Accelerator in each core"; "an improved 16-core Neural Engine"; "a nearly 30 percent increase in unified memory bandwidth to 153GB/s"; "32GB of memory capacity".
+- **M5 Pro and M5 Max (newsroom, 3 Mar 2026):** "Fusion Architecture that connects two dies with advanced IP blocks into a single SoC"; "M5 Pro supports up to 64GB of unified memory with higher unified memory bandwidth up to 307GB/s"; "M5 Max supports up to 128GB of unified memory with higher unified memory bandwidth up to 614GB/s".
+- **MacBook Pro technical specifications (page as read in Nov 2026):** 14-inch base model "Apple M6 chip 12-core CPU with: 2 super cores 4 performance cores 6 efficiency cores 12-core GPU Neural Accelerators ... Dual 16-core Neural Engine Up to 170GB/s memory bandwidth"; M5 Pro configurations with "Efficiency cores not available" and "307GB/s memory bandwidth"; an M5 Max configuration with "460GB/s memory bandwidth"; 14-inch battery: M6 "Up to 24 hours video streaming Up to 16 hours wireless web 72.4-watt-hour lithium-polymer battery", M5 Pro "Up to 22 hours video streaming Up to 14 hours wireless web", M5 Max "Up to 20 hours video streaming Up to 13 hours wireless web"; 16-inch M5 Pro "Up to 24 hours video streaming Up to 17 hours wireless web 100-watt-hour"; test: "Video streaming battery life tested with 1080p content in Safari while connected to Wi-Fi. Display brightness set to 8 clicks from the bottom and keyboard backlight was off"; "Testing conducted by Apple in September 2026 using preproduction 14-inch MacBook Pro systems with Apple M6".
+- Derived (ours): 72.4 Wh over 24 h of video streaming is an average of 3.02 W for the whole laptop.
+- **Sources:** [M5 release](https://www.apple.com/newsroom/2025/10/apple-unleashes-m5-the-next-big-leap-in-ai-performance-for-apple-silicon/); [M5 Pro and M5 Max release](https://www.apple.com/newsroom/2026/03/apple-debuts-m5-pro-and-m5-max-to-supercharge-the-most-demanding-pro-workflows/); [MacBook Pro specs](https://www.apple.com/macbook-pro/specs/). Checked Nov 2026.
+
+## R-684 · AMD Ryzen AI Max+ 395 ("Strix Halo") and Ryzen AI 400 (Course 27)
+
+*Read on 26 Nov 2026 on AMD product, blog and newsroom pages and TechInsights.*
+
+- **Ryzen AI Max+ 395 specifications (AMD):** "Former Codename Strix Halo"; "16x Zen 5 # of CPU Cores 16"; "Default TDP 55W AMD Configurable TDP (cTDP) 45-120W"; "Processor Technology for CPU Cores TSMC 4nm FinFET Processor Technology for I/O Die TSMC 4nm FinFET Package Die Count 3"; "System Memory Type 256-bit LPDDR5x Max. Memory 128 GB Max Memory Speed LPDDR5x-8000"; "Radeon 8060S Graphics Graphics Core Count 40"; "Overall TOPS Up to 126 TOPS NPU TOPS Up to 50 TOPS"; "PCIe® 4.0" [Established as manufacturer specification].
+- **AMD blog on Variable Graphics Memory (2025):** "Run up to 128 Billion parameter LLMs"; "the 96GB VGM available on a Ryzen™ AI MAX+ 395 128GB machine on Windows" [Established as vendor statement].
+- **TechInsights, Strix Halo packaging quick look:** two CPU "complex die (CCD) chiplets mounted next to a large input/output (I/O) die chiplet housing the GPU and NPU", interconnected "using TSMC's integrated fan-out on substrate (InFO-oS) packaging technology" [Industry estimate].
+- **AMD newsroom (5 Jan 2026):** Ryzen AI 400 and PRO 400 Series "deliver up to 60 TOPS of NPU AI compute, with every processor in the stack exceeding Copilot+ PC requirements" [Established as vendor claim].
+- Derived (ours): a 256-bit bus at 8000 MT/s gives 256 GB/s.
+- **Sources:** [Ryzen AI Max+ 395](https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-395.html); [AMD VGM blog](https://www.amd.com/en/blogs/2025/amd-ryzen-ai-max-upgraded-run-up-to-128-billion-parameter-llms-lm-studio.html); [TechInsights](https://www.techinsights.com/blog/amd-ryzen-series-strix-halo-advanced-packaging-quick-look-analysis); [AMD CES 2026 release](https://amd.com/en/newsroom/press-releases/2026-1-5-amd-expands-ai-leadership-across-client-graphics-.html). Checked Nov 2026.
+
+## R-685 · Intel Lunar Lake memory on package (Course 27)
+
+*Read on 26 Nov 2026 in Intel's Hot Chips 2024 slides (A. Gihon), text reassembled from the slide layout.* [Industry estimate: vendor presentation]
+
+- "Memory on Package — First ever Intel integration onto package"; "Up to 32GB LPDDR5x 8.5GT/s with 2 ranks"; "Up to 40% lower PHY power"; "Up to 250mm2 area savings".
+- Intel's newsroom and ARK pages returned HTTP 403 from the build environment, so Panther Lake (Core Ultra series 3) figures reported in the press are not used.
+- **Source:** [Hot Chips 2024, Intel Lunar Lake](https://www.hc2024.hotchips.org/assets/program/conference/day1/56_HC2024.Intel.AGihon.final.pdf). Checked Nov 2026.
+
+## R-686 · Copilot+ PC requirements and Modern Standby targets (Course 27)
+
+*Read on 26 Nov 2026 on Microsoft support and Microsoft Learn pages.* [Established]
+
+- **Copilot+ PC requirements (Microsoft Support):** "Processor: A compatible processor or System on a Chip (SoC) with an NPU capable of performing 40+ TOPS. This currently includes: AMD Ryzen™ AI 300 and 400 series Intel® Core™ Ultra 200V and 300V series Snapdragon® X series RAM: 16 GB DDR5/LPDDR5 Storage: 256 GB SSD/UFS".
+- **Modern Standby (Microsoft Learn):** "the S0 low power idle model enables the system to stay connected to the network while in a low power mode".
+- **Energy-efficiency guidance (Microsoft Learn):** targets "Modern Standby >= 9 days of battery life" and "audio playback (display off) >= 125 hours"; "DRIPS percentage is a key metric to determine if a given system exhibits good or bad battery life during a Modern Standby session. DRIPS % Evaluation 98 – 100 Excellent 95 – 97.9 Very good 90 – 94.9 Good 80 – 89.9 Fair < 80 Poor"; the compatibility program requires "SW DRIPS % >= 80%".
+- **Sources:** [Copilot+ PC requirements](https://support.microsoft.com/en-us/topic/windows-next-generation-ai-device-hardware-requirements-35782169-6eab-4d63-a5c5-c498c3037364); [Modern Standby](https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/modern-standby); [Modern Standby energy efficiency](https://learn.microsoft.com/en-us/windows-hardware/test/weg/delivering-a-great-energy-efficiency-experience-with-modern-standby). Checked Nov 2026.
+
+## R-687 · PC shipments, 2025–2026 (Course 27)
+
+*Read on 26 Nov 2026 on IDC press releases.* [Industry estimate]
+
+- **IDC (12 Jan 2026):** "Global PC shipments grew 9.6% year-over-year in the fourth quarter of 2025, reaching 76.4 million units"; full-year 2025 table "Total 284.7 ... 263.3 ... 8.1%".
+- **IDC (8 Oct 2026):** "Worldwide PC shipments fell 20.1% year over year in Q3 2026 to 62.7 million units ... the second consecutive decline"; table: Apple 5.9 million (9.5%), total 62.7 against 78.5 a year earlier. Gartner's Q3 2026 release returned 403 and is not used.
+- **Sources:** [IDC Q4 2025](https://www.idc.com/resource-center/press-releases/4q25-pc-top-5-pr/); [IDC Q3 2026](https://idc.com/resource-center/press-releases/idc-pc-tracker-3q26). Checked Nov 2026.

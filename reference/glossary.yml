@@ -11114,3 +11114,31 @@
   definition: Extrapolating head motion forward by the known pipeline latency so the rendered or reprojected image matches where the head will be when the photons arrive.
   chapter: "27-04"
   see_also: [Motion-to-photon latency]
+- term: Package C-state
+  definition: A package-wide idle state of a processor in which progressively more of the chip (cores, caches, fabric, memory interface) is clock-gated or power-gated; deeper states save more power but take longer to enter and leave.
+  chapter: "27-05"
+  see_also: [State residency, Modern standby]
+- term: State residency
+  definition: The fraction of time a processor or package spends in each power state; average power is the residency-weighted sum of the states' powers, so long residency in deep idle dominates light-load battery life.
+  chapter: "27-05"
+  see_also: [Package C-state]
+- term: Modern standby
+  definition: A PC low-power mode in which the system stays in a very low-power on state, waking briefly for network and background activity like a phone, rather than fully suspending; its battery drain depends on every device and driver letting the package reach deep idle.
+  chapter: "27-05"
+  see_also: [Package C-state]
+- term: Turbo power limit
+  definition: A short-term power limit above the sustained limit that a processor may draw until an exponentially weighted average of its power reaches the sustained limit; the burst lasts tau times ln((P2 - P0)/(P2 - P1)).
+  chapter: "27-05"
+  see_also: [Sustained power]
+- term: Unified memory
+  definition: A single DRAM pool shared by a SoC's CPU, GPU and NPU behind one memory controller, so data need not be copied between separate memories and large models can use most of the system's capacity.
+  chapter: "27-05"
+  see_also: [Memory on package]
+- term: Memory on package
+  definition: DRAM packages mounted on the processor's package substrate rather than on the motherboard, shortening the memory channel to cut I/O energy and board area at the cost of upgradeability and SKU flexibility.
+  chapter: "27-05"
+  see_also: [Unified memory]
+- term: Prefill and decode
+  definition: The two phases of language-model inference; prefill processes the prompt in parallel and is compute-bound, while decode generates one token at a time, reading every weight per token, and is memory-bandwidth-bound.
+  chapter: "27-05"
+  see_also: [Unified memory]
