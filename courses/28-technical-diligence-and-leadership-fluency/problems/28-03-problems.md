@@ -20,11 +20,11 @@ Chapter: [28-03](../chapters/28-03-silicon-maturity-scales.md) · Worked solutio
 
 ### Problem 28-03.3 [B]
 
-**From first silicon.** A programme is at L3. Find its probability of reaching production, the remaining time if all goes well, and its value multiplier.
+**From first silicon.** A program is at L3. Find its probability of reaching production, the remaining time if all goes well, and its value multiplier.
 
 ### Problem 28-03.4 [B]
 
-**Paying for qualification.** Find the discount factor and value multiplier of a programme that has completed qualification (only the release step, 0.95 and 2 months, remains), and the most a buyer should pay for it relative to the same programme at tape-out.
+**Paying for qualification.** Find the discount factor and value multiplier of a program that has completed qualification (only the release step, 0.95 and 2 months, remains), and the most a buyer should pay for it relative to the same program at tape-out.
 
 ### Problem 28-03.5 [B]
 

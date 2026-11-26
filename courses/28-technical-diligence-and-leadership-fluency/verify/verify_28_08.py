@@ -68,6 +68,8 @@ v.assert_true("Ex 1: lab model agrees", abs(ig.synergy_value(50, 5, 0.1, 1, 0.8)
 # --- Examples 28-08.2 to 28-08.4 ---------------------------------------------------------
 v.check("Ex 28-08.2a", 25 * 4 * 0.025)
 v.check("Ex 28-08.2b", 60 * 3 / 12)
+v.check("Ex 28-08.2c", 0.6 * 60 * 3 / 12)
+v.check("Ex 28-08.2d", 0.6 * 60 * 3 / 12 / (25 * 4 * 0.025))
 w_both = paths_mc(0.6, 0.5, 0.4 * 0.5, 200)
 v.check("Ex 28-08.3a", 1 - 0.4 * 0.5)
 v.check("Ex 28-08.3b", 200 * (1 - 0.4 * 0.5))
@@ -111,6 +113,7 @@ v.check("28-08.2f", 100 * (1 - q2 / q0))
 # --- Problems 28-08.3 to 28-08.8 -----------------------------------------------------
 v.check("28-08.3a", 40 * 6 * 0.022)
 v.check("28-08.3b", 90 * 4 / 12)
+v.check("28-08.3c", 0.55 * 90 * 4 / 12)
 v.check("28-08.4a", 0.3 * 0.6)
 v.check("28-08.4b", 1 - 0.3 * 0.6)
 v.check("28-08.4c", 150 * (1 - 0.3 * 0.6))
@@ -153,12 +156,13 @@ v.check("28-08.10c", shifted)
 v.check("28-08.10d", 100 * (1 - shifted / p0))
 v.assert_true("P10: lab fixed-window model agrees",
               abs(ig.synergy_value(50, 5, 0.10, delay=1, fixed_window=True) - fixed) < 1e-9)
-surv = np.prod([0.99] * 24)
-cliff = np.prod([0.99] * 23) * 0.85
-v.check("28-08.11a", 100 * surv)
-v.check("28-08.11b", 100 * cliff)
-sim = (RNG.random((200_000, 24)) >= np.r_[[0.01] * 23, [0.15]]).all(axis=1).mean()
-v.assert_true("P11: simulated cliff retention within 0.3 points", abs(sim - cliff) < 0.003)
+rates = {"none": [0.01] * 27, "lump": [0.003] * 24 + [0.05] * 3, "staged": [0.005] * 27}
+ret = {k: np.cumprod([1 - r for r in v]) for k, v in rates.items()}
+for key, (pkg, month) in {"a": ("none", 24), "b": ("lump", 24), "c": ("staged", 24),
+                           "d": ("none", 27), "e": ("lump", 27), "f": ("staged", 27)}.items():
+    v.check(f"28-08.11{key}", 100 * ret[pkg][month - 1])
+sim = (RNG.random((200_000, 27)) >= np.array(rates["lump"])).all(axis=1).mean()
+v.assert_true("P11: simulated lump-package retention within 0.3 points", abs(sim - ret["lump"][26]) < 0.003)
 
 # --- Problem 28-08.12 identities ----------------------------------------------------
 for n, r in ((5, 0.10), (4, 0.12), (10, 0.07)):
@@ -172,5 +176,11 @@ v.check("Lab 28-08.a", plan(50, 5, 0.10, 3, 0.8))
 v.check("Lab 28-08.b", 200 * (1 - 0.35) - 120)
 v.check("Lab 28-08.c", 2 * (2000 / 2) * 8)
 v.check("Lab 28-08.d", sum(terms) - 0.10 * 150)
+
+gross13 = 200 * ((1 - 0.4 * 0.5) - 0.6)
+v.check("28-08.13a", gross13)
+v.check("28-08.13b", gross13 - 30)
+v.check("28-08.13c", gross13 - 12)
+v.check("28-08.13d", (gross13 - 12) - (gross13 - 30))
 
 sys.exit(v.finish())

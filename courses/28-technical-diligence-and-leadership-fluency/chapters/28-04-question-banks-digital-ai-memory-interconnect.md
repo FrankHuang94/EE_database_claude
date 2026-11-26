@@ -11,7 +11,7 @@
 
 **Learning objectives.** After this chapter you can:
 
-1. For digital and CPU programmes, decompose a performance-per-watt claim into IPC, frequency, voltage and process, and ask the questions that separate design gains from node gains.
+1. For digital and CPU programs, decompose a performance-per-watt claim into IPC, frequency, voltage and process, and ask the questions that separate design gains from node gains.
 2. For AI accelerators, check a claim against the ridge point, the decode arithmetic intensity and memory capacity, and ask for utilization at the buyer's batch and latency.
 3. For memory, compute bandwidth and power per stack from interface width, pin rate and energy per bit, and ask about the numbers that govern supply and yield.
 4. For interconnect and optics, compute link and port power from lane counts and energy per bit, and ask about reach, error rates, laser counts and serviceability.
@@ -102,7 +102,7 @@ for a batch of $N_b$ sequences, ignoring the KV cache (which lowers it further).
 
 ### 3.3 Memory
 
-**Governing quantities.** Bandwidth per device is interface width × pin rate ÷ 8. HBM3E stacks use a 1,024-bit interface, and Micron's run at up to 9.2 GT/s, about 1.2 TB/s [R-475]; JEDEC's HBM4 doubles the width to 2,048 bits at up to 8 Gb/s, about 2 TB/s per stack [R-520] **[Established: standard]**, and vendors have announced HBM4 at 11.7 Gb/s and up to 13 Gb/s, "up to 3.3 TB/s" per stack [R-475] **[Established as announcements]**. Power is bits per second × energy per bit: about 3.9 pJ/bit for HBM2 [R-459], and a 2026 measurement put HBM3E power at about 248 W, roughly 35% of an H200's 700 W, at 4.52 TB/s of reads [R-459] **[Industry estimate: preprint]**. The two energy figures have different boundaries: the 3.9 pJ/bit is a 2017 model of the DRAM access alone **[Established, modelled]**, while dividing the measured 248 W by the read rate gives an all-in figure that includes background power, refresh and the host side (Example 28-04.3(e)), so the larger number does not mean energy per bit got worse. Capacity is die density × the number of dies in the stack: sixteen 32 Gb dies give 64 GB, the HBM4 standard's maximum [R-520].
+**Governing quantities.** Bandwidth per device is interface width × pin rate ÷ 8. HBM3E stacks use a 1,024-bit interface, and Micron's run at up to 9.2 GT/s, about 1.2 TB/s [R-475]; JEDEC's HBM4 doubles the width to 2,048 bits at up to 8 Gb/s, about 2 TB/s per stack [R-520] **[Established: standard]**, and vendors have announced HBM4 at 11.7 Gb/s and up to 13 Gb/s, "up to 3.3 TB/s" per stack [R-475] **[Established as announcements]**. Power is bits per second × energy per bit: about 3.9 pJ/bit for HBM2 [R-459], and a 2026 measurement put HBM3E power at about 248 W, roughly 35% of an H200's 700 W, at 4.52 TB/s of reads [R-459] **[Industry estimate: preprint]**. The two energy figures have different boundaries: the 3.9 pJ/bit is a 2017 model of the DRAM access alone **[Established, modeled]**, while dividing the measured 248 W by the read rate gives an all-in figure that includes background power, refresh and the host side (Example 28-04.3(e)), so the larger number does not mean energy per bit got worse. Capacity is die density × the number of dies in the stack: sixteen 32 Gb dies give 64 GB, the HBM4 standard's maximum [R-520].
 
 | # | Question | Strong answer | Evasive answer |
 |---|---|---|---|
@@ -184,7 +184,7 @@ All parameters are illustrative assumptions unless a source is cited.
 
 ### Example 28-04.3 · An HBM4 stack's bandwidth and power (tier B)
 
-**Setup.** Find the bandwidth per stack of (a) HBM3E at 1,024 bits and 9.6 Gb/s [R-475], (b) JEDEC HBM4 at 2,048 bits and 8 Gb/s [R-520], and (c) a vendor's HBM4 at 11.7 and 13 Gb/s [R-475]. (d) At an assumed 6.5 pJ/bit (within the range modelled for HBM4 in [R-459]), what does one 11.7 Gb/s stack draw at full read bandwidth? (e) What energy per bit does the measured H200 figure imply (248 W at 4.52 TB/s), and what share of 700 W is it [R-459]?
+**Setup.** Find the bandwidth per stack of (a) HBM3E at 1,024 bits and 9.6 Gb/s [R-475], (b) JEDEC HBM4 at 2,048 bits and 8 Gb/s [R-520], and (c) a vendor's HBM4 at 11.7 and 13 Gb/s [R-475]. (d) At an assumed 6.5 pJ/bit (within the range modeled for HBM4 in [R-459]), what does one 11.7 Gb/s stack draw at full read bandwidth? (e) What energy per bit does the measured H200 figure imply (248 W at 4.52 TB/s), and what share of 700 W is it [R-459]?
 
 **Solution.**
 
@@ -196,7 +196,7 @@ All parameters are illustrative assumptions unless a source is cited.
 
 **Units check.** bits × Gb/s ÷ 8 = GB/s; bits/s × J/bit = W. ✓
 
-**Sanity check.** At full read bandwidth, memory power is a large share of an accelerator's budget, which is why M2 asks for energy per bit at the shipping rate and M5 for sustained bandwidth. The 6.5 pJ/bit is modelled at 4.8–8 Gb/s; at higher pin rates the vendor's own number is needed.
+**Sanity check.** At full read bandwidth, memory power is a large share of an accelerator's budget, which is why M2 asks for energy per bit at the shipping rate and M5 for sustained bandwidth. The 6.5 pJ/bit is modeled at 4.8–8 Gb/s; at higher pin rates the vendor's own number is needed.
 
 ### Example 28-04.4 · What links cost (tier B)
 

@@ -6,8 +6,8 @@ Exam: [README.md](README.md). Every number is recomputed by [verify_28_exam.py](
 
 **1.** (a) A: weighted $0.3 \times 4 + 0.3 \times 4 + 0.2 \times 2 + 0.2 \times 5$ = **3.80**; geometric $4^{0.6} \times 2^{0.2} \times 5^{0.2}$ = **3.64**. B: weighted **3.50**; geometric $3^{0.5} \times 4^{0.5}$ = **3.46**. A leads on both, but its geometric score falls more because of its weak third dimension.
 (b) Prior odds $0.35/0.65 = 0.538$; posterior odds $0.538 \times 4 \times 0.6$ = **1.29**; probability **56.4**%.
-(c) Expected value $0.564 \times 300 - 0.436 \times 150$ = **103.7** \$M. With perfect information the buyer buys only when the claim holds: $0.564 \times 300 = 169.1$, so EVPI = **65.4** $M.
-(d) $0.564 \times 120/1.12^2$ = **53.9** $M.
+(c) Expected value $0.564 \times 300 - 0.436 \times 150$ = **103.7** \$M. With perfect information the buyer buys only when the claim holds: $0.564 \times 300 = 169.1$, so EVPI = **65.4** \$M.
+(d) $0.564 \times 120/1.12^2$ = **53.9** \$M.
 
 **2.** (a) $2 \times 16384 \times 1.5 \times 10^9$ = **49.2** TOPS dense INT8, so the brochure is **1.99** times that: 2:4 sparsity at INT8 or dense INT4 (28-02).
 (b) MacTOPS $16384 \times 1.5 \times 10^9/10^{12} = 24.6$; TPP $2 \times 24.6 \times 8$ = **393**.
@@ -42,7 +42,7 @@ Exam: [README.md](README.md). Every number is recomputed by [verify_28_exam.py](
 **8.** (a) $\text{LR}^+ = 0.7/0.15$ = **4.67**; $\text{LR}^- = 0.3/0.85$ = **0.353**.
 (b) Prior odds $1/3$. Present: odds 1.556, probability **60.9**%. Absent: odds 0.118, probability **10.5**%.
 (c) $1 - 0.97^{30}$ = **59.9**%; expected $30 \times 0.03$ = **0.9** flags.
-(d) Sensitivity $P(K \ge 3; 30, 0.25)$ = **98.9**%; false-positive rate $P(K \ge 3; 30, 0.03)$ = **6.01**%; ratio **16.5**.
+(d) Sensitivity $P(K \ge 3; 30, 0.25)$ = **98.9**%; false-positive rate $P(K \ge 3; 30, 0.03)$ = **6.01**%; ratio **16.5**. That ratio weighs the *rule*. A target observed with exactly three flags carries $(0.25/0.03)^3(0.75/0.97)^{27}$ = **0.558**, mild evidence of health, because a troubled target averages 7.5 flags (28-06 §3.2); full marks need neither, but an answer that uses 16.5 to update on an observed count of three loses the interpretation mark.
 
 **9.** (a) Posterior $\text{Beta}(3.4, 11.6)$: mean $3.4/15$ = **22.7**%; weight $5/15$ = **0.333**.
 (b) 5th to 95th percentile: **7.75**% to **41.8**%.
@@ -50,13 +50,13 @@ Exam: [README.md](README.md). Every number is recomputed by [verify_28_exam.py](
 (d) $q = 1 - 0.85^2$ = **27.75**% with one owner; $q^2$ = **7.70**% with two.
 
 **10.** (a) Annuity $[1 - 1.1^{-5}]/0.1 = 3.791$; planned $40 \times 3.791$ = **151.6** \$M; late and partial $0.75 \times 151.6/1.1$ = **103.4** \$M; loss $1 - 0.75/1.1$ = **31.8**%.
-(b) Migration $30 \times 5 \times 0.025$ = **3.75** \$M; delay $120 \times 2/12$ = **20** $M. Freeze the flow until the tape-out.
-(c) $1 - 0.45 \times 0.55$ = **0.7525**; with both $180 \times 0.7525$ = **135.45** \$M; better alone $180 \times 0.55$ = **99** $M; gain **36.45** $M, just above the $35M cost: keep both, narrowly, and only if the programs are truly independent.
-(d) Contingent $0.45 \times 300/1.1^3$ = **101.4** $M; deal **601.4** $M.
+(b) Migration $30 \times 5 \times 0.025$ = **3.75** \$M; delay $120 \times 2/12$ = **20** \$M. Freeze the flow until the tape-out.
+(c) $1 - 0.45 \times 0.55$ = **0.7525**; with both $180 \times 0.7525$ = **135.45** \$M; better alone $180 \times 0.55$ = **99** \$M; gain **36.45** \$M, just above the \$35M cost: keep both, narrowly, and only if the programs are truly independent.
+(d) Contingent $0.45 \times 300/1.1^3$ = **101.4** \$M; deal **601.4** \$M.
 
-**11.** (a) DPW $\lfloor \pi \cdot 300^2/600 - \pi \cdot 300/\sqrt{300} \rfloor$ = **416**; yield $e^{-0.12}$ = **88.7**%; cost $20000/(416 \times 0.8869)$ = **54.21** $.
+**11.** (a) DPW $\lfloor \pi \cdot 300^2/600 - \pi \cdot 300/\sqrt{300} \rfloor$ = **416**; yield $e^{-0.12}$ = **88.7**%; cost $20000/(416 \times 0.8869)$ = **54.21** \$.
 (b) Ignoring the edge, $\text{DPW} = \pi d^2/(4A)$, so $C = (4W/\pi d^2)\,A\,e^{AD_0}$ and $\ln C = \text{const} + \ln A + AD_0$; then $d\ln C/d\ln A = A\,(1/A + D_0) = 1 + AD_0$ = **1.12**. At 165 mm²: DPW **376**, cost increase **12.0**%, average elasticity **1.20**, above 1.12 because of the edge term and whole-die rounding.
-(c) Margin $1 - (54.21 + 12)/120$ = **44.8**%. For 65%: unit cost $120 \times 0.35$ = **42** $, die budget **30** $, area **89.9** mm².
+(c) Margin $1 - (54.21 + 12)/120$ = **44.8**%. For 65%: unit cost $120 \times 0.35$ = **42** \$, die budget **30** \$, area **89.9** mm².
 (d) $0.45 \times 1.3 \times 35064 \times 0.09$ = **1846** \$; 400 W **1641** \$; saving **205** \$; capacity gain $0.45/0.40 - 1$ = **12.5**%.
 
 **12.** (a) With $o \sim \text{Bernoulli}(q)$: $E[(p - o)^2] = q(1 - p)^2 + (1 - q)p^2 = p^2 - 2pq + q = (p - q)^2 + q(1 - q)$. Only the first term depends on $p$, and it is zero at $p = q$, so honest reporting minimizes the expected score (rubric below).
@@ -137,6 +137,7 @@ Exam: [README.md](README.md). Every number is recomputed by [verify_28_exam.py](
 | X28.8d | sensitivity, three or more | 98.9 | % |
 | X28.8d1 | false-positive rate, three or more | 6.01 | % |
 | X28.8d2 | ratio | 16.5 | — |
+| X28.8d3 | likelihood ratio, exactly three | 0.558 | — |
 | X28.9a | posterior mean | 22.7 | % |
 | X28.9a1 | weight on the record | 0.333 | — |
 | X28.9b | 5th percentile | 7.75 | % |

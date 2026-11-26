@@ -9,7 +9,7 @@
 The lab uses the chapter's models with its assumed parameters:
 
 - §3.1: a $\text{Beta}(\alpha_0, \beta_0)$ prior updated by $s$ successes in $n$ projects, with mean $(\alpha_0 + s)/(n_0 + n)$.
-- §3.2: lognormal overruns with $P(\text{on time}) = \Phi(-\mu/\sigma)$ and $T_{90} = T_{\text{plan}}e^{\mu + z_{0.9}\sigma}$.
+- §3.2: lognormal overruns with the plug-in $P(\text{on time}) = \Phi(-\mu/s_{\ln})$ and $T_{90} = T_{\text{plan}}e^{\mu + z_{0.9}s_{\ln}}$ (overconfident for a short record; §3.2 gives the $t$ predictive form).
 - §3.3: capability loss $q^k$, or $c + (1 - c)q'^k$ with group departures.
 - §3.6: retained value $NV\rho$.
 
@@ -35,14 +35,14 @@ The lab uses the chapter's models with its assumed parameters:
 | ID | Quantity | Value | Unit |
 |---|---|---|---|
 | Lab 28-07.a | posterior mean, 5 of 5 | 42.7 | % |
-| Lab 28-07.b | P90 duration for a 24-month plan | 34.4 | months |
+| Lab 28-07.b | plug-in P90 duration for a 24-month plan | 34.4 | months |
 | Lab 28-07.c | two owners, three years | 10.1 | % |
 | Lab 28-07.d | break-even package cost | 13.5 | $M |
 
 ## Discussion
 
 1. Five successes in five projects lift the estimate from 14% to **42.7**%: impressive, but far from the raw 100%, because five projects are little evidence against a low base rate. Each further success adds less.
-2. With a 24-month plan the P90 is **34.4** months. A deal model that schedules milestone payments at 24 months is betting against the team's own history.
+2. With a 24-month plan the plug-in P90 is **34.4** months, and the $t$ predictive P90 is later still because four projects leave the spread uncertain. A deal model that schedules milestone payments at 24 months is betting against the team's own history.
 3. Two owners cut the three-year loss probability to **10.1**%, but a 5% chance of the group leaving together sets a floor that no amount of redundancy inside the team removes.
 4. The package breaks even at **13.5** $M. Concentrating it on the engineers whose departure would cost the most raises its value per dollar.
 

@@ -70,8 +70,9 @@ Conventions:
 |---|---|---|
 | $\text{LR}^+ = s/f$; $\text{LR}^- = (1 - s)/(1 - f)$ | A flag as a diagnostic test | [28-06](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-06-red-and-green-flags.md) |
 | $P(\ge 1 \mid \text{healthy}) = 1 - (1 - f)^n \approx 1 - e^{-nf}$ | Checklist false alarms | [28-06](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-06-red-and-green-flags.md) |
-| LR of $K \ge k$ = $P(K \ge k; n, s)/P(K \ge k; n, f)$ | Binomial count thresholds | [28-06](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-06-red-and-green-flags.md) |
-| $1 - (1 - q)^{mt}$; $\text{HHI} = \sum s_i^2$, effective customers $1/\text{HHI}$ | Key-person risk; customer concentration | [28-06](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-06-red-and-green-flags.md) |
+| LR of $K \ge k$ = $P(K \ge k; n, s)/P(K \ge k; n, f)$ | Weight of a count *threshold* (a decision rule), valid only when all you know is that it was crossed | [28-06](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-06-red-and-green-flags.md) |
+| LR of exactly $K = k$ = $(\text{LR}^+)^k(\text{LR}^-)^{n - k}$ | Weight of an *observed* count; use this to update | [28-06](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-06-red-and-green-flags.md) |
+| $1 - (1 - q)^{mt}$; $\text{HHI} = \sum x_i^2$ (shares $x_i$), effective customers $1/\text{HHI}$ | Key-person risk; customer concentration | [28-06](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-06-red-and-green-flags.md) |
 | $V = N p R \cdot \frac1n\sum(1 + r)^{-k}$ | Risk-adjusted design-win funnel | [28-06](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-06-red-and-green-flags.md) |
 
 ## Evaluating engineering teams (28-07)
@@ -88,7 +89,7 @@ Conventions:
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
 | $\text{PV} = S[1 - (1 + r)^{-n}]/r$; late and partial: $\times\rho(1 + r)^{-d}$ | Synergy value | [28-08](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-08-integration-risk.md) |
-| Lost revenue $\approx R\,d/12$ | Delay in a fixed market window | [28-08](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-08-integration-risk.md) |
+| Lost gross profit $\approx m\,R\,d_m/12$ for $d_m$ months (revenue $R\,d_m/12$ times margin $m$) | Delay in a fixed market window; compare profit, not revenue, with a cost | [28-08](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-08-integration-risk.md) |
 | Gain $= W[1 - P(\text{both fail}) - \max(p_1, p_2)]$ | Parallel paths | [28-08](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-08-integration-risk.md) |
 | $\text{EL} = \sum_i p_iI_i$; earn-out PV $= pC(1 + r)^{-T}$ | Risk register; contingent payments | [28-08](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-08-integration-risk.md) |
 

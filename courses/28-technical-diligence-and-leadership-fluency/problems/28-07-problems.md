@@ -29,13 +29,13 @@ Chapter: [28-07](../chapters/28-07-evaluating-engineering-teams.md) · Worked so
 
 ### Problem 28-07.4 [B]
 
-**Another schedule.** A team's last three projects took 1.15, 1.35 and 1.50 times their plans. Its new plan is 24 months. Find the geometric mean overrun, the expected duration, the standard deviation of the log-ratios and the probability of meeting the plan.
+**Another schedule.** A team's last three projects took 1.15, 1.35 and 1.50 times their plans. Its new plan is 24 months. Find the geometric mean overrun, the median duration, the standard deviation of the log-ratios and the probability of meeting the plan with the plug-in normal; then find the probability of meeting the plan and the P90 duration with the $t$ predictive distribution ($t_{0.9;2} = 1.886$). Why do the two answers differ so much?
 
 ### Problem 28-07.5 [B]
 
 **Bench depth at 15%.** Each engineer leaves with probability 15% a year. Find the probability of losing a capability with one, two and three owners over one year and over three years.
 
-### Problem 28-07.6 [B]
+### Problem 28-07.6 [A]
 
 **Single points of failure.** Four capabilities each have a single owner; departures are 12% a year. Find the probability of losing at least one capability within two years.
 

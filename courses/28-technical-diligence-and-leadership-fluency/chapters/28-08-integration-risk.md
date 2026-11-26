@@ -32,7 +32,7 @@ Most of the value in a semiconductor acquisition is created or lost after the de
 
 **A merger of two IT systems.** Anyone who has lived through a bank merger knows the pattern: the two banks' systems must eventually become one, but converting the core ledger in the middle of quarter-end closing is how merged banks end up in the news. The safe sequence is to keep both systems running, convert at a quiet time, and test thoroughly before switching. Chip-design integration follows the same logic. A design team mid-way to tape-out has a flow (EDA tools, scripts, libraries, verification infrastructure) tuned over years; switching it to the buyer's flow before tape-out risks a slip measured in months, on the product the deal was meant to buy.
 
-Where the analogy breaks down: a bank can run two ledgers in parallel indefinitely at modest cost. Two chip flows mean duplicated EDA licenses, two sets of methodology experts and two qualification processes, and a design started in one flow cannot easily be finished in another. The cost of waiting is real, so the decision is about when to migrate, not whether.
+Where the analogy breaks down: a bank can run two ledgers in parallel for a long time, at a known cost. Two chip flows mean duplicated EDA licenses, two sets of methodology experts and two qualification processes, and a design started in one flow cannot easily be finished in another. The cost of waiting is real, so the decision is about when to migrate, not whether.
 
 **Delay is the silent killer of synergies.** Synergies are cash flows in the future; a one-year slip in integration discounts every one of them by another year and often shortens the window in which they apply. A plan that delivers its synergies a year late and only partly can lose more than a quarter of its value (Example 28-08.1).
 
@@ -57,13 +57,13 @@ $$
 V = V_{\text{standalone}} + \text{PV}(\text{synergies}) - \text{PV}(\text{integration costs}) - \text{PV}(\text{dis-synergies})
 $$
 
-where dis-synergies are losses caused by the combination itself (customers who leave because they now compete with the buyer, engineers who leave, programs cancelled). A synergy of $S$ per year for $n$ years, starting at the end of year 1, is worth the annuity
+where dis-synergies are losses caused by the combination itself (customers who leave because they now compete with the buyer, engineers who leave, programs canceled). A synergy of $S$ per year for $n$ years, starting at the end of year 1, is worth the annuity
 
 $$
 \text{PV} = S\sum_{t=1}^{n}(1 + r)^{-t} = S\,\frac{1 - (1 + r)^{-n}}{r}
 $$
 
-at discount rate $r$ (26-04). If integration delays the start by $d$ years and only a fraction $\rho$ is realized, the value becomes
+at discount rate $r$ (26-04). If integration delays the start by $d$ years (in this section $d$ is in years; §3.2 measures delay $d_m$ in months) and only a fraction $\rho$ is realized, the value becomes
 
 $$
 \text{PV}_{d,\rho} = \rho\,S\,\frac{1 - (1 + r)^{-n}}{r}\,(1 + r)^{-d}
@@ -77,15 +77,15 @@ assuming the synergies still last $n$ years once started. If instead the window 
 
 **The cost of migrating.** A migration costs engineer time, $N_e \times T_m \times c$ for $N_e$ engineers over $T_m$ months at loaded cost $c$ per month, plus duplicated licenses during the transition and a learning-curve loss of productivity. Its larger cost is the risk of delay: switching flows mid-project means re-running timing, power and verification sign-off in an unfamiliar environment, and finding the differences the hard way.
 
-**The cost of delay.** If a product's market window ends at a fixed date (the next generation, a customer's model year), each month of delay removes a month of revenue at the product's run rate $R$ per year:
+**The cost of delay.** If a product's market window ends at a fixed date (the next generation, a customer's model year), each month of delay removes a month of sales at the product's run rate $R$ per year. What the business loses is the gross profit on those sales, at gross margin $m$, which is the number to compare with a cost:
 
 $$
-\text{Lost revenue} \approx R \cdot \frac{d}{12}
+\text{Lost gross profit} \approx m \cdot R \cdot \frac{d_m}{12}
 $$
 
-for a delay of $d$ months, before any loss of the socket itself. Comparing this with the migration's cost saving usually favors the **flow-freeze rule**: finish the current tape-out in the existing flow, migrate between projects, and start the next project in the target flow (Example 28-08.2).
+for a delay of $d_m$ months, before any loss of the socket itself. Two refinements matter in a real model: the lost months may fall at peak volume rather than at the average run rate, so $R$ at the average can understate the loss, and the loss arrives later than the migration's cost, so both should be discounted (§3.1). Comparing this with the migration's cost saving usually favors the **flow-freeze rule**: finish the current tape-out in the existing flow, migrate between projects, and start the next project in the target flow (Example 28-08.2).
 
-**Process and foundry ports.** Moving a design to the buyer's preferred foundry or node is a larger migration. Digital logic can be re-synthesized; analog and mixed-signal blocks must be redesigned, which is slow and risky (20-12), and qualification starts again (25-10). An integration plan that assumes a quick port of analog IP is a red flag (28-06).
+**Process and foundry ports.** Moving a design to the buyer's preferred foundry or node is a larger migration. Digital logic can be re-synthesized, but even that needs the new node's cell libraries and memory compilers, full physical design and a new mask set, and third-party hard IP (SerDes, PHYs, PLLs) that may not exist on the target node; analog and mixed-signal blocks must be redesigned, which is slow and risky (20-12), and qualification starts again (25-10). An integration plan that assumes a quick port of analog IP is a red flag (28-06).
 
 ### 3.3 Roadmap overlap as parallel paths
 
@@ -100,18 +100,21 @@ and with a socket worth $W$, keeping both adds $W[P(\text{at least one}) - \max(
 - **Correlation.** Programs that share IP, a process node or a team fail together more often than independence suggests. If $P(\text{both fail})$ is larger than $(1 - p_1)(1 - p_2)$, the gain from the second path shrinks (Problem 28-08.4).
 - **Customer and team effects.** Cancelling a program can cost customers who chose it and engineers who built it, which are dis-synergies in the value equation.
 
+**Staging the choice.** "Keep both to the end" and "cancel one now" are not the only options. The more valuable one is usually to keep both until a milestone that reveals which is ahead, such as first silicon, and then cancel the laggard. This is a real option: the buyer pays only the cost of carrying the second program to the milestone, and it keeps most of the benefit of the parallel path, because the information arrives before most of the money is spent. If the milestone revealed the outcomes perfectly, the staged plan would capture the whole gain $W[P(\text{at least one}) - \max(p_1, p_2)]$ for the pre-milestone cost alone; a noisy milestone captures less, so this is an upper bound on what staging is worth (Problem 28-08.13).
+
 ### 3.4 Retention through integration
 
-The retention arithmetic of 28-07 applies, with two integration-specific features. First, departures cluster around events: deal announcement, the first reorganization, and vesting dates of retention equity. A package that vests in one lump at month 24 tends to hold people until month 24 and then release many at once, so staged vesting and project-tied milestones spread the risk. Second, the most marketable engineers, often the ones the deal was for, leave first. A retention plan built on the capability map of 28-07 §3.3 directs money to the engineers whose departure would cost the most, and pairs it with work they want to do: integration that cancels a team's favorite project is a common cause of departures.
+The retention arithmetic of 28-07 applies, with two integration-specific features. First, departures cluster around events: deal announcement, the first reorganization, and vesting dates of retention equity. A package that vests in one lump at month 24 tends to hold people until month 24 and then release many at once, so a dashboard that reports retention *at* the cliff flatters it; measure retention a few months after, and compare structures at equal cost. Staged vesting and project-tied milestones spread the risk (Problem 28-08.11). Second, the most marketable engineers, often the ones the deal was for, leave first. A retention plan built on the capability map of 28-07 §3.3 directs money to the engineers whose departure would cost the most, and pairs it with work they want to do: integration that cancels a team's favorite project is a common cause of departures.
 
 ### 3.5 Intellectual property, licensing and regulation
 
 An acquisition can change what the combined company is allowed to do. Four areas need technical as well as legal review:
 
-- **Architecture and IP licenses.** Processor IP is often licensed under agreements with change-of-control or scope terms. Arm's filings describe several licensing models, including architecture licenses that allow a licensee to design its own compatible CPUs, and a per-unit royalty "on substantially every chip shipped" [R-204]. Its dispute with Qualcomm over Nuvia's architecture license, acquired with Nuvia, went to judgment for Qualcomm on 30 Sep 2025 with Arm's appeal pending at the time of Arm's 2026 filing [R-204] **[Established as described in the filing]**: an example of how a license's terms can become an integration risk.
-- **Royalties and margin.** A royalty set as a fraction of chip price, or per unit, scales with volume. Arm reports that Armv9's typical royalty was "around double" Armv8's [R-639] **[Established: company statement]**, so the architecture generation chosen for the combined roadmap affects gross margin directly (Example 28-08.4).
-- **Open-source and open standards.** The RISC-V instruction set is free to use, but implementations "may carry a fee" for other IP they rely on [R-203]; open-source software and hardware licenses carry obligations that must be honored when products are combined.
-- **Export controls.** US rules classify advanced computing chips by total processing performance (TPP, 28-02) and performance density. Under ECCN 3A090 as revised in 2023, chips with TPP of 4800 or more, or TPP of 1600 or more with performance density of 5.92 or more, fall under 3A090.a, with a lower band in 3A090.b [R-659] **[Established: regulatory text; not legal advice]**. Licensing policy has changed several times since 2022 [R-659], so an acquisition that adds datacenter accelerators, or teams in other countries, must be checked against the current rules.
+- **Architecture and IP licenses.** Processor IP is often licensed under agreements with change-of-control or scope terms. Arm's filings describe several licensing models, including architecture licenses that allow a licensee to design its own compatible CPUs, and a per-unit royalty "on substantially every chip shipped" [R-204]. Its dispute with Qualcomm, over whether designs developed under Nuvia's architecture license could be used under Qualcomm's own license after the acquisition, went to judgment for Qualcomm on 30 Sep 2025 with Arm's appeal pending at the time of Arm's 2026 filing [R-204] **[Established as described in the filing]**: an example of how a license's terms can become an integration risk.
+- **Royalties and margin.** A royalty set as a fraction of chip price, or per unit, scales with volume. Arm reports that for fiscal 2024 Armv9's typical royalty was "around double" Armv8's [R-639] **[Established: company statement]**, so the architecture generation chosen for the combined roadmap affects gross margin directly (Example 28-08.4).
+- **Open-source and open standards.** The RISC-V instruction set is free to use, but implementations "may carry a fee" for other IP they rely on [R-203] **[Established]**; open-source software and hardware licenses carry obligations that must be honored when products are combined.
+- **Export controls.** US rules classify advanced computing chips by total processing performance (TPP, 28-02) and performance density. Under ECCN 3A090 as revised in 2023, chips with TPP of 4800 or more, or TPP of 1600 or more with performance density of 5.92 or more, fall under 3A090.a, with a lower band in 3A090.b [R-659] **[Established: regulatory text; not legal advice]**. Licensing policy has changed several times since 2022 [R-659]: most recently, an interim final rule effective 19 Nov 2026 (91 FR 74970) restricts exports to overseas data centers that remotely supply significant compute to companies headquartered in Country Group D:5 or Macau, and formally rescinds the regulations implementing the AI Diffusion Rule [R-659] **[Established: Federal Register; not legal advice]**. An acquisition that adds datacenter accelerators, data-center sites, or teams in other countries must be checked against the current rules.
+- **Other approvals.** Merger-control clearances (in several jurisdictions, not only the US), national-security review such as CFIUS with its possible mitigation agreements, and deemed-export rules for foreign-national engineers working on controlled technology can all shape an integration plan and its timing. These are pointers for counsel, not legal advice.
 
 ### 3.6 The integration risk register and earn-outs
 
@@ -121,9 +124,9 @@ $$
 \text{EL} = \sum_i p_i I_i
 $$
 
-(26-05). Rank risks by $p_iI_i$, not by impact alone, and rank mitigations by the reduction in expected loss per dollar spent. Low-probability, high-impact risks (a license dispute) deserve explicit treatment because their expected loss can be the largest single term even when they seem unlikely.
+(26-05). Rank risks by $p_iI_i$, not by impact alone, and rank mitigations by the reduction in expected loss per dollar spent. Low-probability, high-impact risks (a license dispute) deserve explicit treatment because their expected loss can be the largest single term even when they seem unlikely. Two limits of the register: expected losses add whatever the dependence between risks, but mitigations can interact (a retention package also lowers the chance of a tape-out slip), so their savings do not simply add; and an expected value says nothing about the tail, where correlated risks (a key team leaving *and* the tape-out slipping) can produce a total loss far above the sum's typical value.
 
-**Earn-outs.** When buyer and seller disagree about the probability of future milestones, part of the price is made contingent. If a contingent payment $C$ is paid with probability $p$ at time $T$, its expected present value is $pC(1 + r)^{-T}$, and the deal's expected cost is the upfront payment plus that. Marvell's acquisition of Celestial AI is a recent example: about $3.25B upfront (cash and shares) and up to about $2.25B more in shares contingent on revenue milestones through fiscal 2029, paid in full if cumulative revenue exceeds $2.0B [R-547] **[Established: company releases]**. Earn-outs shift risk to the seller, but they also create incentives: a target's engineers paid on revenue milestones will prioritize those milestones over integration.
+**Earn-outs.** When buyer and seller disagree about the probability of future milestones, part of the price is made contingent. If a contingent payment $C$ is paid with probability $p$ at time $T$, its expected present value is $pC(1 + r)^{-T}$, and the deal's expected cost is the upfront payment plus that. Marvell's acquisition of Celestial AI is a recent example: about \$3.25B upfront (cash and shares) and up to about \$2.25B more in shares contingent on revenue milestones through fiscal 2029, paid in full if cumulative revenue exceeds \$2.0B [R-547] **[Established: company releases]**. Earn-outs shift risk to the seller, but they also create incentives: a target's engineers paid on revenue milestones will prioritize those milestones over integration. They are also a common source of post-closing disputes over how milestones were measured and whether the buyer ran the business to meet them, and their accounting matters: contingent consideration is remeasured after closing under US GAAP (ASC 805), and payments tied to continued employment are generally compensation expense rather than purchase price. These are pointers for counsel and the accountants, not legal or accounting advice.
 
 ## 4. Worked examples
 
@@ -135,8 +138,8 @@ All synergies, costs, probabilities and impacts are illustrative assumptions unl
 
 **Solution.**
 
-- (a) $[1 - 1.1^{-5}]/0.1$ = **3.791**; $50 \times 3.791$ = **189.5** $M.
-- (b) $0.8 \times 189.5/1.1$ = **137.8** $M.
+- (a) $[1 - 1.1^{-5}]/0.1$ = **3.791**; $50 \times 3.791$ = **189.5** \$M.
+- (b) $0.8 \times 189.5/1.1$ = **137.8** \$M.
 - (c) Loss **51.7** $M, **27.3**% of the plan.
 
 **Units check.** $M per year × years-equivalent factor = $M. ✓
@@ -145,19 +148,19 @@ All synergies, costs, probabilities and impacts are illustrative assumptions unl
 
 ### Example 28-08.2 · Migrate now or after tape-out? (tier B)
 
-**Setup.** Migrating a 25-engineer team to the buyer's flow takes 4 months at $25k per engineer-month (loaded). Doing it now, mid-project, is expected to delay the current product by 3 months; the product earns $60M a year in a market window that ends at a fixed date. Find the migration's direct cost and the lost revenue from the delay.
+**Setup.** Migrating a 25-engineer team to the buyer's flow takes 4 months at $25k per engineer-month (loaded). Doing it now, mid-project, is expected to delay the current product by 3 months; the product earns \$60M a year at a 60% gross margin (assumed) in a market window that ends at a fixed date. Find the migration's direct cost, the lost revenue and the lost gross profit from the delay.
 
-**Solution.** Direct cost $25 \times 4 \times 0.025$ = **2.5** \$M. Lost revenue $60 \times 3/12$ = **15** $M.
+**Solution.** Direct cost $25 \times 4 \times 0.025$ = **2.5** \$M. Lost revenue $60 \times 3/12$ = **15** \$M; lost gross profit $0.6 \times 15$ = **9** \$M.
 
 **Units check.** engineers × months × $M per engineer-month = $M; $M/year × years = $M. ✓
 
-**Sanity check.** The delay costs six times the migration itself. Unless running two flows until tape-out costs more than about $15M (it rarely does), freezing the flow and migrating afterward is the better plan.
+**Sanity check.** The delay's lost profit is **3.6** times the migration's direct cost; comparing revenue with a cost would have overstated it by the margin's inverse. Unless running two flows until tape-out (duplicated licenses and support) costs more than about \$9M in profit terms, freezing the flow and migrating afterward is the better plan, and a lost socket would strengthen the case further.
 
 ### Example 28-08.3 · Two programs for one socket (tier B)
 
 **Setup.** After a merger, the buyer's program succeeds with probability 0.6 and the target's with 0.5 (independent). The socket is worth $200M. Keeping the second program costs $30M. Find the probability that at least one succeeds, the expected value with both and with the better one alone, and the decision.
 
-**Solution.** $P = 1 - 0.4 \times 0.5$ = **0.8**; value with both $200 \times 0.8$ = **160** \$M; better alone $200 \times 0.6$ = **120** $M; gain **40** $M against a cost of $30M, so keep both.
+**Solution.** $P = 1 - 0.4 \times 0.5$ = **0.8**; value with both $200 \times 0.8$ = **160** \$M; better alone $200 \times 0.6$ = **120** \$M; gain **40** \$M against a cost of \$30M, so keep both.
 
 **Units check.** Probabilities × $M = $M. ✓
 
@@ -167,11 +170,11 @@ All synergies, costs, probabilities and impacts are illustrative assumptions unl
 
 **Setup.** A combined roadmap ships 50 million chips a year at a $20 average selling price. Find the annual royalty at 1%, 2% and 3% of the selling price, and the gross-margin points each represents.
 
-**Solution.** Revenue $50 \times 10^6 \times 20$ = $1,000M. Royalty **10**, **20** and **30** $M; **1**, **2** and **3** margin points.
+**Solution.** Revenue $50 \times 10^6 \times 20$ = \$1,000M. Royalty **10**, **20** and **30** \$M; **1**, **2** and **3** margin points.
 
 **Units check.** units × $/unit × fraction = $. ✓
 
-**Sanity check.** A doubling of the royalty rate, of the size Arm reports between Armv8 and Armv9 [R-639], moves gross margin by a full point at this volume. Royalty terms, and whether they change on a change of control, belong in the deal model.
+**Sanity check.** A doubling of the royalty rate from 1% to 2% of price, of the relative size Arm reports between Armv8 and Armv9 [R-639], moves gross margin by one point whatever the volume; at this volume that point is worth about \$10M a year. Royalty terms, and whether they change on a change of control, belong in the deal model.
 
 ### Example 28-08.5 · Valuing an earn-out (tier B)
 
@@ -179,9 +182,9 @@ All synergies, costs, probabilities and impacts are illustrative assumptions unl
 
 **Solution.**
 
-- (a) $3.25 + 2.25$ = **5.5** $B; contingent share **40.9**%.
-- (b) $3.25 + 0.4 \times 2.25$ = **4.15** $B.
-- (c) $0.4 \times 2.25/1.1^3$ = **0.676** $B; total **3.93** $B.
+- (a) $3.25 + 2.25$ = **5.5** \$B; contingent share **40.9**%.
+- (b) $3.25 + 0.4 \times 2.25$ = **4.15** \$B.
+- (c) $0.4 \times 2.25/1.1^3$ = **0.676** \$B; total **3.93** \$B.
 
 **Units check.** $B × probability × discount factor = $B. ✓
 
@@ -193,12 +196,12 @@ All synergies, costs, probabilities and impacts are illustrative assumptions unl
 
 **Solution.**
 
-- (a) $12 + 12 + 5 + 15 + 5$ = **49** $M; the largest term is the license dispute at **15** $M.
-- (b) $49 - 6$ = **43** $M; saving **6** $M.
+- (a) $12 + 12 + 5 + 15 + 5$ = **49** \$M; the largest term is the license dispute at **15** \$M.
+- (b) $49 - 6$ = **43** \$M; saving **6** \$M.
 
 **Units check.** Probability × $M = $M. ✓
 
-**Sanity check.** The least likely risk contributes the most expected loss, which is why license review belongs before signing. The flow freeze saves $6M for little cost, the kind of cheap, high-value mitigation an integration plan should lead with.
+**Sanity check.** The least likely risk contributes the most expected loss, which is why license review belongs before signing. The flow freeze saves \$6M of expected loss at the price of duplicated licenses for a few months, the kind of cheap, high-value mitigation an integration plan should lead with.
 
 <!-- answer-key -->
 
@@ -213,6 +216,8 @@ All synergies, costs, probabilities and impacts are illustrative assumptions unl
 | Ex 28-08.1c1 | loss fraction | 27.3 | % |
 | Ex 28-08.2a | migration cost | 2.5 | $M |
 | Ex 28-08.2b | lost revenue | 15 | $M |
+| Ex 28-08.2c | lost gross profit | 9 | $M |
+| Ex 28-08.2d | lost profit over direct cost | 3.6 | — |
 | Ex 28-08.3a | at least one succeeds | 0.8 | — |
 | Ex 28-08.3b | value with both | 160 | $M |
 | Ex 28-08.3c | value with the better one | 120 | $M |
@@ -237,9 +242,9 @@ All synergies, costs, probabilities and impacts are illustrative assumptions unl
 
 The lab is [labs/28-08-lab/](../labs/28-08-lab/README.md). `integrate.py` implements the models: synergy annuities with delay and realization, migration and delay costs, parallel paths with correlation, royalties, TPP and performance density, risk registers and earn-outs.
 
-1. *Predict* the value of Example 28-08.1's plan if integration slips two years with 80% realization. Then plot value against delay for realization of 60%, 80% and 100%.
+1. *Predict* the value of Example 28-08.1's plan if integration slips three years with 80% realization. Then plot value against delay for realization of 60%, 80% and 100%.
 2. *Predict* the gain from keeping both programs of Example 28-08.3 if they fail together with probability 0.35 (instead of 0.2). Then plot the gain against the probability that both fail.
-3. *Predict* the TPP of an accelerator with 1,200 dense INT8 TOPS. Then tabulate TPP and performance density for a set of hypothetical chips against the 3A090 thresholds [R-659].
+3. *Predict* the TPP of an accelerator with 2,000 dense FP8 TFLOP/s. Then tabulate TPP and performance density for a set of hypothetical chips against the 3A090.a and 3A090.b thresholds [R-659] (not legal advice).
 4. *Predict* the expected loss of Example 28-08.6's register if the license risk is resolved before signing. Then plot each risk's contribution before and after mitigations.
 
 ![Left: present value of a $50M-a-year, five-year synergy plan at 10% against integration delay from zero to three years, for realization of 60%, 80% and 100%, falling with each year of delay; right: a bar chart of expected loss by integration risk for Example 28-08.6, with the architecture-license dispute largest at $15M despite its 10% probability](../../../assets/figures/28-08/synergy-and-register.svg)
@@ -266,12 +271,12 @@ Figures are as of Nov 2026 unless dated otherwise.
 |---|---|---|
 | Annuity factor, 5 years at 10% | 3.791 | §3.1 |
 | Synergy value, late and partial | $\rho(1 + r)^{-d}$ of plan | §3.1 |
-| Lost revenue from delay (fixed window) | $R \cdot d/12$ | §3.2 |
+| Lost gross profit from delay (fixed window) | $m \cdot R \cdot d_m/12$ | §3.2 |
 | Parallel paths | $1 - (1 - p_1)(1 - p_2)$ if independent | §3.3 |
-| Arm royalty share of revenue | about 53% (FY2026: $2,613M of $4,920M) | Form 20-F [R-204] |
-| Armv9 royalty against Armv8 | "around double" | [R-639] |
-| 3A090.a thresholds | TPP ≥ 4800, or TPP ≥ 1600 with density ≥ 5.92 | 2023 rule text [R-659] |
-| Celestial AI terms | about $3.25B upfront, up to about $2.25B contingent (through FY2029) | Marvell [R-547] |
+| Arm royalty share of revenue | about 53% (FY2026: \$2,613M of \$4,920M) | Form 20-F [R-204] **[Established]** |
+| Armv9 royalty against Armv8 | "around double" (fiscal 2024) | [R-639] **[Established: company statement]** |
+| 3A090.a thresholds | TPP ≥ 4800, or TPP ≥ 1600 with density ≥ 5.92 | 2023 rule text [R-659] **[Established; not legal advice]** |
+| Celestial AI terms | about $3.25B upfront, up to about $2.25B contingent (through FY2029) | Marvell [R-547] **[Established: company announcement]** |
 
 ## 8. Common mistakes
 
@@ -287,7 +292,7 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 **State of play (as of Nov 2026).**
 
-- **Earn-outs are back in large chip deals.** Marvell's acquisition of Celestial AI, signed in December 2025 and closed on 2 Feb 2026, put about 40% of the maximum consideration in revenue-contingent shares [R-547] **[Established]**.
+- **Large chip deals still use earn-outs.** Marvell's acquisition of Celestial AI, signed in December 2025 and closed on 2 Feb 2026, put about 40% of the maximum consideration in revenue-contingent shares [R-547] **[Established]**.
 - **License terms can follow a team into a dispute.** The Arm–Qualcomm litigation over the Nuvia architecture license reached a judgment for Qualcomm in September 2025, with Arm's appeal pending when Arm filed its fiscal-2026 annual report [R-204] **[Established as described in the filing]**.
 - **Royalty economics depend on architecture generation.** Arm describes Armv9 royalties as about double Armv8's, with Compute Subsystems higher still [R-639] **[Established: company statements]**, so roadmap choices after a merger change cost of goods.
 - **Export rules keep moving.** Since the 2022 rule, the US has revised advanced-computing controls repeatedly, including a January 2026 change to license review for certain accelerators [R-659] **[Established: Federal Register]**; integration plans that combine product lines or sites must be rechecked against the rules in force.
@@ -322,7 +327,7 @@ Figures are as of Nov 2026 unless dated otherwise.
 
    <details><summary>Answer</summary>
 
-   Finish the current tape-out in the existing flow and migrate afterward. The cost of a few months' delay on a revenue-generating product usually exceeds the cost of running two flows for a while.
+   Finish the current tape-out in the existing flow and migrate afterward. The gross profit lost to a few months' delay on a product in its market window usually exceeds the cost of running two flows for a while; compare profit, not revenue, with that cost.
 
    </details>
 

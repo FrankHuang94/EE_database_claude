@@ -23,14 +23,14 @@
 
 Most of what a diligence team hears about a chip arrives as a number with an adjective: "up to 1,000 TOPS", "industry-leading 50 TOPS/W", "MLPerf-leading", "taped out and on track for production next year". Each is true under some conditions and misleading under others. This chapter turns the numbers back into the physics and arithmetic that produce them: a MAC count and a clock for throughput, energy per operation for efficiency, a statistical method for benchmarks, and fab and qualification times for schedules. Each check takes minutes with a calculator, and together they produce the evidence with the highest likelihood ratios in the framework of 28-01: either the claim reconstructs from first principles, or it does not.
 
-- **Why it exists:** peak numbers are set by datasheet arithmetic, not by workloads; efficiency numbers are measured at favourable operating points and power boundaries; benchmarks are selected; and schedules are written by the people who will be judged by them.
+- **Why it exists:** peak numbers are set by datasheet arithmetic, not by workloads; efficiency numbers are measured at favorable operating points and power boundaries; benchmarks are selected; and schedules are written by the people who will be judged by them.
 - **Where it shows up:** every investor presentation, product brief and analyst day, and every competitive comparison an acquirer's own team prepares.
 - **What it produces:** each claim restated on a common basis (same precision, same sparsity, same power boundary, same workload), with the conditions that make it true and the evidence that would confirm it.
 - **The governing rule:** a number without its conditions is not a measurement. Sze and colleagues put it in the title of their tutorial: "TOPS/W (alone) considered harmful" [R-492].
 
 ## 2. Intuition first
 
-**A yield to worst, not a headline coupon.** A bond analyst does not compare bonds by coupon; a callable bond's headline rate tells you little until you compute the yield to the call date least favourable to the investor. A chip's peak TOPS is the coupon: real, contractual, and nearly irrelevant to what the buyer will earn. The delivered throughput on the buyer's workload, at the buyer's latency target and power boundary, is the yield to worst. The analogy is tighter than it looks, because both conversions require the same two things: the full terms (the call schedule; the precision, sparsity and operating point) and a model of the scenario (rates; the workload's arithmetic intensity).
+**A yield to worst, not a headline coupon.** A bond analyst does not compare bonds by coupon; a callable bond's headline rate tells you little until you compute the yield to the call date least favorable to the investor. A chip's peak TOPS is the coupon: real, contractual, and nearly irrelevant to what the buyer will earn. The delivered throughput on the buyer's workload, at the buyer's latency target and power boundary, is the yield to worst. The analogy is tighter than it looks, because both conversions require the same two things: the full terms (the call schedule; the precision, sparsity and operating point) and a model of the scenario (rates; the workload's arithmetic intensity).
 
 Where it breaks down: a bond's terms are in its indenture, fully disclosed. A chip's terms are often in a footnote, sometimes one whose text does not appear on the page (27-07 [R-690]), so the first step is frequently to ask for them.
 
@@ -133,7 +133,7 @@ $$
 \text{best} \approx m\,e^{\sigma\,\operatorname{E}[Z_{(N)}]},
 $$
 
-the exponential of the expected maximum logarithm, where $\operatorname{E}[Z_{(N)}]$ is the expected maximum of $N$ standard normal variables (because $e^x$ is convex, this slightly understates the *mean* best): 1.16 for $N = 5$, **1.54** for $N = 10$ and 1.87 for $N = 20$. With $m = 1.5\times$ and $\sigma = 0.3$, the best of ten is about **2.4**×: an "up to 2.4×" headline is what a typical 1.5× product produces when the best case is shown (Example 28-02.5). The defence is to ask for the full distribution, or to pick the workloads oneself.
+the exponential of the expected maximum logarithm, where $\operatorname{E}[Z_{(N)}]$ is the expected maximum of $N$ standard normal variables (because $e^x$ is convex, this slightly understates the *mean* best): 1.16 for $N = 5$, **1.54** for $N = 10$ and 1.87 for $N = 20$. With $m = 1.5\times$ and $\sigma = 0.3$, the best of ten is about **2.4**×: an "up to 2.4×" headline is what a typical 1.5× product produces when the best case is shown (Example 28-02.5). The defense is to ask for the full distribution, or to pick the workloads oneself.
 
 > **Going deeper — expected maxima.** The maximum of $N$ independent variables with distribution function $\Phi$ has distribution $\Phi^N$, so $\operatorname{E}[Z_{(N)}] = \int x\,N\phi(x)\Phi(x)^{N-1}\,dx$. For large $N$ it grows like $\sqrt{2\ln N}$, slowly but without limit: there is always a better-looking best case if one tests enough workloads.
 
@@ -339,7 +339,7 @@ Figures are as of Nov 2026 unless dated otherwise.
 | Precision and sparsity factors | 2 per halving of operand width; 2 for 2:4 sparsity | §3.1; NVIDIA prints "sparse \| dense" [R-147] |
 | Export-control TPP | $2 \times \text{MacTOPS} \times$ bit length; threshold 4800 (= 600 int8 TOPS) | ECCN 3A090 (2023 text) [R-659] **[Established]** |
 | 45 nm energy (0.9 V) | 8-bit multiply 0.2 pJ, add 0.03 pJ; 32-bit SRAM read (8 KB) 5 pJ; 32-bit DRAM read 640 pJ | Horowitz, ISSCC 2014 [R-208, R-458] **[Established]** |
-| HBM2 access energy | about 3.9 pJ/bit | O'Connor et al., MICRO-50, 2017 [R-459] **[Established, modelled]** |
+| HBM2 access energy | about 3.9 pJ/bit | O'Connor et al., MICRO-50, 2017 [R-459] **[Established, modeled]** |
 | Efficiency to energy | 50 TOPS/W = **20** fJ/op; 100 TOPS/W = 10 fJ/op | §3.2 |
 | Fab cycle time | 14–20 weeks at advanced nodes (2021); 1–1.5 days per mask layer (2017) | [R-020] **[Industry estimate]** |
 | Qualification life test | 1000 h at $T_j \ge$ 125 °C, 3 lots × 77 units, 0 fails (JESD47G, 2009) | [R-061] **[Established]** |
@@ -362,14 +362,14 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 - **Dense and sparse conventions are inconsistent across vendors.** NVIDIA's HGX B200 table states "sparse | dense" and the dense figure is half the sparse [R-147]; a third-party analysis warns that the half rule does not carry over to later parts [R-147] **[Contested]**; and the GB200 NVL72 table marks its Tensor Core rows with a footnote whose text did not appear on the page as read (27-07, [R-690]). AMD's MI355X page lists dense and sparse separately [R-692]. The convention must be confirmed for each part.
 - **The research community has formalized the critique.** Sze, Chen, Yang and Emer argue that TOPS/W alone is harmful and that accuracy, throughput, latency, energy, cost and flexibility must be reported together [R-492] **[Established: peer-reviewed tutorial]**.
-- **Benchmarks evolve.** SPEC retired CPU 2017 on 17 November 2026 in favour of CPU 2026, with 52 benchmarks against 43 [R-223]; MLPerf's closed training table (v6.1) now lists language models up to DeepSeek-V3 at 671 billion parameters [R-224] **[Established]**. A comparison should cite the suite version and round.
+- **Benchmarks evolve.** SPEC retired CPU 2017 on 17 November 2026 in favor of CPU 2026, with 52 benchmarks against 43 [R-223]; MLPerf's closed training table (v6.1) now lists language models up to DeepSeek-V3 at 671 billion parameters [R-224] **[Established]**. A comparison should cite the suite version and round.
 - **Even leaders respin and slip.** NVIDIA respun a Blackwell mask for yield [R-646], and Intel added validation time and moved Sapphire Rapids production [R-647]; three in four IC/ASIC projects miss their original schedules [R-018] **[Established as reported]**.
 
 **Commercial relevance.** In a competitive process, the target's numbers become the acquirer's model inputs within days. Restating them on a common basis is the cheapest high-value diligence there is: it takes hours, needs no access to the target's lab, and either confirms the claims or produces precise questions. It also protects the acquirer's own credibility: a valuation built on a sparse INT4 figure compared with a competitor's dense FP8 figure is a factor-of-four error that someone will eventually find.
 
 **Marketing vs Reality.**
 
-- *"Up to N TOPS."* "Up to" means the most favourable product of precision, sparsity and clock. Ask for dense throughput at the precision the buyer's models use, and for utilization on those models.
+- *"Up to N TOPS."* "Up to" means the most favorable product of precision, sparsity and clock. Ask for dense throughput at the precision the buyer's models use, and for utilization on those models.
 - *"Industry-leading TOPS/W."* Ask at which voltage, clock and temperature, at which power boundary, and on which workload. Then compute the energy per operation and check it against §3.2.
 - *"MLPerf-leading."* Ask which division, scenario, round and submission category, and how many systems were in the comparison; check whether the claim is per chip, per system or per watt.
 - *"N× faster than [competitor]."* Ask for the full per-workload table and the averaging method, and who chose the workloads.

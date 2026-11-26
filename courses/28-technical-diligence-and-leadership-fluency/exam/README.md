@@ -29,7 +29,7 @@
 Weights 0.3, 0.3, 0.2 and 0.2. Target A scores 4, 4, 2, 5; target B scores 3, 4, 4, 3.
 (a) Find the weighted arithmetic and geometric scores of each target.
 (b) The prior that A's key claim holds is 0.35. Two independent pieces of evidence have likelihood ratios 4 and 0.6. Find the posterior odds and probability.
-(c) Buying A is worth +$300M if the claim holds and −$150M if not. At the posterior of (b), find the expected value of buying and the expected value of perfect information.
+(c) Buying A is worth +\$300M if the claim holds and −\$150M if not. At the posterior of (b), find the expected value of buying and the expected value of perfect information.
 (d) A $120M earn-out is paid in 2 years if the claim holds. Find its expected present value at 12%, using the posterior of (b).
 
 **2 [B] · An NPU brochure.** (28-02)
@@ -40,7 +40,7 @@ An NPU has 16,384 INT8 MAC units at 1.5 GHz; its brochure says "98 TOPS" and "24
 (d) At 4 W, find the delivered TOPS/W in (c) and compare it with the brochure.
 
 **3 [B] · Maturity and qualification.** (28-03)
-(a) A programme has completed engineering samples; qualification (0.85, 5 months) and release (0.95, 2 months) remain. Find the probability of production and the value multiplier at 15% a year.
+(a) A program has completed engineering samples; qualification (0.85, 5 months) and release (0.95, 2 months) remain. Find the probability of production and the value multiplier at 15% a year.
 (b) Find the Arrhenius acceleration factor between a 60 °C use junction and a 125 °C stress junction at 0.7 eV.
 (c) 300 devices run 1000 hours at 125 °C with no failures. Find the FIT bound at 60% confidence ($\chi^2_{0.6;2} = 1.833$).
 (d) How many devices would a zero-failure 1000-hour test need to bound the rate at 20 FIT with 90% confidence ($\chi^2_{0.9;2} = 4.605$)?

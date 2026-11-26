@@ -38,13 +38,14 @@ The lab uses the chapter's models with its assumed parameters:
 | Lab 28-06.b1 | sensitivity at that threshold | 91.0 | % |
 | Lab 28-06.c | key-person loss in three years | 85.3 | % |
 | Lab 28-06.d | funnel value at 40% conversion | 34.3 | $M |
+| Lab 28-06.e | funnel value over headline at 40% | 28.6 | % |
 
 ## Discussion
 
 1. Fifty flags at 3% give a healthy company a **78.2**% chance of at least one false alarm. Longer checklists find more real problems but make single flags nearly meaningless.
-2. A threshold of **5** flags is the first with a likelihood ratio above 100, and it still catches **91.0**% of troubled companies, because the two count distributions barely overlap there. The independence assumption makes this look cleaner than reality; clustered flags blur the separation.
+2. A threshold of **5** flags is the first rule whose tail likelihood ratio exceeds 100, and it still catches **91.0**% of troubled companies, because the two count distributions barely overlap there. That ratio weighs the *rule*; a company observed with exactly five flags carries an exact-count ratio of about 43 (Example 28-06.2(d)), smaller because five is still fewer than a troubled company usually shows. The independence assumption makes this look cleaner than reality; clustered flags blur the separation.
 3. Over three years the chance of losing at least one of five key engineers reaches **85.3**%. Integration plans should assume departures and plan successors, not hope to avoid them.
-4. At 40% conversion the funnel is worth **34.3** $M, under 30% of the $120M headline. The conversion rate is the single most valuable number to ask a target for.
+4. At 40% conversion the funnel is worth **34.3** \$M, **28.6**% of the \$120M headline. The conversion rate is the single most valuable number to ask a target for.
 
 ## Optional hardware
 

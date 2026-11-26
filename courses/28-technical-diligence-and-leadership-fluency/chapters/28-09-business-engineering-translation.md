@@ -99,7 +99,7 @@ A product manager sets a selling price and a gross-margin target. The total unit
 
 ### 3.4 Time and power are money
 
-**Schedule.** In a market window that ends at a fixed date, a delay of $d$ months at revenue rate $R$ per year loses about $R\,d/12$ of revenue (28-08 §3.2); the gross profit lost is that times the gross margin. A respin adds a new mask set (at the leading edge, estimates reach about $40M [R-321] **[Industry estimate]**) and a delay of several months, so its cost is usually dominated by the delay, not the masks (Example 28-09.3).
+**Schedule.** In a market window that ends at a fixed date, a delay of $d$ months at revenue rate $R$ per year loses about $R\,d/12$ of revenue (28-08 §3.2); the gross profit lost is that times the gross margin. A respin adds a new mask set (at the leading edge, estimates reach about \$40M [R-321] **[Industry estimate]**) and a delay of several months, so its cost is usually dominated by the delay, not the masks (Example 28-09.3).
 
 **Power, for the customer.** A datacenter pays for every watt twice: once in the server and again in cooling and power distribution, captured by the power usage effectiveness (PUE, the ratio of facility power to IT power). Over a life of $h$ hours at electricity price $p_e$, a device drawing $P$ costs
 
@@ -149,7 +149,7 @@ Wafer prices are from [R-575]; other parameters are illustrative assumptions. Di
 
 **Setup.** A product earning $300M a year at 60% gross margin, in a fixed market window, needs a full-layer respin: a new mask set at about $40M [R-321] and a 4-month delay. Find the lost revenue, the lost gross profit, and the total profit impact.
 
-**Solution.** Lost revenue $300 \times 4/12$ = **100** \$M; lost gross profit $100 \times 0.6$ = **60** $M; with masks, **100** $M.
+**Solution.** Lost revenue $300 \times 4/12$ = **100** \$M; lost gross profit $100 \times 0.6$ = **60** \$M; with masks, **100** \$M.
 
 **Units check.** $M/year × years = $M. ✓
 
@@ -159,7 +159,7 @@ Wafer prices are from [R-575]; other parameters are illustrative assumptions. Di
 
 **Setup.** An accelerator draws 1,000 W; a competitor delivers the same performance at 900 W. With PUE 1.3, electricity at $0.08 per kWh and a 4-year life (8,766 hours a year), all assumed, find the lifetime energy and its cost for the first, the cost for the second, the saving per device, and the saving for 10,000 devices.
 
-**Solution.** Energy $1.0 \times 1.3 \times 35064$ = **45583** kWh, costing **3647** $; the 900 W device **3282** $; saving **365** $ per device; **3.65** $M for 10,000.
+**Solution.** Energy $1.0 \times 1.3 \times 35064$ = **45583** kWh, costing **3647** \$; the 900 W device **3282** \$; saving **365** \$ per device; **3.65** \$M for 10,000.
 
 **Units check.** kW × h = kWh; kWh × $/kWh = $. ✓
 
@@ -169,7 +169,7 @@ Wafer prices are from [R-575]; other parameters are illustrative assumptions. Di
 
 **Setup.** A part rated at 100 FIT is installed in 1 million systems running continuously. Find the expected failures in a year and their cost at $500 each, and the same at 500 FIT.
 
-**Solution.** $100 \times 10^{-9} \times 10^6 \times 8766$ = **877** failures, **0.438** $M. At 500 FIT: **4383** failures, **2.19** $M.
+**Solution.** $100 \times 10^{-9} \times 10^6 \times 8766$ = **877** failures, **0.438** \$M. At 500 FIT: **4383** failures, **2.19** \$M.
 
 **Units check.** failures/(device·hour) × devices × hours = failures. ✓
 
@@ -177,7 +177,7 @@ Wafer prices are from [R-575]; other parameters are illustrative assumptions. Di
 
 ### Example 28-09.6 · Which knob moves margin most? (tier C)
 
-**Setup.** Base case: ASP \$90, die 100 mm² on an \$18,500 wafer with $D_0$ = 0.001 per mm², package and test $8. Find the base gross margin and the change in margin (percentage points) when each of ASP, die area, wafer price, defect density and package cost rises by 10% with the others fixed.
+**Setup.** Base case: ASP \$90, die 100 mm² on an \$18,500 wafer with $D_0$ = 0.001 per mm², package and test \$8. Find the base gross margin and the change in margin (percentage points) when each of ASP, die area, wafer price, defect density and package cost rises by 10% with the others fixed.
 
 **Solution.** Base: die $31.95, unit cost $39.95, margin **55.6**%. Changes: ASP **+4.0** points; die area **−4.1**; wafer price **−3.5**; defect density **−0.36**; package cost **−0.89**.
 

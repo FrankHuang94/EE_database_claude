@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from scipy import integrate, optimize
+from scipy import integrate, optimize, stats
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -139,6 +139,7 @@ se, fp = tail(30, 0.25, 3), tail(30, 0.03, 3)
 v.check("X28.8d", 100 * se)
 v.check("X28.8d1", 100 * fp)
 v.check("X28.8d2", se / fp)
+v.check("X28.8d3", stats.binom.pmf(3, 30, 0.25) / stats.binom.pmf(3, 30, 0.03))
 v.assert_true("Q8d: Monte Carlo false-positive rate within 0.2 points",
               abs((rng.binomial(30, 0.03, 500_000) >= 3).mean() - fp) < 0.002)
 

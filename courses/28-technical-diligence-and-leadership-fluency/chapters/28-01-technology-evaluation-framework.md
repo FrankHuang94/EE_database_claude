@@ -23,8 +23,8 @@
 
 Every acquisition, venture investment and partnership in semiconductors rests on a forecast that is mostly technical: will this chip work, at this power, on this schedule, and will customers be able to use it? A financial model can be built in a day; the inputs that drive it (the tape-out date, the probability that first silicon is good enough to ship, the size of the software gap, the supply of advanced packaging) come from engineering. Technical diligence is the discipline of turning those questions into evidence and the evidence into numbers a business decision can use. This chapter gives the framework the rest of Course 28 fills in: seven dimensions to examine, a scorecard that respects uncertainty, Bayes' rule for weighing evidence, milestone probabilities for pricing risk, and the value of information for deciding what to examine first.
 
-- **Why it exists:** chip programmes fail more often than they succeed at the first attempt. Only 14% of IC/ASIC projects reported first-silicon success in 2024 and 5% in 2026 (about 3–8% given the 2026 sample; the survey changed its recruitment in 2024), against about 30% historically [R-018, R-621, R-622], so a target's plan should be read against base rates, not against its own optimism.
-- **Where it shows up:** acquisition and venture diligence, licensing and partnership decisions, make-or-buy reviews of a supplier, and internal portfolio reviews of one's own programmes.
+- **Why it exists:** chip programs fail more often than they succeed at the first attempt. Only 14% of IC/ASIC projects reported first-silicon success in 2024 and 5% in 2026 (about 3–8% given the 2026 sample; the survey changed its recruitment in 2024), against about 30% historically [R-018, R-621, R-622], so a target's plan should be read against base rates, not against its own optimism.
+- **Where it shows up:** acquisition and venture diligence, licensing and partnership decisions, make-or-buy reviews of a supplier, and internal portfolio reviews of one's own programs.
 - **What it produces:** not a verdict but a calibrated view: probabilities for the milestones that matter, the evidence behind each, the gates that would stop the deal, and a list of what would change the view.
 - **Why it matters to this learner:** the success criterion of a fluent, skeptical conversation with a VP of Engineering is met only if the questions are aimed at the dimensions that move value, and the answers are weighed by how much they should move belief.
 
@@ -32,7 +32,7 @@ Every acquisition, venture investment and partnership in semiconductors rests on
 
 **A credit analyst's discipline, applied to silicon.** A credit analyst does not ask whether a borrower is "good"; they decompose the question (capacity, collateral, covenants), assign each part to evidence, and price what remains uncertain. Technical diligence does the same with a chip company. The seven dimensions are the decomposition; the evidence is what the target can show, not what it says; and the price of the remaining uncertainty appears as probabilities, delays and contingent payments.
 
-The analogy breaks down in two places. First, credit risk is a portfolio of many small, partly independent exposures, while a chip programme is a few large, correlated, nearly binary events: a mask set works or it does not, and a single architectural mistake can sink every product built on it. Second, a borrower's financial statements are audited; a target's benchmark slides are not. Evidence quality varies far more in technical diligence, so weighing evidence (§3.3) matters as much as gathering it.
+The analogy breaks down in two places. First, credit risk is a portfolio of many small, partly independent exposures, while a chip program is a few large, correlated, nearly binary events: a mask set works or it does not, and a single architectural mistake can sink every product built on it. Second, a borrower's financial statements are audited; a target's benchmark slides are not. Evidence quality varies far more in technical diligence, so weighing evidence (§3.3) matters as much as gathering it.
 
 **Three habits.**
 
@@ -61,7 +61,7 @@ The framework divides a chip company's technology into seven dimensions. Each ha
 |---|---|---|---|---|
 | Architecture | The idea: dataflow, memory system, interconnect, precision, programmability, and whether it matches the workload's arithmetic intensity | Analytic models and simulations the team can defend from first principles; measured efficiency on silicon for representative workloads | Peak TOPS; a single benchmark chosen by the target | 14-15, 23-01, 27-07 |
 | Implementation | Whether the idea is built well: timing, power, area, verification, DFT, signal and power integrity, packaging | Silicon in hand at the target clock and voltage; coverage and bug-trend data; respin history | "Taped out"; simulation results only | 19-10 to 19-13, 25-12, 26-05 |
-| IP position | Ownership and freedom to operate: patents, licences (Arm, SerDes, memory PHYs), open-source obligations, trade secrets | Licence agreements and their terms (change of control); freedom-to-operate opinions; inventor records | A patent count | 26-04, 26-07 |
+| IP position | Ownership and freedom to operate: patents, licenses (Arm, SerDes, memory PHYs), open-source obligations, trade secrets | License agreements and their terms (change of control); freedom-to-operate opinions; inventor records | A patent count | 26-04, 26-07 |
 | Team | Who can do it again: key people, tape-out history, depth in verification and physical design | Named people with shipped products; retention plans; attrition data | Résumés of founders alone | 26-06, 28-07 |
 | Roadmap | Whether the next products are credible: cadence, node and packaging choices, funding | Plans consistent with design-cost and schedule base rates; funded milestones | A slide of future products with no resourcing | 25-05, 26-05 |
 | Ecosystem and software | Whether customers can use it: compilers, runtimes, drivers, model support, reference designs | Customers running their own code; release history; issue trackers | "Full software stack" | 27-02, 27-05, 27-07 |
@@ -421,7 +421,7 @@ Figures are as of Nov 2026 unless dated otherwise.
 2. *"What would have to be true for your next product to slip by six months?"* Strong: named risks with probabilities and mitigations (a risk register, 26-05). Evasive: "we have built in margin".
 3. *"Which of your performance numbers come from silicon, and which from simulation?"* Strong: a clear split, with the conditions of each silicon measurement. Evasive: a blend presented as one number.
 4. *"Who outside the company has run their own code on your silicon, and what did they find?"* Strong: named customers or partners, with results the acquirer can verify. Evasive: logos without contacts.
-5. *"What do you license, from whom, and what happens to those licences on a change of control?"* Strong: a list with terms, already reviewed by counsel. Evasive: "standard terms".
+5. *"What do you license, from whom, and what happens to those licenses on a change of control?"* Strong: a list with terms, already reviewed by counsel. Evasive: "standard terms".
 6. *"If you lost your two most senior engineers tomorrow, what would stop?"* Strong: named successors and documented ownership. Evasive: "everyone is replaceable", or a silence (28-07).
 
 ## 10. Concept check

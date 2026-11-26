@@ -22,7 +22,7 @@ Chapter: [28-06](../chapters/28-06-red-and-green-flags.md) · Worked solutions: 
 
 ### Problem 28-06.2 [B]
 
-**A sharper flag.** A flag appears in 50% of troubled and 5% of healthy programmes; the base rate of trouble is 30%. Find its positive and negative likelihood ratios, and the posterior odds and probability of trouble when it is present and when it is absent.
+**A sharper flag.** A flag appears in 50% of troubled and 5% of healthy programs; the base rate of trouble is 30%. Find its positive and negative likelihood ratios, and the posterior odds and probability of trouble when it is present and when it is absent.
 
 ### Problem 28-06.3 [B]
 
@@ -54,9 +54,9 @@ Chapter: [28-06](../chapters/28-06-red-and-green-flags.md) · Worked solutions: 
 
 ### Problem 28-06.10 [B]
 
-**Verification staffing.** A target has 40 design and 15 verification engineers. Find its verification-to-design ratio, the verification hires needed to reach the industry's reported one-to-one peak ratio [R-321], and their annual cost at an assumed $250k fully loaded each.
+**Verification staffing.** A target has 40 design and 15 verification engineers. Find its verification-to-design ratio, the verification hires needed to reach the industry's reported one-to-one peak ratio [R-651], and their annual cost at an assumed \$250k fully loaded each. Is the comparison like for like?
 
-### Problem 28-06.11 [B]
+### Problem 28-06.11 [A]
 
 **Schedule credibility.** A team's last three projects took 25%, 40% and 30% longer than planned. Its new plan is 18 months. Find the mean overrun and the duration it implies for the new plan if the team's history repeats.
 
@@ -68,6 +68,11 @@ Chapter: [28-06](../chapters/28-06-red-and-green-flags.md) · Worked solutions: 
 - (b) Derive $P(\ge 1) = 1 - (1 - f)^n$ for $n$ independent flags, and show that it is approximately $1 - e^{-nf}$ for small $f$.
 - (c) Show that $\text{HHI} = 1/N$ for $N$ equal customers and that $\text{HHI} \ge 1/N$ for any $N$ shares that sum to 1.
 - (d) Show that the likelihood ratio of "$K \ge k$" for binomial counts is $P(K \ge k; n, s)/P(K \ge k; n, f)$, and explain why it rises with $k$ when $s > f$.
+- (e) Show that the likelihood ratio of observing *exactly* $k$ of $n$ independent flags is $(\text{LR}^+)^k(\text{LR}^-)^{n - k}$, and evaluate it for Example 28-06.2's checklist at $k = 2$. Why is it below 1?
+
+### Problem 28-06.13 [C]
+
+**Two flags that are not independent.** Flag $F_1$ (a slipped tape-out) appears in 60% of troubled and 20% of healthy targets. Flag $F_2$ (a revised revenue ramp) is more likely when $F_1$ is present: among targets showing $F_1$ it appears in 90% of troubled and 60% of healthy ones; among those without $F_1$, in 20% and 5% (all assumed). Both flags are present and the prior is 25%. Find (a) $\text{LR}(F_1)$, the marginal $\text{LR}(F_2)$ and the correct joint ratio $\text{LR}(F_1)\,\text{LR}(F_2 \mid F_1)$; (b) the posterior with the correct joint ratio, with the two ratios wrongly multiplied as if independent, and with only the stronger flag counted. Which shortcut is closer here, and why?
 
 ---
 
@@ -76,7 +81,7 @@ Chapter: [28-06](../chapters/28-06-red-and-green-flags.md) · Worked solutions: 
 | Objective | Problems |
 |---|---|
 | 1. Flags as tests; likelihood ratios | 1, 2, 12 |
-| 2. False alarms and thresholds | 3, 4, 12 |
+| 2. False alarms, thresholds and observed counts | 3, 4, 12 |
 | 3. Technical, organizational and commercial flags | 1, 9, 10, 11 |
 | 4. Key-person risk, concentration and funnels | 5, 6, 7, 12 |
-| 5. Combining flags without double-counting | 8 |
+| 5. Combining flags without double-counting | 8, 13 |

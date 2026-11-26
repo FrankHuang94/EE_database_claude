@@ -23,7 +23,7 @@ $P = 0.80 \times 0.85 \times 0.95$ = **0.646**; $T = 6 + 5 + 2$ = **13.0** month
 
 ### Solution 28-03.4
 
-Discount factor $1.15^{2/12}$ = **1.024**; multiplier $0.95/1.024$ = **0.928**. Against the tape-out multiplier of 0.501 (Example 28-03.2), the ratio is **1.85**: a buyer could pay up to 1.85 times as much for the qualified programme, other things equal.
+Discount factor $1.15^{2/12}$ = **1.024**; multiplier $0.95/1.024$ = **0.928**. Against the tape-out multiplier of 0.501 (Example 28-03.2), the ratio is **1.85**: a buyer could pay up to 1.85 times as much for the qualified program, other things equal.
 
 ### Solution 28-03.5
 
@@ -39,7 +39,7 @@ With one failure, $\chi^2_{0.6;4} = 4.045$, so $\lambda_{60} = 4.045/(2 \times 4
 
 ### Solution 28-03.8
 
-$\text{AF} = 77.65$ (carried unrounded) and $\chi^2_{0.9;2} = 4.605$, so $n \ge 4.605 \times 10^9/(2 \times 5 \times 1000 \times 77.65) = 5931.0$, that is **5932** devices. A 5 FIT claim at 90% confidence from a single product's qualification is a large programme; such claims usually pool data across products on the same process.
+$\text{AF} = 77.65$ (carried unrounded) and $\chi^2_{0.9;2} = 4.605$, so $n \ge 4.605 \times 10^9/(2 \times 5 \times 1000 \times 77.65) = 5931.0$, that is **5932** devices. A 5 FIT claim at 90% confidence from a single product's qualification is a large program; such claims usually pool data across products on the same process.
 
 ### Solution 28-03.9
 

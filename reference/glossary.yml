@@ -11335,7 +11335,7 @@
   chapter: "28-03"
   see_also: [Silicon maturity level]
 - term: Silicon maturity level
-  definition: A chip programme's position on the ladder concept, architecture and RTL, tape-out, first silicon in bring-up, engineering samples, qualification complete, production release, volume; each level is reached only with its evidence, and respins loop back to tape-out.
+  definition: A chip program's position on the ladder concept, architecture and RTL, tape-out, first silicon in bring-up, engineering samples, qualification complete, production release, volume; each level is reached only with its evidence, and respins loop back to tape-out.
   chapter: "28-03"
   see_also: [Technology readiness level (TRL), Engineering sample (ES), Value multiplier (maturity)]
 - term: Engineering sample (ES)
@@ -11343,7 +11343,7 @@
   chapter: "28-03"
   see_also: [Silicon maturity level, Stepping]
 - term: Value multiplier (maturity)
-  definition: The fraction of a released product's value that a programme at a given maturity level is worth to a risk-neutral buyer, $P_k/(1 + r)^{T_k/12}$, where $P_k$ is the probability of reaching production and $T_k$ the months still to wait.
+  definition: The fraction of a released product's value that a program at a given maturity level is worth to a risk-neutral buyer, $P_k/(1 + r)^{T_k/12}$, where $P_k$ is the probability of reaching production and $T_k$ the months still to wait.
   chapter: "28-03"
   see_also: [Silicon maturity level, Earn-out]
 - term: Failure-rate confidence bound
@@ -11379,7 +11379,7 @@
   chapter: "28-05"
   see_also: ["Process capability (Cp, Cpk)"]
 - term: Red flag (diligence)
-  definition: An observation that is more common in troubled companies or programmes than in healthy ones; its evidential weight is its positive likelihood ratio, sensitivity divided by false-positive rate, so a flag common among healthy companies says little.
+  definition: An observation that is more common in troubled companies or programs than in healthy ones; its evidential weight is its positive likelihood ratio, sensitivity divided by false-positive rate, so a flag common among healthy companies says little.
   chapter: "28-06"
   see_also: [Green flag (diligence), Positive and negative likelihood ratios]
 - term: Green flag (diligence)
@@ -11412,7 +11412,7 @@
   chapter: "28-07"
   see_also: [Beta distribution, First-silicon success]
 - term: Reference-class forecasting
-  definition: Forecasting a project from the outcomes of similar past projects rather than its own plan; for schedules, fitting the log of actual/plan ratios and using $T_{\text{plan}}e^{\mu}$, $\Phi(-\mu/\sigma)$ for the chance of meeting the plan, and $T_{\text{plan}}e^{\mu + 1.2816\sigma}$ for the P90.
+  definition: Forecasting a project from the distribution of outcomes of similar projects across the industry (the outside view) rather than from its own plan, then moving toward the team's own record as far as its length justifies; for schedules, fit the logs of actual/plan ratios, take $T_{\text{plan}}e^{\mu}$ as the median, and with only a few projects use the Student-t predictive distribution rather than a normal with the sample spread treated as exact.
   chapter: "28-07"
 - term: Bench depth
   definition: The number of people who could own a critical capability; with independent departures at probability $q$ the capability is lost only if all $k$ owners leave, $q^k$, but group departures put a floor under the risk.

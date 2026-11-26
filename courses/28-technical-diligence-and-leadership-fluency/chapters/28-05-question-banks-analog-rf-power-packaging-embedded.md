@@ -90,7 +90,7 @@ independent of sample rate [R-332]. Independent noise sources add in power, so a
 | AM1 | "What is SNDR at an input near Nyquist, at what amplitude?" | SNDR against input frequency, at −1 dBFS, with the Nyquist-zone result | A low-frequency SNR only |
 | AM2 | "What does the power figure include: references, buffers, clock, calibration logic, I/O?" | An itemized power budget | "Core power" without a list |
 | AM3 | "How many parts, from how many lots, across which temperatures and supplies?" | Histograms with minimum, typical and maximum, and Cpk against the data-sheet limits | "Typical" |
-| AM4 | "What calibration does it need, foreground or background, and does it track temperature and ageing?" | The algorithms, their convergence time and residual error over temperature | "Self-calibrating" |
+| AM4 | "What calibration does it need, foreground or background, and does it track temperature and aging?" | The algorithms, their convergence time and residual error over temperature | "Self-calibrating" |
 | AM5 | "What clock jitter did the bench use, and what will the product's PLL deliver?" | Both values, with the SNR budget that combines them | "Our clock is very clean" |
 | AM6 | "Where does it sit against the published figure-of-merit frontier for its speed class?" | Its FoM and the nearest published results, and why it is above or below them | "Best in class" without a comparison |
 | AM7 | "What did the last process port cost in time and respins, and how much of the design is digital?" | Months, respins and the scaling-friendly fraction (20-12) | "It ports easily" |
@@ -391,7 +391,7 @@ The lab is [labs/28-05-lab/](../labs/28-05-lab/README.md). `bankcheck.py` implem
 | Knob | Improves | Costs | Typical decision owner |
 |---|---|---|---|
 | ADC resolution (ENOB) | Dynamic range, fewer analog gain stages | Power (×4 per bit at the thermal limit), clock quality, area | Mixed-signal architect |
-| Background calibration | Accuracy over temperature and ageing | Digital power, convergence time, test complexity | Converter designer with DSP team |
+| Background calibration | Accuracy over temperature and aging | Digital power, convergence time, test complexity | Converter designer with DSP team |
 | Cleaner clock (lower jitter) | SNR at high input frequency | PLL power (×4 per halving), area, reference cost | Clocking lead |
 | Doherty or envelope tracking | Efficiency at back-off | Bandwidth, linearity effort, DPD complexity | RF system architect |
 | Wide-bandgap switches | Efficiency, power density | Device cost, supply concentration, ruggedness limits | Power-supply architect with procurement |

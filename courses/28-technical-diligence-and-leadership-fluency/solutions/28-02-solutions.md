@@ -32,7 +32,7 @@ $(4.0 + 1.2 + 0.3)/0.85$ = **6.47** W at the battery, so $26/6.47$ = **4.02** TO
 
 ### Solution 28-02.7
 
-(a) $2 \times 500 \times 16$ = **16000**, over 4800. (b) $2 \times 300 \times 8$ = **4800**, exactly at the threshold (the rule's own example). (c) $16\,000/800$ = **20.0** per mm², above 5.92. Both parts fall within ECCN 3A090's scope by TPP [R-659]; whether a licence is needed for a given destination is a legal question, but the screening is arithmetic.
+(a) $2 \times 500 \times 16$ = **16000**, over 4800. (b) $2 \times 300 \times 8$ = **4800**, exactly at the threshold (the rule's own example). (c) $16\,000/800$ = **20.0** per mm², above 5.92. Both parts fall within ECCN 3A090's scope by TPP [R-659]; whether a license is needed for a given destination is a legal question, but the screening is arithmetic.
 
 ### Solution 28-02.8
 
@@ -48,7 +48,7 @@ $\operatorname{E}[Z_{(5)}]$ = **1.163**, so the best of five is $1.3\,e^{0.25 \t
 
 (a) A **closed-division server (or interactive) scenario** result, which measures throughput under a latency bound with Poisson arrivals, at the stated latency target; cost per token then needs the system's price and power. An offline result would not support it.
 
-(b) An **open-division** result compares a different model with the reference; it shows what the vendor's own model achieves, not that its hardware is faster. The claim needs a closed-division comparison on the same model, and the open result must be labelled "MLPerf Open" [R-224].
+(b) An **open-division** result compares a different model with the reference; it shows what the vendor's own model achieves, not that its hardware is faster. The claim needs a closed-division comparison on the same model, and the open result must be labeled "MLPerf Open" [R-224].
 
 (c) **Offline** throughput allows arbitrary batching, so it says nothing about a 30 ms per-frame deadline. The camera claim needs a **single-stream** (or multistream) latency result, whose percentile latency must fall within 30 ms.
 
@@ -70,7 +70,7 @@ Efficiency $1000/75$ = **13.3** TOPS/W, plausible at the chip boundary. Batch-1 
 
 (a) With $P = \alpha CV^2f$ and operations per second $F = kf$, the energy per operation is $P/F = \alpha CV^2/k$, independent of $f$. The efficiency $\eta = F/P$ is its inverse, so $\eta_2/\eta_1 = (V_1/V_2)^2$. From 0.60 V to 0.90 V the efficiency falls by $(0.90/0.60)^2$ = **2.25** times.
 
-(b) With $r_{A,i} = t_{R,i}/t_{A,i}$, $\text{GM}(r_A)/\text{GM}(r_B) = \left[\prod_i (t_{R,i}/t_{A,i})/(t_{R,i}/t_{B,i})\right]^{1/n} = \left[\prod_i t_{B,i}/t_{A,i}\right]^{1/n}$, in which $t_{R,i}$ has cancelled.
+(b) With $r_{A,i} = t_{R,i}/t_{A,i}$, $\text{GM}(r_A)/\text{GM}(r_B) = \left[\prod_i (t_{R,i}/t_{A,i})/(t_{R,i}/t_{B,i})\right]^{1/n} = \left[\prod_i t_{B,i}/t_{A,i}\right]^{1/n}$, in which $t_{R,i}$ has canceled.
 
 (c) Require $E_\ell/I_\ell \le \beta E_{\text{op}}$, so $I_\ell \ge E_\ell/(\beta E_{\text{op}})$. With DRAM's 160 pJ per byte, $\beta = 0.1$ and $E_{\text{op}} = 10$ fJ, $I \ge 160{,}000$ operations per byte (Example 28-02.2).
 

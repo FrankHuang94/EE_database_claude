@@ -1,6 +1,6 @@
 # Lab 28-03 · Maturity, Life Tests and Bug Curves
 
-**Objective.** Use small models to see how a programme's value rises as it climbs the maturity scale, what a life test of a given size proves about failure rates, how a defect-discovery curve is fitted to a bug tracker's history, and how much a FIT claim depends on its assumed activation energy.
+**Objective.** Use small models to see how a program's value rises as it climbs the maturity scale, what a life test of a given size proves about failure rates, how a defect-discovery curve is fitted to a bug tracker's history, and how much a FIT claim depends on its assumed activation energy.
 
 **Chapter:** [28-03 · Maturity Scales for Silicon](../../chapters/28-03-silicon-maturity-scales.md)
 

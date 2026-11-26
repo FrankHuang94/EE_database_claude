@@ -25,7 +25,7 @@ Chapter: [28-08](../chapters/28-08-integration-risk.md) · Worked solutions: [28
 
 ### Problem 28-08.3 [B]
 
-**A bigger migration.** Migrating 40 engineers takes 6 months at $22k per engineer-month. Done mid-project, it delays a product earning $90M a year in a fixed window by 4 months. Find the migration's direct cost and the lost revenue.
+**A bigger migration.** Migrating 40 engineers takes 6 months at $22k per engineer-month. Done mid-project, it delays a product earning $90M a year in a fixed window by 4 months. Its gross margin is 55% (assumed). Find the migration's direct cost, the lost revenue and the lost gross profit, and say whether to migrate now.
 
 ### Problem 28-08.4 [B]
 
@@ -45,9 +45,9 @@ Chapter: [28-08](../chapters/28-08-integration-risk.md) · Worked solutions: [28
 
 ### Problem 28-08.8 [B]
 
-**Export status.** Find the TPP of an accelerator with 400 dense INT8 TOPS and its performance density on a 600 mm² die; the TPP of one with 1,200 dense INT8 TOPS; and the TPP of an edge NPU with 150 dense INT8 TOPS. Compare each with the 4800 and 1600 thresholds of 3A090.a [R-659].
+**Export status.** Find the TPP of an accelerator with 400 dense INT8 TOPS and its performance density on a 600 mm² die; the TPP of one with 1,200 dense INT8 TOPS; and the TPP of an edge NPU with 150 dense INT8 TOPS. Compare each with the 3A090.a thresholds (TPP of 4800, or TPP of 1600 with performance density of 5.92) and say whether it could fall in the lower 3A090.b band [R-659].
 
-### Problem 28-08.9 [B]
+### Problem 28-08.9 [A]
 
 **Two years late.** Repeat Example 28-08.1 with a two-year slip and 80% realization. Find the value and the fractional loss.
 
@@ -57,7 +57,7 @@ Chapter: [28-08](../chapters/28-08-integration-risk.md) · Worked solutions: [28
 
 ### Problem 28-08.11 [B]
 
-**A vesting cliff.** Engineers leave at 1% a month. Find the two-year retention with no retention package, and with a package that vests in one lump at month 24 and holds everyone until then, after which 15% leave in month 24 (assume the 1% monthly rate applies in months 1–23 and is replaced by the 15% spike in month 24).
+**A vesting cliff.** Without a package, key engineers leave at 1% a month (assumed). Package L vests in one lump at month 24: it lowers the rate to 0.3% a month before the cliff, but 5% a month leave in months 25–27 once it has paid (assumed). Package S costs the same but vests in thirds at months 12, 24 and 36, holding the rate at 0.5% a month throughout (assumed). Find retention at month 24 and at month 27 under each. Which does a dashboard that reports month-24 retention favor, and which keeps more people?
 
 ### Problem 28-08.12 [C]
 
@@ -68,6 +68,10 @@ Chapter: [28-08](../chapters/28-08-integration-risk.md) · Worked solutions: [28
 - (c) Show that the gain from a second program is $W[1 - P(\text{both fail}) - \max(p_1, p_2)]$, and explain why positive correlation between failures reduces it.
 - (d) Show that expected loss is additive across risks, and that a mitigation's value is the reduction in $p_iI_i$ it buys, whatever the other risks are.
 
+### Problem 28-08.13 [B]
+
+**Keep both until first silicon.** In Example 28-08.3 (programs succeed with probability 0.6 and 0.5, independent; socket worth \$200M; the second program costs \$30M to finish), suppose \$12M of that cost falls before first silicon and first silicon reveals which programs will succeed (assumed). After first silicon the buyer finishes only one working program. Find the net gain over keeping the better program alone for (a) keeping both to the end and (b) keeping both to first silicon, and (c) the value of the option to cancel at first silicon. Why is (b) an upper bound for a real milestone?
+
 ---
 
 ## Objective coverage
@@ -76,6 +80,6 @@ Chapter: [28-08](../chapters/28-08-integration-risk.md) · Worked solutions: [28
 |---|---|
 | 1. Synergy value with delay and realization | 2, 9, 10, 12 |
 | 2. Migration and delay costs | 1, 3 |
-| 3. Roadmap overlap as parallel paths | 1, 4, 12 |
+| 3. Roadmap overlap as parallel paths | 1, 4, 12, 13 |
 | 4. Licensing, royalties and export controls | 1, 5, 8 |
 | 5. Risk registers, retention and earn-outs | 6, 7, 11, 12 |

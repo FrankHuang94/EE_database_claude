@@ -11,8 +11,8 @@
 
 **Learning objectives.** After this chapter you can:
 
-1. Place a chip programme on a silicon maturity scale from concept to volume production, relate it to NASA's technology readiness levels, and name the evidence each level requires.
-2. Estimate a programme's probability of reaching production and its remaining time from its current level, and turn them into a value multiplier.
+1. Place a chip program on a silicon maturity scale from concept to volume production, relate it to NASA's technology readiness levels, and name the evidence each level requires.
+2. Estimate a program's probability of reaching production and its remaining time from its current level, and turn them into a value multiplier.
 3. Compute the failure-rate bound that a zero-failure (or one-failure) life test supports, with Arrhenius acceleration and a chi-square confidence level, and the sample size a target needs.
 4. Fit a defect-discovery model to a software team's bug counts, and estimate the defects remaining and the time to a release criterion.
 5. Combine silicon, qualification and software maturity into one view, with the least mature dimension as the binding one.
@@ -26,15 +26,15 @@
 - **Why it exists:** value depends on maturity, and the same chip is worth very different amounts at tape-out and at qualification, because most of the risk sits in between (28-01 §3.4).
 - **Where it shows up:** acquisition pricing and earn-out milestones, venture tranches tied to "first silicon" or "customer samples", supply agreements that start at "production release", and internal stage gates.
 - **What it produces:** a level for silicon, a status for qualification and a level for software, each backed by evidence, and a probability-weighted view of what remains.
-- **The governing rule:** a programme is as mature as its least mature dimension. Production-quality silicon with immature software is not a production product.
+- **The governing rule:** a program is as mature as its least mature dimension. Production-quality silicon with immature software is not a production product.
 
 ## 2. Intuition first
 
-**Clinical phases for chips.** A drug candidate's value depends on its phase (preclinical, Phase 1, 2, 3, approval) because each phase has a historical success rate and a typical duration, and investors price a candidate by the probability of reaching the market and the time to get there. A chip programme has the same structure: architecture, tape-out, first silicon, engineering samples, qualification, production. Each step has a chance of failing (or of costing a respin) and a typical duration, and value rises as steps are passed.
+**Clinical phases for chips.** A drug candidate's value depends on its phase (preclinical, Phase 1, 2, 3, approval) because each phase has a historical success rate and a typical duration, and investors price a candidate by the probability of reaching the market and the time to get there. A chip program has the same structure: architecture, tape-out, first silicon, engineering samples, qualification, production. Each step has a chance of failing (or of costing a respin) and a typical duration, and value rises as steps are passed.
 
-The analogy breaks down in two places. First, drug-phase success rates are measured across thousands of trials and published; chip-stage probabilities are not, so the numbers in this chapter are assumptions to be informed by the industry's first-silicon base rates [R-018] and the target's own history. Second, a failed chip step is usually a delay and a cost (a respin), not the end of the programme; probabilities of "never reaching production" are smaller than probabilities of "not reaching it on plan".
+The analogy breaks down in two places. First, drug-phase success rates are measured across thousands of trials and published; chip-stage probabilities are not, so the numbers in this chapter are assumptions to be informed by the industry's first-silicon base rates [R-018] and the target's own history. Second, a failed chip step is usually a delay and a cost (a respin), not the end of the program; probabilities of "never reaching production" are smaller than probabilities of "not reaching it on plan".
 
-**Three dimensions mature separately.** Silicon (does the hardware work at specification?), qualification (will it keep working for the product's life?) and software (can customers use it?) each have their own ladder, and a programme can be far along one and early on another. The diligence report should give a level for each.
+**Three dimensions mature separately.** Silicon (does the hardware work at specification?), qualification (will it keep working for the product's life?) and software (can customers use it?) each have their own ladder, and a program can be far along one and early on another. The diligence report should give a level for each.
 
 ```mermaid
 flowchart LR
@@ -66,17 +66,17 @@ NASA's technology readiness levels run from TRL 1, where basic scientific resear
 | L6 | Production release | Released part numbers, a stepping, yields by lot, a supply allocation | "Production-ready" | 8–9 |
 | L7 | Volume and yield learning | Shipments, field-return data, yield trends | A forecast | 9 |
 
-Two notes on the ladder. First, **respins loop back**: a respin at L3 or L4 returns the programme to L2 for the new stepping, and most complex chips loop at least once (5–14% first-silicon success [R-018]). Second, a level is reached only with its evidence; a level claimed without it should be scored one lower, which is 28-01 §3.3's likelihood-ratio logic applied to status.
+Two notes on the ladder. First, **respins loop back**: a respin at L3 or L4 returns the program to L2 for the new stepping, and most complex chips loop at least once (5–14% first-silicon success [R-018]). Second, a level is reached only with its evidence; a level claimed without it should be scored one lower, which is 28-01 §3.3's likelihood-ratio logic applied to status.
 
 ### 3.2 From level to probability, time and value
 
-Let the programme be at level $k$, and let each remaining transition $j$ succeed (possibly after a respin) with probability $p_j$, conditional on the earlier ones, taking $t_j$ months. Here $t_j$ is the expected duration of the stage *including* any respin delay: a stage that takes 4 months, or 8 if a respin (probability 0.5) is needed, has $t_j = 6$ months. The probability of reaching production and the time if every step succeeds are
+Let the program be at level $k$, and let each remaining transition $j$ succeed (possibly after a respin) with probability $p_j$, conditional on the earlier ones, taking $t_j$ months. Here $t_j$ is the expected duration of the stage *including* any respin delay: a stage that takes 4 months, or 8 if a respin (probability 0.5) is needed, has $t_j = 6$ months. The probability of reaching production and the time if every step succeeds are
 
 $$
 P_k = \prod_{j \ge k} p_j , \qquad T_k = \sum_{j \ge k} t_j .
 $$
 
-A risk-neutral buyer values the programme at a fraction of a production-ready programme's value $V$: the probability, discounted for the time still to wait at an annual rate $r$,
+A risk-neutral buyer values the program at a fraction of a production-ready program's value $V$: the probability, discounted for the time still to wait at an annual rate $r$,
 
 $$
 \frac{V_k}{V} = \frac{P_k}{(1 + r)^{T_k/12}} .
@@ -126,9 +126,9 @@ where $a$ is the total number of defects that testing will eventually find and $
 
 The model's assumptions (each defect found independently at the same rate, fixes introducing no new defects, steady test effort) rarely hold exactly, so its numbers are estimates; their value in diligence is to turn a bug tracker's history into a question with a number: "your curve says about 80 defects remain and you are finding 7 a week; what is your release criterion and when does it fall due?" 26-05 used the same curve for hardware verification.
 
-### 3.5 One programme, three ladders
+### 3.5 One program, three ladders
 
-A programme's position is three positions: a silicon level (§3.1), a qualification status (none, in progress, complete for a stated standard, such as AEC-Q100 Grade 1 for −40 °C to +125 °C ambient [R-612]), and a software level (from "runs vendor demos" to "runs customers' models unmodified, with a release history"). The product is ready only when all three are. The **binding dimension** is the least mature, and it sets the remaining time: production silicon with a compiler that runs a third of the customer's models is a software programme for the next year, and should be valued and staffed as one. In a scorecard (28-01 §3.2) this is a case for a geometric score or a gate, not an arithmetic average.
+A program's position is three positions: a silicon level (§3.1), a qualification status (none, in progress, complete for a stated standard, such as AEC-Q100 Grade 1 for −40 °C to +125 °C ambient [R-612]), and a software level (from "runs vendor demos" to "runs customers' models unmodified, with a release history"). The product is ready only when all three are. The **binding dimension** is the least mature, and it sets the remaining time: production silicon with a compiler that runs a third of the customer's models is a software program for the next year, and should be valued and staffed as one. In a scorecard (28-01 §3.2) this is a case for a geometric score or a gate, not an arithmetic average.
 
 ## 4. Worked examples
 
@@ -162,7 +162,7 @@ All parameters are illustrative assumptions unless a source is cited.
 
 **Units check.** Probabilities and discount factors are dimensionless; months ÷ 12 = years. ✓
 
-**Sanity check.** Passing first silicon and engineering samples raises the value by half: a buyer could pay up to 1.49 times as much for the programme at L4 as at L2, other things equal. The largest single risk is the 0.80 transition from first silicon to engineering samples, where respins live, so that is where diligence and deal milestones should concentrate.
+**Sanity check.** Passing first silicon and engineering samples raises the value by half: a buyer could pay up to 1.49 times as much for the program at L4 as at L2, other things equal. The largest single risk is the 0.80 transition from first silicon to engineering samples, where respins live, so that is where diligence and deal milestones should concentrate.
 
 ### Example 28-03.3 · What a minimum qualification proves (tier B)
 
@@ -205,7 +205,7 @@ All parameters are illustrative assumptions unless a source is cited.
 
 **Units check.** $\chi^2 \times 10^9$ ÷ (FIT × hours × AF) = devices, since FIT counts failures per $10^9$ device-hours. ✓
 
-**Sanity check.** Allowing one failure more than doubles the sample, because the bound must hold even if one device fails. Over a thousand devices on life test is a substantial programme, which is why low-FIT claims usually rest on accumulated data across products on the same process rather than one product's qualification.
+**Sanity check.** Allowing one failure more than doubles the sample, because the bound must hold even if one device fails. Over a thousand devices on life test is a substantial program, which is why low-FIT claims usually rest on accumulated data across products on the same process rather than one product's qualification.
 
 <!-- answer-key -->
 
@@ -255,7 +255,7 @@ The lab is [labs/28-03-lab/](../labs/28-03-lab/README.md). `matscale.py` impleme
 3. *Predict* the parameters a least-squares fit recovers from weekly counts generated by Example 28-03.4's model and rounded to whole defects. Then fit and plot the curve.
 4. *Predict* the FIT bound of Example 28-03.3 at 60% if the activation energy is 0.5 eV instead of 0.7, and if it is 1.0 eV. Then plot the bound against activation energy.
 
-![Left: value multiplier of a chip programme at maturity levels L2 to L5 for Example 28-03.2's assumed chain, rising from 0.50 at tape-out to 0.93 after qualification; right: upper bound on the use failure rate in FIT against devices on a zero-failure 1000-hour life test, at 60% and 90% confidence, falling inversely with sample size, with the JESD47G minimum of 231 devices marked near 51 and 128 FIT](../../../assets/figures/28-03/maturity-and-fit.svg)
+![Left: value multiplier of a chip program at maturity levels L2 to L5 for Example 28-03.2's assumed chain, rising from 0.50 at tape-out to 0.93 after qualification; right: upper bound on the use failure rate in FIT against devices on a zero-failure 1000-hour life test, at 60% and 90% confidence, falling inversely with sample size, with the JESD47G minimum of 231 devices marked near 51 and 128 FIT](../../../assets/figures/28-03/maturity-and-fit.svg)
 
 *Figure 1. What maturity is worth and what a life test proves: the value multiplier by level for an assumed stage chain (§3.2), and the failure-rate bound against sample size (§3.3).*
 
@@ -286,7 +286,7 @@ Figures are as of Nov 2026 unless dated otherwise.
 ## 8. Common mistakes
 
 - **Taking a status word at face value.** "Sampling", "qualified" and "production" each need their evidence; without it, score one level lower.
-- **Ignoring the loop back.** A respin returns the programme to tape-out for the new stepping; a plan without one is the optimistic case.
+- **Ignoring the loop back.** A respin returns the program to tape-out for the new stepping; a plan without one is the optimistic case.
 - **Reading a qualification pass as a low failure rate.** A minimum zero-failure test bounds the rate at tens of FIT, not single digits.
 - **Accepting a FIT number without its activation energy and confidence.** Both can move it by large factors.
 - **Counting found bugs instead of the discovery rate.** A falling rate, not a rising count, signals maturity.
@@ -296,7 +296,7 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 **State of play (as of Nov 2026).**
 
-- **Respins are the norm.** With 5% of IC/ASIC projects reporting first-silicon success in 2026 and 14% in 2024 [R-018], a programme between L2 and L4 should be modelled with at least one loop back. Production steppings carry the history: Intel's Sapphire Rapids specification update lists steppings E-5, S-3 and B-3 for its three variants [R-647] **[Established]**.
+- **Respins are the norm.** With 5% of IC/ASIC projects reporting first-silicon success in 2026 and 14% in 2024 [R-018], a program between L2 and L4 should be modeled with at least one loop back. Production steppings carry the history: Intel's Sapphire Rapids specification update lists steppings E-5, S-3 and B-3 for its three variants [R-647] **[Established]**.
 - **Qualification standards keep moving.** JESD47 reached revision N in August 2026 [R-611], and AEC-Q100 Rev J (2023) changed the Grade 0 temperature-cycling requirement from 2,000 to 1,500 cycles and added a bump shear test [R-612] **[Established]**. A target's qualification claim should name the revision.
 - **Reliability claims rest on stated assumptions.** TI's published method uses JEDEC JESD85, a 60% confidence level "typical for industrial calculations", and a 0.7 eV activation energy [R-610] **[Established]**; another supplier's choices may differ, and the comparison needs the same basis.
 
@@ -319,11 +319,11 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 ## 10. Concept check
 
-1. Why is a programme at "first silicon in bring-up" worth much less than one with engineering samples at customers?
+1. Why is a program at "first silicon in bring-up" worth much less than one with engineering samples at customers?
 
    <details><summary>Answer</summary>
 
-   The transition from first silicon to engineering samples carries most of the respin risk, and it lies ahead of the first programme but behind the second. The value multiplier $P_k/(1 + r)^{T_k/12}$ rises as that transition is passed, by about a third (0.555 at L3 to 0.744 at L4, Lab 28-03 Part 1).
+   The transition from first silicon to engineering samples carries most of the respin risk, and it lies ahead of the first program but behind the second. The value multiplier $P_k/(1 + r)^{T_k/12}$ rises as that transition is passed, by about a third (0.555 at L3 to 0.744 at L4, Lab 28-03 Part 1).
 
    </details>
 
@@ -359,7 +359,7 @@ Figures are as of Nov 2026 unless dated otherwise.
 
    </details>
 
-6. Why is a programme's maturity its least mature dimension?
+6. Why is a program's maturity its least mature dimension?
 
    <details><summary>Answer</summary>
 
@@ -376,7 +376,7 @@ Problems: [28-03 problem set](../problems/28-03-problems.md) · Solutions: [28-0
 ## 12. Connections
 
 - **Previous:** [28-02 Validating Claims](28-02-validating-claims.md): what each milestone proves.
-- **Next:** [28-04 Domain Question Banks I](28-04-question-banks-digital-ai-memory-interconnect.md): diagnostic questions for digital, AI, memory and interconnect programmes.
+- **Next:** [28-04 Domain Question Banks I](28-04-question-banks-digital-ai-memory-interconnect.md): diagnostic questions for digital, AI, memory and interconnect programs.
 - **Prerequisites used here:** confidence bounds ([03-05](../../03-probability-statistics-and-random-variables/chapters/03-05-estimation-and-hypothesis-testing.md)); Arrhenius acceleration ([25-09](../../25-fabrication-packaging-test-and-reliability/chapters/25-09-reliability-physics.md)); qualification ([25-10](../../25-fabrication-packaging-test-and-reliability/chapters/25-10-qualification-and-functional-safety.md)); post-silicon validation ([25-12](../../25-fabrication-packaging-test-and-reliability/chapters/25-12-post-silicon-validation.md)); bug-discovery curves ([26-05](../../26-engineering-design-and-professional-practice/chapters/26-05-schedule-and-respin-risk.md)).
 - **Used later:** maturity levels define the red flags of [28-06](28-06-red-and-green-flags.md) and the integration milestones of [28-08](28-08-integration-risk.md).
 

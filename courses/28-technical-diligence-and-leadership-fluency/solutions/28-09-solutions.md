@@ -15,7 +15,7 @@ Problems: [28-09 problems](../problems/28-09-problems.md) · Chapter: [28-09](..
 
 ### Solution 28-09.2
 
-100 mm²: $30000/(640 \times 0.9048)$ = **51.80** $; 120 mm²: **64.06** $; increase **23.7**% (the same as on N3, because the wafer price scales both).
+100 mm²: $30000/(640 \times 0.9048)$ = **51.80** \$; 120 mm²: **64.06** \$; increase **23.7**% (the same as on N3, because the wafer price scales both).
 
 ### Solution 28-09.3
 
@@ -23,11 +23,11 @@ $1 + 600 \times 0.001$ = **1.6**. Dies per wafer **90** and **81**. Cost increas
 
 ### Solution 28-09.4
 
-Unit cost $45 \times 0.45$ = **20.25** $; die cost **14.25** $; area **48.5** mm².
+Unit cost $45 \times 0.45$ = **20.25** \$; die cost **14.25** \$; area **48.5** mm².
 
 ### Solution 28-09.5
 
-Lost revenue $120 \times 5/12$ = **50** $M; lost gross profit **25** $M; total with masks **40** $M.
+Lost revenue $120 \times 5/12$ = **50** \$M; lost gross profit **25** \$M; total with masks **40** \$M.
 
 ### Solution 28-09.6
 
@@ -35,7 +35,7 @@ $0.7 \times 1.2 \times 43830 \times 0.12$ = **4418** \$; 600 W: **3787** \$; sav
 
 ### Solution 28-09.7
 
-$20 \times 10^{-9} \times 5 \times 10^6 \times 500$ = **50** failures a year, costing **0.1** $M.
+$20 \times 10^{-9} \times 5 \times 10^6 \times 500$ = **50** failures a year, costing **0.1** \$M.
 
 ### Solution 28-09.8
 

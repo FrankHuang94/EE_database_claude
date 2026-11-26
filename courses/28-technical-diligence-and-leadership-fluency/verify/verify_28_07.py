@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from scipy import integrate, optimize
+from scipy import integrate, optimize, stats
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -84,6 +84,11 @@ v.check("Ex 28-07.2c", 18 * math.exp(mu))
 v.check("Ex 28-07.2d", 100 * phi(-mu / sd))
 z90 = optimize.brentq(lambda z: phi(z) - 0.9, 0, 3)
 v.check("Ex 28-07.2e", 18 * math.exp(mu + z90 * sd))
+v.check("Ex 28-07.2c1", 18 * math.exp(mu + sd ** 2 / 2))
+sc2 = sd * math.sqrt(1 + 1 / 4)
+v.check("Ex 28-07.2f", 100 * stats.t.cdf(-mu / sc2, 3))
+v.check("Ex 28-07.2g", 18 * math.exp(mu + stats.t.ppf(0.9, 3) * sc2))
+v.check("Txt 28-07.1", stats.t.ppf(0.9, 3))
 v.assert_true("Ex 2: z0.9 = 1.2816", abs(z90 - 1.2816) < 1e-4)
 
 # --- Example 28-07.3 ---------------------------------------------------------------------
@@ -93,6 +98,7 @@ for k, ida, idb in ((1, "Ex 28-07.3a", "Ex 28-07.3b"), (2, "Ex 28-07.3a1", "Ex 2
     v.check(idb, 100 * (1 - 0.88 ** 2) ** k)
 q2 = 1 - 0.88 ** 2
 v.check("Ex 28-07.3c", 100 * (1 - (1 - q2) ** 6))
+v.check("Ex 28-07.3d", 1 / (1 - 0.88 ** 2))
 v.assert_true("Ex 3: Monte Carlo two owners within 0.2 points", abs(loss_mc(q2, 2) - q2 ** 2) < 0.002)
 
 # --- Example 28-07.4 ---------------------------------------------------------------------
@@ -178,5 +184,16 @@ v.check("Lab 28-07.a", 100 * post_mean_num(5, 5))
 v.check("Lab 28-07.b", 24 * math.exp(mu + z90 * sd))
 v.check("Lab 28-07.c", 100 * (1 - 0.88 ** 3) ** 2)
 v.check("Lab 28-07.d", 60 * 1.5 * 0.15)
+
+l4 = np.log([1.15, 1.35, 1.50])
+sc4 = l4.std(ddof=1) * math.sqrt(1 + 1 / 3)
+v.check("28-07.4e", 100 * stats.t.cdf(-l4.mean() / sc4, 2))
+v.check("28-07.4f", 24 * math.exp(l4.mean() + stats.t.ppf(0.9, 2) * sc4))
+v.assert_true("t_0.9;2 is 1.886", abs(stats.t.ppf(0.9, 2) - 1.886) < 5e-4)
+
+v.check("28-07.3c", 100 * stats.beta.sf(0.14, 5.4, 9.6))
+
+v.check("28-07.10d", (34.6 / 20.4) / (15 / 40))
+v.check("28-07.10e", 1.49 / 0.51)
 
 sys.exit(v.finish())

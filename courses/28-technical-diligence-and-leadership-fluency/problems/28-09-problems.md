@@ -25,7 +25,7 @@ Chapter: [28-09](../chapters/28-09-business-engineering-translation.md) · Worke
 
 ### Problem 28-09.3 [B]
 
-**A big die.** For a 600 mm² die, find $1 + AD_0$, the dies per wafer at 600 and 660 mm², and the cost increase and average elasticity for that 10% growth on an $18,500 wafer.
+**A big die.** For a 600 mm² die, find $1 + AD_0$, the dies per wafer at 600 and 660 mm², and the cost increase and average elasticity for that 10% growth on an \$18,500 wafer.
 
 ### Problem 28-09.4 [B]
 

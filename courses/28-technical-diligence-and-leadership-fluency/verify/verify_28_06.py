@@ -15,6 +15,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from scipy import stats
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -86,6 +87,15 @@ h4, t4 = tail_exact(25, 0.04, 4), tail_exact(25, 0.30, 4)
 v.check("Ex 28-06.2c", 100 * h4)
 v.check("Ex 28-06.2c1", 100 * t4)
 v.check("Ex 28-06.2c2", t4 / h4)
+lrp, lrm = 0.30 / 0.04, 0.70 / 0.96
+exact = {k: stats.binom.pmf(k, 25, 0.30) / stats.binom.pmf(k, 25, 0.04) for k in (3, 4, 5)}
+v.assert_true("exact-count LR equals (LR+)^k (LR-)^(n-k)", all(abs(exact[k] - lrp ** k * lrm ** (25 - k)) < 1e-9 * exact[k] for k in exact))
+v.check("Ex 28-06.2d", exact[3])
+v.check("Ex 28-06.2d1", exact[4])
+v.check("Ex 28-06.2d2", exact[5])
+v.check("Ex 28-06.2d3", 100 * 0.25 * exact[3] / (1 + 0.25 * exact[3]))
+tail3 = stats.binom.sf(2, 25, 0.30) / stats.binom.sf(2, 25, 0.04)
+v.check("Ex 28-06.2d4", 100 * 0.25 * tail3 / (1 + 0.25 * tail3))
 v.assert_true("Ex 2: Monte Carlo healthy tail within 0.2 points", abs(tail_mc(25, 0.04, 3) - h3) < 0.002)
 v.assert_true("Ex 2: lab tail agrees", abs(fm.tail(25, 0.30, 3) - t3) < 1e-12)
 
@@ -195,5 +205,29 @@ v.check("Lab 28-06.b", k_best)
 v.check("Lab 28-06.b1", 100 * tail_exact(25, 0.3, k_best))
 v.check("Lab 28-06.c", 100 * (1 - 0.88 ** 15))
 v.check("Lab 28-06.d", funnel_cashflows(40, 0.4, 3, [2, 3, 4], 0.12))
+v.check("Lab 28-06.e", 100 * funnel_cashflows(40, 0.4, 3, [2, 3, 4], 0.12) / 120)
+for f_, n_ in ((0.02, 34), (0.05, 14), (0.10, 7)):
+    v.assert_true(f"alt text: 50% false-alarm length at f={f_} is about {n_}", round(math.log(0.5) / math.log(1 - f_)) == n_)
+
+v.check("28-06.12e", stats.binom.pmf(2, 25, 0.30) / stats.binom.pmf(2, 25, 0.04))
+
+# Problem 28-06.13: chain rule for dependent flags
+pT1, pH1 = 0.6, 0.2
+pT2_1, pH2_1, pT2_0, pH2_0 = 0.9, 0.6, 0.2, 0.05
+lr1 = pT1 / pH1
+lr2 = (pT2_1 * pT1 + pT2_0 * (1 - pT1)) / (pH2_1 * pH1 + pH2_0 * (1 - pH1))
+joint = (pT1 * pT2_1) / (pH1 * pH2_1)
+v.assert_true("P13: chain rule equals LR(F1) * LR(F2|F1)", abs(joint - lr1 * (pT2_1 / pH2_1)) < 1e-12)
+post = lambda lr: 100 * (lr / 3) / (1 + lr / 3)
+v.check("28-06.13a", lr1)
+v.check("28-06.13b", lr2)
+v.check("28-06.13c", joint)
+v.check("28-06.13d", lr1 * lr2)
+v.check("28-06.13e", post(joint))
+v.check("28-06.13f", post(lr1 * lr2))
+v.check("28-06.13g", post(max(lr1, lr2)))
+
+v.check("28-06.9e", 100 * 30 / 97)
+v.check("28-06.9f", 100 * (1.4 + 3) / (10 + 3))
 
 sys.exit(v.finish())

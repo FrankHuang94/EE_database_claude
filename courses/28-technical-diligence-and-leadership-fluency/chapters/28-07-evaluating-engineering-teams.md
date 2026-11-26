@@ -67,25 +67,35 @@ a weighted average of the prior mean $\theta_0$ and the team's raw rate $s/n$, w
 
 > **Math refresher — the Beta distribution.** $\text{Beta}(\alpha, \beta)$ has density proportional to $\theta^{\alpha - 1}(1 - \theta)^{\beta - 1}$ on $0 \le \theta \le 1$, mean $\alpha/(\alpha + \beta)$, and it is "conjugate" to the binomial: multiplying it by a binomial likelihood gives another Beta. Think of $\alpha$ and $\beta$ as counts of successes and failures already seen.
 
-**Choosing the prior.** The base rate comes from industry surveys: first-silicon success was about 30% historically, 14% in the 2024 Wilson Research Group study and 5% in the 2026 study [R-621], [R-321] **[Industry estimate; the 2024 sampling change makes the trend uncertain]**. The prior weight $n_0$ expresses how much teams differ: a small $n_0$ says teams vary widely and a record should move the estimate quickly. Using $\theta_0 = 0.14$ and $n_0 = 10$ (assumed) is a reasonable default for a team doing projects of typical complexity; a team doing simpler projects (mature node, reused IP) deserves a higher $\theta_0$.
+**Choosing the prior.** The base rate comes from industry surveys: first-silicon success was about 30% historically, 14% in the 2024 Wilson Research Group study and 5% in the 2026 study [R-621], [R-321] **[Industry estimate; the recruitment change between 2022 and 2024 makes the long-run trend uncertain]**. The prior weight $n_0$ expresses how much teams differ: a small $n_0$ says teams vary widely and a record should move the estimate quickly. Using $\theta_0 = 0.14$ and $n_0 = 10$ (assumed) is a reasonable default for a complex SoC typical of the survey sample, which over-represents CPU, GPU and AI-accelerator projects [R-622]; the 2026 figure of 5% is itself uncertain (a 95% interval of roughly 3–8%); a team doing simpler projects (mature node, reused IP) deserves a higher $\theta_0$.
 
-**Checking the definition.** A first-silicon "success" in the surveys means the first silicon went to production without a respin [R-621]. Teams sometimes count first silicon that merely booted, or count metal-only fixes as "no respin". The stepping history of shipped products (A0, A1, B0 …) settles the definition (28-03).
+**Checking the definition.** The surveys' spins-before-production chart treats a single spin as first-silicon success (about 14% of projects in 2024, matching the headline rate) [R-645], and the answers are self-reported. Teams sometimes count first silicon that merely booted, or count metal-only fixes as "no respin". The stepping history of shipped products (A0, A1, B0 …) settles the definition (28-03).
 
 ### 3.2 Schedule calibration
 
-Most chip projects overrun: 75% were behind schedule in the 2024 study [R-621]. A team's own history is the best predictor of its next overrun, a practice called **reference-class forecasting**. Take the ratios $x_i = T_{\text{actual}}/T_{\text{plan}}$ of past projects and work with their logarithms, which turns multiplicative overruns into additive ones. With mean $\mu$ and sample standard deviation $\sigma$ of $\ln x_i$, and modelling the next ratio as lognormal:
+Most chip projects overrun: 75% were behind schedule in the 2024 study [R-621] **[Industry estimate: sponsored survey]**. Two kinds of evidence inform the next project's overrun. The *outside view* is the distribution of overruns across similar projects in the industry; using it is what **reference-class forecasting** means. The *inside view* is this team's own record. A good forecast starts from the outside view and moves toward the team's record as far as the record's length justifies, exactly as §3.1 shrinks a first-silicon record toward the base rate.
+
+For the team's record, take the ratios $x_i = T_{\text{actual}}/T_{\text{plan}}$ of its $n$ past projects and work with their logarithms. Logs suit these ratios because the ratios are positive and right-skewed: a project can overrun by 100% but cannot finish in less than no time, and a lognormal model has that shape. With mean $\mu$ and sample standard deviation $s_{\ln}$ of the $\ln x_i$, the **plug-in** forecast treats both as known:
 
 $$
-\hat T = T_{\text{plan}}\,e^{\mu}, \qquad P(\text{on time}) = P(\ln x \le 0) = \Phi\!\left(-\frac{\mu}{\sigma}\right), \qquad T_{90} = T_{\text{plan}}\,e^{\mu + z_{0.9}\sigma}
+\hat T_{50} = T_{\text{plan}}\,e^{\mu}, \qquad P(\text{on time}) = P(\ln x \le 0) = \Phi\!\left(-\frac{\mu}{s_{\ln}}\right), \qquad T_{90} = T_{\text{plan}}\,e^{\mu + z_{0.9}s_{\ln}}
 $$
 
-where $\Phi$ is the standard normal distribution function and $z_{0.9} = 1.2816$. The geometric mean overrun $e^{\mu}$ is used because overruns compound; a 25% overrun followed by a 25% underrun is not a wash on a log scale. With only a few projects, $\sigma$ is uncertain (28-05 §3.6), so the P90 should be read as indicative. A team whose new plan assumes no overrun when every past project overran is a red flag of the kind in 28-06; a team that presents its own calibration is a green one.
+where $\Phi$ is the standard normal distribution function and $z_{0.9} = 1.2816$. $\hat T_{50}$ is the *median* duration; the mean of the lognormal is $T_{\text{plan}}\,e^{\mu + s_{\ln}^2/2}$, slightly longer.
+
+With three or four projects the plug-in forecast is overconfident, because $\mu$ and $s_{\ln}$ are themselves uncertain: 28-05 §3.6 shows that the 95% bound on a standard deviation from four samples is almost three times the sample value. The standard correction is the **predictive** distribution. If the log-ratios are normal with unknown mean and variance, the next one follows a Student $t$ distribution with $n - 1$ degrees of freedom, centered on $\mu$ with scale $s_{\ln}\sqrt{1 + 1/n}$:
+
+$$
+P(\text{on time}) = F_{t,\,n-1}\!\left(-\frac{\mu}{s_{\ln}\sqrt{1 + 1/n}}\right), \qquad T_{90} = T_{\text{plan}}\exp\!\left(\mu + t_{0.9;\,n-1}\,s_{\ln}\sqrt{1 + 1/n}\right),
+$$
+
+where $F_{t,\,n-1}$ is the $t$ distribution function and $t_{0.9;\,n-1}$ its 90th percentile (1.638 for $n = 4$). For a record of three or four projects this multiplies the chance of an on-time finish several-fold and pushes the P90 out by months (Example 28-07.2). Read every such number as conditional on the next project resembling the last few. A team whose new plan assumes no overrun when every past project overran is a red flag of the kind in 28-06; a team that presents its own calibration, and compares it with the industry's, is a green one.
 
 ### 3.3 Composition and bench depth
 
 **Composition.** A chip team's disciplines peak at different times (26-06 §3.1): architecture early, RTL and verification in the middle, physical design toward tape-out, validation and software after it. Two composition checks matter most in diligence:
 
-- **Verification capacity.** The 2022 Wilson study found about a one-to-one ratio of verification to design engineers at peak (about five to one in processors), and that design engineers spent 49% of their time on verification [R-651] **[Industry estimate: sponsored survey]**. Head counts therefore understate verification effort; ask for time allocation, not only titles (Problem 28-07.10).
+- **Verification capacity.** The 2022 Wilson study found about a one-to-one ratio in the mean peak number of verification and design engineers per project (and said a 5-to-1 ratio is "not unusual" in processors), and that design engineers spent 49% of their time on verification [R-651] **[Industry estimate: sponsored survey]**. Head counts therefore understate verification effort; ask for time allocation, not only titles (Problem 28-07.10).
 - **Coverage of the hard parts.** Map each critical capability (each analog block, the SerDes, the memory controller, DFT, the compiler for an accelerator) to the people who can own it.
 
 **Bench depth.** If $k$ people can each own a capability, and each leaves independently with probability $q$ over the horizon, the capability is lost only if all $k$ leave:
@@ -102,13 +112,13 @@ A team's tools are part of its capability and much of its cost. Questions to set
 
 - **Flow maturity.** Which EDA flows, at which versions; is there a scripted, reproducible flow from RTL to GDS, or a set of hand steps known to one person?
 - **Verification infrastructure.** Regression frequency and pass rate; coverage closure against a plan; formal tools on control logic; emulation or FPGA prototyping capacity for system-level tests (19-13).
-- **Compute capacity.** Whether the compute matches the verification plan. A regression budget of $N$ runs of $t$ CPU-hours on $C$ cores at utilization $u$ takes
+- **Compute capacity.** Whether the compute matches the verification plan. A regression budget of $N$ runs of $t$ CPU-hours on $C$ cores, with $L$ simulator licenses (one per running job), at utilization $u$ takes
 
 $$
-T = \frac{N\,t}{C\,u}
+T = \frac{N\,t}{\min(C, L)\,u}
 $$
 
-hours of wall-clock time (Example 28-07.6). A plan that needs more weeks of regression than the schedule allows is a hidden schedule risk.
+hours of wall-clock time (Example 28-07.6). Licenses often bind before cores do, and they are a recurring cost. A plan that needs more weeks of regression than the schedule allows is a hidden schedule risk.
 
 - **Licenses and portability.** Tool licenses tied to the target's company may not transfer in an acquisition; flows tuned to one foundry may not port (28-08).
 
@@ -132,7 +142,7 @@ Two cautions apply. First, rehearsed candor exists: a team that has prepared pol
 
 **Scorecard.** 28-01's scorecards apply directly. Score each dimension (track record, composition, verification discipline, tooling, culture, bench depth) from 1 to 5 against evidence, weight the scores, and compute both the weighted arithmetic score $\sum w_i x_i$ and the weighted geometric score $\prod x_i^{w_i}$. The geometric score punishes a single weak dimension, which matches how teams fail. Add **gates**: some weaknesses (no verification plan, a critical capability with no owner) disqualify a team regardless of its average.
 
-**Retention value.** If a team of $N$ engineers would cost $V$ per engineer to replace (recruiting, ramp-up and the schedule lost while new hires learn the design), and a fraction $\rho$ stays through integration, the expected retained value is $N V \rho$. A retention package that raises retention from $\rho_0$ to $\rho_1$ is worth $N V(\rho_1 - \rho_0)$ before its cost; its break-even cost is that amount. The replacement value per engineer is a judgment, often well above salary for engineers who hold unique knowledge of the design.
+**Retention value.** If a team of $N$ engineers would cost $V$ per engineer to replace (recruiting, ramp-up and the schedule lost while new hires learn the design), and a fraction $\rho$ stays through integration, the expected retained value is $N V \rho$. A retention package that raises retention from $\rho_0$ to $\rho_1$ is worth $N V(\rho_1 - \rho_0)$ before its cost; its break-even cost is that amount. The replacement value per engineer is a judgment, often well above salary for engineers who hold unique knowledge of the design. Two refinements matter in practice. A package is usually paid only to those who stay (unvested awards are forfeited), so its expected cost is about $\rho_1$ times the award per head, not the headline; and much of it goes to people who would have stayed anyway, a deadweight cost of $\rho_0 N$ awards. In an acquisition, payments contingent on continued employment are generally accounted for as post-combination compensation expense rather than purchase price (US GAAP, ASC 805); this is a pointer for the accountants, not accounting advice.
 
 ## 4. Worked examples
 
@@ -155,19 +165,21 @@ All base rates, prior weights, departure rates, scores and financial values are 
 
 ### Example 28-07.2 · Calibrating a schedule (tier B)
 
-**Setup.** A team's last four projects took 1.25, 1.40, 1.30 and 1.10 times their planned durations. Its new plan is 18 months. Assuming lognormal overruns, find (a) the geometric mean overrun, (b) the standard deviation of the log-ratios (sample, $n - 1$), (c) the expected duration, (d) the probability of meeting the plan, and (e) the P90 duration.
+**Setup.** A team's last four projects took 1.25, 1.40, 1.30 and 1.10 times their planned durations. Its new plan is 18 months. Assuming lognormal overruns, find (a) the geometric mean overrun, (b) the standard deviation of the log-ratios (sample, $n - 1$), (c) the median and mean durations, (d) the probability of meeting the plan, (e) the P90 duration, both with the plug-in normal, and (f) the probability of meeting the plan and (g) the P90 from the $t$ predictive distribution.
 
 **Solution.**
 
 - (a) $\exp[\tfrac14\sum \ln x_i]$ = **1.258**.
-- (b) $\sigma$ = **0.101**.
-- (c) $18 \times 1.258$ = **22.6** months.
-- (d) $\Phi(-\mu/\sigma) = \Phi(-0.2293/0.1009)$ = **1.16**%.
-- (e) $18\,e^{\mu + 1.2816\sigma}$ = **25.8** months.
+- (b) $s_{\ln}$ = **0.101**.
+- (c) Median $18 \times 1.258$ = **22.6** months; mean $18\,e^{\mu + s_{\ln}^2/2}$ = **22.8** months.
+- (d) $\Phi(-\mu/s_{\ln}) = \Phi(-0.2293/0.1009)$ = **1.16**%.
+- (e) $18\,e^{\mu + 1.2816s_{\ln}}$ = **25.8** months.
+- (f) Scale $0.1009\sqrt{1.25} = 0.1129$; $F_{t,3}(-0.2293/0.1129)$ = **6.75**%.
+- (g) $18\exp(0.2293 + 1.638 \times 0.1129)$ = **27.2** months.
 
 **Units check.** Ratios are dimensionless; months × ratio = months. ✓
 
-**Sanity check.** Every past project overran, so the chance of an on-time finish is small. A deal model that uses the 18-month plan should instead use about 23 months, with a P90 near 26; milestone payments (28-01) tied to the plan will very likely be missed.
+**Sanity check.** Every past project overran, so the chance of an on-time finish is small, but four projects cannot pin it down: the plug-in answer of about 1% becomes about 7% once the uncertainty in $\mu$ and $s_{\ln}$ is counted, and the P90 moves from about 26 to about 27 months. A deal model that uses the 18-month plan should instead use about 23 months, with a P90 of 27 or more, checked against the industry's overrun distribution; milestone payments (28-01) tied to the plan will very likely be missed.
 
 ### Example 28-07.3 · Bench depth (tier B)
 
@@ -177,7 +189,7 @@ All base rates, prior weights, departure rates, scores and financial values are 
 
 **Units check.** Probabilities over the horizon. ✓
 
-**Sanity check.** A second owner cuts the two-year risk by a factor of more than four, which is why cross-training the critical blocks is among the cheapest integration actions. Six single points of failure make losing at least one nearly certain over an integration, and correlated departures would make it worse.
+**Sanity check.** A second owner cuts the two-year risk by a factor of $1/0.2256$ = **4.43**, which is why cross-training the critical blocks is among the cheapest integration actions. Six single points of failure make losing at least one more likely than not over an integration (**78.4**%), and correlated departures would make it worse.
 
 ### Example 28-07.4 · A team scorecard (tier B)
 
@@ -206,7 +218,7 @@ All base rates, prior weights, departure rates, scores and financial values are 
 
 **Setup.** A verification plan needs 2 million simulation runs of 30 CPU-minutes each before tape-out. The team has 2,000 cores at 80% utilization. Find the wall-clock days needed, and the days with 5,000 cores.
 
-**Solution.** $2 \times 10^6 \times 0.5/(2000 \times 0.8)$ = **625** h = **26.0** days; with 5,000 cores, **10.4** days.
+**Solution.** $2 \times 10^6 \times 0.5/(2000 \times 0.8)$ = **625** h = **26.0** days; with 5,000 cores, **10.4** days, provided the team holds at least 5,000 simulator licenses (with only 2,000 the extra cores sit idle and the answer stays 26.0 days).
 
 **Units check.** runs × CPU-hours per run ÷ cores = hours. ✓
 
@@ -228,9 +240,13 @@ All base rates, prior weights, departure rates, scores and financial values are 
 | Ex 28-07.1d2 | 95th percentile, 2 of 2 | 50.9 | % |
 | Ex 28-07.2a | geometric mean overrun | 1.258 | — |
 | Ex 28-07.2b | standard deviation of log-ratios | 0.101 | — |
-| Ex 28-07.2c | expected duration | 22.6 | months |
+| Ex 28-07.2c | median duration | 22.6 | months |
+| Ex 28-07.2c1 | mean duration | 22.8 | months |
 | Ex 28-07.2d | probability of meeting plan | 1.16 | % |
-| Ex 28-07.2e | P90 duration | 25.8 | months |
+| Ex 28-07.2e | P90 duration, plug-in | 25.8 | months |
+| Ex 28-07.2f | probability of meeting plan, t predictive | 6.75 | % |
+| Ex 28-07.2g | P90 duration, t predictive | 27.2 | months |
+| Txt 28-07.1 | 90th percentile of t with 3 degrees of freedom | 1.638 | — |
 | Ex 28-07.3a | one year, one owner | 12 | % |
 | Ex 28-07.3a1 | one year, two owners | 1.44 | % |
 | Ex 28-07.3a2 | one year, three owners | 0.173 | % |
@@ -238,6 +254,7 @@ All base rates, prior weights, departure rates, scores and financial values are 
 | Ex 28-07.3b1 | two years, two owners | 5.09 | % |
 | Ex 28-07.3b2 | two years, three owners | 1.15 | % |
 | Ex 28-07.3c | six single-owner capabilities | 78.4 | % |
+| Ex 28-07.3d | risk reduction from a second owner | 4.43 | — |
 | Ex 28-07.4a | weighted score | 3.10 | — |
 | Ex 28-07.4a1 | geometric score | 2.98 | — |
 | Ex 28-07.4b | weighted score, improved | 3.50 | — |
@@ -285,9 +302,9 @@ Figures are as of Nov 2026 unless dated otherwise.
 | Quantity | Value | Note |
 |---|---|---|
 | First-silicon success (IC/ASIC) | about 30% historically; 14% (2024); 5% (2026) | [R-621], [R-321] **[Industry estimate]** |
-| Projects behind schedule | 75% (2024) | [R-621] |
-| Verification to design engineers | about 1:1 at peak; about 5:1 in processors | 2022 study [R-651] |
-| Design engineers' time on verification | 49% (2022) | [R-651] |
+| Projects behind schedule | 75% (2024) | [R-621] **[Industry estimate]** |
+| Verification to design engineers | about 1:1 mean peak per project; up to about 5:1 in processors | 2022 study [R-651] **[Industry estimate]** |
+| Design engineers' time on verification | 49% (2022) | [R-651] **[Industry estimate]** |
 | Pairwise channels | $n(n - 1)/2$ | Brooks [R-650] |
 | Beta posterior mean | $(\alpha_0 + s)/(n_0 + n)$ | §3.1 |
 | Capability loss with $k$ owners | $q^k$ (independent departures) | §3.3 |
@@ -296,7 +313,7 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 - **Taking a short track record at face value.** Shrink it toward the base rate in proportion to its length.
 - **Accepting the team's definition of success.** Check stepping histories: booted is not shipped.
-- **Using the arithmetic mean of overruns.** Overruns compound; use logarithms and the geometric mean.
+- **Using the plan instead of the history.** A plan that ignores every past overrun is a forecast of the team's hopes. Start from the industry's overrun distribution and the team's record, and with only a few projects use the $t$ predictive distribution, not a normal with the sample spread treated as exact.
 - **Counting heads instead of capabilities.** A large team can still have single points of failure.
 - **Assuming departures are independent.** Teams leave together; plan for correlated loss.
 - **Judging culture from the leadership presentation.** Meet the engineers who do the work.
@@ -307,8 +324,8 @@ Figures are as of Nov 2026 unless dated otherwise.
 **State of play (as of Nov 2026).**
 
 - **Base rates are low and uncertain.** Survey-reported first-silicon success fell from about 30% historically to 14% in 2024 and 5% in 2026, with 75% of 2024 projects behind schedule [R-621], [R-321] **[Industry estimate; Contested trend]**. A team with a documented record well above these rates is genuinely scarce.
-- **Verification is now half the work.** Verification headcount grew at about 6.2% a year from 2007 to 2022 against 2.7% for design, reaching parity at peak, and designers spend about half their time verifying [R-651] **[Industry estimate]**. A team's verification capacity is the first thing to measure.
-- **Leading-edge chips take very large teams.** NVIDIA described "thousands of NVIDIA engineers" spending "over three years" on Volta [R-653] **[Established: company statement]**, which is why acquiring a capable team is often faster than building one, and why acquirers pay for teams.
+- **Verification is about half the work.** Verification headcount grew at about 6.2% a year from 2007 to 2022 against 2.7% for design, reaching parity at peak, and designers spent about half their time verifying in 2022 [R-651] **[Industry estimate, 2022]**; the 2026 study puts the verification share near 49%, against 53–57% in some earlier studies, so the share is high but not rising [R-018]. A team's verification capacity is the first thing to measure.
+- **Leading-edge chips take very large teams.** NVIDIA described "thousands of NVIDIA engineers" spending "over three years" on Volta (10 May 2017) [R-653] **[Established: company statement]**, which is why acquiring a capable team is often faster than building one, and why acquirers pay for teams.
 
 **Commercial relevance.** Team evaluation feeds three numbers in a deal: the probability that the next milestone succeeds (28-01's chains and earn-outs), the expected delay (which shifts every cash flow), and the cost of keeping the team (retention packages and the integration plan of 28-08). An acquirer that measures these with evidence can pay more for a genuinely strong team and less for a well-presented weak one.
 

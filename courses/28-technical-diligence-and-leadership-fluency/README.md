@@ -53,7 +53,7 @@ Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 
 - question banks for every domain of Courses 14–27, each built on an identity you can compute (28-04, 28-05);
 - flags as diagnostic tests with likelihood ratios, false-alarm rates and thresholds (28-06);
 - team evaluation by shrinkage, reference-class schedules, bench depth and retention value (28-07);
-- integration risk as synergy timing, migration and delay costs, parallel paths, licences and registers (28-08);
+- integration risk as synergy timing, migration and delay costs, parallel paths, licenses and registers (28-08);
 - a translation table between business and engineering units (28-09);
 - and 26 conversation scenarios that put it all to work in real time (28-10).
 

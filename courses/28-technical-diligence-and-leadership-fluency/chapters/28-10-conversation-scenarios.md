@@ -381,7 +381,7 @@ Each scenario is a condensed conversation with an invented company; names and pa
 - **VP Sales:** About 40%, and those took about two years to ramp.
 - **Analyst:** Then the risk-adjusted value is about $34M, roughly a third of the headline.
 
-**Live check.** Average discount factor **0.715**; value $30 \times 0.4 \times 4 \times 0.715$ = **34.3** $M; claim over value **3.50**.
+**Live check.** Average discount factor **0.715**; value $30 \times 0.4 \times 4 \times 0.715$ = **34.3** \$M; claim over value **3.50**.
 
 **Debrief.** A conversion rate offered without evasion: strong (LR 3). The headline itself was not misleading by intent; it was the wrong measure.
 
@@ -399,7 +399,7 @@ Each scenario is a condensed conversation with an invented company; names and pa
 - **Target VPE:** At least three months' slip; timing and power sign-off would restart in tools we don't know.
 - **Analyst:** Three months is about $20M of revenue; migrating 15 engineers for four months at $30k a month costs $1.8M either way. Freezing the flow until tape-out looks right.
 
-**Live check.** Delay cost $80 \times 3/12$ = **20** \$M; migration cost $15 \times 4 \times 0.03$ = **1.8** $M.
+**Live check.** Delay cost $80 \times 3/12$ = **20** \$M; migration cost $15 \times 4 \times 0.03$ = **1.8** \$M.
 
 **Debrief.** The target's estimate was specific; the analyst's arithmetic turned a process debate into a decision (28-08 §3.2).
 
@@ -417,7 +417,7 @@ Each scenario is a condensed conversation with an invented company; names and pa
 - **Counsel:** The agreement requires consent to assignment; the rate is fixed through 2028.
 - **Analyst:** Then consent is a closing condition, and the 2028 renewal is a margin risk to model.
 
-**Live check.** $20 \times 10^6 \times 15 \times 0.025$ = **7.5** $M.
+**Live check.** $20 \times 10^6 \times 15 \times 0.025$ = **7.5** \$M.
 
 **Debrief.** Specific terms: strong (LR 3). Two follow-ups for the register (28-08 §3.5).
 
@@ -506,11 +506,13 @@ Each scenario is a condensed conversation with an invented company; names and pa
 **Dialogue.**
 
 - **Deal lead:** Three red flags; should we be worried?
-- **Analyst:** Three or more appears in about 99% of troubled targets but only about 7.5% of healthy ones under our assumptions, a likelihood ratio of about 13. But two of the three are the same tape-out slip seen twice; counted once, we have two flags.
+- **Analyst:** As a screening rule, "three or more" fires for about 99% of troubled targets and only about 7.5% of healthy ones under our assumptions, a ratio of about 13, so it was right to escalate. But that ratio weighs the rule, not the count. A troubled target would show about seven flags on this list; seeing exactly three is more typical of a healthy one, a likelihood ratio of about 0.54. And two of the three are the same tape-out slip seen twice; counted once, we have two flags, a ratio of about 0.05.
+- **Deal lead:** So the flags argue for health?
+- **Analyst:** Under these per-flag rates, yes, mildly: the count is reassuring and the content is what matters. The tape-out slip is real, so we follow it up on its own terms (28-06 Example 28-06.2).
 
-**Live check.** $P(K \ge 3 \mid \text{troubled})$ = **98.8**%; $P(K \ge 3 \mid \text{healthy})$ = **7.55**%; ratio **13.1**.
+**Live check.** $P(K \ge 3 \mid \text{troubled})$ = **98.8**%; $P(K \ge 3 \mid \text{healthy})$ = **7.55**%; tail ratio **13.1**. Exactly three: $(0.35/0.05)^3(0.65/0.95)^{17}$ = **0.541**; exactly two after grouping: **0.0529**. A troubled target averages $20 \times 0.35$ = **7** flags.
 
-**Debrief.** The grouping by cause (28-06 §3.6) changes the conclusion more than any single flag.
+**Debrief.** Two errors were avoided. Using the tail ratio of a threshold as the weight of an observed count would have turned reassuring evidence into alarming evidence (28-06 §3.2), and counting one cause twice would have inflated it further (28-06 §3.6). What survives is a single, specific flag to investigate.
 
 **Units check.** Binomial probabilities. ✓
 
@@ -518,7 +520,7 @@ Each scenario is a condensed conversation with an invented company; names and pa
 
 ### Example 28-10.23 · Paying for first silicon (tier B)
 
-**Setup.** A seller asks to be valued as if production-ready; the programme is at first silicon with remaining stages 0.80, 0.85 and 0.95 over 11 months (assumed, 28-03 §3.2), at 15% a year.
+**Setup.** A seller asks to be valued as if production-ready; the program is at first silicon with remaining stages 0.80, 0.85 and 0.95 over 11 months (assumed, 28-03 §3.2), at 15% a year.
 
 **Dialogue.**
 
@@ -646,7 +648,10 @@ Each scenario is a condensed conversation with an invented company; names and pa
 | Ex 28-10.21 | field failures a year | 8 | failures |
 | Ex 28-10.22a | three or more, troubled | 98.8 | % |
 | Ex 28-10.22b | three or more, healthy | 7.55 | % |
-| Ex 28-10.22c | ratio | 13.1 | — |
+| Ex 28-10.22c | tail ratio of the rule | 13.1 | — |
+| Ex 28-10.22d | likelihood ratio, exactly three | 0.541 | — |
+| Ex 28-10.22e | likelihood ratio, exactly two after grouping | 0.0529 | — |
+| Ex 28-10.22f | expected flags, troubled | 7 | flags |
 | Ex 28-10.23a | probability of production | 0.646 | — |
 | Ex 28-10.23b | value multiplier | 0.568 | — |
 | Ex 28-10.24 | best-of-ten inflation | 1.36 | — |

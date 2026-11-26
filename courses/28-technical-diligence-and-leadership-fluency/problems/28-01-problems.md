@@ -27,7 +27,7 @@ Chapter: [28-01](../chapters/28-01-technology-evaluation-framework.md) · Worked
 
 ### Problem 28-01.3 [B]
 
-**A gate.** X's score of 1 on the third dimension (IP position) reflects a core licence that terminates on a change of control. Treat an IP score of at least 2 as a knockout gate.
+**A gate.** X's score of 1 on the third dimension (IP position) reflects a core license that terminates on a change of control. Treat an IP score of at least 2 as a knockout gate.
 
 - (a) Does X pass the gate? What does that mean for its scores in Problem 28-01.2?
 - (b) The buyer makes the licensor's consent a closing condition, and the IP score rises to 3. Find X's new arithmetic and geometric scores.

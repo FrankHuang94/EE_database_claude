@@ -24,7 +24,7 @@ The lab uses the chapter's models with its assumed parameters:
 
 **Part 2 · Correlated paths** (notebook). *Predict* the gain from keeping both of Example 28-08.3's programs if they fail together with probability 0.35. Then plot the gain against the joint-failure probability, with the $30M cost.
 
-**Part 3 · Export metrics** (notebook). *Predict* the TPP of an accelerator with 2,000 dense FP8 TFLOP/s. Then tabulate TPP and density for a set of hypothetical chips against the 3A090.a thresholds.
+**Part 3 · Export metrics** (notebook). *Predict* the TPP of an accelerator with 2,000 dense FP8 TFLOP/s. Then tabulate TPP and density for a set of hypothetical chips against the 3A090.a and 3A090.b thresholds (a teaching classifier, not legal advice).
 
 **Part 4 · The register** (notebook). *Predict* Example 28-08.6's expected loss if the license risk is resolved before signing. Then plot each risk's expected loss before and after the mitigations.
 

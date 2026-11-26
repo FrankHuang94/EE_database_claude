@@ -19,25 +19,25 @@ Annuity $[1 - 1.12^{-4}]/0.12$ = **3.037**; planned $30 \times 3.037$ = **91.1**
 
 ### Solution 28-08.3
 
-$40 \times 6 \times 0.022$ = **5.28** \$M; lost revenue $90 \times 4/12$ = **30** $M.
+$40 \times 6 \times 0.022$ = **5.28** \$M; lost revenue $90 \times 4/12$ = **30** \$M; lost gross profit $0.55 \times 30$ = **16.5** \$M, about three times the direct cost, so freeze the flow and migrate after tape-out.
 
 ### Solution 28-08.4
 
-(a) Both fail $0.3 \times 0.6$ = **0.18**; at least one **0.82**; value with both $150 \times 0.82$ = **123** $M; better alone **105** $M; gain **18** $M, below the $25M cost: cancel the second program.
+(a) Both fail $0.3 \times 0.6$ = **0.18**; at least one **0.82**; value with both $150 \times 0.82$ = **123** \$M; better alone **105** \$M; gain **18** \$M, below the \$25M cost: cancel the second program.
 
-(b) At least one succeeds with probability $1 - 0.25 = 0.75$; gain $150 \times 0.75 - 105$ = **7.5** $M, an even clearer case to cancel.
+(b) At least one succeeds with probability $1 - 0.25 = 0.75$; gain $150 \times 0.75 - 105$ = **7.5** \$M, an even clearer case to cancel.
 
 ### Solution 28-08.5
 
-Revenue $30 \times 10^6 \times 12$ = $360M; royalty **5.4** $M at 1.5% and **10.8** $M at 3%; the difference is **1.5** margin points.
+Revenue $30 \times 10^6 \times 12$ = \$360M; royalty **5.4** \$M at 1.5% and **10.8** \$M at 3%; the difference is **1.5** margin points.
 
 ### Solution 28-08.6
 
-Contingent share $0.8/2.0$ = **40**%. At $p = 0.5$: contingent $0.5 \times 0.8/1.1^2$ = **0.331** \$B; deal **1.53** \$B. At $p = 0.7$: deal **1.66** $B.
+Contingent share $0.8/2.0$ = **40**%. At $p = 0.5$: contingent $0.5 \times 0.8/1.1^2$ = **0.331** \$B; deal **1.53** \$B. At $p = 0.7$: deal **1.66** \$B.
 
 ### Solution 28-08.7
 
-$10 + 12 + 15 + 4.5$ = **41.5** \$M; largest **15** \$M (the tail risk). With the review: $41.5 - 15 + 3$ = **29.5** $M; saving **12** $M.
+$10 + 12 + 15 + 4.5$ = **41.5** \$M; largest **15** \$M (the tail risk). With the review: $41.5 - 15 + 3$ = **29.5** \$M; saving **12** \$M.
 
 ### Solution 28-08.8
 
@@ -45,15 +45,15 @@ $10 + 12 + 15 + 4.5$ = **41.5** \$M; largest **15** \$M (the tail risk). With th
 
 ### Solution 28-08.9
 
-$0.8 \times 189.5/1.1^2$ = **125.3** $M; loss **33.9**%.
+$0.8 \times 189.5/1.1^2$ = **125.3** \$M; loss **33.9**%.
 
 ### Solution 28-08.10
 
-Fixed window: years 2–5 only, $50 \times [1 - 1.1^{-4}]/0.1 \times 1.1^{-1}$ = **144.1** \$M, a loss of **24.0**%. Shifted window: $189.5/1.1$ = **172.3** $M, a loss of **9.09**%. Losing a year of a fixed window costs more than two and a half times as much as shifting it.
+Fixed window: years 2–5 only, $50 \times [1 - 1.1^{-4}]/0.1 \times 1.1^{-1}$ = **144.1** \$M, a loss of **24.0**%. Shifted window: $189.5/1.1$ = **172.3** \$M, a loss of **9.09**%. Losing a year of a fixed window costs more than two and a half times as much as shifting it.
 
 ### Solution 28-08.11
 
-No package: $0.99^{24}$ = **78.6**% stay. Lump vesting: $0.99^{23} \times 0.85$ = **67.5**%. The cliff concentrates departures and, here, loses more people over two years than steady attrition; staged vesting spreads the risk.
+Month 24: no package $0.99^{24}$ = **78.6**%; L $0.997^{24}$ = **93.0**%; S $0.995^{24}$ = **88.7**%. Month 27: no package $0.99^{27}$ = **76.2**%; L $0.997^{24} \times 0.95^3$ = **79.8**%; S $0.995^{27}$ = **87.3**%. A month-24 dashboard makes L look best, but most of its benefit leaks out in the three months after it pays: by month 27 it keeps only a few points more than no package, while S, at the same cost, keeps about eight points more than L. Measure retention after the cliff, and spread vesting across the period the integration needs the people.
 
 ### Solution 28-08.12
 
@@ -63,7 +63,11 @@ No package: $0.99^{24}$ = **78.6**% stay. Lump vesting: $0.99^{23} \times 0.85$ 
 
 (c) With both programs the socket is won unless both fail: value $W[1 - P(\text{both fail})]$. With the better alone it is $W\max(p_1, p_2)$. The difference is the gain. Positive correlation makes joint failure more likely than $(1 - p_1)(1 - p_2)$, which lowers $1 - P(\text{both fail})$ and the gain.
 
-(d) Loss is $L = \sum_i I_i\mathbf{1}_i$, where $\mathbf{1}_i$ is 1 if risk $i$ occurs. By linearity of expectation, $E[L] = \sum_i I_iP(\mathbf{1}_i = 1) = \sum_i p_iI_i$, whatever the dependence between risks. A mitigation that changes $p_i$ or $I_i$ changes only its own term, so its value is the change in $p_iI_i$.
+(d) Loss is $L = \sum_i I_i\mathbf{1}_i$, where $\mathbf{1}_i$ is 1 if risk $i$ occurs. By linearity of expectation, $E[L] = \sum_i I_iP(\mathbf{1}_i = 1) = \sum_i p_iI_i$, whatever the dependence between risks. A mitigation that changes $p_i$ or $I_i$ only for its own risk changes only its own term, so its value is the change in $p_iI_i$; a mitigation that also lowers other risks' probabilities (retention lowering the chance of a slip) changes several terms, and the register says nothing about the spread of the total loss when risks are correlated.
+
+### Solution 28-08.13
+
+The gross gain from a second path is $200 \times (0.8 - 0.6)$ = **40** \$M (Example 28-08.3). (a) To the end: $40 - 30$ = **10** \$M. (b) To first silicon: the probability of ending with at least one working program is still 0.8, but only \$12M of the second program's cost is spent, so the net gain is $40 - 12$ = **28** \$M. (c) The option to cancel at first silicon is worth $28 - 10$ = **18** \$M, the cost it avoids. A real first silicon does not reveal the outcome perfectly: a program that works at first silicon can still fail later, and one that needs a respin can still succeed, so the buyer will sometimes cancel the wrong program or keep both longer. The staged plan then captures less than \$28M, which is why (b) is an upper bound.
 
 ---
 
@@ -79,6 +83,7 @@ No package: $0.99^{24}$ = **78.6**% stay. Lump vesting: $0.99^{23} \times 0.85$ 
 | 28-08.2f | loss, two years | 40.2 | % |
 | 28-08.3a | migration cost | 5.28 | $M |
 | 28-08.3b | lost revenue | 30 | $M |
+| 28-08.3c | lost gross profit | 16.5 | $M |
 | 28-08.4a | both fail, independent | 0.18 | — |
 | 28-08.4b | at least one succeeds | 0.82 | — |
 | 28-08.4c | value with both | 123 | $M |
@@ -106,5 +111,13 @@ No package: $0.99^{24}$ = **78.6**% stay. Lump vesting: $0.99^{23} \times 0.85$ 
 | 28-08.10b | loss, fixed window | 24.0 | % |
 | 28-08.10c | value, shifted window | 172.3 | $M |
 | 28-08.10d | loss, shifted window | 9.09 | % |
-| 28-08.11a | retention, no package | 78.6 | % |
-| 28-08.11b | retention, lump vesting | 67.5 | % |
+| 28-08.11a | retention at 24 months, no package | 78.6 | % |
+| 28-08.11b | retention at 24 months, lump package | 93.0 | % |
+| 28-08.11c | retention at 24 months, staged package | 88.7 | % |
+| 28-08.11d | retention at 27 months, no package | 76.2 | % |
+| 28-08.11e | retention at 27 months, lump package | 79.8 | % |
+| 28-08.11f | retention at 27 months, staged package | 87.3 | % |
+| 28-08.13a | gross gain from the second path | 40 | $M |
+| 28-08.13b | net gain, both to the end | 10 | $M |
+| 28-08.13c | net gain, both to first silicon | 28 | $M |
+| 28-08.13d | value of the option to cancel | 18 | $M |

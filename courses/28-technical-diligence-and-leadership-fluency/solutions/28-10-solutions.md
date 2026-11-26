@@ -42,7 +42,7 @@ Odds $(0.3/0.7) \times 3 \times 0.4 \times 2 \times 1 \times 0.5$ = **0.514**, p
 
 ### Solution 28-10.9
 
-Factor $\tfrac13(1.1^{-1} + 1.1^{-2} + 1.1^{-3})$ = **0.829**; value $50 \times 0.3 \times 2 \times 0.829$ = **24.9** $M; ratio **4.02**.
+Factor $\tfrac13(1.1^{-1} + 1.1^{-2} + 1.1^{-3})$ = **0.829**; value $50 \times 0.3 \times 2 \times 0.829$ = **24.9** \$M; ratio **4.02**.
 
 ### Solution 28-10.10
 
@@ -50,7 +50,7 @@ First forecaster: $[5 \times 0.2^2 + 5 \times 0.6^2]/10$ = **0.20**. Always 0.5:
 
 ### Solution 28-10.11
 
-Unit cost $25 \times 0.5$ = **12.5** $; die cost **9.5** $; area **33.2** mm².
+Unit cost $25 \times 0.5$ = **12.5** \$; die cost **9.5** \$; area **33.2** mm².
 
 ### Solution 28-10.12
 

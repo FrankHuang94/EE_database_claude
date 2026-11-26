@@ -19,11 +19,11 @@ Problems: [28-07 problems](../problems/28-07-problems.md) · Chapter: [28-07](..
 
 ### Solution 28-07.3
 
-2.5th percentile **14.7**%, 97.5th **60.9**%. The 95% interval reaches down to about the 2024 base rate, so with 95% confidence the team is not proven better than average, although its posterior mean is well above it.
+2.5th percentile **14.7**%, 97.5th **60.9**%. The 95% interval just excludes the 2024 base rate of 14% (the posterior probability that $\theta$ exceeds 14% is about **98**%), but its lower end is close to it, so the evidence is strong yet sensitive to how much weight the prior carries: with a heavier prior the interval would include the base rate.
 
 ### Solution 28-07.4
 
-$\mu = \tfrac13(\ln 1.15 + \ln 1.35 + \ln 1.50)$; $e^{\mu}$ = **1.325**; expected $24 \times 1.325$ = **31.8** months; $\sigma$ = **0.134**; $P = \Phi(-\mu/\sigma)$ = **1.76**%.
+$\mu = \tfrac13(\ln 1.15 + \ln 1.35 + \ln 1.50)$; $e^{\mu}$ = **1.325**; median $24 \times 1.325$ = **31.8** months; $s_{\ln}$ = **0.134**; plug-in $P = \Phi(-\mu/s_{\ln})$ = **1.76**%. Predictive: scale $0.1338\sqrt{1 + 1/3} = 0.1545$; $P = F_{t,2}(-0.2818/0.1545)$ = **10.5**%; $T_{90} = 24\exp(0.2818 + 1.886 \times 0.1545)$ = **42.6** months. With three projects and two degrees of freedom, the $t$ distribution's heavy tails admit both an on-time finish and a very late one far more readily than a normal with the sample spread treated as exact; the honest summary is "about 32 months, with wide uncertainty", which is a reason to check the outside view (28-07 §3.2).
 
 ### Solution 28-07.5
 
@@ -39,7 +39,7 @@ Weighted $0.3 \times 5 + 0.25 \times 4 + 0.25 \times 1 + 0.2 \times 4$ = **3.55*
 
 ### Solution 28-07.8
 
-Without: $40 \times 1.2 \times 0.65$ = **31.2** \$M; with: **38.4** \$M; gain **7.2** \$M. Break-even: $1/(40 \times 1.2)$ = **2.08** points of retention per $1M.
+Without: $40 \times 1.2 \times 0.65$ = **31.2** \$M; with: **38.4** \$M; gain **7.2** \$M. Break-even: $1/(40 \times 1.2)$ = **2.08** points of retention per \$1M.
 
 ### Solution 28-07.9
 
@@ -47,7 +47,7 @@ $3 \times 10^6 \times 0.25/(1000 \times 0.75)$ = 1000 h = **41.7** days.
 
 ### Solution 28-07.10
 
-Verification $15 + 0.49 \times 40$ = **34.6** FTE; design $0.51 \times 40$ = **20.4** FTE; ratio **1.70**. The head-count ratio, 15/40, understates verification effort by more than four times.
+Verification $15 + 0.49 \times 40$ = **34.6** FTE; design $0.51 \times 40$ = **20.4** FTE; ratio **1.70**. The head-count ratio, 15/40 = 0.375, understates this team's verification effort ratio by a factor of **4.52**. Compare effort with effort: a team at the survey's one-to-one head count, with the same 49% split, would have an effort ratio of $(1 + 0.49)/0.51$ = **2.92**, so this team's 1.70 is still well below it.
 
 ### Solution 28-07.11
 
@@ -73,10 +73,13 @@ $20 \times 19/2$ = **190**; $30 \times 29/2$ = **435**; ratio **2.29**: 50% more
 | 28-07.2d | weight, 6 of 8 | 0.444 | — |
 | 28-07.3a | 2.5th percentile | 14.7 | % |
 | 28-07.3b | 97.5th percentile | 60.9 | % |
+| 28-07.3c | posterior probability above 14% | 98 | % |
 | 28-07.4a | geometric mean overrun | 1.325 | — |
-| 28-07.4b | expected duration | 31.8 | months |
+| 28-07.4b | median duration | 31.8 | months |
 | 28-07.4c | standard deviation of log-ratios | 0.134 | — |
-| 28-07.4d | probability of meeting plan | 1.76 | % |
+| 28-07.4d | probability of meeting plan, plug-in | 1.76 | % |
+| 28-07.4e | probability of meeting plan, t predictive | 10.5 | % |
+| 28-07.4f | P90 duration, t predictive | 42.6 | months |
 | 28-07.5a | one year, one owner | 15 | % |
 | 28-07.5b | one year, two owners | 2.25 | % |
 | 28-07.5c | one year, three owners | 0.338 | % |
@@ -94,6 +97,8 @@ $20 \times 19/2$ = **190**; $30 \times 29/2$ = **435**; ratio **2.29**: 50% more
 | 28-07.10a | verification effort | 34.6 | FTE |
 | 28-07.10b | design effort | 20.4 | FTE |
 | 28-07.10c | ratio | 1.70 | — |
+| 28-07.10d | effort ratio over head-count ratio | 4.52 | — |
+| 28-07.10e | effort ratio at one-to-one heads | 2.92 | — |
 | 28-07.11a | channels, 20 people | 190 | — |
 | 28-07.11b | channels, 30 people | 435 | — |
 | 28-07.11c | ratio | 2.29 | — |
