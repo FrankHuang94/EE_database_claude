@@ -17,4 +17,6 @@ At the end of each term there is an FE-style checkpoint exam: 40–60 multiple-c
 | Term 4 | Electronics; Electromagnetics; Computer Systems | [ready](term-4/README.md): 50 questions, [solutions](term-4/solutions.md) |
 | Term 5 | Control Systems; Signal Processing; Communications; Computer Networks; Computer Systems; Software Engineering | [ready](term-5/README.md): 50 questions, [solutions](term-5/solutions.md) |
 | Term 6 | Electronics; Power Systems; Digital Systems; Properties of Electrical Materials; Communications; Computer Systems | [ready](term-6/README.md): 50 questions, [solutions](term-6/solutions.md) |
-| Term 7 | Ethics and Professional Practice; Engineering Economics; full-length mixed practice exam (110 questions) | planned |
+| Term 7 | Engineering Economics; Ethics and Professional Practice; design process, system architectures and technical diligence (Courses 26–28) | [ready](term-7/README.md): 50 questions, [solutions](term-7/solutions.md) |
+
+A full-length mixed practice exam (110 questions across all FE areas, at the FE's 5 h 20 min pace) is planned for Phase 3; until then, take the seven checkpoints in sequence under timed conditions.
