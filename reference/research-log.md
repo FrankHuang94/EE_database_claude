@@ -6784,3 +6784,48 @@ R&D % = R&D ÷ revenue.
 - **Environment and power:** "a diurnal 1-2% throughput variation based on time-of-day … the result of higher mid-day temperatures impacting GPU dynamic voltage and frequency scaling"; synchronized power changes "on the order of tens of megawatts, stretching the limits of the power grid".
 - **Consistency check (ours) [Contested: internal inconsistency in the table].** The counts sum to 419, but 148/419 = 35.3%, not the printed 30.1%. The printed percentages sum to 94.9%. The GPU categories sum to 64.0% using the 148 count, but to 58.7% (the text's figure) if the faulty-GPU count is 126, which matches 30.1% of 419. One of the printed figures is wrong. GPUs and HBM dominate either way.
 - **Source:** [Llama Team, AI @ Meta, "The Llama 3 Herd of Models", arXiv:2407.21783v3 (23 Nov 2024)](https://arxiv.org/abs/2407.21783). Checked Nov 2026.
+
+## R-695 · Arm Ethos-U55 and Ethos-U85 NPUs (Course 27)
+
+*Read on 26 Nov 2026 on Arm's product pages.* [Established as Arm's specifications and claims]
+
+- **Ethos-U85:** "scales from 128 to 2048 MAC units, and is 20% more energy efficient than Arm Ethos-U55 and Arm Ethos-U65"; "Scales from 128 to 2048 MACs, providing up to 4 TOPs of performance at 1 GHz"; "Scalable performance – 256 GOP/s up to 4 TOPs at 1 GHz"; "Native support for transformer networks, along with support for Tensor Operator Set Architecture (TOSA)".
+- **Ethos-U55:** "The Ethos-U55, combined with the AI-capable Arm Cortex-M55 processor provides a 480 times uplift in ML performance over existing Cortex-M based systems"; "Ethos-U55 delivers up to 90% energy reduction in about 0.1mm² for AI applications". Its MAC-count range was not stated in the text read.
+- **Derived (ours):** 128 and 2048 MACs × 2 operations × 1 GHz = 0.256 and 4.10 TOPS, matching the stated range.
+- **Sources:** [Ethos-U55](https://www.arm.com/products/silicon-ip-cpu/ethos/ethos-u55); [Ethos-U85](https://www.arm.com/products/silicon-ip-cpu/ethos/ethos-u85). Checked Nov 2026.
+
+## R-696 · MLPerf Tiny benchmark (Course 27)
+
+*Read on 26 Nov 2026 in the paper's PDF (arXiv 2106.07597v4, 24 Aug 2021).* [Established]
+
+- C. Banbury, V. Janapa Reddi, P. Torelli, J. Holleman, N. Jeffries and others, "MLPerf Tiny Benchmark": it "measures the accuracy, latency, and energy of machine learning inference"; TinyML "achieves ML inference under a milliWatt"; on-device inference avoids "the energy cost associated with wireless communication, which at this scale is far higher than that of compute".
+- **Table 1 (v0.5):** Keyword Spotting, Speech Commands (49x10), "DS-CNN (52.5 KB)", 90% (Top-1). Visual Wake Words (96x96), "MobileNetV1 (325 KB)", 80%. Image Classification, CIFAR10, "ResNet (96 KB)", 85%. Anomaly Detection, ToyADMOS, "FC-AutoEncoder (270 KB)", 0.85 AUC.
+- **Keyword-spotting model:** "with 38.6K parameters, it fits within the available memory of most microcontrollers"; 12 output classes.
+- **Energy measurement:** total energy in the timing window gives "micro-Joules per inference", the median of five runs.
+- **Source:** [arXiv:2106.07597](https://arxiv.org/abs/2106.07597). Checked Nov 2026.
+
+## R-697 · Semtech SX1276/77/78/79 data sheet: LoRa time on air and currents (Course 27)
+
+*Read on 26 Nov 2026 in the data sheet, Rev. 7 (May 2020), from a copy hosted by SparkFun. This extends R-274, which used Rev. 5.* [Established as manufacturer specifications]
+
+- **Symbol rate:** "Rs = BW / 2^SF".
+- **Time on air (§4.1.1.7):** "T preamble = (n preamble + 4.25) T sym". Payload symbols: "8 + max(ceil((8PL – 4SF + 28 + 16CRC – 20IH)/(4(SF – 2DE)))(CR + 4), 0)", with "IH=0 when the header is enabled", "DE=1 when LowDataRateOptimize=1", "CR is the coding rate (1 corresponding to 4/5, 4 to 4/8)". "T packet = T preamble + T payload".
+- **Low data rate optimization:** "Its use is mandated when the symbol duration exceeds 16ms."
+- **Supply currents (typical):** sleep "0.2" µA; receive "10.8" mA (LnaBoost off, band 1); transmit "29" mA at +13 dBm and "20" mA at +7 dBm (RFO pin), "87" mA at +17 dBm and "120" mA at +20 dBm (PA_BOOST).
+- **Source:** [SX1276 data sheet (SparkFun copy)](https://cdn.sparkfun.com/assets/7/7/3/2/2/SX1276_Datasheet.pdf). Checked Nov 2026.
+
+## R-698 · EU 868 MHz duty cycles and The Things Network's fair-use policy (Course 27)
+
+*Read on 26 Nov 2026 on The Things Network's documentation page "Duty Cycle".* [Established for the ETSI sub-band limits as reproduced; TTN policy is a community network's rule]
+
+- The page reproduces section 4.3.3 of ETSI EN300.220-2 V3.2.1 (2018-06): "K (863 MHz - 865 MHz): 0.1% L (865 MHz - 868 MHz): 1% M (868 MHz - 868.6 MHz): 1% N (868.7 MHz - 869.2 MHz): 0.1% P (869.4 MHz - 869.65 MHz): 10% Q (869.7 MHz - 870 MHz): 1%". The ETSI standard itself was not read.
+- **Fair use:** "a Fair Use Policy applies which limits the uplink airtime to 30 seconds per day (24 hours) per node and the downlink messages to 10 messages per day (24 hours) per node. If you use a private network, these limits do not apply".
+- **Source:** [The Things Network, Duty Cycle](https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/). Checked Nov 2026.
+
+## R-699 · Connected IoT devices (Course 27)
+
+*Read on 26 Nov 2026 on IoT Analytics' "State of IoT 2025" page (28 Oct 2025).* [Industry estimate]
+
+- "Based on H1 2025 IoT connection data, the number of connected IoT devices is expected to grow 14% year-over-year to 21.1 billion by the end of 2025."
+- "Wi-Fi remains the largest technology for IoT connectivity, now accounting for 32% of all connections"; "24% of connected IoT devices worldwide rely on Bluetooth"; "cellular IoT connections grew 16% YoY in 2024".
+- **Source:** [IoT Analytics, 28 Oct 2025](https://iot-analytics.com/number-connected-iot-devices/). Checked Nov 2026.

@@ -33,7 +33,7 @@ End-to-end analyses of real product classes (smartphone SoC, wearables, PC SoC, 
 | [27-05 · The PC SoC](chapters/27-05-pc-soc.md) | 6 | ✅ verified | [problems](problems/27-05-problems.md) · [solutions](solutions/27-05-solutions.md) · [lab](labs/27-05-lab/README.md) · [verify](verify/verify_27_05.py) |
 | [27-06 · Automotive E/E Architecture and ADAS Compute](chapters/27-06-automotive-ee-architecture.md) | 9 | ✅ verified | [problems](problems/27-06-problems.md) · [solutions](solutions/27-06-solutions.md) · [lab](labs/27-06-lab/README.md) · [verify](verify/verify_27_06.py) |
 | [27-07 · The AI Datacenter Server and Rack](chapters/27-07-ai-datacenter-server-and-rack.md) | 10 | ✅ verified | [problems](problems/27-07-problems.md) · [solutions](solutions/27-07-solutions.md) · [lab](labs/27-07-lab/README.md) · [verify](verify/verify_27_07.py) |
-| [27-08 · Edge AI and IoT](chapters/27-08-edge-ai-and-iot.md) | 6 | ⬜ planned | — |
+| [27-08 · Edge AI and IoT](chapters/27-08-edge-ai-and-iot.md) | 6 | ✅ verified | [problems](problems/27-08-problems.md) · [solutions](solutions/27-08-solutions.md) · [lab](labs/27-08-lab/README.md) · [verify](verify/verify_27_08.py) |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 

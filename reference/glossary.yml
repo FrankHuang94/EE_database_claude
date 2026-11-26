@@ -11226,3 +11226,47 @@
   definition: "The tradeoff between a serving system's total tokens per second and each user's tokens per second as the batch grows; in the memory-bound region it is a straight line whose slope is the ratio of weight bytes to one sequence's KV-cache bytes."
   chapter: "27-07"
   see_also: [KV cache, Decode and prefill]
+- term: TinyML
+  definition: "Machine-learning inference on microcontroller-class devices at milliwatt and lower power, with models of tens to hundreds of kilobytes; benchmarked by MLPerf Tiny in microjoules per inference."
+  chapter: "27-08"
+  see_also: [Quantization (neural networks), Depthwise-separable convolution]
+- term: Depthwise-separable convolution
+  definition: "A convolution factored into a per-channel k × k spatial filter and a 1 × 1 pointwise convolution that mixes channels, cutting MACs and weights to 1/C_out + 1/k² of a standard convolution."
+  chapter: "27-08"
+  see_also: [TinyML]
+- term: Tensor arena
+  definition: "The block of SRAM a microcontroller inference library plans ahead of time for a network's activations and scratch buffers; its size is set by the largest set of tensors live at once, not by the sum over layers."
+  chapter: "27-08"
+  see_also: [TinyML]
+- term: Low-power wide-area network (LPWAN)
+  definition: "A radio network for small, infrequent messages over kilometres at very low energy per message, such as LoRaWAN, Sigfox, NB-IoT and LTE-M, trading data rate and latency for range and battery life."
+  chapter: "27-08"
+  see_also: [LoRa, Time on air]
+- term: LoRa
+  definition: "Semtech's chirp-spread-spectrum modulation, in which each symbol is a frequency sweep across the bandwidth carrying SF bits in 2^SF chips; LoRaWAN is the network protocol built on it."
+  chapter: "27-08"
+  see_also: [Spreading factor (LoRa), Low-power wide-area network (LPWAN)]
+- term: Spreading factor (LoRa)
+  definition: "The number of bits per LoRa symbol, SF, from 7 to 12 in LoRaWAN; each step doubles the symbol time 2^SF/BW, roughly halving the bit rate and doubling airtime and energy, in exchange for about 2.5 dB lower required SNR."
+  chapter: "27-08"
+  see_also: [LoRa, Adaptive data rate (ADR)]
+- term: Time on air
+  definition: "The duration of one radio transmission, preamble plus payload; for low-power radios it sets the transmit energy, the share of a regulatory duty cycle used and the network's capacity."
+  chapter: "27-08"
+  see_also: [Duty cycling, Spreading factor (LoRa)]
+- term: Adaptive data rate (ADR)
+  definition: "LoRaWAN's mechanism by which the network assigns each device the fastest spreading factor and lowest transmit power its link margin allows, minimizing airtime and energy."
+  chapter: "27-08"
+  see_also: [Spreading factor (LoRa)]
+- term: Energy-neutral operation
+  definition: "Running a device indefinitely on harvested energy, which requires harvested energy at least equal to consumed energy over every cycle and storage large enough to carry the load through the longest period without harvest."
+  chapter: "27-08"
+  see_also: [Energy harvesting]
+- term: Luminous efficacy of radiation
+  definition: "The luminous flux per watt of radiant power for a given spectrum, in lumens per watt; at most 683 lm/W (monochromatic light at 540 THz, the SI definition), lower for broad white spectra; it converts lux to irradiance."
+  chapter: "27-08"
+  see_also: [Energy harvesting]
+- term: Cyber Resilience Act (CRA)
+  definition: "Regulation (EU) 2024/2847, which sets cybersecurity requirements for products with digital elements sold in the EU, including vulnerability reporting and security updates over a support period of at least five years in most cases."
+  chapter: "27-08"
+  see_also: [Secure boot, Over-the-air (OTA) update]
