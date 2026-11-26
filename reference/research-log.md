@@ -5872,3 +5872,87 @@ R&D % = R&D ÷ revenue.
 - TrendForce (8 May 2026): "the biggest mass-production challenge for glass substrates is "SeWaRe," which refers to micro-cracks that form during processing, especially drilling and dicing." TrendForce (1 Jun 2026): Intel and 3DGS plan "about US$3.3 billion" for a substrate plant in Odisha, India, over five to six years.
 - **Derived here:** 1.2 × 10¹⁰ mm² a year over 2–3 million packages is 4,000–6,000 mm² of substrate each.
 - **Sources:** [I-Connect007, 18 Sep 2023](https://iconnect007.com/article/137826/intel-unveils-industryleading-glass-substrates-to-meet-demand-for-more-powerful-compute/137823/smtahref); [TrendForce, 26 Jan 2026](https://www.trendforce.com/news/2026/01/26/news-intel-reportedly-presents-first-thick-core-glass-substrate-with-emib-targeting-ai-data-centers/); [Tom's Hardware, 27 Aug 2026](https://tomshardware.com/tech-industry/manufacturing/glass-substrate-roadmap-examined); [TrendForce, 8 May 2026](https://www.trendforce.com/news/2026/05/08/news-skc-said-to-speed-glass-substrate-mass-production-by-year-end-advances-new-non-embedding-tech-for-u-s-client/); [TrendForce, 1 Jun 2026](https://www.trendforce.com/news/2026/06/01/news-intel-advances-glass-substrate-push-with-3dgs-us3-3-billion-india-plant-set-for-five-to-six-year-buildout/). Checked Nov 2026.
+
+## R-596 · NVIDIA Blackwell per-GPU power (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (NVIDIA HGX B200 datasheet, DGX B300 page and user guide, Verda and Tom's Hardware pages opened).* [Established for B200; Industry estimate and Contested for B300, GB300 and GB200]
+
+- NVIDIA HGX B200 Product Carbon Footprint summary: "Max Thermal Design Power — Per individual GPU: Configurable up to 1000 W"; "The HGX B200 baseboard can be paired with advanced air or liquid cooling solutions".
+- Verda (cloud provider, 19 Sep 2025): "Max Thermal Design Power (TDP) | Up to 1,000W | Up to 1,100W" for B200 and B300; "liquid-cooled systems are generally recommended for DGX/HGX B300".
+- Tom's Hardware (26 Dec 2024), relaying SemiAnalysis: B300 "comes at the cost of a massive 1,400W TDP, just 200W higher than the GB200."
+- NVIDIA DGX B300: "Power Consumption | ~14 kW"; user guide "15 kW system max". No NVIDIA per-GPU B300 figure was found.
+- **Sources:** [NVIDIA HGX B200 PCF summary](https://images.nvidia.com/aem-dam/Solutions/documents/HGX-B200-PCF-Summary.pdf); [Verda, 19 Sep 2025](https://verda.com/blog/nvidia-b300-vs-b200-complete-gpu-comparison-to-date); [Tom's Hardware, 26 Dec 2024](https://www.tomshardware.com/tech-industry/artificial-intelligence/nvidias-next-gen-b300-gpus-have-1-400w-tdp-deliver-50-percent-more-ai-horsepower-report); [NVIDIA DGX B300](https://www.nvidia.com/en-eu/data-center/dgx-b300.md); [DGX B300 user guide](https://docs.nvidia.com/dgx/dgxb300-user-guide/dgxb300-user-guide.pdf). Checked Nov 2026.
+
+## R-597 · NVIDIA Rubin power profiles (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Tom's Hardware and SemiAnalysis pages opened).* [Industry estimate]
+
+- Tom's Hardware (17 Nov 2025): "Current guidance points to roughly 1.8 kW per GPU". Tom's Hardware (21 Jan 2026): "The Rubin GPU's power rating has now been locked in at 2.3 kW, up from 1.8 kW originally announced by Nvidia … according to Keybanc", described as "an unofficial source".
+- SemiAnalysis (25 Feb 2026): "Rubin's chip level TDP increases up to 2,300W vs 1000-1400W for Blackwell … a Max-P variant at 2,300W and a Max-Q variant at 1,800W. However, these are not distinct hardware SKUs but the 2 default power profiles"; "Running the Max-P setting results in a 20% increase in rack power draw but the performance gain fall well short of this 20% power consumption increase."
+- **Caveat:** no NVIDIA per-GPU figure was found.
+- **Sources:** [Tom's Hardware, 21 Jan 2026](https://www.tomshardware.com/tech-industry/artificial-intelligence/nvidia-reportedly-boosts-vera-rubin-performance-to-ward-hyperscalers-off-amd-instinct-ai-accelerators-increased-boost-clocks-and-memory-bandwidth-pushes-power-demand-by-500-watts-to-2300-watts); [SemiAnalysis, 25 Feb 2026](https://newsletter.semianalysis.com/p/vera-rubin-extreme-co-design-an-evolution); [Tom's Hardware, 17 Nov 2025](https://tomshardware.com/pc-components/gpus/nvidias-vera-rubin-platform-in-depth-inside-nvidias-most-complex-ai-and-hpc-platform-to-date). Checked Nov 2026.
+
+## R-598 · AMD Instinct board power (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (AMD product pages, Helios datasheet and Tom's Hardware opened).* [Established]
+
+- AMD: "Typical Board Power (TBP) | 1400W (TBP)" for MI355X and "1000W (TBP)" for MI350X; cooling "Passive OAM" (MI350X) and "Passive & Active" (MI355X).
+- Tom's Hardware (12 Jun 2025): "the MI350X is geared for air-cooled solutions with a lower Total Board Power (TBP), while the MI355X pushes power consumption up a notch for liquid-cooled systems"; both "come in an OAM form factor and drop into the standardized UBB form factor servers (OCP spec)".
+- AMD Helios datasheet (Jul 2026): MI455X "with a maximum TBP of 2500W in liquid-cooled EAM form factor"; "72 AMD Instinct™ MI455X GPUs per rack".
+- **Caveats:** AMD expands TBP as "Typical", Tom's as "Total"; TBP is a board-level figure not directly comparable with NVIDIA's per-GPU TDP. No official Helios rack power was found; 72 × 2.5 kW = 180 kW is arithmetic.
+- **Sources:** [AMD MI355X](https://www.amd.com/en/products/accelerators/instinct/mi350/mi355x.html); [AMD MI350X](https://www.amd.com/en/products/accelerators/instinct/mi350/mi350x.html); [Tom's Hardware, 12 Jun 2025](https://www.tomshardware.com/pc-components/gpus/amd-announces-mi350x-and-mi355x-ai-gpus-claims-up-to-4x-generational-gain-up-to-35x-faster-inference-performance); [AMD Helios datasheet](https://www.amd.com/content/dam/amd/en/documents/products/accelerators/instinct/amd-instinct-helios-mi455x.pdf). Checked Nov 2026.
+
+## R-599 · Google Ironwood TPU pod (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Google blog and ServeTheHome opened).* [Established for pod figures]
+
+- Google (9 Apr 2025): "It scales up to 9,216 liquid cooled chips linked with breakthrough Inter-Chip Interconnect (ICI) networking spanning nearly 10 MW"; "Each individual chip boasts peak compute of 4,614 TFLOPs"; "Ironwood offers 192 GB per chip"; "Ironwood perf/watt is 2x relative to Trillium", "Measured by peak FP8 flops delivered per watt of thermal design power per chip package."
+- ServeTheHome (27 Aug 2025): "There's 1.77 PB of directly addressable HBM altogether"; Google's "third generation of liquid cooling"; "Each tray contains 4 Ironwood TPUs. The tray is liquid-cooled."
+- **Derived here:** 10 MW/9,216 ≈ 1.09 kW per chip including all overheads (not a chip TDP); 192 GB × 9,216 ≈ 1.77 PB; 4,614 TFLOPS × 9,216 ≈ 42.5 EFLOPS.
+- **Sources:** [Google, 9 Apr 2025](https://blog.google/products/google-cloud/ironwood-tpu-age-of-inference/); [ServeTheHome, 27 Aug 2025](https://www.servethehome.com/google-ironwood-tpu-swings-for-reasoning-model-leadership-at-hot-chips-2025/). Checked Nov 2026.
+
+## R-600 · NVL72 rack power and the air/liquid split (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (NVIDIA user guide and blog, SemiAnalysis, Lenovo Press and Vertiv pages opened; HPE, Supermicro, Gigabyte and Cisco pages were blocked).* [Established for the opened vendor figures]
+
+- NVIDIA DGX GB200 user guide: "The rack power consumption is approximately 120kW"; "The compute trays are cooled by liquid that runs up and down the rack through manifolds, then through the cold plates that are attached to the CPUs and the GPUs in the tray."
+- SemiAnalysis (17 Jul 2024): "123.6kW per NVL72 is the total power draw including the inefficiencies from rectifying from AC power".
+- Lenovo Press LP2357 (GB300 NVL72): "Each rack consumes 135 kW TDP; up to 155 kW peak depending on workload and EDP behavior … about 10% to air and 90% to liquid."
+- Vertiv (GB300 NVL72): "Maximum IT load | Up to 142 kW".
+- **Caveats:** the spread reflects nominal, operating and peak definitions and AC against DC. A widely repeated "1.5× TDP" peak-provisioning figure could not be verified (its source page was blocked, and its quoted numbers are internally inconsistent: 1.5 × 132 = 198, not 192 kW).
+- **Sources:** [NVIDIA DGX GB200 user guide](https://docs.nvidia.com/dgx/dgxgb200-user-guide/hardware.html); [NVIDIA blog, 22 Apr 2025](https://blogs.nvidia.com/blog/blackwell-platform-water-efficiency-liquid-cooling-data-centers/); [SemiAnalysis, 17 Jul 2024](https://newsletter.semianalysis.com/p/gb200-hardware-architecture-and-component); [Lenovo Press LP2357](https://lenovopress.lenovo.com/lp2357); [Vertiv GB300 NVL72 datasheet](https://www.vertiv.com/4a9fd7/globalassets/shared/vertiv-smartit-for-nvidia-gb300-nvl72_datasheet_englis_sl-80699.pdf). Checked Nov 2026.
+
+## R-601 · Rubin-generation liquid cooling, 45 °C inlet and power provisioning (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (NVIDIA blogs, Hashrate Index and The Register opened).* [Established for NVIDIA's cooling statements; Contested for Vera Rubin and Kyber rack power]
+
+- NVIDIA (22 Jun 2026): "The Rubin generation of NVIDIA AI infrastructure is the world's first to achieve 100% liquid cooling — every chip, every networking component, cooled entirely by liquid in a closed loop with no fans anywhere in the system"; cooling liquid "up to 45 degrees Celsius"; "In favorable climates, NVIDIA's 45-degree liquid-cooling architecture can enable chiller-less operation with dry coolers".
+- NVIDIA (24 Aug 2026): "Vera Rubin NVL72 racks designed for 45° C liquid-cooling inlet operation"; "MaxLPS reduces provisioned rack power from 125 kW to 90 kW on GB200 NVL72 and from 136 kW to 101 kW on Vera Rubin NVL72, enabling 39% and 35% more racks, respectively, within the same power envelope while preserving workload throughput."
+- Hashrate Index (20 Mar 2026): "Power: ~190 kW (Max Q) / ~230 kW (Max P)"; Kyber "144 GPUs, 600 kW" expected H2 2027. The Register (19 Mar 2025): "576 GPU dies … in a single rack consuming 600 kW", late 2027.
+- **Sources:** [NVIDIA, 22 Jun 2026](https://blogs.nvidia.com/blog/liquid-cooling-ai-factories/); [NVIDIA Technical Blog, 24 Aug 2026](https://developer.nvidia.com/blog/maximizing-ai-factory-performance-per-watt-with-nvidia-dsx-maxlps/); [Hashrate Index, 20 Mar 2026](https://hashrateindex.com/blog/nvidia-vera-rubin-nvl72-specs-breakdown/); [The Register, 19 Mar 2025](https://www.theregister.com/2025/03/19/nvidia_charts_course_for_600kw); [NVIDIA, 13 Oct 2025](https://blogs.nvidia.com/blog/gigawatt-ai-factories-ocp-vera-rubin). Checked Nov 2026.
+
+## R-602 · Liquid-cooling penetration (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (two TrendForce press releases opened).* [Industry estimate]
+
+- TrendForce (17 Aug 2026): "TrendForce projects liquid cooling penetration among AI chips to reach 53% in 2026 and approach 60% in 2027"; "expected to increase from approximately 33% in 2025 to 53% in 2026"; "Google has been the most aggressive in adopting liquid cooling, with the technology now used in more than 80% of its AI servers"; AI chips have pushed "the TDP of individual chips above 1 kW".
+- TrendForce (21 Aug 2025): "Penetration in AI data centers is projected to surge from 14% in 2024 to 33% in 2025".
+- **Caveat:** the two releases use different denominators ("AI data centers" and "AI chips"); do not join them into one series.
+- **Sources:** [TrendForce, 17 Aug 2026](https://www.trendforce.com/presscenter/news/20260817-13183.html); [TrendForce, 21 Aug 2025](https://www.trendforce.com/presscenter/news/20250821-12682.html). Checked Nov 2026.
+
+## R-603 · 3M's exit from PFAS manufacturing (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (3M Form 10-K for FY2025 on SEC EDGAR opened; 3M's web pages and Uptime Institute and Data Center Dynamics pages were blocked).* [Established for 3M's exit]
+
+- 3M 10-K: "3M announced in December 2022 it would take two further actions with respect to PFAS … exiting all PFAS manufacturing by the end of 2025, and working to discontinue the use of PFAS across its product portfolio by the end of 2025. 3M completed its exit of PFAS manufacturing at the end of 2025."
+- **Caveats:** the exit covers manufacturing; discontinuing use across products was a separate goal. Industry-survey findings that immersion remains niche and direct liquid cooling is adopted gradually could not be opened and are stated qualitatively only.
+- **Source:** [3M Form 10-K, FY2025](https://www.sec.gov/Archives/edgar/data/66740/000006674026000014/mmm-20251231.htm). Checked Nov 2026.
+
+## R-604 · Junction-temperature limits and the AM625 mission profile (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (TI AM62x datasheet and a Microchip online datasheet opened; TI E2E pages were blocked).* [Established as typical practice; values are per part]
+
+- TI AM62x datasheet (SPRSP58C), power-on hours: "Commercial | 0°C to 95°C | 100000 ; Extended Industrial | –40°C to 105°C | 100000 ; Automotive | –40°C to 125°C | 20000"; "Automotive profile is defined as 20000 power on hours with a junction temperature as follows: 5%@-40°C, 65%@70°C, 20%@110°C, and 10%@125°C"; "POH is a function of voltage, temperature and time."
+- Microchip MCP16367/8/9: "Operating Junction Temperature Range | TJ | -40 | — | +125 | °C | Steady State"; "Maximum Junction Temperature | TJ | — | — | +150 | °C | Transient".
+- **Derived here:** the automotive profile's time-weighted mean junction temperature is 78.0 °C.
+- **Sources:** [TI AM62x datasheet, §6.4](https://ti.com/document-viewer/AM625/datasheet/GUID-A025377A-0F66-410F-B7B2-B137B14D1CFA); [Microchip MCP16367/8/9, temperature specifications](https://onlinedocs.microchip.com/oxy/GUID-818C9189-BAE2-477E-8033-0E60407CD520-en-US-2/GUID-DBFF8684-8BB8-4CD2-A55E-A359FC6C1699.html). Checked Nov 2026.

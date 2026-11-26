@@ -10409,3 +10409,43 @@
 - term: Glass-core substrate
   definition: "A package substrate whose core is glass instead of glass-reinforced resin; flatter and stiffer with tunable expansion and fine through-glass vias, but prone to micro-cracking in drilling and dicing and not yet in volume production as of 2026."
   chapter: "25-07"
+
+# ---------------------------------------------------------------- 25-08
+- term: Thermal interface material (TIM)
+  definition: "A thin layer (grease, pad, phase-change material, solder or liquid metal) between a die and its lid, or a lid and its cooler, that fills microscopic gaps; its low conductivity makes even a 25 µm layer a major thermal resistance."
+  chapter: "25-08"
+  see_also: [Thermal resistance]
+- term: Spreading resistance
+  definition: "The extra thermal resistance incurred when heat from a small source must spread sideways into a larger body; for a uniform-flux disk of radius a on a large block it is about 0.27/(ka)."
+  chapter: "25-08"
+  see_also: [Hotspot]
+- term: Hotspot
+  definition: "A region of a die whose power density exceeds the average, such as a matrix unit or SerDes; its spreading rise adds to the die's average temperature and can sit away from the thermal sensors."
+  chapter: "25-08"
+  see_also: [Spreading resistance, Junction temperature]
+- term: Heat transfer coefficient
+  definition: "The coefficient h in Newton's law of cooling, P = hA(T_s − T_fluid), lumping the flow physics at a surface; about 25–250 W/(m²·K) for forced air and roughly a hundred to tens of thousands for forced liquids."
+  chapter: "25-08"
+- term: Fin efficiency
+  definition: "The heat a fin removes divided by what it would remove if it were entirely at its base temperature; tanh(mL)/mL for a straight fin with an insulated tip, with m = sqrt(2h/(k t))."
+  chapter: "25-08"
+  see_also: [Heat transfer coefficient]
+- term: Vapor chamber
+  definition: "A flat sealed chamber with a wick and a small charge of working fluid that spreads heat by evaporation at the hot area and condensation elsewhere, with an effective conductivity far above solid copper's."
+  chapter: "25-08"
+  see_also: [Spreading resistance]
+- term: Cold plate
+  definition: "A metal block with internal channels, clamped to a package and carrying pumped coolant, that removes heat by direct-to-chip liquid cooling; the standard path for kilowatt AI accelerators."
+  chapter: "25-08"
+  see_also: [Immersion cooling]
+- term: Immersion cooling
+  definition: "Submerging whole servers in a dielectric liquid, either circulated (single-phase) or boiled and condensed (two-phase); still a niche next to cold plates."
+  chapter: "25-08"
+  see_also: [Cold plate]
+- term: Thermal design power (TDP)
+  definition: "The sustained power a cooling solution must be designed to remove for a chip; definitions differ by vendor (NVIDIA's per-GPU TDP, AMD's typical board power), so boundaries must be checked before comparing."
+  chapter: "25-08"
+  see_also: [Junction temperature]
+- term: Mission profile
+  definition: "The fraction of a product's life spent at each operating condition, such as junction temperature; because wear-out is roughly Arrhenius in temperature, the hottest intervals dominate the damage."
+  chapter: "25-08"
