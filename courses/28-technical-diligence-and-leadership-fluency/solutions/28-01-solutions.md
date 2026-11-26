@@ -19,7 +19,7 @@ Problems: [28-01 problems](../problems/28-01-problems.md) · Chapter: [28-01](..
 
 Arithmetic: X $= 0.3 \times 5 + 0.3 \times 5 + 0.2 \times 1 + 0.2 \times 4$ = **4.0**; Y $= 1.2 + 1.2 + 0.6 + 0.7$ = **3.7**. Geometric: $G_X = 5^{0.6} \times 1^{0.2} \times 4^{0.2}$ = **3.47**; $G_Y = 4^{0.6} \times 3^{0.2} \times 3.5^{0.2}$ = **3.68**.
 
-X leads on the arithmetic score and Y on the geometric one. X's single score of 1 is fully offset by its two 5s in the sum, but in the product $1^{0.2}$ contributes nothing, so the geometric score treats the weakness as unrecoverable.
+X leads on the arithmetic score and Y on the geometric one. X's single score of 1 is fully offset by its two 5s in the sum, but in the product, $\ln 1 = 0$ adds nothing to $\ln G$, so the weak dimension is penalized rather than offset.
 
 ### Solution 28-01.3
 
@@ -65,7 +65,7 @@ $P = 0.8 \times 0.5 \times 0.9 \times 0.6$ = **0.216**. Expected value $0.216 \t
 
 (b) The seller values the earn-out deal at \$799.3 million against \$700 million in cash and prefers the earn-out; the buyer values it at \$685.4 million against \$700 million and also prefers the earn-out. Both sides prefer the same structure.
 
-(c) The gap, $199.3 - 85.4$ = **113.9** million dollars, is value created by disagreement about the probability: each side prices the contingent payment at its own belief. It is real only if both cannot be right; whoever is wrong about the technology bears the cost, which is why the milestone definitions (what counts as revenue, by when, under whose control) are negotiated as hard as the price.
+(c) The gap, $199.3 - 85.4$ = **113.9** million dollars, is value created by disagreement about the probability: each side prices the contingent payment at its own belief. It is not value created for both: at most one side's probability is right, and whoever is wrong about the technology bears the cost, which is why the milestone definitions (what counts as revenue, by when, under whose control) are negotiated as hard as the price.
 
 ### Solution 28-01.12
 
@@ -142,32 +142,32 @@ because there are $n(n - 1)/2$ pairs. As $n \to \infty$ it tends to $\rho\sigma^
 | 28-01.9a | probability the plan holds | 69.1 | % |
 | 28-01.9b | expected spins beyond plan | 0.495 | spins |
 | 28-01.9c | expected delay | 2.47 | months |
-| 28-01.9d | expected extra cost | 14.8 | million $ |
+| 28-01.9d | expected extra cost | 14.8 | million \$ |
 | 28-01.10a | chain probability | 0.216 | — |
-| 28-01.10b | expected value | 0.338 | billion $ |
+| 28-01.10b | expected value | 0.338 | billion \$ |
 | 28-01.10c | failure at the silicon stage | 0.40 | — |
 | 28-01.11a | discount factor | 1.405 | — |
-| 28-01.11b | seller's earn-out value | 199.3 | million $ |
-| 28-01.11c | seller's total | 799.3 | million $ |
-| 28-01.11d | buyer's earn-out value | 85.4 | million $ |
-| 28-01.11e | buyer's total | 685.4 | million $ |
-| 28-01.11f | valuation gap | 113.9 | million $ |
-| 28-01.12a | value now, prior 0.9 | 430 | million $ |
-| 28-01.12b | EVPI, prior 0.9 | 20 | million $ |
+| 28-01.11b | seller's earn-out value | 199.3 | million \$ |
+| 28-01.11c | seller's total | 799.3 | million \$ |
+| 28-01.11d | buyer's earn-out value | 85.4 | million \$ |
+| 28-01.11e | buyer's total | 685.4 | million \$ |
+| 28-01.11f | valuation gap | 113.9 | million \$ |
+| 28-01.12a | value now, prior 0.9 | 430 | million \$ |
+| 28-01.12b | EVPI, prior 0.9 | 20 | million \$ |
 | 28-01.12c | P(pass), prior 0.9 | 0.73 | — |
 | 28-01.12d | P(works given fail), prior 0.9 | 0.667 | — |
-| 28-01.12e | value after a fail, prior 0.9 | 266.7 | million $ |
-| 28-01.12f | EVSI, prior 0.9 | 0 | million $ |
-| 28-01.12g | value now, prior 0.2 | -60 | million $ |
-| 28-01.12h | EVPI, prior 0.2 | 100 | million $ |
+| 28-01.12e | value after a fail, prior 0.9 | 266.7 | million \$ |
+| 28-01.12f | EVSI, prior 0.9 | 0 | million \$ |
+| 28-01.12g | value now, prior 0.2 | -60 | million \$ |
+| 28-01.12h | EVPI, prior 0.2 | 100 | million \$ |
 | 28-01.12i | P(pass), prior 0.2 | 0.24 | — |
 | 28-01.12j | P(works given pass), prior 0.2 | 0.667 | — |
-| 28-01.12k | value after a pass, prior 0.2 | 266.7 | million $ |
-| 28-01.12l | EVSI, prior 0.2 | 64.0 | million $ |
+| 28-01.12k | value after a pass, prior 0.2 | 266.7 | million \$ |
+| 28-01.12l | EVSI, prior 0.2 | 64.0 | million \$ |
 | 28-01.13a | runway without NRE | 50 | months |
-| 28-01.13b | cash needed | 162 | million $ |
-| 28-01.13c | shortfall | 12 | million $ |
-| 28-01.13d | shortfall with a respin | 32 | million $ |
+| 28-01.13b | cash needed | 162 | million \$ |
+| 28-01.13c | shortfall | 12 | million \$ |
+| 28-01.13d | shortfall with a respin | 32 | million \$ |
 | 28-01.13e | runway after both NREs | 20 | months |
 | 28-01.14a | variance, uncorrelated | 0.0357 | — |
 | 28-01.14b | standard deviation, uncorrelated | 0.189 | — |

@@ -18,7 +18,7 @@ Conventions:
 | $O(T \mid E) = O(T)\,\Lambda$, $\Lambda = P(E \mid T)/P(E \mid \bar T)$ | Bayes in odds form; independent evidence multiplies | [28-01](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-01-technology-evaluation-framework.md) |
 | $\Lambda_{\text{req}} = \frac{p_1/(1 - p_1)}{p_0/(1 - p_0)}$ | Evidence needed to move a belief from $p_0$ to $p_1$ | [28-01](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-01-technology-evaluation-framework.md) |
 | $P = \prod_j p_j$; $PV = pX/(1 + r)^t$ | Milestone chains; an earn-out to a risk-neutral party | [28-01](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-01-technology-evaluation-framework.md) |
-| $\text{EVPI} = pG - \max(pG + (1 - p)L, 0)$ | Upper bound on what any diligence step is worth | [28-01](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-01-technology-evaluation-framework.md) |
+| $\text{EVPI} = pU - \max(pU + (1 - p)L, 0)$ | Upper bound on what any diligence step is worth | [28-01](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-01-technology-evaluation-framework.md) |
 
 ## Validating claims (28-02)
 

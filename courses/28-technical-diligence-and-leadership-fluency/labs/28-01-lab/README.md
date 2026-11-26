@@ -28,7 +28,7 @@ The lab uses the chapter's models with its assumed parameters:
 
 **Part 2 · One more signal** (notebook). *Predict* the posterior of Example 28-01.3 if a fourth, independent signal arrives: a second customer ends its evaluation (likelihood ratio 0.25). Then plot posterior against prior for likelihood ratios of 0.25, 0.5, 2, 4 and 16.
 
-**Part 3 · A three-spin plan** (notebook). *Predict* Example 28-01.4's expected delay and extra mask cost (4 months and \$25 million per spin) if the plan budgets three spins. Then sample 10,000 projects from the 2024 distribution and plot a histogram of their delays beyond a two-spin plan.
+**Part 3 · A three-spin plan** (notebook). *Predict* Example 28-01.4's expected delay and extra mask cost (4 months and \$25 million per spin) if the plan budgets three spins. Then sample 10,000 projects from the 2024 distribution and plot a histogram of their delays beyond the original two-spin plan; the third budgeted spin covers the first 4 months of that delay.
 
 **Part 4 · A less specific test** (notebook). *Predict* the EVSI of Example 28-01.6's test if its specificity falls from 0.9 to 0.7, with the sensitivity still 0.8. Then plot EVSI against sensitivity for specificities of 0.7, 0.8, 0.9 and 0.99.
 
@@ -46,11 +46,11 @@ The lab uses the chapter's models with its assumed parameters:
 | Lab 28-01.c | probability a three-spin plan holds | 69.1 | % |
 | Lab 28-01.c1 | expected spins beyond plan | 0.495 | spins |
 | Lab 28-01.c2 | expected delay | 1.98 | months |
-| Lab 28-01.c3 | expected extra mask cost | 12.4 | million $ |
+| Lab 28-01.c3 | expected extra mask cost | 12.4 | million \$ |
 | Lab 28-01.d | probability of a pass | 0.50 | — |
 | Lab 28-01.d1 | P(works given pass) | 0.64 | — |
-| Lab 28-01.d2 | value of buying after a pass | 248 | million $ |
-| Lab 28-01.d3 | EVSI | 44.0 | million $ |
+| Lab 28-01.d2 | value of buying after a pass | 248 | million \$ |
+| Lab 28-01.d3 | EVSI | 44.0 | million \$ |
 
 ## Discussion
 

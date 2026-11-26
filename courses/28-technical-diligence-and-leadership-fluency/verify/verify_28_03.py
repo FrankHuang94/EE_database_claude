@@ -149,6 +149,16 @@ v.check("28-03.10a", t10)
 v.check("28-03.10b", t10 - 16)
 v.check("28-03.10c", a9 * math.exp(-b9 * t10))
 v.check("28-03.11", 1000)
+b13 = optimize.brentq(lambda b: (1 - math.exp(-16 * b)) / (1 - math.exp(-8 * b)) - 1.5, 1e-4, 2)
+a13 = 200 / (1 - math.exp(-8 * b13))
+v.check("28-03.13a", b13)
+v.check("28-03.13b", a13)
+v.check("28-03.13c", a13 * math.exp(-16 * b13))
+v.check("28-03.13d", a13 * b13 * math.exp(-16 * b13))
+t13 = optimize.brentq(lambda t: a13 * b13 * math.exp(-b13 * t) - 2.0, 0, 500)
+v.check("28-03.13e", t13)
+v.check("28-03.13f", t13 - 16)
+v.check("28-03.13g", (t13 - 16) * 7 / 30.44)
 
 # ---------------------------------------------------------------------------
 # Lab

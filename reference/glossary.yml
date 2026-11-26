@@ -11311,7 +11311,7 @@
   chapter: "28-01"
   see_also: [Expected value of perfect information (EVPI)]
 - term: Peak throughput
-  definition: An accelerator's datasheet rate $2N_{\text{MAC}}f$ (a MAC counted as two operations), multiplied by 2 for each halving of operand width and by 2 for 2:4 structured sparsity; one chip can be quoted at four peaks a factor of two apart.
+  definition: An accelerator's datasheet rate $2N_{\text{MAC}}f$ (a MAC counted as two operations), multiplied by 2 for each halving of operand width and by 2 for 2:4 structured sparsity; one chip can be quoted at four peaks up to a factor of four apart.
   chapter: "28-02"
   see_also: [Structured sparsity, Total processing performance (TPP), Utilization (accelerator)]
 - term: Energy per operation

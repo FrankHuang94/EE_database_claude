@@ -78,6 +78,7 @@ p_pk = ac * 0.90 ** 2 * 1.0e9
 v.check("Ex 28-02.3a", p_pk)
 v.check("Ex 28-02.3b", ops_per_hz * 1.0e9 / 1e12 / p_pk)
 v.check("Ex 28-02.3c", 20 / (0.90 / 0.60) ** 2)
+v.check("Ex 28-02.3d", 200 / 20)
 v.assert_true("200 TOPS is the peak point's throughput", abs(ops_per_hz * 1.0e9 - 200e12) < 1)
 
 # Example 28-02.4
@@ -117,6 +118,9 @@ v.check("Ex 28-02.6b2", w_resp * 7 / DAY)
 w_none = weeks([3, 16, 4, 12]) + qual_wk + 2
 v.check("Ex 28-02.6c", w_none)
 v.check("Ex 28-02.6c1", w_none * 7 / DAY)
+w_two = w_resp + weeks([3, 16, 4])
+v.check("Ex 28-02.6d", w_two)
+v.check("Ex 28-02.6d1", w_two * 7 / DAY)
 v.assert_true("lab schedule agrees",
               abs(cc.tapeout_to_production(3, 16, 4, 12, 1, 3, 16, 1000, 2) - w_resp) < 1e-12)
 
@@ -151,6 +155,7 @@ v.check("28-02.4a", floor)
 v.check("28-02.4b", 1 / floor)
 for k, t in zip("cde", terms):
     v.check(f"28-02.4{k}", 100 * t / floor)
+v.check("28-02.4f", 100 * (terms[1] + terms[2]) / floor)
 v.check("28-02.5", 30 * (0.55 / 0.85) ** 2)
 mod = (4.0 + 1.2 + 0.3) / 0.85
 v.check("28-02.6a", mod)
@@ -160,7 +165,8 @@ v.check("28-02.7a", 2 * 500 * 16)
 v.check("28-02.7b", 2 * 300 * 8)
 v.check("28-02.7c", 2 * 500 * 16 / 800)
 tR, tR2, tA, tB = np.array([10, 10]), np.array([5, 20]), np.array([5, 20]), np.array([8, 8])
-for (ka, kg), ref, m in ((("a", "b"), tR, tA), (("c", "d"), tR, tB), (("e", "f"), tR2, tA), (("g", "h"), tR2, tB)):
+for (ka, kg), ref, m in ((("a", "b"), tR, tA), (("c", "d"), tR, tB), (("e", "f"), tR2, tA), (("g", "h"), tR2, tB),
+                         (("i", "j"), np.array([20, 1]), tA), (("k", "l"), np.array([20, 1]), tB)):
     r = ref / m
     v.check(f"28-02.8{ka}", float(np.mean(r)))
     v.check(f"28-02.8{kg}", float(stats.gmean(r)))

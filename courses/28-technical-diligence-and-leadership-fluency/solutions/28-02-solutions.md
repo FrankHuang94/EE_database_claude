@@ -20,7 +20,7 @@ Ridge point $200 \times 10^{12}/3.2 \times 10^{12}$ = **62.5** operations per by
 
 ### Solution 28-02.4
 
-$E_{\text{op}} \ge 0.05 + 0.6/10 + 31.2/500 = 0.05 + 0.06 + 0.0624$ = **0.172** pJ, so the efficiency is at most $1/0.1724$ = **5.80** TOPS/W. Shares: arithmetic **29.0**%, SRAM **34.8**%, HBM **36.2**%. Two-thirds of the energy is data movement even with good reuse, which is why architectures compete on dataflow rather than on multipliers.
+$E_{\text{op}} \ge 0.05 + 0.6/10 + 31.2/500 = 0.05 + 0.06 + 0.0624$ = **0.172** pJ, so the efficiency is at most $1/0.1724$ = **5.80** TOPS/W. Shares: arithmetic **29.0**%, SRAM **34.8**%, HBM **36.2**%. Data movement takes **71.0**% of the energy even with good reuse, which is why architectures compete on dataflow rather than on multipliers.
 
 ### Solution 28-02.5
 
@@ -36,9 +36,9 @@ $(4.0 + 1.2 + 0.3)/0.85$ = **6.47** W at the battery, so $26/6.47$ = **4.02** TO
 
 ### Solution 28-02.8
 
-Against R: A's speedups are $10/5 = 2$ and $10/20 = 0.5$, arithmetic **1.25**, geometric **1.00**; B's are $10/8 = 1.25$ twice, arithmetic **1.25**, geometric **1.25**. Against R′: A's are $5/5 = 1$ and $20/20 = 1$, arithmetic **1.00**, geometric **1.00**; B's are $5/8 = 0.625$ and $20/8 = 2.5$, arithmetic **1.5625**, geometric **1.25**.
+Against R: A's speedups are $10/5 = 2$ and $10/20 = 0.5$, arithmetic **1.25**, geometric **1.00**; B's are $10/8 = 1.25$ twice, arithmetic **1.25**, geometric **1.25**. Against R′: A's are $5/5 = 1$ and $20/20 = 1$, arithmetic **1.00**, geometric **1.00**; B's are $5/8 = 0.625$ and $20/8 = 2.5$, arithmetic **1.5625**, geometric **1.25**. Against R″: A's are $20/5 = 4$ and $1/20 = 0.05$, arithmetic **2.025**, geometric **0.447**; B's are $20/8 = 2.5$ and $1/8 = 0.125$, arithmetic **1.3125**, geometric **0.559**.
 
-The arithmetic mean calls A and B equal against R but B 56% better against R′. The geometric mean puts B ahead of A by 1.25 against either reference, because the reference times cancel in the ratio.
+The arithmetic mean calls A and B equal against R, puts B ahead against R′ (1.5625 against 1.00) and puts *A* ahead against R″: the ranking reverses with the reference. The geometric mean puts B ahead of A by a factor of 1.25 against every reference, because the reference times cancel in the ratio.
 
 ### Solution 28-02.9
 
@@ -74,6 +74,13 @@ Efficiency $1000/75$ = **13.3** TOPS/W, plausible at the chip boundary. Batch-1 
 
 (c) Require $E_\ell/I_\ell \le \beta E_{\text{op}}$, so $I_\ell \ge E_\ell/(\beta E_{\text{op}})$. With DRAM's 160 pJ per byte, $\beta = 0.1$ and $E_{\text{op}} = 10$ fJ, $I \ge 160{,}000$ operations per byte (Example 28-02.2).
 
+### Solution 28-02.15
+
+- (a) **Proves** that the design functions on real silicon, at small sample size. **Leaves open** yield, cost, volume and the product's own masks and lot (the shuttle's masks are shared). **Ask:** "How many dies did you test, at which corners, and when do dedicated masks tape out?"
+- (b) **Proves** that the dedicated first silicon powers up and that enough logic works to run software. **Leaves open** the validation plan: corners, temperatures, analog and I/O blocks, power and performance at the target clock. **Ask:** "What fraction of the validation plan has passed, and what bugs are open?"
+- (c) **Proves** two mask revisions: B0 changed the base layers (a full respin, repeating the fab cycle) and A1, by the usual naming, changed only metal. The ordering in the claim is muddled (A1 precedes B0), which is itself a question. **Leaves open** whether B0 has been validated as fully as A0 and whether more fixes are pending. **Ask:** "Which stepping will ship, and what does its errata list contain?"
+- (d) **Proves**, if true, that the part passed stress tests to some standard. **Leaves open** which standard, grade and conditions. **Ask:** "Qualified to which standard and revision (JESD47 or AEC-Q100 grade), on which stepping, how many lots and units, and with how many failures?"
+
 ---
 
 <!-- answer-key -->
@@ -100,6 +107,7 @@ Efficiency $1000/75$ = **13.3** TOPS/W, plausible at the chip boundary. Batch-1 
 | 28-02.4c | arithmetic share | 29.0 | % |
 | 28-02.4d | SRAM share | 34.8 | % |
 | 28-02.4e | HBM share | 36.2 | % |
+| 28-02.4f | data-movement share | 71.0 | % |
 | 28-02.5 | efficiency at the peak point | 12.6 | TOPS/W |
 | 28-02.6a | module power | 6.47 | W |
 | 28-02.6b | module efficiency | 4.02 | TOPS/W |
@@ -115,6 +123,10 @@ Efficiency $1000/75$ = **13.3** TOPS/W, plausible at the chip boundary. Batch-1 
 | 28-02.8f | A vs R′, geometric | 1.00 | — |
 | 28-02.8g | B vs R′, arithmetic | 1.5625 | — |
 | 28-02.8h | B vs R′, geometric | 1.25 | — |
+| 28-02.8i | A vs R″, arithmetic | 2.025 | — |
+| 28-02.8j | A vs R″, geometric | 0.447 | — |
+| 28-02.8k | B vs R″, arithmetic | 1.3125 | — |
+| 28-02.8l | B vs R″, geometric | 0.559 | — |
 | 28-02.9a | expected maximum of 5 | 1.163 | — |
 | 28-02.9b | best of five | 1.74 | — |
 | 28-02.9c | expected maximum of 20 | 1.867 | — |

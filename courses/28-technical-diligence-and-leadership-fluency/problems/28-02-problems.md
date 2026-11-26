@@ -40,7 +40,7 @@ Chapter: [28-02](../chapters/28-02-validating-claims.md) · Worked solutions: [2
 
 ### Problem 28-02.8 [B]
 
-**The reference machine matters.** Two workloads take 10 s and 10 s on reference machine R, and 5 s and 20 s on reference machine R′. Machine A takes 5 s and 20 s; machine B takes 8 s and 8 s. Compute A's and B's arithmetic and geometric mean speedups against R and against R′. Which average gives a ranking that does not depend on the reference?
+**The reference machine matters.** Two workloads take 10 s and 10 s on reference machine R, 5 s and 20 s on reference machine R′, and 20 s and 1 s on reference machine R″. Machine A takes 5 s and 20 s; machine B takes 8 s and 8 s. Compute A's and B's arithmetic and geometric mean speedups against each reference. Which average gives a ranking that does not depend on the reference?
 
 ### Problem 28-02.9 [B]
 
@@ -73,6 +73,15 @@ Chapter: [28-02](../chapters/28-02-validating-claims.md) · Worked solutions: [2
 - (b) Show that the ratio of two machines' geometric-mean speedups over a reference does not depend on the reference.
 - (c) From $E_{\text{op}} \ge E_{\text{arith}} + E_\ell/I_\ell$, derive the minimum intensity $I_\ell$ for a memory level to use at most a fraction $\beta$ of a budget $E_{\text{op}}$.
 
+### Problem 28-02.15 [A]
+
+**What does the status prove?** For each status claim, say what it proves, what it leaves open, and the one question you would ask next.
+
+- (a) "We have working silicon from an MPW shuttle."
+- (b) "A0 is back and booted Linux on day three."
+- (c) "B0 fixed the bugs; A1 was a metal-only stepping for the PLL."
+- (d) "The part is qualified."
+
 ---
 
 ## Objective coverage
@@ -83,4 +92,4 @@ Chapter: [28-02](../chapters/28-02-validating-claims.md) · Worked solutions: [2
 | 2. Efficiency as energy per operation | 2, 4, 5, 14 |
 | 3. Operating point and power boundary | 5, 6 |
 | 4. Benchmarks: divisions, means and selection | 8, 9, 10, 14 |
-| 5. Silicon status and schedules | 11, 12 |
+| 5. Silicon status and schedules | 11, 12, 15 |

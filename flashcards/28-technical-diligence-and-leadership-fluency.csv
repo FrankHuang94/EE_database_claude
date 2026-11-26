@@ -7,7 +7,7 @@
 "What likelihood ratio moves a belief from 20% to 80%?","Λ = (0.8/0.2)/(0.2/0.8) = 16. Slides and fluent answers have Λ near 1.","bsee::28 bsee::28-01"
 "What is the chance two targets' ranking reverses?","P(D < 0) = Φ(−μ_D/σ_D), where D is the difference in scores; with |μ_D| small against σ_D the ranking is a coin flip.","bsee::28 bsee::28-01"
 "How do you value an earn-out to a risk-neutral party?","PV = pX/(1 + r)^t. Buyer and seller can hold different p, which is why earn-outs close valuation gaps.","bsee::28 bsee::28-01"
-"What bounds the value of any diligence step?","The expected value of perfect information: EVPI = pG − max(pG + (1 − p)L, 0).","bsee::28 bsee::28-01"
+"What bounds the value of any diligence step?","The expected value of perfect information: EVPI = pU − max(pU + (1 − p)L, 0), with upside U and loss L.","bsee::28 bsee::28-01"
 "Why are milestone chains fragile?","The probability of success is the product of stage probabilities: four stages at 0.8 give 0.41.","bsee::28 bsee::28-01"
 "How is an accelerator's peak throughput built?","F_peak = 2·N_MAC·f·k_prec·k_sparse; a brochure figure usually includes precision and sparsity multipliers, which must be stated.","bsee::28 bsee::28-02"
 "What is TPP?","Total processing performance, 2 × MacTOPS × bit length, aggregated over the chip; precision-normalized, used by US export rules (3A090: 4800, or 1600 with density 5.92).","bsee::28 bsee::28-02"

@@ -48,7 +48,7 @@ Chapter: [28-01](../chapters/28-01-technology-evaluation-framework.md) · Worked
 
 ### Problem 28-01.6 [B]
 
-**The compiler claim.** The claim: the target's compiler runs the buyer's ten most important models without hand-tuning. The prior is 0.3. Evidence: release notes list 8 of the 10 as supported (likelihood ratio 2); a buyer's engineer compiles three of them in a sandbox, all successfully (likelihood ratio 5); the target's largest customer still uses hand-written kernels (likelihood ratio 0.5). Find the prior odds, the posterior odds and the posterior probability.
+**The compiler claim.** The claim: the target's compiler runs the buyer's ten most important models without hand-tuning. The prior is 0.3. Evidence: release notes list all 10 as supported (likelihood ratio 2); a buyer's engineer compiles three of them in a sandbox, all successfully (likelihood ratio 5); the target's largest customer still uses hand-written kernels (likelihood ratio 0.5). Find the prior odds, the posterior odds and the posterior probability.
 
 ### Problem 28-01.7 [B]
 

@@ -15,7 +15,7 @@ Problems: [28-03 problems](../problems/28-03-problems.md) · Chapter: [28-03](..
 
 ### Solution 28-03.2
 
-A breadboard tested in a realistic simulated environment is **TRL 5**; in the silicon scale, closest to verified RTL on emulation or a tape-out (L1–L2). A fully functional prototype is **TRL 6**; closest to working first silicon (L3). "Flight qualified", ready for implementation, is **TRL 8**; closest to a completed qualification and release (L5–L6) [R-701]. The mapping is an analogy: silicon has no single "space environment" test, and a chip's TRL 7 is closest to engineering samples running in customers' systems.
+A breadboard tested in a realistic simulated environment is **TRL 5**; in the silicon scale, closest to a tape-out (L2), with verified RTL on emulation (L1) a step below at TRL 4. A fully functional prototype is **TRL 6**; closest to first silicon once bring-up has shown it works (late L3, the table's 5–6). "Flight qualified", ready for implementation, is **TRL 8**; closest to a completed qualification and release (L5–L6) [R-701]. The mapping is an analogy: silicon has no single "space environment" test, and a chip's TRL 7 is closest to engineering samples running in customers' systems.
 
 ### Solution 28-03.3
 
@@ -27,7 +27,7 @@ Discount factor $1.15^{2/12}$ = **1.024**; multiplier $0.95/1.024$ = **0.928**. 
 
 ### Solution 28-03.5
 
-With $T_{\text{use}} = 343.15$ K and $T_{\text{stress}} = 398.15$ K: at 0.7 eV, $\text{AF} = \exp[8123 \times (1/343.15 - 1/398.15)]$ = **26.3**; at 0.9 eV, **67.0**. A cooler stress-to-use gap or a lower activation energy gives much less acceleration than Example 28-03.3's 77.6.
+With $T_{\text{use}} = 343.15$ K and $T_{\text{stress}} = 398.15$ K: at 0.7 eV, $\text{AF} = \exp[8123 \times (1/343.15 - 1/398.15)]$ = **26.3**; at 0.9 eV, **67.0**. A smaller stress-to-use temperature gap gives much less acceleration than Example 28-03.3's 77.6, even at 0.9 eV.
 
 ### Solution 28-03.6
 
@@ -39,7 +39,7 @@ With one failure, $\chi^2_{0.6;4} = 4.045$, so $\lambda_{60} = 4.045/(2 \times 4
 
 ### Solution 28-03.8
 
-$\text{AF} = 77.6$ and $\chi^2_{0.9;2} = 4.605$, so $n \ge 4.605 \times 10^9/(2 \times 5 \times 1000 \times 77.6) = 5931.0$, that is **5932** devices. A 5 FIT claim at 90% confidence from a single product's qualification is a large programme; such claims usually pool data across products on the same process.
+$\text{AF} = 77.65$ (carried unrounded) and $\chi^2_{0.9;2} = 4.605$, so $n \ge 4.605 \times 10^9/(2 \times 5 \times 1000 \times 77.65) = 5931.0$, that is **5932** devices. A 5 FIT claim at 90% confidence from a single product's qualification is a large programme; such claims usually pool data across products on the same process.
 
 ### Solution 28-03.9
 
@@ -58,6 +58,10 @@ $t^* = \ln(400 \times 0.0639/2)/0.0639$ = **39.9** weeks, **23.9** weeks after w
 (a) With a constant rate, failures in $T_{\text{eq}}$ are Poisson with mean $\lambda T_{\text{eq}}$, so $P(0) = e^{-\lambda T_{\text{eq}}}$, which falls as $\lambda$ rises. The upper bound at confidence $C$ is the $\lambda$ at which observing zero failures would have probability $1 - C$: $e^{-\lambda_C T_{\text{eq}}} = 1 - C$, so $\lambda_C = -\ln(1 - C)/T_{\text{eq}}$. The chi-square distribution with 2 degrees of freedom has $F(x) = 1 - e^{-x/2}$; its $C$ quantile solves $1 - e^{-x/2} = C$, giving $\chi^2_{C;2} = -2\ln(1 - C)$. Hence $\lambda_C = \chi^2_{C;2}/(2T_{\text{eq}})$.
 
 (b) $m(t_1) = a(1 - x)$ and $m(2t_1) = a(1 - x^2) = a(1 - x)(1 + x)$ with $x = e^{-bt_1}$. Their ratio is $1 + x$, so $x = m_2/m_1 - 1$, $b = -\ln x/t_1$ and $a = m_1/(1 - x)$. The discovery rate is $\lambda(t) = ab\,e^{-bt}$ and the remaining count is $a\,e^{-bt}$; dividing, remaining $= \lambda(t)/b$ at every $t$, so at the rate $\lambda^*$ it is $\lambda^*/b$.
+
+### Solution 28-03.13
+
+With $x = e^{-8b}$, $m(16)/m(8) = (1 - x^2)/(1 - x) = 1 + x = 300/200$, so $x = 0.5$ and $b = \ln 2/8$ = **0.0866** per week; $a = 200/(1 - 0.5)$ = **400** defects. At week 16: remaining $400 \times 0.25$ = **100** defects; discovery rate $ab\,e^{-16b} = 400 \times 0.0866 \times 0.25$ = **8.66** per week. The rate reaches 2 a week when $e^{-bt} = 2/(ab)$, at $t = \ln(ab/2)/b$ = **32.9** weeks: **16.9** more weeks, **3.89** months. Silicon and qualification are ready now, so the least mature dimension, software, binds: the deployment date is about four months out however good the silicon is, and the diligence question is the compiler team's plan to shorten it.
 
 ---
 
@@ -85,3 +89,10 @@ $t^* = \ln(400 \times 0.0639/2)/0.0639$ = **39.9** weeks, **23.9** weeks after w
 | 28-03.10b | weeks still to go | 23.9 | weeks |
 | 28-03.10c | remaining then | 31.3 | defects |
 | 28-03.11 | Grade 1 temperature cycles | 1000 | cycles |
+| 28-03.13a | discovery constant | 0.0866 | per week |
+| 28-03.13b | total defects | 400 | defects |
+| 28-03.13c | remaining at week 16 | 100 | defects |
+| 28-03.13d | discovery rate at week 16 | 8.66 | per week |
+| 28-03.13e | week the rate reaches 2 | 32.9 | weeks |
+| 28-03.13f | weeks still needed | 16.9 | weeks |
+| 28-03.13g | months still needed | 3.89 | months |

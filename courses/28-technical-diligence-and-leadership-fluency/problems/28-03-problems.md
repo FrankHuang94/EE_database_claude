@@ -32,7 +32,7 @@ Chapter: [28-03](../chapters/28-03-silicon-maturity-scales.md) · Worked solutio
 
 ### Problem 28-03.6 [B]
 
-**Two lots more.** A product runs 462 devices (6 lots of 77) for 1000 hours at 125 °C with zero failures. Its use junction is 70 °C and the mechanism's activation energy 0.7 eV. Find the FIT bound at 60% confidence.
+**Twice the lots.** A product runs 462 devices (6 lots of 77) for 1000 hours at 125 °C with zero failures. Its use junction is 70 °C and the mechanism's activation energy 0.7 eV. Find the FIT bound at 60% confidence.
 
 ### Problem 28-03.7 [B]
 
@@ -61,6 +61,10 @@ Chapter: [28-03](../chapters/28-03-silicon-maturity-scales.md) · Worked solutio
 - (a) For a constant failure rate $\lambda$ and $T_{\text{eq}}$ equivalent device-hours, derive the zero-failure upper bound $\lambda_C = -\ln(1 - C)/T_{\text{eq}}$, and show it equals $\chi^2_{C;2}/(2T_{\text{eq}})$ using the chi-square distribution function with 2 degrees of freedom, $F(x) = 1 - e^{-x/2}$.
 - (b) For the Goel–Okumoto model, derive the two-point fit for $t_2 = 2t_1$, and show that when the discovery rate is $\lambda^*$ the remaining defects are $\lambda^*/b$.
 
+### Problem 28-03.13 [B]
+
+**The binding dimension.** A target's silicon is at L6 (production release) and its qualification is complete. Its compiler, which the buyer's models need, is still in system test: its tracker shows 200 defects found by week 8 and 300 by week 16. The buyer will not deploy until the discovery rate falls to 2 defects a week (assumed). Fit the Goel–Okumoto model, find the defects remaining and the discovery rate at week 16, and find how many more weeks (and months) the compiler needs. Which dimension binds the time to deployment?
+
 ---
 
 ## Objective coverage
@@ -71,4 +75,4 @@ Chapter: [28-03](../chapters/28-03-silicon-maturity-scales.md) · Worked solutio
 | 2. Probability, time and value from a level | 3, 4 |
 | 3. Qualification bounds and sample sizes | 5, 6, 7, 8, 12 |
 | 4. Software defect discovery | 9, 10, 12 |
-| 5. Combining dimensions | 1, 11 |
+| 5. Combining dimensions | 1, 11, 13 |

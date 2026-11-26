@@ -75,8 +75,14 @@ def tree_value(p, gain, loss, sens=None, spec=None):
 # ---------------------------------------------------------------------------
 # Examples
 # ---------------------------------------------------------------------------
-W, A, B = dm.WEIGHTS, dm.TARGET_A, dm.TARGET_B
-SA, SB = dm.SIGMA_A, dm.SIGMA_B
+# Inputs typed from the chapter's Example 28-01.1 table (independent of the lab module)
+W = [0.20, 0.15, 0.15, 0.15, 0.10, 0.15, 0.10]
+A = [4.5, 4.0, 3.0, 4.5, 4.0, 2.0, 3.5]
+B = [3.5, 3.5, 4.0, 3.5, 3.5, 4.0, 3.5]
+SA = [0.75, 0.5, 0.5, 0.75, 0.5, 0.5, 0.5]
+SB = [0.4] * 7
+v.assert_true("lab module inputs match the chapter",
+              (dm.WEIGHTS, dm.TARGET_A, dm.TARGET_B, dm.SIGMA_A, dm.SIGMA_B) == (W, A, B, SA, SB))
 v.check("Ex 28-01.1a", arith(W, A))
 v.check("Ex 28-01.1a1", arith(W, B))
 v.check("Ex 28-01.1a2", arith(W, A) - arith(W, B))
@@ -105,6 +111,7 @@ draw_b = rng.normal(B, SB, size=(400_000, 7)) @ np.asarray(W)
 v.assert_true("Monte Carlo rank reversal within 0.5 points", abs(np.mean(draw_b > draw_a) - p_rev) < 0.005)
 v.check("Ex 28-01.2c", 100 * terms[0] / var_d)
 v.check("Ex 28-01.2c1", 100 * terms[3] / var_d)
+v.check("Ex 28-01.2c2", 100 * terms[5] / var_d)
 
 v.check("Ex 28-01.3a", 0.25 / 0.75)
 p3 = bayes_full(0.25, [(0.9, 0.3), (0.8, 0.2), (0.3, 0.6)])
@@ -124,6 +131,8 @@ beyond2 = Fraction(sum((k - 2) * n for k, n in dist.items() if k > 2), tot)
 v.check("Ex 28-01.4c", float(beyond2))
 v.check("Ex 28-01.4d", float(4 * beyond2))
 v.check("Ex 28-01.4d1", float(25 * beyond2))
+raw = {1: 14, 2: 25, 3: 28, 4: 16, 5: 10, 6: 4, 7: 3}
+v.check("Ex 28-01.4e", sum((k - 2) * q for k, q in raw.items() if k > 2) / 100)
 
 p5 = 0.6 * 0.5
 v.check("Ex 28-01.5a", p5)
@@ -205,8 +214,13 @@ v.check("28-01.7b", 100 * p7a)
 v.check("28-01.7c", p7b / (1 - p7b))
 v.check("28-01.7d", 100 * p7b)
 
-v.check("28-01.8a", dm.required_lr(0.1, 0.5))
-v.check("28-01.8b", dm.required_lr(0.1, 0.9))
+def lr_needed(prior, target):
+    return (target / (1 - target)) / (prior / (1 - prior))
+
+
+v.check("28-01.8a", lr_needed(0.1, 0.5))
+v.check("28-01.8b", lr_needed(0.1, 0.9))
+v.assert_true("lab required_lr agrees", abs(dm.required_lr(0.1, 0.9) - lr_needed(0.1, 0.9)) < 1e-12)
 n8 = 0
 while bayes_full(0.1, [(0.9, 0.3)] * n8) < 0.9 - 1e-12:
     n8 += 1

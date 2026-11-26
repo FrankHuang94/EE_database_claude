@@ -26,7 +26,7 @@ The lab uses the chapter's models with its assumed parameters:
 
 **Part 3 · Best of twenty** (notebook). *Predict* the expected best-of-twenty headline for a product whose per-workload log speedups have median 1.5× and standard deviation 0.3. Then simulate 20,000 vendors, each reporting its best of 20 workloads, and compare the mean with the formula.
 
-**Part 4 · A metal-only respin** (notebook). *Predict* Example 28-02.6's time to production if the respin is metal-only from held wafers (2 weeks of masks, 6 of fab, then packaging and test). Then plot time to production against the number of respins, 0 to 3, for metal-only and full-layer respins.
+**Part 4 · A metal-only respin** (notebook). *Predict* Example 28-02.6's time to production if the respin is metal-only from held wafers (2 weeks of masks and 6 of fab, both assumed because no quantified data were found [R-648], then packaging and test). Then plot time to production against the number of respins, 0 to 3, for metal-only and full-layer respins.
 
 ## Expected results
 

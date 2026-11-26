@@ -23,7 +23,7 @@
 
 Every acquisition, venture investment and partnership in semiconductors rests on a forecast that is mostly technical: will this chip work, at this power, on this schedule, and will customers be able to use it? A financial model can be built in a day; the inputs that drive it (the tape-out date, the probability that first silicon is good enough to ship, the size of the software gap, the supply of advanced packaging) come from engineering. Technical diligence is the discipline of turning those questions into evidence and the evidence into numbers a business decision can use. This chapter gives the framework the rest of Course 28 fills in: seven dimensions to examine, a scorecard that respects uncertainty, Bayes' rule for weighing evidence, milestone probabilities for pricing risk, and the value of information for deciding what to examine first.
 
-- **Why it exists:** chip programmes fail more often than they succeed at the first attempt. Only 14% of IC/ASIC projects reported first-silicon success in 2024 and 5% in 2026, against about 30% historically [R-018, R-621, R-622], so a target's plan should be read against base rates, not against its own optimism.
+- **Why it exists:** chip programmes fail more often than they succeed at the first attempt. Only 14% of IC/ASIC projects reported first-silicon success in 2024 and 5% in 2026 (about 3–8% given the 2026 sample; the survey changed its recruitment in 2024), against about 30% historically [R-018, R-621, R-622], so a target's plan should be read against base rates, not against its own optimism.
 - **Where it shows up:** acquisition and venture diligence, licensing and partnership decisions, make-or-buy reviews of a supplier, and internal portfolio reviews of one's own programmes.
 - **What it produces:** not a verdict but a calibrated view: probabilities for the milestones that matter, the evidence behind each, the gates that would stop the deal, and a list of what would change the view.
 - **Why it matters to this learner:** the success criterion of a fluent, skeptical conversation with a VP of Engineering is met only if the questions are aimed at the dimensions that move value, and the answers are weighed by how much they should move belief.
@@ -85,7 +85,7 @@ $$
 G = \prod_{i=1}^{n} s_i^{\,w_i}, \qquad \ln G = \sum_i w_i \ln s_i ,
 $$
 
-penalizes a weak dimension more, because the logarithm is concave: lowering one score from 4 to 2 costs $w\ln 2$ in $\ln G$, while raising another from 4 to 6 would gain only $w\ln 1.5$. By the inequality of weighted arithmetic and geometric means, $G \le S$, with equality only when all scores are equal; the gap grows with the spread of the scores (Example 28-01.1).
+penalizes a weak dimension more, because the logarithm is concave: lowering one score from 3 to 1 costs $w\ln 3$ in $\ln G$, while raising another from 3 to 5, the same two points, gains only $w\ln(5/3)$, less than half as much. By the inequality of weighted arithmetic and geometric means, $G \le S$, with equality only when all scores are equal; the gap grows with the spread of the scores (Example 28-01.1).
 
 **Gates.** Some dimensions should not be traded at all. A **knockout gate** is a condition that must hold before any score counts: the target owns or has transferable rights to its essential IP; its products can be sold to its intended customers under export controls (26-07; [R-659]); it has a credible path to wafers and packaging; it meets the functional-safety standard its market demands. A gate failure is not a low score but a reason to stop or to restructure the deal (an escrow, an indemnity, a carve-out). Gates keep the scorecard honest: a weighted sum cannot express "worthless unless".
 
@@ -111,7 +111,7 @@ $$
 
 where $\Phi$ is the standard normal distribution function (03-02). When $\lvert\mu_D\rvert$ is small against $\sigma_D$, the ranking is a coin flip and the scorecard has not yet decided anything.
 
-> **Going deeper — multi-attribute utility.** The weighted sum is the simplest multi-attribute utility function. It assumes *preferential independence* (the value of a better architecture score does not depend on the software score) and constant trade-offs between dimensions. The geometric form assumes instead that dimensions are complements. Decision analysis (Clemen and Reilly, §13) elicits the form and the weights from the decision maker with swing-weighting and trade-off questions; in practice the robust lesson is to test whether the ranking survives a change of form and of weights before trusting it.
+> **Going deeper — multi-attribute utility.** The weighted sum is the simplest multi-attribute utility function. It assumes *preferential independence* (the value of a better architecture score does not depend on the software score) and constant trade-offs between dimensions. The geometric form assumes instead that dimensions are complements. Decision analysis (Clemen and Reilly; see Further study, §13) elicits the form and the weights from the decision maker with swing-weighting and trade-off questions; in practice the robust lesson is to test whether the ranking survives a change of form and of weights before trusting it.
 
 ### 3.3 Weighing evidence: Bayes' rule in odds form
 
@@ -142,13 +142,13 @@ From 20% to 80% requires $\Lambda = 4/0.25$ = **16**. A polished slide deck has 
 
 ### 3.4 Technical milestones as probabilities
 
-**Spins.** A chip rarely reaches production on its first mask set. 26-05 models the number of tape-outs with a constant per-attempt success probability. The industry survey of 2024 gives the distribution directly: read from the report's chart, the share of IC/ASIC projects needing 1, 2, 3, 4, 5 and 6 spins before production was about 14, 25, 28, 16, 10 and 4% [R-645] **[Industry estimate: chart readings, ±1 point]**. If $q_k$ is the probability of needing $k$ spins, the expected number is $\bar k = \sum_k kq_k$, and for a plan that budgets $m$ spins, the expected number of spins *beyond* the plan is
+**Spins.** A chip rarely reaches production on its first mask set. 26-05 models the number of tape-outs with a per-attempt success probability (constant in its simplest form). The industry survey of 2024 gives the distribution directly: read from the report's chart, the share of IC/ASIC projects needing 1, 2, 3, 4, 5 and 6 spins before production was about 14, 25, 28, 16, 10 and 4% [R-645] **[Industry estimate: chart readings, ±1 point]**. If $q_k$ is the probability of needing $k$ spins, the expected number is $\bar k = \sum_k kq_k$, and for a plan that budgets $m$ spins, the expected number of spins *beyond* the plan is
 
 $$
 \operatorname{E}[\max(0, k - m)] = \sum_{k > m}(k - m)\,q_k .
 $$
 
-Each extra spin costs a mask set (tens of millions of dollars at the leading edge [R-623]) and several months (26-05), so this expectation converts directly into expected delay and cost (Example 28-01.4).
+Each extra spin costs up to a full mask set (tens of millions of dollars at the leading edge [R-623] **[Industry estimate; Contested]**; a metal-only respin replaces only the metal masks [R-648]) and several months (26-05), so this expectation converts directly into expected delay and cost (Example 28-01.4).
 
 **Milestone chains.** Value usually depends on a chain of events: the tape-out lands on time, the silicon works, the product qualifies, and a customer ramps. If stage $j$ succeeds with probability $p_j$, conditional on the earlier stages, the chain succeeds with probability
 
@@ -168,12 +168,12 @@ to a risk-neutral party. Buyer and seller can hold different values of $p$, whic
 
 ### 3.5 The value of information
 
-Diligence costs money and time, so each piece of work should be judged by how much it could improve the decision. Consider a choice between buying a target, worth a gain $G$ if its technology works (probability $p$) and a loss $L < 0$ if not, and passing (worth 0). Without more information the best expected value is $\max(pG + (1 - p)L,\ 0)$.
+Diligence costs money and time, so each piece of work should be judged by how much it could improve the decision. Consider a choice between buying a target, worth an upside $U$ if its technology works (probability $p$) and a loss $L < 0$ if not, and passing (worth 0). Without more information the best expected value is $\max(pU + (1 - p)L,\ 0)$.
 
-With **perfect information** the buyer would learn the outcome first and buy only if it works, for an expected value $pG$. The difference is the **expected value of perfect information**:
+With **perfect information** the buyer would learn the outcome first and buy only if it works, for an expected value $pU$. The difference is the **expected value of perfect information**:
 
 $$
-\text{EVPI} = pG - \max\bigl(pG + (1 - p)L,\ 0\bigr).
+\text{EVPI} = pU - \max\bigl(pU + (1 - p)L,\ 0\bigr).
 $$
 
 No diligence step is worth more than the EVPI.
@@ -181,12 +181,12 @@ No diligence step is worth more than the EVPI.
 Real tests are imperfect. A test (an independent benchmark of the silicon, a code review, a customer reference) passes a working technology with probability $a$, its **sensitivity**, and fails a broken one with probability $b$, its **specificity**. Then $P(\text{pass}) = pa + (1 - p)(1 - b)$, Bayes' rule gives $P(\text{works} \mid \text{pass})$ and $P(\text{works} \mid \text{fail})$, the buyer chooses the best action after each result, and the **expected value of sample information** is
 
 $$
-\text{EVSI} = P(\text{pass})\max(V_{\text{pass}}, 0) + P(\text{fail})\max(V_{\text{fail}}, 0) - \max\bigl(pG + (1 - p)L,\ 0\bigr),
+\text{EVSI} = P(\text{pass})\max(V_{\text{pass}}, 0) + P(\text{fail})\max(V_{\text{fail}}, 0) - \max\bigl(pU + (1 - p)L,\ 0\bigr),
 $$
 
 where $V_{\text{pass}}$ and $V_{\text{fail}}$ are the expected values of buying after each result. A test is worth doing when its EVSI exceeds its cost, including the cost of delay. A test whose result would not change the decision has an EVSI of zero, however interesting its answer (Example 28-01.6). The same logic ranks diligence workstreams: the most valuable is the one most likely to flip the decision, which is usually the heavily weighted, poorly evidenced dimension of §3.2.
 
-> **Going deeper — information value theory.** R. A. Howard's 1966 paper (§13) introduced the value of information in decision analysis. The general form is a preposterior analysis: average, over the possible results of the test, the best decision's expected value given each result. Production diligence rarely computes it exactly, but even a rough EVSI exposes tests that cannot change the decision and tests that are cheap relative to what they protect.
+> **Going deeper — information value theory.** R. A. Howard's 1966 paper (see Further study, §13) formalized the value of information in decision analysis, building on Raiffa and Schlaifer's earlier statistical decision theory. The general form is a preposterior analysis: average, over the possible results of the test, the best decision's expected value given each result. Production diligence rarely computes it exactly, but even a rough EVSI exposes tests that cannot change the decision and tests that are cheap relative to what they protect.
 
 ### 3.6 A consistency check on the roadmap
 
@@ -227,11 +227,11 @@ All parameters below are illustrative assumptions unless a source is cited; the 
 
 **Units check.** Variances in score units squared; their square root in score units; the ratio $\mu_D/\sigma_D$ is dimensionless. ✓
 
-**Sanity check.** A 0.025 lead against a 0.285 standard deviation decides nothing: the ranking is almost a coin flip. The variance shares say where to look next. An architecture deep-dive (an independent model of A's dataflow on the acquirer's workloads) attacks over a third of the uncertainty; a review of A's software, the cause of Example 28-01.1's disagreement, attacks only 11% of the variance but could swing the decision on its own. Both belong at the top of the plan (§3.5).
+**Sanity check.** A 0.025 lead against a 0.285 standard deviation decides nothing: the ranking is almost a coin flip. The variance shares say where to look next. An architecture deep-dive (an independent model of A's dataflow on the acquirer's workloads) attacks over a third of the uncertainty; a review of A's software, the cause of Example 28-01.1's disagreement, attacks only **11.4**% of the variance but could swing the decision on its own. Both belong at the top of the plan (§3.5).
 
 ### Example 28-01.3 · What the evidence says (tier B)
 
-**Setup.** The claim: target A's first silicon meets its performance target at its production clock. Anchored on the low first-silicon success rates of [R-018], the analyst's prior is 0.25. Three pieces of evidence arrive, with the analyst's estimates of their likelihoods:
+**Setup.** The claim: target A's first silicon meets its performance target at its production clock. The analyst's prior is 0.25. That sits above the 5–14% first-silicon success rates of [R-018] because this claim is narrower than "ships without a respin": silicon can meet its performance target at its clock and still need a functional respin for an unrelated bug. Three pieces of evidence arrive, with the analyst's estimates of their likelihoods:
 
 - $E_1$: a live demonstration of a standard workload at the claimed clock, $P(E_1 \mid T) = 0.9$, $P(E_1 \mid \bar T) = 0.3$ (a team with marginal silicon can still stage a demo);
 - $E_2$: an independent customer reports the same performance on its own model, $P(E_2 \mid T) = 0.8$, $P(E_2 \mid \bar T) = 0.2$;
@@ -251,7 +251,7 @@ Find (a) the prior odds, (b) the posterior odds and probability with independent
 
 ### Example 28-01.4 · How many spins? (tier B)
 
-**Setup.** Use the 2024 distribution of spins before production [R-645]: 14, 25, 28, 16, 10 and 4% of projects needed 1 to 6 spins (chart readings; they total 97%, so renormalize). A target's plan assumes two spins. Each extra spin costs 4 months and a \$25 million mask set (assumed, at the low end of leading-edge estimates [R-623]). Find (a) the expected number of spins, (b) the probability that two or fewer suffice, (c) the expected spins beyond plan, and (d) the expected delay and extra mask cost.
+**Setup.** Use the 2024 distribution of spins before production [R-645]: 14, 25, 28, 16, 10 and 4% of projects needed 1 to 6 spins (chart readings; they total 97%, so renormalize). A target's plan assumes two spins. Each extra spin costs 4 months and a \$25 million mask set (assumed, within the \$10–40 M range of leading-edge estimates [R-623]). Find (a) the expected number of spins, (b) the probability that two or fewer suffice, (c) the expected spins beyond plan, and (d) the expected delay and extra mask cost.
 
 **Solution.**
 
@@ -262,7 +262,7 @@ Find (a) the prior odds, (b) the posterior odds and probability with independent
 
 **Units check.** Spins × months/spin = months; spins × dollars/spin = dollars. ✓
 
-**Sanity check.** A two-spin plan is already more cautious than most slides, yet the base rate says it holds only two times in five and costs about four months and \$27 million in expectation. The survey is vendor-sponsored, its sample changed in 2024 [R-621] and it over-represents processor-class projects [R-622], so treat these as a prior to be moved by the target's own history (its past tape-outs and their outcomes), not as a forecast.
+**Sanity check.** A two-spin plan is already more cautious than most slides, yet the base rate says it holds only two times in five and costs about four months and \$27 million in expectation. The survey is vendor-sponsored, its sample changed in 2024 [R-621] and it over-represents processor-class projects [R-622], and renormalizing assumes the missing 3% is reading error: if it is a "7 or more" bar, placing it at 7 spins gives $(28 + 32 + 30 + 16 + 15)/100$ = **1.21** spins beyond plan instead of 1.09. Treat these as a prior to be moved by the target's own history (its past tape-outs and their outcomes), not as a forecast.
 
 ### Example 28-01.5 · Valuing an earn-out (tier C)
 
@@ -314,6 +314,7 @@ Find (a) the prior odds, (b) the posterior odds and probability with independent
 | Ex 28-01.2b | probability B is ahead | 46.5 | % |
 | Ex 28-01.2c | architecture share of variance | 35.7 | % |
 | Ex 28-01.2c1 | team share of variance | 20.1 | % |
+| Ex 28-01.2c2 | software share of variance | 11.4 | % |
 | Ex 28-01.3a | prior odds | 0.333 | — |
 | Ex 28-01.3b | posterior odds, independent | 2.00 | — |
 | Ex 28-01.3b1 | posterior probability, independent | 66.7 | % |
@@ -323,21 +324,22 @@ Find (a) the prior odds, (b) the posterior odds and probability with independent
 | Ex 28-01.4b | probability two spins suffice | 40.2 | % |
 | Ex 28-01.4c | expected spins beyond plan | 1.09 | spins |
 | Ex 28-01.4d | expected delay | 4.37 | months |
-| Ex 28-01.4d1 | expected extra mask cost | 27.3 | million $ |
+| Ex 28-01.4d1 | expected extra mask cost | 27.3 | million \$ |
+| Ex 28-01.4e | spins beyond plan, residue at 7 | 1.21 | spins |
 | Ex 28-01.5a | buyer's probability | 0.30 | — |
 | Ex 28-01.5b0 | discount factor | 1.357 | — |
-| Ex 28-01.5b | present value of the earn-out | 0.498 | billion $ |
-| Ex 28-01.5c | expected total consideration | 3.75 | billion $ |
-| Ex 28-01.5c1 | maximum nominal total | 5.50 | billion $ |
+| Ex 28-01.5b | present value of the earn-out | 0.498 | billion \$ |
+| Ex 28-01.5c | expected total consideration | 3.75 | billion \$ |
+| Ex 28-01.5c1 | maximum nominal total | 5.50 | billion \$ |
 | Ex 28-01.5d | break-even probability for 4.0 B | 0.452 | — |
-| Ex 28-01.6a | expected value of buying now | 80 | million $ |
-| Ex 28-01.6a1 | EVPI | 120 | million $ |
+| Ex 28-01.6a | expected value of buying now | 80 | million \$ |
+| Ex 28-01.6a1 | EVPI | 120 | million \$ |
 | Ex 28-01.6b | probability of a pass | 0.38 | — |
 | Ex 28-01.6b1 | P(works given pass) | 0.842 | — |
 | Ex 28-01.6b2 | P(works given fail) | 0.129 | — |
-| Ex 28-01.6c | value of buying after a pass | 389.5 | million $ |
-| Ex 28-01.6c1 | value of buying after a fail | -109.7 | million $ |
-| Ex 28-01.6d | EVSI | 68.0 | million $ |
+| Ex 28-01.6c | value of buying after a pass | 389.5 | million \$ |
+| Ex 28-01.6c1 | value of buying after a fail | -109.7 | million \$ |
+| Ex 28-01.6d | EVSI | 68.0 | million \$ |
 | Txt 28-01.1 | likelihood ratio from 20% to 80% | 16 | — |
 | Txt 28-01.2 | four stages at 0.8 | 0.41 | — |
 
@@ -377,12 +379,12 @@ Figures are as of Nov 2026 unless dated otherwise.
 | Quantity | Value | Note |
 |---|---|---|
 | IC/ASIC first-silicon success | 5% (2026), 14% (2024); about 30–33% in 2010–2020 and 24% in 2022 | Wilson Research Group / Siemens EDA [R-018, R-621, R-622] **[Established as reported; trend Contested]** |
-| Projects behind schedule | about 75% (2024 and 2026), against about 66% historically | Same surveys [R-018, R-645] |
+| Projects behind schedule | about 75% (2024 and 2026), against about 66% historically | Same surveys [R-018, R-645] **[Established as reported]** |
 | Spins before production (2024) | 1: 14%, 2: 25%, 3: 28%, 4: 16%, 5: 10%, 6: 4%; mean **2.95** | Chart readings [R-645]; mean derived (Example 28-01.4) |
 | Leading-edge NRE and mask sets | NRE \$30–100 M+, mask set \$10–20 M at 3–5 nm (2026); about \$40 M mask sets at 3 nm (2022 estimate) | [R-623] **[Industry estimate; Contested]** |
 | From-scratch design cost | about \$249 M (7 nm) and \$725 M (2 nm) | IBS via Arm's F-1 [R-019] **[Contested]** |
-| R&D intensity | 8.6% (NVIDIA FY2026) to 26.1% (Intel FY2025) of revenue | 10-K filings [R-017] |
-| Earn-out example | \$3.25 B upfront plus up to about \$2.25 B on revenue milestones (Marvell–Celestial AI, 2025) | [R-547] |
+| R&D intensity | 8.6% (NVIDIA FY2026) to 26.1% (Intel FY2025) of revenue | 10-K filings [R-017] **[Established]** |
+| Earn-out example | \$3.25 B upfront plus up to about \$2.25 B on revenue milestones (Marvell–Celestial AI, 2025) | [R-547] **[Established: company announcement]** |
 | Evidence needed from 20% to 80% | likelihood ratio **16** | §3.3 |
 
 ## 8. Common mistakes
@@ -399,10 +401,10 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 **State of play (as of Nov 2026).**
 
-- **The base rate for working first silicon is at a record low.** The 2026 Wilson Research Group study reports 5% first-silicon success among IC/ASIC respondents, from 14.4% in 2024, with about three in four projects behind schedule [R-018, R-622] **[Established as reported]**. The survey changed its recruitment in 2024 and its 2026 sample leans towards CPU, GPU and AI-accelerator projects, so the trend is **[Contested]**; the level is not in doubt: most complex chips need more than one spin [R-645].
+- **The base rate for working first silicon is at a record low.** The 2026 Wilson Research Group study reports 5% first-silicon success among IC/ASIC respondents, from 14.4% in 2024, with about three in four projects behind schedule [R-018, R-622] **[Established as reported]**. The survey changed its recruitment in 2024 and its 2026 sample leans towards CPU, GPU and AI-accelerator projects, so the trend is **[Contested]**, and the 2026 figure is fragile (16 of about 320 respondents, a 95% interval of roughly 3–8% [R-622]). That most complex chips need more than one spin is not in doubt [R-645].
 - **Even the leaders respin and slip.** NVIDIA "executed a change to the Blackwell GPU [mask] to improve production yields" in 2024 [R-646], and Intel built in "additional validation time" for Sapphire Rapids, moving production to 2022 [R-647] **[Established: company statements as reported]**. A target that claims it will not need such margins should be asked why.
 - **Deal structures price technical risk explicitly.** Marvell's acquisition of Celestial AI paired about \$3.25 billion upfront with up to about \$2.25 billion contingent on revenue milestones through fiscal 2029 [R-547] **[Established for the terms]**. Contingent consideration is how a buyer turns a technical probability into a price.
-- **Gates increasingly sit outside engineering.** US export controls define thresholds by "total processing performance" and "performance density" (ECCN 3A090) [R-659] **[Established: regulatory text]**; a chip's addressable market can depend on a number its architects chose. Supply is another: estimates of CoWoS capacity at the end of 2026 range from about 88,000 to 160,000 wafers per month, depending on the source and on whether OSATs are included [R-588] **[Industry estimate; Contested]**, and a target's packaging allocation can gate its ramp.
+- **Gates increasingly sit outside engineering.** US export controls define thresholds by "total processing performance" and "performance density" (ECCN 3A090) [R-659] **[Established: regulatory text]**; a chip's addressable market can depend on a number its architects chose. Supply is another: estimates of TSMC's or the industry's CoWoS run rate at the end of 2026 range from about 88,000 wafers per month (a June 2025 forecast) to 160,000, and one estimate that adds 50,000–60,000 of OSAT capacity approaches 200,000; Goldman Sachs's 106,000 is an annual total divided by 12, a different basis [R-588] **[Industry estimate; Contested]**, and a target's packaging allocation can gate its ramp.
 
 **Commercial relevance.** For a corporate-development team the framework does three jobs. It structures the diligence plan (which dimensions, which evidence, in what order of value of information); it disciplines the valuation (milestone probabilities and expected delays feed the model, and the gap between buyer's and seller's probabilities is where earn-outs live); and it organizes the conversation with the target's engineering leaders around evidence rather than assertions. Its output to an investment committee is a short list: the gates and their status, the three uncertainties that move value most, the probability attached to each, and what would change it.
 

@@ -53,14 +53,14 @@ flowchart LR
 
 ### 3.1 A silicon maturity scale
 
-NASA's technology readiness levels run from TRL 1, where "scientific research is beginning", to TRL 9, where a technology has been "flight proven" during a successful mission; TRL 6 is "a fully functional prototype or representational model" and TRL 8 has been "tested and 'flight qualified'" [R-701] **[Established]**. They are a general scale for any technology. For silicon a more specific ladder is useful, and the mapping to TRL below is ours, by analogy.
+NASA's technology readiness levels run from TRL 1, where basic scientific research is only starting, to TRL 9, where a technology has been "flight proven" during a successful mission; TRL 6 is "a fully functional prototype or representational model" and TRL 8 has been "tested and 'flight qualified'" [R-701] **[Established]**. They are a general scale for any technology. For silicon a more specific ladder is useful, and the mapping to TRL below is ours, by analogy.
 
 | Level | Status | Evidence that establishes it | Evidence that does not | Analogous TRL |
 |---|---|---|---|---|
 | L0 | Concept | Analytic models and simulations of the architecture on target workloads | A pitch deck | 2–3 |
 | L1 | Architecture and RTL | RTL in a repository, verification plan with coverage numbers, timing closure trends | "Design is 80% complete" | 4 |
 | L2 | Tape-out | Mask-shop confirmation, sign-off reports (timing, power, physical verification) | A press release | 5 |
-| L3 | First silicon in bring-up | Lab data at corners; the fraction of the validation plan passed; open-bug counts | A demo at one operating point | 6 |
+| L3 | First silicon in bring-up | Lab data at corners; the fraction of the validation plan passed; open-bug counts | A demo at one operating point | 5–6 |
 | L4 | Engineering samples (ES) with customers | Customer-measured results; an errata list; sample shipment records | Logos on a slide | 6–7 |
 | L5 | Qualification complete | A qualification report (life tests, ESD, latch-up, package tests) on production-representative silicon | "Qualification in progress" | 8 |
 | L6 | Production release | Released part numbers, a stepping, yields by lot, a supply allocation | "Production-ready" | 8–9 |
@@ -70,7 +70,7 @@ Two notes on the ladder. First, **respins loop back**: a respin at L3 or L4 retu
 
 ### 3.2 From level to probability, time and value
 
-Let the programme be at level $k$, and let each remaining transition $j$ succeed (possibly after a respin) with probability $p_j$, conditional on the earlier ones, taking $t_j$ months. The probability of reaching production and the time if every step succeeds are
+Let the programme be at level $k$, and let each remaining transition $j$ succeed (possibly after a respin) with probability $p_j$, conditional on the earlier ones, taking $t_j$ months. Here $t_j$ is the expected duration of the stage *including* any respin delay: a stage that takes 4 months, or 8 if a respin (probability 0.5) is needed, has $t_j = 6$ months. The probability of reaching production and the time if every step succeeds are
 
 $$
 P_k = \prod_{j \ge k} p_j , \qquad T_k = \sum_{j \ge k} t_j .
@@ -82,17 +82,19 @@ $$
 \frac{V_k}{V} = \frac{P_k}{(1 + r)^{T_k/12}} .
 $$
 
+Here $V$ is the value *after* all remaining development spend. If the buyer pays the remaining NRE (masks, respins, qualification), subtract its present value $C_k$, which is spent whether or not the chain succeeds: $V_k = P_kV/(1 + r)^{T_k/12} - C_k$. Because $C_k$ is largest at the earliest levels, leaving it out understates how much reaching a later level is worth.
+
 This **value multiplier** rises with each level passed, both because the remaining chain is shorter (higher $P_k$) and because the wait is shorter (smaller discount). Its ratio between two levels is the most a buyer should pay for the later level relative to the earlier one, other things equal (Example 28-03.2). The inputs $p_j$ and $t_j$ are assumptions; their value is in making the assumptions explicit and in showing which transition dominates the risk.
 
 ### 3.3 Qualification: what a life test proves
 
-Qualification life tests run samples at elevated temperature and voltage and count failures. A life test with $n$ devices for $t$ hours at a stress temperature represents $n\,t\,\text{AF}$ equivalent hours at the use temperature, where the **acceleration factor** for a thermally activated mechanism with activation energy $E_a$ is the Arrhenius ratio (25-09):
+Qualification life tests run samples at elevated temperature and voltage and count failures. This section uses the thermal acceleration factor alone; the voltage stress adds a voltage-acceleration factor (25-09) that multiplies the equivalent hours and lowers the bound further, by an amount that depends on the mechanism's voltage model. A life test with $n$ devices for $t$ hours at a stress temperature represents $n\,t\,\text{AF}$ equivalent hours at the use temperature, where the **acceleration factor** for a thermally activated mechanism with activation energy $E_a$ is the Arrhenius ratio (25-09):
 
 $$
 \text{AF} = \exp\!\left[\frac{E_a}{k_B}\left(\frac{1}{T_{\text{use}}} - \frac{1}{T_{\text{stress}}}\right)\right],
 $$
 
-with $k_B = 8.617 \times 10^{-5}$ eV/K and temperatures in kelvin. At $E_a$ = 0.7 eV between 55 °C and 125 °C, AF is **77.6** with exact constants; TI's app note quotes 78.6, which reproduces with $k_B = 8.6 \times 10^{-5}$ and $T = \text{°C} + 273$ [R-610].
+with Boltzmann's constant $k_B = 8.617 \times 10^{-5}$ eV/K (written with a subscript here because $k$ indexes maturity levels) and temperatures in kelvin. At $E_a$ = 0.7 eV between 55 °C and 125 °C, AF is **77.6** with exact constants; TI's app note quotes 78.6, which reproduces with $k_B = 8.6 \times 10^{-5}$ and $T = \text{°C} + 273$ [R-610].
 
 **The failure-rate bound.** If failures occur at a constant rate $\lambda$, the number of failures in $T_{\text{eq}} = n\,t\,\text{AF}$ equivalent hours is Poisson with mean $\lambda T_{\text{eq}}$. Seeing zero failures has probability $e^{-\lambda T_{\text{eq}}}$. The **upper confidence bound** at confidence $C$ is the rate at which zero failures would occur with probability only $1 - C$:
 
@@ -100,11 +102,11 @@ $$
 e^{-\lambda_C T_{\text{eq}}} = 1 - C \;\Rightarrow\; \lambda_C = \frac{-\ln(1 - C)}{T_{\text{eq}}} = \frac{\chi^2_{C;\,2}}{2T_{\text{eq}}},
 $$
 
-because the chi-square distribution with 2 degrees of freedom has quantile $\chi^2_{C;2} = -2\ln(1 - C)$. With $r$ failures the general bound is $\lambda_C = \chi^2_{C;\,2r+2}/(2T_{\text{eq}})$, and multiplying by $10^9$ gives FIT (failures per $10^9$ device-hours) [R-610].
+because the chi-square distribution with 2 degrees of freedom has quantile $\chi^2_{C;2} = -2\ln(1 - C)$. With $r$ failures (here $r$ counts failures, not the discount rate of §3.2) the general bound is $\lambda_C = \chi^2_{C;\,2r+2}/(2T_{\text{eq}})$, and multiplying by $10^9$ gives FIT (failures per $10^9$ device-hours) [R-610].
 
 > **Math refresher — why chi-square appears.** The time to the $(r+1)$-th event of a Poisson process with rate $\lambda$ has a gamma distribution, and $2\lambda T$ for that time is chi-square with $2r + 2$ degrees of freedom. "At most $r$ failures in $T$" is the same event as "the $(r+1)$-th failure comes after $T$", so the bound on $\lambda$ is a chi-square quantile divided by $2T$. For $r = 0$ it reduces to the exponential case above.
 
-Two consequences for diligence. First, a minimum qualification proves less than it sounds: JEDEC JESD47G's high-temperature operating life row is 1000 hours on 3 lots of 77 units with zero failures [R-061], which at an acceleration factor of 77.6 bounds the use failure rate at about **51** FIT at 60% confidence (the level common in industrial calculations [R-610]) and about 128 FIT at 90% (Example 28-03.3). Low single-digit FIT claims need far more device-hours, and TI's example uses 7,859 devices to reach about 1.5 FIT [R-610]. Second, the bound depends on $E_a$, which is assumed per failure mechanism (JEDEC JEP122 lists mechanisms and their activation energies [R-609]); a higher assumed $E_a$ gives a larger AF and a lower bound, so the activation energy behind a FIT claim is the first thing to ask about.
+Two consequences for diligence. First, a minimum qualification proves less than it sounds: JEDEC JESD47G's high-temperature operating life row is 1000 hours on 3 lots of 77 units with zero failures [R-061] (Rev G's row; whether Rev N of August 2026 changed it has not been checked here), which at an acceleration factor of 77.6 bounds the use failure rate at about **51** FIT at 60% confidence (the level common in industrial calculations [R-610]) and about 128 FIT at 90% (Example 28-03.3). Low single-digit FIT claims need far more device-hours, and TI's example uses 7,859 devices to reach about 1.5 FIT [R-610]. Second, the bound depends on $E_a$, which is assumed per failure mechanism (JEDEC JEP122 lists mechanisms and their activation energies [R-609]); a higher assumed $E_a$ gives a larger AF and a lower bound, so the activation energy behind a FIT claim is the first thing to ask about.
 
 ### 3.4 Software maturity: the defect-discovery curve
 
@@ -194,12 +196,12 @@ All parameters are illustrative assumptions unless a source is cited.
 
 ### Example 28-03.5 · How many devices for a 10 FIT claim? (tier C)
 
-**Setup.** A supplier wants to support "below 10 FIT at 55 °C, 60% confidence" with 1000-hour life tests at 125 °C and $E_a$ = 0.7 eV (AF 77.6). Find the devices needed if zero failures are allowed, and if one failure is allowed ($\chi^2_{0.6;4}$ = **4.045**).
+**Setup.** A supplier wants to support "below 10 FIT at 55 °C, 60% confidence" with 1000-hour life tests at 125 °C and $E_a$ = 0.7 eV (AF 77.65, carried unrounded). Find the devices needed if zero failures are allowed, and if one failure is allowed ($\chi^2_{0.6;4}$ = **4.045**).
 
 **Solution.**
 
-- Zero failures: $n \ge 1.833 \times 10^9/(2 \times 10 \times 1000 \times 77.6)$, so **1181** devices.
-- One failure: $n \ge 4.045 \times 10^9/(2 \times 10 \times 1000 \times 77.6)$, so **2605** devices.
+- Zero failures: $n \ge 1.833 \times 10^9/(2 \times 10 \times 1000 \times 77.65)$, so **1181** devices.
+- One failure: $n \ge 4.045 \times 10^9/(2 \times 10 \times 1000 \times 77.65)$, so **2605** devices.
 
 **Units check.** $\chi^2 \times 10^9$ ÷ (FIT × hours × AF) = devices, since FIT counts failures per $10^9$ device-hours. ✓
 
@@ -273,13 +275,13 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 | Quantity | Value | Note |
 |---|---|---|
-| Technology readiness levels | TRL 1 (research beginning) to TRL 9 (flight proven); TRL 6 a functional prototype | NASA [R-701] |
-| First-silicon success | 5% (2026), 14% (2024) of IC/ASIC projects | [R-018] |
-| Minimum HTOL qualification | 1000 h at $T_j \ge$ 125 °C, 3 lots × 77, 0 failures (JESD47G) | [R-061] |
-| Arrhenius AF, 0.7 eV, 55 → 125 °C | **77.6** exact; 78.6 with rounded constants | [R-610] |
+| Technology readiness levels | TRL 1 (research beginning) to TRL 9 (flight proven); TRL 6 a functional prototype | NASA [R-701] **[Established]** |
+| First-silicon success | 5% (2026; about 3–8% given the sample), 14% (2024) of IC/ASIC projects | [R-018, R-622] **[Established as reported; trend Contested]** |
+| Minimum HTOL qualification | 1000 h at $T_j \ge$ 125 °C, 3 lots × 77, 0 failures (JESD47G, 2009) | [R-061] **[Established]** |
+| Arrhenius AF, 0.7 eV, 55 → 125 °C | **77.6** exact; 78.6 with rounded constants | [R-610] **[Established]** |
 | FIT bound, minimum HTOL | about **51** FIT (60%), 128 FIT (90%) at 0.7 eV, 55 °C | Example 28-03.3 |
-| Industrial confidence level | 60% "typical for industrial calculations" | TI [R-610] |
-| AEC-Q100 grades | 0: −40 to +150 °C; 1: −40 to +125 °C; 2: −40 to +105 °C; 3: −40 to +85 °C ambient | Rev J [R-612] |
+| Industrial confidence level | 60% "typical for industrial calculations" | TI [R-610] **[Established]** |
+| AEC-Q100 grades | 0: −40 to +150 °C; 1: −40 to +125 °C; 2: −40 to +105 °C; 3: −40 to +85 °C ambient | Rev J [R-612] **[Established]** |
 
 ## 8. Common mistakes
 
@@ -321,7 +323,7 @@ Figures are as of Nov 2026 unless dated otherwise.
 
    <details><summary>Answer</summary>
 
-   The transition from first silicon to engineering samples carries most of the respin risk, and it lies ahead of the first programme but behind the second. The value multiplier $P_k/(1 + r)^{T_k/12}$ rises as that transition is passed, by about half in Example 28-03.2.
+   The transition from first silicon to engineering samples carries most of the respin risk, and it lies ahead of the first programme but behind the second. The value multiplier $P_k/(1 + r)^{T_k/12}$ rises as that transition is passed, by about a third (0.555 at L3 to 0.744 at L4, Lab 28-03 Part 1).
 
    </details>
 

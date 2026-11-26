@@ -5,7 +5,7 @@
 |---|---|
 | **Course** | [28 · Technical Diligence and Engineering Leadership Fluency](../README.md) |
 | **University equivalent** | No direct university equivalent: the quantitative-evaluation units of a computer-architecture course (Hennessy & Patterson, *Computer Architecture: A Quantitative Approach*, chapter 1 on measuring and reporting performance), applied to industry claims, with the evaluation method of Sze, Chen, Yang and Emer, "How to Evaluate Deep Neural Network Processors" (2020) |
-| **Prerequisites** | [28-01](28-01-technology-evaluation-framework.md) (evidence and likelihood ratios), [14-01](../../14-computer-organization-and-architecture/chapters/14-01-performance-power-iron-law.md) (performance, $P = \alpha CV^2f$), [14-14](../../14-computer-organization-and-architecture/chapters/14-14-ai-accelerators.md) (AI accelerators), [14-15](../../14-computer-organization-and-architecture/chapters/14-15-roofline-and-benchmarks.md) (roofline and benchmarks), [23-01](../../23-memory-and-storage-technology/chapters/23-01-memory-hierarchy-and-memory-wall.md) (the energy of memory), [25-10](../../25-fabrication-packaging-test-and-reliability/chapters/25-10-qualification-and-functional-safety.md) (qualification) |
+| **Prerequisites** | [28-01](28-01-technology-evaluation-framework.md) (evidence and likelihood ratios), [14-01](../../14-computer-organization-and-architecture/chapters/14-01-performance-power-iron-law.md) (performance, $P = \alpha CV^2f$), [14-14](../../14-computer-organization-and-architecture/chapters/14-14-ai-accelerators.md) (AI accelerators), [19-06](../../19-digital-vlsi-design/chapters/19-06-power-and-low-power-design.md) (power and DVFS), [14-15](../../14-computer-organization-and-architecture/chapters/14-15-roofline-and-benchmarks.md) (roofline and benchmarks), [23-01](../../23-memory-and-storage-technology/chapters/23-01-memory-hierarchy-and-memory-wall.md) (the energy of memory), [25-01](../../25-fabrication-packaging-test-and-reliability/chapters/25-01-process-flow-overview.md) (process flow and masks), [25-10](../../25-fabrication-packaging-test-and-reliability/chapters/25-10-qualification-and-functional-safety.md) (qualification), [27-01](../../27-system-architectures/chapters/27-01-system-analysis-method.md) (system analysis) |
 | **Estimated study hours** | 6 |
 | **Last verified** | 2026-11-26 |
 
@@ -30,7 +30,7 @@ Most of what a diligence team hears about a chip arrives as a number with an adj
 
 ## 2. Intuition first
 
-**A yield to worst, not a headline coupon.** A bond analyst does not compare bonds by coupon; a callable bond's headline rate tells you little until you compute the yield under the issuer's least favourable call. A chip's peak TOPS is the coupon: real, contractual, and nearly irrelevant to what the buyer will earn. The delivered throughput on the buyer's workload, at the buyer's latency target and power boundary, is the yield to worst. The analogy is tighter than it looks, because both conversions require the same two things: the full terms (the call schedule; the precision, sparsity and operating point) and a model of the scenario (rates; the workload's arithmetic intensity).
+**A yield to worst, not a headline coupon.** A bond analyst does not compare bonds by coupon; a callable bond's headline rate tells you little until you compute the yield to the call date least favourable to the investor. A chip's peak TOPS is the coupon: real, contractual, and nearly irrelevant to what the buyer will earn. The delivered throughput on the buyer's workload, at the buyer's latency target and power boundary, is the yield to worst. The analogy is tighter than it looks, because both conversions require the same two things: the full terms (the call schedule; the precision, sparsity and operating point) and a model of the scenario (rates; the workload's arithmetic intensity).
 
 Where it breaks down: a bond's terms are in its indenture, fully disclosed. A chip's terms are often in a footnote, sometimes one whose text does not appear on the page (27-07 [R-690]), so the first step is frequently to ask for them.
 
@@ -59,9 +59,9 @@ $$
 F_{\text{peak}} = 2N_{\text{MAC}}f\cdot k_{\text{prec}}\cdot k_{\text{sparse}} ,
 $$
 
-in operations per second, where $k_{\text{prec}}$ is the throughput multiplier of a narrower format (commonly 2 each time the operand width halves, when one unit performs two narrower MACs) and $k_{\text{sparse}}$ is 2 for 2:4 structured sparsity, in which hardware skips two of every four weights for models pruned to that pattern (27-07 §3.1). A datasheet number is therefore a product of four factors, and the same silicon can be quoted at four values a factor of two apart. NVIDIA's HGX B200 table, for instance, prints "144 PFLOPS | 72 PFLOPS" with a footnote that the specification is "sparse | dense" [R-147]; the first check of any figure is which product it is.
+in operations per second, where $k_{\text{prec}}$ is the throughput multiplier of a narrower format (commonly 2 each time the operand width halves, when one unit performs two narrower MACs) and $k_{\text{sparse}}$ is 2 for 2:4 structured sparsity, in which hardware skips two of every four weights for models pruned to that pattern (27-07 §3.1). A datasheet number is therefore a product of four factors, and the same silicon can be quoted at four values up to a factor of four apart (1×, 2×, 2× and 4× the dense, native-precision rate). NVIDIA's HGX B200 table, for instance, prints "FP4 Tensor Core 144 PFLOPS | 72 PFLOPS" for eight GPUs with a footnote that the specification is "sparse | dense" [R-147]; the first check of any figure is which product it is.
 
-**A precision-normalized measure.** US export controls define a **total processing performance** that removes the precision factor: $\text{TPP} = 2 \times \text{MacTOPS} \times \text{bit length}$, where MacTOPS is the peak MAC rate in units of $10^{12}$ per second at that bit length [R-659]. Halving the bit length doubles MacTOPS and halves the bit length, so TPP is unchanged. A chip reaches the control threshold of 4800 at, for example, 600 int8 TOPS (300 MacTOPS) [R-659], whatever precision its headline uses. For diligence, TPP is a quick way both to compare chips across precisions and to tell whether a product's market depends on an export licence (28-01 §3.2's gates).
+**A precision-normalized measure.** US export controls define a **total processing performance** that removes the precision factor: $\text{TPP} = 2 \times \text{MacTOPS} \times \text{bit length}$, where MacTOPS is the peak MAC rate in units of $10^{12}$ per second at that bit length [R-659]. When the hardware packs two narrower MACs into each wide one, halving the bit length doubles MacTOPS and halves the bit length, so TPP is unchanged; a part that gains less (or more) than 2× per halving has a TPP that depends on the precision used, so ask which precision the classification rests on. How sparse rates count toward TPP is not settled in the text logged here, so check the dense figure. A chip reaches the control threshold of 4800 at, for example, 600 int8 TOPS (300 MacTOPS) [R-659], whatever precision its headline uses. For diligence, TPP is a quick way both to compare chips across precisions and to tell whether a product's market depends on an export license (28-01 §3.2's gates).
 
 **Delivered throughput.** No workload runs at peak. The roofline (14-15) bounds the attainable rate by the memory system: with off-chip bandwidth $B$ (bytes/s) and arithmetic intensity $I$ (operations per byte moved),
 
@@ -87,7 +87,7 @@ $$
 
 where $E_{\text{arith}}$ is the energy of the arithmetic per operation, and for each memory level $\ell$ (on-chip SRAM, off-chip DRAM) $E_\ell$ is its energy per byte and $I_\ell$ the operations performed per byte fetched from it. Reuse (keeping a weight or an activation in registers or SRAM and using it many times) raises $I_\ell$ and shrinks each term.
 
-The reference numbers come from Horowitz's ISSCC 2014 survey at 45 nm and 0.9 V [R-208, R-458] **[Established]**: an 8-bit multiply costs 0.2 pJ and an 8-bit add 0.03 pJ, so an 8-bit MAC costs about 0.23 pJ, or 115 fJ per operation; a 32-bit read from an 8 KB SRAM costs 5 pJ; and a 32-bit DRAM read costs 640 pJ, which is **20** pJ per bit. HBM2 brings the off-chip cost down to about 3.9 pJ per bit [R-459]. Newer nodes and lower voltages cut the arithmetic energy by a factor that is itself a claim to examine: dynamic energy scales with switched capacitance and with $V^2$ (14-01), so a quoted efficiency implies a node and a voltage, and the two must be consistent with each other.
+The reference numbers come from Horowitz's ISSCC 2014 survey at 45 nm and 0.9 V [R-208, R-458] **[Established]**: an 8-bit multiply costs 0.2 pJ and an 8-bit add 0.03 pJ, so an 8-bit MAC costs about 0.23 pJ, or 115 fJ per operation; a 32-bit read from an 8 KB SRAM costs 5 pJ; and a 32-bit DRAM read costs 640 pJ, which is **20** pJ per bit (the figure's values as reproduced in MIT 6.5930's lecture slides [R-458]; the paper's prose puts a whole DRAM access at 1 to 2 nJ and DRAM I/O alone at over 20 pJ per bit, so 20 pJ/bit is a floor). HBM2 brings the off-chip cost down to about 3.9 pJ per bit [R-459]. Newer nodes and lower voltages cut the arithmetic energy by a factor that is itself a claim to examine: dynamic energy scales with switched capacitance and with $V^2$ (14-01), so a quoted efficiency implies a node and a voltage, and the two must be consistent with each other.
 
 > **Math refresher — why TOPS/W is a property of the voltage.** Dynamic power is $P = \alpha CV^2f$ (14-01), and the operations per second scale with $f$. The energy per operation, $P/F \propto \alpha CV^2f/f = \alpha CV^2$, does not depend on the clock at all. Running slower saves energy per operation only if it allows a lower voltage. Two efficiencies at voltages $V_1$ and $V_2$ therefore differ by $(V_2/V_1)^2$ when leakage is small (Example 28-02.3).
 
@@ -95,7 +95,7 @@ The practical consequences are sharp. A claim of 100 TOPS/W at INT8 asks for 10 
 
 ### 3.3 Conditions: operating point and power boundary
 
-**Operating point.** A chip is specified over a range of voltage and frequency (19-06). Peak throughput is quoted at the highest point; efficiency is best near the lowest. A product brief that pairs "200 TOPS" with "20 TOPS/W" may be quoting two operating points that cannot coexist: at the peak point the efficiency falls by $(V_{\text{peak}}/V_{\text{eff}})^2$, and the power rises as $V^2f$ (Example 28-02.3). The honest pair is the throughput and efficiency *at the same point*, plus the point's voltage, clock and junction temperature, and whether it can be sustained without throttling (27-01 §3.3).
+**Operating point.** A chip is specified over a range of voltage and frequency, and dynamic voltage and frequency scaling (DVFS, 19-06) moves it between operating points. Peak throughput is quoted at the highest point; efficiency is best near the lowest. A product brief that pairs "200 TOPS" with "20 TOPS/W" may be quoting two operating points that cannot coexist: at the peak point the efficiency falls by $(V_{\text{peak}}/V_{\text{eff}})^2$, and the power rises as $V^2f$ (Example 28-02.3). The honest pair is the throughput and efficiency *at the same point*, plus the point's voltage, clock and junction temperature, and whether it can be sustained without throttling (27-01 §3.3).
 
 **Power boundary.** Efficiency also depends on where the power is measured. Moving outward:
 
@@ -127,13 +127,13 @@ $$
 
 because the reference times cancel inside the product. The ranking of A and B does not depend on the reference machine. The arithmetic mean has no such property: changing the reference can reverse the ranking, and "A is 1.9× faster than B" and "B is 0.75× as fast as A" can both be computed from the same data (Example 28-02.5, Problem 28-02.8). SPEC also separates *base* results, which require the same compiler flags for every module, from *peak* results, which allow per-benchmark tuning [R-223]; a vendor's comparison should say which.
 
-**Selection.** A vendor that measures $N$ workloads and shows the best reports the maximum of $N$ draws. If the logarithms of the per-workload speedups are spread normally with median $m$ and standard deviation $\sigma$, the expected best is about
+**Selection.** A vendor that measures $N$ workloads and shows the best reports the maximum of $N$ draws. If the per-workload speedups are lognormal with median $m$ (their logarithms normal, with mean $\ln m$ and standard deviation $\sigma$), the typical best is about
 
 $$
 \text{best} \approx m\,e^{\sigma\,\operatorname{E}[Z_{(N)}]},
 $$
 
-where $\operatorname{E}[Z_{(N)}]$ is the expected maximum of $N$ standard normal variables: 1.16 for $N = 5$, **1.54** for $N = 10$ and 1.87 for $N = 20$. With $m = 1.5\times$ and $\sigma = 0.3$, the best of ten is about **2.4**×: an "up to 2.4×" headline is what a typical 1.5× product produces when the best case is shown (Example 28-02.5). The defence is to ask for the full distribution, or to pick the workloads oneself.
+the exponential of the expected maximum logarithm, where $\operatorname{E}[Z_{(N)}]$ is the expected maximum of $N$ standard normal variables (because $e^x$ is convex, this slightly understates the *mean* best): 1.16 for $N = 5$, **1.54** for $N = 10$ and 1.87 for $N = 20$. With $m = 1.5\times$ and $\sigma = 0.3$, the best of ten is about **2.4**×: an "up to 2.4×" headline is what a typical 1.5× product produces when the best case is shown (Example 28-02.5). The defence is to ask for the full distribution, or to pick the workloads oneself.
 
 > **Going deeper — expected maxima.** The maximum of $N$ independent variables with distribution function $\Phi$ has distribution $\Phi^N$, so $\operatorname{E}[Z_{(N)}] = \int x\,N\phi(x)\Phi(x)^{N-1}\,dx$. For large $N$ it grows like $\sqrt{2\ln N}$, slowly but without limit: there is always a better-looking best case if one tests enough workloads.
 
@@ -142,12 +142,12 @@ where $\operatorname{E}[Z_{(N)}]$ is the expected maximum of $N$ standard normal
 Status claims form a ladder. Each step proves something specific and leaves the rest open; 28-03 develops the full maturity scale, and this section gives the checks.
 
 - **Tape-out.** The design database is released to the mask shop. It proves the design closed timing and verification to the team's own criteria, not that the silicon works.
-- **Multi-project wafer (MPW) silicon.** Several customers share one mask set and a shuttle run, receiving a few dies each [R-581]. It proves function at small sample size; it says nothing about yield, cost or volume, because the masks and often the wafer lot are not the product's.
+- **Multi-project wafer (MPW) silicon.** Several customers share one mask set and a shuttle run [R-581]. It proves function at small sample size; it says nothing about yield, cost or volume, because the masks and often the wafer lot are not the product's.
 - **First silicon (A0) and bring-up.** Dedicated masks, an engineering lot, and weeks to months of lab validation (25-12). The status to ask about is the fraction of the validation plan that has passed, at which corners.
 - **Steppings.** Later mask revisions: a metal-only change reuses the transistor masks, and wafers held before the metal layers can be finished quickly [R-648]; a full-layer change repeats the whole fab cycle. Production parts carry stepping names: Intel's specification update for Sapphire Rapids lists steppings E-5, S-3 and B-3 for its XCC, MCC and HBM variants [R-647].
 - **Qualification.** Stress tests on samples from several lots, for example 1000 hours of high-temperature operating life at a junction of at least 125 °C on 3 lots of 77 units with zero failures under JEDEC JESD47G [R-061]. Qualification proves reliability to the market's standard; only after it can a part be called production.
 
-**Schedule arithmetic.** Each step takes time that physics and logistics fix. A wafer at an advanced node spends about 14–20 weeks in the fab, at about 1–1.5 days per mask layer [R-020] **[Industry estimate]**; 80 mask layers at 1–1.5 days is **11.4** to **17.1** weeks. Qualification life testing alone is 1000 hours, **5.95** weeks, before the reports. A schedule from tape-out to volume production is therefore at least the sum
+**Schedule arithmetic.** Each step takes time that physics and logistics fix. A wafer at an advanced node spends about 14–20 weeks in the fab (2021 estimate), at about 1–1.5 days per mask layer (2017 estimate) [R-020] **[Industry estimate]**; 80 mask layers (about 7 nm [R-020]) at 1–1.5 days is **11.4** to **17.1** weeks. Qualification life testing alone is 1000 hours, **5.95** weeks, before the reports. A schedule from tape-out to volume production is therefore at least the sum
 
 $$
 T = T_{\text{masks}} + T_{\text{fab}} + T_{\text{pkg+test}} + T_{\text{bring-up}} + n_{\text{respin}}\,T_{\text{respin}} + T_{\text{qual}} + T_{\text{report}},
@@ -172,7 +172,7 @@ All parameters are illustrative assumptions unless a source is cited.
 
 **Units check.** MACs × cycles/s × 2 ops/MAC = ops/s; TPP is dimensionless by the rule's definition. ✓
 
-**Sanity check.** The headline is twice the dense INT8 capability and over five times what a 35%-utilized workload sees. TPP, being precision-normalized, shows at once that this part is far from the export threshold, so no licence gate applies to its sales.
+**Sanity check.** The headline is twice the dense INT8 capability and over five times what a 35%-utilized workload sees. TPP, being precision-normalized, shows at once that this part is far below the 3A090 advanced-computing thresholds (28-08 §3.5). That settles only one control: the entity list, end-use rules and other export classifications still need checking before anyone says no license is required.
 
 ### Example 28-02.2 · Can it really be 100 TOPS/W? (tier B)
 
@@ -201,7 +201,7 @@ All parameters are illustrative assumptions unless a source is cited.
 
 **Units check.** W × (V/V)² × (Hz/Hz) = W; TOPS ÷ W = TOPS/W. ✓
 
-**Sanity check.** The brief's two numbers cannot hold together: at 200 TOPS the chip runs at 8.89 TOPS/W and draws 22.5 W, against the 10 W that 200 TOPS at 20 TOPS/W would imply. Leakage would make the peak point worse still. The question that resolves it is "what are throughput and efficiency at the same operating point, and which point will our product use?"
+**Sanity check.** The brief's two numbers cannot hold together: at 200 TOPS the chip runs at 8.89 TOPS/W and draws 22.5 W, against the **10** W that 200 TOPS at 20 TOPS/W would imply. Leakage changes both points (the part of the 4.0 W anchor that is leakage does not scale with frequency), so ask for measured power at the point you will ship. The question that resolves it is "what are throughput and efficiency at the same operating point, and which point will our product use?"
 
 ### Example 28-02.4 · Where the watts are counted (tier B)
 
@@ -216,7 +216,7 @@ All parameters are illustrative assumptions unless a source is cited.
 
 **Units check.** W ÷ (dimensionless efficiency) = W; TOPS ÷ W = TOPS/W. ✓
 
-**Sanity check.** The same chip is a "5 TOPS/W" part in its brief and a 2 TOPS/W part at the meter. Neither number is wrong; comparing a competitor's card-level figure with this core-level one would be. The buyer's TCO (27-07 §3.7) runs on the facility figure.
+**Sanity check.** The same chip is a "5 TOPS/W" part in its brief and a 2 TOPS/W part at the meter. Neither number is wrong; comparing a competitor's card-level figure with this core-level one would be. The buyer's TCO (26-04 §3.6) runs on the facility figure.
 
 ### Example 28-02.5 · Averaging speedups, and the best of ten (tier B)
 
@@ -244,7 +244,7 @@ All parameters are illustrative assumptions unless a source is cited.
 
 **Units check.** Weeks throughout; months = weeks × 7/30.44. ✓
 
-**Sanity check.** Even with working first silicon the plan is about a month short, so it must already assume overlaps: qualification starting on bring-up material, or a shorter validation. With one respin, the base case for most projects (28-01 Example 28-01.4), production is about 15 months out. The questions are which steps overlap, what silicon the qualification will use, and what the plan is if A0 needs a respin.
+**Sanity check.** Even with working first silicon the plan is about a month short, so it must already assume overlaps: qualification starting on bring-up material, or a shorter validation. One respin is optimistic: the median project in the 2024 survey needs three spins, two respins (28-01 Example 28-01.4), which puts production about $66.0 + 23$ = **89.0** weeks, **20.5** months, out. Both totals are floors, because each respin path omits revalidating the new silicon. The questions are which steps overlap, what silicon the qualification will use, and what the plan is if A0 needs a respin.
 
 <!-- answer-key -->
 
@@ -268,6 +268,7 @@ All parameters are illustrative assumptions unless a source is cited.
 | Ex 28-02.3a | power at the peak point | 22.5 | W |
 | Ex 28-02.3b | efficiency at the peak point | 8.89 | TOPS/W |
 | Ex 28-02.3c | efficiency from V² scaling | 8.89 | TOPS/W |
+| Ex 28-02.3d | power implied by the brief | 10 | W |
 | Ex 28-02.4a | core efficiency | 5.0 | TOPS/W |
 | Ex 28-02.4b | card power | 16.1 | W |
 | Ex 28-02.4b1 | card efficiency | 3.10 | TOPS/W |
@@ -288,6 +289,8 @@ All parameters are illustrative assumptions unless a source is cited.
 | Ex 28-02.6b2 | total with one respin | 15.2 | months |
 | Ex 28-02.6c | total without a respin | 43.0 | weeks |
 | Ex 28-02.6c1 | total without a respin | 9.88 | months |
+| Ex 28-02.6d | total with two respins | 89.0 | weeks |
+| Ex 28-02.6d1 | total with two respins | 20.5 | months |
 | Txt 28-02.1 | energy per operation at 50 TOPS/W | 20 | fJ |
 | Txt 28-02.2 | DRAM energy per bit | 20 | pJ |
 | Txt 28-02.3 | 80 layers at 1 day per layer | 11.4 | weeks |
@@ -334,12 +337,12 @@ Figures are as of Nov 2026 unless dated otherwise.
 |---|---|---|
 | Ops per MAC | 2 (multiply + add) | Convention behind TOPS |
 | Precision and sparsity factors | 2 per halving of operand width; 2 for 2:4 sparsity | §3.1; NVIDIA prints "sparse \| dense" [R-147] |
-| Export-control TPP | $2 \times \text{MacTOPS} \times$ bit length; threshold 4800 (= 600 int8 TOPS) | ECCN 3A090 [R-659] |
-| 45 nm energy (0.9 V) | 8-bit multiply 0.2 pJ, add 0.03 pJ; 32-bit SRAM read (8 KB) 5 pJ; 32-bit DRAM read 640 pJ | Horowitz, ISSCC 2014 [R-208, R-458] |
-| HBM2 access energy | about 3.9 pJ/bit | O'Connor et al., MICRO-50 [R-459] |
+| Export-control TPP | $2 \times \text{MacTOPS} \times$ bit length; threshold 4800 (= 600 int8 TOPS) | ECCN 3A090 (2023 text) [R-659] **[Established]** |
+| 45 nm energy (0.9 V) | 8-bit multiply 0.2 pJ, add 0.03 pJ; 32-bit SRAM read (8 KB) 5 pJ; 32-bit DRAM read 640 pJ | Horowitz, ISSCC 2014 [R-208, R-458] **[Established]** |
+| HBM2 access energy | about 3.9 pJ/bit | O'Connor et al., MICRO-50, 2017 [R-459] **[Established, modelled]** |
 | Efficiency to energy | 50 TOPS/W = **20** fJ/op; 100 TOPS/W = 10 fJ/op | §3.2 |
-| Fab cycle time | 14–20 weeks at advanced nodes; 1–1.5 days per mask layer | [R-020] **[Industry estimate]** |
-| Qualification life test | 1000 h at $T_j \ge$ 125 °C, 3 lots × 77 units, 0 fails (JESD47G) | [R-061] |
+| Fab cycle time | 14–20 weeks at advanced nodes (2021); 1–1.5 days per mask layer (2017) | [R-020] **[Industry estimate]** |
+| Qualification life test | 1000 h at $T_j \ge$ 125 °C, 3 lots × 77 units, 0 fails (JESD47G, 2009) | [R-061] **[Established]** |
 | Best of N | $\operatorname{E}[Z_{(N)}]$ = 1.16, **1.54**, 1.87 for N = 5, 10, 20 | §3.4 |
 
 ## 8. Common mistakes
@@ -359,8 +362,8 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 - **Dense and sparse conventions are inconsistent across vendors.** NVIDIA's HGX B200 table states "sparse | dense" and the dense figure is half the sparse [R-147]; a third-party analysis warns that the half rule does not carry over to later parts [R-147] **[Contested]**; and the GB200 NVL72 table marks its Tensor Core rows with a footnote whose text did not appear on the page as read (27-07, [R-690]). AMD's MI355X page lists dense and sparse separately [R-692]. The convention must be confirmed for each part.
 - **The research community has formalized the critique.** Sze, Chen, Yang and Emer argue that TOPS/W alone is harmful and that accuracy, throughput, latency, energy, cost and flexibility must be reported together [R-492] **[Established: peer-reviewed tutorial]**.
-- **Benchmarks evolve.** SPEC retired CPU 2017 on 17 November 2026 in favour of CPU 2026, with 52 benchmarks against 43 [R-223]; MLPerf's closed training table (v6.1) now lists language models up to DeepSeek-V3 at 671 billion parameters [R-224]. A comparison should cite the suite version and round.
-- **Schedules slip even for leaders.** NVIDIA changed a Blackwell mask to improve yields [R-646], and Intel added validation time for Sapphire Rapids [R-647]; three in four IC/ASIC projects miss their original schedules [R-018] **[Established as reported]**.
+- **Benchmarks evolve.** SPEC retired CPU 2017 on 17 November 2026 in favour of CPU 2026, with 52 benchmarks against 43 [R-223]; MLPerf's closed training table (v6.1) now lists language models up to DeepSeek-V3 at 671 billion parameters [R-224] **[Established]**. A comparison should cite the suite version and round.
+- **Even leaders respin and slip.** NVIDIA respun a Blackwell mask for yield [R-646], and Intel added validation time and moved Sapphire Rapids production [R-647]; three in four IC/ASIC projects miss their original schedules [R-018] **[Established as reported]**.
 
 **Commercial relevance.** In a competitive process, the target's numbers become the acquirer's model inputs within days. Restating them on a common basis is the cheapest high-value diligence there is: it takes hours, needs no access to the target's lab, and either confirms the claims or produces precise questions. It also protects the acquirer's own credibility: a valuation built on a sparse INT4 figure compared with a competitor's dense FP8 figure is a factor-of-four error that someone will eventually find.
 
@@ -382,7 +385,7 @@ Figures are as of Nov 2026 unless dated otherwise.
 
 ## 10. Concept check
 
-1. Why can the same chip be quoted at four peak throughputs a factor of two apart?
+1. Why can the same chip be quoted at four peak throughputs up to a factor of four apart?
 
    <details><summary>Answer</summary>
 
