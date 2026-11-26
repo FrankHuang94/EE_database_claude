@@ -10954,3 +10954,35 @@
 - term: Conflict of interest
   definition: A personal interest, such as a shareholding or a job offer, that could bias a professional judgment; the standard remedies are disclosure and stepping back from the decision.
   chapter: "26-07"
+- term: Budget tree
+  definition: A requirement's total (power, area, cost, latency or error) allocated down a product's hierarchy to blocks, with margin held back at each level; a design closes when no leaf or shared resource is overdrawn.
+  chapter: "27-01"
+  see_also: [Power tree, Bill of materials (BOM)]
+- term: Power tree
+  definition: The chain of converters that feeds each load from the battery or supply; battery power is the sum of load powers divided by their converters' efficiencies, and every converter loss also heats the product.
+  chapter: "27-01"
+  see_also: [Budget tree]
+- term: Sustained power
+  definition: The largest power a product can dissipate indefinitely without exceeding a temperature limit, (T_max − T_ambient)/θ; short bursts can exceed it until the product's heat capacity fills.
+  chapter: "27-01"
+  see_also: [Burst duration, Thermal time constant]
+- term: Burst duration
+  definition: How long a power above the sustained limit can run before a temperature limit is reached, τ ln[(T_∞ − T_0)/(T_∞ − T_max)] for a first-order thermal model.
+  chapter: "27-01"
+  see_also: [Sustained power, Thermal time constant]
+- term: Thermal time constant
+  definition: The product of thermal resistance and thermal capacitance, τ = θC_th, which sets how fast a body's temperature approaches its steady value after a change in power.
+  chapter: "27-01"
+  see_also: [Sustained power]
+- term: Bottleneck
+  definition: The stage or resource that limits a system's throughput; in a pipeline it is the slowest stage, and improving any other stage changes nothing.
+  chapter: "27-01"
+  see_also: [Roofline model]
+- term: Bill of materials (BOM)
+  definition: The list of a product's components and their costs; the BOM plus assembly, test, royalties and logistics gives the cost of goods sold, and a change in any component's cost moves gross margin by that change divided by the selling price.
+  chapter: "27-01"
+  see_also: [Budget tree]
+- term: Shadow price
+  definition: The value of one more unit of a binding constraint in the units of the objective; under a power cap with dynamic power proportional to f³, a watt is worth 1/(3P_dyn) of performance at the margin.
+  chapter: "27-01"
+  see_also: [Sustained power]

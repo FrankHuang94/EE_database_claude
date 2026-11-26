@@ -26,7 +26,7 @@ End-to-end analyses of real product classes (smartphone SoC, wearables, PC SoC, 
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [27-01 · Method: Analyzing a System End to End](chapters/27-01-system-analysis-method.md) | 4 | ⬜ planned | — |
+| [27-01 · Method: Analyzing a System End to End](chapters/27-01-system-analysis-method.md) | 4 | ✅ verified | [problems](problems/27-01-problems.md) · [solutions](solutions/27-01-solutions.md) · [lab](labs/27-01-lab/README.md) · [verify](verify/verify_27_01.py) |
 | [27-02 · The Smartphone SoC](chapters/27-02-smartphone-soc.md) | 8 | ⬜ planned | — |
 | [27-03 · Wearables I: The Smartwatch](chapters/27-03-wearables-smartwatch.md) | 7 | ⬜ planned | — |
 | [27-04 · Wearables II: Earbuds and Smart Glasses / XR](chapters/27-04-wearables-earbuds-and-glasses.md) | 8 | ⬜ planned | — |
