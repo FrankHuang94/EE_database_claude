@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 25-12 · Post-Silicon Validation and Bring-Up
 
 | | |

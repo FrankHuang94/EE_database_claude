@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 25-11 · Test: ATE, Wafer Sort, Burn-In and Binning
 
 | | |

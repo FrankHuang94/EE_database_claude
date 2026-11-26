@@ -17,7 +17,7 @@ Conventions:
 | $t = x^2/B + x/(B/A)$; linear $x \approx (B/A)t$ for $x \ll A$, parabolic $x \approx \sqrt{Bt}$ for $x \gg A$ | From bare silicon; the two terms are equal at $x = A$ | [25-01](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-01-process-flow-overview.md) |
 | $d_{Si} = 0.44\,x$ | Silicon consumed per oxide thickness ($N_{ox}/N_{Si}$) | [25-01](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-01-process-flow-overview.md) |
 | $R_c = \rho_c/A_c$; $I_D' = I_D/(1 + g_mR_S)$ | Contact resistance and source degeneration by it | [25-01](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-01-process-flow-overview.md) |
-| $t_{50} = 0.379\,RC$ for a distributed line, $\propto L^2/s^2$ | $R$, $C$ are the wire's totals; scaling width and spacing by $s$ | [25-01](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-01-process-flow-overview.md) |
+| $t_{50} = 0.3787\,RC$ for a distributed line, $\propto L^2/s^2$ | $R$, $C$ are the wire's totals; scaling width and spacing by $s$ | [25-01](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-01-process-flow-overview.md) |
 | $Y = \prod y_i \approx \exp[-\sum(1 - y_i)]$ | Line yield over many steps | [25-01](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-01-process-flow-overview.md) |
 | WIP $= \lambda T$ | Little's law: starts rate × cycle time | [25-01](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-01-process-flow-overview.md) |
 
@@ -27,7 +27,7 @@ Conventions:
 |---|---|---|
 | $n\sin\theta_m = s_0 + m\lambda/p$ | Grating orders from a mask of pitch $p$ | [25-02](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-02-lithography.md) |
 | $p_{min} = \lambda/\text{NA}$ on-axis; $\lambda/(2\text{NA})$ off-axis | Two-beam imaging; half-pitch $k_1\lambda/\text{NA}$ with $k_1 \ge 0.25$ | [25-02](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-02-lithography.md) |
-| DOF $\approx n\lambda/(2\text{NA}^2)$ | Small-NA approximation; exact form $\lambda/\{4n[1 - \sqrt{1 - (\text{NA}/n)^2}]\}$ | [25-02](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-02-lithography.md) |
+| DOF $\approx n\lambda/\text{NA}^2$ | Twice the quarter-wave defocus limit $z \approx n\lambda/(2\text{NA}^2)$ (small NA); exact DOF $\lambda/\{2n[1 - \sqrt{1 - (\text{NA}/n)^2}]\}$ | [25-02](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-02-lithography.md) |
 | $N = DA/(hc/\lambda)$; relative shot noise $1/\sqrt N$ | Photons per feature at dose $D$ | [25-02](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-02-lithography.md) |
 | wph $= 3600\ \text{s}/(t_{oh} + t_{exp})$, $t_{exp} \propto D/P$ | Scanner throughput | [25-02](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-02-lithography.md) |
 | $c_{pass} = \text{price}/(\text{years} \times 8766\ \text{h} \times \text{availability} \times \text{wph})$ | Depreciation per exposure pass | [25-02](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-02-lithography.md) |
@@ -51,7 +51,7 @@ Conventions:
 |---|---|---|
 | DPW $\approx \pi d^2/(4A) - \pi d/\sqrt{2A}$ | Gross dies per wafer of diameter $d$ | [25-04](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-04-yield-and-die-cost.md) |
 | $Y = \int_0^\infty e^{-AD}f(D)\,dD$ | Yield averaged over the defect-density distribution | [25-04](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-04-yield-and-die-cost.md) |
-| Poisson $e^{-AD_0}$; Murphy $[(1 - e^{-AD_0})/AD_0]^2$; negative binomial $(1 + AD_0/\alpha)^{-\alpha}$ | Uniform, triangular and gamma-distributed $D$; small $\alpha$ = strong clustering | [25-04](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-04-yield-and-die-cost.md) |
+| Poisson $e^{-AD_0}$; Murphy $[(1 - e^{-AD_0})/AD_0]^2$; negative binomial $(1 + AD_0/\alpha)^{-\alpha}$ | Poisson: every die sees the same $D_0$ (defects scattered at random); Murphy: triangular $f(D)$; negative binomial: gamma $f(D)$ with shape $\alpha$, tending to Poisson as $\alpha \to \infty$; small $\alpha$ = strong clustering | [25-04](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-04-yield-and-die-cost.md) |
 | $C_{die} = C_w/(\text{DPW} \times Y)$ | Cost per good die | [25-04](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-04-yield-and-die-cost.md) |
 | $Y_{\ge n-1} = y_u[y_c^n + ny_c^{n-1}(1 - y_c)]$ | Harvesting: one spare among $n$ cores | [25-04](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-04-yield-and-die-cost.md) |
 | $D_0(t) = D_\infty + (D_{start} - D_\infty)e^{-t/\tau}$ | Yield learning | [25-04](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-04-yield-and-die-cost.md) |
@@ -79,7 +79,7 @@ Conventions:
 
 | Relation | Conditions / notes | Chapter |
 |---|---|---|
-| $N_{edge} = L/(w + s)$ per layer | Wires per mm of die edge (with $w + s$ in mm) | [25-07](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md) |
+| $N_{edge} = L/(w + s)$ | Wires per mm of die edge for $L$ routing layers of line $w$ and space $s$ (with $w + s$ in mm) | [25-07](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md) |
 | $n_{bond} = 1/p^2$; overlay budget $\lvert\varepsilon\rvert \le p/4$ per axis | Hybrid-bond density and alignment for pads $p/2$ wide | [25-07](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md) |
 | $Y_{bond} = [\operatorname{erf}(p/(4\sigma\sqrt2))]^2$ | Gaussian placement error $\sigma$ per axis | [25-07](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md) |
 | $\Delta T_{close} = \delta/[(\alpha_{Cu} - \alpha_d)t]$ | Anneal to close a copper recess $\delta$ in a pad of thickness $t$ | [25-07](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md) |
@@ -144,7 +144,7 @@ Conventions:
 | $m(t) = a(1 - e^{-bt})$; remaining $a - m(t)$; $t_q = \ln[1/(1 - q)]/b$ | Goel–Okumoto bug-discovery model | [25-12](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-12-post-silicon-validation.md) |
 | Expected cost $= \sum p_i C_i$; break-even $p$ where the branches are equal | Metal-only vs full respin decision tree | [25-12](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-12-post-silicon-validation.md) |
 | $n \approx 1 + z^2/(2\delta^2)$ | Parts to know σ within a fraction $\delta$ | [25-12](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-12-post-silicon-validation.md) |
-| $[\hat p + z^2/2n \pm z\sqrt{\hat p(1 - \hat p)/n + z^2/4n^2}]/(1 + z^2/n)$ | Wilson score interval for a proportion | [25-12](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-12-post-silicon-validation.md) |
+| $[\hat p + z^2/2n \pm z\sqrt{\hat p(1 - \hat p)/n + z^2/4n^2}]/(1 + z^2/n)$ | Wilson score interval for a proportion ($z$ = 1.96 for 95% two-sided); for $\hat p = 1$ the lower end is $n/(n + z^2)$ | [25-12](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-12-post-silicon-validation.md) |
 
 ## Numbers to know
 

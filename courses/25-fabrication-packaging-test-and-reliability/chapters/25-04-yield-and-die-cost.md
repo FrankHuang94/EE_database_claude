@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 25-04 · Yield Models and Die Cost
 
 | | |

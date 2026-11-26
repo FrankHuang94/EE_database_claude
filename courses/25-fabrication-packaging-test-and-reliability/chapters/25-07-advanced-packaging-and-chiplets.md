@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 25-07 · Packaging II: 2.5D, 3D, Hybrid Bonding and Chiplets
 
 | | |

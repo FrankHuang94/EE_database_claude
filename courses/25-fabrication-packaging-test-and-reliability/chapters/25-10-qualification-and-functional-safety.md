@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 25-10 · Qualification and Functional Safety
 
 | | |

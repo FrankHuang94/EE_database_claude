@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 25-02 · Lithography: DUV, Multipatterning, EUV and High-NA
 
 | | |

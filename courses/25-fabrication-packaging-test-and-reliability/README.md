@@ -28,18 +28,18 @@ How chips are made, packaged, tested and qualified: process flow, lithography th
 
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
-| [25-01 · Process Flow Overview: FEOL, MOL and BEOL](chapters/25-01-process-flow-overview.md) | 7 | ✅ verified | [problems](problems/25-01-problems.md) · [solutions](solutions/25-01-solutions.md) · [lab](labs/25-01-lab/README.md) · [verify](verify/verify_25_01.py) |
-| [25-02 · Lithography: DUV, Multipatterning, EUV and High-NA](chapters/25-02-lithography.md) | 8 | ✅ verified | [problems](problems/25-02-problems.md) · [solutions](solutions/25-02-solutions.md) · [lab](labs/25-02-lab/README.md) · [verify](verify/verify_25_02.py) |
-| [25-03 · Deposition, Etch, CMP, Implant and Metrology](chapters/25-03-deposition-etch-cmp-implant-metrology.md) | 8 | ✅ verified | [problems](problems/25-03-problems.md) · [solutions](solutions/25-03-solutions.md) · [lab](labs/25-03-lab/README.md) · [verify](verify/verify_25_03.py) |
-| [25-04 · Yield Models and Die Cost](chapters/25-04-yield-and-die-cost.md) | 7 | ✅ verified | [problems](problems/25-04-problems.md) · [solutions](solutions/25-04-solutions.md) · [lab](labs/25-04-lab/README.md) · [verify](verify/verify_25_04.py) |
-| [25-05 · Foundries, PDKs and Specialty Processes](chapters/25-05-foundries-pdks-specialty-processes.md) | 6 | ✅ verified | [problems](problems/25-05-problems.md) · [solutions](solutions/25-05-solutions.md) · [lab](labs/25-05-lab/README.md) · [verify](verify/verify_25_05.py) |
-| [25-06 · Packaging I: Wire Bond, Flip-Chip, Substrates, SiP and PoP](chapters/25-06-packaging-fundamentals.md) | 6 | ✅ verified | [problems](problems/25-06-problems.md) · [solutions](solutions/25-06-solutions.md) · [lab](labs/25-06-lab/README.md) · [verify](verify/verify_25_06.py) |
-| [25-07 · Packaging II: 2.5D, 3D, Hybrid Bonding and Chiplets](chapters/25-07-advanced-packaging-and-chiplets.md) | 7 | ✅ verified | [problems](problems/25-07-problems.md) · [solutions](solutions/25-07-solutions.md) · [lab](labs/25-07-lab/README.md) · [verify](verify/verify_25_07.py) |
-| [25-08 · Thermal Engineering](chapters/25-08-thermal-engineering.md) | 6 | ✅ verified | [problems](problems/25-08-problems.md) · [solutions](solutions/25-08-solutions.md) · [lab](labs/25-08-lab/README.md) · [verify](verify/verify_25_08.py) |
-| [25-09 · Reliability Physics](chapters/25-09-reliability-physics.md) | 8 | ✅ verified | [problems](problems/25-09-problems.md) · [solutions](solutions/25-09-solutions.md) · [lab](labs/25-09-lab/README.md) · [verify](verify/verify_25_09.py) |
-| [25-10 · Qualification and Functional Safety](chapters/25-10-qualification-and-functional-safety.md) | 5 | ✅ verified | [problems](problems/25-10-problems.md) · [solutions](solutions/25-10-solutions.md) · [lab](labs/25-10-lab/README.md) · [verify](verify/verify_25_10.py) |
-| [25-11 · Test: ATE, Wafer Sort, Burn-In and Binning](chapters/25-11-test-ate-sort-burn-in.md) | 6 | ✅ verified | [problems](problems/25-11-problems.md) · [solutions](solutions/25-11-solutions.md) · [lab](labs/25-11-lab/README.md) · [verify](verify/verify_25_11.py) |
-| [25-12 · Post-Silicon Validation and Bring-Up](chapters/25-12-post-silicon-validation.md) | 4 | ✅ verified | [problems](problems/25-12-problems.md) · [solutions](solutions/25-12-solutions.md) · [lab](labs/25-12-lab/README.md) · [verify](verify/verify_25_12.py) |
+| [25-01 · Process Flow Overview: FEOL, MOL and BEOL](chapters/25-01-process-flow-overview.md) | 7 | 🏁 reviewed | [problems](problems/25-01-problems.md) · [solutions](solutions/25-01-solutions.md) · [lab](labs/25-01-lab/README.md) · [verify](verify/verify_25_01.py) |
+| [25-02 · Lithography: DUV, Multipatterning, EUV and High-NA](chapters/25-02-lithography.md) | 8 | 🏁 reviewed | [problems](problems/25-02-problems.md) · [solutions](solutions/25-02-solutions.md) · [lab](labs/25-02-lab/README.md) · [verify](verify/verify_25_02.py) |
+| [25-03 · Deposition, Etch, CMP, Implant and Metrology](chapters/25-03-deposition-etch-cmp-implant-metrology.md) | 8 | 🏁 reviewed | [problems](problems/25-03-problems.md) · [solutions](solutions/25-03-solutions.md) · [lab](labs/25-03-lab/README.md) · [verify](verify/verify_25_03.py) |
+| [25-04 · Yield Models and Die Cost](chapters/25-04-yield-and-die-cost.md) | 7 | 🏁 reviewed | [problems](problems/25-04-problems.md) · [solutions](solutions/25-04-solutions.md) · [lab](labs/25-04-lab/README.md) · [verify](verify/verify_25_04.py) |
+| [25-05 · Foundries, PDKs and Specialty Processes](chapters/25-05-foundries-pdks-specialty-processes.md) | 6 | 🏁 reviewed | [problems](problems/25-05-problems.md) · [solutions](solutions/25-05-solutions.md) · [lab](labs/25-05-lab/README.md) · [verify](verify/verify_25_05.py) |
+| [25-06 · Packaging I: Wire Bond, Flip-Chip, Substrates, SiP and PoP](chapters/25-06-packaging-fundamentals.md) | 6 | 🏁 reviewed | [problems](problems/25-06-problems.md) · [solutions](solutions/25-06-solutions.md) · [lab](labs/25-06-lab/README.md) · [verify](verify/verify_25_06.py) |
+| [25-07 · Packaging II: 2.5D, 3D, Hybrid Bonding and Chiplets](chapters/25-07-advanced-packaging-and-chiplets.md) | 7 | 🏁 reviewed | [problems](problems/25-07-problems.md) · [solutions](solutions/25-07-solutions.md) · [lab](labs/25-07-lab/README.md) · [verify](verify/verify_25_07.py) |
+| [25-08 · Thermal Engineering](chapters/25-08-thermal-engineering.md) | 6 | 🏁 reviewed | [problems](problems/25-08-problems.md) · [solutions](solutions/25-08-solutions.md) · [lab](labs/25-08-lab/README.md) · [verify](verify/verify_25_08.py) |
+| [25-09 · Reliability Physics](chapters/25-09-reliability-physics.md) | 8 | 🏁 reviewed | [problems](problems/25-09-problems.md) · [solutions](solutions/25-09-solutions.md) · [lab](labs/25-09-lab/README.md) · [verify](verify/verify_25_09.py) |
+| [25-10 · Qualification and Functional Safety](chapters/25-10-qualification-and-functional-safety.md) | 5 | 🏁 reviewed | [problems](problems/25-10-problems.md) · [solutions](solutions/25-10-solutions.md) · [lab](labs/25-10-lab/README.md) · [verify](verify/verify_25_10.py) |
+| [25-11 · Test: ATE, Wafer Sort, Burn-In and Binning](chapters/25-11-test-ate-sort-burn-in.md) | 6 | 🏁 reviewed | [problems](problems/25-11-problems.md) · [solutions](solutions/25-11-solutions.md) · [lab](labs/25-11-lab/README.md) · [verify](verify/verify_25_11.py) |
+| [25-12 · Post-Silicon Validation and Bring-Up](chapters/25-12-post-silicon-validation.md) | 4 | 🏁 reviewed | [problems](problems/25-12-problems.md) · [solutions](solutions/25-12-solutions.md) · [lab](labs/25-12-lab/README.md) · [verify](verify/verify_25_12.py) |
 
 **Course resources:** [Course final exam](exam/README.md) · [Flashcards (Anki CSV)](../../flashcards/25-fabrication-packaging-test-and-reliability.csv) · [Equation sheet](../../reference/equation-sheets/25-fabrication-packaging-test-and-reliability.md)
 
@@ -52,8 +52,8 @@ Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 
 **How to approach this course.** Course 25 is planned at about 83 hours: the chapters' own estimates add to 78, plus about 5 hours of review; allow a further 4 hours for the exam. It draws on several earlier courses:
 
 - Course 09: diffusion, oxides and the MOSFET;
-- Course 19: wire delay, design for test (19-12) and mask costs (19-13);
-- Course 03: Bayes' rule, Weibull and chi-square bounds, and Wilson intervals;
+- Course 19: wire delay, design for test (19-12) and pre-silicon verification (19-13);
+- Course 03: Bayes' rule, the normal and chi-square distributions, and confidence intervals for a proportion (03-05; 25-12 adds the Wilson interval);
 - Course 15: thermal networks (15-01);
 - Course 04: the HBM ESD model (04-02) and optics;
 - Course 23: TSVs and HBM stacks;
@@ -75,14 +75,14 @@ Work at least the [A] and [B] problems of every chapter. The labs are of two kin
 
 **What to master cold.** The [equation sheet](../../reference/equation-sheets/25-fabrication-packaging-test-and-reliability.md) collects the relations; these are the ideas behind them:
 
-- oxidation is reaction-limited when thin and diffusion-limited when thick; a wafer's yield is the product of hundreds of step yields, and Little's law turns cycle time into inventory (25-01);
+- oxidation is reaction-limited when thin and diffusion-limited when thick; a wafer's yield is the product of 400 to 1,400 step yields, and Little's law turns cycle time into inventory (25-01);
 - resolution is set by $\lambda/\text{NA}$ and depth of focus by $\lambda/\text{NA}^2$, so a higher NA buys resolution at the cost of focus; EUV is photon-starved, so dose, throughput and stochastic defects trade against each other (25-02);
 - each unit process runs at a rate set by its slowest step (transport or reaction); an anneal broadens an implant while conserving its dose; a gauge's own noise adds in quadrature to the process spread it measures (25-03);
 - yield falls exponentially with area × defect density, and clustering makes large dies less hopeless than Poisson predicts; cost per good die rises faster than area (25-04);
-- a corner is a shift in $V_{TH}$, and delay is most sensitive to it at low supply; specialty and mature nodes win on cost, voltage and analog, not density (25-05);
+- a process corner (the P of a PVT corner) is modelled as a shift in $V_{TH}$, and delay is most sensitive to it at low supply; specialty and mature nodes win on cost, voltage and analog, not density (25-05);
 - area arrays beat perimeter pads above a crossover die size; solder fatigue life scales as strain to the power −2, and a package is only as reliable as its weakest-link joints (25-06);
 - bond density scales as $1/\text{pitch}^2$ but overlay must shrink with pitch; chiplets win when the yield gain exceeds the added test, package and attach cost, and escapes compound across every die in a package (25-07);
-- heat flows through a series of resistances, and spreading near a hotspot, not bulk conduction, often dominates; liquid cooling removes the fluid-rise and convection limits of air (25-08);
+- heat flows through a series of resistances, and spreading near a small hotspot can add as much rise as conduction through the whole die (Examples 25-08.1 and 25-08.2); liquid cooling relaxes the fluid-rise and convection limits of air (25-08);
 - acceleration factors are exponential in $E_a/k$, so a wrong activation energy or breakdown model can shift a lifetime by orders of magnitude; zero failures bound a failure rate only to a chi-square quantile over device-hours (25-09);
 - qualification proves a mission profile with accelerated stress; ISO 26262 asks for coverage of single-point faults (SPFM) and latent faults (LFM) and a bounded residual rate (PMHF), and a chip supports an ASIL rather than being one (25-10);
 - test cost is tester time × rate divided by yield; guard bands trade escapes for overkill at a price set by tester accuracy; burn-in removes a weak subpopulation at the cost of every part's stress time (25-11);

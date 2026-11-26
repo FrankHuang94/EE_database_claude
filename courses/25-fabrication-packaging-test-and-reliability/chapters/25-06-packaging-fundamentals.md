@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 25-06 · Packaging I: Wire Bond, Flip-Chip, Substrates, SiP and PoP
 
 | | |

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 25-05 · Foundries, PDKs and Specialty Processes
 
 | | |
