@@ -34,7 +34,7 @@ How chips are made, packaged, tested and qualified: process flow, lithography th
 | [25-04 · Yield Models and Die Cost](chapters/25-04-yield-and-die-cost.md) | 7 | ✅ verified | [problems](problems/25-04-problems.md) · [solutions](solutions/25-04-solutions.md) · [lab](labs/25-04-lab/README.md) · [verify](verify/verify_25_04.py) |
 | [25-05 · Foundries, PDKs and Specialty Processes](chapters/25-05-foundries-pdks-specialty-processes.md) | 6 | ✅ verified | [problems](problems/25-05-problems.md) · [solutions](solutions/25-05-solutions.md) · [lab](labs/25-05-lab/README.md) · [verify](verify/verify_25_05.py) |
 | [25-06 · Packaging I: Wire Bond, Flip-Chip, Substrates, SiP and PoP](chapters/25-06-packaging-fundamentals.md) | 6 | ✅ verified | [problems](problems/25-06-problems.md) · [solutions](solutions/25-06-solutions.md) · [lab](labs/25-06-lab/README.md) · [verify](verify/verify_25_06.py) |
-| [25-07 · Packaging II: 2.5D, 3D, Hybrid Bonding and Chiplets](chapters/25-07-advanced-packaging-and-chiplets.md) | 7 | ⬜ planned | — |
+| [25-07 · Packaging II: 2.5D, 3D, Hybrid Bonding and Chiplets](chapters/25-07-advanced-packaging-and-chiplets.md) | 7 | ✅ verified | [problems](problems/25-07-problems.md) · [solutions](solutions/25-07-solutions.md) · [lab](labs/25-07-lab/README.md) · [verify](verify/verify_25_07.py) |
 | [25-08 · Thermal Engineering](chapters/25-08-thermal-engineering.md) | 6 | ⬜ planned | — |
 | [25-09 · Reliability Physics](chapters/25-09-reliability-physics.md) | 8 | ⬜ planned | — |
 | [25-10 · Qualification and Functional Safety](chapters/25-10-qualification-and-functional-safety.md) | 5 | ⬜ planned | — |

@@ -5770,3 +5770,105 @@ R&D % = R&D ÷ revenue.
 - "Although wire bonding dominates traditional IC packages, advanced techniques like flip-chip and FO-WLP are growing quickly"; "In 2024, area-array bonding is expected to exceed peripheral bonding for better performance and a smaller footprint"; "advanced packaging wafers will grow 10% in 2024 and 23% in 2025."
 - **Caveats:** the page is undated (it refers to 2024 forecasts, so probably late 2024); the area-array crossover is a connection-count metric, not a package-unit share. No credible, openly published unit share of wire bond against flip-chip was found (market-research data is paywalled), so the chapter gives no percentage.
 - **Source:** [TechInsights, "Advanced Packaging Market: 2025 Outlook and Growth Trends"](https://www.techinsights.com/ja/node/58737). Checked Nov 2026.
+
+## R-586 · CoWoS variants and the Blackwell B200 package (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (TechInsights and Tom's Hardware pages opened; TSMC's 3DFabric pages returned a bot challenge and were not read).* [Established for the B200 facts and variant definitions; Contested for the CoWoS-S area]
+
+- TechInsights teardown of a GB100 from an HGX B200 system: "It features two near-reticle sized GPU dies and eight SK hynix high bandwidth memory 3 extended (HBM3E)"; "it utilizes the local area silicon interconnect (-L) variant of CoWoS instead of a monolithic silicon interposer (-S). This marks NVIDIA's first use of a bridge-based 2.5D integration technology."
+- Tom's Hardware (Jan 2025): "Nvidia's B100 and B200 GPUs require two compute chiplets that need interconnection with 10 TB/s of bandwidth. This is enabled by TSMC's CoWoS-L technology, which uses local silicon interconnect (LSI) bridges and an organic interposer that acts as a redistribution layer (RDL)."
+- Tom's Hardware (Apr 2025): CoWoS "enable[s] interposer sizes of up to 2831 mm^2, which is approximately 3.3 times larger than the company's reticle (photomask) size limit (858 mm^2 per EUV standard, with TSMC using 830 mm^2)."
+- **Caveats:** TSMC's Chinese CoWoS page reportedly gives about 2,700 mm², close to 3.3 × 830 = 2,739 mm², but could not be opened; 2,831 mm² is exactly 3.3 × 858. TSMC's production-start dates for CoWoS-R and CoWoS-L are unverified here.
+- **Sources:** [TechInsights, 5 Mar 2025](https://www.techinsights.com/blog/nvidia-blackwell-b200-high-performance-interconnect-and-packaging-analysis); [Tom's Hardware, 16 Jan 2025](https://www.tomshardware.com/tech-industry/nvidia-shifts-to-cowos-l-packaging-for-blackwell-gpu-production-ramp-up); [Tom's Hardware, 24 Apr 2025](https://www.tomshardware.com/tech-industry/tsmc-mulls-massive-1000w-class-multi-chiplet-processors-with-40x-the-performance-of-standard-models). Checked Nov 2026.
+
+## R-587 · CoWoS interposer roadmap and yield statements (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Tom's Hardware, SemiEngineering and TrendForce pages opened; TSMC's press release returned a bot challenge).* [Established for announced roadmap points; Industry estimate for "up to 99%"; Contested for the 2028 die count]
+
+- Tom's Hardware (27 Apr 2026): "TSMC has begun mass production of 5.5-reticle-sized CoWoS SiPs, supporting up to 12 HBM3E/HBM4 stacks and has achieved yields over 98%, according to the company." Roadmap: "In 2027, … a 9.5-reticle-sized interposer that supports 12 HBM5 stacks, which is expected to require a 120 mm by 150 mm substrate. In 2028, … a 14-reticle-sized interposer capable of carrying 20 3D-stacked compute chiplets and 20 HBM5 modules. By 2029, … interposers over 14 reticle sizes, with up to 24 HBM5E stacks."
+- SemiEngineering (27 Apr 2026): "TSMC is manufacturing the world's largest 5.5-reticle size CoWoS, with > 98% yield in 2026 … an SoW-X projected to accommodate 64 HBM stacks."
+- TrendForce (11 Aug 2026), relaying a TSMC vice-president via Taiwanese press: yields "consistently topping 98% across multiple AI customer products and reaching as high as 99% in some cases."
+- Earlier 2027 targets: 8 reticles, "6,864 square mm", on a 120 × 120 mm substrate (Apr 2024); a 9-reticle "Super Carrier" with "up to 7,722 mm^2" (Nov 2024); 9.5 reticles, "up to 7,885 mm^2 … mounted on a 120×150 mm substrate" (Apr 2025).
+- **Caveats:** TrendForce describes 2028 as "around 10 large compute dies and 20 HBM stacks", against Tom's 20 chiplets. The yield definition is unstated. 6,864/8 and 7,722/9 use 858 mm²; 7,885/9.5 uses 830 mm².
+- **Sources:** [Tom's Hardware, 27 Apr 2026](https://www.tomshardware.com/tech-industry/semiconductors/tsmcs-details-next-gen-cowos-roadmap-over-14-reticle-packages-and-48x-leap-in-compute-power-expected-by-2029-massive-size-enables-24-hbm5e-stacks-and-additional-memory-bandwidth-jump); [SemiEngineering, 27 Apr 2026](https://semiengineering.com/tsmc-tech-symposium-2026-by-the-numbers/); [TrendForce, 11 Aug 2026](https://www.trendforce.com/news/2026/08/11/news-tsmcs-5-5-reticle-cowos-reportedly-tops-99-yield-flags-memory-abf-as-ai-bottlenecks/); [Tom's Hardware via Yahoo, 27 Apr 2024](https://www.yahoo.com/tech/tsmc-build-massive-chips-twice-125520646.html); [Tom's Hardware, 27 Nov 2024](https://www.tomshardware.com/tech-industry/tsmc-super-carrier-cowos-interposer-gets-bigger-enabling-massive-ai-chips-to-reach-9-reticle-sizes-with-12-hbm4-stacks); Tom's Hardware 24 Apr 2025 as in R-586. Checked Nov 2026.
+
+## R-588 · CoWoS capacity estimates and TSMC's statements (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (TrendForce, Wccftech, DIGITIMES abstract, Tiger Brokers, 36Kr and Motley Fool pages opened).* [Industry estimate and Contested for all wafers-per-month figures; Established for TSMC's call statements]
+
+- Not TSMC disclosures. 2026: DIGITIMES (Jun 2025 forecast) "88,000 wafers by the end of 2026"; Morgan Stanley (Nov 2025) "120,000–130,000"; equipment suppliers via Taiwanese press 127,000 by end-2026; institutional investors via Economic Daily News "120,000 to 140,000 wafers in 2026 … total industry capacity could approach 200,000 wafers per month" including 50,000–60,000 from OSATs; Wccftech "130,000 wafers per month" by end-2026 and "260,000 … by the end of 2028".
+- Goldman Sachs (via TrendForce, 27 Oct 2026): "1.275 million wafers in 2026, or roughly 106,000 per month, before surging 114% YoY to 2.73 million in 2027 (227,500 monthly) … another 27% to 3.48 million wafers in 2028, equivalent to nearly 290,000 per month".
+- UBS (via 36Kr): "the industry's CoWoS monthly capacity will increase from 160 thousand wafers at the end of 2026 to 250 thousand wafers at the end of 2027". Morgan Stanley demand data: NVIDIA's share of CoWoS demand from about 56% (2026) to about 45% (2027).
+- TSMC: capacity to "double each year in 2024 and 2025", advanced packaging "approximately 7-9% of its revenue" (Oct 2024 call); "our advanced packaging revenue is approaching close to 10%" (C.C. Wei, Oct 2025 call); "nearly doubled CoWoS capacity each year over the past three years" (Aug 2026); a CoWoS capacity CAGR "of more than 80% from 2022 to 2027, according to Reuters" (May 2026 symposium).
+- **Caveats:** estimates differ in scope (TSMC or industry), basis (end-of-year run rate or annual total ÷ 12) and vintage. A UBS "270k" and a Morgan Stanley "200k in 2027" figure, and a "65% → 49%" NVIDIA share, were not found on the cited pages and are not used.
+- **Sources:** [TrendForce, 15 Jun 2026](https://www.trendforce.com/news/2026/06/15/news-tsmc-cowos-supply-demand-gap-reportedly-seen-narrowing-from-20-to-10-by-end-2026-as-capacity-expands); [TrendForce, 27 Oct 2026](https://trendforce.com/news/2026/10/27/news-tsmc-reportedly-eyes-20-cowos-price-hike-skips-equipment-price-renegotiations-amid-ai-demand-surge); [Wccftech, 11 Sep 2026](https://wccftech.com/report-tsmc-to-double-cowos-capacity-by-2028-as-ai-chip-shortage-spills-over-to-rivals/); [DIGITIMES Research, Jun 2025](https://www.digitimes.com/news/a20250628RS401.html?chid=2); [Tiger Brokers, 11 Dec 2025](https://www.itiger.com/news/1121636208); [36Kr, 13 Jul 2026](https://eu.36kr.com/en/p/3892020701149697); [TrendForce, 21 Oct 2024](https://www.trendforce.com/news/2024/10/21/news-cowos-capacity-doubles-for-two-years-still-insufficient-positive-outlook-for-suppliers/); [The Motley Fool, TSMC Q3 2025 call transcript](https://www.fool.com/earnings/call-transcripts/2025/10/17/tsmc-tsm-q3-2025-earnings-call-transcript); TrendForce 11 Aug 2026 as in R-587. Checked Nov 2026.
+
+## R-589 · TSMC SoIC pitch roadmap and hybrid bonding in products (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Tom's Hardware and TrendForce pages opened).* [Established for the roadmap and A14 statement; Contested for AMD's pitch definition]
+
+- Tom's Hardware (2 Sep 2026): "a pitch roadmap moving from 9 microns in 2023 to 6 microns in 2025 and 4.5 microns by 2029, with second-gen SoIC adding face-to-face bonding on top of the face-to-back stacking"; face-to-face hybrid bonding gives "around 14,000 signals per square millimeter against roughly 1,500 for face-to-back through-silicon-via stacking", per TSMC's 2026 symposium.
+- TrendForce (11 Aug 2026): "A14-to-A14 SoIC set to be available for production in 2029, which will provide 1.8X higher die-to-die I/O density compared with N2-on-N2 SoIC."
+- Tom's Hardware (29 Apr 2026): "Broadcom is currently sampling Monaka with Fujitsu and aims to volume produce the CPU in 2027 … it also uses 9 µm pitches".
+- Tom's Hardware (23 Aug 2021, Hot Chips 33): "AMD's new interconnect comes with a 9-micrometer (μm) pitch (distance between TSV), standard C4 packaging has a 130 μm pitch, and Microbump 3D comes with a 50 μm pitch."
+- **Caveats:** Tom's 2021 gloss "distance between TSV" conflates bond pitch and TSV pitch. A 2024 report of "3 µm by 2027" could not be opened; the 2026 roadmap reads as a slowdown.
+- **Sources:** [Tom's Hardware, 2 Sep 2026](https://www.tomshardware.com/tech-industry/semiconductors/hybrid-bonding-roadmap-examined); [Tom's Hardware, 29 Apr 2026](https://www.tomshardware.com/tech-industry/semiconductors/tsmc-soic-3d-stacking-roadmap-outlines-path-from-6-micron-pitches-today-to-4-5-micron-in-2029-fujitsus-monaka-cpu-to-benefit-from-face-to-face-chiplet-stacking); TrendForce 11 Aug 2026 as in R-587; [Tom's Hardware, 23 Aug 2021](https://tomshardware.com/news/amd-unveils-more-ryzen-3d-packaging-and-v-cache-details-at-hot-chips). Checked Nov 2026.
+
+## R-590 · Intel Foveros Direct (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Tom's Hardware page opened; Intel's pages returned "Access Denied").* [Established for the pitches; Industry estimate for shipment timing]
+
+- "Intel began shipping Foveros Direct hybrid bonding in its Clearwater Forest server CPU in the first half of 2026"; "The design uses a 9-micron copper-to-copper pitch … and Intel has described a second generation targeting a 3-micron pitch. Enabling that on a leading-edge logic node required a dedicated process variant, 18A-PT, which adds the through-silicon vias (TSVs) and bonding support that standard 18A doesn't carry."
+- **Caveat:** no volume year for 3 µm was found; Intel's own wording could not be checked.
+- **Source:** Tom's Hardware, 2 Sep 2026, as in R-589. Checked Nov 2026.
+
+## R-591 · Intel EMIB and EMIB-T bump pitch (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Tom's Hardware and SemiAnalysis pages opened).* [Established for 55 → 45 µm; Industry estimate for the 35/36 µm and 25 µm status]
+
+- Tom's Hardware (30 May 2025): "the first generation of EMIB enabled a 55-micron bump pitch … while the second-generation EMIB scaled down to a 45-micron pitch. Intel's paper demonstrates an EMIB-T design with a 45-micron pitch, but notes that the new technology supports "well below" 45-micron pitches, saying it will go to 35-micron pitches soon and has 25-micron pitches in development." EMIB-T packages up to 120 × 180 mm with more than 38 bridges are reported.
+- SemiAnalysis (ECTC 2026): "Intel has validated EMIB-T at a 36/35 µm bump pitch on a package with 2× reticle-sized silicon … a 65% increase in bump density"; validation "is now expanding to 4.5× reticle silicon packages, with certification targeted by the end of 2026"; "Intel testing 25 µm bump pitch on a vehicle with two 1-reticle silicon dies connected through a single 3 mm × 18 mm EMIB-T bridge."
+- **Derived here:** (45/35)² = 1.65, matching "65%"; (45/36)² = 1.56.
+- **Sources:** [Tom's Hardware, 30 May 2025](https://www.tomshardware.com/pc-components/cpus/intel-details-new-advanced-packaging-breakthroughs-emib-t-paves-the-way-for-hbm4-and-increased-ucie-bandwidth); [SemiAnalysis, 2 Jul 2026](https://newsletter.semianalysis.com/p/ectc2026). Checked Nov 2026.
+
+## R-592 · Samsung I-Cube, the Cube family and Cube-H (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (Samsung Newsroom, Samsung Foundry and TrendForce pages opened).* [Established for product descriptions; Industry estimate for Cube-H timing and pitch]
+
+- Samsung (6 May 2021): "I-Cube4, which incorporates four HBMs and one logic die"; "the silicon interposer in the I-Cube is thinner (around 100㎛ thick) than paper".
+- Samsung Foundry HPC/AI page: "2.5D Cube-S: 2.5D Si-Interposer"; "2.3D Cube-R"; "2.3D Cube-E: 2.3D RDL-Interposer with Si-Bridge"; "3D Cube-T/H: 3D IC"; "2.5D packages with 3.3x silicon interposer, integrating advanced logic and up to eight HBM modules, are fully qualified and available for production"; "developing a 2.3D RDL interposer technology with a line and a space width of 2/2㎛."
+- TrendForce (11 Nov 2026, relaying ZDNet): Samsung aims "to complete development of its next-generation 3D Cube-H technology by early 2027", with "an interconnect pitch of approximately 6 micrometers (μm), significantly finer than the minimum pitch of around 25μm for existing TC bonding-based chips"; "The company has already developed 3D Cube-T using thermocompression (TC) bonding".
+- **Sources:** [Samsung Newsroom, 6 May 2021](https://news.samsung.com/global/samsung-electronics-announces-availability-of-its-next-generation-2-5d-integration-solution-i-cube4-for-high-performance-applications); [Samsung Foundry, HPC/AI](https://semiconductor.samsung.com/foundry/application-specific-service/hpc-ai/); [TrendForce, 11 Nov 2026](https://www.trendforce.com/news/2026/11/11/news-samsung-reportedly-eyes-early-2027-for-3d-cube-h-advanced-packaging-development-featuring-hybrid-bonding/). Checked Nov 2026.
+
+## R-593 · Hybrid-bonding research pitches and overlay (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (imec, EVG, CEA-Leti and Bits&Chips pages opened).* [Established as research demonstrations, not production pitches]
+
+- imec (19 Feb 2024): hybrid Cu/SiCN bonding "with interconnect pitches down to an unprecedented 400nm", reported at IEDM 2023; "for these 400nm interconnect pitches, overlay control needs to be smaller than 100nm".
+- imec and EV Group (28 May 2026, ECTC 2026): 200 nm wafer-to-wafer pitch; "a Cu pad-to-pad post-bond overlay vector below 40nm was obtained for 100% of the dies over the full 300mm wafer".
+- imec (29 May 2024): die-to-wafer "Cu bond pad pitch of only 2µm at <350nm die-to-wafer overlay error, achieving good electrical yield."
+- CEA-Leti (29 May 2026): die-to-wafer "with pitches down to 1 μm"; "While the yield at 1 μm is limited by the alignment accuracy of existing bonding tools, the team anticipates significant improvements with the introduction of next-generation tools featuring 0.5 μm (3σ) alignment capabilities."
+- Bits&Chips (28 May 2026): "In general, the required overlay accuracy of the bonding process corresponds to one-fourth of the pitch."
+- **Derived here:** 200/4 = 50 nm against < 40 nm reported; 400/4 = 100 nm, matching imec's statement. "World first" and "record" are the labs' own words.
+- **Sources:** [imec, 19 Feb 2024](https://www.imec-int.com/en/articles/wafer-wafer-hybrid-bonding-pushing-boundaries-400nm-interconnect-pitch); [imec, 28 May 2026](https://www.imec-int.com/en/press/imec-and-ev-group-demonstrate-wafer-wafer-hybrid-bonding-200nm-interconnect-pitch-and-record); [imec, 29 May 2024](https://imec-int.com/en/press/imec-demonstrates-die-wafer-hybrid-bonding-cu-interconnect-pad-pitch-2mm); [CEA-Leti, 29 May 2026](https://www.cea.fr/cea-tech/leti/english/Pages/What's-On/Press%20release/Die-to-Wafer-Hybrid-Bonding-Press-Release.aspx); [Bits&Chips, 28 May 2026](https://bits-chips.com/article/imec-and-evg-push-hybrid-bonding-to-200-nanometers/). Checked Nov 2026.
+
+## R-594 · HBM height limits and the postponement of hybrid bonding (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (SemiEngineering, Tom's Hardware and TrendForce pages opened).* [Established for 720 → 775 µm; Contested for the about 900 µm proposal]
+
+- SemiEngineering (13 Jan 2026): "JEDEC revised the module height limit from 720µm to 775µm, which affords enough room to allow microbump bonding for HBM4. However, HBM5 and its successors are expected to take advantage of hybrid bonding"; "it's merely a postponement, not a cancellation."
+- Tom's Hardware (2 Sep 2026): "the extra room means 16-high HBM4 stacks can be assembled with microbumps after all"; hybrid bonding's HBM debut moves "toward HBM4E and HBM5, expected around 2027 to the end of the decade".
+- TrendForce (1 Apr 2026, relaying Korean press): JEDEC "is weighing a plan to raise HBM height specifications to around 900 micrometers (µm)", expected "starting with seventh-generation HBM4E".
+- **Caveats:** the JEDEC standard text was not checked; the date of the 775 µm decision is ambiguous between sources; no 1,000 µm figure for HBM5 was found.
+- **Sources:** [SemiEngineering, 13 Jan 2026](https://semiengineering.com/hbm4-sticks-with-microbumps-postponing-hybrid-bonding/); Tom's Hardware 2 Sep 2026 as in R-589; [TrendForce, 1 Apr 2026](https://www.trendforce.com/news/2026/04/01/news-jedec-reportedly-plans-to-relax-hbm-height-specs-to-900%C2%B5m-potentially-slowing-hybrid-bonding-adoption/). Checked Nov 2026.
+
+## R-595 · Glass-core substrates (Course 25)
+
+*Read on 26 Nov 2026 by a research subagent (I-Connect007 reprint, Tom's Hardware and TrendForce pages opened; Intel's newsroom returned "Access Denied").* [Established for Intel's 2023 statement; Industry estimate for timing and customers; Contested on Intel's commitment]
+
+- Intel (18 Sep 2023, reprinted): "Intel is on track to deliver complete glass substrate solutions to the market in the second half of this decade".
+- TrendForce (26 Jan 2026): Intel showed "a thick-core glass substrate measuring 78 × 77 mm for the overall package … about 1,716 mm² of silicon area (2 × 858 mm²)", with "two EMIB bridges within the glass core", a two-layer "800-µm (0.8-mm) class" core, and no "SeWaRe issues during testing".
+- Tom's Hardware (27 Aug 2026): "TrendForce placing Intel's commercialization somewhere around 2030"; Intel "has shifted to licensing its patents and showing demo vehicles"; Absolics' "$600 million plant in Covington, Georgia … has a Phase 1 capacity of 12,000 m2 of substrate per year, enough for roughly two to three million H100-sized packages", in customer qualification "that reportedly includes AMD and AWS, and is targeting mass production by the end of 2026", after originally planning "the first half of 2024".
+- TrendForce (8 May 2026): "the biggest mass-production challenge for glass substrates is "SeWaRe," which refers to micro-cracks that form during processing, especially drilling and dicing." TrendForce (1 Jun 2026): Intel and 3DGS plan "about US$3.3 billion" for a substrate plant in Odisha, India, over five to six years.
+- **Derived here:** 1.2 × 10¹⁰ mm² a year over 2–3 million packages is 4,000–6,000 mm² of substrate each.
+- **Sources:** [I-Connect007, 18 Sep 2023](https://iconnect007.com/article/137826/intel-unveils-industryleading-glass-substrates-to-meet-demand-for-more-powerful-compute/137823/smtahref); [TrendForce, 26 Jan 2026](https://www.trendforce.com/news/2026/01/26/news-intel-reportedly-presents-first-thick-core-glass-substrate-with-emib-targeting-ai-data-centers/); [Tom's Hardware, 27 Aug 2026](https://tomshardware.com/tech-industry/manufacturing/glass-substrate-roadmap-examined); [TrendForce, 8 May 2026](https://www.trendforce.com/news/2026/05/08/news-skc-said-to-speed-glass-substrate-mass-production-by-year-end-advances-new-non-embedding-tech-for-u-s-client/); [TrendForce, 1 Jun 2026](https://www.trendforce.com/news/2026/06/01/news-intel-advances-glass-substrate-push-with-3dgs-us3-3-billion-india-plant-set-for-five-to-six-year-buildout/). Checked Nov 2026.

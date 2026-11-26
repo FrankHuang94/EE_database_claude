@@ -10368,3 +10368,44 @@
 - term: Coffin–Manson relation
   definition: "An empirical fatigue law: cycles to failure scale as a negative power of the plastic strain range per cycle, with an exponent near 2 for solder joints, so halving the strain roughly quadruples the life."
   chapter: "25-06"
+
+# ---------------------------------------------------------------- 25-07
+- term: 2.5D integration
+  definition: "Placing several dies side by side on a layer of wiring much finer than a package substrate (a silicon or RDL interposer, or silicon bridges), so they can exchange thousands of short signals."
+  chapter: "25-07"
+  see_also: [Silicon interposer, RDL interposer, "Silicon bridge (EMIB, LSI)"]
+- term: 3D integration
+  definition: "Stacking dies on top of each other and connecting them vertically through TSVs, microbumps or hybrid bonds, for the shortest and densest die-to-die connections at the cost of heat removal and test access."
+  chapter: "25-07"
+  see_also: [Through-silicon via (TSV), Hybrid bonding]
+- term: RDL interposer
+  definition: "An interposer made of organic redistribution layers with lithographically patterned copper lines a few micrometres wide; coarser than a silicon interposer but cheaper and not limited by silicon wafer area."
+  chapter: "25-07"
+  see_also: [Silicon interposer, "Silicon bridge (EMIB, LSI)"]
+- term: Silicon bridge (EMIB, LSI)
+  definition: "A small silicon die with fine wiring embedded only where two dies meet, either in the package substrate (Intel's EMIB) or in an RDL interposer (TSMC's local silicon interconnect in CoWoS-L), giving interposer-class wiring without a full silicon interposer."
+  chapter: "25-07"
+  see_also: [2.5D integration]
+- term: Microbump
+  definition: "A small solder-capped copper pillar, at pitches of tens of micrometres, used to join stacked dies or dies to an interposer; joined by thermocompression or mass reflow with a filled gap, and limited to about 25 µm pitch."
+  chapter: "25-07"
+  see_also: [Hybrid bonding, Bump pitch]
+- term: Face-to-face bonding
+  definition: "Stacking two dies with their active sides facing, so signals pass between their top metal layers directly without TSVs; only the die facing the package needs TSVs."
+  chapter: "25-07"
+  see_also: [3D integration]
+- term: Die-to-wafer bonding
+  definition: "Placing individual tested dies onto a target wafer and bonding them; it allows known-good-die selection and different die sizes but has coarser placement accuracy than wafer-to-wafer bonding."
+  chapter: "25-07"
+  see_also: [Wafer-to-wafer bonding, Known-good die (KGD)]
+- term: Wafer-to-wafer bonding
+  definition: "Aligning and bonding two whole wafers at once; it reaches the finest overlay and pitch but bonds every die, good or bad, to whatever lies opposite it."
+  chapter: "25-07"
+  see_also: [Die-to-wafer bonding]
+- term: Test escape
+  definition: "A defective die that passes test; the escape rate among passing dies is (1 − Y)(1 − c)/[Y + (1 − Y)(1 − c)] for yield Y and coverage c, so it rises sharply when yield is low."
+  chapter: "25-07"
+  see_also: [Known-good die (KGD)]
+- term: Glass-core substrate
+  definition: "A package substrate whose core is glass instead of glass-reinforced resin; flatter and stiffer with tunable expansion and fine through-glass vias, but prone to micro-cracking in drilling and dicing and not yet in volume production as of 2026."
+  chapter: "25-07"
