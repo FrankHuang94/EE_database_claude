@@ -10283,3 +10283,36 @@
 - term: Wafer fab equipment (WFE)
   definition: "SEMI's market segment for wafer processing, mask and reticle, and fab facilities equipment; it excludes test and assembly equipment."
   chapter: "25-03"
+
+# ---------------------------------------------------------------- 25-04
+- term: Defect density (D0)
+  definition: "The average number of killer defects per unit area (usually per cm²) on a wafer; with die area A it sets the expected defects per die, A·D₀."
+  chapter: "25-04"
+  see_also: [Poisson yield model, Negative-binomial yield model]
+- term: Poisson yield model
+  definition: "Yield = e^(−A·D₀): the probability that no killer defect lands on a die when defects are independent and uniform."
+  chapter: "25-04"
+- term: Negative-binomial yield model
+  definition: "Yield = (1 + A·D₀/α)^(−α), obtained by averaging the Poisson yield over a gamma-distributed defect density; α measures clustering (α → ∞ is Poisson, α = 1 is Seeds' model)."
+  chapter: "25-04"
+- term: Murphy's yield model
+  definition: "Yield = [(1 − e^(−A·D₀))/(A·D₀)]², obtained by averaging the Poisson yield over a triangular distribution of defect density."
+  chapter: "25-04"
+- term: Critical area
+  definition: "The part of a die's area where a defect of a given size causes a failure (a short or an open); yield models use defect density over critical area."
+  chapter: "25-04"
+- term: Systematic yield
+  definition: "The yield factor from non-random losses (design-process interactions, parametric shifts, edge effects) that multiplies the random-defect yield."
+  chapter: "25-04"
+- term: Edge exclusion
+  definition: "The ring at a wafer's edge where no product dies are placed, because film and patterning quality degrade there."
+  chapter: "25-04"
+- term: Core harvesting
+  definition: "Selling a die with a defective core disabled, as a lower-tier product; it raises sellable yield to the probability of at most one (or a few) bad cores."
+  chapter: "25-04"
+- term: Yield learning
+  definition: "The fall of defect density over a process's ramp as defect sources are found and removed, often modelled as an exponential approach to a mature floor."
+  chapter: "25-04"
+- term: Cost per transistor
+  definition: "Wafer cost divided by the transistors on good dies; it falls with a new node only if density gains outpace wafer-price increases at comparable yield, which is contested at recent nodes."
+  chapter: "25-04"

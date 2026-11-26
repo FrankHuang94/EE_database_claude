@@ -5639,3 +5639,57 @@ R&D % = R&D ÷ revenue.
 - KLA (call of 29 Apr 2026): "KLA's share has grown by 360 basis points since 2021, and is approximately seven times larger than the nearest competitor"; advanced-packaging process-control revenue to "grow from approximately $635 million in 2025 to approximately $1 billion in 2026".
 - Third-party process-control share estimates (search excerpts only, unconfirmed) range from about 49% to 58% depending on definition.
 - **Sources:** Lam 10-K as in R-570; [KLA Q3 FY2026 call transcript (Motley Fool)](https://www.fool.com/earnings/call-transcripts/2026/04/29/kla-klac-q3-2026-earnings-call-transcript/). Checked Nov 2026.
+
+## R-572 · TSMC N2 defect-density disclosures (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (Tom's Hardware and Semiconductor Engineering opened).* [Established, qualitative]
+
+- Tom's Hardware (25 Apr 2025): "the node has lower defect density than its predecessors at the same stage of development, two quarters before mass production (MP)"; "production volume and product diversity remain the key [drivers] for accelerating defect density improvements."
+- Semiconductor Engineering (27 Apr 2026): "TSMC also claimed that N2 is ramping better in terms of defect density reduction than N3."
+- TSMC publishes no absolute $D_0$; forum numbers are unverified and not used.
+- **Sources:** [Tom's Hardware, 25 Apr 2025](https://www.tomshardware.com/tech-industry/tsmc-discloses-n2-defect-density-lower-than-n3-at-the-same-stage-of-development); Semiconductor Engineering as in R-553. Checked Nov 2026.
+
+## R-573 · Intel 18A yield claims (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (Tom's Hardware and TrendForce reports opened).* [Contested: yield undefined]
+
+- Tom's Hardware (10 Oct 2025): "Intel did not mark the Y-axis of the graph"; "a relatively small compute tile of Panther Lake (100 – 110 mm^2) has higher functional yield".
+- TrendForce (19 Nov 2026): "According to Crypto Briefing, Tan also noted that 18A yields have reportedly climbed to 70%"; the first external customer deal "involves 18A-P, an upgraded process node that entered risk production in June."
+- **Derived here:** 70% on a 105 mm² die implies a Poisson $D_0$ of about 0.34 cm⁻² (an illustration, not a disclosure).
+- **Sources:** Tom's Hardware as in R-552; [TrendForce, 19 Nov 2026](https://www.trendforce.com/news/2026/11/19/news-intel-scores-dual-foundry-wins-microsoft-named-first-emib-customer-tan-says-18a-secures-first-external-deal/). Checked Nov 2026.
+
+## R-574 · Samsung SF2 yield and price reports (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (TrendForce report opened).* [Contested / Industry estimate: anonymous-source press]
+
+- "The SF2 process yield climbed from around 30% in Q1 to an estimated 50%. Still, this number reflects an AP benchmark, with real yields varying by die size."
+- "the company has reportedly cut its 2nm wafer price to $20,000—a 33% discount from TSMC's expected $30,000 rate".
+- Other SF2 figures seen only in search excerpts are unconfirmed and not used.
+- **Source:** [TrendForce, 30 Sep 2025](https://www.trendforce.com/news/2025/09/30/news-samsung-reportedly-starts-exynos-2600-mass-production-yield-estimated-to-reach-50/). Checked Nov 2026.
+
+## R-575 · Leading-edge wafer prices and fab cost (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (two Tom's Hardware reports opened).* [Industry estimate: no published price lists]
+
+- Tom's Hardware (4 Oct 2024): "TSMC's quote for a 300-mm wafer process using its N2 technology will exceed $30,000, according to the report. Previously it was expected that world's largest contract maker of chips will charge around $25,000 per N2 wafer, up significantly from around $18,500 per N3 (3nm-class) wafer."
+- Tom's Hardware (22 Dec 2023), citing IBS: "a 2nm-capable fab with a capacity of roughly 50,000 wafer starts per month (WSPM) costs around $28 billion, up from around $20 billion for a 3nm fab with a similar production capacity"; IBS estimates about $30,000 per N2 wafer against about $20,000 for N3.
+- **Derived here:** $28 B over five years and 600,000 wafers a year is $9,333 of depreciation per wafer.
+- **Sources:** [Tom's Hardware, 4 Oct 2024](https://www.tomshardware.com/tech-industry/tsmcs-2nm-will-reportedly-receive-a-price-hike-once-again-usd30-000-per-wafer); [Tom's Hardware, 22 Dec 2023](https://www.tomshardware.com/tech-industry/firm-predicts-it-will-cost-dollar28-billion-to-build-a-2nm-fab-and-dollar30000-per-wafer-a-50-percent-increase-in-chipmaking-costs-as-complexity-rises). Checked Nov 2026.
+
+## R-576 · CSET's modelled wafer prices by node (2020) (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (CSET report PDF opened).* [Industry estimate: a transparent 2020 model]
+
+- Table 9, "Foundry sale price per wafer": 90 nm $1,650; 65 nm $1,937; 40 nm $2,274; 28 nm $2,891; 20 nm $3,677; 16/12 nm $3,984; 10 nm $5,992; 7 nm $9,346; 5 nm $16,988.
+- The model ranks prices by how depreciated each node's capital is ("Net capital depreciation at start of 2020 (25.29% / year) 65% … 0.0%").
+- Use for the depreciation logic, not as current prices.
+- **Source:** [S. M. Khan and A. Mann, "AI Chips: What They Are and Why They Matter," CSET, Apr 2020](https://cset.georgetown.edu/wp-content/uploads/AI-Chips%E2%80%94What-They-Are-and-Why-They-Matter-1.pdf). Checked Nov 2026.
+
+## R-577 · The cost-per-transistor debate (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (CSET report and a Tom's Hardware report opened).* [Contested]
+
+- CSET: "This cost has historically decreased by around 20-30 percent annually. Some analysts claim that decreases have stopped past the 28 nm node introduced in 2011, while others disagree."
+- Tom's Hardware (2 Feb 2024), on Google's IEDM 2023 analysis: "Transistor cost scaling (0.7X) stalled at 28 nm and remains flat gen-over-gen".
+- The answer depends on the metric (wafer price ÷ achieved density at real yield), the cell mix and whether design costs are included.
+- **Sources:** CSET as in R-576; [Tom's Hardware, 2 Feb 2024](https://www.tomshardware.com/tech-industry/manufacturing/chips-arent-getting-cheaper-the-cost-per-transistor-stopped-dropping-a-decade-ago-at-28nm). Checked Nov 2026.
