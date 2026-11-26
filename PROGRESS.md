@@ -65,7 +65,9 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 >
 > 25-04 (Yield Models and Die Cost) is verified: dies per wafer (formula derived and compared with an exact optimized-grid count); Poisson yield, clustering by averaging over a defect-density distribution (Jensen), Murphy and the negative binomial derived; cost per good die and its superlinear growth; redundancy and core harvesting; yield learning; wafer cost from fab depreciation and cost per transistor; reading yield claims; R-572 to R-577.
 >
-> **Next: 25-05 (Foundries, PDKs and Specialty Processes).** Use research batch A's 25-05 section (scratchpad `research25_A.md`). Research batch B for 25-07 to 25-12 is confirmed in scratchpad `research25_B_confirmed.md` (use only confirmed or corrected statements, as corrected). Then 25-06 to 25-12, wrap-up, audit and the Term 6 checkpoint (50 FE-style questions on Courses 19–25).
+> 25-05 (Foundries, PDKs and Specialty Processes) is verified: business models and foundry market data (share denominators, wafer-revenue mix); PDK contents and maturity; corners priced with the alpha-power law; MPW shuttles against dedicated runs; FD-SOI back-gate coupling derived as series capacitors (confirmed by a numerical Laplace solve); the specialty-process map and shrink economics for mixed-signal dies; R-578 to R-581.
+>
+> **Next: 25-06 (Packaging I: Wire Bond, Flip-Chip, Substrates, SiP and PoP).** Use research batch A's 25-06 section (scratchpad `research25_A.md`). Research batch B for 25-07 to 25-12 is confirmed in scratchpad `research25_B_confirmed.md` (use only confirmed or corrected statements, as corrected). Then 25-07 to 25-12, wrap-up, audit and the Term 6 checkpoint (50 FE-style questions on Courses 19–25).
 >
 > Tips carried from Course 22: switched-converter ngspice runs show sub-millivolt steps when the time step changes, so measure averages over a late window and peak-to-peak values over the final period only; new notebooks that call ngspice must use the guarded helper (copied in 21-01 to 21-10), because CI's notebook job has no ngspice; `.meas integ` on non-uniform transient points is inaccurate for small harmonics, so run, `linearize`, then `meas` in a `.control` block.
 >
@@ -163,10 +165,10 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | 22 | 12 | 12 | 12 | 12 | 96,801 | 171 | 1653 | 12 | 12 / 25 / 0 |
 | 23 | 9 | 9 | 9 | 9 | 73,016 | 123 | 1567 | 9 | 9 / 8 / 0 |
 | 24 | 9 | 9 | 9 | 9 | 64,285 | 132 | 1522 | 9 | 9 / 7 / 0 |
-| 25 | 12 | 4 | 4 | 0 | 26,535 | 57 | 427 | 4 | 4 / 1 / 0 |
-| **Total** | **307** | **274** | **274** | **270** | **1,942,538** | **3920** | **33819** | **274** | **270 / 270 / 27** |
+| 25 | 12 | 5 | 5 | 0 | 31,227 | 70 | 489 | 5 | 5 / 1 / 0 |
+| **Total** | **307** | **275** | **275** | **270** | **1,947,230** | **3933** | **33881** | **275** | **271 / 270 / 27** |
 
-Glossary terms: **2790** · Flashcards: **2545**
+Glossary terms: **2794** · Flashcards: **2545**
 
 <!-- END STATS -->
 
@@ -598,3 +600,4 @@ Changes relative to the original build brief's chapter plan.
 | 2026-11-26 | Phase 2. **25-02 Lithography: DUV, Multipatterning, EUV and High-NA ✅ verified.** Resolution from diffraction orders in pupil coordinates; quarter-wave depth of focus; immersion; LELE overlay, SADP pitch walk, SAQP and cut masks; EUV optics, sources and photon shot noise; High-NA field and stitching; throughput and cost per pass; OPC. 8 examples, 14 problems with solutions, verify (128 checks: root-found pupil limits and defocus, numerical Fourier amplitudes, closed-form two- and three-beam contrast, Monte Carlo photon counts), lab (litho.py aerial-image model, notebook), 3 figures, 12 glossary terms, R-560 to R-567. 04-09's k₁ arithmetic is linked, not repeated. |
 | 2026-11-26 | Phase 2. **25-03 Deposition, Etch, CMP, Implant and Metrology ✅ verified.** CVD regimes from fluxes in series; ALD; PVD, epitaxy and Faraday-law plating; plasma etch, selectivity and overetch; Preston's law and pattern density; implant profiles and junction depth; anneal broadening and the thermal budget; gauge noise; equipment market. 9 examples, 14 problems with solutions, verify (101 checks: numerical flux balance, charge integration, numerical convolution, a Crank–Nicolson solver with a reflecting surface, simulated gauge noise), lab (units.py with a finite-difference diffusion solver, notebook), 2 figures, 12 glossary terms, R-568 to R-571. Research batch B for 25-07 to 25-12 confirmed by a fact-checking agent. |
 | 2026-11-26 | Phase 2. **25-04 Yield Models and Die Cost ✅ verified.** Dies per wafer (formula and exact count), Poisson yield, clustering via Jensen's inequality, Murphy and negative-binomial models derived, cost per good die, redundancy and harvesting, yield learning, depreciation-based wafer cost, cost per transistor, reading yield claims. 8 examples, 14 problems with solutions, verify (90 checks: numerical averaging over triangular and gamma densities, a row-wise exact die count, binomial enumeration, a clustered Monte Carlo), lab (yieldcost.py, notebook), 2 figures, 10 glossary terms, R-572 to R-577. |
+| 2026-11-26 | Phase 2. **25-05 Foundries, PDKs and Specialty Processes ✅ verified.** Foundry models and market data, PDK contents and maturity, corners and signoff margin, MPW economics, FD-SOI back-gate coupling (derived; numerically confirmed), specialty-process map and shrink economics. 6 examples, 13 problems with solutions, verify (64 checks: a charge-balance network and a sparse finite-difference Laplace solve for the coupling, corner ratios, Monte Carlo local variation), lab (foundry.py, notebook), 2 figures, 4 glossary terms, R-578 to R-581. RF-SOI switches (21-09), the Baliga limit (09-13, 22-06) and eNVM (23-08) are linked, not repeated. |

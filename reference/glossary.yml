@@ -10316,3 +10316,19 @@
 - term: Cost per transistor
   definition: "Wafer cost divided by the transistors on good dies; it falls with a new node only if density gains outpace wafer-price increases at comparable yield, which is contested at recent nodes."
   chapter: "25-04"
+
+# ---------------------------------------------------------------- 25-05
+- term: Multi-project wafer (MPW)
+  definition: "A shuttle run in which many designs share one mask set and wafer lot, each buying a few square millimetres; it makes prototypes cost tens of thousands rather than millions, at the price of schedule and die count."
+  chapter: "25-05"
+  see_also: [Process design kit (PDK)]
+- term: FD-SOI
+  definition: "Fully depleted silicon-on-insulator: planar transistors on an undoped silicon film a few nanometres thick over a buried oxide, with low leakage and a back gate that tunes the threshold."
+  chapter: "25-05"
+  see_also: [Back-gate biasing]
+- term: Back-gate biasing
+  definition: "Shifting an FD-SOI transistor's threshold by biasing the substrate region under the buried oxide; the coupling C_Si·C_BOX/[C_ox(C_Si + C_BOX)] is tens of millivolts per volt and rises as the BOX thins."
+  chapter: "25-05"
+- term: BCD process
+  definition: "A bipolar-CMOS-DMOS process combining logic, precision analog and high-voltage LDMOS transistors on one die, used for power management, motor drivers and battery management."
+  chapter: "25-05"

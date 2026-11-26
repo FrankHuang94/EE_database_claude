@@ -5693,3 +5693,41 @@ R&D % = R&D ÷ revenue.
 - Tom's Hardware (2 Feb 2024), on Google's IEDM 2023 analysis: "Transistor cost scaling (0.7X) stalled at 28 nm and remains flat gen-over-gen".
 - The answer depends on the metric (wafer price ÷ achieved density at real yield), the cell mix and whether design costs are included.
 - **Sources:** CSET as in R-576; [Tom's Hardware, 2 Feb 2024](https://www.tomshardware.com/tech-industry/manufacturing/chips-arent-getting-cheaper-the-cost-per-transistor-stopped-dropping-a-decade-ago-at-28nm). Checked Nov 2026.
+
+## R-578 · TrendForce foundry ranking, 2Q26 (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (TrendForce press release opened).* [Industry estimate: TrendForce methodology]
+
+- Top-10 foundry revenue about $53.49 B in 2Q26 (+11.5% QoQ, a record). "TSMC maintained its lead with 2Q26 revenue nearing $40.2 billion, a 12.1% increase QoQ, capturing a 72.5% market share." Samsung: "Revenue edged up 1.8% QoQ to $3.26 billion. However, Samsung's market share declined to 5.9%"; SMIC over $3 B at 5.4%; UMC about $2.18 B (3.9%); GlobalFoundries about $1.79 B (3.2%); then HuaHong Group, Tower, VIS, Nexchip and PSMC. "2nm contributed revenue for the first time."
+- Intel Foundry does not appear in the ranking.
+- **Derived here:** TSMC's 72.5% implies a market base of 40.2/0.725 = $55.4 B, of which the top 10 hold 96.5%; TSMC's share of the top 10 is 75.2%.
+- **Source:** [TrendForce, 9 Sep 2026](https://www.trendforce.com/presscenter/news/20260909-13225.html). Checked Nov 2026.
+
+## R-579 · TSMC node mix, results and process portfolio, 2025–2026 (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (TSMC 6-K earnings releases and the FY2025 20-F opened).* [Established]
+
+- 3Q26: "shipments of 2-nanometer accounted for 8% of total wafer revenue; 3-nanometer accounted for 33%; 5-nanometer accounted for 28%; and 7-nanometer accounted for 10%. Advanced technologies, defined as 7-nanometer and more advanced technologies, accounted for 79% of total wafer revenue." Revenue $46.72 B (+41.2% YoY) at a 66.4% gross margin; 4Q26 guidance $52.3–54.3 B, "including the steep ramp-up of our 2-nanometer technology."
+- 2Q26: "shipments of 2-nanometer accounted for 3% of total wafer revenue; 3-nanometer accounted for 30%; 5-nanometer accounted for 33%; and 7-nanometer accounted for 11%."
+- 20-F: "TSMC deployed 305 distinct process technologies, and manufactured 12,682 products for 534 customers in 2025".
+- Shares are of wafer revenue, not total revenue.
+- **Sources:** [TSMC 3Q26 release](https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000726/a3q26e_withguidancexfinal.htm); [TSMC 2Q26 release](https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000451/a2q26e_withguidancexfinal.htm); TSMC 20-F as in R-552. Checked Nov 2026.
+
+## R-580 · Specialty processes: TSMC eNVM, GlobalFoundries FDX, ST–Samsung 18 nm FD-SOI with ePCM (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (TSMC 20-F, GlobalFoundries FDX page and ST press release opened).* [Established for the offerings; performance figures are vendor claims]
+
+- TSMC 20-F: "the 16-nanometer technology as second-generation MRAM passed Automotive Grade-1 requirements in 2025. 22ULL resistive random-access memory ("RRAM") technology also passed Automotive Grade-1 requirements in 2025."
+- GlobalFoundries: "Our FDX production-proven process technology is the most advanced planar technology in volume production since 2019"; adaptive body bias; eMRAM with ">500K cycles endurance and 20-year data retention at 150 °C"; RRAM options.
+- ST (19 Mar 2024): "an advanced process based on 18nm Fully Depleted Silicon On Insulator (FD-SOI) technology with embedded phase change memory (ePCM)… co-developed by ST and Samsung Foundry"; against ST's 40 nm eNVM process, more than 50% better performance-to-power, "2.5-times higher non-volatile memory (NVM) density" and 3× digital density.
+- **Sources:** TSMC 20-F as in R-552; [GlobalFoundries FDX page](https://gf.com/technology-platforms/fdx-fd-soi/); [ST press release, 19 Mar 2024](https://newsroom.st.com/media-center/press-item.html/c3244.html). Checked Nov 2026.
+
+## R-581 · Multi-project wafer shuttles and the efabless shutdown (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (TSMC 20-F, Europractice schedule, Tom's Hardware and Tiny Tapeout pages opened).* [Established]
+
+- TSMC: "a dedicated multi-project wafer processing service that allows us to provide multiple customers with circuits produced with the same mask… ranging from the latest 2-, 3-, 4-, 5-, 6-, 7-, 12-, 16-, 22-, 28-, 40-, 45-, 55-, 65- and 90-nanometer processes to 0.13-, 0.18-, 0.25- and 0.35-micron."
+- Europractice 2026: "GLOBALFOUNDRIES 22 nm FDSOI 17,820 … 16,200" €/mm² (standard, discounted); "Price = area (mm²) * price/mm² with min. fabrication cost equivalent to 4 mm²"; GF180MCU at €913/mm² with a 6 mm² minimum; TSMC runs down to 7 nm; IHP SiGe BiCMOS and ams OSRAM.
+- efabless faced "funding challenges" and shut down around 1 Mar 2025 (Tom's Hardware); Tiny Tapeout: "Current TT10 shuttle and future SkyWater Sky130 shuttles are paused while we explore options".
+- **Derived here:** minimum GF 22FDSOI slot €71,280 (standard) or €64,800 (discounted); GF180MCU €5,478.
+- **Sources:** TSMC 20-F as in R-552; [Europractice schedules 2026](https://europractice-ic.com/schedules-prices-2026/); [Tom's Hardware, 2 Mar 2025](https://www.tomshardware.com/tech-industry/semiconductors/efabless-shuts-down-fate-of-tiny-tapeout-chip-production-projects-unclear); [Tiny Tapeout, 1 Mar 2025](https://tinytapeout.com/news/efabless-shutsdown/). Checked Nov 2026.
