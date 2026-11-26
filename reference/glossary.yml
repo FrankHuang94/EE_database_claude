@@ -10243,3 +10243,43 @@
 - term: Field stitching
   definition: "Printing a die larger than one exposure field as two or more abutting exposures; it costs throughput and needs alignment across the stitch."
   chapter: "25-02"
+
+# ---------------------------------------------------------------- 25-03
+- term: Chemical vapour deposition (CVD)
+  definition: "Film growth by a chemical reaction of precursor gases at a heated surface; its rate is limited either by the surface reaction (uniform, temperature-sensitive) or by gas transport (fast, geometry-sensitive)."
+  chapter: "25-03"
+  see_also: [Atomic-layer deposition (ALD), Step coverage]
+- term: Atomic-layer deposition (ALD)
+  definition: "Deposition in alternating self-limiting half-reactions separated by purges, adding a fixed fraction of a nanometre per cycle; conformal and precisely controlled, but slow."
+  chapter: "25-03"
+- term: Physical vapour deposition (PVD)
+  definition: "Deposition by sputtering atoms off a target with plasma ions; line-of-sight arrival makes it fast but poorly conformal; used for barriers, liners and seed layers."
+  chapter: "25-03"
+- term: Step coverage
+  definition: "The ratio of film thickness on a feature's sidewall or bottom to that on the top surface; it falls with aspect ratio for transport-limited and line-of-sight processes."
+  chapter: "25-03"
+- term: Etch selectivity
+  definition: "The ratio of the etch rate of the film being removed to that of the underlying stop layer or the mask; it sets how much stop layer an overetch consumes."
+  chapter: "25-03"
+- term: Anisotropic etch
+  definition: "Etching faster vertically than laterally, achieved in plasmas by directional ion bombardment and sidewall passivation; wet etching is isotropic."
+  chapter: "25-03"
+- term: Atomic-layer etching (ALE)
+  definition: "Etching in self-limiting cycles of surface modification and removal, taking off a fixed thin layer per cycle with high uniformity and selectivity."
+  chapter: "25-03"
+- term: Preston's equation
+  definition: "The empirical CMP law RR = K_p P v: removal rate proportional to local pressure and relative velocity; raised features carry more pressure and polish faster."
+  chapter: "25-03"
+  see_also: [Dishing and erosion]
+- term: Dishing and erosion
+  definition: "CMP defects that depend on pattern density: dishing recesses wide soft-metal lines below the dielectric, erosion thins the dielectric in dense line arrays."
+  chapter: "25-03"
+- term: Projected range
+  definition: "The mean depth R_p at which implanted ions stop, with straggle ΔR_p as its standard deviation; the as-implanted profile is approximately Gaussian about R_p."
+  chapter: "25-03"
+- term: Precision-to-tolerance ratio
+  definition: "P/T = 6σ_m/(USL − LSL), a gauge's measurement noise relative to the specification window; about 0.1 or less is good, above about 0.3 inadequate."
+  chapter: "25-03"
+- term: Wafer fab equipment (WFE)
+  definition: "SEMI's market segment for wafer processing, mask and reticle, and fab facilities equipment; it excludes test and assembly equipment."
+  chapter: "25-03"

@@ -5600,3 +5600,42 @@ R&D % = R&D ÷ revenue.
 - Source power is quoted at intermediate focus, not at the wafer.
 - **Derived here:** 1,000/600 = +67% power against about +50% throughput (220 to 330 wph).
 - **Sources:** [Bits&Chips, 24 Feb 2026](https://bits-chips.com/article/asml-hits-1000-w-in-euv-source-proof-of-concept/); [Tom's Hardware, 24 Feb 2026](https://www.tomshardware.com/tech-industry/semiconductors/asml-makes-breakthrough-in-euv-chipmaking-tech-plans-to-increase-speed-by-50-percent-by-2030-new-1-000-watt-light-source-fires-three-lasers-at-100-000-tin-droplets-every-second); annual report as in R-560. Checked Nov 2026.
+
+## R-568 · SEMI equipment forecast, July 2026 (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (SEMI release as reprinted verbatim by I-Connect007; semi.org itself was blocked).* [Established for 2025; 2026–2028 Industry estimate]
+
+- "After registering a record $116.9 billion in sales last year, the Wafer Fab Equipment (WFE) segment, which includes wafer processing, mask/reticle, and fab facilities equipment, is projected to increase 23.1% to $143.9 billion in 2026."
+- "WFE sales for foundry and logic applications are expected to increase 18.9% year-over-year to $78.0 billion in 2026"; "DRAM equipment sales are projected to rise 39.0% to $38.8 billion in 2026"; NAND $13.9 B in 2026.
+- Total equipment projected at $165.9 B in 2026 (+23.2%) and $229.5 B in 2028; test equipment $15.3 B (+31.0%) and assembly and packaging equipment $6.7 B (+9.6%) in 2026.
+- **Derived here:** implied 2025 total equipment 165.9/1.232 = $134.7 B.
+- **Source:** [I-Connect007 reprint of SEMI release, 15 Jul 2026](https://iconnect007.com/article/150797/global-semiconductor-equipment-sales-forecast-to-reach-a-record-229-billion-in-2028/150794/ein). Checked Nov 2026.
+
+## R-569 · TechInsights 2025 equipment-supplier ranking (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (TechInsights page opened).* [Industry estimate; supplier dollar figures Contested by scope]
+
+- "The global IC manufacturing equipment market reached $136.2 billion in 2025, growing 13% year-over-year"; "ASML extended its position as the market leader, generating $27.5 billion in revenue… Applied Materials, Lam Research, Tokyo Electron, and KLA completed the top five".
+- Another tracker (search excerpt only, unconfirmed) reports ASML near $37 B and Applied near $27 B: a scope difference (equipment only against total revenue with service) plus fiscal-year and currency effects.
+- **Derived here:** within about 1% of SEMI's implied 2025 total (R-568).
+- **Source:** [TechInsights, 17 Jul 2026](https://techinsights.com/ja/node/61870). Checked Nov 2026.
+
+## R-570 · Equipment suppliers' latest fiscal-year revenues (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (SEC filings, Tokyo Electron's results PDF and a KLA release reprint opened).* [Established]
+
+- Applied Materials (FY to 25 Oct 2026): "Record annual revenue $34.45 billion, up 21 percent year over year" (includes services and display).
+- Lam Research (FY to 28 Jun 2026): "Revenue (in millions) $ 23,233 $ 18,436"; "Systems revenue increased by $3.39 billion, or 29.5%… primarily due to foundry equipment customer spending"; China 34% of FY2026 revenue in the 10-K's geographic table.
+- Tokyo Electron (FY to 31 Mar 2026): net sales ¥2,443,533 M (+0.5%).
+- KLA (FY to 30 Jun 2026): "total revenues of $13.58 billion".
+- Fiscal years differ by up to ten months; do not add or rank naively.
+- **Sources:** [Applied Materials 8-K Ex. 99.1, 12 Nov 2026](https://www.sec.gov/Archives/edgar/data/0000006951/000162828026073360/exhibit991q42026earningsre.htm); [Lam Research 10-K FY2026](https://www.sec.gov/Archives/edgar/data/0000707549/000070754926000037/lrcx-20260628.htm); [Tokyo Electron FY2026 results](https://www.tel.com/ir/library/report/pjuomj00000000tf-att/fy26q4tanshin-e.pdf); [KLA results via I-Connect007, 29 Jul 2026](https://iconnect007.com/article/150980/kla-reports-strong-q4-and-fy-2026-results-revenue-hits-366b/150977/design). Checked Nov 2026.
+
+## R-571 · Who competes where in deposition, etch, clean and process control (Course 25)
+
+*Read on 25 Nov 2026 by a research subagent (Lam's 10-K and a KLA earnings-call transcript opened).* [Established for company statements; KLA's share claim self-reported, Contested]
+
+- Lam 10-K: "Our primary competitor in the dielectric and metals deposition market is Applied Materials, Inc. For ALD and PECVD, we also compete against ASM International and Wonik IPS. In the etch market, our primary competitors are Applied Materials, Inc.; Hitachi, Ltd.; and Tokyo Electron, Ltd., and our primary competitors in the wet clean market are Screen Holding Co., Ltd.; Semes Co., Ltd.; and Tokyo Electron, Ltd."
+- KLA (call of 29 Apr 2026): "KLA's share has grown by 360 basis points since 2021, and is approximately seven times larger than the nearest competitor"; advanced-packaging process-control revenue to "grow from approximately $635 million in 2025 to approximately $1 billion in 2026".
+- Third-party process-control share estimates (search excerpts only, unconfirmed) range from about 49% to 58% depending on definition.
+- **Sources:** Lam 10-K as in R-570; [KLA Q3 FY2026 call transcript (Motley Fool)](https://www.fool.com/earnings/call-transcripts/2026/04/29/kla-klac-q3-2026-earnings-call-transcript/). Checked Nov 2026.
