@@ -11014,3 +11014,51 @@
   definition: A cellular modem built into the application processor die rather than supplied as a separate chip; integration saves the chip-to-chip link's power, area and package cost, while a separate modem decouples schedules and process nodes.
   chapter: "27-02"
   see_also: [Application processor (AP)]
+- term: Luminance
+  definition: Luminous intensity per unit projected area of a surface in a given direction, in candela per square metre (cd/m², also called nits); the quantity a display's brightness is specified in.
+  chapter: "27-03"
+  see_also: [Lambertian emitter, Luminous efficacy]
+- term: Lambertian emitter
+  definition: A surface whose luminance is the same from every viewing angle, so its intensity per unit area falls as the cosine of the angle from the normal; its total luminous flux is pi times its luminance times its area.
+  chapter: "27-03"
+  see_also: [Luminance]
+- term: Average pixel level (APL)
+  definition: The average over all pixels of each pixel's luminance as a fraction of full-white luminance; an emissive (OLED) display's emission power is proportional to it, which is why always-on watch faces are mostly black.
+  chapter: "27-03"
+  see_also: [Always-on display (AOD), Luminance]
+- term: LTPO backplane
+  definition: A display backplane that combines low-temperature polysilicon transistors (high mobility, used to drive pixel current) with oxide-semiconductor switches (very low leakage, used to hold each pixel's voltage), so the panel can refresh as slowly as about 1 Hz.
+  chapter: "27-03"
+  see_also: [Always-on display (AOD)]
+- term: Always-on display (AOD)
+  definition: A display mode that keeps a dim, mostly dark watch or phone face visible at all times, made affordable by OLED emission proportional to lit area and by refresh rates near 1 Hz.
+  chapter: "27-03"
+  see_also: [Average pixel level (APL), LTPO backplane]
+- term: Memory-in-pixel (MIP) display
+  definition: A reflective LCD with a small memory cell under each pixel that holds its state, so a static image costs almost no power and stays readable in sunlight, at the price of color depth, contrast and resolution.
+  chapter: "27-03"
+  see_also: [Always-on display (AOD)]
+- term: Connection interval
+  definition: In a Bluetooth LE connection, the time between the scheduled meetings (connection events) of the two devices; longer intervals save energy and add latency.
+  chapter: "27-03"
+  see_also: [Peripheral latency, Window widening]
+- term: Peripheral latency
+  definition: The number of consecutive Bluetooth LE connection events a peripheral may skip when it has nothing to send, cutting its receive energy while keeping its own transmit latency short.
+  chapter: "27-03"
+  see_also: [Connection interval]
+- term: Window widening
+  definition: The extra time a Bluetooth LE receiver listens around each expected connection event to allow for the drift of both devices' sleep clocks; it grows with the time since the last event, so it adds an average current independent of the interval.
+  chapter: "27-03"
+  see_also: [Connection interval]
+- term: Discontinuous reception (DRX)
+  definition: A cellular idle-mode scheme in which the device sleeps between scheduled paging occasions one DRX cycle apart; extended DRX (eDRX) stretches the cycle to tens of seconds or more, trading reachability for energy.
+  chapter: "27-03"
+  see_also: [Duty cycling]
+- term: Always-on floor
+  definition: The power a battery device draws when the user does nothing and the display is off, the sum of the application processor's sleep state, background wakes, the always-on domain, radio link maintenance, controller scanning, converter quiescent currents and leakage.
+  chapter: "27-03"
+  see_also: [Always-on domain, Quiescent current]
+- term: Brownout
+  definition: A supply dip below a device's undervoltage threshold that resets it, typically when a burst of current through a cold, aged or nearly empty battery's internal resistance pulls the terminal voltage down while charge remains.
+  chapter: "27-03"
+  see_also: [Internal resistance]

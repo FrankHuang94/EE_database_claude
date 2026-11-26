@@ -6538,3 +6538,67 @@ R&D % = R&D ÷ revenue.
 
 - iPhone 17 Pro Max: "5,088 mAh (+8.6% over iPhone 16 Pro Max)", for eSIM-only models; iPhone 17 Pro 4,252 mAh; iPhone Air 3,149 mAh; "Apple says eSIM-only models of the new iPhones are equipped with a larger battery".
 - **Source:** [MacRumors, 9 Sep 2025](https://www.macrumors.com/2025/09/09/iphone-17-and-17-pro-battery-capacities/). Checked Nov 2026.
+
+## R-670 · Apple Watch Series 12 and Ultra 4: chip, display, battery (Course 27)
+
+*Read on 26 Nov 2026 on Apple's specification page and newsroom releases.* [Established as manufacturer claims]
+
+- **Series 12 specifications:** "S11 chip with 64-bit dual-core processor"; "4-core Neural Engine"; "Always‑On Retina display with wide‑angle OLEDs and LTPO3 1Hz refresh"; "2000 nits peak brightness 1 nit minimum brightness"; "All‑day battery life, up to 24 hours of normal use"; "Up to 38 hours in Low Power Mode"; "Up to 10 hours workout tracking"; "Up to 80% charge in about 30 minutes"; cellular models "Supports RedCap for 5G and LTE"; "Bluetooth 5.3". Footnote: "All‑day battery life testing includes: 300 time checks, 90 notifications, 15 minutes of app use, a 60‑minute workout with music playback from Apple Watch via Bluetooth, and 6 hours of sleep tracking over the course of 24 hours"; cellular usage "includes a total of 4 hours of cellular connection and 20 hours of connection to iPhone via Bluetooth over the course of 24 hours". The page states no process node for the S11.
+- **Series 12 newsroom (9 Sep 2026):** "now offers up to 10 hours of battery life during an outdoor workout — 25 percent more than the previous model"; "Just 15 minutes now gets up to 12 hours of additional battery life — 50 percent more than the previous model".
+- **Ultra 4 newsroom (9 Sep 2026):** "more than two days of battery life, up to 50 hours. In Low Power Mode, it offers up to 84 hours of battery life"; "Just 15 minutes adds up to 18 hours of additional battery life"; the 50 h profile includes "two 60-minute workouts" and "12 hours of sleep tracking over the course of 50 hours", with "10 hours of cellular connection and 40 hours of connection to iPhone via Bluetooth"; "Testing conducted by Apple in July and August 2026".
+- **Ultra 4 satellite features:** "Emergency SOS, Find My, and Messages via satellite are included for free for two years with the activation of Apple Watch Ultra 3 or later." Series 12 release: "the most accurate heart rate sensing in a wearable".
+- **Series 11 newsroom (9 Sep 2025):** "Apple Watch Series 11 now offers up to 24 hours of battery life"; "5G cellular capabilities".
+- **Sources:** [Series 12 specs](https://www.apple.com/apple-watch-series-12/specs/); [Series 12 release](https://www.apple.com/newsroom/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/); [Ultra 4 release](https://www.apple.com/newsroom/2026/09/apple-unveils-apple-watch-ultra-4/); [Series 11 release](https://www.apple.com/newsroom/2025/09/apple-debuts-apple-watch-series-11-featuring-groundbreaking-health-insights/). Checked Nov 2026.
+
+## R-671 · Apple Watch battery energy from teardown (Course 27)
+
+*Read on 26 Nov 2026 on iFixit's teardown report (Elizabeth Chamberlain with Shahram Mokhtari, 6 Oct 2026).* [Established as measured by teardown label]
+
+- Ultra 4: "We found a slightly bigger battery: 2.444 Wh, compared with the Ultra 3's 2.313 Wh"; "the Ultra 4 earns a 4 out of 10 for repairability".
+- Series 12: "The Series 12 battery is rated at 1.461 Wh, up from 1.403 Wh in the 46 mm Series 11."
+- Derived (ours, not iFixit's): 1461 mWh over a 24 h rating is an average of at most 60.9 mW from the battery; 2444 mWh over 50 h is at most 48.9 mW.
+- **Source:** [iFixit, 6 Oct 2026](https://www.ifixit.com/News/119658/apple-watch-series-12-and-ultra-4-teardown-reveals-a-gap-in-right-to-repair-coverage). Checked Nov 2026.
+
+## R-672 · Google Pixel Watch 4 and Samsung Galaxy Watch8/Watch9 specifications (Course 27)
+
+*Read on 26 Nov 2026 on the Google Store specification page and Samsung Newsroom releases.* [Established as manufacturer claims]
+
+- **Pixel Watch 4 (Google Store specs):** "Qualcomm Snapdragon® W5 Gen 2 Cortex-M55 co-processor"; "32 GB eMMC flash 2 GB SDRAM"; 41 mm: "325 mAh (typical)", "Up to 30 hours with always-on display", "Up to 48 hours with Battery Saver mode"; 45 mm: "455 mAh (typical)", "Up to 40 hours with always-on display", "Up to 72 hours with Battery Saver Mode"; "AMOLED LTPO display". Derived (ours): average currents of 10.8 mA (41 mm) and 11.4 mA (45 mm) over the rated always-on life.
+- **Galaxy Watch8 (Samsung Newsroom, 9 Jul 2025):** "Processor Exynos W1000 (5 Core, 3nm)"; "Battery (typical) – 44mm: 435mAh – 40mm: 325mAh"; Classic "445mAh"; "our most powerful 3nm processor delivers faster performance and greater power efficiency".
+- **Galaxy Watch9 and Watch Ultra2 (Samsung Newsroom, 22 Jul 2026):** "Processor Qualcomm SDW6100 (Penta-Core, 3nm)"; "Battery 800mAh 44mm : 445mAh 40mm: 390mAh"; Ultra2 "800 mAh battery — a 35% increase in capacity compared to the previous Ultra model. Powered by the Snapdragon Wear Elite platform"; Watch9 "a brilliant 3,000-nit display".
+- **Sources:** [Pixel Watch 4 specs](https://store.google.com/us/product/pixel_watch_4_specs?hl=en-US); [Galaxy Watch8 release](https://news.samsung.com/global/samsung-galaxy-watch8-series-ultra-comfort-from-sleep-to-workout); [Galaxy Watch9 and Ultra2 release](https://news.samsung.com/global/samsung-galaxy-watch-ultra2-and-watch9-your-health-companion-on-the-wrist). Checked Nov 2026.
+
+## R-673 · Qualcomm Snapdragon W5+ Gen 1 hybrid architecture (Course 27)
+
+*Read on 26 Nov 2026 in Qualcomm's product brief (PDF; two-column text, quotes reassembled from the extracted columns).* [Industry estimate: vendor claim]
+
+- "Comprised of a new 4nm System-on-Chip (SoC) and new a 22nm ... co-processor" [sic]; SoC "4nm quad-core @ 1.7 GHz, Qualcomm® Adreno™ 702 GPU, 1x16 LPDDR4 2133 MHz memory"; always-on co-processor "(Qualcomm® QCC5100) 22nm @ 250 MHz. U55 ML core, HiFi5 DSP, 2.5D GPU, integrated Bluetooth® 5.3, 802.11n RF, 8+ MB memory"; offloads "display, sensors, audio, AON Co-Processor ... and notifications offload use cases"; "These innovations result in 30-60% lower power on typical use cases*, which drives >50% longer battery life"; the W5 Gen 1 variant "brings all the low-power capabilities of the SoC while foregoing the benefits of the co-processor".
+- **Source:** [Snapdragon W5+ Gen 1 product brief](https://www.qualcomm.com/content/dam/qcomm-martech/dm-assets/documents/Snapdragon-W5-Plus-Gen-1-Wearable-Platforms-product-brief.pdf). Checked Nov 2026. The March 2026 Snapdragon Wear Elite release page returned no readable text and is not cited.
+
+## R-674 · Garmin fēnix 8: display mode and solar effect on battery life (Course 27)
+
+*Read on 26 Nov 2026 in the fēnix 8 owner's manual, Battery Information (page version "v10 November 2026").* [Established as manufacturer claims]
+
+- **fēnix 8 AMOLED 47 mm:** "Smartwatch mode ... Up to 16 days with Gesture Up to 7 days with Always On Display"; "GPS only mode ... Up to 47 hours with Gesture Up to 37 hours with Always On Display". 43 mm: 10 days and 4 days; 51 mm: 29 days and 13 days.
+- **fēnix 8 Solar 47 mm:** "Smartwatch mode Up to 21 days typical use Up to 28 days with solar"; "GPS only mode Up to 67 hours typical use Up to 92 hours with solar". Footnote: "Assuming all-day wear with 3 hours per day outside in 50,000 lux conditions".
+- Derived (ours): for the AMOLED 47 mm, the always-on display raises average power by 16/7 = 2.29 times; for the Solar 47 mm, solar supplies 1 − 21/28 = 25% of the daily energy under Garmin's light assumption. Garmin's product pages (which describe the Solar models' display) render by script and could not be read; the Solar models' display type is therefore not stated from a fetched source.
+- **Source:** [fēnix 8 owner's manual, Battery Information](https://www8.garmin.com/manuals/webhelp/GUID-EECCAC99-90D6-4AB1-9A3A-EC433D3365E2/EN-US/GUID-40B16F18-75A1-4B3E-8F1A-AB4919BC9E51.html). Checked Nov 2026.
+
+## R-675 · Smartwatch shipments and bills of materials (Course 27)
+
+*Read on 26 Nov 2026 on IDC and TechInsights pages.*
+
+- **IDC (24 Jun 2025):** "the global wrist-worn device market shipped 45.6 million units in the first quarter of 2025, a year-on-year (YoY) increase of 10.5%"; "The global smartwatch market shipped 34.8 million units in Q1 2025, a 4.8% YoY increase." [Industry estimate]
+- **IDC, Wearable Devices Market Insights (updated 29 Oct 2026):** "Worldwide wearable device shipments reached about 148 million units in Q2 2026, up 2.7% year over year"; "Smartwatches fell 4.2% to a 25.0% share"; "IDC forecasts wearable shipments of about 625 million units in 2026, up 1.7% year over year". Derived (ours): about 37 million smartwatches in Q2 2026 (25.0% of about 148 million) [Industry estimate].
+- **TechInsights, four-smartwatch BOM comparison (10 Jun 2026):** "the display subsystem remains the largest cost driver, accounting for between 22.6% and 32.3% of total BOM cost"; Samsung "relies on its 3nm Exynos W1000 processor, which alone contributes nearly 22% of total device cost" (Galaxy Watch8 LTE) [Industry estimate].
+- **TechInsights, Apple Watch Series 11 5G teardown page:** "Cost breakdown at 1M units"; "Applications Processor: $23.90"; "Visible total: $ 150.38"; S10 SiP "15.9 x 9.12 x 0.56 mm, 1,758-pin package"; "Apple's first use of MediaTek ICs in a smartwatch, with the MT6815W baseband and MT6695P envelope power tracker". The full report is paywalled; the "visible total" may not be the full BOM [Industry estimate].
+- **Sources:** [IDC Q1 2025](https://www.idc.com/resource-center/press-releases/idc-global-wrist-worn-device-shipments-grew-10-5-in-q1-2025/); [IDC wearables insights](https://www.idc.com/promo/wearablevendor/); [TechInsights BOM comparison](https://www.techinsights.com/blog/inside-smartwatch-costs-xiaomi-samsung-and-huawei-compared); [TechInsights Series 11 teardown](https://www.techinsights.com/teardown/apple-watch-series-11-5g-teardown). Checked Nov 2026.
+
+## R-676 · Bluetooth LE packet timing and window widening, vendor and academic sources (Course 27)
+
+*Read on 26 Nov 2026. The Bluetooth SIG's specification pages returned HTTP 403 and Nordic's pages 403; neither is used.*
+
+- **Silicon Labs, "Throughput" (Bluetooth 6.2 docs):** "Multiple packets can be sent within one connection interval sequentially (with 150 µs inter-frame spacing)"; "for a 27-byte PDU it takes the following time to send out a packet: 328 µs + 150 µs + 80 µs + 150 µs = 708 µs 328 µs is the effective transmitting time, 150 µs is IFS (interframe space), 80 µs is receiving". The 328 µs is 41 octets at 1 Mb/s, consistent with 1 + 4 + 2 + 27 + 4 (MIC) + 3 octets; the 80 µs is a 10-octet empty packet. Its 2M example, "(251 – 4 – 3) byte / (1060 + 150 + 40 + 150) µs", counts a 1-octet preamble on the 2M PHY (1060 µs and 40 µs rather than 1064 µs and 44 µs) [Established for the IFS and 1M timing].
+- **arXiv 2105.00141 (a paper on a BLE digital receiver; authors not recorded here):** "The preamble ... length for LE1M PHY and LE2M PHY modes is 8 bits and 16 bits respectively. It consists of a 32-bit access address, 16-bit PDU, and 24-bit CRC" (two-column text reassembled) [Established; cited by arXiv number].
+- **TI application note SDAA329, "CC27xx Operation and Configuration Without an External 32kHz Crystal" (PDF created 11 May 2026):** "Window Width = 2 × (SCA_peripheral + SCA_central) × time_since_last_anchor where SCA values are expressed in parts per million (ppm)"; a "Sleep Clock Accuracy (SCA) of ±500ppm, the maximum allowable drift permitted by the Bluetooth Core Specification"; RX windows "are wider due to 500 ppm clock accuracy versus 50 ppm with crystal (room temperature)" [Established as vendor statement of the specification].
+- **Sources:** [Silicon Labs throughput](https://docs.silabs.com/bluetooth/6.2.0/bluetooth-fundamentals-system-performance/throughput); [arXiv 2105.00141](https://arxiv.org/abs/2105.00141); [TI SDAA329](https://www.ti.com/lit/an/sdaa329/sdaa329.pdf). Checked Nov 2026.

@@ -28,7 +28,7 @@ End-to-end analyses of real product classes (smartphone SoC, wearables, PC SoC, 
 |---|---|---|---|
 | [27-01 · Method: Analyzing a System End to End](chapters/27-01-system-analysis-method.md) | 4 | ✅ verified | [problems](problems/27-01-problems.md) · [solutions](solutions/27-01-solutions.md) · [lab](labs/27-01-lab/README.md) · [verify](verify/verify_27_01.py) |
 | [27-02 · The Smartphone SoC](chapters/27-02-smartphone-soc.md) | 8 | ✅ verified | [problems](problems/27-02-problems.md) · [solutions](solutions/27-02-solutions.md) · [lab](labs/27-02-lab/README.md) · [verify](verify/verify_27_02.py) |
-| [27-03 · Wearables I: The Smartwatch](chapters/27-03-wearables-smartwatch.md) | 7 | ⬜ planned | — |
+| [27-03 · Wearables I: The Smartwatch](chapters/27-03-wearables-smartwatch.md) | 7 | ✅ verified | [problems](problems/27-03-problems.md) · [solutions](solutions/27-03-solutions.md) · [lab](labs/27-03-lab/README.md) · [verify](verify/verify_27_03.py) |
 | [27-04 · Wearables II: Earbuds and Smart Glasses / XR](chapters/27-04-wearables-earbuds-and-glasses.md) | 8 | ⬜ planned | — |
 | [27-05 · The PC SoC](chapters/27-05-pc-soc.md) | 6 | ⬜ planned | — |
 | [27-06 · Automotive E/E Architecture and ADAS Compute](chapters/27-06-automotive-ee-architecture.md) | 9 | ⬜ planned | — |
