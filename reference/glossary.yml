@@ -10905,3 +10905,40 @@
 - term: Loaded cost
   definition: The full cost of an employee to the company per period, including salary, benefits, taxes, tools, facilities and overhead, not just salary.
   chapter: "26-06"
+
+# ---------------------------------------------------------------- 26-07
+- term: Code of ethics
+  definition: A profession's written statement of its members' obligations; the NSPE code's first canon requires engineers to hold paramount the safety, health and welfare of the public.
+  chapter: "26-07"
+- term: Professional engineer (PE)
+  definition: An engineer licensed by a US state, usually after an accredited degree, the FE exam, about four years of experience and the PE exam; required to sign and seal engineering work offered to the public.
+  chapter: "26-07"
+- term: Common-cause failure
+  definition: A failure that defeats several redundant channels at once because they share a cause (design, software, power, environment), so redundancy protects less than independence predicts.
+  chapter: "26-07"
+  see_also: [Beta-factor model]
+- term: Beta-factor model
+  definition: A model of common-cause failure in which a fraction β of each channel's failures is shared, so two channels both fail with probability about βp + [(1 − β)p]² rather than p².
+  chapter: "26-07"
+- term: Patent
+  definition: A government grant of exclusive rights to an invention in exchange for publishing it; in the US the term ends 20 years from the filing date, subject to fees and adjustments.
+  chapter: "26-07"
+- term: Mask work
+  definition: The layout of a semiconductor chip, protected in the US for ten years from registration or first commercial exploitation (whichever is first), running to the end of the calendar year.
+  chapter: "26-07"
+- term: Trade secret
+  definition: Information that derives economic value from not being generally known and that its owner takes reasonable measures to keep secret, such as process recipes, test limits or design methods.
+  chapter: "26-07"
+- term: Clean room (IP)
+  definition: A procedure that keeps people who have seen a competitor's confidential material away from those designing a competing product, to show the new design was created independently.
+  chapter: "26-07"
+- term: Export control
+  definition: Government regulation of the export of goods, software and technology with strategic uses, including the transfer of technical data to foreign persons; in the US, the EAR administered by BIS.
+  chapter: "26-07"
+  see_also: ["Total processing performance (TPP)"]
+- term: Total processing performance (TPP)
+  definition: The US export-control metric for advanced chips, 2 × MacTOPS × bit length of the operation, aggregated over all processing units; performance density is TPP per mm² of die.
+  chapter: "26-07"
+- term: Conflict of interest
+  definition: A personal interest, such as a shareholding or a job offer, that could bias a professional judgment; the standard remedies are disclosure and stepping back from the decision.
+  chapter: "26-07"

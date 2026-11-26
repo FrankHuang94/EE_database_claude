@@ -32,7 +32,7 @@ How engineering decisions are made and paid for: requirements and specifications
 | [26-04 · Engineering Economics II: Build, Buy or License; Node; Chiplets; ASIC vs Merchant](chapters/26-04-engineering-economics-2.md) | 8 | ✅ verified | [problems](problems/26-04-problems.md) · [solutions](solutions/26-04-solutions.md) · [lab](labs/26-04-lab/README.md) · [verify](verify/verify_26_04.py) |
 | [26-05 · Schedule and Risk: Why Respins Happen](chapters/26-05-schedule-and-respin-risk.md) | 6 | ✅ verified | [problems](problems/26-05-problems.md) · [solutions](solutions/26-05-solutions.md) · [lab](labs/26-05-lab/README.md) · [verify](verify/verify_26_05.py) |
 | [26-06 · Engineering Team Structures and Sizing](chapters/26-06-team-structures-and-sizing.md) | 5 | ✅ verified | [problems](problems/26-06-problems.md) · [solutions](solutions/26-06-solutions.md) · [lab](labs/26-06-lab/README.md) · [verify](verify/verify_26_06.py) |
-| [26-07 · Engineering Ethics and Professional Responsibility](chapters/26-07-engineering-ethics.md) | 5 | ⬜ planned | — |
+| [26-07 · Engineering Ethics and Professional Responsibility](chapters/26-07-engineering-ethics.md) | 5 | ✅ verified | [problems](problems/26-07-problems.md) · [solutions](solutions/26-07-solutions.md) · [lab](labs/26-07-lab/README.md) · [verify](verify/verify_26_07.py) |
 
 Status legend: ⬜ planned · ✏️ draft · ✅ verified (all checks pass) · 🏁 reviewed (independent audit done)
 

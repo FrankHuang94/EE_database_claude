@@ -6394,3 +6394,59 @@ R&D % = R&D ÷ revenue.
 - NVIDIA, 10 May 2017, Volta launch: "Thousands of NVIDIA engineers spent over three years crafting Volta". No exact headcount was found from a primary or peer-reviewed source; a widely repeated development-cost figure appears only in press coverage and is not used.
 - **Not read:** the US Bureau of Labor Statistics occupational pages (HTTP 403), so the chapter's loaded engineering cost is an assumption.
 - **Source:** [NVIDIA, 10 May 2017](https://nvidianews.nvidia.com/news/nvidia-launches-revolutionary-volta-gpu-platform-fueling-next-era-of-ai-and-high-performance-computing). Checked Nov 2026.
+
+## R-654 · NSPE Code of Ethics for Engineers (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent (NSPE web page and PDF); quotes spot-checked.* [Established]
+
+- Version: "PUBLICATION DATE AS REVISED JULY 2019 • PUBLICATION #1102".
+- "I. Fundamental Canons. Engineers, in the fulfillment of their professional duties, shall: 1. Hold paramount the safety, health, and welfare of the public. 2. Perform services only in areas of their competence. 3. Issue public statements only in an objective and truthful manner. 4. Act for each employer or client as faithful agents or trustees. 5. Avoid deceptive acts. 6. Conduct themselves honorably, responsibly, ethically, and lawfully so as to enhance the honor, reputation, and usefulness of the profession."
+- Rule of Practice II.1.a: "If engineers' judgment is overruled under circumstances that endanger life or property, they shall notify their employer or client and such other authority as may be appropriate."
+- **Not read:** the IEEE Code of Ethics (IEEE Policies 7.8); the IEEE page returned an empty bot-check response.
+- **Source:** [NSPE Code of Ethics](https://www.nspe.org/career-growth/nspe-code-ethics-engineers). Checked Nov 2026.
+
+## R-655 · NCEES: FE ethics topics, the PE exam and licensure (Course 26)
+
+*Read on 26 Nov 2026 by a research subagent (NCEES specification PDF and pages); quotes spot-checked.* [Established]
+
+- FE Electrical and Computer specification (effective July 2020): "3. Ethics and Professional Practice 4–6 A. Codes of ethics (e.g., professional and technical societies, NCEES Model Law and Model Rules) B. Intellectual property (e.g., copyright, trade secrets, patents, trademarks) C. Safety (e.g., grounding, material safety data, PPE, radiation protection)".
+- PE Electrical and Computer page: the PE exam "is designed for engineers with a minimum of four years of post-college work experience in their chosen engineering discipline"; three exams (Computer Engineering; Electronics, Controls, and Communications; Power).
+- Licensure page: "Most states require four years of acceptable, progressive, and verifiable work experience"; "Generally, engineering licensing boards require P.E. candidates to have a bachelor's degree from an EAC/ABET-accredited program"; "Many states provide additional paths for licensure."
+- **Sources:** [FE E&C specification](https://ncees.org/wp-content/uploads/FE-Electrical-and-Computer-CBT-specs.pdf); [PE E&C](https://ncees.org/exams/pe-exam/electrical-and-computer/); [Licensure](https://ncees.org/licensure/). Checked Nov 2026. See also R-001.
+
+## R-656 · The Therac-25 accidents (Leveson and Turner, 1993) (Course 26)
+
+*Read on 26 Nov 2026: Crossref record; a course-hosted reprint ("Reprinted, with permission, from Computer, 26, 7 (July 1993) pp. 18–41"), a scan without a text layer, so quotes were transcribed from the page images and proof-read against them.* [Established]
+
+- N. G. Leveson and C. S. Turner, "An Investigation of the Therac-25 Accidents," *Computer* 26(7), pp. 18–41, July 1993, DOI 10.1109/MC.1993.274940.
+- p. 18: "Between June 1985 and January 1987, six known accidents involved massive overdoses by the Therac-25 — with resultant deaths and serious injuries. They have been described as the worst series of radiation accidents in the 35-year history of medical accelerators."
+- p. 38: contributing factors included "overconfidence in the software and removal of hardware interlocks (making the software into a single point of failure that could lead to an accident)"; "A common mistake in engineering, in this case and many others, is to put too much confidence in software"; "A lesson to be learned from the Therac-25 accidents is not to remove standard hardware interlocks when adding computer control."
+- **Sources:** [Stanford course reprint](https://web.stanford.edu/class/cs240/old/sp2014/readings/therac-25.pdf); Crossref for the bibliographic record. Checked Nov 2026.
+
+## R-657 · Report of the Presidential Commission on the Space Shuttle Challenger Accident (1986) (Course 26)
+
+*Read on 26 Nov 2026 from NASA's online edition (chapters IV and V); quotes spot-checked.* [Established]
+
+- Ch. IV: "the loss of the Space Shuttle Challenger was caused by a failure in the joint between the two lower segments of the right Solid Rocket Motor. The specific failure was the destruction of the seals that are intended to prevent hot gases from leaking through the joint during the propellant burn of the rocket motor"; the failure "was due to a faulty design unacceptably sensitive to a number of factors", including "the effects of temperature".
+- Ch. V: "The decision to launch the Challenger was flawed. Those who made that decision were unaware of the recent history of problems concerning the O-rings and the joint and were unaware of the initial written recommendation of the contractor advising against the launch at temperatures below 53 degrees Fahrenheit and the continuing opposition of the engineers at Thiokol after the management reversed its position." Finding 4: "the Thiokol Management reversed its position and recommended the launch of 51-L, at the urging of Marshall and contrary to the views of its engineers in order to accommodate a major customer."
+- **Sources:** [Ch. IV](https://www.nasa.gov/history/rogersrep/v1ch4.htm); [Ch. V](https://www.nasa.gov/history/rogersrep/v1ch5.htm). Checked Nov 2026.
+
+## R-658 · US statutes: patent term, mask works, trade secrets (Course 26)
+
+*Read on 26 Nov 2026 from Cornell LII's republication of the US Code (uscode.house.gov URLs returned 404); quotes spot-checked.* [Established: statute text; not legal advice]
+
+- 35 U.S.C. §154(a)(2): the patent term begins when the patent issues and ends "20 years from the date on which the application for the patent was filed in the United States" (or from the earliest referenced application), "Subject to the payment of fees".
+- 17 U.S.C. §904: protection commences on registration "or the date on which the mask work is first commercially exploited anywhere in the world, whichever occurs first"; it "shall end ten years after the date on which such protection commences"; and "All terms of protection provided in this section shall run to the end of the calendar year in which they would otherwise expire." (Semiconductor Chip Protection Act, Pub. L. 98–620, 1984.)
+- 18 U.S.C. §1836(b)(1) (added by the Defend Trade Secrets Act of 2016, Pub. L. 114–153): "An owner of a trade secret that is misappropriated may bring a civil action under this subsection if the trade secret is related to a product or service used in, or intended for use in, interstate or foreign commerce."
+- 18 U.S.C. §1839(3): information is a trade secret if "(A) the owner thereof has taken reasonable measures to keep such information secret; and (B) the information derives independent economic value, actual or potential, from not being generally known to, and not being readily ascertainable through proper means by, another person who can obtain economic value from the disclosure or use of the information".
+- **Sources:** [35 U.S.C. §154](https://www.law.cornell.edu/uscode/text/35/154); [17 U.S.C. §904](https://www.law.cornell.edu/uscode/text/17/904); [18 U.S.C. §1836](https://www.law.cornell.edu/uscode/text/18/1836); [18 U.S.C. §1839](https://www.law.cornell.edu/uscode/text/18/1839). Checked Nov 2026.
+
+## R-659 · US export controls on advanced computing chips, 2022–2026 (Course 26)
+
+*Read on 26 Nov 2026 from Federal Register API records and the official GPO PDF of the October 2023 rule (federalregister.gov's full-text pages served a bot check); quotes spot-checked.* [Established: regulatory text as published; not legal advice]
+
+- 7 Oct 2022 interim final rule, "Implementation of Additional Export Controls: Certain Advanced Computing and Semiconductor Manufacturing Items…", 87 FR 62186 (published 13 Oct 2022).
+- October 2023 updates (published 25 Oct 2023, effective 17 Nov 2023): 88 FR 73458 ("…Certain Advanced Computing Items…; Updates and Corrections") and 88 FR 73424 ("Export Controls on Semiconductor Manufacturing Items").
+- ECCN 3A090 as revised (88 FR 73502–73503): "a. Integrated circuits having one or more digital processing units having either of the following: a.1. a 'total processing performance' of 4800 or more, or a.2. a 'total processing performance' of 1600 or more and a 'performance density' of 5.92 or more. b. … b.1. a 'total processing performance' of 2400 or more and less than 4800 and a 'performance density' of 1.6 or more and less than 5.92, or b.2. a 'total processing performance' of 1600 or more and a 'performance density' of 3.2 or more and less than 5.92." Technical notes: "'Total processing performance' ('TPP') is 2 × 'MacTOPS' × 'bit length of the operation', aggregated over all processing units on the integrated circuit"; "'Performance density' is 'TPP' divided by 'applicable die area'" (mm²); the threshold of 4800 "can be met with 600 tera integer operations (or 2 × 300 'MacTOPS') at 8 bits or 300 tera FLOPS (or 2 × 150 'MacTOPS') at 16 bits"; "Note 2 to 3A090: 3A090 does not apply to items that are not designed or marketed for use in datacenters and do not have a 'total processing performance' of 4800 or more."
+- Later changes (Federal Register records): "Framework for Artificial Intelligence Diffusion", 90 FR 4544 (15 Jan 2025); "Revision to License Review Policy for Advanced Computing Commodities", 91 FR 1684 (15 Jan 2026), changing review for exports to China and Macau of "the Nvidia H200 and its equivalents" from "a presumption of denial to a case-by-case review"; "Addressing Remote Access to Advanced Semiconductors", 91 FR 74970 (interim final rule, published and effective 19 Nov 2026), which restricts exports to "overseas data centers that remotely supply significant volumes of compute to companies headquartered in Country Group D:5 or Macau" and "formally rescinds the regulations implementing the Biden-era AI Diffusion Rule", whose rescission BIS "announced in May 2025".
+- **Sources:** [87 FR 62186](https://www.federalregister.gov/d/2022-21658); [88 FR 73458 (GPO PDF)](https://www.govinfo.gov/content/pkg/FR-2023-10-25/pdf/2023-23055.pdf); [88 FR 73424](https://www.federalregister.gov/d/2023-23049); [91 FR 1684](https://www.federalregister.gov/d/2026-00789); [91 FR 74970](https://www.federalregister.gov/d/2026-23529). Checked Nov 2026.
