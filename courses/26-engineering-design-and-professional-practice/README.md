@@ -27,7 +27,7 @@ How engineering decisions are made and paid for: requirements and specifications
 | Chapter | Hours | Status | Materials |
 |---|---|---|---|
 | [26-01 · Requirements, Specifications and the Design Process](chapters/26-01-requirements-and-specifications.md) | 5 | ✅ verified | [problems](problems/26-01-problems.md) · [solutions](solutions/26-01-solutions.md) · [lab](labs/26-01-lab/README.md) · [verify](verify/verify_26_01.py) |
-| [26-02 · Design Reviews, Documentation and Standards Bodies](chapters/26-02-design-reviews-and-standards.md) | 4 | ⬜ planned | — |
+| [26-02 · Design Reviews, Documentation and Standards Bodies](chapters/26-02-design-reviews-and-standards.md) | 4 | ✅ verified | [problems](problems/26-02-problems.md) · [solutions](solutions/26-02-solutions.md) · [lab](labs/26-02-lab/README.md) · [verify](verify/verify_26_02.py) |
 | [26-03 · Engineering Economics I: NRE, Die Cost, ASP and Gross Margin](chapters/26-03-engineering-economics-1.md) | 7 | ⬜ planned | — |
 | [26-04 · Engineering Economics II: Build, Buy or License; Node; Chiplets; ASIC vs Merchant](chapters/26-04-engineering-economics-2.md) | 8 | ⬜ planned | — |
 | [26-05 · Schedule and Risk: Why Respins Happen](chapters/26-05-schedule-and-respin-risk.md) | 6 | ⬜ planned | — |

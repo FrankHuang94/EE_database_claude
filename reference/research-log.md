@@ -6185,3 +6185,54 @@ R&D % = R&D ÷ revenue.
 - Cover: "Second edition 2018-11". Table of contents: "5.2.5 Characteristics of individual requirements"; a following clause, "Characteristics of a set of requirements" (5.2.6 or 5.2.7; the preview's table of contents is garbled at this point).
 - **Caveat:** the clause text is not in the preview and is not quoted or paraphrased in 26-01.
 - **Source:** [iTeh Standards preview of ISO/IEC/IEEE 29148:2018](https://standards.iteh.ai/catalog/standards/iso/8cf2bc2b-8b5e-4907-a82a-d1c5676c9e85/iso-iec-ieee-29148-2018). Checked Nov 2026.
+
+## R-630 · NASA Systems Engineering Handbook, Rev 2: review definitions (Course 26)
+
+*Read on 26 Nov 2026 (full PDF, glossary).* [Established]
+
+- "Peer Review: Independent evaluation by internal or external subject matter experts who do not have a vested interest in the work product under review. Peer reviews can be planned, focused reviews conducted on selected work products by the producer's peers to identify defects and issues prior to that work product moving into a milestone review or approval cycle."
+- "Preliminary Design Review: A review that demonstrates that the preliminary design meets all system requirements with acceptable risk and within the cost and schedule constraints and establishes the basis for proceeding with detailed design. It will show that the correct design option has been selected, interfaces have been identified, and verification methods have been described."
+- "Critical Design Review: A review that demonstrates that the maturity of the design is appropriate to support proceeding with full-scale fabrication, assembly, integration, and test, and that the technical effort is on track to complete the system development meeting performance requirements within the identified cost and schedule constraints."
+- "Key Decision Point: The event at which the decision authority determines the readiness of a program/project to progress to the next phase of the life cycle (or to the next KDP)."
+- **Source:** [NASA Systems Engineering Handbook, NASA/SP-2016-6105 Rev 2](https://www.nasa.gov/wp-content/uploads/2018/09/nasa_systems_engineering_handbook_0.pdf). Checked Nov 2026. See also R-626.
+
+## R-631 · IEEE SA patent policy (Standards Board Bylaws, clause 6) (Course 26)
+
+*Read on 26 Nov 2026 (IEEE SA bylaws page, current text).* [Established for the text; **Contested** for its interpretation]
+
+- "'Reasonable Rate' shall mean appropriate compensation to the patent holder for the practice of an Essential Patent Claim excluding the value, if any, resulting from the inclusion of that Essential Patent Claim's technology in the IEEE Standard."
+- Optional considerations include "The value that the functionality of the claimed invention or inventive feature within the Essential Patent Claim contributes to the value of the relevant functionality of the smallest saleable Compliant Implementation that practices the Essential Patent Claim or to another appropriate value level of the Compliant Implementation."
+- "'Prohibitive Order' shall mean an interim or permanent injunction, exclusion order, or similar adjudicative directive that limits or prevents making, having made, using, selling, offering to sell, or importing a Compliant Implementation." The submitter of an accepted assurance "shall neither seek nor seek to enforce a Prohibitive Order based on such Essential Patent Claim(s) in a jurisdiction against an implementer who is willing to negotiate in good faith for a license."
+- **Caveat:** the policy's history (the 2015 and 2023 revisions) and its legal effect are debated; 26-02 quotes only the current text.
+- **Source:** [IEEE SA Standards Board Bylaws, clauses 6–7](https://standards.ieee.org/about/policies/bylaws/sect6-7/). Checked Nov 2026.
+
+## R-632 · IEEE SA Standards Board Operations Manual (January 2026): balloting rules (Course 26)
+
+*Read on 26 Nov 2026 (full PDF, "Approved by the IEEE SA Standards Board: January 2026").* [Established]
+
+- "In the first ballot, if the ballot has not achieved a 75% return by the specified closing date, the ballot may be extended to close when a 75% return is received."
+- "A minimum of 75% of those voting Approve or Do Not Approve (Negative with comment) must approve the draft in order to submit the ballot result to the IEEE SA Standards Board. In the event that 30% or more of the returned ballots are Abstentions, the standards balloting process shall be considered invalid."
+- "In the event that a 75% return cannot be obtained, the standards balloting process is considered to have failed"; "Once all required recirculations have been completed and 75% approval has been achieved, the IEEE requirements for consensus have been met."
+- **Source:** [IEEE SA Standards Board Operations Manual](https://standards.ieee.org/wp-content/uploads/import/documents/other/sb_om.pdf). Checked Nov 2026.
+
+## R-633 · ETSI IPR Policy, clause 6.1 (Course 26)
+
+*Read on 26 Nov 2026 (ETSI IPR Policy PDF; Rules of Procedure of 29–30 November 2022).* [Established]
+
+- "When an ESSENTIAL IPR relating to a particular STANDARD or TECHNICAL SPECIFICATION is brought to the attention of ETSI, the Director-General of ETSI shall immediately request the owner to give within three months an irrevocable undertaking in writing that it is prepared to grant irrevocable licences on fair, reasonable and non-discriminatory ('FRAND') terms and conditions under such IPR".
+- **Source:** [ETSI IPR Policy](https://www.etsi.org/images/files/IPR/etsi-ipr-policy.pdf). Checked Nov 2026.
+
+## R-634 · 3GPP release timeline (Course 26)
+
+*Read on 26 Nov 2026 (3GPP "Releases" page).* [Established for past dates; projections subject to change]
+
+- Table columns "Functional Freeze (Stage 3 complete)" and "End date (Protocols stable)": Release 20, open, "2027-03 (Projected SA#115)" and "2027-06 (Projected SA#116)"; Release 19, "2025-09 (SA#109)" and "2025-12-12 (SA#110)"; Release 18, frozen, "2024-03 (SA#103)" and "2024-06 (SA#104)".
+- "Future dates are proposals, subject to change."
+- **Source:** [3GPP Releases](https://www.3gpp.org/specifications-technologies/releases). Checked Nov 2026.
+
+## R-635 · UCIe Consortium promoter members (Course 26)
+
+*Read on 26 Nov 2026 (UCIe membership page).* [Established as listed by the consortium]
+
+- "The promoter members of UCIe are Advanced Micro Devices (AMD), Advanced Semiconductor Engineering, Inc. (ASE), Alibaba Cloud, Arm Limited, Google Cloud, Intel, Meta, Microsoft, NVIDIA, Qualcomm, Samsung, and Taiwan Semiconductor Manufacturing Company."
+- **Source:** [UCIe membership](https://www.uciexpress.org/membership). Checked Nov 2026.

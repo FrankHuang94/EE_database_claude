@@ -10647,3 +10647,53 @@
 - term: Weighted decision matrix
   definition: A table scoring design alternatives on weighted criteria and ranking them by weighted sum; its value lies in exposing the weights, so the sensitivity of the ranking to each weight should always be reported.
   chapter: "26-01"
+
+# ---------------------------------------------------------------- 26-02
+- term: Peer review
+  definition: An independent evaluation of a work product by experts without a vested interest in it, held to find defects and issues before the work enters a milestone review or approval cycle (NASA definition).
+  chapter: "26-02"
+  see_also: [Milestone review]
+- term: Milestone review
+  definition: A formal life-cycle review (such as a preliminary or critical design review, or a chip's tape-out review) at which a decision authority decides whether the program may proceed to its next phase.
+  chapter: "26-02"
+  see_also: [Peer review, Phase-gate process]
+- term: Entry and exit criteria
+  definition: The conditions a work product must meet before a review may start (entry) and the decisions and closed findings the review must produce before the program proceeds (exit); they keep reviews from becoming status meetings.
+  chapter: "26-02"
+- term: Waiver
+  definition: A documented, owned decision to accept a known deviation from a requirement or sign-off rule (for example a timing path that misses its target), with the analysis showing why the risk is acceptable.
+  chapter: "26-02"
+- term: Capture–recapture estimate
+  definition: An estimate of the total number of defects from two independent reviews finding n₁ and n₂ defects with m in common, N ≈ n₁n₂/m (Lincoln–Petersen); it is biased low when defects differ in how easily they are found.
+  chapter: "26-02"
+  see_also: [Peer review]
+- term: Change control board
+  definition: The group that approves or rejects changes to a baselined document or design after weighing each change's impact, found through traceability links, on schedule, cost and risk.
+  chapter: "26-02"
+  see_also: [Specification freeze, Engineering change order (ECO)]
+- term: Standards development organization
+  definition: A body that develops standards under published due-process rules (for example IEEE SA, ETSI or ISO/IEC), as distinct from a membership consortium that writes specifications for its members (for example JEDEC, PCI-SIG or UCIe).
+  chapter: "26-02"
+- term: Balloting group
+  definition: The members eligible to vote on a draft standard; under IEEE SA rules at least 75% must return ballots and at least 75% of Approve plus Do Not Approve votes must approve, and 30% or more abstentions invalidate the ballot.
+  chapter: "26-02"
+- term: Standard-essential patent (SEP)
+  definition: A patent that cannot be avoided when implementing a standard; standards bodies require its holder to commit in advance to license it on fair, reasonable and non-discriminatory terms.
+  chapter: "26-02"
+  see_also: [FRAND, Royalty stacking]
+- term: FRAND
+  definition: Fair, reasonable and non-discriminatory licensing terms that holders of standard-essential patents undertake to offer (ETSI IPR Policy clause 6.1); what is "reasonable" and on which royalty base is often disputed.
+  chapter: "26-02"
+  see_also: [Standard-essential patent (SEP)]
+- term: Royalty stacking
+  definition: The accumulation of royalties when many patent holders each charge a rate on the same product, so that the total grows with the number of holders rather than with the value of the standard; top-down approaches cap the aggregate instead.
+  chapter: "26-02"
+  see_also: [FRAND]
+- term: Smallest saleable compliant implementation
+  definition: In IEEE SA's patent policy, the smallest product that implements the standard (often a chip), named as one optional value level for judging a reasonable royalty, alongside other appropriate value levels.
+  chapter: "26-02"
+  see_also: [Royalty stacking]
+- term: Baseline
+  definition: A reviewed and approved version of a document or design that changes only through a controlled process (change requests approved by a change control board); specification freeze establishes the baseline that design and verification work to.
+  chapter: "26-02"
+  see_also: [Change control board, Specification freeze]
