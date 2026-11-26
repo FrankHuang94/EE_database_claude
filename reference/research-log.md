@@ -6139,3 +6139,49 @@ R&D % = R&D ÷ revenue.
 - arXiv 1602.03095: "According to recent reports, post-silicon validation effort comprises more than 50% of the overall development effort of an 65nm SoC." The claim gives no primary source and is not relied on.
 - **Caveat:** vendor anecdotes about bring-up speed could not be verified (pages blocked or no source).
 - **Sources:** [Mitra, Seshia and Nicolici, DAC 2010](https://people.eecs.berkeley.edu/~sseshia/pubdir/postSi-dac10.pdf); [arXiv 1602.03095](https://arxiv.org/pdf/1602.03095). Checked Nov 2026.
+
+## R-625 · NASA study of error-cost escalation by life-cycle phase (Course 26)
+
+*Read on 26 Nov 2026 from the NASA Technical Reports Server record (JSON API) for document 20100036670.* [Established as published; **Contested** when transferred to semiconductor programs]
+
+- Stecklein, Dabney, Dick, Haskins et al. (NASA Johnson Space Center, University of Houston–Clear Lake, Boeing), "Error Cost Escalation Through the Project Life Cycle," INCOSE 14th Annual International Symposium, Toulouse, 19–24 June 2004.
+- Abstract: "This study used three approaches to determine the relative costs: the bottom-up cost method, the total cost breakdown method, and the top-down hypothetical project method." The results "presume development of a hardware/software system having project characteristics similar to those used in the development of a large, complex spacecraft, a military aircraft, or a small communications satellite."
+- Abstract: "If the cost of fixing a requirements error discovered during the requirements phase is defined to be 1 unit, the cost to fix that error if found during the design phase increases to 3 - 8 units; at the manufacturing/build phase, the cost to fix the error is 7 - 16 units; at the integration and test phase, the cost to fix the error becomes 21 - 78 units; and at the operations phase, the cost to fix the requirements error ranged from 29 units to more than 1500 units".
+- **Caveat:** secondary summaries quote single multipliers (for example "29×" or "1,615×") taken from one of the three methods; 26-01 uses only the abstract's ranges.
+- **Source:** [NASA NTRS 20100036670](https://ntrs.nasa.gov/citations/20100036670). Checked Nov 2026.
+
+## R-626 · NASA Systems Engineering Handbook, Rev 2: verification methods, V&V and requirement checklist (Course 26)
+
+*Read on 26 Nov 2026 (full PDF).* [Established]
+
+- Identity: "NASA SP-2016-6105 Rev2 supersedes SP-2007-6105 Rev 1 dated December, 2007."
+- Methods of verification: "Analysis: The use of mathematical modeling and analytical techniques to predict the suitability of a design…"; "Demonstration: Showing that the use of an end product achieves the individual specified requirement. It is generally a basic confirmation of performance capability, differentiated from testing by the lack of detailed data gathering."; "Inspection: The visual examination of a realized end product."; "Test: The use of an end product to obtain detailed data needed to verify performance… Testing… is the most resource-intensive verification technique."
+- Glossary: "Verification (of a product): Proof of compliance with specifications… (Answers the question, 'Did I build the product right?')"; "Validation (of a product): The process of showing proof that the product accomplishes the intended purpose based on stakeholder expectations and the Concept of Operations… (Answers the question, 'Am I building the right product?')".
+- Appendix C, "How to Write a Good Requirement—Checklist": "Shall = requirement", "Will = facts or declaration of purpose", "Should = goal"; "The use of 'To Be Determined' (TBD) values should be minimized. It is better to use a best estimate for a value and mark it 'To Be Resolved' (TBR) with the rationale…"; "Is each requirement necessary to meet the parent requirement?… If it is not necessary, it is not a requirement."; "Ask, 'What is the worst thing that could happen if the tolerance was doubled or tripled?'"; the checklist lists commonly overlooked requirement areas (functional, performance, interface, environment, facility, transportation, training, personnel, operability, safety, security, appearance and physical characteristics, design).
+- Requirements management is described as "Managing the product requirements, including providing bidirectional traceability".
+- **Source:** [NASA Systems Engineering Handbook, NASA/SP-2016-6105 Rev 2](https://www.nasa.gov/wp-content/uploads/2018/09/nasa_systems_engineering_handbook_0.pdf). Checked Nov 2026.
+
+## R-627 · Process models: Royce (1970), Boehm (1988), Agile Manifesto (2001) (Course 26)
+
+*Read on 26 Nov 2026: Royce's paper (PDF reprint), the Crossref record for Boehm's article, and agilemanifesto.org.* [Established]
+
+- Royce, "Managing the Development of Large Software Systems," reprinted from Proceedings, IEEE WESCON, August 1970, pages 1–9: "I believe in this concept, but the implementation described above is risky and invites failure." Section heading "STEP 3: DO IT TWICE"; "arrange matters so that the version finally delivered to the customer for operational deployment is actually the second version insofar as critical design/operations areas are concerned."
+- Boehm, "A spiral model of software development and enhancement," *Computer* 21(5): 61–72, May 1988 (Crossref, DOI 10.1109/2.59).
+- Manifesto for Agile Software Development (© 2001, the authors): "Individuals and interactions over processes and tools / Working software over comprehensive documentation / Customer collaboration over contract negotiation / Responding to change over following a plan"; "That is, while there is value in the items on the right, we value the items on the left more."
+- **Sources:** [Royce 1970 (reprint)](https://www.praxisframework.org/files/royce1970.pdf); [Crossref record 10.1109/2.59](https://api.crossref.org/works/10.1109/2.59); [agilemanifesto.org](https://agilemanifesto.org/). Checked Nov 2026.
+
+## R-628 · Specifications as a root cause in the 2024 Wilson Research Group study (Course 26)
+
+*Read on 26 Nov 2026 (2024 IC/ASIC report PDF, text only; the figures' percentages are images and were not transcribed).* [Established as reported; Industry estimate for trends]
+
+- "Historically, design errors have been the leading cause of functional flaws, though there are signs of improvement. Additionally, issues related to changing, incorrect, or incomplete specifications remain a common concern among verification engineers and project managers, as highlighted in the study."
+- **Caveat:** the share of functional flaws attributed to specifications is shown only in a chart (Figure 5) and is not quoted in 26-01.
+- **Source:** [2024 Wilson Research Group IC/ASIC functional verification trend report](https://static.sw.cdn.siemens.com/siemens-disw-assets/public/1NyfMZJ3nuPhMGQCGFDITG/en-US/ic-asic-functional-verification-trend-report-wp-86424-d3.pdf). Checked Nov 2026. See also R-621.
+
+## R-629 · ISO/IEC/IEEE 29148:2018 edition and structure (Course 26)
+
+*Read on 26 Nov 2026 (publisher's sample preview, which ends in clause 3).* [Established for edition and clause titles only]
+
+- Cover: "Second edition 2018-11". Table of contents: "5.2.5 Characteristics of individual requirements"; a following clause, "Characteristics of a set of requirements" (5.2.6 or 5.2.7; the preview's table of contents is garbled at this point).
+- **Caveat:** the clause text is not in the preview and is not quoted or paraphrased in 26-01.
+- **Source:** [iTeh Standards preview of ISO/IEC/IEEE 29148:2018](https://standards.iteh.ai/catalog/standards/iso/8cf2bc2b-8b5e-4907-a82a-d1c5676c9e85/iso-iec-ieee-29148-2018). Checked Nov 2026.

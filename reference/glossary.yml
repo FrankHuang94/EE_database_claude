@@ -10595,3 +10595,55 @@
 - term: Reliability-growth model
   definition: "A model of how fast bugs or failures are found and removed over time, such as the Goel–Okumoto curve m(t) = a(1 − e^(−bt)), used to estimate the total and the bugs still hidden."
   chapter: "25-12"
+
+# ---------------------------------------------------------------- 26-01
+- term: Market requirements document (MRD)
+  definition: The document that states who the customer is, what problem the product solves, the competitive alternatives, the target price and volume and the time window, in the customer's language.
+  chapter: "26-01"
+  see_also: [Product requirements document (PRD)]
+- term: Product requirements document (PRD)
+  definition: The document that states what a product shall do in measurable terms (functions, performance, interfaces, environment, cost, schedule) without saying how; the bridge from the MRD to the architecture specification.
+  chapter: "26-01"
+  see_also: [Market requirements document (MRD), Requirement]
+- term: Requirement flow-down
+  definition: Allocating a system-level requirement to subsystems and blocks as budgets (power, error, latency, cost), usually with margin held back at each level, so that meeting every block's share meets the system requirement.
+  chapter: "26-01"
+  see_also: [Error budget, Design margin]
+- term: TBD and TBR
+  definition: To be determined (TBD) marks a requirement value that is unknown; to be resolved (TBR) marks a best estimate that still needs confirmation, with a rationale, an owner and a closing date. Counting open TBDs and TBRs is a simple measure of a specification's maturity.
+  chapter: "26-01"
+- term: Verification (of a product)
+  definition: Proof that a product complies with its specification, by test, analysis, inspection or demonstration; it answers "did we build the product right?"
+  chapter: "26-01"
+  see_also: [Validation (of a product), Verification methods (TAID)]
+- term: Validation (of a product)
+  definition: Showing that a product accomplishes its intended purpose for its users and stakeholders; it answers "did we build the right product?", which a product can fail even when it passes verification.
+  chapter: "26-01"
+  see_also: [Verification (of a product)]
+- term: Verification methods (TAID)
+  definition: Test (measured data from the product), analysis (modelling and simulation), inspection (visual examination of the product or its records) and demonstration (showing the capability in use without detailed data), as defined in the NASA Systems Engineering Handbook.
+  chapter: "26-01"
+  see_also: [Verification (of a product)]
+- term: Design margin
+  definition: The part of a budget deliberately held back (as reserve or contingency) to absorb optimistic estimates and late discoveries; it is tracked and released by the budget's owner rather than spent silently.
+  chapter: "26-01"
+  see_also: [Requirement flow-down]
+- term: Traceability matrix
+  definition: A table linking requirements (rows) to the design elements or tests (columns) that implement or verify them; it yields coverage, childless requirements and orphan tests, and supports impact analysis when a requirement changes.
+  chapter: "26-01"
+  see_also: [Traceability]
+- term: Waterfall model
+  definition: A process in which requirements, design, implementation, test and operation follow in strict sequence. Royce's 1970 paper, usually cited as its origin, called the single-pass version "risky" and recommended feedback and building the system twice.
+  chapter: "26-01"
+  see_also: [V-model, Spiral model]
+- term: Spiral model
+  definition: Boehm's risk-driven process (1988), in which each cycle identifies the largest remaining risk, builds just enough (a prototype, model or test chip) to resolve it, and plans the next cycle.
+  chapter: "26-01"
+  see_also: [Waterfall model]
+- term: Phase-gate process
+  definition: A process in which a project passes formal decision reviews (gates) between phases, where management decides to continue, change course or stop; chip programs place gates such as specification freeze and tape-out where the cost of change jumps.
+  chapter: "26-01"
+  see_also: [Specification freeze, Tape-out]
+- term: Weighted decision matrix
+  definition: A table scoring design alternatives on weighted criteria and ranking them by weighted sum; its value lies in exposing the weights, so the sensitivity of the ranking to each weight should always be reported.
+  chapter: "26-01"
