@@ -11354,3 +11354,15 @@
   definition: A software-reliability-growth model in which the cumulative defects found by testing time $t$ are $a(1 - e^{-bt})$; the remaining defects are $a\,e^{-bt}$, always the current discovery rate divided by $b$.
   chapter: "28-03"
   see_also: [Bug-discovery curve]
+- term: Diagnostic question
+  definition: A diligence question whose strong and weak answers differ in a way the asker can check, because it asks for a number with its conditions, a mechanism or an artifact; its value is the likelihood ratio between the answer a capable team gives and the answer a struggling team gives.
+  chapter: "28-04"
+  see_also: [Likelihood ratio, Posterior odds]
+- term: Iso-power claim
+  definition: A claim of more performance at the same power; with performance IPC × frequency and dynamic power rising as $f^3$ along the voltage–frequency line, a ratio $R$ with IPC ratio $g_{\text{IPC}}$ and capacitance ratio $g_C$ needs energy per operation to fall by $1 - 1/[g_C(R/g_{\text{IPC}})^3]$.
+  chapter: "28-04"
+  see_also: [Dynamic power]
+- term: Decode arithmetic intensity
+  definition: The FLOP per byte of weights in a language model's token-by-token decode, $2B/b_w$ for $B$ sequences and $b_w$ bytes per weight (KV cache ignored); far below an accelerator's ridge point at small batch, which makes decode memory-bound.
+  chapter: "28-04"
+  see_also: [Ridge point, Prefill and decode]
