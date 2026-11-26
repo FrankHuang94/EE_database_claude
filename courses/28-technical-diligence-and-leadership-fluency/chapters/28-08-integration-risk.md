@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 28-08 · Post-Acquisition Integration Risk
 
 | | |

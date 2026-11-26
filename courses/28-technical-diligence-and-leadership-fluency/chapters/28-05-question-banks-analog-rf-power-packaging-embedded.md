@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 28-05 · Domain Question Banks II: Analog/Mixed-Signal, RF, Power, Packaging, Embedded
 
 | | |

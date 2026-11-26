@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 28-10 · Conversation Scenarios
 
 | | |

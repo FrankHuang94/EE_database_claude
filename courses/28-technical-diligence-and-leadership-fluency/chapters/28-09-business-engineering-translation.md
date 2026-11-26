@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 28-09 · The Business ↔ Engineering Translation Table
 
 | | |

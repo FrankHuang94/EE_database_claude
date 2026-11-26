@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 28-02 · Validating Claims: TOPS/W, Benchmarks, Tapeout Status
 
 | | |

@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 28-06 · Red Flags and Green Flags
 
 | | |

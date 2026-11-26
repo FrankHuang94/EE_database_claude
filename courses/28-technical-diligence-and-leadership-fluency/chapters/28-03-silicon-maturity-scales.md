@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 28-03 · Maturity Scales for Silicon
 
 | | |

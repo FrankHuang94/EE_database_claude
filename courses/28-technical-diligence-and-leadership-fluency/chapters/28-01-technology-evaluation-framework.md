@@ -1,4 +1,4 @@
-<!-- status: verified -->
+<!-- status: reviewed -->
 # 28-01 · A Framework for Evaluating a Chip Company's Technology
 
 | | |
