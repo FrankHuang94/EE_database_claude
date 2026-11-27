@@ -12,6 +12,7 @@ generated:
 	$(PY) tools/build_curriculum.py --check
 	$(PY) tools/build_glossary.py --check
 	$(PY) tools/progress_stats.py --check
+	$(PY) tools/build_practitioner.py --check
 
 docs:
 	$(PY) tools/check_links.py
@@ -40,11 +41,12 @@ notebooks:
 figures:
 	for f in assets/figures/src/fig_*.py; do $(PY) $$f || exit 1; done
 
-# Regenerate all generated Markdown (curriculum, course READMEs, glossary, stats).
+# Regenerate all generated Markdown (curriculum, course READMEs, glossary, stats, question banks).
 regen:
 	$(PY) tools/build_curriculum.py
 	$(PY) tools/build_glossary.py
 	$(PY) tools/progress_stats.py
+	$(PY) tools/build_practitioner.py
 
 site:
 	mkdocs serve

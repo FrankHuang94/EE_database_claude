@@ -149,7 +149,7 @@ Run everything locally with `make check`.
 - **Division of labor:** the main agent does all the writing so voice and notation stay consistent. Use subagents only for parallel fact-finding and independent review.
 - **If a session ends mid-chapter,** leave a clean state and record exactly where you stopped.
 - **Generated files:**
-  - `CURRICULUM.md`, the generated block of each course README, `reference/glossary.md` and the stats block in PROGRESS.md are generated.
+  - `CURRICULUM.md`, the generated block of each course README, `reference/glossary.md`, the stats block in PROGRESS.md and `practitioner/question-banks/` (from each chapter's Practitioner lens, by `tools/build_practitioner.py`) are generated.
   - Edit `tools/data/curriculum.yml`, `reference/glossary.yml` or the script instead.
   - CI fails if generated files are stale.
 
