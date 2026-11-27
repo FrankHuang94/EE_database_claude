@@ -42,7 +42,7 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_25_exa
 
 (b) With $2Dt = 4 \times 10^{-12}$ cm² = 400 nm², $\Delta R_p' = \sqrt{20^2 + 400}$ = **28.3** nm; the dose is conserved, so the peak falls in proportion to **1.41e20** cm⁻³.
 
-(c) $x_j' = R_p + \Delta R_p'\sqrt{2\ln(N_p'/N_B)} = 72.0 + $ **28.28** $\sqrt{2\ln 1410}$ (with $N_p'/N_B$ = **1410**), where the second term is **107.7** nm, so $x_j'$ = **180** nm. The anneal moved the junction **29.8** nm deeper, which is why implant energies are chosen with the downstream thermal budget in mind.
+(c) \$x_j' = R_p + \Delta R_p'\sqrt{2\ln(N_p'/N_B)} = 72.0 + \$ **28.28** $\sqrt{2\ln 1410}$ (with $N_p'/N_B$ = **1410**), where the second term is **107.7** nm, so $x_j'$ = **180** nm. The anneal moved the junction **29.8** nm deeper, which is why implant energies are chosen with the downstream thermal budget in mind.
 
 (d) $k_{eff} = k_sh_g/(k_s + h_g) = 5/6$ = **0.833** cm/s: close to $k_s$, so the surface reaction limits the process (reaction-limited, and temperature-sensitive). For plating, Faraday's law inverted gives $j = x\,nF\rho/(Mt) = 10^{-4}\ \text{cm} \times 2 \times 96{,}485 \times 8.96/(63.55 \times 120\ \text{s})$ = **22.7** mA/cm². Units: cm × (C/mol) × (g/cm³)/((g/mol) × s) = C/(cm²·s) = A/cm². ✓
 
@@ -52,9 +52,9 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_25_exa
 
 (b) $AD_0 = 1.5 \times 0.15$ = **0.225**: Poisson $e^{-0.225}$ = **0.799** (unrounded **0.7985**, used below); Murphy $[(1 - e^{-0.225})/0.225]^2$ = **0.802**; negative binomial $(1 + 0.225/2)^{-2}$ = **0.808**.
 
-(c) $18{,}000/(417 \times 0.7985)$ = **$54.1**.
+(c) $18{,}000/(417 \times 0.7985)$ = **\$54.1**.
 
-(d) $18{,}000/(417 \times 0.808)$ = **$53.4**. Clustering concentrates defects on fewer dies, raising yield for the same average density; the difference is small for a modest die and grows with area (Solution 11(d)).
+(d) $18{,}000/(417 \times 0.808)$ = **\$53.4**. Clustering concentrates defects on fewer dies, raising yield for the same average density; the difference is small for a modest die and grows with area (Solution 11(d)).
 
 ### Solution 5
 
@@ -89,7 +89,7 @@ The ratio of the two is $\ln 200$ itself, **5.30**: when the weak population's h
 
 (c) $e = 0.15 \times 0.02/(0.85 + 0.003)$ = **0.352**%; $Y_{pkg} = 0.998^7(1 - 0.00352)(0.996)^6$ = **0.959**.
 
-(d) Monolithic: $Y = e^{-0.72}$ = **0.487**, so $[(180 + 3)/0.487 + 50]/0.99$ = **$430**. Chiplets: $Y = e^{-0.264}$ = **0.768**, so $[3(66 + 3)/0.768 + 90]/0.99^3$ = **$371**. Ratio **0.861**.
+(d) Monolithic: $Y = e^{-0.72}$ = **0.487**, so $[(180 + 3)/0.487 + 50]/0.99$ = **\$430**. Chiplets: $Y = e^{-0.264}$ = **0.768**, so $[3(66 + 3)/0.768 + 90]/0.99^3$ = **\$371**. Ratio **0.861**.
 
 ### Solution 8
 
@@ -156,7 +156,7 @@ using $\int_0^\infty D^{\alpha - 1}e^{-cD}dD = \Gamma(\alpha)/c^\alpha$. As α �
 
 ### Solution 12
 
-(a) At $D_0$ = 0.1 cm⁻²: $Y_M = e^{-0.8}$ = **0.449** and $Y_C = e^{-0.22}$ = **0.803**, so $C_M = [(0.30 \times 800 + 3)/0.449 + 50]/0.99$ = **$597** and $C_C = [4(0.30 \times 220 + 3)/0.803 + 110]/0.99^4$ = **$473**: a saving of **20.8**%, not 30%. Solving $C_C/C_M = 0.70$ for $D_0$ (bisection on the two cost lines) gives $D_0$ = **0.122** cm⁻², **21.6**% above the model's value. There, $AD_0$ is **0.973** for the monolithic die and **0.268** per chiplet, $Y_M$ = **0.378** and $Y_C$ = **0.765**, and
+(a) At $D_0$ = 0.1 cm⁻²: $Y_M = e^{-0.8}$ = **0.449** and $Y_C = e^{-0.22}$ = **0.803**, so $C_M = [(0.30 \times 800 + 3)/0.449 + 50]/0.99$ = **\$597** and $C_C = [4(0.30 \times 220 + 3)/0.803 + 110]/0.99^4$ = **\$473**: a saving of **20.8**%, not 30%. Solving $C_C/C_M = 0.70$ for $D_0$ (bisection on the two cost lines) gives $D_0$ = **0.122** cm⁻², **21.6**% above the model's value. There, $AD_0$ is **0.973** for the monolithic die and **0.268** per chiplet, $Y_M$ = **0.378** and $Y_C$ = **0.765**, and
 
 $$
 C_M = \frac{243/0.378 + 50}{0.99} = \$700, \qquad C_C = \frac{4 \times 69/0.765 + 110}{0.99^4} = \$490 .
@@ -166,7 +166,7 @@ The startup's 30% therefore rests on its launch defect density (or on smaller in
 
 (b) The heat sink may take $95 - 35 - 1500 \times 0.015$ = 60 − **22.5** = **37.5** K, so it needs $37.5/1500$ = **0.0250** K/W, **2.51** times better than the 0.0627 K/W sink. That is outside what a practical air heat sink delivers at 1.5 kW. Ask for the cooling solution's measured resistance, or plan for liquid cooling.
 
-(c) When a fix is needed, the ECO path costs $3 + 12 \times 4$ = **51** $M for certain, plus a 0.3 chance of the respin's $30 + 24 \times 4$ = **126** $M. So the expected cost is $51 + 0.3 \times 126$ = **$88.8 M** and the expected delay $12 + 0.3 \times 24$ = **19.2** weeks. Weighted by the 0.95 chance of needing a fix, the plan omits **$84.4 M** and **18.2** weeks of expected schedule. Delay, not masks, is most of it, and the plan needs the funding runway to survive it.
+(c) When a fix is needed, the ECO path costs $3 + 12 \times 4$ = **51** \$M for certain, plus a 0.3 chance of the respin's $30 + 24 \times 4$ = **126** \$M. So the expected cost is $51 + 0.3 \times 126$ = **\$88.8 M** and the expected delay $12 + 0.3 \times 24$ = **19.2** weeks. Weighted by the 0.95 chance of needing a fix, the plan omits **\$84.4 M** and **18.2** weeks of expected schedule. Delay, not masks, is most of it, and the plan needs the funding runway to survive it.
 
 (d) With $\hat p = 1$ the Wilson numerator is $1 + z^2/(2n) - z\sqrt{z^2/(4n^2)} = 1$, so the lower end is $1/(1 + z^2/n) = n/(n + z^2) = 4/(4 + 3.8416)$ = **51.0**%. Even that lower end is **10.2** times the survey's 5%, so the record is evidence of a strong team. But four chips is a small sample, and earlier chips may have been smaller, on mature nodes or without chiplets. Questions:
 

@@ -14,7 +14,7 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (b) No: the mean varies with time. Restricting the phase to half a cycle makes some parts of the waveform systematically more likely.
 
-(c) At $\omega t = \pi/2$: $-2/\pi = $ **−0.6366 V**.
+(c) At $\omega t = \pi/2$: \$-2/\pi = \$ **−0.6366 V**.
 
 ### Solution 03-06.2
 
@@ -24,7 +24,7 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (c) AC power $5 - 1 = $ **4 V²**.
 
-(d) The autocovariance is $4e^{-|\tau|/\tau_c}$, so the correlation coefficient at τ_c is $e^{-1} = $ **0.3679**.
+(d) The autocovariance is $4e^{-|\tau|/\tau_c}$, so the correlation coefficient at τ_c is \$e^{-1} = \$ **0.3679**.
 
 ### Solution 03-06.3
 
@@ -52,23 +52,23 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 03-06.6
 
-(a) $\Delta = 1/4096$ V, so $\Delta/\sqrt{12} = $ **70.48 µV**, and $kT/C \le (70.48\text{ µV})^2$ gives $C \ge 4.142\times10^{-21}/4.967\times10^{-9} = $ **0.8339 pF**.
+(a) $\Delta = 1/4096$ V, so \$\Delta/\sqrt{12} = \$ **70.48 µV**, and $kT/C \le (70.48\text{ µV})^2$ gives \$C \ge 4.142\times10^{-21}/4.967\times10^{-9} = \$ **0.8339 pF**.
 
-(b) $\Delta = 1/65{,}536$ V, so **4.405 µV**, and $C \ge $ **213.5 pF**.
+(b) $\Delta = 1/65{,}536$ V, so **4.405 µV**, and \$C \ge \$ **213.5 pF**.
 
 Each extra bit halves Δ and so quadruples the required capacitance: four bits cost 256 times the capacitance, with the area and drive power that go with it. That is why high-resolution converters are large and power-hungry.
 
 ### Solution 03-06.7
 
-$B_N = (\pi/2)\times10$ kHz $= $ **15.71 kHz**, and the output noise is $10\text{ nV}\times\sqrt{15{,}708} = $ **1.253 µV** rms.
+$B_N = (\pi/2)\times10$ kHz \$= \$ **15.71 kHz**, and the output noise is \$10\text{ nV}\times\sqrt{15{,}708} = \$ **1.253 µV** rms.
 
 ### Solution 03-06.8
 
-$\sqrt{2qIB} = \sqrt{2\times1.602\times10^{-19}\times10^{-5}\times10^8} = $ **17.90 nA** rms. The ratio $10\ \mu\text{A}/17.90\text{ nA} = 558.6$, or **54.94 dB**. A hundredfold smaller current than Example 03-06.5 loses 10 dB of ratio in a tenfold smaller bandwidth: the ratio scales as $\sqrt{I/B}$.
+\$\sqrt{2qIB} = \sqrt{2\times1.602\times10^{-19}\times10^{-5}\times10^8} = \$ **17.90 nA** rms. The ratio $10\ \mu\text{A}/17.90\text{ nA} = 558.6$, or **54.94 dB**. A hundredfold smaller current than Example 03-06.5 loses 10 dB of ratio in a tenfold smaller bandwidth: the ratio scales as $\sqrt{I/B}$.
 
 ### Solution 03-06.9
 
-(a) The source contributes $(0.8949\text{ nV})^2$, the voltage noise $(1\text{ nV})^2$, and the current noise flowing in the source resistance $(2\text{ pA}\times50\ \Omega)^2 = (0.1\text{ nV})^2$, all per hertz. Total: $\sqrt{0.8009 + 1 + 0.01}$ nV/√Hz $= $ **1.346 nV/√Hz**.
+(a) The source contributes $(0.8949\text{ nV})^2$, the voltage noise $(1\text{ nV})^2$, and the current noise flowing in the source resistance $(2\text{ pA}\times50\ \Omega)^2 = (0.1\text{ nV})^2$, all per hertz. Total: $\sqrt{0.8009 + 1 + 0.01}$ nV/√Hz \$= \$ **1.346 nV/√Hz**.
 
 (b) $F = 1.8109/0.8009 = $ **2.261**, so NF = **3.544 dB**. The amplifier's own voltage noise, larger than the source's, dominates; with a 50 Ω source, low voltage noise matters far more than low current noise.
 
@@ -98,7 +98,7 @@ $\sqrt{2qIB} = \sqrt{2\times1.602\times10^{-19}\times10^{-5}\times10^8} = $ **17
 
 ### Solution 03-06.13
 
-For a random walk the rms error grows as $\sqrt t$. After 100 µs: $1\text{ ps}\times\sqrt{100} = $ **10 ps**; after 1 ms: $\sqrt{1000} = $ **31.62 ps**. Without correction the error grows without bound; a clock-and-data-recovery loop measures the phase of the incoming data and continuously corrects the sampling clock, turning the unbounded walk into a bounded tracking error ([24](../../24-high-speed-io-signal-integrity-and-photonics/README.md)).
+For a random walk the rms error grows as $\sqrt t$. After 100 µs: \$1\text{ ps}\times\sqrt{100} = \$ **10 ps**; after 1 ms: \$\sqrt{1000} = \$ **31.62 ps**. Without correction the error grows without bound; a clock-and-data-recovery loop measures the phase of the incoming data and continuously corrects the sampling clock, turning the unbounded walk into a bounded tracking error ([24](../../24-high-speed-io-signal-integrity-and-photonics/README.md)).
 
 ### Solution 03-06.14
 
@@ -110,9 +110,9 @@ For a random walk the rms error grows as $\sqrt t$. After 100 µs: $1\text{ ps}\
 
 ### Solution 03-06.15
 
-(a) With $2K = 32$ degrees of freedom, the quantiles are $\chi^2_{0.025} = 18.29$ and $\chi^2_{0.975} = 49.48$. The true PSD lies between $32/49.48 = $ **0.6467** and $32/18.29 = $ **1.750** times the measured value: **−1.893 dB** to **+2.429 dB**.
+(a) With $2K = 32$ degrees of freedom, the quantiles are $\chi^2_{0.025} = 18.29$ and $\chi^2_{0.975} = 49.48$. The true PSD lies between \$32/49.48 = \$ **0.6467** and \$32/18.29 = \$ **1.750** times the measured value: **−1.893 dB** to **+2.429 dB**.
 
-(b) Searching $K$, the upper limit first falls within 1 dB at $K = $ **82** (lower limit −0.8911 dB).
+(b) Searching $K$, the upper limit first falls within 1 dB at \$K = \$ **82** (lower limit −0.8911 dB).
 
 (c) It is the same chi-square interval: each PSD bin is a variance estimate with $2K$ degrees of freedom, so pinning a spectrum to ±1 dB needs about 160 degrees of freedom, just as 03-05's 50-sample noise-power estimate was uncertain by ±1.7 dB.
 

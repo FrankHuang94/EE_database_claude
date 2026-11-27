@@ -35,7 +35,7 @@ $\lvert H\rvert$ at $\pi$ is $2/(1 + a)$. Near DC the zero at 1 gives a distance
 
 ### Solution 16-02.5
 
-The width rule $\Delta\omega \approx 2(1 - r)$ with $\Delta\omega = 2\pi \times 2/1000$ gives $r = 1 - 0.006283$ = **0.99372**. With $\omega_0 = 2\pi \times 60/1000$, the denominator is $1 - 2r\cos\omega_0z^{-1} + r^2z^{-2} = 1 - $ **1.84787** $z^{-1} +$ **0.98747** $z^{-2}$; the numerator $1 - 2\cos\omega_0z^{-1} + z^{-2}$, scaled by $g$ for unit DC gain, is **0.99400** $-$ **1.84839** $z^{-1} +$ **0.99400** $z^{-2}$. The exact −3 dB width is **2.01** Hz.
+The width rule $\Delta\omega \approx 2(1 - r)$ with $\Delta\omega = 2\pi \times 2/1000$ gives $r = 1 - 0.006283$ = **0.99372**. With $\omega_0 = 2\pi \times 60/1000$, the denominator is \$1 - 2r\cos\omega_0z^{-1} + r^2z^{-2} = 1 - \$ **1.84787** $z^{-1} +$ **0.98747** $z^{-2}$; the numerator $1 - 2\cos\omega_0z^{-1} + z^{-2}$, scaled by $g$ for unit DC gain, is **0.99400** $-$ **1.84839** $z^{-1} +$ **0.99400** $z^{-2}$. The exact −3 dB width is **2.01** Hz.
 
 The time constant is $-1/\ln r$ = **158.7** samples (0.159 s). Wise? Mains frequency in many grids is held within a fraction of a hertz, but a 2 Hz notch is centred on 60 Hz only to within its width; a drift of ±1 Hz would sit at the band edge. The long transient also means the notch takes about half a second to reach full depth. A wider notch, or an adaptive one that tracks the mains frequency, is usually better.
 

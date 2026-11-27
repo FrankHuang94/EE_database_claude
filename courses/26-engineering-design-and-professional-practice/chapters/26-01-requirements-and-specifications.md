@@ -290,8 +290,8 @@ All examples use assumed, illustrative numbers unless a source is cited.
 **Solution.**
 
 - (a) $108/120$ = **90.0**%.
-- (b) $(3 \times 0.30 + 9 \times 0.05) \times 2.0$ = **1.35** × 2.0 = **$2.70 M** expected.
-- (c) Closing all 12 costs $12 \times 0.020$ = **$0.24 M**, so the expected loss is **11.25** times the cost of the tests.
+- (b) $(3 \times 0.30 + 9 \times 0.05) \times 2.0$ = **1.35** × 2.0 = **\$2.70 M** expected.
+- (c) Closing all 12 costs $12 \times 0.020$ = **\$0.24 M**, so the expected loss is **11.25** times the cost of the tests.
 
 **Units check.** Count × probability × $/escape = $. ✓
 
@@ -311,7 +311,7 @@ whose four terms (**2.0**, **1.8**, **12.6** and **16.8**) are the design, build
 
 - (a) Light review: found **20**, **32**, **14.4**, **20.16** and **13.44** in the five phases; cost $100[0.2 \times 1 + 0.8 \times 33.2]$ = **2676** units. Formal review: **60**, **16**, **7.2**, **10.08** and **6.72**; cost $100[0.6 + 0.4 \times 33.2]$ = **1388** units.
 - (b) The formal review saves **1288** units, **$12.9 M**, and cuts field escapes from 13.44 to 6.72.
-- (c) $N(\bar c_{down} - c_1) = 100 \times 32.2$ = **3220** units per unit of catch rate, so each percentage point is worth **32.2** units, **$322,000**.
+- (c) $N(\bar c_{down} - c_1) = 100 \times 32.2$ = **3220** units per unit of catch rate, so each percentage point is worth **32.2** units, **\$322,000**.
 
 **Units check.** Errors × relative cost units × $/unit = $. ✓
 

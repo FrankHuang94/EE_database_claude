@@ -36,7 +36,7 @@ The accelerometer reads the floor's upward push per unit mass, $a + g$ (upward p
 
 (a) $9.80665 + 2 = $ **11.81 m/s²**, or **1.204 *g***.
 
-(b) Slowing while moving upward means $a = -1.5$ m/s²: $9.80665 - 1.5 = $ **8.307 m/s²**, or **0.8470 *g***.
+(b) Slowing while moving upward means $a = -1.5$ m/s²: \$9.80665 - 1.5 = \$ **8.307 m/s²**, or **0.8470 *g***.
 
 (c) In free fall the floor exerts no force: **0**.
 
@@ -46,7 +46,7 @@ The accelerometer reads the floor's upward push per unit mass, $a + g$ (upward p
 
 (a) $U = \tfrac12k_sx^2 = \tfrac12\times200\times0.05^2 = $ **0.25 J**.
 
-(b) $\tfrac12mv^2 = 0.25$ J gives $v = \sqrt{2\times0.25/0.02} = $ **5 m/s** (equivalently $x\sqrt{k_s/m}$).
+(b) $\tfrac12mv^2 = 0.25$ J gives \$v = \sqrt{2\times0.25/0.02} = \$ **5 m/s** (equivalently $x\sqrt{k_s/m}$).
 
 (c) $v = \sqrt{2\times0.9\times0.25/0.02} = $ **4.743 m/s**.
 
@@ -54,13 +54,13 @@ The accelerometer reads the floor's upward push per unit mass, $a + g$ (upward p
 
 (a) At constant speed the hoist force equals the weight: $P = mgv = 1000\times9.80665\times2 = $ **19.61 kW**.
 
-(b) The counterweight's descent supplies $800\times9.80665\times2$ W, so the hoist supplies only the imbalance: $200\times9.80665\times2 = $ **3.923 kW**.
+(b) The counterweight's descent supplies $800\times9.80665\times2$ W, so the hoist supplies only the imbalance: \$200\times9.80665\times2 = \$ **3.923 kW**.
 
 (c) $3922.66/0.85 = $ **4.615 kW**. A counterweight cuts the motor power fivefold, which is why every traction elevator has one.
 
 ### Solution 04-01.7
 
-(a) Momentum: $2\times3 = (2 + 1)v_f$, so $v_f = $ **2 m/s**.
+(a) Momentum: $2\times3 = (2 + 1)v_f$, so \$v_f = \$ **2 m/s**.
 
 (b) Before: $\tfrac12\times2\times3^2 = $ **9 J**. After: $\tfrac12\times3\times2^2 = $ **6 J**. Lost: **3 J**, **33.33%**.
 
@@ -80,11 +80,11 @@ The accelerometer reads the floor's upward push per unit mass, $a + g$ (upward p
 
 (b) $v_{\max} = A\omega_0 = 0.03\times20 = $ **0.6 m/s**; $a_{\max} = A\omega_0^2 = $ **12 m/s²**.
 
-(c) $\tfrac12k_sA^2 = \tfrac12\times200\times0.03^2 = $ **0.09 J** (equal to $\tfrac12mv_{\max}^2 = \tfrac12\times0.5\times0.36$ ✓).
+(c) \$\tfrac12k_sA^2 = \tfrac12\times200\times0.03^2 = \$ **0.09 J** (equal to $\tfrac12mv_{\max}^2 = \tfrac12\times0.5\times0.36$ ✓).
 
 ### Solution 04-01.10
 
-(a) 500 cycles at 100 kHz take 5 ms. $e^{-\alpha\times0.005} = \tfrac12$ gives $\alpha = \ln2/0.005 = $ **138.6 s⁻¹**.
+(a) 500 cycles at 100 kHz take 5 ms. $e^{-\alpha\times0.005} = \tfrac12$ gives \$\alpha = \ln2/0.005 = \$ **138.6 s⁻¹**.
 
 (b) $Q = \omega_0/(2\alpha) = 2\pi\times10^5/(2\times138.63) = $ **2266**.
 
@@ -94,9 +94,9 @@ The accelerometer reads the floor's upward push per unit mass, $a + g$ (upward p
 
 ### Solution 04-01.11
 
-(a) In series the springs carry the same force and their stretches add: $1/k = 1/100 + 1/300$, so $k = $ **75 N/m**. In parallel they share one stretch and their forces add: $k = $ **400 N/m**.
+(a) In series the springs carry the same force and their stretches add: $1/k = 1/100 + 1/300$, so \$k = \$ **75 N/m**. In parallel they share one stretch and their forces add: \$k = \$ **400 N/m**.
 
-(b) Each spring is a capacitance $C = 1/k_s$: 0.01 F and 3.333 mF. Springs in series share one force, which maps to one voltage, so the capacitors are in **parallel**: $0.01 + 0.003333 = $ **0.01333 F** = 1/75 ✓. Springs in parallel share one velocity, which maps to one current, so their capacitors are in series: $1/(100 + 300)$ F. The force–voltage analogy inverts series and parallel for springs.
+(b) Each spring is a capacitance $C = 1/k_s$: 0.01 F and 3.333 mF. Springs in series share one force, which maps to one voltage, so the capacitors are in **parallel**: \$0.01 + 0.003333 = \$ **0.01333 F** = 1/75 ✓. Springs in parallel share one velocity, which maps to one current, so their capacitors are in series: $1/(100 + 300)$ F. The force–voltage analogy inverts series and parallel for springs.
 
 ### Solution 04-01.12
 
@@ -118,7 +118,7 @@ So **2.706 µg**.
 
 (b) $k_s = m\omega_0^2 = $ **0.4273 N/m**; deflection per *g* $= g/\omega_0^2 = $ **62.10 nm**.
 
-(c) $a_n \propto 1/\sqrt Q$: the floor falls by $\sqrt{1000/2} = $ **22.36**. But a Q of 1000 makes the sensor ring for about 1000/π ≈ 300 cycles after every bump and peaks its response 1000-fold at resonance; the design then needs closed-loop (force-feedback) control or electronic damping.
+(c) $a_n \propto 1/\sqrt Q$: the floor falls by \$\sqrt{1000/2} = \$ **22.36**. But a Q of 1000 makes the sensor ring for about 1000/π ≈ 300 cycles after every bump and peaks its response 1000-fold at resonance; the design then needs closed-loop (force-feedback) control or electronic damping.
 
 ### Solution 04-01.14
 
@@ -134,17 +134,17 @@ So **2.706 µg**.
 
 (a) $v = \sqrt{2\times9.80665\times1.2} = $ **4.851 m/s**.
 
-(b) $a_{\text{pk}} = (\pi/2)v/\Delta t \le 1500\times9.80665 = 14{,}710$ m/s², so $\Delta t \ge (\pi/2)\times4.851/14{,}710 = $ **0.5181 ms**.
+(b) $a_{\text{pk}} = (\pi/2)v/\Delta t \le 1500\times9.80665 = 14{,}710$ m/s², so \$\Delta t \ge (\pi/2)\times4.851/14{,}710 = \$ **0.5181 ms**.
 
-(c) For $a = a_{\text{pk}}\sin(\pi t/\Delta t)$ with $v(0) = v_0 = 2a_{\text{pk}}\Delta t/\pi$, integrating gives $v(t) = (a_{\text{pk}}\Delta t/\pi)\big(1 + \cos(\pi t/\Delta t)\big)$, and integrating again over $[0, \Delta t]$ gives the stopping distance $a_{\text{pk}}\Delta t^2/\pi = v_0\Delta t/2$. Here $4.851\times0.0005181/2 = $ **1.257 mm**: the cushioning must compress at least that much while decelerating the device smoothly.
+(c) For $a = a_{\text{pk}}\sin(\pi t/\Delta t)$ with $v(0) = v_0 = 2a_{\text{pk}}\Delta t/\pi$, integrating gives $v(t) = (a_{\text{pk}}\Delta t/\pi)\big(1 + \cos(\pi t/\Delta t)\big)$, and integrating again over $[0, \Delta t]$ gives the stopping distance $a_{\text{pk}}\Delta t^2/\pi = v_0\Delta t/2$. Here \$4.851\times0.0005181/2 = \$ **1.257 mm**: the cushioning must compress at least that much while decelerating the device smoothly.
 
 ### Solution 04-01.16
 
 (a) At −10 °C: $-0.035\times(-35)^2 = $ **−42.88 ppm**. At 60 °C: $-0.035\times35^2 = $ **−42.88 ppm**: the parabola is symmetric about the turnover, and the crystal runs slow on both sides.
 
-(b) $42.875\times10^{-6}\times86{,}400 = $ **3.704 s** per day; over a year, $42.875\times10^{-6}\times365.25\times86{,}400 = 1353$ s, or **22.55 min**.
+(b) \$42.875\times10^{-6}\times86{,}400 = \$ **3.704 s** per day; over a year, $42.875\times10^{-6}\times365.25\times86{,}400 = 1353$ s, or **22.55 min**.
 
-(c) $-0.035\times7^2 = -1.715$ ppm; over 30 days, $1.715\times10^{-6}\times30\times86{,}400 = $ **4.445 s**.
+(c) $-0.035\times7^2 = -1.715$ ppm; over 30 days, \$1.715\times10^{-6}\times30\times86{,}400 = \$ **4.445 s**.
 
 (d) The error is systematic and quadratic in temperature, so it can be measured and cancelled: temperature-compensated oscillators measure the temperature and correct the frequency (or the count) electronically, holding a few ppm over a wide range. Wearables and phones also correct their clocks from the network.
 

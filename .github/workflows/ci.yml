@@ -31,6 +31,8 @@ jobs:
           python tools/progress_stats.py --check
           python tools/build_practitioner.py --check
           python tools/build_reference.py --check
+      - name: Currency signs next to inline math
+        run: python tools/check_currency.py
       - name: Internal links and anchors
         run: python tools/check_links.py
       - name: Chapter template structure

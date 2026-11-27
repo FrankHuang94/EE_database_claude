@@ -170,7 +170,7 @@ $$
 E = \frac{\ell D}{w}\ \text{engineer-years},
 $$
 
-and over a program of $T$ years the average headcount is $E/T$. The peak is higher, because staffing rises and falls (§3.1). Published design-cost estimates for leading-edge chips are contested: Arm's 2023 prospectus, citing IBS (July 2022), put a 7 nm design at about $249 M and a 2 nm design at about $725 M, while critics argue that IBS figures run 50–66% above typical costs [R-019] **[Contested]**. Converting both to engineers (Example 26-06.6) shows what each claim implies about team size, which is easier to sanity-check against a company's disclosed R&D headcount (§7).
+and over a program of $T$ years the average headcount is $E/T$. The peak is higher, because staffing rises and falls (§3.1). Published design-cost estimates for leading-edge chips are contested: Arm's 2023 prospectus, citing IBS (July 2022), put a 7 nm design at about \$249 M and a 2 nm design at about \$725 M, while critics argue that IBS figures run 50–66% above typical costs [R-019] **[Contested]**. Converting both to engineers (Example 26-06.6) shows what each claim implies about team size, which is easier to sanity-check against a company's disclosed R&D headcount (§7).
 
 ## 4. Worked examples
 
@@ -236,9 +236,9 @@ The coordination costs, ramp times, wages and loads below are **assumed** for te
 
 **Solution.**
 
-- (a) $40 \times 8 \times 75{,}000$ = **$24.0 M**.
-- (b) The load totals **175** engineer-quarters: $175 \times 112{,}500$ = **$19.7 M**.
-- (c) $C_e/C_c$ = **0.667**. A base of 10 is exceeded in 5 of 8 quarters (0.625), below the ratio, so stop at **10**. Cost: $10 \times 8 \times 75{,}000 + 95 \times 112{,}500 = 6.0 + 10.7$ = **$16.7 M**, where **95** engineer-quarters are contracted.
+- (a) $40 \times 8 \times 75{,}000$ = **\$24.0 M**.
+- (b) The load totals **175** engineer-quarters: $175 \times 112{,}500$ = **\$19.7 M**.
+- (c) $C_e/C_c$ = **0.667**. A base of 10 is exceeded in 5 of 8 quarters (0.625), below the ratio, so stop at **10**. Cost: $10 \times 8 \times 75{,}000 + 95 \times 112{,}500 = 6.0 + 10.7$ = **\$16.7 M**, where **95** engineer-quarters are contracted.
 
 **Units check.** Engineers × quarters × $/quarter = $. ✓
 
@@ -251,7 +251,7 @@ The coordination costs, ramp times, wages and loads below are **assumed** for te
 **Solution.**
 
 - (a) $0.8 \times 249 \times 10^6/300{,}000$ = **664** engineer-years; average headcount $664/2.5$ = **266**.
-- (b) Reading the critique as "IBS is 1.5 to 1.66 times typical cost", typical cost is $249/1.66$ = **$150 M** to $249/1.5$ = **$166 M**, implying an average of **160** to **177** engineers. (Read instead as "IBS is 50–66% too high", typical cost would be 34–50% of IBS; state which reading a claim uses.)
+- (b) Reading the critique as "IBS is 1.5 to 1.66 times typical cost", typical cost is $249/1.66$ = **\$150 M** to $249/1.5$ = **\$166 M**, implying an average of **160** to **177** engineers. (Read instead as "IBS is 50–66% too high", typical cost would be 34–50% of IBS; state which reading a claim uses.)
 
 **Units check.** $ ÷ ($/engineer-year) = engineer-years; ÷ years = engineers. ✓
 
@@ -381,7 +381,7 @@ The lab is [labs/26-06-lab/](../labs/26-06-lab/README.md). `team.py` implements 
 - **Chip companies are R&D organizations.** At NVIDIA about **74**% of employees work in R&D (about 31,000 of 42,000) [R-017] **[Industry estimate for the split]**, and the large chip companies spend from 8.6% (NVIDIA) to 26.1% (Intel) of revenue on R&D [R-017] **[Established]**.
 - **Verification keeps growing.** Verification engineers have grown faster than designers for fifteen years, and verification takes about half of project time [R-018, R-321] **[Industry estimate]**.
 - **Leading-edge chips take thousands of engineer-years.** NVIDIA said that "Thousands of NVIDIA engineers spent over three years crafting Volta" (2017) [R-653] **[Established, qualitative]**; no company publishes exact team sizes.
-- **Design services have scaled, and their revenue mix shows the business model.** GUC's 2025 revenue was NT$**34.1** B, of which 24% was NRE and 75% turnkey (chips delivered), against 34% NRE a year earlier; Socionext's NRE revenue was ¥**38.3** B of ¥**200.8** B in the year to March 2026, **19.1**%; Alchip's 2025 revenue fell to US$**992** M from US$**1.62** B, with NRE more than half of fourth-quarter revenue [R-652] **[Established]**. A rising turnkey share means designs moving into volume; a rising NRE share means a pipeline of new designs. Broadcom's AI semiconductor revenue (custom accelerators plus AI networking) and Marvell's custom revenue show the same model at larger scale [R-642, R-643].
+- **Design services have scaled, and their revenue mix shows the business model.** GUC's 2025 revenue was NT$**34.1** B, of which 24% was NRE and 75% turnkey (chips delivered), against 34% NRE a year earlier; Socionext's NRE revenue was ¥**38.3** B of ¥**200.8** B in the year to March 2026, **19.1**%; Alchip's 2025 revenue fell to US$**992** M from US\$**1.62** B, with NRE more than half of fourth-quarter revenue [R-652] **[Established]**. A rising turnkey share means designs moving into volume; a rising NRE share means a pipeline of new designs. Broadcom's AI semiconductor revenue (custom accelerators plus AI networking) and Marvell's custom revenue show the same model at larger scale [R-642, R-643].
 
 **Commercial relevance.** For acquisitions, the team's structure is part of what is bought: which disciplines are in-house, how much depends on contractors, who the key people are (and whether they will stay), and whether the organization's shape matches the roadmap. Integration plans that merge two functional organizations change every reporting line at once, which is when key people leave.
 

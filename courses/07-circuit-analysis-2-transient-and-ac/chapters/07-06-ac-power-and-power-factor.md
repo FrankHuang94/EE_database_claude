@@ -89,7 +89,7 @@ $$
 
 with $X_0$ any DC part. Other common cases, from the definition: a square wave of amplitude $\pm A$ has RMS $A$; a triangle or sawtooth of peak $A$ (symmetric about zero, or from 0 to $A$ respectively) has RMS $A/\sqrt3$; a half-wave rectified sine of peak $A$ has RMS $A/2$.
 
-**Crest factor** is peak over RMS: $\sqrt2 = 1.414$ for a sinusoid, $\sqrt3$ for a triangle. Meters that compute true RMS must handle the crest factor of the signal. A cheaper "average-responding" meter measures the average of the rectified signal and multiplies it by the sinusoid's **form factor**, RMS/average $= (V_m/\sqrt2)/(2V_m/\pi) = \pi/(2\sqrt2) = $ **1.111**. It therefore reads any other waveform wrongly: a square wave, whose RMS equals its rectified average, reads **11.1%** high.
+**Crest factor** is peak over RMS: $\sqrt2 = 1.414$ for a sinusoid, $\sqrt3$ for a triangle. Meters that compute true RMS must handle the crest factor of the signal. A cheaper "average-responding" meter measures the average of the rectified signal and multiplies it by the sinusoid's **form factor**, RMS/average \$= (V_m/\sqrt2)/(2V_m/\pi) = \pi/(2\sqrt2) = \$ **1.111**. It therefore reads any other waveform wrongly: a square wave, whose RMS equals its rectified average, reads **11.1%** high.
 
 ### 3.4 Complex power
 
@@ -196,13 +196,13 @@ If the load must be purely resistive ($X_L = 0$), its power is $P_L = \tfrac12\l
 
 **Solution.**
 
-(a) $\omega = $ **377.0 rad/s**, so $X = \omega L = $ **7.540 Ω** and $Z = 10 + j7.540$ Ω $= $ **12.52 Ω ∠ 37.02°**.
+(a) \$\omega = \$ **377.0 rad/s**, so \$X = \omega L = \$ **7.540 Ω** and $Z = 10 + j7.540$ Ω \$= \$ **12.52 Ω ∠ 37.02°**.
 
 (b) $I_{rms} = 120/12.52 = $ **9.582 A**, lagging the voltage by 37.02°.
 
-(c) $S = \mathbf{V}_{rms}\mathbf{I}_{rms}^* = 120\times9.582\angle37.02° = 918.1 + j692.2$ VA: $P$ = **918.1 W**, $Q$ = **692.2 var**, $\lvert S\rvert$ = **1150 VA**, and PF $= \cos37.02° = $ **0.7985** lagging. Check: $I_{rms}^2R = 9.582^2\times10 = 918.1$ W ✓ and $I_{rms}^2X = 692.2$ var ✓.
+(c) $S = \mathbf{V}_{rms}\mathbf{I}_{rms}^* = 120\times9.582\angle37.02° = 918.1 + j692.2$ VA: $P$ = **918.1 W**, $Q$ = **692.2 var**, $\lvert S\rvert$ = **1150 VA**, and PF \$= \cos37.02° = \$ **0.7985** lagging. Check: $I_{rms}^2R = 9.582^2\times10 = 918.1$ W ✓ and $I_{rms}^2X = 692.2$ var ✓.
 
-(d) $p(t) = P + \lvert S\rvert\cos(2\omega t + \ldots)$ swings between $P + \lvert S\rvert = $ **2068 W** and $P - \lvert S\rvert = $ **−231.7 W**. For about 21% of each cycle the load returns energy to the supply: its inductor giving back what it stored.
+(d) $p(t) = P + \lvert S\rvert\cos(2\omega t + \ldots)$ swings between \$P + \lvert S\rvert = \$ **2068 W** and \$P - \lvert S\rvert = \$ **−231.7 W**. For about 21% of each cycle the load returns energy to the supply: its inductor giving back what it stored.
 
 ![Voltage, current and instantaneous power of an RL load](../../../assets/figures/07-06/rl-power.svg)
 
@@ -217,9 +217,9 @@ If the load must be purely resistive ($X_L = 0$), its power is $P_L = \tfrac12\l
 
 **Solution.**
 
-(a) Over a quarter period the triangle rises linearly from 0 to $A$, so its mean square is $\frac{1}{T/4}\int_0^{T/4}\big(4At/T\big)^2dt = A^2/3$: RMS $= A/\sqrt3 = $ **0.5774 V**, crest factor $\sqrt3 = $ **1.732**.
+(a) Over a quarter period the triangle rises linearly from 0 to $A$, so its mean square is $\frac{1}{T/4}\int_0^{T/4}\big(4At/T\big)^2dt = A^2/3$: RMS \$= A/\sqrt3 = \$ **0.5774 V**, crest factor \$\sqrt3 = \$ **1.732**.
 
-(b) The components are at different frequencies, so their RMS values add in quadrature: $I_{rms} = \sqrt{(10^2 + 3^2)/2} = $ **7.382 A**. The peak occurs at $\omega t = 0$, where both cosines are 1: **13.00 A**, so the crest factor is $13/7.382 = $ **1.761**, above a sinusoid's 1.414. THD $= 3/10 = $ **30.0%**.
+(b) The components are at different frequencies, so their RMS values add in quadrature: \$I_{rms} = \sqrt{(10^2 + 3^2)/2} = \$ **7.382 A**. The peak occurs at $\omega t = 0$, where both cosines are 1: **13.00 A**, so the crest factor is \$13/7.382 = \$ **1.761**, above a sinusoid's 1.414. THD \$= 3/10 = \$ **30.0%**.
 
 **Units check.** A² averaged, then square-rooted, gives A ✓.
 **Sanity check.** A pure sinusoid of the same 10 A fundamental would have an RMS of **7.071 A**; the third harmonic adds only **0.311 A**, because quadrature sums are dominated by the largest term ✓.
@@ -230,11 +230,11 @@ If the load must be purely resistive ($X_L = 0$), its power is $P_L = \tfrac12\l
 
 **Solution.**
 
-(a) Motor: $Q = P\tan\theta = 10\tan(\arccos0.75) = 8.819$ kvar. Heating: $Q = 0$. Total $S = 14 + j8.819$ kVA, $\lvert S\rvert = $ **16.55 kVA**, PF $= 14/16.55 = $ **0.8461** lagging, $I = 16\,546/230 = $ **71.94 A**.
+(a) Motor: $Q = P\tan\theta = 10\tan(\arccos0.75) = 8.819$ kvar. Heating: $Q = 0$. Total $S = 14 + j8.819$ kVA, \$\lvert S\rvert = \$ **16.55 kVA**, PF \$= 14/16.55 = \$ **0.8461** lagging, \$I = 16\,546/230 = \$ **71.94 A**.
 
 (b) $Q_C = P(\tan\theta_1 - \tan\theta_2) = 14\big(0.6299 - 0.3287\big) = $ **4.218 kvar**, so $C = Q_C/(\omega V^2) = 4218/(314.16\times230^2) = $ **253.8 µF**.
 
-(c) $I = P/(V\times0.95) = $ **64.07 A**, and the line losses scale as $I^2$: $(64.07/71.94)^2 = $ **0.7933**, a 21% cut for the same useful power.
+(c) \$I = P/(V\times0.95) = \$ **64.07 A**, and the line losses scale as $I^2$: \$(64.07/71.94)^2 = \$ **0.7933**, a 21% cut for the same useful power.
 
 (d) Before: $14\times0.90/0.8461 = $ **14.89 kW** billed. After: PF ≥ 0.90, so the measured **14.00 kW**. The capacitor removes a **6.4%** demand surcharge.
 
@@ -253,7 +253,7 @@ If the load must be purely resistive ($X_L = 0$), its power is $P_L = \tfrac12\l
 
 (a) Conjugate match: $Z_L = $ **50 − j30 Ω**, with $P_{max} = \lvert\mathbf{V}_{Th}\rvert^2/(8R_{Th}) = 100/400 = $ **0.2500 W**.
 
-(b) $R_L = \lvert Z_{Th}\rvert = \sqrt{50^2 + 30^2} = $ **58.31 Ω**. Then $\lvert\mathbf{I}\rvert = 10/\lvert108.31 + j30\rvert = 0.08898$ A and $P_L = \tfrac12(0.08898)^2(58.31) = $ **0.2308 W**: **92.3%** of the conjugate-matched maximum.
+(b) \$R_L = \lvert Z_{Th}\rvert = \sqrt{50^2 + 30^2} = \$ **58.31 Ω**. Then $\lvert\mathbf{I}\rvert = 10/\lvert108.31 + j30\rvert = 0.08898$ A and \$P_L = \tfrac12(0.08898)^2(58.31) = \$ **0.2308 W**: **92.3%** of the conjugate-matched maximum.
 
 **Units check.** V²/Ω = W ✓.
 **Sanity check.** With no reactance in the source ($X_{Th} = 0$), both answers would reduce to 06-09's $R_L = R_{Th}$ ✓.
@@ -264,11 +264,11 @@ If the load must be purely resistive ($X_L = 0$), its power is $P_L = \tfrac12\l
 
 **Solution.**
 
-(a) Only the fundamental carries power (§3.7), and it is in phase, so $P = V_{rms}I_1$ and $I_1 = 100/230 = $ **0.4348 A** (RMS). The fundamental of alternating rectangular pulses of height $I_p$ and width $W$ centered on the cosine's peaks has peak amplitude $a_1 = \frac{4I_p}{\pi}\sin\frac{\omega W}{2}$. To see this, use the Fourier coefficient of [01-06 §3.3](../../01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md), $a_1 = \frac2T\int_Ti\cos\omega t\,dt$. The positive pulse, centered on $t = 0$, contributes $\frac2TI_p\int_{-W/2}^{W/2}\cos\omega t\,dt = \frac{4I_p}{\omega T}\sin\frac{\omega W}{2}$. The negative pulse, centered on $T/2$, contributes the same, because there both $i$ and $\cos\omega t$ change sign. With $\omega T = 2\pi$ the total is $\frac{8I_p}{2\pi}\sin\frac{\omega W}{2}$, as stated, and the same integral with $\cos3\omega t$ gives part (d). with $\omega W/2 = 2\pi\times50\times1.25\times10^{-3} = 0.3927$ rad, $I_p = \dfrac{\pi\sqrt2\,I_1}{4\sin0.3927} = $ **1.262 A**.
+(a) Only the fundamental carries power (§3.7), and it is in phase, so $P = V_{rms}I_1$ and \$I_1 = 100/230 = \$ **0.4348 A** (RMS). The fundamental of alternating rectangular pulses of height $I_p$ and width $W$ centered on the cosine's peaks has peak amplitude $a_1 = \frac{4I_p}{\pi}\sin\frac{\omega W}{2}$. To see this, use the Fourier coefficient of [01-06 §3.3](../../01-calculus-for-engineers/chapters/01-06-techniques-of-integration.md), $a_1 = \frac2T\int_Ti\cos\omega t\,dt$. The positive pulse, centered on $t = 0$, contributes $\frac2TI_p\int_{-W/2}^{W/2}\cos\omega t\,dt = \frac{4I_p}{\omega T}\sin\frac{\omega W}{2}$. The negative pulse, centered on $T/2$, contributes the same, because there both $i$ and $\cos\omega t$ change sign. With $\omega T = 2\pi$ the total is $\frac{8I_p}{2\pi}\sin\frac{\omega W}{2}$, as stated, and the same integral with $\cos3\omega t$ gives part (d). with $\omega W/2 = 2\pi\times50\times1.25\times10^{-3} = 0.3927$ rad, \$I_p = \dfrac{\pi\sqrt2\,I_1}{4\sin0.3927} = \$ **1.262 A**.
 
-(b) The current is $\pm I_p$ for a fraction $d = 2W/T = 0.25$ of the time and zero otherwise, so $I_{rms} = I_p\sqrt{d} = $ **0.6310 A**, and $\lvert S\rvert = 230\times0.6310 = $ **145.1 VA**.
+(b) The current is $\pm I_p$ for a fraction $d = 2W/T = 0.25$ of the time and zero otherwise, so \$I_{rms} = I_p\sqrt{d} = \$ **0.6310 A**, and \$\lvert S\rvert = 230\times0.6310 = \$ **145.1 VA**.
 
-(c) PF $= 100/145.1 = $ **0.6891**. The displacement factor is 1 (no phase shift), so all of it is distortion: $I_1/I_{rms} = 0.6891$, and $\text{THD} = \sqrt{1/0.6891^2 - 1} = $ **105.2%**.
+(c) PF \$= 100/145.1 = \$ **0.6891**. The displacement factor is 1 (no phase shift), so all of it is distortion: $I_1/I_{rms} = 0.6891$, and \$\text{THD} = \sqrt{1/0.6891^2 - 1} = \$ **105.2%**.
 
 (d) The third harmonic's amplitude is $\frac{4I_p}{3\pi}\sin\frac{3\omega W}{2}$, which is **80.47%** of the fundamental.
 

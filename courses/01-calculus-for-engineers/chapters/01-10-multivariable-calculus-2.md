@@ -249,7 +249,7 @@ Average: $70/100 = $ **0.7 W/mm²**. Peak at (10, 10): $0.2 + 2 = $ **2.2 W/mm²
 
 **Solution.**
 
-(a) By polar coordinates (§3.3), $I^2 = \pi$, so $I = \sqrt{\pi} = $ **1.772**.
+(a) By polar coordinates (§3.3), $I^2 = \pi$, so \$I = \sqrt{\pi} = \$ **1.772**.
 
 (b) $1 - e^{-2} = $ **86.47%**.
 
@@ -286,9 +286,9 @@ Figure 4 shows the edge loss directly for large dies.
 
 **Solution.**
 
-(a) $\partial F_y/\partial x = 2x = \partial F_x/\partial y$, so $\vec{F}$ is conservative, with potential $\varphi = x^2y$. Both paths therefore give $\varphi(1, 2) - \varphi(0, 0) = $ **2**. Check the axis path: along the $x$ axis $y = 0$, so $F_x = 0$, contributing 0. Up the line $x = 1$, $F_y = 1$, so $\int_0^21\,dy = 2$ ✓.
+(a) $\partial F_y/\partial x = 2x = \partial F_x/\partial y$, so $\vec{F}$ is conservative, with potential $\varphi = x^2y$. Both paths therefore give \$\varphi(1, 2) - \varphi(0, 0) = \$ **2**. Check the axis path: along the $x$ axis $y = 0$, so $F_x = 0$, contributing 0. Up the line $x = 1$, $F_y = 1$, so $\int_0^21\,dy = 2$ ✓.
 
-(b) $\vec{B} = \frac{\mu_0I}{2\pi r}\hat{\boldsymbol\theta}$ is tangent to the circle and constant in magnitude, so $\oint\vec{B}\cdot d\vec{l} = \frac{\mu_0I}{2\pi r}\cdot2\pi r = \mu_0I = $ **1.257×10^−6 T·m**, independent of $r$.
+(b) $\vec{B} = \frac{\mu_0I}{2\pi r}\hat{\boldsymbol\theta}$ is tangent to the circle and constant in magnitude, so \$\oint\vec{B}\cdot d\vec{l} = \frac{\mu_0I}{2\pi r}\cdot2\pi r = \mu_0I = \$ **1.257×10^−6 T·m**, independent of $r$.
 
 **Interpretation.** The magnetic field's circulation measures the enclosed current. Its curl is zero everywhere except on the wire, yet the loop integral is not zero: the wire is a "hole" in the region, so zero curl alone does not make the field conservative there (Problem 01-10.15).
 
@@ -302,7 +302,7 @@ $$
 Q = \int_0^R\rho_0\left(1 - \frac{r}{R}\right)4\pi r^2\,dr = 4\pi\rho_0\left(\frac{R^3}{3} - \frac{R^3}{4}\right) = \frac{\pi\rho_0R^3}{3} = \mathbf{1.047\times10^{-9}\ C}.
 $$
 
-By Gauss's law on a sphere of radius $R$: $E(R) = \dfrac{Q}{4\pi\varepsilon_0R^2} = $ **941.2 V/m**, pointing outward.
+By Gauss's law on a sphere of radius $R$: \$E(R) = \dfrac{Q}{4\pi\varepsilon_0R^2} = \$ **941.2 V/m**, pointing outward.
 
 **Interpretation.** Symmetry turned a three-dimensional integral into a one-dimensional one, and a field calculation into an algebra step. Electromagnetic design relies on such symmetry arguments. Problem 01-10.12 finds that this field actually peaks *inside* the sphere.
 

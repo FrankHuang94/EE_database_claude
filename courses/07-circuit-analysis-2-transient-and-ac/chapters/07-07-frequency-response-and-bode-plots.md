@@ -319,9 +319,9 @@ The 16% overshoot is 02-03's $e^{-\pi\zeta/\sqrt{1-\zeta^2}}$ at ζ = 0.5. A dat
 
 **Solution.**
 
-(a) $A_v = 1.0/0.05 = 20$, so $20\lg 20 = $ **26.02 dB**.
+(a) $A_v = 1.0/0.05 = 20$, so \$20\lg 20 = \$ **26.02 dB**.
 
-(b) $P_{in} = 0.05^2/10^4 = 0.25$ µW and $P_{out} = 1^2/100 = 10$ mW. Their ratio is 40 000, or $10\lg 40\,000 = $ **46.02 dB**. The difference, **20.00 dB**, is $10\lg(R_{in}/R_L) = 10\lg 100$ (§3.2): the amplifier also transforms a high impedance into a low one, and power gain counts that.
+(b) $P_{in} = 0.05^2/10^4 = 0.25$ µW and $P_{out} = 1^2/100 = 10$ mW. Their ratio is 40 000, or \$10\lg 40\,000 = \$ **46.02 dB**. The difference, **20.00 dB**, is $10\lg(R_{in}/R_L) = 10\lg 100$ (§3.2): the amplifier also transforms a high impedance into a low one, and power gain counts that.
 
 (c) Output: $20\lg(1.0/1\ \text{V}) = $ **0.00 dBV**, and $10\lg(10\ \text{mW}/1\ \text{mW}) = $ **10.00 dBm**. Input: $20\lg 0.05 = $ **−26.02 dBV** and $10\lg(0.25\ \text{µW}/1\ \text{mW}) = $ **−36.02 dBm**. The power levels differ by the power gain (10.00 − (−36.02) = 46.02 dB) and the voltage levels by the voltage gain (26.02 dB), as they must.
 
@@ -428,7 +428,7 @@ $$
 
 **Solution.**
 
-(a) $A_0 = 10^{130/20} = 3.162\times10^6$, so $f_a = $ GBW/$A_0$ = **3.162 Hz**. With $A_0 = 10^{104/20} = 1.585\times10^5$, $f_a$ = **63.10 Hz**. The open-loop gain starts falling at a few hertz.
+(a) $A_0 = 10^{130/20} = 3.162\times10^6$, so \$f_a = \$ GBW/$A_0$ = **3.162 Hz**. With $A_0 = 10^{104/20} = 1.585\times10^5$, $f_a$ = **63.10 Hz**. The open-loop gain starts falling at a few hertz.
 
 (b) $\beta$ = 1/100. Typical: bandwidth $f_a(1 + A_0\beta) = 3.162\times(1 + 31\,623)$ = **100.0 kHz**. Gain $A_0/(1 + A_0\beta)$ = 99.9968, an error of **0.0032%**. Minimum: bandwidth **100.1 kHz**, but gain 99.937, an error of **0.063%**. The bandwidth is set by GBW and barely moves. The DC accuracy is set by $A_0$ and moves twentyfold.
 

@@ -167,7 +167,7 @@ The integrator maps to the pole at $z$ = 1, and the ZOH introduces a zero at $z$
 
 **Setup.** Discretize 15-08's thermal PI controller ($K_p$ = 14 W/K, $K_i$ = 5 W/(K·s), plant $0.5/(10s + 1)$ K/W) with Tustin at $T$ = 0.5 s and at $T$ = 2 s. Give the difference equation and compare overshoot and phase margin with the continuous design (12.6%, 72.4°).
 
-**Solution.** With $T$ = 0.5 s: $u_k = u_{k-1} + $ **15.25** $e_k$ **− 12.75** $e_{k-1}$. Simulating the sampled loop (exactly, with the ZOH plant): overshoot **15.7**%, phase margin **61.7**° (from the discrete loop gain on the unit circle). With $T$ = 2 s: $u_k = u_{k-1} + 19e_k - 9e_{k-1}$; overshoot **72.2**% and phase margin **29.9**°.
+**Solution.** With $T$ = 0.5 s: \$u_k = u_{k-1} + \$ **15.25** $e_k$ **− 12.75** $e_{k-1}$. Simulating the sampled loop (exactly, with the ZOH plant): overshoot **15.7**%, phase margin **61.7**° (from the discrete loop gain on the unit circle). With $T$ = 2 s: $u_k = u_{k-1} + 19e_k - 9e_{k-1}$; overshoot **72.2**% and phase margin **29.9**°.
 
 At $T$ = 0.5 s, about 20 samples per plant time constant, the digital loop is close to the analog one (losing about 11° of margin). At $T$ = 2 s the first sample applies a 19 W step for 2 s, the hold's delay is large, and the response overshoots badly even though the closed-loop poles are well inside the unit circle.
 

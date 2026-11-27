@@ -12,8 +12,8 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (a) $f'(x) = 3x^2 - 3 = 0$ at $x = \pm1$. Then $f''(x) = 6x$:
 
-- $f''(-1) = -6 < 0$, a local maximum, $f(-1) = $ **2**;
-- $f''(1) = 6 > 0$, a local minimum, $f(1) = $ **−2**.
+- $f''(-1) = -6 < 0$, a local maximum, \$f(-1) = \$ **2**;
+- $f''(1) = 6 > 0$, a local minimum, \$f(1) = \$ **−2**.
 
 (b) Compare the critical values with the endpoint values $f(-2) = -8 + 6 = -2$ and $f(3) = 27 - 9 = 18$.
 
@@ -22,9 +22,9 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 01-04.2
 
-(a) $f'(x) = e^{-x} - xe^{-x} = (1 - x)e^{-x}$, zero at $x = 1$. It changes from + to −, so this is a maximum, $f(1) = e^{-1} = $ **0.3679**.
+(a) $f'(x) = e^{-x} - xe^{-x} = (1 - x)e^{-x}$, zero at $x = 1$. It changes from + to −, so this is a maximum, \$f(1) = e^{-1} = \$ **0.3679**.
 
-(b) $f''(x) = -e^{-x} - (1 - x)e^{-x} = (x - 2)e^{-x}$, zero at $x = 2$, where the sign changes (concave down before, concave up after). The inflection point is at $x = 2$, $f(2) = 2e^{-2} = $ **0.2707**.
+(b) $f''(x) = -e^{-x} - (1 - x)e^{-x} = (x - 2)e^{-x}$, zero at $x = 2$, where the sign changes (concave down before, concave up after). The inflection point is at $x = 2$, \$f(2) = 2e^{-2} = \$ **0.2707**.
 
 (c) $x/e^x$ is an ∞/∞ form. L'Hôpital gives $1/e^x \to$ **0**.
 
@@ -38,11 +38,11 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (d) 0/0. The first application gives $\dfrac{3\sin 3x}{2x}$, still 0/0. The second gives $\dfrac{9\cos 3x}{2} \to$ **4.5**. (Alternatively, $1 - \cos u \approx u^2/2$ with $u = 3x$ gives $9x^2/2 \div x^2$.)
 
-(e) Let $y = x^{1/x}$, so $\ln y = \dfrac{\ln x}{x}$, an ∞/∞ form → $\dfrac{1/x}{1} \to 0$. So $y \to e^0 = $ **1**.
+(e) Let $y = x^{1/x}$, so $\ln y = \dfrac{\ln x}{x}$, an ∞/∞ form → $\dfrac{1/x}{1} \to 0$. So \$y \to e^0 = \$ **1**.
 
 ### Solution 01-04.4
 
-(a) $f(x) = \sqrt{x}$ at $a = 4$: $f' = 1/(2\sqrt{x}) = 1/4$, so $L(4.1) = 2 + 0.1/4 = $ **2.025**. Exact: **2.0248**. Since $f''(x) = -\tfrac{1}{4}x^{-3/2}$, $f''(4) = -1/32$, and the predicted error is $\tfrac{1}{2}(-1/32)(0.1)^2 = $ **−1.56×10^−4**. The actual error, exact minus linear, is $-1.54\times10^{-4}$ ✓.
+(a) $f(x) = \sqrt{x}$ at $a = 4$: $f' = 1/(2\sqrt{x}) = 1/4$, so \$L(4.1) = 2 + 0.1/4 = \$ **2.025**. Exact: **2.0248**. Since $f''(x) = -\tfrac{1}{4}x^{-3/2}$, $f''(4) = -1/32$, and the predicted error is \$\tfrac{1}{2}(-1/32)(0.1)^2 = \$ **−1.56×10^−4**. The actual error, exact minus linear, is $-1.54\times10^{-4}$ ✓.
 
 (b) $e^x$ at 0: $L = 1 + x$, so $e^{0.05} \approx$ **1.05**. Exact: **1.051**. The linearization underestimates, because $e^x$ curves up.
 
@@ -52,17 +52,17 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 01-04.5
 
-(a) $R_L = R_s = $ **2 kΩ**, and $P_{max} = V_s^2/(4R_s) = 1/8000$ W $= $ **125 µW**.
+(a) \$R_L = R_s = \$ **2 kΩ**, and $P_{max} = V_s^2/(4R_s) = 1/8000$ W \$= \$ **125 µW**.
 
 (b) $P = 1^2\times1000/3000^2 = $ **111.1 µW**, or **88.9%** of the maximum.
 
-(c) With $R_L$ fixed, $P = V_s^2R_L/(R_s + R_L)^2$ *decreases* as $R_s$ grows, so the best choice is $R_s = $ **0**. There is no contradiction. Part (a) optimized the load for a given source; this part optimizes the source for a given load. The variable you optimize over changes the answer. Low source resistance is always better for delivering power; matching is the right answer only when the source is fixed.
+(c) With $R_L$ fixed, $P = V_s^2R_L/(R_s + R_L)^2$ *decreases* as $R_s$ grows, so the best choice is \$R_s = \$ **0**. There is no contradiction. Part (a) optimized the load for a given source; this part optimizes the source for a given load. The variable you optimize over changes the answer. Low source resistance is always better for delivering power; matching is the right answer only when the source is fixed.
 
 ### Solution 01-04.6
 
-(a) $T'(n) = 20 - 800/n^2 = 0$ gives $n^\ast = \sqrt{40} = $ **6.325**, and $T_{min} = 2\sqrt{20\times800} = $ **253.0 ps** (the balance principle, §3.4). $T''(n) = 1600/n^3 > 0$, so it is a minimum.
+(a) $T'(n) = 20 - 800/n^2 = 0$ gives \$n^\ast = \sqrt{40} = \$ **6.325**, and \$T_{min} = 2\sqrt{20\times800} = \$ **253.0 ps** (the balance principle, §3.4). $T''(n) = 1600/n^3 > 0$, so it is a minimum.
 
-(b) $T(6) = 120 + 133.3 = $ **253.3 ps** and $T(7) = 140 + 114.3 = 254.3$ ps. The best integer is **6**.
+(b) \$T(6) = 120 + 133.3 = \$ **253.3 ps** and $T(7) = 140 + 114.3 = 254.3$ ps. The best integer is **6**.
 
 (c) $T(1) = 20 + 800 = $ **820 ps** (the driver plus the whole wire). Repeaters make the wire $820/253.3 = $ **3.2 times** faster.
 
@@ -80,7 +80,7 @@ Only multiplication and subtraction are needed.
 
 (b) $x_1 = 0.3(2 - 0.9) = $ **0.33**; $x_2 = 0.33(2 - 0.99) = $ **0.3333**; $x_3 = 0.3333(2 - 0.9999) = $ **0.33333333**.
 
-(c) $1 - ax_{k+1} = 1 - ax_k(2 - ax_k) = 1 - 2ax_k + a^2x_k^2 = (1 - ax_k)^2$, so $\varepsilon_{k+1} = \varepsilon_k^2$ exactly. With $\varepsilon_0 = 1 - 0.9 = 0.1$: $\varepsilon_1 = $ **0.01**, $\varepsilon_2 = $ **10^−4**, $\varepsilon_3 = $ **10^−8**.
+(c) $1 - ax_{k+1} = 1 - ax_k(2 - ax_k) = 1 - 2ax_k + a^2x_k^2 = (1 - ax_k)^2$, so $\varepsilon_{k+1} = \varepsilon_k^2$ exactly. With $\varepsilon_0 = 1 - 0.9 = 0.1$: \$\varepsilon_1 = \$ **0.01**, \$\varepsilon_2 = \$ **10^−4**, \$\varepsilon_3 = \$ **10^−8**.
 
 (d) The exponent doubles each iteration: $2^{-8} \to 2^{-16} \to 2^{-32} \to 2^{-64}$. **3 iterations** pass $2^{-53}$.
 
@@ -99,7 +99,7 @@ Only multiplication and subtraction are needed.
 
 From 1.0, the iterates alternate in sign and converge quickly, in fact *cubically* at the end: $\lvert e_4\rvert/\lvert e_3\rvert^3 = 0.667$. The reason is that $f''(0) = 0$ for arctan (it is odd), so the quadratic error term of the chapter's formula vanishes. Expanding, $x - \arctan x\,(1 + x^2) = -\tfrac23x^3 + \cdots$, so $e_{k+1} \approx -\tfrac23e_k^3$. From 1.5, they alternate in sign with *growing* magnitude: divergence. The tangent of the flattening arctan curve, far from the root, is nearly horizontal, and it throws the next guess far past the root.
 
-(c) Setting $x_{k+1} = -x_k$ gives $2x = (1 + x^2)\arctan x$. Solving numerically (bisection on $[1, 2]$) gives $x_c = $ **1.392**. Starting below it converges; starting above it diverges.
+(c) Setting $x_{k+1} = -x_k$ gives $2x = (1 + x^2)\arctan x$. Solving numerically (bisection on $[1, 2]$) gives \$x_c = \$ **1.392**. Starting below it converges; starting above it diverges.
 
 (d) Add a bracket and a bisection fallback (a hybrid method), or damp each step: halve it while $\lvert f\rvert$ does not decrease. SPICE limits the per-iteration voltage change for the same reason.
 
@@ -107,7 +107,7 @@ From 1.0, the iterates alternate in sign and converge quickly, in fact *cubicall
 
 (a) $C = \varepsilon_0A/d = 8.854\times10^{-12}\times10^{-6}/(2\times10^{-6}) = $ **4.427 pF**.
 
-(b) $\dfrac{dC}{dt} = -\dfrac{\varepsilon_0A}{d^2}\dfrac{dd}{dt} = -\dfrac{8.854\times10^{-18}}{4\times10^{-12}}\times10^{-3} = -2.214\times10^{-9}$ F/s. Then $i = V\,dC/dt = 5\times(-2.214\times10^{-9}) = $ **−11.07 nA**. The negative sign means charge flows *out* of the capacitor as it loses capacitance.
+(b) $\dfrac{dC}{dt} = -\dfrac{\varepsilon_0A}{d^2}\dfrac{dd}{dt} = -\dfrac{8.854\times10^{-18}}{4\times10^{-12}}\times10^{-3} = -2.214\times10^{-9}$ F/s. Then \$i = V\,dC/dt = 5\times(-2.214\times10^{-9}) = \$ **−11.07 nA**. The negative sign means charge flows *out* of the capacitor as it loses capacitance.
 
 (c) $dC/dt \propto 1/d^2$, so halving the gap multiplies the current by **4**. This is why MEMS microphones and accelerometers use micrometer gaps, and also why they are fragile: the electrostatic force grows as $1/d^2$ too ("pull-in").
 
@@ -115,7 +115,7 @@ From 1.0, the iterates alternate in sign and converge quickly, in fact *cubicall
 
 (a) $P = 25/100 = $ **0.25 W**.
 
-(b) The elasticities are $S_V = 2$ and $S_R = -1$. Worst case: $2(1\%) + 1(2\%) = $ **4%**, i.e. ±**0.01 W**.
+(b) The elasticities are $S_V = 2$ and $S_R = -1$. Worst case: \$2(1\%) + 1(2\%) = \$ **4%**, i.e. ±**0.01 W**.
 
 (c) RSS: $\sqrt{(2\times1)^2 + (1\times2)^2}\% = \sqrt{8}\% = $ **2.828%**, i.e. ±**0.00707 W**.
 
@@ -129,7 +129,7 @@ From 1.0, the iterates alternate in sign and converge quickly, in fact *cubicall
 
 (c) By the MVT, $\sin a - \sin b = \cos(c)(a - b)$ for some $c$ between $a$ and $b$. Since $\lvert\cos c\rvert \le 1$, $\lvert\sin a - \sin b\rvert \le \lvert a - b\rvert$. $\blacksquare$
 
-(d) $\lvert dv/dt\rvert = \lvert i\rvert/C \le 0.01/10^{-6} = 10^4$ V/s, so $\lvert\Delta v\rvert \le 10^4\times50\times10^{-6} = $ **0.5 V**.
+(d) $\lvert dv/dt\rvert = \lvert i\rvert/C \le 0.01/10^{-6} = 10^4$ V/s, so \$\lvert\Delta v\rvert \le 10^4\times50\times10^{-6} = \$ **0.5 V**.
 
 ### Solution 01-04.12
 
@@ -143,29 +143,29 @@ From 1.0, the iterates alternate in sign and converge quickly, in fact *cubicall
 
 ### Solution 01-04.13
 
-(a) Expand: $T = \dfrac{600}{n} + 600\times0.04 + 40 + 40\times0.04\,n = 64 + \dfrac{600}{n} + 1.6n$. This is the balance form $an + b/n$ plus a constant, with $a = 1.6$ and $b = 600$. So $n^\ast = \sqrt{600/1.6} = $ **19.36**, and $T_{min} = 64 + 2\sqrt{960} = $ **125.97 ps**.
+(a) Expand: $T = \dfrac{600}{n} + 600\times0.04 + 40 + 40\times0.04\,n = 64 + \dfrac{600}{n} + 1.6n$. This is the balance form $an + b/n$ plus a constant, with $a = 1.6$ and $b = 600$. So \$n^\ast = \sqrt{600/1.6} = \$ **19.36**, and \$T_{min} = 64 + 2\sqrt{960} = \$ **125.97 ps**.
 
-(b) $T(1) = $ **665.6 ps**; $T(5) = $ **192.0 ps**; $T(19) = $ **125.98 ps** (the best integer; $T(20) = 126.0$ ps). The speedup over $n = 1$ is $665.6/125.98 = $ **5.28×**.
+(b) \$T(1) = \$ **665.6 ps**; \$T(5) = \$ **192.0 ps**; \$T(19) = \$ **125.98 ps** (the best integer; $T(20) = 126.0$ ps). The speedup over $n = 1$ is \$665.6/125.98 = \$ **5.28×**.
 
 (c) At half the optimal depth (9.68) and at double (38.7), $T = $ **141.46 ps**, only **12.3%** slower. The optimum is broad. That is why real designs can sit some distance from the "optimal" depth for power or design-effort reasons.
 
-(d) $T = 52 + 600/n + 0.8n$, so $n^\ast = \sqrt{600/0.8} = $ **27.39**, with $T_{min} = $ **95.82 ps**. Better branch prediction justifies deeper pipelines. This is the historical logic of the deep-pipeline era (Hartstein and Puzak, ISCA 2002, analyzed it in this spirit), and also part of why power limits later pulled depths back down.
+(d) $T = 52 + 600/n + 0.8n$, so \$n^\ast = \sqrt{600/0.8} = \$ **27.39**, with \$T_{min} = \$ **95.82 ps**. Better branch prediction justifies deeper pipelines. This is the historical logic of the deep-pipeline era (Hartstein and Puzak, ISCA 2002, analyzed it in this spirit), and also part of why power limits later pulled depths back down.
 
 ### Solution 01-04.14
 
 (a) The errors $e_k = x_k - \sqrt{2}$ are $8.579\times10^{-2}$, $2.453\times10^{-3}$, $2.124\times10^{-6}$ and $1.595\times10^{-12}$. The ratios $e_{k+1}/e_k^2$ are **0.3333**, **0.3529** and **0.3535**.
 
-(b) $f'(r) = 2\sqrt{2}$ and $f'' = 2$, so $f''/(2f') = 2/(4\sqrt{2}) = 1/(2\sqrt{2}) = $ **0.3536**. The ratios approach it ✓.
+(b) $f'(r) = 2\sqrt{2}$ and $f'' = 2$, so \$f''/(2f') = 2/(4\sqrt{2}) = 1/(2\sqrt{2}) = \$ **0.3536**. The ratios approach it ✓.
 
 (c) For $f = x^2 - 2$, $f'' = 2$ is constant and $f'(x_k) = 2x_k$, so the chapter's formula is *exact*: $e_{k+1} = e_k^2/(2x_k)$. The ratios are therefore $1/(2x_k)$ at the current iterate: $1/(2\times1.5) = 0.3333$ at $x_1 = 1.5$, then $1/(2\times1.41667) = 0.3529$, then $1/(2\times1.414216) = 0.3535$. As $x_k \to \sqrt2$ they converge to the limiting constant $1/(2\sqrt2)$.
 
 ### Solution 01-04.15
 
-(a) $dT/dt = \dfrac{PR_{th}}{\tau}e^{-t/\tau}$, which is $50/2 = $ **25 K/s** at $t = 0$. The steady state is $40 + 50 = $ **90 °C**. Solve $40 + 50(1 - e^{-t/2}) = 85$: $e^{-t/2} = 0.1$, so $t = 2\ln 10 = $ **4.605 s**.
+(a) $dT/dt = \dfrac{PR_{th}}{\tau}e^{-t/\tau}$, which is \$50/2 = \$ **25 K/s** at $t = 0$. The steady state is \$40 + 50 = \$ **90 °C**. Solve $40 + 50(1 - e^{-t/2}) = 85$: $e^{-t/2} = 0.1$, so \$t = 2\ln 10 = \$ **4.605 s**.
 
-(b) At 150 W the steady state would be 115 °C. Solve $45 = 75(1 - e^{-t/2})$: $e^{-t/2} = 0.4$, so $t = -2\ln 0.4 = $ **1.833 s**. The linear estimate uses the initial rate $75/2 = 37.5$ K/s: $45/37.5 = $ **1.2 s**. The linear estimate is **safer**. The heating rate only *decreases* over time, so the true temperature always lies below the tangent line, and the tangent reaches 85 °C first. A controller using the linear estimate throttles early and never overshoots the limit, at the cost of 0.6 s of lost turbo.
+(b) At 150 W the steady state would be 115 °C. Solve $45 = 75(1 - e^{-t/2})$: $e^{-t/2} = 0.4$, so \$t = -2\ln 0.4 = \$ **1.833 s**. The linear estimate uses the initial rate $75/2 = 37.5$ K/s: \$45/37.5 = \$ **1.2 s**. The linear estimate is **safer**. The heating rate only *decreases* over time, so the true temperature always lies below the tangent line, and the tangent reaches 85 °C first. A controller using the linear estimate throttles early and never overshoots the limit, at the cost of 0.6 s of lost turbo.
 
-(c) Sustainable forever: $40 + 0.5P \le 85$, so $P \le $ **90 W**.
+(c) Sustainable forever: $40 + 0.5P \le 85$, so \$P \le \$ **90 W**.
 
 ---
 

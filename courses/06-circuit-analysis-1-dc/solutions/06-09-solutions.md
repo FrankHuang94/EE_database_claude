@@ -10,15 +10,15 @@ Problems: [06-09 problems](../problems/06-09-problems.md) · Chapter: [06-09](..
 
 (a) $p_{max} = 6^2/(4\times300) = $ **30 mW** into **300 Ω**.
 
-(b) 100 Ω: $36\times100/400^2 = $ **22.5 mW**; 900 Ω: $36\times900/1200^2 = $ **22.5 mW**. They are equal because $100\times900 = 300^2$: loads $R_{th}/k$ and $kR_{th}$ receive the same power (here $k$ = 3).
+(b) 100 Ω: \$36\times100/400^2 = \$ **22.5 mW**; 900 Ω: \$36\times900/1200^2 = \$ **22.5 mW**. They are equal because $100\times900 = 300^2$: loads $R_{th}/k$ and $kR_{th}$ receive the same power (here $k$ = 3).
 
 ### Solution 06-09.2
 
-(a) $\eta = 4/(1 + 4) = $ **80%**. (b) $p/p_{max} = 4\times4/(1 + 4)^2 = 16/25 = $ **0.64**, and $4\times0.8\times0.2 = 0.64$ ✓.
+(a) \$\eta = 4/(1 + 4) = \$ **80%**. (b) \$p/p_{max} = 4\times4/(1 + 4)^2 = 16/25 = \$ **0.64**, and $4\times0.8\times0.2 = 0.64$ ✓.
 
 ### Solution 06-09.3
 
-$R_{th}$ = 2 kΩ, so the matched load is **2 kΩ**. The 10 mA splits equally: 5 mA into the load at **10 V**, giving $p_{max} = I_N^2R_{th}/4 = 0.01^2\times2000/4 = $ **50 mW**.
+$R_{th}$ = 2 kΩ, so the matched load is **2 kΩ**. The 10 mA splits equally: 5 mA into the load at **10 V**, giving \$p_{max} = I_N^2R_{th}/4 = 0.01^2\times2000/4 = \$ **50 mW**.
 
 ### Solution 06-09.4
 
@@ -30,7 +30,7 @@ $R_{th}$ = 2 kΩ, so the matched load is **2 kΩ**. The 10 mA splits equally: 5 
 
 (a) $48^2/(4\times0.25) = $ **2304 W**, at 96 A and 50% efficiency.
 
-(b) $R_L = 0.95\times0.25/0.05 = $ **4.75 Ω**; the current is $48/5 = 9.6$ A and the load receives $9.6^2\times4.75 = $ **437.8 W**.
+(b) \$R_L = 0.95\times0.25/0.05 = \$ **4.75 Ω**; the current is $48/5 = 9.6$ A and the load receives \$9.6^2\times4.75 = \$ **437.8 W**.
 
 (c) At 30 A the internal drop is 7.5 V, so the load sees **40.5 V** and receives $30\times40.5 = $ **1215 W** at **84.4%** efficiency (the pack dissipates 225 W, a thermal problem in itself).
 
@@ -44,11 +44,11 @@ $R_{th}$ = 2 kΩ, so the matched load is **2 kΩ**. The 10 mA splits equally: 5 
 
 ### Solution 06-09.7
 
-$R_L$ = **33.49 Ω** and $p_{max} = 0.9665^2/(4\times0.03349) = $ **6.973 mW** per V² of input (in V and kΩ). The real limit is large-signal: the transistor must source the load current through its emitter, and with a resistive emitter load it can only pull the output down as far as $R_E$ allows; the swing (and the bias current) caps the deliverable power well before the small-signal formula matters for large inputs.
+$R_L$ = **33.49 Ω** and \$p_{max} = 0.9665^2/(4\times0.03349) = \$ **6.973 mW** per V² of input (in V and kΩ). The real limit is large-signal: the transistor must source the load current through its emitter, and with a resistive emitter load it can only pull the output down as far as $R_E$ allows; the swing (and the bias current) caps the deliverable power well before the small-signal formula matters for large inputs.
 
 ### Solution 06-09.8
 
-(a) $v = V_{th}R_L/(R_{th} + R_L)$. For 100 Ω: $100/50 = $ **2 V**, power $4/100 = $ **40 mW**. For 60 Ω: $60/10 = $ **6 V**, power $36/60 = $ **600 mW**.
+(a) $v = V_{th}R_L/(R_{th} + R_L)$. For 100 Ω: \$100/50 = \$ **2 V**, power \$4/100 = \$ **40 mW**. For 60 Ω: \$60/10 = \$ **6 V**, power \$36/60 = \$ **600 mW**.
 
 (b) The denominator $R_L - 50$ goes to zero: voltage, current and power grow without bound. In a real circuit the dependent source saturates or the circuit oscillates.
 
@@ -56,7 +56,7 @@ $R_L$ = **33.49 Ω** and $p_{max} = 0.9665^2/(4\times0.03349) = $ **6.973 mW** p
 
 ### Solution 06-09.9
 
-(a) $\Delta T$ = 20 K: $V_{oc}$ = 0.8 V, $p_{max} = 0.8^2/16 = $ **40 mW**. $\Delta T$ = 10 K: $V_{oc}$ = 0.4 V, $p_{max} = $ **10 mW** (power scales with $\Delta T^2$).
+(a) $\Delta T$ = 20 K: $V_{oc}$ = 0.8 V, \$p_{max} = 0.8^2/16 = \$ **40 mW**. $\Delta T$ = 10 K: $V_{oc}$ = 0.4 V, \$p_{max} = \$ **10 mW** (power scales with $\Delta T^2$).
 
 (b) At 20 K, 0.4 V is exactly $V_{oc}/2$: **40 mW**. At 10 K, 0.4 V equals $V_{oc}$: no current flows, **0 mW**.
 
@@ -66,7 +66,7 @@ $R_L$ = **33.49 Ω** and $p_{max} = 0.9665^2/(4\times0.03349) = $ **6.973 mW** p
 
 ### Solution 06-09.10
 
-(a) Minimum loss: $76.71/\sqrt{2.1} = $ **52.93 Ω**; maximum power: $30.0/\sqrt{2.1} = $ **20.70 Ω** (the optimal ratios $b/a$ are unchanged; only $Z_0$ scales with $1/\sqrt{\varepsilon_r}$).
+(a) Minimum loss: \$76.71/\sqrt{2.1} = \$ **52.93 Ω**; maximum power: \$30.0/\sqrt{2.1} = \$ **20.70 Ω** (the optimal ratios $b/a$ are unchanged; only $Z_0$ scales with $1/\sqrt{\varepsilon_r}$).
 
 (b) $b/a = \exp(50\sqrt{2.1}/60) = $ **3.345**. Loss relative to the minimum: $f(3.345)/f(3.591) = $ **1.002** (0.2% above the optimum); power capacity relative to the maximum: $g(3.345)/g(1.649) = $ **0.587**. With a solid dielectric, 50 Ω is essentially the low-loss design.
 

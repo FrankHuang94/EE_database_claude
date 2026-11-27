@@ -24,7 +24,7 @@ Check with the rules: $f'(x) = 6x - 1 = 5$ at $x = 1$ ✓.
 
 (a) $12x^2 - 2$, which is **46** at $x = 2$.
 (b) $-2x^{-3}$, which is **−2** at $x = 1$.
-(c) $\tfrac{1}{2}x^{-1/2}$, which is $\tfrac{1}{2}\cdot\tfrac{1}{3} = $ **0.1667** at $x = 9$.
+(c) $\tfrac{1}{2}x^{-1/2}$, which is \$\tfrac{1}{2}\cdot\tfrac{1}{3} = \$ **0.1667** at $x = 9$.
 (d) $5x^{-3} \to -15x^{-4}$, which is **−15** at $x = 1$.
 
 ### Solution 01-03.3
@@ -32,22 +32,22 @@ Check with the rules: $f'(x) = 6x - 1 = 5$ at $x = 1$ ✓.
 (a) $-3e^{-3t}$, which is **−3** at $t = 0$.
 (b) $\ln(5x) = \ln 5 + \ln x$, so the derivative is $1/x$, which is **0.5** at $x = 2$. (The constant factor 5 disappears, as the log law predicts.)
 (c) $377\cos(377t)$, which is **377** at $t = 0$ (in 1/s).
-(d) $2^x\ln 2$, which is $8\ln 2 = $ **5.545** at $x = 3$.
-(e) $\sec^2 x = 1 + \tan^2 x$, which is $1 + 1 = $ **2** at $\pi/4$.
+(d) $2^x\ln 2$, which is \$8\ln 2 = \$ **5.545** at $x = 3$.
+(e) $\sec^2 x = 1 + \tan^2 x$, which is \$1 + 1 = \$ **2** at $\pi/4$.
 
 ### Solution 01-03.4
 
-(a) Product rule: $2xe^x + x^2e^x = (2x + x^2)e^x$, which is $3e = $ **8.155** at $x = 1$.
+(a) Product rule: $2xe^x + x^2e^x = (2x + x^2)e^x$, which is \$3e = \$ **8.155** at $x = 1$.
 
-(b) Quotient rule: $\dfrac{x\cos x - \sin x}{x^2}$. At $\pi/2$, $\cos = 0$ and $\sin = 1$, so the value is $-1/(\pi/2)^2 = -4/\pi^2 = $ **−0.4053**.
+(b) Quotient rule: $\dfrac{x\cos x - \sin x}{x^2}$. At $\pi/2$, $\cos = 0$ and $\sin = 1$, so the value is \$-1/(\pi/2)^2 = -4/\pi^2 = \$ **−0.4053**.
 
-(c) $\dfrac{(1)(x - 1) - (x + 1)(1)}{(x - 1)^2} = \dfrac{-2}{(x - 1)^2}$, which is $-2/4 = $ **−0.5** at $x = 3$.
+(c) $\dfrac{(1)(x - 1) - (x + 1)(1)}{(x - 1)^2} = \dfrac{-2}{(x - 1)^2}$, which is \$-2/4 = \$ **−0.5** at $x = 3$.
 
 ### Solution 01-03.5
 
 (a) $5(3x + 1)^4\cdot 3 = 15(3x + 1)^4$, which is **15** at $x = 0$.
-(b) $\tfrac{1}{2}(1 + x^2)^{-1/2}\cdot 2x = x/\sqrt{1 + x^2}$, which is $1/\sqrt{2} = $ **0.7071** at $x = 1$.
-(c) $e^{-t^2}\cdot(-2t)$, which is $-2e^{-1} = $ **−0.7358** at $t = 1$.
+(b) $\tfrac{1}{2}(1 + x^2)^{-1/2}\cdot 2x = x/\sqrt{1 + x^2}$, which is \$1/\sqrt{2} = \$ **0.7071** at $x = 1$.
+(c) $e^{-t^2}\cdot(-2t)$, which is \$-2e^{-1} = \$ **−0.7358** at $t = 1$.
 (d) $-V_m\omega\sin(\omega t + \phi)$, equivalently $V_m\omega\cos(\omega t + \phi + \pi/2)$.
 
 ### Solution 01-03.6
@@ -64,16 +64,16 @@ Check with the rules: $f'(x) = 6x - 1 = 5$ at $x = 1$ ✓.
 
 | Interval | $dv/dt$ | $i$ |
 |---|---|---|
-| 0–2 ms | $10/0.002 = 5000$ V/s | $10^{-5}\times5000 = $ **50 mA** |
+| 0–2 ms | $10/0.002 = 5000$ V/s | \$10^{-5}\times5000 = \$ **50 mA** |
 | 2–5 ms | 0 | **0** |
 | 5–6 ms | $-10/0.001 = -10\,000$ V/s | **−100 mA** |
 | after 6 ms | 0 | 0 |
 
 The current is a set of rectangular pulses (Figure 3 of the chapter).
 
-(b) $w = \tfrac{1}{2}Cv^2 = \tfrac{1}{2}(10^{-5})(100) = 5\times10^{-4}$ J $= $ **0.5 mJ**.
+(b) $w = \tfrac{1}{2}Cv^2 = \tfrac{1}{2}(10^{-5})(100) = 5\times10^{-4}$ J \$= \$ **0.5 mJ**.
 
-(c) At 1 ms, $v = 5$ V and $i = 50$ mA, so $p = $ **0.25 W**. Just before 2 ms, $v \to 10$ V, so $p \to $ **0.5 W**. Check: the energy delivered over the ramp is the average power times the time, $0.25\text{ W}\times2\text{ ms} = 0.5$ mJ, matching (b) ✓.
+(c) At 1 ms, $v = 5$ V and $i = 50$ mA, so \$p = \$ **0.25 W**. Just before 2 ms, $v \to 10$ V, so \$p \to \$ **0.5 W**. Check: the energy delivered over the ramp is the average power times the time, $0.25\text{ W}\times2\text{ ms} = 0.5$ mJ, matching (b) ✓.
 
 (d) The voltage is continuous (no infinite current is available). Its *slope* changes abruptly at 2 ms, and the current is proportional to the slope, so the current jumps from 50 mA to 0. A corner in $v$ is a jump in $i$.
 
@@ -85,15 +85,15 @@ $$
 f_{max} = \frac{SR}{2\pi V_p}.
 $$
 
-(b) $SR = 1\text{ V/µs} = 10^6$ V/s. For 10 V: $10^6/(2\pi\cdot10) = $ **15.92 kHz**. For 1 V: **159.2 kHz**.
+(b) $SR = 1\text{ V/µs} = 10^6$ V/s. For 10 V: \$10^6/(2\pi\cdot10) = \$ **15.92 kHz**. For 1 V: **159.2 kHz**.
 
 (c) $0.3\times10^6/(2\pi\cdot10) = $ **4.775 kHz**. Above that frequency, a large sine is distorted into a triangle wave, because the output can only ramp at the slew rate.
 
 ### Solution 01-03.9
 
-(a) $v = L\,di/dt = L\cdot0.5\,\omega\cos\omega t$, with $\omega = 2\pi\cdot50\,000 = 3.1416\times10^5$ rad/s. The amplitude is $10^{-4}\times0.5\times3.1416\times10^5 = $ **15.71 V**. The ratio $V/I = \omega L = $ **31.42 Ω**, the inductive reactance. It grows with frequency, unlike a resistance.
+(a) $v = L\,di/dt = L\cdot0.5\,\omega\cos\omega t$, with $\omega = 2\pi\cdot50\,000 = 3.1416\times10^5$ rad/s. The amplitude is \$10^{-4}\times0.5\times3.1416\times10^5 = \$ **15.71 V**. The ratio \$V/I = \omega L = \$ **31.42 Ω**, the inductive reactance. It grows with frequency, unlike a resistance.
 
-(b) $di/dt = v_L/L = 8.7/4.7\times10^{-6} = 1.851\times10^6$ A/s $= $ **1.851 A/µs**. Over 0.3 µs the current rises by $1.851\times0.3 = $ **0.5553 A**. This peak-to-peak ripple current is a key buck-converter design parameter ([22-02](../../22-power-electronics-and-energy-conversion/chapters/22-02-buck-converter-steady-state.md)).
+(b) $di/dt = v_L/L = 8.7/4.7\times10^{-6} = 1.851\times10^6$ A/s \$= \$ **1.851 A/µs**. Over 0.3 µs the current rises by \$1.851\times0.3 = \$ **0.5553 A**. This peak-to-peak ripple current is a key buck-converter design parameter ([22-02](../../22-power-electronics-and-energy-conversion/chapters/22-02-buck-converter-steady-state.md)).
 
 ### Solution 01-03.10
 
@@ -103,27 +103,27 @@ $$
 \frac{dv}{dt} = 5e^{-200t}\big(-200\sin 1000t + 1000\cos 1000t\big).
 $$
 
-At $t = 0$: $dv/dt = 5\times1000 = 5000$ V/s, so $i = 2\times10^{-6}\times5000 = $ **10.00 mA**.
+At $t = 0$: $dv/dt = 5\times1000 = 5000$ V/s, so \$i = 2\times10^{-6}\times5000 = \$ **10.00 mA**.
 
-(b) Set $dv/dt = 0$. The exponential is never zero, so $1000\cos 1000t = 200\sin 1000t$, i.e. $\tan 1000t = 5$. The first positive solution is $t_1 = \arctan(5)/1000 = 1.3734\times10^{-3}$ s $= $ **1.373 ms**.
+(b) Set $dv/dt = 0$. The exponential is never zero, so $1000\cos 1000t = 200\sin 1000t$, i.e. $\tan 1000t = 5$. The first positive solution is $t_1 = \arctan(5)/1000 = 1.3734\times10^{-3}$ s \$= \$ **1.373 ms**.
 
-(c) $v(t_1) = 5e^{-0.2747}\sin(1.3734) = 5\times0.7598\times0.9806 = $ **3.725 V**. It is below 5 V for two reasons: the envelope has decayed by $e^{-0.2747}$, and the peak occurs slightly before the undamped peak (where $\sin = 1$ at $1000t = \pi/2$), because the decay pulls the maximum earlier.
+(c) \$v(t_1) = 5e^{-0.2747}\sin(1.3734) = 5\times0.7598\times0.9806 = \$ **3.725 V**. It is below 5 V for two reasons: the envelope has decayed by $e^{-0.2747}$, and the peak occurs slightly before the undamped peak (where $\sin = 1$ at $1000t = \pi/2$), because the decay pulls the maximum earlier.
 
 ### Solution 01-03.11
 
 (a) For $y = kx^n$: $\dfrac{x}{y}\dfrac{dy}{dx} = \dfrac{x}{kx^n}nkx^{n-1} = n$. For a product, $\ln y = \ln f + \ln g$, and differentiating with respect to $\ln x$ adds the elasticities: $S^{y}_{x} = S^{f}_{x} + S^{g}_{x}$.
 
-(b) At fixed $f$: $S^{P}_{V} = $ **2**. With $f \propto V$: $P \propto V^2\cdot V$, so $S = 2 + 1 = $ **3**.
+(b) At fixed $f$: \$S^{P}_{V} = \$ **2**. With $f \propto V$: $P \propto V^2\cdot V$, so \$S = 2 + 1 = \$ **3**.
 
 (c) $T = E/P$ gives $S^{T}_{V} = -S^{P}_{V} = -3$. A −1% change in $V$ therefore gives about **+3%** runtime. Exactly: $T_{new}/T = 1/0.99^3 = 1.0306$, a **3.061%** gain. The elasticity is a first-order estimate, accurate for small changes.
 
-(d) $f_c \propto R^{-1}$, so $S^{f_c}_{R} = $ **−1**. A +5% resistor gives about **−5%**. Exactly: $1/1.05 - 1 = $ **−4.762%** for +5%, and $1/0.95 - 1 = $ **+5.263%** for −5%. The asymmetry is second-order, which the elasticity ignores.
+(d) $f_c \propto R^{-1}$, so \$S^{f_c}_{R} = \$ **−1**. A +5% resistor gives about **−5%**. Exactly: \$1/1.05 - 1 = \$ **−4.762%** for +5%, and \$1/0.95 - 1 = \$ **+5.263%** for −5%. The asymmetry is second-order, which the elasticity ignores.
 
 ### Solution 01-03.12
 
-(a) Differentiate implicitly: $2x + 2y\,y' = 0$, so $y' = -x/y = -3/4 = $ **−0.75**. Check: the radius to $(3, 4)$ has slope 4/3, and a tangent is perpendicular to the radius: $(4/3)(-3/4) = -1$ ✓.
+(a) Differentiate implicitly: $2x + 2y\,y' = 0$, so \$y' = -x/y = -3/4 = \$ **−0.75**. Check: the radius to $(3, 4)$ has slope 4/3, and a tangent is perpendicular to the radius: $(4/3)(-3/4) = -1$ ✓.
 
-(b) $1/(1 + x^2) = $ **0.5** at $x = 1$.
+(b) \$1/(1 + x^2) = \$ **0.5** at $x = 1$.
 
 (c) $dV/dI = V_T\cdot\dfrac{1}{I/I_s}\cdot\dfrac{1}{I_s} = \dfrac{V_T}{I}$. At 1 mA: **25.85 Ω**. At 10 mA: **2.585 Ω**. This is the reciprocal of $g_d = I/V_T$, as it must be. The derivative of an inverse function is the reciprocal of the original derivative: $dV/dI = 1/(dI/dV)$.
 
@@ -139,9 +139,9 @@ At $t = 0$: $dv/dt = 5\times1000 = 5000$ V/s, so $i = 2\times10^{-6}\times5000 =
 
 The central error falls 100× when $h$ falls 10× (second order). At the same $h = 0.1$, the forward difference is about 48 times worse.
 
-(b) $-\tfrac{h^2}{6}\cos 1 = -\tfrac{0.01}{6}\times0.5403 = $ **−9.005×10^−4**, matching the observed $-9.0005\times10^{-4}$ ✓.
+(b) \$-\tfrac{h^2}{6}\cos 1 = -\tfrac{0.01}{6}\times0.5403 = \$ **−9.005×10^−4**, matching the observed $-9.0005\times10^{-4}$ ✓.
 
-(c) $h^3 = 3\epsilon_{\text{mach}} = 6.66\times10^{-16}$, so $h = $ **8.7×10^−6**. At that step both error terms are about $10^{-11}$, giving roughly 10–11 correct digits, against about 8 for the forward difference.
+(c) $h^3 = 3\epsilon_{\text{mach}} = 6.66\times10^{-16}$, so \$h = \$ **8.7×10^−6**. At that step both error terms are about $10^{-11}$, giving roughly 10–11 correct digits, against about 8 for the forward difference.
 
 ### Solution 01-03.14
 
@@ -190,13 +190,13 @@ $$
 
 ### Solution 01-03.17
 
-(a) $\ln y = x\ln x$, so $y'/y = \ln x + 1$ and $y' = x^x(1 + \ln x)$. At $x = 2$: $4(1 + 0.6931) = $ **6.773**.
+(a) $\ln y = x\ln x$, so $y'/y = \ln x + 1$ and $y' = x^x(1 + \ln x)$. At $x = 2$: \$4(1 + 0.6931) = \$ **6.773**.
 
-(b) $(\tanh x)' = 1 - \tanh^2x$. At 0.5, $\tanh 0.5 = 0.4621$, so the derivative is $1 - 0.2135 = $ **0.7864**.
+(b) $(\tanh x)' = 1 - \tanh^2x$. At 0.5, $\tanh 0.5 = 0.4621$, so the derivative is \$1 - 0.2135 = \$ **0.7864**.
 
-(c) By the chain rule, $g_m = \dfrac{I_{EE}}{2V_T}\left[1 - \tanh^2\!\left(\dfrac{v_{id}}{2V_T}\right)\right]$. At $v_{id} = 0$: $g_m = I_{EE}/(2V_T) = 1\text{ mA}/51.7\text{ mV} = $ **19.34 mS**. Units: A/V = S ✓.
+(c) By the chain rule, $g_m = \dfrac{I_{EE}}{2V_T}\left[1 - \tanh^2\!\left(\dfrac{v_{id}}{2V_T}\right)\right]$. At $v_{id} = 0$: \$g_m = I_{EE}/(2V_T) = 1\text{ mA}/51.7\text{ mV} = \$ **19.34 mS**. Units: A/V = S ✓.
 
-(d) We need $1 - \tanh^2u = 1/\cosh^2u = \tfrac12$, so $\cosh u = \sqrt2$ and $u = \operatorname{arccosh}\sqrt2 = $ **0.8814**. Then $v_{id} = 2V_Tu = $ **45.57 mV**. The pair is linear only for inputs of a few tens of millivolts; beyond about ±45 mV its gain has halved and it acts as a current switch. That is why a bipolar differential pair makes a good limiter and needs emitter degeneration for linearity ([12](../../12-electronics-2/README.md)).
+(d) We need $1 - \tanh^2u = 1/\cosh^2u = \tfrac12$, so $\cosh u = \sqrt2$ and \$u = \operatorname{arccosh}\sqrt2 = \$ **0.8814**. Then \$v_{id} = 2V_Tu = \$ **45.57 mV**. The pair is linear only for inputs of a few tens of millivolts; beyond about ±45 mV its gain has halved and it acts as a current switch. That is why a bipolar differential pair makes a good limiter and needs emitter degeneration for linearity ([12](../../12-electronics-2/README.md)).
 
 ---
 

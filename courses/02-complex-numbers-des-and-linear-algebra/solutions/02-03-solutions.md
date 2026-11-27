@@ -12,7 +12,7 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (a) Series: α = $R/(2L) = 50/0.02 = $ **2500 s⁻¹**, $\omega_0 = 1/\sqrt{10^{-2}\times10^{-6}} = $ **1.000×10⁴ rad/s**, so ζ = **0.25**: underdamped.
 
-(b) Parallel: α = $1/(2RC) = 1/(2\times1000\times10^{-6}) = $ **500 s⁻¹**, $\omega_0 = 10^4$ rad/s, so ζ = **0.05**: lightly underdamped. The same $L$ and $C$ with a 1 kΩ *parallel* resistor ring far more than with 50 Ω in series.
+(b) Parallel: α = \$1/(2RC) = 1/(2\times1000\times10^{-6}) = \$ **500 s⁻¹**, $\omega_0 = 10^4$ rad/s, so ζ = **0.05**: lightly underdamped. The same $L$ and $C$ with a 1 kΩ *parallel* resistor ring far more than with 50 Ω in series.
 
 (c) $\omega_0 = \sqrt{k_s/m} = \sqrt{80/0.2} = $ **20 rad/s**, α = $b/(2m) = 2/0.4 = $ **5 s⁻¹**, so ζ = **0.25**: underdamped.
 
@@ -22,7 +22,7 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (b) $s^2 + 4s + 4 = (s + 2)^2$: a double root at −2, critically damped. $y = (c_1 + c_2t)e^{-2t}$.
 
-(c) $s = -1 \pm\sqrt{1 - 10} = -1 \pm 3j$: underdamped, with $\omega_0 = \sqrt{10} = $ **3.162** and ζ = $1/\sqrt{10} = $ **0.3162**. $y = e^{-t}(A\cos3t + B\sin3t)$.
+(c) $s = -1 \pm\sqrt{1 - 10} = -1 \pm 3j$: underdamped, with \$\omega_0 = \sqrt{10} = \$ **3.162** and ζ = \$1/\sqrt{10} = \$ **0.3162**. $y = e^{-t}(A\cos3t + B\sin3t)$.
 
 ### Solution 02-03.3
 
@@ -38,7 +38,7 @@ $$
 
 $s_1 = \omega_0\big(-\zeta + \sqrt{\zeta^2 - 1}\big) = \omega_0\big(-\zeta + \zeta\sqrt{1 - 1/\zeta^2}\big)$. For large ζ, $\sqrt{1 - u} \approx 1 - u/2$ with $u = 1/\zeta^2$, so $s_1 \approx \omega_0\big(-\zeta + \zeta - 1/(2\zeta)\big) = -\omega_0/(2\zeta)$.
 
-For ζ = 5: exactly $s_1/\omega_0 = -5 + \sqrt{24} = $ **−0.1010**; approximately $-1/10 = -0.1$. The approximation is **1.0%** too small in magnitude. The slow time constant, $2\zeta/\omega_0$, *grows* with damping: an overdamped system gets slower as damping increases.
+For ζ = 5: exactly \$s_1/\omega_0 = -5 + \sqrt{24} = \$ **−0.1010**; approximately $-1/10 = -0.1$. The approximation is **1.0%** too small in magnitude. The slow time constant, $2\zeta/\omega_0$, *grows* with damping: an overdamped system gets slower as damping increases.
 
 ### Solution 02-03.5
 
@@ -54,7 +54,7 @@ Since $2 + 3t > 0$ for all $t > 0$, $y$ never crosses zero: a critically damped 
 
 (a) A constant particular solution $y_p = X$ satisfies $\omega_0^2X = \omega_0^2X$. So $y = X + (c_1 + c_2t)e^{-\omega_0t}$. From $y(0) = 0$, $c_1 = -X$. Differentiating, $y'(0) = c_2 - \omega_0c_1 = 0$, so $c_2 = -\omega_0X$. Hence $y = X\big[1 - (1 + \omega_0t)e^{-\omega_0t}\big]$.
 
-(b) Solve $(1 + x)e^{-x} = 0.1$ numerically: $x = $ **3.890**. With $\omega_0 = 10^4$ rad/s, $t = x/\omega_0 = $ **389.0 µs**.
+(b) Solve $(1 + x)e^{-x} = 0.1$ numerically: \$x = \$ **3.890**. With $\omega_0 = 10^4$ rad/s, \$t = x/\omega_0 = \$ **389.0 µs**.
 
 ### Solution 02-03.7
 
@@ -70,23 +70,23 @@ Since $\alpha^2 + \omega_d^2 = \omega_0^2$, this is $X\frac{\omega_0^2}{\omega_d
 
 ### Solution 02-03.8
 
-(a) α = $R/(2L) = $ **1000 s⁻¹**, $\omega_0 = 1/\sqrt{10^{-3}\times10^{-5}} = $ **1.000×10⁴ rad/s**, and $\omega_d = \sqrt{10^8 - 10^6} = $ **9950 rad/s**. The capacitor starts uncharged, $v_C(0) = 0$, and the loop current flows into it: $v_C'(0) = i(0)/C = 1/10^{-5} = $ **1.000×10⁵ V/s**.
+(a) α = \$R/(2L) = \$ **1000 s⁻¹**, \$\omega_0 = 1/\sqrt{10^{-3}\times10^{-5}} = \$ **1.000×10⁴ rad/s**, and \$\omega_d = \sqrt{10^8 - 10^6} = \$ **9950 rad/s**. The capacitor starts uncharged, $v_C(0) = 0$, and the loop current flows into it: \$v_C'(0) = i(0)/C = 1/10^{-5} = \$ **1.000×10⁵ V/s**.
 
-(b) By chapter §3.7, $A = 0$ and $B = v_C'(0)/\omega_d = $ **10.05 V**:
+(b) By chapter §3.7, $A = 0$ and \$B = v_C'(0)/\omega_d = \$ **10.05 V**:
 
 $$
 v_C(t) = 10.05\,e^{-1000t}\sin(9950t)\text{ V}.
 $$
 
-(c) $v_C' = 10.05e^{-1000t}\big(9950\cos9950t - 1000\sin9950t\big) = 0$ when $\tan(9950t) = 9.950$, so $t = \arctan(9.950)/9950 = $ **147.8 µs**, where $v_C = $ **8.626 V**. At that instant $v_C' = 0$, so the current is zero and all the remaining energy is in the capacitor: $\tfrac12(10^{-5})(8.626)^2 = $ **0.3720 mJ**, which is **74.41%** of the inductor's initial $\tfrac12(10^{-3})(1)^2 = 0.5$ mJ. The rest was dissipated in the resistor.
+(c) $v_C' = 10.05e^{-1000t}\big(9950\cos9950t - 1000\sin9950t\big) = 0$ when $\tan(9950t) = 9.950$, so \$t = \arctan(9.950)/9950 = \$ **147.8 µs**, where \$v_C = \$ **8.626 V**. At that instant $v_C' = 0$, so the current is zero and all the remaining energy is in the capacitor: \$\tfrac12(10^{-5})(8.626)^2 = \$ **0.3720 mJ**, which is **74.41%** of the inductor's initial $\tfrac12(10^{-3})(1)^2 = 0.5$ mJ. The rest was dissipated in the resistor.
 
 ### Solution 02-03.9
 
-(a) α = $1/(2RC) = 1/(2\times200\times10^{-6}) = $ **2500 s⁻¹**, $\omega_0 = 10^4$ rad/s, ζ = **0.25**, and $\omega_d = \sqrt{10^8 - 6.25\times10^6} = $ **9682 rad/s**.
+(a) α = \$1/(2RC) = 1/(2\times200\times10^{-6}) = \$ **2500 s⁻¹**, $\omega_0 = 10^4$ rad/s, ζ = **0.25**, and \$\omega_d = \sqrt{10^8 - 6.25\times10^6} = \$ **9682 rad/s**.
 
-(b) KCL: $Cv' + v/R + i_L = 0$, so $v'(0) = -\big(10/200 + 0\big)/10^{-6} = $ **−5.000×10⁴ V/s**.
+(b) KCL: $Cv' + v/R + i_L = 0$, so \$v'(0) = -\big(10/200 + 0\big)/10^{-6} = \$ **−5.000×10⁴ V/s**.
 
-(c) $A = v(0) = 10$ V and $B = \big(v'(0) + \alpha A\big)/\omega_d = (-5\times10^4 + 2.5\times10^4)/9682 = $ **−2.582 V**:
+(c) $A = v(0) = 10$ V and \$B = \big(v'(0) + \alpha A\big)/\omega_d = (-5\times10^4 + 2.5\times10^4)/9682 = \$ **−2.582 V**:
 
 $$
 v(t) = e^{-2500t}\big(10\cos9682t - 2.582\sin9682t\big)\text{ V}.
@@ -104,11 +104,11 @@ $$
 W = e^{-2\alpha t}\big[c(-\alpha s + \omega_dc) - s(-\alpha c - \omega_ds)\big] = \omega_de^{-2\alpha t}(c^2 + s^2) = \omega_de^{-2\alpha t} \ne 0 .
 $$
 
-At $t = 0$ with $\omega_d = 3$: $W = $ **3**.
+At $t = 0$ with $\omega_d = 3$: \$W = \$ **3**.
 
 ### Solution 02-03.11
 
-With OS = 0.10, $\ln\text{OS} = -2.303$, so $\zeta = 2.303/\sqrt{\pi^2 + 2.303^2} = $ **0.5912**. The peak time gives $\omega_d = \pi/(50\text{ µs}) = $ **62.83 krad/s**, so $\omega_0 = \omega_d/\sqrt{1 - \zeta^2} = $ **77.90 krad/s**, and $Q = 1/(2\zeta) = $ **0.8458**. These formulas are valid here only because the loop is all-pole. A charge-pump (type-II) loop has a closed-loop zero, which adds a derivative-like kick and raises the overshoot: simulating its step response gives **25.27%** overshoot at ζ = 0.5912, and a 10% overshoot would need ζ ≈ **1.243**. Reading such a trace with the all-pole formula would badly underestimate the damping it actually has. For loops with zeros, fit the measured response to the full transfer function, or use the decay ratio of successive peaks (the logarithmic decrement).
+With OS = 0.10, $\ln\text{OS} = -2.303$, so \$\zeta = 2.303/\sqrt{\pi^2 + 2.303^2} = \$ **0.5912**. The peak time gives \$\omega_d = \pi/(50\text{ µs}) = \$ **62.83 krad/s**, so \$\omega_0 = \omega_d/\sqrt{1 - \zeta^2} = \$ **77.90 krad/s**, and \$Q = 1/(2\zeta) = \$ **0.8458**. These formulas are valid here only because the loop is all-pole. A charge-pump (type-II) loop has a closed-loop zero, which adds a derivative-like kick and raises the overshoot: simulating its step response gives **25.27%** overshoot at ζ = 0.5912, and a 10% overshoot would need ζ ≈ **1.243**. Reading such a trace with the all-pole formula would badly underestimate the damping it actually has. For loops with zeros, fit the measured response to the full transfer function, or use the decay ratio of successive peaks (the logarithmic decrement).
 
 ### Solution 02-03.12
 
@@ -116,7 +116,7 @@ With OS = 0.10, $\ln\text{OS} = -2.303$, so $\zeta = 2.303/\sqrt{\pi^2 + 2.303^2
 
 (b) $Q/\pi = $ **20.13** cycles.
 
-(c) α = $R/(2L) = 2500$ s⁻¹ and $\omega_d \approx \omega_0$. The energy decays as $e^{-2\alpha t}$, so over one period $2\pi/\omega_d$ the fraction lost is $1 - e^{-4\pi\alpha/\omega_d} = $ **9.457%**. The estimate $2\pi/Q = $ **9.935%** is the first-order term of that exponential; it is good for high $Q$ and overestimates the loss as $Q$ falls.
+(c) α = $R/(2L) = 2500$ s⁻¹ and $\omega_d \approx \omega_0$. The energy decays as $e^{-2\alpha t}$, so over one period $2\pi/\omega_d$ the fraction lost is \$1 - e^{-4\pi\alpha/\omega_d} = \$ **9.457%**. The estimate \$2\pi/Q = \$ **9.935%** is the first-order term of that exponential; it is good for high $Q$ and overestimates the loss as $Q$ falls.
 
 ### Solution 02-03.13
 
@@ -124,7 +124,7 @@ With OS = 0.10, $\ln\text{OS} = -2.303$, so $\zeta = 2.303/\sqrt{\pi^2 + 2.303^2
 
 (b) Overshoot $= \exp\big(-\pi\times0.1581/\sqrt{1 - 0.025}\big) = $ **60.47%**: a 1 V edge would ring up to about 1.6 V at the pad, stressing the input and reflecting noise back.
 
-(c) $R = 2\zeta\sqrt{L/C} = 1.4\times31.62 = $ **44.27 Ω** gives ζ = 0.7 and an overshoot of **4.60%**. The cost is speed: the larger resistance slows the edge (the response time scales with $1/(\zeta\omega_0)$ for the decay and with $RC$ for charging the pad), which eats into timing margin at high data rates. Package designers therefore also attack $L$ (shorter bonds, flip-chip bumps) rather than relying on resistance alone.
+(c) \$R = 2\zeta\sqrt{L/C} = 1.4\times31.62 = \$ **44.27 Ω** gives ζ = 0.7 and an overshoot of **4.60%**. The cost is speed: the larger resistance slows the edge (the response time scales with $1/(\zeta\omega_0)$ for the decay and with $RC$ for charging the pad), which eats into timing margin at high data rates. Package designers therefore also attack $L$ (shorter bonds, flip-chip bumps) rather than relying on resistance alone.
 
 ### Solution 02-03.14
 
@@ -132,7 +132,7 @@ With OS = 0.10, $\ln\text{OS} = -2.303$, so $\zeta = 2.303/\sqrt{\pi^2 + 2.303^2
 
 (b) First droop $\approx \Delta I\sqrt{L/C} = 50\times2.236\text{ mΩ} = $ **111.8 mV**, or **13.98%** of the rail against the 5% allowed. The network resonates at $f_0 = 1/\big(2\pi\sqrt{LC}\big) = $ **71.18 MHz**.
 
-(c) To make $\sqrt{L/C} = Z_t$: with $L = 5$ pH, $C = L/Z_t^2 = $ **7.813 µF**; with $C = 1$ µF, $L = Z_t^2C = $ **0.64 pH**. Neither is easy, which is why high-current processors combine more on-die and in-package capacitance, many more power bumps (lower $L$), and voltage regulation inside the package.
+(c) To make $\sqrt{L/C} = Z_t$: with $L = 5$ pH, \$C = L/Z_t^2 = \$ **7.813 µF**; with $C = 1$ µF, \$L = Z_t^2C = \$ **0.64 pH**. Neither is easy, which is why high-current processors combine more on-die and in-package capacitance, many more power bumps (lower $L$), and voltage regulation inside the package.
 
 (d) Matching $\sqrt{L/C}$ to $Z_t$ only sizes the first droop. The target-impedance test asks for $\lvert Z(j\omega)\rvert \le Z_t$ at every frequency, and a lossless LC tank has $Z(j\omega) = j\omega L/(1 - \omega^2LC)$, which is infinite at $\omega_0$. With resistance $R$ in series with each element, the load sees
 
@@ -146,9 +146,9 @@ With $R^2 = L/C$ the numerator is $R\big(2R + sL + \frac{1}{sC}\big)$, so $Z = R
 
 (a) α = $R/(2L) = -2/(2\times10^{-3}) = -1000$ s⁻¹, so $s = 1000 \pm j9950$ s⁻¹, with $\omega_d = \sqrt{10^8 - 10^6} = 9950$ rad/s. The roots lie in the **right half-plane**: the system is unstable.
 
-(b) $f = 9950/2\pi = $ **1584 Hz**. The envelope grows as $e^{1000t}$, with time constant **1.000 ms**.
+(b) \$f = 9950/2\pi = \$ **1584 Hz**. The envelope grows as $e^{1000t}$, with time constant **1.000 ms**.
 
-(c) $e^{1000t} = 1000$ gives $t = \ln1000/1000 = $ **6.908 ms**, which is $6.908\text{ ms}\times1584\text{ Hz} = $ **10.94** cycles.
+(c) $e^{1000t} = 1000$ gives \$t = \ln1000/1000 = \$ **6.908 ms**, which is \$6.908\text{ ms}\times1584\text{ Hz} = \$ **10.94** cycles.
 
 (d) A net resistance of **zero** puts the roots on the imaginary axis, giving a steady sinusoid. In a real oscillator the active device's negative resistance weakens as the amplitude grows (its gain compresses), so the amplitude rises until the net resistance averages to zero, then holds: nonlinearity, not linear theory, sets the final amplitude ([12-09](../../12-electronics-2/chapters/12-09-oscillators.md)).
 
@@ -168,9 +168,9 @@ $$
 v_C(t) = 2 + \tfrac{32}{3}e^{-t} - \tfrac{8}{3}e^{-4t}\ \text{V}.
 $$
 
-Check: $v_C(0) = 2 + 8 = 10$ ✓ and $v_C'(0) = -32/3 + 32/3 = 0$ ✓. At 1 s, $v_C = 2 + 3.924 - 0.0488 = $ **5.875 V**. It falls monotonically toward 2 V, dominated by the slow root.
+Check: $v_C(0) = 2 + 8 = 10$ ✓ and $v_C'(0) = -32/3 + 32/3 = 0$ ✓. At 1 s, \$v_C = 2 + 3.924 - 0.0488 = \$ **5.875 V**. It falls monotonically toward 2 V, dominated by the slow root.
 
-(e) $i = Cv_C' = 0.25\big(-\tfrac{32}{3}e^{-t} + \tfrac{32}{3}e^{-4t}\big) = \tfrac{8}{3}\big(e^{-4t} - e^{-t}\big)$ A. It is most negative where $i' = \tfrac{8}{3}\big(-4e^{-4t} + e^{-t}\big) = 0$, so $e^{3t} = 4$ and $t = \ln4/3 = $ **0.4621 s**. There $e^{-t} = 4^{-1/3} = 0.6300$ and $e^{-4t} = 0.1575$, so $i = $ **−1.260 A**: the capacitor discharges, current flowing back toward the source.
+(e) $i = Cv_C' = 0.25\big(-\tfrac{32}{3}e^{-t} + \tfrac{32}{3}e^{-4t}\big) = \tfrac{8}{3}\big(e^{-4t} - e^{-t}\big)$ A. It is most negative where $i' = \tfrac{8}{3}\big(-4e^{-4t} + e^{-t}\big) = 0$, so $e^{3t} = 4$ and \$t = \ln4/3 = \$ **0.4621 s**. There $e^{-t} = 4^{-1/3} = 0.6300$ and $e^{-4t} = 0.1575$, so \$i = \$ **−1.260 A**: the capacitor discharges, current flowing back toward the source.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |

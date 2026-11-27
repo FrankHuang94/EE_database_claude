@@ -24,7 +24,7 @@ Each solution names the chapter to revisit if you lost points.
   - the 2.2 µF capacitor gets $12\times4.7/6.9 = $ **8.174 V**.
 - The smaller capacitor takes the larger voltage, so check each part's voltage rating separately.
 
-(d) The capacitor supplies $\Delta I$ for $\Delta t$, losing charge $\Delta I\,\Delta t$, so $\Delta V = \Delta I\,\Delta t/C$. Then $C \ge \Delta I\,\Delta t/\Delta V = 2\ \text{A}\times1\ \mu\text{s}/50\ \text{mV} = $ **40 µF**.
+(d) The capacitor supplies $\Delta I$ for $\Delta t$, losing charge $\Delta I\,\Delta t$, so $\Delta V = \Delta I\,\Delta t/C$. Then \$C \ge \Delta I\,\Delta t/\Delta V = 2\ \text{A}\times1\ \mu\text{s}/50\ \text{mV} = \$ **40 µF**.
 
 Real capacitors also drop $\Delta I\times\text{ESR}$ and $L\,di/dt$ across their ESL the instant the step arrives. A 2 A step into 10 mΩ of ESR would use 20 mV of the 50 mV budget, so the real design needs more capacitance and low-ESR parts (07-01 §3.6).
 
@@ -32,18 +32,18 @@ Real capacitors also drop $\Delta I\times\text{ESR}$ and $L\,di/dt$ across their
 
 (a) $\tau = RC = 10\ \text{k}\Omega\times100\ \text{nF} = $ **1 ms**. Then $v_C(2\ \text{ms}) = 3.3(1 - e^{-2}) = $ **2.853 V**, 86.5% of the way.
 
-(b) The 10% and 90% points are at $\tau\ln(1/0.9)$ and $\tau\ln(1/0.1)$, so $t_r = \tau\ln9 = $ **2.197 ms**.
+(b) The 10% and 90% points are at $\tau\ln(1/0.9)$ and $\tau\ln(1/0.1)$, so \$t_r = \tau\ln9 = \$ **2.197 ms**.
 
 - The bandwidth is $f_{3dB} = 1/(2\pi\tau) = $ **159.2 Hz**.
-- Their product is $\ln9/(2\pi) = $ **0.3497**: the "$t_rf_{3dB}$ ≈ 0.35" rule, exact for a single pole.
+- Their product is \$\ln9/(2\pi) = \$ **0.3497**: the "$t_rf_{3dB}$ ≈ 0.35" rule, exact for a single pole.
 
-(c) The error after time $t$ is $3.3e^{-t/\tau}$ V. Half an LSB of a 12-bit converter is $3.3/2^{13}$ V. Setting them equal gives $t = 13\tau\ln2 = $ **9.011 ms**, that is, $(N + 1)\ln2$ time constants.
+(c) The error after time $t$ is $3.3e^{-t/\tau}$ V. Half an LSB of a 12-bit converter is $3.3/2^{13}$ V. Setting them equal gives \$t = 13\tau\ln2 = \$ **9.011 ms**, that is, $(N + 1)\ln2$ time constants.
 
-(d) The source delivers $QV = CV^2$. Half is stored, so the other half is dissipated in the resistor: $\tfrac12CV^2 = \tfrac12\times100\ \text{nF}\times3.3^2 = $ **544.5 nJ**. The value of $R$ does not matter.
+(d) The source delivers $QV = CV^2$. Half is stored, so the other half is dissipated in the resistor: \$\tfrac12CV^2 = \tfrac12\times100\ \text{nF}\times3.3^2 = \$ **544.5 nJ**. The value of $R$ does not matter.
 
 **3.** *(07-02)*
 
-(a) Before $t = 0$ the capacitor is an open circuit, and R1 and R2 form a divider: $v_C(0^-) = 12\times12/16 = $ **9 V**.
+(a) Before $t = 0$ the capacitor is an open circuit, and R1 and R2 form a divider: \$v_C(0^-) = 12\times12/16 = \$ **9 V**.
 
 (b) With S closed, R2 ∥ R3 = 4 kΩ. Seen from the capacitor:
 
@@ -53,7 +53,7 @@ Real capacitors also drop $\Delta I\times\text{ESR}$ and $L\,di/dt$ across their
 
 Hence $v_C(t) = 6 + (9 - 6)e^{-t/20\ \text{ms}} = 6 + 3e^{-t/20\ \text{ms}}$ V.
 
-(c) At $0^+$ the capacitor still holds 9 V, so $i_{R3} = 9/6\ \text{k}\Omega = $ **1.5 mA**. KCL at node a, with currents into the capacitor:
+(c) At $0^+$ the capacitor still holds 9 V, so \$i_{R3} = 9/6\ \text{k}\Omega = \$ **1.5 mA**. KCL at node a, with currents into the capacitor:
 
 - R1 brings in $(12 - 9)/4\ \text{k}\Omega = 0.75$ mA;
 - R2 takes $9/12\ \text{k}\Omega = 0.75$ mA;
@@ -63,12 +63,12 @@ So $i_C(0^+) = 0.75 - 0.75 - 1.5 = $ **−1.5 mA**: the capacitor discharges.
 
 Check: $C\,dv_C/dt(0^+) = 10\ \mu\text{F}\times(-3/20\ \text{ms}) = -1.5$ mA. The capacitor current jumped from 0 to −1.5 mA at the switching instant, while its voltage did not jump.
 
-(d) $6 + 3e^{-t/\tau_1} = 7$ gives $t = \tau_1\ln3 = $ **21.97 ms**.
+(d) $6 + 3e^{-t/\tau_1} = 7$ gives \$t = \tau_1\ln3 = \$ **21.97 ms**.
 
 (e) $v_C(40\ \text{ms}) = 6 + 3e^{-2} = $ **6.406 V**. This is the initial value for the second interval.
 
 - With S open, the final value is again 9 V.
-- $R_{Th} = 4\parallel12 = 3$ kΩ, so $\tau_2 = $ **30 ms**. The time constant changes because the circuit changed (07-02, Common mistake 4).
+- $R_{Th} = 4\parallel12 = 3$ kΩ, so \$\tau_2 = \$ **30 ms**. The time constant changes because the circuit changed (07-02, Common mistake 4).
 - So $v_C(100\ \text{ms}) = 9 - (9 - 6.406)e^{-60/30} = $ **8.649 V**.
 
 **4.** *(07-03)*
@@ -77,7 +77,7 @@ Check: $C\,dv_C/dt(0^+) = 10\ \mu\text{F}\times(-3/20\ \text{ms}) = -1.5$ mA. Th
 
 - $\omega_0 = 1/\sqrt{LC} = 1/\sqrt{10^{-3}\times10^{-6}} = $ **31,623 rad/s**, so $f_0 = \omega_0/2\pi = $ **5033 Hz**.
 - $\alpha = R/(2L) = 20/0.002 = $ **10,000 s⁻¹**.
-- $\zeta = \alpha/\omega_0 = $ **0.3162**, so $Q = 1/(2\zeta) = $ **1.581**, which equals $\sqrt{L/C}/R = 31.62/20$.
+- \$\zeta = \alpha/\omega_0 = \$ **0.3162**, so \$Q = 1/(2\zeta) = \$ **1.581**, which equals $\sqrt{L/C}/R = 31.62/20$.
 
 The circuit is underdamped.
 
@@ -89,12 +89,12 @@ $$
 v_C = V\Big[1 - e^{-\alpha t}\Big(\cos\omega_dt + \frac{\alpha}{\omega_d}\sin\omega_dt\Big)\Big] ,
 $$
 
-whose derivative is $V(\omega_0^2/\omega_d)e^{-\alpha t}\sin\omega_dt$. The derivative is first zero at $t_p = \pi/\omega_d = $ **104.7 µs**. There $\cos\omega_dt = -1$, so $v_C = V(1 + e^{-\alpha\pi/\omega_d})$.
+whose derivative is $V(\omega_0^2/\omega_d)e^{-\alpha t}\sin\omega_dt$. The derivative is first zero at \$t_p = \pi/\omega_d = \$ **104.7 µs**. There $\cos\omega_dt = -1$, so $v_C = V(1 + e^{-\alpha\pi/\omega_d})$.
 
 - The overshoot is $e^{-\pi/3}$ = **35.09%** (the same as $e^{-\pi\zeta/\sqrt{1 - \zeta^2}}$).
 - The peak voltage is $10\times1.3509 = $ **13.51 V**.
 
-(d) Critical damping needs $\zeta = 1$, that is, $R = 2\sqrt{L/C} = $ **63.25 Ω**.
+(d) Critical damping needs $\zeta = 1$, that is, \$R = 2\sqrt{L/C} = \$ **63.25 Ω**.
 
 For 5% overshoot, solve $e^{-\pi\zeta/\sqrt{1 - \zeta^2}} = 0.05$:
 
@@ -185,9 +185,9 @@ So the source sees $Z_{in} = 20 + Z_p = $ **32.20 − j9.756 Ω**.
 
 - $\lvert Z_p\rvert = 15.62$ Ω at −38.66°.
 - $\lvert Z_{in}\rvert = 33.64$ Ω at −16.86°.
-- So $\mathbf{V}_2 = $ **4.642 V at −21.80°**, that is, $v_2(t) = 4.642\cos(10^4t - 21.80°)$ V.
+- So \$\mathbf{V}_2 = \$ **4.642 V at −21.80°**, that is, $v_2(t) = 4.642\cos(10^4t - 21.80°)$ V.
 
-Then $\mathbf{I}_{R2} = \mathbf{V}_2/(10 - j10) = 4.642\angle{-21.80°}/14.14\angle{-45°} = $ **0.3283 A at +23.20°**. The current leads $v_2$ because the branch is capacitive.
+Then \$\mathbf{I}_{R2} = \mathbf{V}_2/(10 - j10) = 4.642\angle{-21.80°}/14.14\angle{-45°} = \$ **0.3283 A at +23.20°**. The current leads $v_2$ because the branch is capacitive.
 
 (c) $P_{R2} = \tfrac12\lvert\mathbf{I}_{R2}\rvert^2R_2 = \tfrac12\times0.3283^2\times10 = $ **0.5388 W**.
 
@@ -235,7 +235,7 @@ $$
 C = \frac{5532}{2\pi\cdot50\cdot230^2} = \textbf{332.9 µF} .
 $$
 
-(c) $I_{new} = 10{,}000/(230\times0.95) = $ **45.77 A**. The $I^2R$ loss scales as $(0.75/0.95)^2 = 0.6233$, a reduction of **37.67%** for the same useful power.
+(c) \$I_{new} = 10{,}000/(230\times0.95) = \$ **45.77 A**. The $I^2R$ loss scales as $(0.75/0.95)^2 = 0.6233$, a reduction of **37.67%** for the same useful power.
 
 (d) Different frequencies add in quadrature:
 
@@ -261,7 +261,7 @@ The errors are about ±3 dB at each corner, slightly less than 3.01 dB because t
 
 (c) By symmetry on the log axis, the maximum lead is at the geometric mean: $\omega_m = \sqrt{10^3\times10^4} = $ **3162 rad/s**. There:
 
-- the lead is $\arctan\sqrt{10} - \arctan(1/\sqrt{10}) = 72.45° - 17.55° = $ **54.90°** (equivalently $\arcsin[(10 - 1)/(10 + 1)]$);
+- the lead is \$\arctan\sqrt{10} - \arctan(1/\sqrt{10}) = 72.45° - 17.55° = \$ **54.90°** (equivalently $\arcsin[(10 - 1)/(10 + 1)]$);
 - the gain is $\sqrt{10}$, that is, **10.00 dB**, halfway up in dB.
 
 (d) The gain–bandwidth product is $A_0f_1 = 10^5\times10$ Hz = **1 MHz**. For $f \gg 10$ Hz,
@@ -282,7 +282,7 @@ $$
 \text{PM} = 180° - \arctan(f_c/10) - \arctan(f_c/f_2) = 180° - 89.999° - 24.47° = \textbf{65.53°} .
 $$
 
-(e) With β = 0.1, $\lvert A\beta\rvert = 1$ gives $u = 2\times10^{12}(\sqrt{1.01} - 1)$, so $f_c = $ **99.88 kHz**. Then $\text{PM} = 180° - 89.994° - \arctan(0.04994) = $ **87.15°**.
+(e) With β = 0.1, $\lvert A\beta\rvert = 1$ gives $u = 2\times10^{12}(\sqrt{1.01} - 1)$, so \$f_c = \$ **99.88 kHz**. Then \$\text{PM} = 180° - 89.994° - \arctan(0.04994) = \$ **87.15°**.
 
 The **unity-gain follower is harder to stabilize.** The most feedback (β = 1) pushes the crossover highest, closest to the second pole, where that pole's phase lag erodes the margin. This is why datasheets quote phase margin at unity gain, and why some fast op-amps are only "stable for gains ≥ 5".
 
@@ -290,14 +290,14 @@ The **unity-gain follower is harder to stabilize.** The most feedback (β = 1) p
 
 (a) The resonance:
 
-- $\omega_0 = 1/\sqrt{LC} = 10^7$ rad/s, so $f_0 = $ **1.592 MHz**.
+- $\omega_0 = 1/\sqrt{LC} = 10^7$ rad/s, so \$f_0 = \$ **1.592 MHz**.
 - $Q = \omega_0L/R = 100/5 = $ **20**.
 - $\text{BW} = f_0/Q = $ **79.58 kHz**.
-- At resonance the reactances cancel, so the current is $1/5$ A and $\lvert\mathbf{V}_C\rvert = I/(\omega_0C) = 0.2\times100 = $ **20 V**, which is $Q$ times the drive. Parts must be rated for this.
+- At resonance the reactances cancel, so the current is $1/5$ A and \$\lvert\mathbf{V}_C\rvert = I/(\omega_0C) = 0.2\times100 = \$ **20 V**, which is $Q$ times the drive. Parts must be rated for this.
 
 (b) The output is $H = R/[R + j(\omega L - 1/\omega C)]$:
 
-- At 1.5 MHz, $X = 94.25 - 106.10 = -11.86$ Ω, so $\lvert H\rvert = 5/\sqrt{25 + 140.5} = 0.3886$, that is, **−8.210 dB**, at a phase of $-\arctan(X/R) = $ **+67.13°** (the circuit looks capacitive below resonance).
+- At 1.5 MHz, $X = 94.25 - 106.10 = -11.86$ Ω, so $\lvert H\rvert = 5/\sqrt{25 + 140.5} = 0.3886$, that is, **−8.210 dB**, at a phase of \$-\arctan(X/R) = \$ **+67.13°** (the circuit looks capacitive below resonance).
 - At 1.7 MHz, $X = +13.19$ Ω, giving **−9.011 dB** at **−69.24°**.
 
 The response is not symmetric in hertz. It is symmetric in the logarithm of frequency, and 1.5 MHz is slightly closer to $f_0$ on that scale than 1.7 MHz.
@@ -312,8 +312,8 @@ Check: the gain at 1 kHz is **−3.010 dB**.
 
 (d) A Butterworth filter of order $n$ has $\lvert H\rvert^2 = 1/[1 + (f/f_c)^{2n}]$:
 
-- For $n = 2$ at 3 kHz: $10\lg(1 + 3^4) = $ **19.14 dB**.
-- For 40 dB: $3^{2n} \ge 10^4 - 1$, so $n \ge 4.192$. The lowest order is **5**, which gives $10\lg(1 + 3^{10}) = $ **47.71 dB**.
+- For $n = 2$ at 3 kHz: \$10\lg(1 + 3^4) = \$ **19.14 dB**.
+- For 40 dB: $3^{2n} \ge 10^4 - 1$, so $n \ge 4.192$. The lowest order is **5**, which gives \$10\lg(1 + 3^{10}) = \$ **47.71 dB**.
 
 Each added order buys about 6 dB per octave (20 dB per decade) further out.
 
@@ -346,9 +346,9 @@ At 10 kHz:
 - So $Z_{in} = $ **99.19 + j126.7 Ω**.
 - The current ratio is $\lvert\mathbf{I}_2/\mathbf{I}_1\rvert = \omega M/\lvert Z_L + j\omega L_2\rvert = 113.1/80.30 = $ **1.408**.
 
-(c) An ideal transformer scales impedance by $n^2$: $n = \sqrt{800/8} = $ **10**, that is, 10:1 turns, with the amplifier on the 10-turn side.
+(c) An ideal transformer scales impedance by $n^2$: \$n = \sqrt{800/8} = \$ **10**, that is, 10:1 turns, with the amplifier on the 10-turn side.
 
-(d) At full load and PF 0.8 the output is 8000 W and the losses are $80 + 200 = 280$ W, so $\eta = 8000/8280 = $ **96.62%**.
+(d) At full load and PF 0.8 the output is 8000 W and the losses are $80 + 200 = 280$ W, so \$\eta = 8000/8280 = \$ **96.62%**.
 
 - Copper loss scales as the square of the load fraction $x$; core loss is constant.
 - Efficiency peaks where they are equal: $x = \sqrt{80/200} = $ **0.6325**.
@@ -358,7 +358,7 @@ At 10 kHz:
 
 (a) Open-circuit tests:
 
-- With port 2 open, a current into port 1 flows through $Z_a$ and $Z_c$: $z_{11} = 10 + 100 = $ **110 Ω**, and $z_{21} = \mathbf{V}_2/\mathbf{I}_1 = $ **100 Ω** (only $Z_c$ is shared).
+- With port 2 open, a current into port 1 flows through $Z_a$ and $Z_c$: \$z_{11} = 10 + 100 = \$ **110 Ω**, and \$z_{21} = \mathbf{V}_2/\mathbf{I}_1 = \$ **100 Ω** (only $Z_c$ is shared).
 - Likewise $z_{22} = 20 + 100 = $ **120 Ω** and $z_{12} = $ **100 Ω**.
 
 The network is **reciprocal** ($z_{12} = z_{21}$; it contains only R, L and C) but **not symmetric** ($z_{11} \ne z_{22}$).
@@ -376,8 +376,8 @@ $AD - BC = 1.32 - 0.32 = $ **1**, as reciprocity requires.
 
 (d) With $Z_0$ = 50 Ω, the common denominator is $A + B/Z_0 + CZ_0 + D = 1.1 + 0.64 + 0.5 + 1.2 = 3.44$. So:
 
-- $S_{11} = (A + B/Z_0 - CZ_0 - D)/3.44 = 0.04/3.44 = $ **0.01163**. Check: $(Z_{in} - 50)/(Z_{in} + 50) = 1.176/101.2$.
-- $S_{21} = 2/3.44 = $ **0.5814**, which equals $S_{12}$.
+- \$S_{11} = (A + B/Z_0 - CZ_0 - D)/3.44 = 0.04/3.44 = \$ **0.01163**. Check: $(Z_{in} - 50)/(Z_{in} + 50) = 1.176/101.2$.
+- \$S_{21} = 2/3.44 = \$ **0.5814**, which equals $S_{12}$.
 - $S_{22} = (-A + B/Z_0 - CZ_0 + D)/3.44 = $ **0.06977**.
 
 The losses:
@@ -405,19 +405,19 @@ The power:
 - $W_1 = V_LI_L\cos(30° + \theta) = 400\times13.86\cos83.13° = $ **663.0 W**;
 - $W_2 = V_LI_L\cos(30° - \theta) = 5543\cos(-23.13°) = $ **5097 W**.
 
-Recovering the totals: $W_1 + W_2 = $ **5760 W** $= P$, and $\sqrt3(W_2 - W_1) = $ **7680 var** $= Q$.
+Recovering the totals: \$W_1 + W_2 = \$ **5760 W** $= P$, and \$\sqrt3(W_2 - W_1) = \$ **7680 var** $= Q$.
 
 (c) Unity PF needs 7680 var of capacitive compensation, 2560 var per phase.
 
-- In Y, each capacitor sees $400/\sqrt3 = 230.9$ V, so $C_Y = 2560/(2\pi\cdot50\cdot230.9^2) = $ **152.8 µF**.
+- In Y, each capacitor sees $400/\sqrt3 = 230.9$ V, so \$C_Y = 2560/(2\pi\cdot50\cdot230.9^2) = \$ **152.8 µF**.
 - The new line current is $5760/(\sqrt3\times400) = $ **8.314 A**, down from 13.86 A.
-- In Δ, each capacitor sees 400 V, so $C_\Delta = 2560/(2\pi\cdot50\cdot400^2) = $ **50.93 µF**. That is a third of $C_Y$, but each capacitor must be rated for the line voltage.
+- In Δ, each capacitor sees 400 V, so \$C_\Delta = 2560/(2\pi\cdot50\cdot400^2) = \$ **50.93 µF**. That is a third of $C_Y$, but each capacitor must be rated for the line voltage.
 
 **13.** *(07-03, 07-07, 07-08)*
 
 (a) The filter:
 
-- $\omega_0 = 1/\sqrt{LC} = 1/\sqrt{2.2\ \mu\text{H}\times47\ \mu\text{F}} = 98{,}342$ rad/s, so $f_0 = $ **15.65 kHz**.
+- $\omega_0 = 1/\sqrt{LC} = 1/\sqrt{2.2\ \mu\text{H}\times47\ \mu\text{F}} = 98{,}342$ rad/s, so \$f_0 = \$ **15.65 kHz**.
 - $Z_0 = \sqrt{L/C} = $ **0.2164 Ω**.
 
 The transfer function from the switch node is
@@ -426,18 +426,18 @@ $$
 H(s) = \frac{1}{s^2LC + sL/R + 1} ,
 $$
 
-a second-order low-pass. Comparing $s/(\omega_0Q)$ with $sL/R$ gives $Q = R/(\omega_0L) = R/Z_0 = $ **4.622**. At $f_0$ the gain is exactly $Q$: **13.30 dB** of peaking.
+a second-order low-pass. Comparing $s/(\omega_0Q)$ with $sL/R$ gives \$Q = R/(\omega_0L) = R/Z_0 = \$ **4.622**. At $f_0$ the gain is exactly $Q$: **13.30 dB** of peaking.
 
 (b) The DC output is the average of the switch node, $DV_{in} = 0.25\times12 = $ **3 V** (L is a short and C an open at DC).
 
-A pulse train of height $V$ and duty $D$ has an $n$th-harmonic amplitude of $(2V/n\pi)\sin(n\pi D)$. The fundamental is therefore $(24/\pi)\sin45° = $ **5.402 V** peak.
+A pulse train of height $V$ and duty $D$ has an $n$th-harmonic amplitude of $(2V/n\pi)\sin(n\pi D)$. The fundamental is therefore \$(24/\pi)\sin45° = \$ **5.402 V** peak.
 
 At 500 kHz:
 
 - $j\omega L = j6.912$ Ω.
 - The capacitor branch is $Z_C = 0.010 - j0.006773$ Ω.
 - In parallel with 1 Ω: $Z_p = Z_C/(1 + Z_C) = 0.009946 - j0.006639$ Ω.
-- So $\lvert H\rvert = \lvert Z_p\rvert/\lvert j\omega L + Z_p\rvert = 0.01196/6.905 = 0.001732$, and the output fundamental is $5.402\times0.001732 = $ **9.355 mV**.
+- So $\lvert H\rvert = \lvert Z_p\rvert/\lvert j\omega L + Z_p\rvert = 0.01196/6.905 = 0.001732$, and the output fundamental is \$5.402\times0.001732 = \$ **9.355 mV**.
 - Without the ESR, $\lvert H\rvert \approx 1/[(f/f_0)^2 - 1] = 0.000981$, giving **5.298 mV**.
 
 **The ESR sets the ripple.** Its zero is at $1/(2\pi\cdot\text{ESR}\cdot C) = 338.6$ kHz, below the switching frequency. At 500 kHz the 10 mΩ of ESR exceeds the 6.77 mΩ capacitive reactance. This is why converter designs specify low-ESR ceramics or polymer capacitors, or put several in parallel.
@@ -454,15 +454,15 @@ $$
 v(t) = -\frac{\Delta I}{\omega_dC}e^{-\alpha t}\sin\omega_dt .
 $$
 
-The peak is where $\tan\omega_dt = \omega_d/\alpha$, at $t = $ **14.96 µs**. Its value is
+The peak is where $\tan\omega_dt = \omega_d/\alpha$, at \$t = \$ **14.96 µs**. Its value is
 
 $$
 \frac{2}{97{,}765\times47\ \mu\text{F}}\,e^{-0.1591}\sin(1.462) = 0.4353\times0.8529\times0.9941 = \textbf{0.3690 V}
 $$
 
-of droop. The undamped estimate $\Delta I\cdot Z_0 = $ **0.4327 V** is 17% pessimistic: the load resistor damps the ring ($\zeta = 1/2Q = 0.108$). In a real converter the loop responds within a few microseconds and the ESR adds an instant step of $\Delta I\times\text{ESR}$ = 20 mV.
+of droop. The undamped estimate \$\Delta I\cdot Z_0 = \$ **0.4327 V** is 17% pessimistic: the load resistor damps the ring ($\zeta = 1/2Q = 0.108$). In a real converter the loop responds within a few microseconds and the ESR adds an instant step of $\Delta I\times\text{ESR}$ = 20 mV.
 
-(d) At 10 Ω, $Q = 10/0.2164 = $ **46.22**, and the gain at $f_0$ is **33.30 dB**.
+(d) At 10 Ω, \$Q = 10/0.2164 = \$ **46.22**, and the gain at $f_0$ is **33.30 dB**.
 
 - The output filter then rings for many cycles ($\alpha = 1/(2RC) = $ **1064 s⁻¹**, so the envelope's time constant is **0.940 ms**, about 15 periods of **63.9 µs**).
 - A load step's peak approaches $\Delta I\cdot Z_0$.
@@ -496,8 +496,8 @@ Setting $Y_{in} = 1/50$:
 
 Here $Q = \sqrt{50/12.5 - 1} = \sqrt3 = 1.732$. So:
 
-- $X_L = 21.65$ Ω, giving $L = 21.65/(2\pi\times2.4\ \text{GHz}) = $ **1.436 nH**;
-- $X_C = 28.87$ Ω, giving $C = 1/(2\pi\times2.4\ \text{GHz}\times28.87) = $ **2.297 pF**.
+- $X_L = 21.65$ Ω, giving \$L = 21.65/(2\pi\times2.4\ \text{GHz}) = \$ **1.436 nH**;
+- $X_C = 28.87$ Ω, giving \$C = 1/(2\pi\times2.4\ \text{GHz}\times28.87) = \$ **2.297 pF**.
 
 (c) From port 1 (the 50 Ω side), the network is the shunt capacitor followed by the series inductor:
 
@@ -515,8 +515,8 @@ because the numerator is exactly 50 times the denominator.
 
 (d) Repeat the ABCD calculation at the new frequencies:
 
-- At 2.2 GHz: $Z_{in} = 42.47 + j8.078$ Ω, so $\lvert\Gamma\rvert = $ **0.1189** and the return loss is **18.49 dB**.
-- At 2.6 GHz: $Z_{in} = 53.33 - j13.03$ Ω, so $\lvert\Gamma\rvert = $ **0.1291** and the return loss is **17.78 dB**.
+- At 2.2 GHz: $Z_{in} = 42.47 + j8.078$ Ω, so \$\lvert\Gamma\rvert = \$ **0.1189** and the return loss is **18.49 dB**.
+- At 2.6 GHz: $Z_{in} = 53.33 - j13.03$ Ω, so \$\lvert\Gamma\rvert = \$ **0.1291** and the return loss is **17.78 dB**.
 
 **Yes**, both band edges beat 10 dB comfortably. A $Q$ of 1.73 is low, so the match is broadband. A larger impedance ratio would raise $Q$ and narrow it, and two L-sections through an intermediate impedance lower each section's $Q$.
 

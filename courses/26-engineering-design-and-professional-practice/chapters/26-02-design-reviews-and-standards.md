@@ -188,8 +188,8 @@ All examples use assumed, illustrative numbers unless a source is cited.
 
 **Solution.**
 
-- (a) $C(k) = 10{,}000k + 10{,}000 \times 20 \times 0.65^k$: **$140,000**, **$104,500**, **$84,925**, **$75,701**, **$73,206**, **$75,084** and **$79,804** for $k$ = 1 to 7.
-- (b) $k \le 1 + \ln[10{,}000/(10{,}000 \times 20 \times 0.35)]/\ln 0.65 = 1 + \ln(0.1429)/(-0.431)$ = **5.52**, so **5** reviewers, at $73,206.
+- (a) $C(k) = 10{,}000k + 10{,}000 \times 20 \times 0.65^k$: **$140,000**, **$104,500**, **$84,925**, **$75,701**, **$73,206**, **$75,084** and **\$79,804** for $k$ = 1 to 7.
+- (b) $k \le 1 + \ln[10{,}000/(10{,}000 \times 20 \times 0.35)]/\ln 0.65 = 1 + \ln(0.1429)/(-0.431)$ = **5.52**, so **5** reviewers, at \$73,206.
 - (c) $1 - 0.65^5$ = **88.4**%, leaving **2.32** expected escapes.
 - (d) $0.70[1 - 0.50^5] + 0.30 \times 0$ = **67.8**%, leaving **6.44** escapes: nearly three times as many, and no number of reviewers recovers the hidden 30%.
 
@@ -232,8 +232,8 @@ All examples use assumed, illustrative numbers unless a source is cited.
 
 **Solution.**
 
-- (a) $30 \times 0.005 \times 500$ = **$75** per phone, **3.75** times the price of the chip that implements the standard.
-- (b) $0.15 \times 20$ = **$3** per chip.
+- (a) $30 \times 0.005 \times 500$ = **\$75** per phone, **3.75** times the price of the chip that implements the standard.
+- (b) $0.15 \times 20$ = **\$3** per chip.
 - (c) $0.05 \times 500 \times 0.08$ = **$2** per phone, out of an aggregate of **$25**.
 
 **Units check.** Rate × dollars = dollars. ✓
@@ -246,7 +246,7 @@ All examples use assumed, illustrative numbers unless a source is cited.
 
 **Solution.**
 
-- (a) Gain $6 \times 5$ = **$30 M**; expected penalty $0.4 \times (3 + 2 \times 5)$ = **$5.2 M**; net **$24.8 M**: start early.
+- (a) Gain $6 \times 5$ = **\$30 M**; expected penalty $0.4 \times (3 + 2 \times 5)$ = **$5.2 M**; net **$24.8 M**: start early.
 - (b) Expected penalty $0.4 \times (25 + 6 \times 5)$ = **$22 M**; net **$8 M**: still positive, but much thinner.
 - (c) Waiting is better when $p(25 + 30) > 30$, that is, $p > 30/55$ = **0.545**.
 

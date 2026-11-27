@@ -8,7 +8,7 @@ Problems: [04-08 problems](../problems/04-08-problems.md) · Chapter: [04-08](..
 
 ### Solution 04-08.1
 
-$u_E = \tfrac12\varepsilon_0E^2 = 0.5\times8.854\times10^{-12}\times10^8 = $ **4.427×10⁻⁴ J/m³**; $u_B = B^2/(2\mu_0) = 10^{-4}/(2\times1.2566\times10^{-6}) = $ **39.79 J/m³**. Ratio **8.988×10⁴**: a modest magnetic field stores far more energy than a substantial electric field. (In SI units the two are equal when $E = cB$, which is the plane-wave case.)
+\$u_E = \tfrac12\varepsilon_0E^2 = 0.5\times8.854\times10^{-12}\times10^8 = \$ **4.427×10⁻⁴ J/m³**; \$u_B = B^2/(2\mu_0) = 10^{-4}/(2\times1.2566\times10^{-6}) = \$ **39.79 J/m³**. Ratio **8.988×10⁴**: a modest magnetic field stores far more energy than a substantial electric field. (In SI units the two are equal when $E = cB$, which is the plane-wave case.)
 
 ### Solution 04-08.2
 
@@ -16,27 +16,27 @@ $\lambda = c/f$: **4997 km** at 60 Hz; **12.49 cm** at 2.4 GHz; **10.71 mm** at 
 
 ### Solution 04-08.3
 
-Delay $= L\sqrt{\varepsilon}/c$. Stripline: $0.3\times\sqrt{3.66}/c = $ **1.914 ns**. Microstrip: $0.3\times\sqrt{2.9}/c = $ **1.704 ns**. Skew **210.3 ps**: matched lengths on different layers do not give matched delays, which matters for differential pairs and parallel buses.
+Delay $= L\sqrt{\varepsilon}/c$. Stripline: \$0.3\times\sqrt{3.66}/c = \$ **1.914 ns**. Microstrip: \$0.3\times\sqrt{2.9}/c = \$ **1.704 ns**. Skew **210.3 ps**: matched lengths on different layers do not give matched delays, which matters for differential pairs and parallel buses.
 
 ### Solution 04-08.4
 
-The current is $i = C\,dv/dt$; for $v = V\sin\omega t$ its amplitude is $\omega CV = 2\pi\times10^6\times10^{-8}\times1 = $ **62.83 mA**. Inside the dielectric no charge flows, but the field $E = q/(\varepsilon A)$ changes, and the displacement current $\varepsilon\,d\Phi_E/dt = dq/dt$ equals the lead current exactly, so Ampère's law gives the same magnetic field around the capacitor as around its leads.
+The current is $i = C\,dv/dt$; for $v = V\sin\omega t$ its amplitude is \$\omega CV = 2\pi\times10^6\times10^{-8}\times1 = \$ **62.83 mA**. Inside the dielectric no charge flows, but the field $E = q/(\varepsilon A)$ changes, and the displacement current $\varepsilon\,d\Phi_E/dt = dq/dt$ equals the lead current exactly, so Ampère's law gives the same magnetic field around the capacitor as around its leads.
 
 ### Solution 04-08.5
 
-$\langle S\rangle = E_0^2/(2\eta_0)$, so $E_0 = \sqrt{2\eta_0\times1000} = $ **868.0 V/m** and $B_0 = E_0/c = $ **2.895 µT**.
+$\langle S\rangle = E_0^2/(2\eta_0)$, so \$E_0 = \sqrt{2\eta_0\times1000} = \$ **868.0 V/m** and \$B_0 = E_0/c = \$ **2.895 µT**.
 
 ### Solution 04-08.6
 
 (a) $\eta_2 = \eta_0/\sqrt4 = $ **188.4 Ω**.
 
-(b) Incident, reflected and transmitted electric amplitudes $E_i$, $E_r$, $E_t$; the magnetic fields are $E/\eta$ with the reflected one reversed (it travels backward). Continuity of tangential E: $E_i + E_r = E_t$. Continuity of tangential H: $(E_i - E_r)/\eta_1 = E_t/\eta_2$. Eliminating $E_t$: $\Gamma = E_r/E_i = (\eta_2 - \eta_1)/(\eta_2 + \eta_1) = (188.4 - 376.7)/(565.1) = $ **−0.3333**: the reflected wave is inverted.
+(b) Incident, reflected and transmitted electric amplitudes $E_i$, $E_r$, $E_t$; the magnetic fields are $E/\eta$ with the reflected one reversed (it travels backward). Continuity of tangential E: $E_i + E_r = E_t$. Continuity of tangential H: $(E_i - E_r)/\eta_1 = E_t/\eta_2$. Eliminating $E_t$: \$\Gamma = E_r/E_i = (\eta_2 - \eta_1)/(\eta_2 + \eta_1) = (188.4 - 376.7)/(565.1) = \$ **−0.3333**: the reflected wave is inverted.
 
-(c) Reflected power fraction $\Gamma^2 = $ **0.1111**; transmitted **0.8889**. The same formula, with $Z_0$ values, gives reflections on transmission lines ([13-07](../../13-electromagnetics/chapters/13-07-transmission-lines-time-domain.md)).
+(c) Reflected power fraction \$\Gamma^2 = \$ **0.1111**; transmitted **0.8889**. The same formula, with $Z_0$ values, gives reflections on transmission lines ([13-07](../../13-electromagnetics/chapters/13-07-transmission-lines-time-domain.md)).
 
 ### Solution 04-08.7
 
-(a) Between the conductors $E = V/(r\ln(b/a))$ (04-04) and $H = I/(2\pi r)$ (04-06), perpendicular, so $S = EH$, directed along the cable toward the load. At $r = a$: $\frac{10}{0.45\times10^{-3}\times1.1872}\times\frac{0.2}{2\pi\times0.45\times10^{-3}} = $ **1.324×10⁶ W/m²**.
+(a) Between the conductors $E = V/(r\ln(b/a))$ (04-04) and $H = I/(2\pi r)$ (04-06), perpendicular, so $S = EH$, directed along the cable toward the load. At $r = a$: \$\frac{10}{0.45\times10^{-3}\times1.1872}\times\frac{0.2}{2\pi\times0.45\times10^{-3}} = \$ **1.324×10⁶ W/m²**.
 
 (b) $\int_a^bS\,2\pi r\,dr = \int_a^b\frac{V}{r\ln(b/a)}\frac{I}{2\pi r}2\pi r\,dr = \frac{VI}{\ln(b/a)}\int_a^b\frac{dr}{r} = VI = $ **2 W** ✓. The power travels in the dielectric between the conductors, concentrated near the inner one.
 
@@ -58,11 +58,11 @@ For a sinusoid, $J_c = \sigma E$ and $J_d = \varepsilon\,\partial E/\partial t$ 
 
 ### Solution 04-08.11
 
-$\partial^2E/\partial x^2 = -k^2E$ and $\partial^2E/\partial t^2 = -\omega^2E$, so the equation requires $k^2 = \mu\varepsilon\omega^2$, i.e. $\omega/k = 1/\sqrt{\mu\varepsilon}$. In $\varepsilon_r$ = 4.6 at 10 GHz, $\lambda = 13.98$ mm and $k = 2\pi/\lambda = $ **449.5 rad/m**.
+$\partial^2E/\partial x^2 = -k^2E$ and $\partial^2E/\partial t^2 = -\omega^2E$, so the equation requires $k^2 = \mu\varepsilon\omega^2$, i.e. $\omega/k = 1/\sqrt{\mu\varepsilon}$. In $\varepsilon_r$ = 4.6 at 10 GHz, $\lambda = 13.98$ mm and \$k = 2\pi/\lambda = \$ **449.5 rad/m**.
 
 ### Solution 04-08.12
 
-$t/L = \sqrt{\varepsilon_{\text{eff}}}/c$, so $\varepsilon_{\text{eff}} = (c\times5.9\ \text{ps/mm})^2 = (2.998\times10^8\times5.9\times10^{-9})^2 = $ **3.129**. A microstrip's field lies partly in the air above the trace (ε = 1) and partly in the laminate, so the wave sees a weighted average between 1 and 4.6.
+$t/L = \sqrt{\varepsilon_{\text{eff}}}/c$, so \$\varepsilon_{\text{eff}} = (c\times5.9\ \text{ps/mm})^2 = (2.998\times10^8\times5.9\times10^{-9})^2 = \$ **3.129**. A microstrip's field lies partly in the air above the trace (ε = 1) and partly in the laminate, so the wave sees a weighted average between 1 and 4.6.
 
 ### Solution 04-08.13
 

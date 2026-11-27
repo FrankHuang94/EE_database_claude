@@ -152,16 +152,16 @@ That is **4** instructions; the carry out of the top word is discarded.
 
 ### Solution 14-02.14
 
-(a) The royalty is 1.5% × $2.00 = $0.03 per unit, or 40 M × $0.03 = $1.2 M a year. The five-year annuity factor at 10% is $\sum_{k=1}^{5} 1.1^{-k}$ = 3.7908.
+(a) The royalty is 1.5% × \$2.00 = \$0.03 per unit, or 40 M × \$0.03 = \$1.2 M a year. The five-year annuity factor at 10% is $\sum_{k=1}^{5} 1.1^{-k}$ = 3.7908.
 
-- Option L: $1.5 + 1.2 \times 3.7908$ = **6.049** $M.
-- Option O: $6 + 0.5 \times 3.7908$ = **7.895** $M.
+- Option L: $1.5 + 1.2 \times 3.7908$ = **6.049** \$M.
+- Option O: $6 + 0.5 \times 3.7908$ = **7.895** \$M.
 
 At this volume licensing is cheaper by **1.846** $M.
 
 (b) Setting $1.5 + 0.03V \times 3.7908 = 7.895$, with $V$ in millions of units a year, gives $V$ = **56.24** million units a year.
 
-(c) At 80 M units a year, option L costs $1.5 + 2.4 \times 3.7908$ = **10.60** $M. Building is cheaper by **2.70** $M. Royalties scale with volume and price; engineering is a fixed cost. The finance analogy is operating leverage: option O has high fixed cost and low marginal cost.
+(c) At 80 M units a year, option L costs $1.5 + 2.4 \times 3.7908$ = **10.60** \$M. Building is cheaper by **2.70** \$M. Royalties scale with volume and price; engineering is a fixed cost. The finance analogy is operating leverage: option O has high fixed cost and low marginal cost.
 
 (d) It leaves out:
 

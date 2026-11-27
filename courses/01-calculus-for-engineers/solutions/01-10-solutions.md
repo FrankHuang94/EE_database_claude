@@ -10,11 +10,11 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 01-10.1
 
-(a) The inner integral is $\int_0^2(x + y)\,dy = 2x + 2$. Then $\int_0^1(2x + 2)\,dx = 1 + 2 = $ **3**.
+(a) The inner integral is $\int_0^2(x + y)\,dy = 2x + 2$. Then \$\int_0^1(2x + 2)\,dx = 1 + 2 = \$ **3**.
 
-(b) The inner integral is $\int_0^xxy\,dy = x^3/2$. Then $\int_0^1x^3/2\,dx = $ **0.125**.
+(b) The inner integral is $\int_0^xxy\,dy = x^3/2$. Then \$\int_0^1x^3/2\,dx = \$ **0.125**.
 
-(c) The region is $0 \le y \le x \le 1$, a triangle. With $x$ outside: $\int_0^1\int_0^xe^{x^2}dy\,dx = \int_0^1xe^{x^2}dx = \tfrac{1}{2}(e - 1) = $ **0.8591**. In the original order the inner integral $\int e^{x^2}dx$ has no elementary form.
+(c) The region is $0 \le y \le x \le 1$, a triangle. With $x$ outside: \$\int_0^1\int_0^xe^{x^2}dy\,dx = \int_0^1xe^{x^2}dx = \tfrac{1}{2}(e - 1) = \$ **0.8591**. In the original order the inner integral $\int e^{x^2}dx$ has no elementary form.
 
 ### Solution 01-10.2
 
@@ -40,13 +40,13 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 01-10.5
 
-$Q = \int_0^{0.05}\int_0^{0.1}\sigma_0(1 + x/0.1)\,dx\,dy = \sigma_0\times0.05\times(0.1 + 0.05) = 2\times10^{-9}\times0.0075 = $ **15 pC**. The average is $Q/\text{area} = 15\text{ pC}/0.005\text{ m}^2 = $ **3 nC/m²**, the value of σ at the middle, $x = L/2$, because σ is linear in $x$.
+\$Q = \int_0^{0.05}\int_0^{0.1}\sigma_0(1 + x/0.1)\,dx\,dy = \sigma_0\times0.05\times(0.1 + 0.05) = 2\times10^{-9}\times0.0075 = \$ **15 pC**. The average is \$Q/\text{area} = 15\text{ pC}/0.005\text{ m}^2 = \$ **3 nC/m²**, the value of σ at the middle, $x = L/2$, because σ is linear in $x$.
 
 ### Solution 01-10.6
 
 (a) $P = \int_0^6\int_0^8(0.3 + 0.9e^{-x/2})\,dx\,dy = 6\big[0.3(8) + 1.8(1 - e^{-4})\big] = 6(2.4 + 1.767) = $ **25.00 W**.
 
-(b) Average $25.00/48 = $ **0.5209 W/mm²**. The peak, along $x = 0$, is 1.2 W/mm², a peak-to-average ratio of **2.304**.
+(b) Average \$25.00/48 = \$ **0.5209 W/mm²**. The peak, along $x = 0$, is 1.2 W/mm², a peak-to-average ratio of **2.304**.
 
 ### Solution 01-10.7
 
@@ -58,13 +58,13 @@ $Q = \int_0^{0.05}\int_0^{0.1}\sigma_0(1 + x/0.1)\,dx\,dy = \sigma_0\times0.05\t
 
 ### Solution 01-10.8
 
-(a) $\partial F_y/\partial x = 2y = \partial F_x/\partial y$, so $\vec{F}$ is conservative, with $\varphi = xy^2$. The integral is $\varphi(2, 1) - \varphi(0, 0) = $ **2**.
+(a) $\partial F_y/\partial x = 2y = \partial F_x/\partial y$, so $\vec{F}$ is conservative, with $\varphi = xy^2$. The integral is \$\varphi(2, 1) - \varphi(0, 0) = \$ **2**.
 
-(b) With $x = 2\cos t$, $y = 2\sin t$: $\vec{G}\cdot\vec{r}' = (-2\sin t)(-2\sin t) + (2\cos t)(2\cos t) = 4$, so $\oint = 4\times2\pi = $ **25.13** (8π). Green's theorem: $\iint(\partial_xG_y - \partial_yG_x)\,dA = \iint2\,dA = 2\times4\pi = 8\pi$ ✓.
+(b) With $x = 2\cos t$, $y = 2\sin t$: $\vec{G}\cdot\vec{r}' = (-2\sin t)(-2\sin t) + (2\cos t)(2\cos t) = 4$, so \$\oint = 4\times2\pi = \$ **25.13** (8π). Green's theorem: $\iint(\partial_xG_y - \partial_yG_x)\,dA = \iint2\,dA = 2\times4\pi = 8\pi$ ✓.
 
 ### Solution 01-10.9
 
-(a) $V_A - V_B = \int_A^B\vec{E}\cdot d\vec{l} = 1000\times0.02 + 0\times0.01 = $ **20 V**. The field has no $y$ component, so moving in $y$ is moving along an equipotential.
+(a) \$V_A - V_B = \int_A^B\vec{E}\cdot d\vec{l} = 1000\times0.02 + 0\times0.01 = \$ **20 V**. The field has no $y$ component, so moving in $y$ is moving along an equipotential.
 
 (b) $W = \dfrac{1}{4\pi\varepsilon_0}\dfrac{q_1q_2}{r} = 8.988\times10^9\times10^{-18}/0.01 = $ **8.988×10^−7 J**, the line integral of the repulsive force from infinity to 1 cm.
 
@@ -72,21 +72,21 @@ $Q = \int_0^{0.05}\int_0^{0.1}\sigma_0(1 + x/0.1)\,dx\,dy = \sigma_0\times0.05\t
 
 (a) By Ampère's law, $\oint\vec{B}\cdot d\vec{l} = \mu_0I = $ **2.513×10^−6 T·m**. At 1 cm, $B = \mu_0I/(2\pi r) = $ **40.00 µT**.
 
-(b) The flux is $\Phi = BA = 10\text{ µT}\sin(\omega t)\times10^{-3}\text{ m}^2$, and the EMF is $-d\Phi/dt$, with peak $AB\omega = 10^{-3}\times10^{-5}\times2\pi\times50 = $ **3.142 µV**. KVL assumed $\oint\vec{E}\cdot d\vec{l} = 0$; Faraday's law says it equals $-d\Phi/dt$, so a few microvolts appear around the loop that no component "drops". **Shrink the loop area**: route the return path directly beside or beneath the signal (a ground plane), or twist the pair. The EMF scales with area, and for sensitive analog paths microvolts matter.
+(b) The flux is $\Phi = BA = 10\text{ µT}\sin(\omega t)\times10^{-3}\text{ m}^2$, and the EMF is $-d\Phi/dt$, with peak \$AB\omega = 10^{-3}\times10^{-5}\times2\pi\times50 = \$ **3.142 µV**. KVL assumed $\oint\vec{E}\cdot d\vec{l} = 0$; Faraday's law says it equals $-d\Phi/dt$, so a few microvolts appear around the loop that no component "drops". **Shrink the loop area**: route the return path directly beside or beneath the signal (a ground plane), or twist the pair. The EMF scales with area, and for sensitive analog paths microvolts matter.
 
 ### Solution 01-10.11
 
-(a) On the sphere, $\vec{F}\cdot\hat{n} = r = 2$, so the flux is $2\times4\pi(2)^2 = 32\pi = $ **100.5**. The divergence is 3, so the volume integral is $3\times\tfrac{4}{3}\pi(2)^3 = 32\pi$ ✓.
+(a) On the sphere, $\vec{F}\cdot\hat{n} = r = 2$, so the flux is \$2\times4\pi(2)^2 = 32\pi = \$ **100.5**. The divergence is 3, so the volume integral is $3\times\tfrac{4}{3}\pi(2)^3 = 32\pi$ ✓.
 
-(b) $Q/\varepsilon_0 = 10^{-9}/8.854\times10^{-12} = $ **112.9 V·m**, independent of the radius. The field falls as $1/r^2$ while the area grows as $r^2$.
+(b) \$Q/\varepsilon_0 = 10^{-9}/8.854\times10^{-12} = \$ **112.9 V·m**, independent of the radius. The field falls as $1/r^2$ while the area grows as $r^2$.
 
 ### Solution 01-10.12
 
 (a) $Q(r) = \int_0^r\rho_0(1 - s/R)4\pi s^2\,ds = 4\pi\rho_0\left(\dfrac{r^3}{3} - \dfrac{r^4}{4R}\right)$.
 
-(b) Gauss on a sphere of radius $r$: $E(r) = \dfrac{Q(r)}{4\pi\varepsilon_0r^2} = \dfrac{\rho_0}{\varepsilon_0}\left(\dfrac{r}{3} - \dfrac{r^2}{4R}\right)$. At $r = R/2 = 0.05$ m: $Q = $ **3.272×10^−10 C**, and $E = $ **1176 V/m**.
+(b) Gauss on a sphere of radius $r$: $E(r) = \dfrac{Q(r)}{4\pi\varepsilon_0r^2} = \dfrac{\rho_0}{\varepsilon_0}\left(\dfrac{r}{3} - \dfrac{r^2}{4R}\right)$. At $r = R/2 = 0.05$ m: \$Q = \$ **3.272×10^−10 C**, and \$E = \$ **1176 V/m**.
 
-(c) $dE/dr = \dfrac{\rho_0}{\varepsilon_0}\left(\dfrac{1}{3} - \dfrac{r}{2R}\right) = 0$ at $r = 2R/3 = $ **0.06667 m**. There $E_{max} = \dfrac{\rho_0}{\varepsilon_0}\cdot\dfrac{R}{9} = $ **1255 V/m**, larger than the surface value of 941 V/m. Beyond $2R/3$, the little charge added in the thin, low-density outer shells cannot keep up with the $1/r^2$ spreading of the field. Electric field stress, which governs dielectric breakdown, can peak inside a structure.
+(c) $dE/dr = \dfrac{\rho_0}{\varepsilon_0}\left(\dfrac{1}{3} - \dfrac{r}{2R}\right) = 0$ at \$r = 2R/3 = \$ **0.06667 m**. There \$E_{max} = \dfrac{\rho_0}{\varepsilon_0}\cdot\dfrac{R}{9} = \$ **1255 V/m**, larger than the surface value of 941 V/m. Beyond $2R/3$, the little charge added in the thin, low-density outer shells cannot keep up with the $1/r^2$ spreading of the field. Electric field stress, which governs dielectric breakdown, can peak inside a structure.
 
 ### Solution 01-10.13
 
@@ -107,13 +107,13 @@ $Q = \int_0^{0.05}\int_0^{0.1}\sigma_0(1 + x/0.1)\,dx\,dy = \sigma_0\times0.05\t
 | 400 | **143.4** | **67.03%** | **96.12** |
 | 800 | **64.80** | **44.93%** | **29.11** |
 
-(b) Cost per good die is proportional to $1/(\text{good dies})$: $579.3/29.11 = $ **19.9×** more for 8× the area. Cost grows much faster than area, because of both edge loss and yield.
+(b) Cost per good die is proportional to $1/(\text{good dies})$: \$579.3/29.11 = \$ **19.9×** more for 8× the area. Cost grows much faster than area, because of both edge loss and yield.
 
 (c) A 200 mm² chiplet gives **306.3** gross and **250.8** good dies (Y = **81.87%**), so **62.70** sets of four per wafer. Four 200 mm² chiplets replace one 800 mm² die, so compare 62.70 sets with 29.11 monolithic good dies: **2.15×**. The saving must pay for advanced packaging, die-to-die interfaces and their power, test of known-good dies, and assembly yield. That is the real chiplet tradeoff ([25-07](../../25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md)).
 
 ### Solution 01-10.15
 
-(a) With $P = -y/2$ and $Q = x/2$, Green's theorem gives $\iint(\tfrac{1}{2} + \tfrac{1}{2})\,dA = $ area. For the ellipse, $x\,dy - y\,dx = (3\cos t)(2\cos t)\,dt + (2\sin t)(3\sin t)\,dt = 6\,dt$, so the area is $\tfrac{1}{2}\times6\times2\pi = 6\pi = $ **18.85** ($\pi ab$ ✓). This is the principle of the planimeter, which measures area by tracing a boundary.
+(a) With $P = -y/2$ and $Q = x/2$, Green's theorem gives \$\iint(\tfrac{1}{2} + \tfrac{1}{2})\,dA = \$ area. For the ellipse, $x\,dy - y\,dx = (3\cos t)(2\cos t)\,dt + (2\sin t)(3\sin t)\,dt = 6\,dt$, so the area is \$\tfrac{1}{2}\times6\times2\pi = 6\pi = \$ **18.85** ($\pi ab$ ✓). This is the principle of the planimeter, which measures area by tracing a boundary.
 
 (b) On the unit circle, $\vec{F} = (-\sin t, \cos t)$ and $\vec{r}' = (-\sin t, \cos t)$, so $\vec{F}\cdot\vec{r}' = 1$ and the circulation is **6.283** (2π). Green's theorem requires the field to be smooth *throughout* the enclosed region, but $\vec{F}$ blows up at the origin, which is inside the loop. The curl is zero everywhere it is defined, yet a "hole" carries circulation. This is exactly the magnetic field of a straight wire along the $z$ axis, scaled: $\vec{B} = \frac{\mu_0I}{2\pi}\vec{F}$, with the current concentrated in the hole.
 
@@ -133,7 +133,7 @@ $$
 V = \int_a^b\frac{\lambda}{2\pi\varepsilon r}\,dr = \frac{\lambda}{2\pi\varepsilon}\ln\frac{b}{a}, \qquad C' = \frac{\lambda}{V} = \frac{2\pi\varepsilon_0\varepsilon_r}{\ln(b/a)} .
 $$
 
-With $\ln 3 = 1.0986$: $C' = 2\pi\times8.854\times10^{-12}\times2.1/1.0986 = $ **106.3 pF/m**.
+With $\ln 3 = 1.0986$: \$C' = 2\pi\times8.854\times10^{-12}\times2.1/1.0986 = \$ **106.3 pF/m**.
 
 (c) $\lambda = C'V = 106.3\text{ pF/m}\times50\text{ V} = $ **5.317 nC/m**. The field is largest at the smallest radius, the inner conductor's surface: $E(a) = V/\big(a\ln(b/a)\big) = 50/(0.5\times10^{-3}\times1.0986) = $ **91.02 kV/m**.
 

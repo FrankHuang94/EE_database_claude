@@ -43,13 +43,13 @@
 (d) An IEEE ballot has 180 eligible voters; 140 return ballots: 98 approve, 22 disapprove and 20 abstain. Check the return, approval and abstention rules (75%, 75%, under 30%). Does it pass?
 
 **4 [B] · Cost stack and margin.** (26-03)
-(a) A 120 mm² die is made on $15,000 wafers at $D_0$ = 0.12 cm⁻². Find the dies per wafer, die yield and cost per good die.
+(a) A 120 mm² die is made on \$15,000 wafers at $D_0$ = 0.12 cm⁻². Find the dies per wafer, die yield and cost per good die.
 (b) The package costs $5.00 and assembly yields 98.5%; final test costs $1.50 per unit tested and yields 97%. Find the cost after assembly and after test.
 (c) The chip sells for $75 (no royalties). Find the gross margin and markup.
 (d) The program's NRE is $90 M. Find the break-even volume.
 
 **5 [B] · Time value and a program's NPV.** (26-03)
-(a) Find $(P/A, 8\%, 6)$ and $(A/P, 8\%, 6)$, and the annual payment that repays a $250,000 tester over 6 years at 8%.
+(a) Find $(P/A, 8\%, 6)$ and $(A/P, 8\%, 6)$, and the annual payment that repays a \$250,000 tester over 6 years at 8%.
 (b) A program spends $40 M of NRE in each of years 0 and 1 and earns $35 M a year in years 2 to 5 (assumed). Find its NPV at 12% and its IRR.
 (c) Find its simple payback, interpolating within the year in which cumulative cash turns positive.
 (d) A one-year slip delays every sales year, and the market window closes after year 5 so the last year is lost. Find the new NPV and the value lost.
@@ -62,7 +62,7 @@
 
 **7 [B] · Node choice.** (26-04)
 (a) A 150 mm² die is 60% logic, 25% SRAM and 15% analog. The new node improves their density by 1.6×, 1.15× and 1.05×. Find the effective density gain and the new die area.
-(b) Old-node wafers cost $15,000 with $D_0$ = 0.10 cm⁻²; new-node wafers $19,000 with $D_0$ = 0.12 cm⁻². Find the cost per good die at each node.
+(b) Old-node wafers cost \$15,000 with $D_0$ = 0.10 cm⁻²; new-node wafers \$19,000 with $D_0$ = 0.12 cm⁻². Find the cost per good die at each node.
 (c) The new node costs $40 M more NRE. Find the break-even lifetime volume.
 (d) Before yield and edge effects, by what factor does cost per function change? Explain in one sentence why it is not $1/1.6$.
 
@@ -80,9 +80,9 @@
 
 **10 [B] · Risk register and when to tape out.** (26-05)
 (a) Risks (probability, impact $ M): R1 (0.2, 25), R2 (0.3, 10), R3 (0.1, 40). Mitigations (cost $ M, probability after): R1 (2.0, 0.05), R2 (1.0, 0.15), R3 (1.5, 0.03). Find the EMV, each mitigation's net benefit, and the best set with a $3 M budget.
-(b) Final verification starts with $N_0$ = 30 bugs, mean discovery time $\tau$ = 3 weeks, and a fraction $\phi$ = 0.3 respin-class; a respin costs $30 M and a week $1.2 M. Find $k = c_w\tau/C_r$, the optimal $\lambda^*$ (the smaller root of $\lambda e^{-\lambda} = k$; iterate), the optimal verification time and the respin probability there.
+(b) Final verification starts with $N_0$ = 30 bugs, mean discovery time $\tau$ = 3 weeks, and a fraction $\phi$ = 0.3 respin-class; a respin costs \$30 M and a week \$1.2 M. Find $k = c_w\tau/C_r$, the optimal $\lambda^*$ (the smaller root of $\lambda e^{-\lambda} = k$; iterate), the optimal verification time and the respin probability there.
 (c) Find the expected cost at the optimum and at $t$ = 0.
-(d) Emulation costing $2 M shortens $\tau$ to 2 weeks. Find the new optimum time, respin probability and expected cost including the emulation. Is it worth buying?
+(d) Emulation costing \$2 M shortens $\tau$ to 2 weeks. Find the new optimum time, respin probability and expected cost including the emulation. Is it worth buying?
 
 **11 [C] · Teams.** (26-06)
 (a) Derive the flat team size that maximizes $O(n) = n[1 - c(n - 1)]$, show it is a maximum, and evaluate the best integer size and its output for $c$ = 0.035.

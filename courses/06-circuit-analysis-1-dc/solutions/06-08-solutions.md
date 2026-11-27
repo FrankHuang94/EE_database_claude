@@ -12,7 +12,7 @@ Problems: [06-08 problems](../problems/06-08-problems.md) · Chapter: [06-08](..
 
 ### Solution 06-08.2
 
-With the 6 Ω removed, the 2 A source's current has only one path: from node a through the 4 Ω into the 12 V source. So $v_{oc} = 12 + 2\times4 = $ **20 V** (the 4 Ω drops 8 V with node a on the high side). Switching off the sources (12 V shorted, 2 A opened) leaves the 4 Ω alone: $R_{th} = $ **4 Ω**. Reconnecting 6 Ω: $v_a = 20\times6/(4 + 6) = 12$ V ✓, as found by superposition in Example 06-07.1.
+With the 6 Ω removed, the 2 A source's current has only one path: from node a through the 4 Ω into the 12 V source. So \$v_{oc} = 12 + 2\times4 = \$ **20 V** (the 4 Ω drops 8 V with node a on the high side). Switching off the sources (12 V shorted, 2 A opened) leaves the 4 Ω alone: \$R_{th} = \$ **4 Ω**. Reconnecting 6 Ω: $v_a = 20\times6/(4 + 6) = 12$ V ✓, as found by superposition in Example 06-07.1.
 
 ### Solution 06-08.3
 
@@ -20,15 +20,15 @@ $v_L = 5R_L/(50 + R_L)$ and the error is $50/(50 + R_L)$: 50 Ω → **2.5 V**, *
 
 ### Solution 06-08.4
 
-(a) Left divider output: $2.5\times350.7/700.7 = 1.251249$ V; right: 1.25 V. $V_{th} = $ **1.249 mV**. With the excitation shorted, each divider's midpoint sees its two arms in parallel: $R_{th} = 350\parallel350.7 + 350\parallel350 = 175.17 + 175 = $ **350.2 Ω**.
+(a) Left divider output: $2.5\times350.7/700.7 = 1.251249$ V; right: 1.25 V. \$V_{th} = \$ **1.249 mV**. With the excitation shorted, each divider's midpoint sees its two arms in parallel: \$R_{th} = 350\parallel350.7 + 350\parallel350 = 175.17 + 175 = \$ **350.2 Ω**.
 
 (b) $1.2488\times10{,}000/10{,}350.2 = $ **1.207 mV**: a loss of **3.38%**, larger than the strain signal's own 0.1% nonlinearity: the amplifier's input resistance must be in the error budget.
 
-(c) $R_{th}/(R_{th} + R_{in}) < 0.001$ requires $R_{in} > 999\times350.2 = $ **349.8 kΩ**; in practice an instrumentation amplifier with gigaohm inputs is used (06-10).
+(c) $R_{th}/(R_{th} + R_{in}) < 0.001$ requires \$R_{in} > 999\times350.2 = \$ **349.8 kΩ**; in practice an instrumentation amplifier with gigaohm inputs is used (06-10).
 
 ### Solution 06-08.5
 
-(a) Open circuit: the input loop gives $i_b = v_s/(R_s + r_\pi + (\beta + 1)R_E)$ and the emitter voltage is $(\beta + 1)i_bR_E$, so the gain is $101\times1/(1 + 2.5 + 101) = $ **0.9665**.
+(a) Open circuit: the input loop gives $i_b = v_s/(R_s + r_\pi + (\beta + 1)R_E)$ and the emitter voltage is $(\beta + 1)i_bR_E$, so the gain is \$101\times1/(1 + 2.5 + 101) = \$ **0.9665**.
 
 (b) Short the source and inject $i_t$ into the emitter. The emitter node sees $R_E$ to ground and, looking back into the transistor, the base loop: a voltage $v_e$ at the emitter drives $i_b = -v_e/(R_s + r_\pi)$, and the transistor's emitter current $(\beta + 1)i_b$ flows *into* the emitter node from the transistor (negative here, since $i_b < 0$), so $-(\beta + 1)i_b$ leaves through the transistor. KCL: $i_t = v_e/R_E + (\beta + 1)v_e/(R_s + r_\pi)$, so
 
@@ -58,27 +58,27 @@ $$
 
 giving $V_{th} = 1/a = $ **5.000 V** and $R_{th} = b/a = $ **5.000 kΩ**.
 
-(b) Ignoring the meter (taking 4.99750 V as $V_{th}$ and 10 kΩ as the second load) gives $10\times(4.99750/3.33222 - 1) = $ **4.9975 kΩ**: only 0.05% low. Here $R_{th}$ is 2000 times smaller than the meter's resistance, so the meter barely loads the source; in Example 06-08.5 the source resistance was 20 times *larger* than the meter's, and ignoring the meter was disastrous.
+(b) Ignoring the meter (taking 4.99750 V as $V_{th}$ and 10 kΩ as the second load) gives \$10\times(4.99750/3.33222 - 1) = \$ **4.9975 kΩ**: only 0.05% low. Here $R_{th}$ is 2000 times smaller than the meter's resistance, so the meter barely loads the source; in Example 06-08.5 the source resistance was 20 times *larger* than the meter's, and ignoring the meter was disastrous.
 
 ### Solution 06-08.8
 
 (a) Type 1: $I = 15.4/44 = $ **0.35 A**, PD voltage $44 - 0.35\times20 = $ **37.0 V**, PD power $15.4 - 0.35^2\times20 = $ **12.95 W**, efficiency **84.1%**. Type 2 Class 4: $I = 30/50 = $ **0.6 A**, **42.5 V**, **25.5 W**, efficiency **85.0%**. Both match the class figures (Example 06-08.4).
 
-(b) A constant-power load satisfies $v(50 - v)/6.25 = 25.5$, that is $v^2 - 50v + 159.4 = 0$; the upper root is $v = (50 + \sqrt{2500 - 637.5})/2 = $ **46.58 V**, so $I = 25.5/46.58 = $ **0.5475 A** and the source delivers $50\times0.5475 = $ **27.37 W** (cable loss 1.87 W). Four-pair powering leaves plenty of margin.
+(b) A constant-power load satisfies $v(50 - v)/6.25 = 25.5$, that is $v^2 - 50v + 159.4 = 0$; the upper root is \$v = (50 + \sqrt{2500 - 637.5})/2 = \$ **46.58 V**, so \$I = 25.5/46.58 = \$ **0.5475 A** and the source delivers \$50\times0.5475 = \$ **27.37 W** (cable loss 1.87 W). Four-pair powering leaves plenty of margin.
 
 ### Solution 06-08.9
 
-(a) The load draws $i = P/v$, and the source gives $i = (V_{th} - v)/R_{th}$. Equating and multiplying by $vR_{th}$: $v^2 - V_{th}v + PR_{th} = 0$. With 12 V, 1 Ω and 20 W: $v = (12 \pm \sqrt{144 - 80})/2 = $ **10 V** or **2 V**. The normal operating point is 10 V (2 A, 4 W lost in the source). The 2 V solution (10 A, 100 W lost) is the "wrong side" of the curve. To see which point is stable, let the voltage dip by δ: the source then supplies $\delta/R_{th}$ more current, while the load (drawing $P/v$) demands $P\delta/v^2$ more. The point recovers if the source's extra current wins, that is if $v^2/P > R_{th}$. At 10 V, $100/20 = 5\ \Omega > 1\ \Omega$: stable (a 1 V dip gives 1 A more from the source against 0.2 A more demanded). At 2 V, $4/20 = 0.2\ \Omega < 1\ \Omega$: a dip makes the load demand 5 A more per volt against 1 A supplied, so the voltage collapses.
+(a) The load draws $i = P/v$, and the source gives $i = (V_{th} - v)/R_{th}$. Equating and multiplying by $vR_{th}$: $v^2 - V_{th}v + PR_{th} = 0$. With 12 V, 1 Ω and 20 W: \$v = (12 \pm \sqrt{144 - 80})/2 = \$ **10 V** or **2 V**. The normal operating point is 10 V (2 A, 4 W lost in the source). The 2 V solution (10 A, 100 W lost) is the "wrong side" of the curve. To see which point is stable, let the voltage dip by δ: the source then supplies $\delta/R_{th}$ more current, while the load (drawing $P/v$) demands $P\delta/v^2$ more. The point recovers if the source's extra current wins, that is if $v^2/P > R_{th}$. At 10 V, $100/20 = 5\ \Omega > 1\ \Omega$: stable (a 1 V dip gives 1 A more from the source against 0.2 A more demanded). At 2 V, $4/20 = 0.2\ \Omega < 1\ \Omega$: a dip makes the load demand 5 A more per volt against 1 A supplied, so the voltage collapses.
 
-(b) Real solutions need $V_{th}^2 \ge 4PR_{th}$, so the largest power is $V_{th}^2/(4R_{th}) = $ **36 W**, at a load voltage of $V_{th}/2 = $ **6 V** (maximum power transfer, 06-09).
+(b) Real solutions need $V_{th}^2 \ge 4PR_{th}$, so the largest power is \$V_{th}^2/(4R_{th}) = \$ **36 W**, at a load voltage of \$V_{th}/2 = \$ **6 V** (maximum power transfer, 06-09).
 
 (c) There is no operating point: the converter's input voltage collapses, and real converters shut down at their undervoltage lockout (or oscillate between starting and stopping). This is the DC version of the "voltage collapse" studied in power systems.
 
 ### Solution 06-08.10
 
-(a) With the drain shorted to small-signal ground, KCL at the source node: $v_s/R_S + v_s/r_o = g_m(1 - v_s)$, so $v_s(1 + 0.02 + 2) = 2$ and $v_s = 0.6623$ V. The current entering the drain from the short is $g_m(1 - v_s) + (0 - v_s)/r_o = 0.6755 - 0.0132 = 0.6623$ mA per volt (equal to $v_s/R_S$, as it must be). With the problem set's convention ($I_N$ flows out of terminal a, the drain, through the short), $I_N = $ **−0.6623 mA** per volt.
+(a) With the drain shorted to small-signal ground, KCL at the source node: $v_s/R_S + v_s/r_o = g_m(1 - v_s)$, so $v_s(1 + 0.02 + 2) = 2$ and $v_s = 0.6623$ V. The current entering the drain from the short is $g_m(1 - v_s) + (0 - v_s)/r_o = 0.6755 - 0.0132 = 0.6623$ mA per volt (equal to $v_s/R_S$, as it must be). With the problem set's convention ($I_N$ flows out of terminal a, the drain, through the short), \$I_N = \$ **−0.6623 mA** per volt.
 
-(b) The Norton source drives $R_N\parallel R_D = 151\parallel10 = 9.379$ kΩ. The current flows into the drain, out of the $R_D$ side, so $v_d = -0.6623\times9.379 = $ **−6.211 V** per volt: exactly Example 06-06.2's gain, now as "transconductance × total resistance at the output".
+(b) The Norton source drives $R_N\parallel R_D = 151\parallel10 = 9.379$ kΩ. The current flows into the drain, out of the $R_D$ side, so \$v_d = -0.6623\times9.379 = \$ **−6.211 V** per volt: exactly Example 06-06.2's gain, now as "transconductance × total resistance at the output".
 
 ### Solution 06-08.11
 
@@ -98,11 +98,11 @@ giving $V_{th} = 1/a = $ **5.000 V** and $R_{th} = b/a = $ **5.000 kΩ**.
 
 ### Solution 06-08.13
 
-(a) Open circuit: the divider gives **$V_{th}$ = 5 V**. With the source shorted, the output sees $2\parallel2 = $ **1 kΩ**. Norton: $I_N = 5/1 = $ **5 mA** in parallel with 1 kΩ.
+(a) Open circuit: the divider gives **$V_{th}$ = 5 V**. With the source shorted, the output sees \$2\parallel2 = \$ **1 kΩ**. Norton: \$I_N = 5/1 = \$ **5 mA** in parallel with 1 kΩ.
 
 (b) Either form: $v = 5\times4/(1 + 4) = $ **4 V**, $p = 4^2/4 = $ **4 mW**. That is what an equivalent guarantees.
 
-(c) *Original.* The load takes 1 mA and the 2 kΩ shunt $4/2 = 2$ mA, so the source supplies 3 mA, delivering $10\times3 = 30$ mW. Inside: $3^2\times2 + 2^2\times2 = 18 + 8 = $ **26 mW**; efficiency $4/30 = $ **13.3%**.
+(c) *Original.* The load takes 1 mA and the 2 kΩ shunt $4/2 = 2$ mA, so the source supplies 3 mA, delivering $10\times3 = 30$ mW. Inside: \$3^2\times2 + 2^2\times2 = 18 + 8 = \$ **26 mW**; efficiency \$4/30 = \$ **13.3%**.
 *Thévenin.* Its 1 kΩ carries the load's 1 mA: **1 mW** inside, source power 5 mW, efficiency **80%**.
 *Norton.* Its 1 kΩ has 4 V across it: **16 mW** inside; the 5 mA source at 4 V delivers 20 mW; efficiency **20%**.
 Only the original network's figure is real. The equivalents agree with it, and with each other, at the terminals only; internally they are different circuits.

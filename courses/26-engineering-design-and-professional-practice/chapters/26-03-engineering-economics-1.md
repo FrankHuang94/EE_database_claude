@@ -85,7 +85,7 @@ $$
 V^* = \frac{\text{NRE}}{\text{ASP} - \text{COGS}} .
 $$
 
-Two consequences follow. First, a high-NRE, leading-edge chip needs either high volume or a high contribution per unit; low-volume products belong on mature nodes where NRE is small (25-05). Second, the break-even volume is very sensitive to the contribution: because $V^*$ varies as $1/(\text{ASP} - \text{COGS})$, it rises more than in proportion to a price cut: a $2 cut on an $8 contribution, a quarter of it, raises $V^*$ by a third (Problem 26-03.8).
+Two consequences follow. First, a high-NRE, leading-edge chip needs either high volume or a high contribution per unit; low-volume products belong on mature nodes where NRE is small (25-05). Second, the break-even volume is very sensitive to the contribution: because $V^*$ varies as $1/(\text{ASP} - \text{COGS})$, it rises more than in proportion to a price cut: a \$2 cut on an \$8 contribution, a quarter of it, raises $V^*$ by a third (Problem 26-03.8).
 
 ### 3.3 The time value of money
 
@@ -178,7 +178,7 @@ All examples use assumed, illustrative numbers unless a source is cited. Interme
 **Solution.**
 
 - (a) GM $= (25 - 10)/25$ = **60.0**%; markup $= 15/10$ = **150**%, which equals $0.60/0.40$.
-- (b) ASP $= \text{COGS}/(1 - \text{GM}) = 10/0.35$ = **$28.57**.
+- (b) ASP $= \text{COGS}/(1 - \text{GM}) = 10/0.35$ = **\$28.57**.
 
 **Units check.** Dollars over dollars. ✓
 
@@ -186,18 +186,18 @@ All examples use assumed, illustrative numbers unless a source is cited. Interme
 
 ### Example 26-03.2 · The cost stack of a 5 nm-class die (tier B)
 
-**Setup.** A 100 mm² die is made on 300 mm wafers costing $17,000 (assumed; CSET's 2020 model put 5 nm at about $17,000 [R-576]) at $D_0$ = 0.1 cm⁻² (Poisson). The package costs $4.00, assembly yields 99%, final test costs $1.20 per unit tested and yields 98%, and a 2% royalty is paid on a $60 ASP (all assumed). Find (a) the dies per wafer (formula of 25-04, rounded down), the die yield and the cost per good die; (b) the cost after assembly and after test; (c) the COGS; (d) the gross margin and markup.
+**Setup.** A 100 mm² die is made on 300 mm wafers costing \$17,000 (assumed; CSET's 2020 model put 5 nm at about \$17,000 [R-576]) at $D_0$ = 0.1 cm⁻² (Poisson). The package costs \$4.00, assembly yields 99%, final test costs \$1.20 per unit tested and yields 98%, and a 2% royalty is paid on a \$60 ASP (all assumed). Find (a) the dies per wafer (formula of 25-04, rounded down), the die yield and the cost per good die; (b) the cost after assembly and after test; (c) the COGS; (d) the gross margin and markup.
 
 **Solution.**
 
-- (a) DPW $= \pi \times 300^2/400 - \pi \times 300/\sqrt{200}$ = **640.2**, so **640**; $Y = e^{-0.1}$ = **0.9048**; $C_{die} = 17{,}000/(640 \times 0.9048)$ = **$29.36**.
-- (b) After assembly $(29.36 + 4.00)/0.99$ = **$33.69**; after test $(33.69 + 1.20)/0.98$ = **$35.61**.
+- (a) DPW $= \pi \times 300^2/400 - \pi \times 300/\sqrt{200}$ = **640.2**, so **640**; $Y = e^{-0.1}$ = **0.9048**; $C_{die} = 17{,}000/(640 \times 0.9048)$ = **\$29.36**.
+- (b) After assembly $(29.36 + 4.00)/0.99$ = **\$33.69**; after test $(33.69 + 1.20)/0.98$ = **\$35.61**.
 - (c) Royalty $0.02 \times 60$ = **$1.20**, so COGS = **$36.81**.
 - (d) GM $= (60 - 36.81)/60$ = **38.7**%; markup **63.0**%.
 
 **Units check.** $/wafer ÷ (dies/wafer) = $/die; costs divided by yields stay in dollars. ✓
 
-**Sanity check.** The yields add $35.61 - (29.36 + 4.00 + 1.20)$ = **$1.05** per unit, **2.9**% of COGS, because they are high; at a 90% final-test yield they would add far more. The die is 80% of COGS here, which is typical for a leading-edge die and is why 25-04's yield models and 25-07's chiplet trade-offs matter so much.
+**Sanity check.** The yields add $35.61 - (29.36 + 4.00 + 1.20)$ = **\$1.05** per unit, **2.9**% of COGS, because they are high; at a 90% final-test yield they would add far more. The die is 80% of COGS here, which is typical for a leading-edge die and is why 25-04's yield models and 25-07's chiplet trade-offs matter so much.
 
 ### Example 26-03.3 · NRE and break-even (tier B)
 
@@ -205,7 +205,7 @@ All examples use assumed, illustrative numbers unless a source is cited. Interme
 
 **Solution.**
 
-- (a) Contribution $60 - 36.81$ = **$23.19**; $V^* = 60 \times 10^6/23.19$ = **2.59 million** units.
+- (a) Contribution $60 - 36.81$ = **\$23.19**; $V^* = 60 \times 10^6/23.19$ = **2.59 million** units.
 - (b) $60 \times 10^6/10^7$ = **$6.00** per unit; fully loaded cost **$42.81**; fully loaded margin $(60 - 42.81)/60$ = **28.7**%.
 
 **Units check.** $ ÷ ($/unit) = units. ✓
@@ -214,13 +214,13 @@ All examples use assumed, illustrative numbers unless a source is cited. Interme
 
 ### Example 26-03.4 · What does a tester cost per year? (tier B)
 
-**Setup.** A test cell costs $2.0 M, lasts 5 years and is sold for $0.3 M at the end (assumed). At 8% a year, find (a) $(A/P, 8\%, 5)$ and $(A/F, 8\%, 5)$, (b) the annual capital recovery cost, and (c) the straight-line depreciation and the book value after 3 years. (d) Find $(P/A, 10\%, 5)$.
+**Setup.** A test cell costs \$2.0 M, lasts 5 years and is sold for \$0.3 M at the end (assumed). At 8% a year, find (a) $(A/P, 8\%, 5)$ and $(A/F, 8\%, 5)$, (b) the annual capital recovery cost, and (c) the straight-line depreciation and the book value after 3 years. (d) Find $(P/A, 10\%, 5)$.
 
 **Solution.**
 
 - (a) $(A/P) = 0.08 \times 1.08^5/(1.08^5 - 1)$ = **0.25046**; $(A/F) = 0.08/(1.08^5 - 1)$ = **0.17046** (their difference is $i$, as the definitions require).
-- (b) CR $= 2.0 \times 0.25046 - 0.3 \times 0.17046$ = 0.50091 − 0.05114 = **$449,776** a year.
-- (c) $D = (2.0 - 0.3)/5$ = **$340,000** a year; book value after 3 years $2.0 - 3 \times 0.34$ = **$0.98 M**.
+- (b) CR $= 2.0 \times 0.25046 - 0.3 \times 0.17046$ = 0.50091 − 0.05114 = **\$449,776** a year.
+- (c) $D = (2.0 - 0.3)/5$ = **\$340,000** a year; book value after 3 years $2.0 - 3 \times 0.34$ = **\$0.98 M**.
 - (d) $(1.10^5 - 1)/(0.10 \times 1.10^5)$ = **3.7908**.
 
 **Units check.** Factors are dimensionless; $ × factor = $/year. ✓
@@ -236,17 +236,17 @@ All examples use assumed, illustrative numbers unless a source is cited. Interme
 - (a) Cash flows ($M): −30, −30, **23.19**, **69.58**, **92.78**, **46.39**. NPV at 12% = **$96.5 M**. The IRR, found by bisection, is **55.3**%. Cumulative cash is −36.81 at the end of year 2 and turns positive during year 3, so payback is $2 + 36.81/69.58$ = **2.53** years.
 - (b) Cash flows −30, −30, 0, 23.19, 69.58, 92.78: NPV = **$56.6 M**.
 - (c) The slip removes **$39.9 M**, or **41**% of the NPV, without any change in cost.
-- (d) A 10% lower ASP lowers the price by $6.00 a unit, but the 2% royalty (Example 26-03.2) falls with it by $0.12, so the contribution falls by **$5.88** on every unit. The present value of the unit stream is $1/1.12^2 + 3/1.12^3 + 4/1.12^4 + 2/1.12^5$ = **6.61** million discounted units, so NPV falls by **$38.9 M**. 10% more NRE costs $3 M in year 0 and $3 M in year 1, or **$5.68 M** in present value. ASP matters about **6.8** times as much.
+- (d) A 10% lower ASP lowers the price by \$6.00 a unit, but the 2% royalty (Example 26-03.2) falls with it by $0.12, so the contribution falls by **$5.88** on every unit. The present value of the unit stream is $1/1.12^2 + 3/1.12^3 + 4/1.12^4 + 2/1.12^5$ = **6.61** million discounted units, so NPV falls by **\$38.9 M**. 10% more NRE costs \$3 M in year 0 and $3 M in year 1, or **$5.68 M** in present value. ASP matters about **6.8** times as much.
 
 **Units check.** Units × $/unit = $; each discounted by a dimensionless factor. ✓
 
-**Sanity check.** The program has a high IRR because NRE is small relative to lifetime contribution; that is the profile of a successful high-volume chip. The slip ($39.9 M) and the price cut ($38.9 M) each cost about seven times the NRE overrun ($5.68 M): schedule and price, not engineering budget, dominate the value of a chip program.
+**Sanity check.** The program has a high IRR because NRE is small relative to lifetime contribution; that is the profile of a successful high-volume chip. The slip ($39.9 M) and the price cut ($38.9 M) each cost about seven times the NRE overrun (\$5.68 M): schedule and price, not engineering budget, dominate the value of a chip program.
 
 ### Example 26-03.6 · Buy a tester or outsource test? (tier B)
 
 **Setup.** A company can buy a test cell for $3.0 M (5-year life, $0.5 M salvage, $0.4 M a year to operate) or outsource the same testing for $1.2 M a year (all assumed). At a MARR of 10%, compare their equivalent uniform annual costs, and find the outsourcing price at which the two are equal.
 
-**Solution.** $(A/P, 10\%, 5)$ = **0.26380** and $(A/F, 10\%, 5)$ = **0.16380**. Buying costs $3.0 \times 0.26380 + 0.4 - 0.5 \times 0.16380$ = **$1.109 M** a year, against $1.200 M for outsourcing: buying saves **$90,506** a year. Outsourcing breaks even at **$1.109 M** a year.
+**Solution.** $(A/P, 10\%, 5)$ = **0.26380** and $(A/F, 10\%, 5)$ = **0.16380**. Buying costs $3.0 \times 0.26380 + 0.4 - 0.5 \times 0.16380$ = **\$1.109 M** a year, against $1.200 M for outsourcing: buying saves **$90,506** a year. Outsourcing breaks even at **\$1.109 M** a year.
 
 **Units check.** $ × factors + $/year = $/year. ✓
 

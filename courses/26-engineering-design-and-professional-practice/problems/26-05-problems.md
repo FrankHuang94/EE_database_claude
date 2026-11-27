@@ -43,7 +43,7 @@ Chapter: [26-05](../chapters/26-05-schedule-and-respin-risk.md) · Worked soluti
 
 ### Problem 26-05.8 [B]
 
-**A smaller register.** Risks (probability, impact in $ M): R1 (0.3, 12), R2 (0.1, 50), R3 (0.4, 4). Mitigations (cost, probability after): R1 ($1.5 M, 0.1), R2 ($2.5 M, 0.04), R3 ($0.5 M, 0.2). Find (a) the EMV, (b) each mitigation's net benefit, and (c) the best set with a $3 M budget and with a $4.5 M budget.
+**A smaller register.** Risks (probability, impact in \$ M): R1 (0.3, 12), R2 (0.1, 50), R3 (0.4, 4). Mitigations (cost, probability after): R1 ($1.5 M, 0.1), R2 ($2.5 M, 0.04), R3 (\$0.5 M, 0.2). Find (a) the EMV, (b) each mitigation's net benefit, and (c) the best set with a \$3 M budget and with a \$4.5 M budget.
 
 ### Problem 26-05.9 [C]
 
@@ -51,15 +51,15 @@ Chapter: [26-05](../chapters/26-05-schedule-and-respin-risk.md) · Worked soluti
 
 ### Problem 26-05.10 [C]
 
-**How much timing margin?** Silicon maximum frequency is normally distributed around the design target with a standard deviation of 4% (model error). The specification is set a margin $\Delta$ (in %) below the target. Each 1% of margin costs $0.5 M (area and power across the product's life), and missing the specification forces a $40 M respin. (a) Find the miss probability and the total expected cost for $\Delta$ = 0, 4% and 8%. (b) Derive the optimal margin and find it, its miss probability and its expected cost.
+**How much timing margin?** Silicon maximum frequency is normally distributed around the design target with a standard deviation of 4% (model error). The specification is set a margin $\Delta$ (in %) below the target. Each 1% of margin costs \$0.5 M (area and power across the product's life), and missing the specification forces a \$40 M respin. (a) Find the miss probability and the total expected cost for $\Delta$ = 0, 4% and 8%. (b) Derive the optimal margin and find it, its miss probability and its expected cost.
 
 ### Problem 26-05.11 [C]
 
-**When to tape out, another program.** $N_0$ = 60 remaining bugs, $\tau$ = 5 weeks, $\phi$ = 0.2, a respin costs $30 M and a week of verification $1 M. Find (a) $k$ and $\lambda^*$, (b) the optimal verification time, (c) the respin probability and expected cost there, and (d) the expected cost of taping out at once.
+**When to tape out, another program.** $N_0$ = 60 remaining bugs, $\tau$ = 5 weeks, $\phi$ = 0.2, a respin costs \$30 M and a week of verification \$1 M. Find (a) $k$ and $\lambda^*$, (b) the optimal verification time, (c) the respin probability and expected cost there, and (d) the expected cost of taping out at once.
 
 ### Problem 26-05.12 [C]
 
-**Formal verification instead of emulation.** In Example 26-05.5, formal verification of the cache-coherence protocol costs $2 M and exhaustively checks the protocol, so that half of the respin-class bugs are found and fixed before final verification (so $\phi N_0$ falls from 10 to 5), without changing $\tau$. Find (a) the new optimal time and respin probability, (b) the expected cost including the formal work, and (c) explain why the respin probability at the optimum does not change while the optimal time does.
+**Formal verification instead of emulation.** In Example 26-05.5, formal verification of the cache-coherence protocol costs \$2 M and exhaustively checks the protocol, so that half of the respin-class bugs are found and fixed before final verification (so $\phi N_0$ falls from 10 to 5), without changing $\tau$. Find (a) the new optimal time and respin probability, (b) the expected cost including the formal work, and (c) explain why the respin probability at the optimum does not change while the optimal time does.
 
 ### Problem 26-05.13 [A]
 

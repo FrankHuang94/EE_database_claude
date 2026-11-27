@@ -56,7 +56,7 @@ flowchart LR
 
 ### 3.2 Test cost and multisite
 
-A tester's all-in cost rate $r$ ($/h: depreciation, floor space, maintenance, handler or prober, labour) multiplies the time a part occupies it. With test time $t$ per part, an index time $t_i$ to move parts in and out, and $N$ sites tested in parallel taking $T_N$ in total,
+A tester's all-in cost rate $r$ (\$/h: depreciation, floor space, maintenance, handler or prober, labour) multiplies the time a part occupies it. With test time $t$ per part, an index time $t_i$ to move parts in and out, and $N$ sites tested in parallel taking $T_N$ in total,
 
 $$
 c_{test} = r\,\frac{T_N + t_i}{N}\quad\text{per die tested},\qquad c_{good} = \frac{c_{test}}{Y}
@@ -114,13 +114,13 @@ Every test generates data: pass/fail by test, parametric values, bins, all tagge
 
 ### Example 25-11.1 · Test cost per die and multisite (tier B)
 
-**Setup.** A tester costs $250 per hour all-in (assumed). A die takes $T_1$ = 2.0 s to test alone, with 0.3 s of index time per insertion; yield is 0.90 (assumed). Find (a) the single-site cost per die, (b) $T_4$ for four sites at 90% multisite efficiency, (c) the four-site cost per die and per good die, and (d) the throughput gain over single-site testing (test time only).
+**Setup.** A tester costs \$250 per hour all-in (assumed). A die takes $T_1$ = 2.0 s to test alone, with 0.3 s of index time per insertion; yield is 0.90 (assumed). Find (a) the single-site cost per die, (b) $T_4$ for four sites at 90% multisite efficiency, (c) the four-site cost per die and per good die, and (d) the throughput gain over single-site testing (test time only).
 
-**Solution.** $r$ = 250/3600 = $0.0694 per second.
+**Solution.** $r$ = 250/3600 = \$0.0694 per second.
 
-- (a) $0.0694 \times (2.0 + 0.3)$ = **$0.160** per die.
+- (a) $0.0694 \times (2.0 + 0.3)$ = **\$0.160** per die.
 - (b) $T_4 = 2.0[1 + 3(0.1)]$ = **2.6** s.
-- (c) $0.0694 \times (2.6 + 0.3)/4$ = **$0.0503** per die; $0.0503/0.90$ = **$0.0559** per good die.
+- (c) $0.0694 \times (2.6 + 0.3)/4$ = **\$0.0503** per die; $0.0503/0.90$ = **\$0.0559** per good die.
 - (d) $4 \times 2.0/2.6$ = **3.08**.
 
 **Units check.** $/s × s = $. ✓
@@ -133,7 +133,7 @@ Every test generates data: pass/fail by test, parametric values, bins, all tagge
 
 **Solution.**
 
-- (a) **$600**, **$1,500** and **$2,100**.
+- (a) **$600**, **$1,500** and **\$2,100**.
 - (b) $600/500$ = **1.2** h, **3.0** h and **4.2** h.
 
 **Units check.** $/($/h) = h.
@@ -168,12 +168,12 @@ Every test generates data: pass/fail by test, parametric values, bins, all tagge
 
 ### Example 25-11.5 · Speed bins and the price of tester accuracy (tier B)
 
-**Setup.** $F_{max}$ is Gaussian with mean 3.0 GHz and standard deviation 0.15 GHz (assumed). Bins: at least 3.2 GHz sells for $500, 3.0–3.2 GHz for $400, 2.8–3.0 GHz for $300, and slower parts are scrapped (assumed). Find (a) the bin fractions, (b) the revenue per die, (c) the revenue with a 50 MHz guard band on every threshold, and (d) the loss.
+**Setup.** $F_{max}$ is Gaussian with mean 3.0 GHz and standard deviation 0.15 GHz (assumed). Bins: at least 3.2 GHz sells for \$500, 3.0–3.2 GHz for \$400, 2.8–3.0 GHz for \$300, and slower parts are scrapped (assumed). Find (a) the bin fractions, (b) the revenue per die, (c) the revenue with a 50 MHz guard band on every threshold, and (d) the loss.
 
 **Solution.**
 
 - (a) $Q(1.333)$ = **0.0912**; $0.5 - 0.0912$ = **0.409**; **0.409**; **0.0912** scrapped.
-- (b) $0.0912 \times 500 + 0.409 \times 400 + 0.409 \times 300$ = **$332**.
+- (b) $0.0912 \times 500 + 0.409 \times 400 + 0.409 \times 300$ = **\$332**.
 - (c) Thresholds at 3.25, 3.05 and 2.85 GHz: fractions 0.0478, 0.322 and 0.472; revenue **$294**.
 - (d) **$37.6** per die, **11.3**%.
 

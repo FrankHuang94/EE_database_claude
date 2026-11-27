@@ -62,16 +62,16 @@ $Q_C = 300(\tan\theta_{0.75} - \tan\theta_{0.95}) = 300(0.8819 - 0.3287)$ = **16
 
 ### Solution 07-11.13
 
-(a) With negative sequence, $\mathbf{V}_{an} = 230.9\angle0°$ V and $\mathbf{V}_{bn} = 230.9\angle120°$ V, so $\mathbf{V}_{ab} = \mathbf{V}_{an} - \mathbf{V}_{bn} = $ **400 V ∠ −30°**: the line voltage now lags. The phase current is unchanged in form, $\mathbf{I}_a = 230.9/(10\angle36.87°) = $ **23.09 A ∠ −36.87°**.
+(a) With negative sequence, $\mathbf{V}_{an} = 230.9\angle0°$ V and $\mathbf{V}_{bn} = 230.9\angle120°$ V, so \$\mathbf{V}_{ab} = \mathbf{V}_{an} - \mathbf{V}_{bn} = \$ **400 V ∠ −30°**: the line voltage now lags. The phase current is unchanged in form, \$\mathbf{I}_a = 230.9/(10\angle36.87°) = \$ **23.09 A ∠ −36.87°**.
 
 (b) The wattmeters:
 
 - $W_1 = \operatorname{Re}(\mathbf{V}_{ab}\mathbf{I}_a^*) = 400\times23.09\cos(-30° + 36.87°) = $ **9171 W**;
-- $\mathbf{V}_{cb} = \mathbf{V}_{cn} - \mathbf{V}_{bn} = 400\angle{-90°}$ V and $\mathbf{I}_c = 23.09\angle(-120° - 36.87°)$, so $W_2 = 400\times23.09\cos(-90° + 156.87°) = $ **3629 W**.
+- $\mathbf{V}_{cb} = \mathbf{V}_{cn} - \mathbf{V}_{bn} = 400\angle{-90°}$ V and $\mathbf{I}_c = 23.09\angle(-120° - 36.87°)$, so \$W_2 = 400\times23.09\cos(-90° + 156.87°) = \$ **3629 W**.
 
-Their sum is **12.80 kW**, the correct total power ($3\times23.09^2\times8$). But $\sqrt3(W_2 - W_1) = $ **−9600 var**.
+Their sum is **12.80 kW**, the correct total power ($3\times23.09^2\times8$). But \$\sqrt3(W_2 - W_1) = \$ **−9600 var**.
 
-(c) The load is inductive: $Q = 3\times23.09^2\times6 = $ **+9600 var**. With positive sequence the readings are swapped ($W_1$ = 3629 W, $W_2$ = 9171 W) and the formula gives +9600 var correctly. Negative sequence exchanges the meters' roles, so a technician who assumes positive sequence reads an inductive load as capacitive. The real power, $W_1 + W_2$, is right either way; the reactive power and the sign of the power factor are not.
+(c) The load is inductive: \$Q = 3\times23.09^2\times6 = \$ **+9600 var**. With positive sequence the readings are swapped ($W_1$ = 3629 W, $W_2$ = 9171 W) and the formula gives +9600 var correctly. Negative sequence exchanges the meters' roles, so a technician who assumes positive sequence reads an inductive load as capacitive. The real power, $W_1 + W_2$, is right either way; the reactive power and the sign of the power factor are not.
 
 ### Solution 07-11.14
 
@@ -89,7 +89,7 @@ KCL at each corner gives the line currents:
 
 The phase currents are equal in size, but the line currents are not: unbalance shows up in the lines even when every branch draws the same current.
 
-(b) Only $Z_{ab}$ absorbs real power: $P = 4^2\times100 = $ **1600 W**. The inductor absorbs $+1600$ var and the capacitor $-1600$ var, so $Q$ = **0**. The total looks like a unity-power-factor load, yet the line currents are unequal: a single power-factor number cannot describe an unbalanced three-phase load.
+(b) Only $Z_{ab}$ absorbs real power: \$P = 4^2\times100 = \$ **1600 W**. The inductor absorbs $+1600$ var and the capacitor $-1600$ var, so $Q$ = **0**. The total looks like a unity-power-factor load, yet the line currents are unequal: a single power-factor number cannot describe an unbalanced three-phase load.
 
 (c) From §3.8, $\mathbf{V}_{an} = (\mathbf{V}_{ab}/\sqrt3)\angle{-30°} = $ **230.9 V ∠ −30°**. A per-phase model of the Δ generator uses this Y source, which produces the same line voltages.
 

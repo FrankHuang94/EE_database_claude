@@ -14,6 +14,7 @@ generated:
 	$(PY) tools/progress_stats.py --check
 	$(PY) tools/build_practitioner.py --check
 	$(PY) tools/build_reference.py --check
+	$(PY) tools/check_currency.py
 
 docs:
 	$(PY) tools/check_links.py

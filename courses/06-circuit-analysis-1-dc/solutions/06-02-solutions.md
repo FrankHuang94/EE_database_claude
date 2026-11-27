@@ -10,11 +10,11 @@ Problems: [06-02 problems](../problems/06-02-problems.md) · Chapter: [06-02](..
 
 (a) $i = v/R = 3.3/2200 = $ **1.5 mA**; $p = v^2/R = 3.3^2/2200 = $ **4.95 mW**.
 
-(b) $v = i/G = 0.050/0.010 = $ **5 V**; $p = i^2/G = 0.050^2/0.010 = $ **0.25 W** (check: $vi = 5\times0.05$ ✓).
+(b) \$v = i/G = 0.050/0.010 = \$ **5 V**; \$p = i^2/G = 0.050^2/0.010 = \$ **0.25 W** (check: $vi = 5\times0.05$ ✓).
 
 ### Solution 06-02.2
 
-(a) Any current at zero voltage: a **short circuit**. (b) Zero current at any voltage: an **open circuit**. (c) $i = (2\ \text{mA/V})\,v$ is a resistor with $G$ = 2 mS, $R = 1/G = $ **500 Ω**. (d) Fixed voltage at any current: an **ideal 3.3 V voltage source**. (e) A **practical source**: open-circuit voltage $V_{oc}$ = **8 V** (where $i = 0$), short-circuit current $I_{sc}$ = **4 mA** (where $v = 0$), internal resistance $R_{int} = V_{oc}/I_{sc} = 8/0.004 = $ **2 kΩ**. Equivalently an 8 V source in series with 2 kΩ, or a 4 mA source in parallel with 2 kΩ.
+(a) Any current at zero voltage: a **short circuit**. (b) Zero current at any voltage: an **open circuit**. (c) $i = (2\ \text{mA/V})\,v$ is a resistor with $G$ = 2 mS, \$R = 1/G = \$ **500 Ω**. (d) Fixed voltage at any current: an **ideal 3.3 V voltage source**. (e) A **practical source**: open-circuit voltage $V_{oc}$ = **8 V** (where $i = 0$), short-circuit current $I_{sc}$ = **4 mA** (where $v = 0$), internal resistance \$R_{int} = V_{oc}/I_{sc} = 8/0.004 = \$ **2 kΩ**. Equivalently an 8 V source in series with 2 kΩ, or a 4 mA source in parallel with 2 kΩ.
 
 ### Solution 06-02.3
 
@@ -36,15 +36,15 @@ Problems: [06-02 problems](../problems/06-02-problems.md) · Chapter: [06-02](..
 
 (b) Drop $= 10\times0.3316 = $ **3.316 V** (about 3% of a 120 V outlet, 1.4% of 230 V); loss $= 10^2\times0.3316 = $ **33.16 W**, spread along 40 m of wire.
 
-(c) At 100 A the loss would be $100^2\times0.3316 = $ **3316 W**: 100 times as much, since loss scales as $I^2$. That heat cannot escape a thin cord fast enough, and the insulation would melt; cords and wires are rated for the current at which their temperature rise stays acceptable, and fuses or breakers enforce it.
+(c) At 100 A the loss would be \$100^2\times0.3316 = \$ **3316 W**: 100 times as much, since loss scales as $I^2$. That heat cannot escape a thin cord fast enough, and the insulation would melt; cords and wires are rated for the current at which their temperature rise stays acceptable, and fuses or breakers enforce it.
 
 ### Solution 06-02.6
 
-$R = R_{20}[1 + \alpha(T - 20)]$, so $T = 20 + (R/R_{20} - 1)/\alpha = 20 + (2.400/2.000 - 1)/0.00393 = 20 + 0.200/0.00393 = $ **70.9 °C**. Motor and transformer standards use exactly this "resistance method" to measure average winding temperature, because the winding's inside is otherwise inaccessible.
+$R = R_{20}[1 + \alpha(T - 20)]$, so \$T = 20 + (R/R_{20} - 1)/\alpha = 20 + (2.400/2.000 - 1)/0.00393 = 20 + 0.200/0.00393 = \$ **70.9 °C**. Motor and transformer standards use exactly this "resistance method" to measure average winding temperature, because the winding's inside is otherwise inaccessible.
 
 ### Solution 06-02.7
 
-(a) The terminal line is $v = V_{oc} - R_{int}i$. From the two points: $R_{int} = (11.6 - 11.0)/(5.0 - 2.0) = $ **0.20 Ω**, and $V_{oc} = 11.6 + 2.0\times0.20 = $ **12.0 V**.
+(a) The terminal line is $v = V_{oc} - R_{int}i$. From the two points: \$R_{int} = (11.6 - 11.0)/(5.0 - 2.0) = \$ **0.20 Ω**, and \$V_{oc} = 11.6 + 2.0\times0.20 = \$ **12.0 V**.
 
 (b) $I_{sc} = 12.0/0.20 = $ **60 A**; the Norton form is a 60 A current source in parallel with 0.20 Ω.
 
@@ -52,7 +52,7 @@ $R = R_{20}[1 + \alpha(T - 20)]$, so $T = 20 + (R/R_{20} - 1)/\alpha = 20 + (2.4
 
 ### Solution 06-02.8
 
-(a) The power $v^2/R$ is largest at the highest voltage and the lowest resistance: $13.2^2/950 = $ **0.1834 W**; smallest at the lowest voltage and the highest resistance: $10.8^2/1050 = $ **0.1111 W**.
+(a) The power $v^2/R$ is largest at the highest voltage and the lowest resistance: \$13.2^2/950 = \$ **0.1834 W**; smallest at the lowest voltage and the highest resistance: \$10.8^2/1050 = \$ **0.1111 W**.
 
 (b) At half-rating the part must be rated at least $2\times0.1834 = 0.367$ W: **1/2 W**. A 1/4 W part would run at 73% of its rating in the worst case.
 
@@ -66,9 +66,9 @@ $R = R_{20}[1 + \alpha(T - 20)]$, so $T = 20 + (R/R_{20} - 1)/\alpha = 20 + (2.4
 
 ### Solution 06-02.10
 
-(a) $R = R_\square L/W$: $L/W = 10\,000/200 = 50$ squares, so $L = 50\times1.00 = $ **50 µm**.
+(a) $R = R_\square L/W$: $L/W = 10\,000/200 = 50$ squares, so \$L = 50\times1.00 = \$ **50 µm**.
 
-(b) With $L$ fixed at 50 µm: $W$ = 0.95 µm gives $200\times50/0.95 = $ **10.53 kΩ**; $W$ = 1.05 µm gives $200\times50/1.05 = $ **9.524 kΩ**: about ±5%.
+(b) With $L$ fixed at 50 µm: $W$ = 0.95 µm gives \$200\times50/0.95 = \$ **10.53 kΩ**; $W$ = 1.05 µm gives \$200\times50/1.05 = \$ **9.524 kΩ**: about ±5%.
 
 (c) The width error is a fixed amount (±0.05 µm here) set by lithography and etching, so its *relative* effect is smaller on a wider resistor: at 10 µm width the same error is ±0.5%. Wider resistors also average out local variations, so matched pairs track better. The price is area.
 
@@ -90,9 +90,9 @@ $$
 2\cdot\frac{4.0 - v}{0.06} + \frac{3.7 - v}{0.06} = 0 \;\Rightarrow\; 8.0 + 3.7 = 3v \;\Rightarrow\; v = \textbf{3.90 V}.
 $$
 
-(b) Each 4.0 V cell delivers $(4.0 - 3.9)/0.06 = $ **1.667 A**; the 3.7 V cell's current out of its + terminal is $(3.7 - 3.9)/0.06 = -3.333$ A: **3.333 A flows into it**.
+(b) Each 4.0 V cell delivers \$(4.0 - 3.9)/0.06 = \$ **1.667 A**; the 3.7 V cell's current out of its + terminal is $(3.7 - 3.9)/0.06 = -3.333$ A: **3.333 A flows into it**.
 
-(c) Heat: $2\times1.667^2\times0.06 + 3.333^2\times0.06 = 0.333 + 0.667 = $ **1.00 W**. The strong cells deliver $2\times4.0\times1.667 = 13.33$ W; the weak cell absorbs $3.7\times3.333 = 12.33$ W; $13.33 = 12.33 + 1.00$ ✓.
+(c) Heat: \$2\times1.667^2\times0.06 + 3.333^2\times0.06 = 0.333 + 0.667 = \$ **1.00 W**. The strong cells deliver $2\times4.0\times1.667 = 13.33$ W; the weak cell absorbs $3.7\times3.333 = 12.33$ W; $13.33 = 12.33 + 1.00$ ✓.
 
 ### Solution 06-02.13
 

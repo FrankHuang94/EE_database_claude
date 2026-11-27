@@ -10,23 +10,23 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 01-06.1
 
-(a) $u = 3x$, $du = 3\,dx$, limits $0 \to \pi/2$: $\tfrac{1}{3}\int_0^{\pi/2}\cos u\,du = \tfrac{1}{3}\big[\sin u\big]_0^{\pi/2} = $ **0.3333**.
+(a) $u = 3x$, $du = 3\,dx$, limits $0 \to \pi/2$: \$\tfrac{1}{3}\int_0^{\pi/2}\cos u\,du = \tfrac{1}{3}\big[\sin u\big]_0^{\pi/2} = \$ **0.3333**.
 
-(b) $u = x^2 + 5$, $du = 2x\,dx$, limits $5 \to 9$: $\tfrac{1}{2}\int_5^9u^{1/2}\,du = \tfrac{1}{3}\big[u^{3/2}\big]_5^9 = \tfrac{1}{3}(27 - 11.180) = $ **5.273**.
+(b) $u = x^2 + 5$, $du = 2x\,dx$, limits $5 \to 9$: \$\tfrac{1}{2}\int_5^9u^{1/2}\,du = \tfrac{1}{3}\big[u^{3/2}\big]_5^9 = \tfrac{1}{3}(27 - 11.180) = \$ **5.273**.
 
-(c) $u = \ln x$, $du = dx/x$, limits $0 \to 1$: $\int_0^1u\,du = $ **0.5**.
+(c) $u = \ln x$, $du = dx/x$, limits $0 \to 1$: \$\int_0^1u\,du = \$ **0.5**.
 
-(d) $u = \cos x$, $du = -\sin x\,dx$: $\big[-\ln\cos x\big]_0^{\pi/4} = -\ln(1/\sqrt{2}) = \tfrac{1}{2}\ln 2 = $ **0.3466**.
+(d) $u = \cos x$, $du = -\sin x\,dx$: \$\big[-\ln\cos x\big]_0^{\pi/4} = -\ln(1/\sqrt{2}) = \tfrac{1}{2}\ln 2 = \$ **0.3466**.
 
 ### Solution 01-06.2
 
-(a) $u = x$, $dv = \sin x\,dx$: $\big[-x\cos x\big]_0^\pi + \int_0^\pi\cos x\,dx = \pi + 0 = $ **3.142**.
+(a) $u = x$, $dv = \sin x\,dx$: \$\big[-x\cos x\big]_0^\pi + \int_0^\pi\cos x\,dx = \pi + 0 = \$ **3.142**.
 
-(b) $u = \ln x$, $dv = dx$: $\big[x\ln x - x\big]_1^e = (e - e) - (0 - 1) = $ **1**.
+(b) $u = \ln x$, $dv = dx$: \$\big[x\ln x - x\big]_1^e = (e - e) - (0 - 1) = \$ **1**.
 
-(c) Tabular: derivatives of $x^2$ are $2x$, 2, 0; repeated integrals of $e^x$ are $e^x$. The antiderivative is $e^x(x^2 - 2x + 2)$, so the integral is $e(1) - 2 = e - 2 = $ **0.7183**.
+(c) Tabular: derivatives of $x^2$ are $2x$, 2, 0; repeated integrals of $e^x$ are $e^x$. The antiderivative is $e^x(x^2 - 2x + 2)$, so the integral is \$e(1) - 2 = e - 2 = \$ **0.7183**.
 
-(d) $u = \arctan x$, $dv = dx$: $\big[x\arctan x\big]_0^1 - \int_0^1\frac{x}{1 + x^2}dx = \frac{\pi}{4} - \frac{1}{2}\ln 2 = $ **0.4388**. (The last integral is a substitution.)
+(d) $u = \arctan x$, $dv = dx$: \$\big[x\arctan x\big]_0^1 - \int_0^1\frac{x}{1 + x^2}dx = \frac{\pi}{4} - \frac{1}{2}\ln 2 = \$ **0.4388**. (The last integral is a substitution.)
 
 ### Solution 01-06.3
 
@@ -36,13 +36,13 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (c) $\int_0^{2\pi}\frac{1 + \cos8x}{2}dx = $ **3.142** (π).
 
-(d) $\int_0^{\pi/2}(1 - \cos^2x)\sin x\,dx$. With $u = \cos x$, the limits run $1 \to 0$: $\int_0^1(1 - u^2)\,du = 1 - \tfrac{1}{3} = $ **0.6667**.
+(d) $\int_0^{\pi/2}(1 - \cos^2x)\sin x\,dx$. With $u = \cos x$, the limits run $1 \to 0$: \$\int_0^1(1 - u^2)\,du = 1 - \tfrac{1}{3} = \$ **0.6667**.
 
 ### Solution 01-06.4
 
-(a) $\dfrac{1}{x^2 - 1} = \dfrac{1}{2}\left(\dfrac{1}{x - 1} - \dfrac{1}{x + 1}\right)$, by cover-up at $x = \pm1$. So the integral is $\tfrac{1}{2}\big[\ln\frac{x - 1}{x + 1}\big]_2^3 = \tfrac{1}{2}\left(\ln\tfrac{2}{4} - \ln\tfrac{1}{3}\right) = \tfrac{1}{2}\ln1.5 = $ **0.2027**.
+(a) $\dfrac{1}{x^2 - 1} = \dfrac{1}{2}\left(\dfrac{1}{x - 1} - \dfrac{1}{x + 1}\right)$, by cover-up at $x = \pm1$. So the integral is \$\tfrac{1}{2}\big[\ln\frac{x - 1}{x + 1}\big]_2^3 = \tfrac{1}{2}\left(\ln\tfrac{2}{4} - \ln\tfrac{1}{3}\right) = \tfrac{1}{2}\ln1.5 = \$ **0.2027**.
 
-(b) Cover-up: $A = \dfrac{3(-1) + 5}{-1 + 3} = 1$ and $B = \dfrac{3(-3) + 5}{-3 + 1} = 2$. So $\dfrac{1}{x + 1} + \dfrac{2}{x + 3}$, and the integral is $\ln2 + 2\ln\tfrac{4}{3} = $ **1.2685**.
+(b) Cover-up: $A = \dfrac{3(-1) + 5}{-1 + 3} = 1$ and $B = \dfrac{3(-3) + 5}{-3 + 1} = 2$. So $\dfrac{1}{x + 1} + \dfrac{2}{x + 3}$, and the integral is \$\ln2 + 2\ln\tfrac{4}{3} = \$ **1.2685**.
 
 (c) $\dfrac{1}{x(x + 1)^2} = \dfrac{A}{x} + \dfrac{B}{x + 1} + \dfrac{C}{(x + 1)^2}$.
 
@@ -54,17 +54,17 @@ So the integral is $\big[\ln x - \ln(x + 1) + \frac{1}{x + 1}\big]_1^2 = \ln\tfr
 
 ### Solution 01-06.5
 
-(a) $\big[-1/x\big]_1^\infty = $ **1**: converges ($p = 2 > 1$).
+(a) \$\big[-1/x\big]_1^\infty = \$ **1**: converges ($p = 2 > 1$).
 (b) $\big[2\sqrt{x}\big]_1^b \to \infty$: **diverges** ($p = \tfrac{1}{2} \le 1$).
 (c) $\big[2\sqrt{x}\big]_\epsilon^1 \to 2$: converges to **2** ($p = \tfrac{1}{2} < 1$ near 0).
 (d) $\big[-\tfrac{1}{2}e^{-2t}\big]_0^\infty = $ **0.5**.
-(e) By parts twice (or the $n!$ rule): $2! = $ **2**.
+(e) By parts twice (or the $n!$ rule): \$2! = \$ **2**.
 
 ### Solution 01-06.6
 
 (a) Elmore delay $= \tau = $ **50 ps**. 50% delay $= \tau\ln2 = $ **34.66 ps**.
 
-(b) Substitute $x = t/\tau$: $\int_0^\infty\frac{t}{\tau^2}e^{-t/\tau}dt = \int_0^\infty xe^{-x}dx = 1! = 1$ ✓. The first moment is $\int_0^\infty t\cdot\frac{t}{\tau^2}e^{-t/\tau}dt = \tau\int_0^\infty x^2e^{-x}dx = 2\tau$. The centroid is $2\tau = $ **100 ps**.
+(b) Substitute $x = t/\tau$: $\int_0^\infty\frac{t}{\tau^2}e^{-t/\tau}dt = \int_0^\infty xe^{-x}dx = 1! = 1$ ✓. The first moment is $\int_0^\infty t\cdot\frac{t}{\tau^2}e^{-t/\tau}dt = \tau\int_0^\infty x^2e^{-x}dx = 2\tau$. The centroid is \$2\tau = \$ **100 ps**.
 
 (c) The impulse response of a chain is the convolution of the stages' responses ([11-03](../../11-signals-and-systems/chapters/11-03-convolution.md)), and the centroids of convolved (non-negative, unit-area) functions add. This is why Elmore delays add along a path, and why they are so convenient inside optimization.
 
@@ -78,7 +78,7 @@ $$
 
 So the second term is $\frac{a}{4(a^2 + b^2)}$, and $W = \frac{1}{4a} - \frac{a}{4(a^2 + b^2)} = \frac{b^2}{4a(a^2 + b^2)}$.
 
-(b) $W = \dfrac{10^6}{400\times1.01\times10^6} = $ **2.475×10^−3 J** (2.475 mJ). The "average ½" approximation gives $1/(4a) = $ **2.5×10^−3 J**, within 1%. The oscillation (1000 rad/s) is ten times faster than the decay (100 s⁻¹), so $\sin^2$ averages out over many cycles before the envelope changes much. The exact factor $b^2/(a^2 + b^2) = 0.990$ measures that ratio.
+(b) \$W = \dfrac{10^6}{400\times1.01\times10^6} = \$ **2.475×10^−3 J** (2.475 mJ). The "average ½" approximation gives \$1/(4a) = \$ **2.5×10^−3 J**, within 1%. The oscillation (1000 rad/s) is ten times faster than the decay (100 s⁻¹), so $\sin^2$ averages out over many cycles before the envelope changes much. The exact factor $b^2/(a^2 + b^2) = 0.990$ measures that ratio.
 
 ### Solution 01-06.8
 
@@ -90,11 +90,11 @@ So the second term is $\frac{a}{4(a^2 + b^2)}$, and $W = \frac{1}{4a} - \frac{a}
 
 ### Solution 01-06.9
 
-(a) $A = \dfrac{10}{(-2 + 5)} = 10/3 = $ **3.333** and $B = \dfrac{10}{(-5 + 2)} = $ **−3.333**. So $H(s) = \dfrac{10/3}{s + 2} - \dfrac{10/3}{s + 5}$.
+(a) \$A = \dfrac{10}{(-2 + 5)} = 10/3 = \$ **3.333** and \$B = \dfrac{10}{(-5 + 2)} = \$ **−3.333**. So $H(s) = \dfrac{10/3}{s + 2} - \dfrac{10/3}{s + 5}$.
 
 (b) $h(t) = \tfrac{10}{3}\left(e^{-2t} - e^{-5t}\right)$ (Figure 4 of the chapter).
 
-(c) $h'(t) = \tfrac{10}{3}(-2e^{-2t} + 5e^{-5t}) = 0$ gives $e^{3t} = 2.5$, so $t = \ln(2.5)/3 = $ **0.3054 s**. The peak is $h = \tfrac{10}{3}(e^{-0.6109} - e^{-1.5272}) = $ **1.086**.
+(c) $h'(t) = \tfrac{10}{3}(-2e^{-2t} + 5e^{-5t}) = 0$ gives $e^{3t} = 2.5$, so \$t = \ln(2.5)/3 = \$ **0.3054 s**. The peak is \$h = \tfrac{10}{3}(e^{-0.6109} - e^{-1.5272}) = \$ **1.086**.
 
 ### Solution 01-06.10
 
@@ -108,7 +108,7 @@ So the second term is $\frac{a}{4(a^2 + b^2)}$, and $W = \frac{1}{4a} - \frac{a}
 
 ### Solution 01-06.11
 
-(a) $h = 0.25$, with samples $e^{-x^2}$ at 0, 0.25, 0.5, 0.75, 1: 1, 0.93941, 0.77880, 0.56978, 0.36788. Then $S = \frac{0.25}{3}\big[1 + 4(0.93941) + 2(0.77880) + 4(0.56978) + 0.36788\big] = $ **0.74686**, an error of **3.1×10^−5** with just five function evaluations.
+(a) $h = 0.25$, with samples $e^{-x^2}$ at 0, 0.25, 0.5, 0.75, 1: 1, 0.93941, 0.77880, 0.56978, 0.36788. Then \$S = \frac{0.25}{3}\big[1 + 4(0.93941) + 2(0.77880) + 4(0.56978) + 0.36788\big] = \$ **0.74686**, an error of **3.1×10^−5** with just five function evaluations.
 
 (b) $h = \pi/8$, with nine samples of $\sin x/x$ (the first equal to 1). Simpson gives **1.8520**, against the accurate value 1.85194.
 
@@ -126,7 +126,7 @@ $$
 
 i.e. **48.34%**.
 
-(c) $A_3/A_1 = 10^{-4}$, which is $20\log_{10}10^{-4} = $ **−80 dB**.
+(c) $A_3/A_1 = 10^{-4}$, which is \$20\log_{10}10^{-4} = \$ **−80 dB**.
 
 ### Solution 01-06.13
 
@@ -156,7 +156,7 @@ $$
 
 (b) By parts: $\displaystyle\int_0^\infty te^{-st}dt = \frac{1}{s^2}$. At $s = 2$: **0.25**.
 
-(c) By the loop formula (sine version) with exponent $-s$: $\displaystyle\int_0^\infty\sin\omega t\,e^{-st}dt = \frac{\omega}{s^2 + \omega^2}$. At $s = 2$, $\omega = 3$: $3/13 = $ **0.2308**.
+(c) By the loop formula (sine version) with exponent $-s$: $\displaystyle\int_0^\infty\sin\omega t\,e^{-st}dt = \frac{\omega}{s^2 + \omega^2}$. At $s = 2$, $\omega = 3$: \$3/13 = \$ **0.2308**.
 
 These are the Laplace transforms of $e^{-at}$, $t$ and $\sin\omega t$, three entries of the table used throughout circuit analysis ([07-04](../../07-circuit-analysis-2-transient-and-ac/chapters/07-04-laplace-domain-circuit-analysis.md)).
 
@@ -178,7 +178,7 @@ $$
 
 Check by differentiating: $\frac{a^2}{2}\cdot\frac{1}{\sqrt{a^2 - x^2}} + \frac{1}{2}\sqrt{a^2 - x^2} - \frac{x^2}{2\sqrt{a^2 - x^2}} = \frac{a^2 + (a^2 - x^2) - x^2}{2\sqrt{a^2 - x^2}} = \sqrt{a^2 - x^2}$ ✓.
 
-(c) With $a = 2$: $\Big[2\arcsin\frac{x}{2} + \frac{x}{2}\sqrt{4 - x^2}\Big]_0^1 = 2\cdot\frac{\pi}{6} + \frac{\sqrt3}{2} = 1.0472 + 0.8660 = $ **1.9132**. **Sanity check:** on $[0, 1]$ the integrand falls from 2 to $\sqrt3 = 1.732$, so the answer must lie between them ✓.
+(c) With $a = 2$: \$\Big[2\arcsin\frac{x}{2} + \frac{x}{2}\sqrt{4 - x^2}\Big]_0^1 = 2\cdot\frac{\pi}{6} + \frac{\sqrt3}{2} = 1.0472 + 0.8660 = \$ **1.9132**. **Sanity check:** on $[0, 1]$ the integrand falls from 2 to $\sqrt3 = 1.732$, so the answer must lie between them ✓.
 
 ### Solution 01-06.17
 

@@ -10,7 +10,7 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 03-05.1
 
-$\bar x = 25/5 = $ **5 mV**. Deviations −2, 0, −1, 1, 2 have squares summing to 10, so $s^2 = 10/4 = $ **2.5 mV²**, $s = $ **1.581 mV** and the standard error is $s/\sqrt5 = $ **0.7071 mV**. Dividing by $n$ gives **2.0 mV²**. That estimator averages $(n - 1)\sigma^2/n$, 20% low here, because the deviations are measured from $\bar x$, which is fitted to these same five numbers and so sits closer to them than the true mean does.
+\$\bar x = 25/5 = \$ **5 mV**. Deviations −2, 0, −1, 1, 2 have squares summing to 10, so \$s^2 = 10/4 = \$ **2.5 mV²**, \$s = \$ **1.581 mV** and the standard error is \$s/\sqrt5 = \$ **0.7071 mV**. Dividing by $n$ gives **2.0 mV²**. That estimator averages $(n - 1)\sigma^2/n$, 20% low here, because the deviations are measured from $\bar x$, which is fitted to these same five numbers and so sits closer to them than the true mean does.
 
 ### Solution 03-05.2
 
@@ -18,7 +18,7 @@ The standard error is $2/\sqrt{16} = 0.5$ nA, so the interval is $10.3 \pm 1.960
 
 ### Solution 03-05.3
 
-With ν = 4, $t_{0.025,4} = 2.776$ and the half-width is $2.776\times0.7071 = $ **1.963 mV**: **[3.037, 6.963] mV**. Using 1.960 would give a half-width of **1.386 mV**, so the t-interval is **41.66%** wider. With five samples, $s$ itself is very uncertain, and the t distribution pays for it.
+With ν = 4, $t_{0.025,4} = 2.776$ and the half-width is \$2.776\times0.7071 = \$ **1.963 mV**: **[3.037, 6.963] mV**. Using 1.960 would give a half-width of **1.386 mV**, so the t-interval is **41.66%** wider. With five samples, $s$ itself is very uncertain, and the t distribution pays for it.
 
 ### Solution 03-05.4
 
@@ -30,9 +30,9 @@ With ν = 4, $t_{0.025,4} = 2.776$ and the half-width is $2.776\times0.7071 = $ 
 
 ### Solution 03-05.5
 
-(a) $\hat p = 46/500 = $ **0.092**, standard error $\sqrt{0.092\times0.908/500} = $ **0.01293**, and the interval is $0.092 \pm 0.02533$: **[0.06667, 0.1173]**.
+(a) \$\hat p = 46/500 = \$ **0.092**, standard error \$\sqrt{0.092\times0.908/500} = \$ **0.01293**, and the interval is $0.092 \pm 0.02533$: **[0.06667, 0.1173]**.
 
-(b) $1 - 0.05^{1/1000} = $ **0.002991**, against $3/1000 = 0.003$ from the rule of three.
+(b) \$1 - 0.05^{1/1000} = \$ **0.002991**, against $3/1000 = 0.003$ from the rule of three.
 
 ### Solution 03-05.6
 
@@ -48,7 +48,7 @@ So **0.3512** to **0.4647 ps**.
 
 ### Solution 03-05.7
 
-Point estimate: $2/(5\times10^8)$ per hour $= $ **4 FIT**. With $c = 2$, $\lambda_U = 5.322$ at 90%, so $r_U = 5.322/(5\times10^8)$, or **10.64 FIT**. With no failures, $\lambda_U = 2.303$: **4.605 FIT**.
+Point estimate: $2/(5\times10^8)$ per hour \$= \$ **4 FIT**. With $c = 2$, $\lambda_U = 5.322$ at 90%, so $r_U = 5.322/(5\times10^8)$, or **10.64 FIT**. With no failures, $\lambda_U = 2.303$: **4.605 FIT**.
 
 ### Solution 03-05.8
 
@@ -56,7 +56,7 @@ Point estimate: $2/(5\times10^8)$ per hour $= $ **4 FIT**. With $c = 2$, $\lambd
 
 (b) $0.040 < 0.05$: reject $H_0$; the evidence favors lower leakage.
 
-(c) Two-sided, $p = $ **0.08012**, not significant at 5%. The one-sided test is appropriate only if the direction was specified before seeing the data (the change was designed to lower leakage and an increase would be treated the same as no improvement). Choosing the sidedness after looking at the data halves the reported p-value, and so doubles the true significance level: you would reject whenever $|z| > 1.645$, which under $H_0$ happens 10% of the time, so a nominal 5% test is really a 10% test.
+(c) Two-sided, \$p = \$ **0.08012**, not significant at 5%. The one-sided test is appropriate only if the direction was specified before seeing the data (the change was designed to lower leakage and an increase would be treated the same as no improvement). Choosing the sidedness after looking at the data halves the reported p-value, and so doubles the true significance level: you would reject whenever $|z| > 1.645$, which under $H_0$ happens 10% of the time, so a nominal 5% test is really a 10% test.
 
 ### Solution 03-05.9
 
@@ -78,7 +78,7 @@ Point estimate: $2/(5\times10^8)$ per hour $= $ **4 FIT**. With $c = 2$, $\lambd
 
 (b) $Q(40/12) + Q(60/12) = Q(3.333) + Q(5) = $ **429.3 ppm**, almost all above the upper limit.
 
-(c) Centering makes $C_{pk} = C_p = 1.389$ and the rate $2Q(50/12) = $ **30.91 ppm**. Keeping the +10 ppm offset, $C_{pk} = 40/(3\sigma) = 4/3$ needs σ = **10.00 ppm**, a 17% cut in spread. Centering (trimming the crystal load or calibrating) is usually far cheaper.
+(c) Centering makes $C_{pk} = C_p = 1.389$ and the rate \$2Q(50/12) = \$ **30.91 ppm**. Keeping the +10 ppm offset, $C_{pk} = 40/(3\sigma) = 4/3$ needs σ = **10.00 ppm**, a 17% cut in spread. Centering (trimming the crystal load or calibrating) is usually far cheaper.
 
 ### Solution 03-05.12
 
@@ -88,7 +88,7 @@ Point estimate: $2/(5\times10^8)$ per hour $= $ **4 FIT**. With $c = 2$, $\lambd
 
 ### Solution 03-05.13
 
-(a) Robust sigma $= (2.37 - 2.10)/1.35 = $ **0.2 µA**, so the static limits are $2.23 \pm 6\times0.2$: **[1.03, 3.43] µA**.
+(a) Robust sigma \$= (2.37 - 2.10)/1.35 = \$ **0.2 µA**, so the static limits are $2.23 \pm 6\times0.2$: **[1.03, 3.43] µA**.
 
 (b) $2.30 \pm 6\times0.35$: **[0.20, 4.40] µA**.
 
@@ -120,7 +120,7 @@ So $E_a = $ **0.7870 eV**.
 
 ### Solution 03-05.16
 
-(a) At 60% confidence with zero failures, $\lambda_U = 0.9163$, so the equivalent device-hours must be at least $0.9163\times10^9/20 = $ **4.581×10⁷ h**. With $AF = 77.65$, each unit contributes $77{,}650$ h, so $N \ge 4.581\times10^7/77{,}650 = 590.0$: **591** units.
+(a) At 60% confidence with zero failures, $\lambda_U = 0.9163$, so the equivalent device-hours must be at least \$0.9163\times10^9/20 = \$ **4.581×10⁷ h**. With $AF = 77.65$, each unit contributes $77{,}650$ h, so $N \ge 4.581\times10^7/77{,}650 = 590.0$: **591** units.
 
 (b) At 0.5 eV, $AF = \exp[(0.5/k)(1/328.15 - 1/398.15)] = $ **22.39**, so 591 units demonstrate only $0.9163\times10^9/(591\times1000\times22.39) = $ **69.24 FIT**.
 

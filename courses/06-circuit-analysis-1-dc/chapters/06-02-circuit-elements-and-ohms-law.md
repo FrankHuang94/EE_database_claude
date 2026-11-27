@@ -183,9 +183,9 @@ A resistor in a parts catalog is specified by much more than its nominal value.
 
 **Solution.** (a) With the passive convention, $i = v/R = 12\ \text{V}/4.7\ \text{kΩ} = $ **2.553 mA**; $G = 1/R = $ **212.8 µS**.
 
-(b) $p = v^2/R = 144/4700 = $ **30.64 mW**, absorbed (check: $i^2R = (2.553\times10^{-3})^2\times4700$ = 30.64 mW ✓).
+(b) \$p = v^2/R = 144/4700 = \$ **30.64 mW**, absorbed (check: $i^2R = (2.553\times10^{-3})^2\times4700$ = 30.64 mW ✓).
 
-(c) Their current is $i' = -i = $ **−2.553 mA**, and for them Ohm's law reads $v = -R\,i'$; their power formula is $p = -v\,i'$ = 30.64 mW, the same physical power. Nothing changes but the bookkeeping.
+(c) Their current is \$i' = -i = \$ **−2.553 mA**, and for them Ohm's law reads $v = -R\,i'$; their power formula is $p = -v\,i'$ = 30.64 mW, the same physical power. Nothing changes but the bookkeeping.
 
 **Units check.** V/Ω = A; 1/Ω = S; V²/Ω = W ✓.
 
@@ -195,7 +195,7 @@ A resistor in a parts catalog is specified by much more than its nominal value.
 
 **Setup.** A trace in 1 oz copper (35 µm thick) is 0.25 mm wide and 50 mm long. Use the IACS values $\rho_{20}$ = 1.7241 µΩ·cm and $\alpha$ = 0.00393 /°C. (a) Find the copper's sheet resistance and the trace's number of squares. (b) Find its resistance at 20 °C and at 85 °C. (c) At 85 °C it carries 2 A. Find the voltage drop and the power it dissipates.
 
-**Solution.** (a) $R_\square = \rho/t = 1.7241\times10^{-8}\ \Omega\cdot\text{m}/35\times10^{-6}\ \text{m} = 4.926\times10^{-4}$ Ω $=$ **0.4926 mΩ/□**. Squares: $L/W = 50/0.25 = $ **200**.
+**Solution.** (a) $R_\square = \rho/t = 1.7241\times10^{-8}\ \Omega\cdot\text{m}/35\times10^{-6}\ \text{m} = 4.926\times10^{-4}$ Ω $=$ **0.4926 mΩ/□**. Squares: \$L/W = 50/0.25 = \$ **200**.
 
 (b) $R_{20} = 200\times0.4926\ \text{mΩ} = $ **98.52 mΩ**. At 85 °C: $R_{85} = 98.52\times[1 + 0.00393\times(85 - 20)] = 98.52\times1.2555 = $ **123.7 mΩ**.
 
@@ -209,7 +209,7 @@ A resistor in a parts catalog is specified by much more than its nominal value.
 
 **Setup.** A lithium cell reads 3.90 V with no load and 3.75 V with a 10 Ω resistor connected. (a) Find its internal resistance and short-circuit current. (b) With the 10 Ω load, find the load power, the power lost inside the cell and the efficiency. (c) What is the terminal voltage when the cell delivers 2 A? (d) Give the equivalent current-source model.
 
-**Solution.** (a) No load: $V_{oc}$ = 3.90 V. With 10 Ω the load current is $3.75/10 = 0.375$ A, and the internal resistance drops the difference: $R_{int} = (3.90 - 3.75)/0.375 = $ **0.40 Ω**. Then $I_{sc} = 3.90/0.40 = $ **9.75 A**.
+**Solution.** (a) No load: $V_{oc}$ = 3.90 V. With 10 Ω the load current is $3.75/10 = 0.375$ A, and the internal resistance drops the difference: \$R_{int} = (3.90 - 3.75)/0.375 = \$ **0.40 Ω**. Then \$I_{sc} = 3.90/0.40 = \$ **9.75 A**.
 
 (b) Load power $3.75\times0.375 = $ **1.406 W**; internal loss $0.375^2\times0.40 = $ **0.0563 W**; efficiency $= P_L/(P_L + P_{int}) = 3.75/3.90 = $ **96.2%** (for a series circuit the efficiency is the ratio of load voltage to source voltage, since the current is common).
 
@@ -225,11 +225,11 @@ A resistor in a parts catalog is specified by much more than its nominal value.
 
 **Setup.** An LED must run at about 10 mA from a 5.0 V ±5% supply; take its forward voltage as a fixed 2.1 V (illustrative). (a) Find the ideal series resistance and the nearest E24 value. (b) With a ±5% resistor, find the worst-case minimum and maximum currents. (c) Find the worst-case resistor power. If design rules require running resistors at no more than half their rating, which of two parts suits, one rated 63 mW and one rated 100 mW (illustrative ratings for small thick-film chips)?
 
-**Solution.** (a) KVL around the loop: $V_s = V_{LED} + iR$, so $R = (5.0 - 2.1)/10\ \text{mA} = 290$ Ω. The nearest E24 value is **300 Ω** (E24 includes 3.0), giving $(5.0 - 2.1)/300 = $ **9.667 mA**.
+**Solution.** (a) KVL around the loop: $V_s = V_{LED} + iR$, so $R = (5.0 - 2.1)/10\ \text{mA} = 290$ Ω. The nearest E24 value is **300 Ω** (E24 includes 3.0), giving \$(5.0 - 2.1)/300 = \$ **9.667 mA**.
 
 (b) The current is largest with the highest supply and the lowest resistance: $(5.25 - 2.1)/(300\times0.95) = 3.15/285 = $ **11.05 mA**; smallest with the lowest supply and highest resistance: $(4.75 - 2.1)/315 = $ **8.413 mA**.
 
-(c) Worst-case resistor power: $v_R^2/R$ is largest at the highest voltage across the resistor and the lowest resistance: $3.15^2/285 = $ **34.82 mW**. At half-rating, the part must be rated at least **69.6 mW**: the 63 mW part fails the rule (it would run at 55% of rating); the **100 mW** part passes (35%).
+(c) Worst-case resistor power: $v_R^2/R$ is largest at the highest voltage across the resistor and the lowest resistance: \$3.15^2/285 = \$ **34.82 mW**. At half-rating, the part must be rated at least **69.6 mW**: the 63 mW part fails the rule (it would run at 55% of rating); the **100 mW** part passes (35%).
 
 **Units check.** V/mA = kΩ; V²/Ω = W ✓.
 
@@ -241,11 +241,11 @@ A resistor in a parts catalog is specified by much more than its nominal value.
 
 **Solution.** (a) Two ideal voltage sources of different value in parallel violate KVL (§3.5): the model has **no solution**. Physically, that means "a current limited only by what the model leaves out", which is the internal resistance.
 
-(b) Around the loop the net voltage is $4.20 - 3.60 = 0.60$ V across the two internal resistances in series: $i = 0.60/(0.050 + 0.050) = $ **6.0 A**, flowing out of the 4.2 V cell's + terminal and into the 3.6 V cell's. Terminal voltage: $4.20 - 6.0\times0.050 = $ **3.90 V** (and $3.60 + 6.0\times0.050$ = 3.90 V ✓).
+(b) Around the loop the net voltage is $4.20 - 3.60 = 0.60$ V across the two internal resistances in series: \$i = 0.60/(0.050 + 0.050) = \$ **6.0 A**, flowing out of the 4.2 V cell's + terminal and into the 3.6 V cell's. Terminal voltage: \$4.20 - 6.0\times0.050 = \$ **3.90 V** (and $3.60 + 6.0\times0.050$ = 3.90 V ✓).
 
-(c) The 4.2 V source delivers $4.20\times6.0 = $ **25.2 W**; the 3.6 V source absorbs $3.60\times6.0 = $ **21.6 W** (it is being charged); the internal resistances turn $2\times6.0^2\times0.050 = $ **3.6 W** into heat. Balance: $-25.2 + 21.6 + 3.6 = 0$ ✓.
+(c) The 4.2 V source delivers \$4.20\times6.0 = \$ **25.2 W**; the 3.6 V source absorbs \$3.60\times6.0 = \$ **21.6 W** (it is being charged); the internal resistances turn \$2\times6.0^2\times0.050 = \$ **3.6 W** into heat. Balance: $-25.2 + 21.6 + 3.6 = 0$ ✓.
 
-(d) KCL at the common + terminal $v$: $(4.20 - v)/0.050 + (3.60 - v)/0.050 = v/1$, so $v(20 + 20 + 1) = 84 + 72$ and $v = 156/41 = $ **3.805 V**. The charged cell delivers $(4.20 - 3.805)/0.050 = $ **7.902 A**; the discharged one's current out of its + terminal is $(3.60 - 3.805)/0.050 = $ **−4.098 A**: even with a load, it is still being *charged* by its neighbour, and the load gets only 3.805 A.
+(d) KCL at the common + terminal $v$: $(4.20 - v)/0.050 + (3.60 - v)/0.050 = v/1$, so $v(20 + 20 + 1) = 84 + 72$ and \$v = 156/41 = \$ **3.805 V**. The charged cell delivers \$(4.20 - 3.805)/0.050 = \$ **7.902 A**; the discharged one's current out of its + terminal is \$(3.60 - 3.805)/0.050 = \$ **−4.098 A**: even with a load, it is still being *charged* by its neighbour, and the load gets only 3.805 A.
 
 **Units check.** V/Ω = A; V × A = W ✓.
 

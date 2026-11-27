@@ -24,7 +24,7 @@ Chapter: [26-03](../chapters/26-03-engineering-economics-1.md) · Worked solutio
 
 ### Problem 26-03.3 [B]
 
-**Saving toward a purchase.** (a) Derive $(F/A, i, n)$ by summing the future values of $n$ end-of-period payments. (b) Evaluate $(F/A, 5\%, 10)$. (c) What equal annual deposit grows to $1.0 M in 10 years at 5%?
+**Saving toward a purchase.** (a) Derive $(F/A, i, n)$ by summing the future values of $n$ end-of-period payments. (b) Evaluate $(F/A, 5\%, 10)$. (c) What equal annual deposit grows to \$1.0 M in 10 years at 5%?
 
 ### Problem 26-03.4 [B]
 
@@ -36,7 +36,7 @@ Chapter: [26-03](../chapters/26-03-engineering-economics-1.md) · Worked solutio
 
 ### Problem 26-03.6 [B]
 
-**A mature-node cost stack.** A 200 mm² die is made on 300 mm wafers costing $12,000 at $D_0$ = 0.15 cm⁻². The package costs $6.00 and assembly yields 98.5%; final test costs $2.50 per unit tested and yields 96%; a royalty of $0.50 is paid per unit sold; the ASP is $95 (all assumed). Find (a) the dies per wafer, die yield and cost per good die; (b) the cost after assembly and after test; (c) the COGS; (d) the gross margin and markup.
+**A mature-node cost stack.** A 200 mm² die is made on 300 mm wafers costing \$12,000 at $D_0$ = 0.15 cm⁻². The package costs \$6.00 and assembly yields 98.5%; final test costs \$2.50 per unit tested and yields 96%; a royalty of \$0.50 is paid per unit sold; the ASP is \$95 (all assumed). Find (a) the dies per wafer, die yield and cost per good die; (b) the cost after assembly and after test; (c) the COGS; (d) the gross margin and markup.
 
 ### Problem 26-03.7 [B]
 
@@ -56,7 +56,7 @@ Chapter: [26-03](../chapters/26-03-engineering-economics-1.md) · Worked solutio
 
 ### Problem 26-03.11 [C]
 
-**Splitting the cost of a slip.** For Example 26-03.5's program: (a) find the present value of its sales cash flows; (b) find the NPV if every sales year is delayed by half a year with no loss of units (discount the sales by $1.12^{0.5}$ more); (c) repeat for a full year with no loss of units; (d) Example 26-03.5 found a $39.9 M loss when the one-year slip also lost the year-5 units. What share of that loss is due to the closing window, and what share to discounting?
+**Splitting the cost of a slip.** For Example 26-03.5's program: (a) find the present value of its sales cash flows; (b) find the NPV if every sales year is delayed by half a year with no loss of units (discount the sales by $1.12^{0.5}$ more); (c) repeat for a full year with no loss of units; (d) Example 26-03.5 found a \$39.9 M loss when the one-year slip also lost the year-5 units. What share of that loss is due to the closing window, and what share to discounting?
 
 ### Problem 26-03.12 [B]
 
@@ -76,7 +76,7 @@ Chapter: [26-03](../chapters/26-03-engineering-economics-1.md) · Worked solutio
 
 ### Problem 26-03.16 [B]
 
-**A growing cost.** A test floor's maintenance costs $50,000 in year 1 and rises by $10,000 a year through year 5 (assumed). At 8%: (a) derive or evaluate $(P/G, 8\%, 5)$ and $(A/G, 8\%, 5)$; (b) find the present worth of the five years of maintenance; (c) find its equivalent uniform annual cost, and check it against (b).
+**A growing cost.** A test floor's maintenance costs \$50,000 in year 1 and rises by \$10,000 a year through year 5 (assumed). At 8%: (a) derive or evaluate $(P/G, 8\%, 5)$ and $(A/G, 8\%, 5)$; (b) find the present worth of the five years of maintenance; (c) find its equivalent uniform annual cost, and check it against (b).
 
 ### Problem 26-03.17 [B]
 

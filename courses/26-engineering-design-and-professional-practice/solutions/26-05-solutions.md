@@ -46,7 +46,7 @@ $\mu = (6 + 32 + 16)/6$ = **9.0** weeks; $\sigma = 10/6$ = **1.67** weeks; $P(D 
 
 (b) $0.6 \times 0.2$ = **0.120**.
 
-(c) Delay $0.72 \times 16$ = **11.5** weeks; cost $0.72 \times 15$ = **$10.8 M**.
+(c) Delay $0.72 \times 16$ = **11.5** weeks; cost $0.72 \times 15$ = **\$10.8 M**.
 
 ### Solution 26-05.6
 
@@ -60,25 +60,25 @@ $E[N] = 1 + (1 - q_1) + (1 - q_1)(0.4)$:
 
 (a) Full: $90 \times 1.4$ = **126** days = **18.0** weeks. ECO: $30 \times 1.4$ = **42** days = **6.0** weeks.
 
-(b) Full respin: $18 + 5$ = **23.0** weeks, $25 + 4 + 23 \times 2$ = **$75.0 M**. ECO: $6 + 3$ = **9.0** weeks, $6 + 1.5 + 9 \times 2$ = **$25.5 M**.
+(b) Full respin: $18 + 5$ = **23.0** weeks, $25 + 4 + 23 \times 2$ = **\$75.0 M**. ECO: $6 + 3$ = **9.0** weeks, $6 + 1.5 + 9 \times 2$ = **\$25.5 M**.
 
 (c) **$49.5 M** and **14.0** weeks.
 
 ### Solution 26-05.8
 
-(a) $0.3 \times 12 + 0.1 \times 50 + 0.4 \times 4 = 3.6 + 5.0 + 1.6$ = **$10.2 M**.
+(a) $0.3 \times 12 + 0.1 \times 50 + 0.4 \times 4 = 3.6 + 5.0 + 1.6$ = **\$10.2 M**.
 
-(b) R1: $0.2 \times 12 - 1.5$ = **$0.90 M**; R2: $0.06 \times 50 - 2.5$ = **$0.50 M**; R3: $0.2 \times 4 - 0.5$ = **$0.30 M**.
+(b) R1: $0.2 \times 12 - 1.5$ = **\$0.90 M**; R2: $0.06 \times 50 - 2.5$ = **\$0.50 M**; R3: $0.2 \times 4 - 0.5$ = **\$0.30 M**.
 
-(c) With $3 M: R1 and R3 ($2.0 M, net **$1.20 M**); R1 and R2 ($4.0 M) do not fit. With $4.5 M: all three fit ($4.5 M, net **$1.70 M**).
+(c) With $3 M: R1 and R3 ($2.0 M, net **$1.20 M**); R1 and R2 ($4.0 M) do not fit. With $4.5 M: all three fit ($4.5 M, net **\$1.70 M**).
 
 ### Solution 26-05.9
 
-(a) $2 \times 0.2 \times 10$ = **$4.0 M** in both cases.
+(a) $2 \times 0.2 \times 10$ = **\$4.0 M** in both cases.
 
-(b) Independent: $P(\text{lose } 20) = 0.2^2$ = **0.04**; variance $2 \times 10^2 \times 0.2 \times 0.8 = 32$, standard deviation **$5.66 M**.
+(b) Independent: $P(\text{lose } 20) = 0.2^2$ = **0.04**; variance $2 \times 10^2 \times 0.2 \times 0.8 = 32$, standard deviation **\$5.66 M**.
 
-(c) Always together: $P(\text{lose } 20)$ = **0.20**; the loss is 20 with probability 0.2, variance $20^2 \times 0.2 \times 0.8 = 64$, standard deviation **$8.0 M**.
+(c) Always together: $P(\text{lose } 20)$ = **0.20**; the loss is 20 with probability 0.2, variance $20^2 \times 0.2 \times 0.8 = 64$, standard deviation **\$8.0 M**.
 
 (d) EMV is the same, but the chance of the worst case is five times higher and the spread larger. Correlated risks (a common cause such as an understaffed team or an immature node) need to be identified and managed as one exposure.
 
@@ -86,13 +86,13 @@ $E[N] = 1 + (1 - q_1) + (1 - q_1)(0.4)$:
 
 (a) $P_{miss} = \Phi(-\Delta/4)$ and $f(\Delta) = 0.5\Delta + 40P_{miss}$:
 
-| $\Delta$ | $P_{miss}$ | $f$ ($ M) |
+| $\Delta$ | $P_{miss}$ | $f$ (\$ M) |
 |---|---|---|
 | 0 | **0.500** | **20.0** |
 | 4% | **0.159** | **8.35** |
 | 8% | **0.0228** | **4.91** |
 
-(b) $f'(\Delta) = 0.5 - (40/4)\varphi(\Delta/4) = 0$, where $\varphi$ is the standard normal density, so $\varphi(z) = 0.05$ with $z = \Delta/4$. Then $z = \sqrt{-2\ln(0.05\sqrt{2\pi})}$ = **2.04**, $\Delta^*$ = **8.15**%, $P_{miss}$ = **0.0208** and $f$ = **$4.91 M** (to three figures the same as at 8%: the optimum is flat). $f''$ is positive there, so it is a minimum.
+(b) $f'(\Delta) = 0.5 - (40/4)\varphi(\Delta/4) = 0$, where $\varphi$ is the standard normal density, so $\varphi(z) = 0.05$ with $z = \Delta/4$. Then $z = \sqrt{-2\ln(0.05\sqrt{2\pi})}$ = **2.04**, $\Delta^*$ = **8.15**%, $P_{miss}$ = **0.0208** and $f$ = **\$4.91 M** (to three figures the same as at 8%: the optimum is flat). $f''$ is positive there, so it is a minimum.
 
 ### Solution 26-05.11
 
@@ -100,7 +100,7 @@ $E[N] = 1 + (1 - q_1) + (1 - q_1)(0.4)$:
 
 (b) $t^* = 5\ln(0.2 \times 60/0.204)$ = **20.4** weeks.
 
-(c) $P_r$ = **0.185**; $f = 20.4 + 30 \times 0.185$ = **$25.9 M**.
+(c) $P_r$ = **0.185**; $f = 20.4 + 30 \times 0.185$ = **\$25.9 M**.
 
 (d) With $\lambda$ = 12 a respin is all but certain: **$30.0 M**. Verifying to the optimum saves **$4.1 M**; the slower discovery ($\tau$ = 5) makes the optimum later than in Example 26-05.5.
 
@@ -108,7 +108,7 @@ $E[N] = 1 + (1 - q_1) + (1 - q_1)(0.4)$:
 
 (a) $\lambda^*$ is unchanged (0.179, since $k$ is unchanged), so $t^* = 4\ln(5/0.179)$ = **13.3** weeks and $P_r$ = **0.164**.
 
-(b) $f = 2 + 1.5 \times 13.3 + 40 \times 0.164$ = **$28.5 M**, against $30.7 M without it: worth doing.
+(b) $f = 2 + 1.5 \times 13.3 + 40 \times 0.164$ = **\$28.5 M**, against \$30.7 M without it: worth doing.
 
 (c) The optimum is set by $\lambda e^{-\lambda} = c_w\tau/C_r$, which does not involve $N_0$: whatever the starting point, the team stops when the expected escapes reach the same $\lambda^*$. Halving the starting escapes reaches that point $\tau\ln 2$ = **2.77** weeks sooner.
 

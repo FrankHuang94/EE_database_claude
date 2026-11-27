@@ -287,7 +287,7 @@ $$
 
 - $P = 10^{-9}\times0.64\times2\times10^9 = $ **1.28 W**.
 - $\partial P/\partial V = 2\alpha CVf = 2\times10^{-9}\times0.8\times2\times10^9 = $ **3.2 W/V**, so 10 mV saves about **32 mW**.
-- $\partial P/\partial f = \alpha CV^2 = 0.64$ nJ $= $ **0.64 W/GHz**, so 100 MHz saves **64 mW**.
+- $\partial P/\partial f = \alpha CV^2 = 0.64$ nJ \$= \$ **0.64 W/GHz**, so 100 MHz saves **64 mW**.
 
 **Interpretation.** Per percentage point, voltage is the stronger knob: a 1% cut in $V$ (8 mV) saves 25.6 mW, against 12.8 mW for a 1% cut in $f$. The elasticities are 2 and 1, as in 01-03.
 
@@ -313,7 +313,7 @@ $$
 
 **Setup.** A silicon diode with $I_s = 10^{-14}$ A at 300 K carries a constant 1 mA. Using $I_s \propto T^3e^{-E_g/(kT)}$ with $E_g = 1.12$ eV, find its voltage and $dV/dT$.
 
-**Solution.** $V_T = kT/q = 25.852$ mV (kept to five digits, since it multiplies a large logarithm), so $V = V_T\ln(10^{-3}/10^{-14}) = $ **0.6548 V**. By §3.4,
+**Solution.** $V_T = kT/q = 25.852$ mV (kept to five digits, since it multiplies a large logarithm), so \$V = V_T\ln(10^{-3}/10^{-14}) = \$ **0.6548 V**. By §3.4,
 
 $$
 \frac{dV}{dT} = \frac{0.6548 - 1.12 - 3(0.02585)}{300} = \frac{-0.5428}{300} = \mathbf{-1.809\ mV/K}.
@@ -339,7 +339,7 @@ $$
 
 **Setup.** A workload needs a total of 3 GHz of throughput, split between two cores running at $f_1$ and $f_2$ (GHz). Under DVFS each core's power is about $P_i = k_if_i^3$, with $k_1 = 0.1$ W/GHz³ (an efficient core) and $k_2 = 0.4$ W/GHz³. Minimize total power. Find λ and interpret it. Compare with an equal split and with running everything on the efficient core.
 
-**Solution.** Lagrange: $\nabla P = \lambda\nabla(f_1 + f_2)$ gives $3k_1f_1^2 = 3k_2f_2^2 = \lambda$. So $f_1/f_2 = \sqrt{k_2/k_1} = 2$, and with $f_1 + f_2 = 3$: $f_1 = $ **2 GHz**, $f_2 = $ **1 GHz**.
+**Solution.** Lagrange: $\nabla P = \lambda\nabla(f_1 + f_2)$ gives $3k_1f_1^2 = 3k_2f_2^2 = \lambda$. So $f_1/f_2 = \sqrt{k_2/k_1} = 2$, and with $f_1 + f_2 = 3$: \$f_1 = \$ **2 GHz**, \$f_2 = \$ **1 GHz**.
 
 - Optimal power: $0.1(8) + 0.4(1) = $ **1.2 W**.
 - $\lambda = 3k_1f_1^2 = $ **1.2 W/GHz**.

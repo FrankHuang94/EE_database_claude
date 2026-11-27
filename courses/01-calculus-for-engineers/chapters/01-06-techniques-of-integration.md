@@ -300,9 +300,9 @@ The rules of thumb:
 
 **Solution.**
 
-(a) $u = 1 + x^2$, $du = 2x\,dx$. The limits $x: 0 \to 1$ become $u: 1 \to 2$, so the integral is $\displaystyle\int_1^2\frac{du}{u} = \ln 2 = $ **0.6931**.
+(a) $u = 1 + x^2$, $du = 2x\,dx$. The limits $x: 0 \to 1$ become $u: 1 \to 2$, so the integral is \$\displaystyle\int_1^2\frac{du}{u} = \ln 2 = \$ **0.6931**.
 
-(b) $u = \sin x$, $du = \cos x\,dx$. The limits become $u: 0 \to 1$, so the integral is $\displaystyle\int_0^1u^2\,du = $ **0.3333** (1/3).
+(b) $u = \sin x$, $du = \cos x\,dx$. The limits become $u: 0 \to 1$, so the integral is \$\displaystyle\int_0^1u^2\,du = \$ **0.3333** (1/3).
 
 **Sanity check.** In (a) the integrand is at most 1 (at $x = 1$), so the integral over a unit interval must be below 1 ✓. In (b) the integrand is non-negative and at most about 0.38, so a result of 1/3 over an interval of length 1.57 is plausible ✓.
 
@@ -352,7 +352,7 @@ $$
 b_n = \frac{2}{T}\left[\int_0^{T/2}\sin n\omega t\,dt - \int_{T/2}^{T}\sin n\omega t\,dt\right] = \frac{1}{n\pi}\Big[(1 - \cos n\pi) - (\cos n\pi - 1)\Big] = \frac{2}{n\pi}\big(1 - \cos n\pi\big).
 $$
 
-$\cos n\pi = (-1)^n$, so $b_n = 4/(n\pi)$ for odd $n$ and 0 for even $n$: $b_1 = $ **1.273**, $b_3 = $ **0.4244**, $b_5 = $ **0.2546**.
+$\cos n\pi = (-1)^n$, so $b_n = 4/(n\pi)$ for odd $n$ and 0 for even $n$: \$b_1 = \$ **1.273**, \$b_3 = \$ **0.4244**, \$b_5 = \$ **0.2546**.
 
 (b) The mean square of a ±1 square wave is 1. The fundamental's power is $b_1^2/2 = 8/\pi^2 = $ **0.8106**, i.e. **81.06%**. The rest sits in the odd harmonics.
 
@@ -368,7 +368,7 @@ $\cos n\pi = (-1)^n$, so $b_n = 4/(n\pi)$ for odd $n$ and 0 for even $n$: $b_1 =
 
 (b) ENBW $= (\pi/2)f_c = $ **15.71 kHz** (§3.6).
 
-(c) Total power $= 4kTR\times\text{ENBW}$, so $v_{rms} = 12.87\text{ nV/√Hz}\times\sqrt{15\,708\text{ Hz}} = $ **1.613 µV**.
+(c) Total power $= 4kTR\times\text{ENBW}$, so \$v_{rms} = 12.87\text{ nV/√Hz}\times\sqrt{15\,708\text{ Hz}} = \$ **1.613 µV**.
 
 **Interpretation.** A designer who multiplied the density by the −3 dB bandwidth (10 kHz) would get 1.287 µV, underestimating the noise by 20% in voltage (57% in power). Datasheets quote noise densities so that you can perform exactly this integral for your own filter.
 
@@ -396,7 +396,7 @@ $$
 E = \frac{k\lambda}{d}\cdot\frac{2L}{\sqrt{L^2 + d^2}} .
 $$
 
-Numerically, $k\lambda/d = 8.988\times10^9\times10^{-9}/0.01 = 898.8$ V/m and $2L/\sqrt{L^2 + d^2} = 0.1/0.05099 = 1.961$, so $E = $ **1763 V/m**. As $L \to \infty$ the factor tends to 2, giving the infinite-wire field $2k\lambda/d = \lambda/(2\pi\varepsilon_0d) = $ **1798 V/m**. A wire whose half-length is only five times the distance already gives **98.06%** of it.
+Numerically, $k\lambda/d = 8.988\times10^9\times10^{-9}/0.01 = 898.8$ V/m and $2L/\sqrt{L^2 + d^2} = 0.1/0.05099 = 1.961$, so \$E = \$ **1763 V/m**. As $L \to \infty$ the factor tends to 2, giving the infinite-wire field \$2k\lambda/d = \lambda/(2\pi\varepsilon_0d) = \$ **1798 V/m**. A wire whose half-length is only five times the distance already gives **98.06%** of it.
 
 **Units check.** (N·m²/C²)(C/m)/m = N/C = V/m ✓. **Sanity check.** Far away ($d \gg L$), $2L/\sqrt{L^2 + d^2} \to 2L/d$ and $E \to k(2L\lambda)/d^2$: the field of a point charge $2L\lambda$, as it must be ✓. [01-10](01-10-multivariable-calculus-2.md) gets the infinite-wire field in one line from Gauss's law.
 

@@ -131,7 +131,7 @@ $$
 
 The new node lowers the cost of a function only if its density gain outruns its wafer-price increase, after yield. With leading-edge wafers rising steeply in price [R-575] and SRAM and analog scaling slowly, the ratio can approach or exceed 1: whether cost per transistor still falls is contested [R-577]. The edge term in DPW slightly favours the smaller die, and a new node's defect density is usually higher at launch, which works the other way (§4, Example 26-04.3).
 
-**Adding NRE.** A newer node costs more to design for: masks (more than $10 M at 7 nm and moving toward $40 M at 3 nm by one analyst's July 2022 estimate [R-321] **[Industry estimate]**), IP that must be bought or ported, and more verification. With an extra NRE $\Delta N$ and a unit saving $C_{old} - C_{new}$, the new node pays back over
+**Adding NRE.** A newer node costs more to design for: masks (more than \$10 M at 7 nm and moving toward \$40 M at 3 nm by one analyst's July 2022 estimate [R-321] **[Industry estimate]**), IP that must be bought or ported, and more verification. With an extra NRE $\Delta N$ and a unit saving $C_{old} - C_{new}$, the new node pays back over
 
 $$
 V^* = \frac{\Delta N}{C_{old} - C_{new} + \Delta v}
@@ -171,7 +171,7 @@ $$
 T = P + O + E, \qquad E = P_{el}\cdot \text{PUE} \cdot 8760\,L \cdot c_e,
 $$
 
-where $P$ is the accelerator's price, $O$ the per-slot share of everything else that scales with the number of accelerators (host processors, network, racks, facility capital), $P_{el}$ the accelerator's electrical power in kW, PUE the facility's power usage effectiveness (22-10), $8760$ the hours in a year and $c_e$ the electricity price in $/kWh. Units: kW × h × $/kWh = $. ✓ Here $T$ is undiscounted, assumes the accelerator draws $P_{el}$ around the clock, and counts only the accelerator's own power (the hosts and network in $O$ draw power too). Discounting Example 26-04.5's $3,644 of energy over 4 years at a 10% MARR would cut it to **$2,888**, which barely moves the comparison; for a refined case, discount and add the host power to $E$.
+where $P$ is the accelerator's price, $O$ the per-slot share of everything else that scales with the number of accelerators (host processors, network, racks, facility capital), $P_{el}$ the accelerator's electrical power in kW, PUE the facility's power usage effectiveness (22-10), $8760$ the hours in a year and $c_e$ the electricity price in \$/kWh. Units: kW × h × \$/kWh = \$. ✓ Here $T$ is undiscounted, assumes the accelerator draws $P_{el}$ around the clock, and counts only the accelerator's own power (the hosts and network in $O$ draw power too). Discounting Example 26-04.5's $3,644 of energy over 4 years at a 10% MARR would cut it to **$2,888**, which barely moves the comparison; for a refined case, discount and add the host power to $E$.
 
 Divide by throughput $\theta$ (useful work per second on the target workload, normalized to the merchant part) to get the cost per unit of work, $\tau = T/\theta$. A fleet of $N_c$ custom chips does the work of $N_{eq} = N_c\theta_c/\theta_m$ merchant parts (**merchant-equivalents**). Custom saves $\tau_m - \tau_c$ per merchant-equivalent and costs NRE $N$ (chip design, software, bring-up), so it breaks even at
 
@@ -222,7 +222,7 @@ All prices, NRE figures and yields below are **assumed** for teaching unless a s
 **Solution.**
 
 - (a) The ASPs are $40.00, **$35.20**, **$30.98** and **$27.26**, so 2% of them is **$0.800**, **$0.704**, **$0.620** and **$0.545** per unit.
-- (b) The per-unit form pays $0.80 \times 16$ M = **$12.80 M**. The percentage form pays $3 \times 0.800 + 5 \times 0.704 + 5 \times 0.620 + 3 \times 0.545$ = **$10.65 M**, **$2.15 M** less (**83.2**% of the per-unit total).
+- (b) The per-unit form pays $0.80 \times 16$ M = **\$12.80 M**. The percentage form pays $3 \times 0.800 + 5 \times 0.704 + 5 \times 0.620 + 3 \times 0.545$ = **$10.65 M**, **$2.15 M** less (**83.2**% of the per-unit total).
 - (c) Under the percentage form the licensor's income falls with the chip's price, so the licensor carries the price risk; under the per-unit form the licensee does. The two are equal in year 1 and diverge as the price erodes.
 
 **Units check.** % × $/unit = $/unit; $/unit × units = $. ✓
@@ -245,13 +245,13 @@ All prices, NRE figures and yields below are **assumed** for teaching unless a s
 
 ### Example 26-04.3 · Should the next chip move from N5 to N3? (tier B)
 
-**Setup.** A 100 mm² die at N5 is 50% logic, 30% SRAM and 20% analog and I/O by area. Take TSMC's "up to" N3-over-N5 density gains as reported, 1.7× for logic, 1.2× for SRAM and 1.1× for analog [R-360]. Wafers cost $17,000 at N5 and $20,000 at N3, and $D_0$ = 0.10 cm⁻² at both (assumed). The N3 design costs $30 M more in NRE (assumed). Find (a) the effective density gain and the N3 die area, (b) the most the die could shrink however dense the logic, (c) the cost per good die at each node, and (d) the lifetime volume at which N3 repays its extra NRE.
+**Setup.** A 100 mm² die at N5 is 50% logic, 30% SRAM and 20% analog and I/O by area. Take TSMC's "up to" N3-over-N5 density gains as reported, 1.7× for logic, 1.2× for SRAM and 1.1× for analog [R-360]. Wafers cost \$17,000 at N5 and \$20,000 at N3, and $D_0$ = 0.10 cm⁻² at both (assumed). The N3 design costs \$30 M more in NRE (assumed). Find (a) the effective density gain and the N3 die area, (b) the most the die could shrink however dense the logic, (c) the cost per good die at each node, and (d) the lifetime volume at which N3 repays its extra NRE.
 
 **Solution.**
 
 - (a) $s_{eff} = 1/(0.5/1.7 + 0.3/1.2 + 0.2/1.1) = 1/(0.2941 + 0.2500 + 0.1818)$ = **1.378**, so the N3 die is $100/1.378$ = **72.59** mm², not the 58.8 mm² the logic figure alone suggests.
 - (b) With $s_L \to \infty$, $1/(0.2500 + 0.1818)$ = **2.32**: SRAM and analog cap the shrink.
-- (c) N5: DPW = **640** (formula 640.2), $Y = e^{-0.1}$ = **0.9048**, $C = 17{,}000/(640 \times 0.9048)$ = **$29.36**. N3: DPW = **895** (formula **895.5**), $Y = e^{-0.0726}$ = **0.9300**, $C = 20{,}000/(895 \times 0.9300)$ = **$24.03**. N3 saves **$5.33** per die.
+- (c) N5: DPW = **640** (formula 640.2), $Y = e^{-0.1}$ = **0.9048**, $C = 17{,}000/(640 \times 0.9048)$ = **\$29.36**. N3: DPW = **895** (formula **895.5**), $Y = e^{-0.0726}$ = **0.9300**, $C = 20{,}000/(895 \times 0.9300)$ = **$24.03**. N3 saves **$5.33** per die.
 - (d) $V^* = 30/5.33$ = **5.63** million units.
 
 **Units check.** $/wafer ÷ (dies/wafer) = $/die; $ ÷ ($/unit) = units. ✓
@@ -260,14 +260,14 @@ All prices, NRE figures and yields below are **assumed** for teaching unless a s
 
 ### Example 26-04.4 · Monolithic or chiplets for a product family (tier C)
 
-**Setup.** A company plans two products. S has one compute block (150 mm² at N3) and an I/O block (50 mm²); L has two compute blocks and the same I/O. **Monolithic:** S is one 200 mm² N3 die and L one 350 mm² N3 die, each in a $15 package, with NRE of $90 M (S) and $100 M (L). **Chiplets:** one compute chiplet (165 mm² at N3, including 10% for die-to-die interfaces) and one I/O die (55 mm² at N6, which costs $10,000 a wafer with $D_0$ = 0.08 cm⁻²); S uses one compute chiplet and L two, each with the I/O die, in packages costing $25 (S) and $35 (L). The chiplets' NRE is $80 M (compute) and $30 M (I/O), plus $8 M of package integration per product. N3 wafers cost $20,000 with $D_0$ = 0.10 cm⁻²; every die costs $2 to test and every attach yields 99%. Lifetime volumes are 4 million (S) and 1 million (L) (all assumed). Find (a) the cost of each good tested die, (b) the cost of each good package, (c) the family's total cost under each approach, and (d) the best choice if only product S were built.
+**Setup.** A company plans two products. S has one compute block (150 mm² at N3) and an I/O block (50 mm²); L has two compute blocks and the same I/O. **Monolithic:** S is one 200 mm² N3 die and L one 350 mm² N3 die, each in a \$15 package, with NRE of \$90 M (S) and \$100 M (L). **Chiplets:** one compute chiplet (165 mm² at N3, including 10% for die-to-die interfaces) and one I/O die (55 mm² at N6, which costs \$10,000 a wafer with $D_0$ = 0.08 cm⁻²); S uses one compute chiplet and L two, each with the I/O die, in packages costing \$25 (S) and \$35 (L). The chiplets' NRE is \$80 M (compute) and \$30 M (I/O), plus \$8 M of package integration per product. N3 wafers cost \$20,000 with $D_0$ = 0.10 cm⁻²; every die costs \$2 to test and every attach yields 99%. Lifetime volumes are 4 million (S) and 1 million (L) (all assumed). Find (a) the cost of each good tested die, (b) the cost of each good package, (c) the family's total cost under each approach, and (d) the best choice if only product S were built.
 
 **Solution.**
 
-- (a) With $C = (W/\text{DPW} + T)/Y$: monolithic S, DPW **306**, $Y$ = **0.8187**, **$82.27**; monolithic L, DPW **166**, $Y$ = **0.7047**, **$173.81**; compute chiplet, DPW **376**, $Y$ = **0.8479**, **$65.09**; I/O die, DPW **1195**, $Y$ = **0.9570**, **$10.83**.
-- (b) Monolithic S: $(82.27 + 15)/0.99$ = **$98.26**. Chiplet S: $(65.09 + 10.83 + 25)/0.99^2$ = **$102.98**, **$4.72** more. Monolithic L: $(173.81 + 15)/0.99$ = **$190.72**. Chiplet L: $(2 \times 65.09 + 10.83 + 35)/0.99^3$ = **$181.41**, **$9.31** less.
-- (c) Monolithic: $190 + 4 \times 98.26 + 1 \times 190.72$ = **$773.7 M**. Chiplets: NRE $80 + 30 + 2 \times 8$ = **$126 M**, total $126 + 4 \times 102.98 + 1 \times 181.41$ = **$719.3 M**. Chiplets save **$54.4 M**: **$64 M** of NRE, less a net unit-cost penalty of $4 \times 4.72 - 9.31$ = **$9.57 M**.
-- (d) For S alone, monolithic costs $90 + 4 \times 98.26$ = **$483.0 M** and chiplets $(80 + 30 + 8) + 4 \times 102.98$ = **$529.9 M**: monolithic wins by **$46.9 M**.
+- (a) With $C = (W/\text{DPW} + T)/Y$: monolithic S, DPW **306**, $Y$ = **0.8187**, **\$82.27**; monolithic L, DPW **166**, $Y$ = **0.7047**, **\$173.81**; compute chiplet, DPW **376**, $Y$ = **0.8479**, **\$65.09**; I/O die, DPW **1195**, $Y$ = **0.9570**, **\$10.83**.
+- (b) Monolithic S: $(82.27 + 15)/0.99$ = **\$98.26**. Chiplet S: $(65.09 + 10.83 + 25)/0.99^2$ = **$102.98**, **$4.72** more. Monolithic L: $(173.81 + 15)/0.99$ = **\$190.72**. Chiplet L: $(2 \times 65.09 + 10.83 + 35)/0.99^3$ = **$181.41**, **$9.31** less.
+- (c) Monolithic: $190 + 4 \times 98.26 + 1 \times 190.72$ = **\$773.7 M**. Chiplets: NRE $80 + 30 + 2 \times 8$ = **\$126 M**, total $126 + 4 \times 102.98 + 1 \times 181.41$ = **$719.3 M**. Chiplets save **$54.4 M**: **\$64 M** of NRE, less a net unit-cost penalty of $4 \times 4.72 - 9.31$ = **\$9.57 M**.
+- (d) For S alone, monolithic costs $90 + 4 \times 98.26$ = **\$483.0 M** and chiplets $(80 + 30 + 8) + 4 \times 102.98$ = **$529.9 M**: monolithic wins by **$46.9 M**.
 
 **Units check.** $/die summed with $/package, divided by dimensionless yields, gives $/package; $ M + (million units × $/unit) = $ M. ✓
 
@@ -279,10 +279,10 @@ All prices, NRE figures and yields below are **assumed** for teaching unless a s
 
 **Solution.**
 
-- (a) Energy: merchant $1.0 \times 1.3 \times 8760 \times 4 \times 0.08$ = **$3,644**; custom $0.7 \times$ that = **$2,551**. TCO per slot: merchant $30{,}000 + 12{,}000 + 3{,}644$ = **$45,644**; custom $9{,}000 + 12{,}000 + 2{,}551$ = **$23,551**.
-- (b) Per merchant-equivalent: merchant **$45,644**; custom $23{,}551/0.8$ = **$29,439**; saving **$16,206** (from the unrounded $45,644.16 and $29,438.64). Break-even $N_{eq}^* = 800 \times 10^6/16{,}206$ = **49,400** merchant-equivalents, or **61,700** custom chips.
-- (c) At $20,000 the merchant's cost per equivalent is **$35,644**, the saving **$6,206**, and the break-even fleet **129,000** merchant-equivalents (**161,000** custom chips), 2.6 times larger.
-- (d) 200,000 custom chips are 160,000 merchant-equivalents, so $P_m^* = 1.0 \times (29{,}438.64 + 800 \times 10^6/160{,}000) - 12{,}000 - 3{,}644.16$ = **$18,794**.
+- (a) Energy: merchant $1.0 \times 1.3 \times 8760 \times 4 \times 0.08$ = **\$3,644**; custom $0.7 \times$ that = **\$2,551**. TCO per slot: merchant $30{,}000 + 12{,}000 + 3{,}644$ = **\$45,644**; custom $9{,}000 + 12{,}000 + 2{,}551$ = **\$23,551**.
+- (b) Per merchant-equivalent: merchant **\$45,644**; custom $23{,}551/0.8$ = **$29,439**; saving **$16,206** (from the unrounded \$45,644.16 and \$29,438.64). Break-even $N_{eq}^* = 800 \times 10^6/16{,}206$ = **49,400** merchant-equivalents, or **61,700** custom chips.
+- (c) At $20,000 the merchant's cost per equivalent is **$35,644**, the saving **\$6,206**, and the break-even fleet **129,000** merchant-equivalents (**161,000** custom chips), 2.6 times larger.
+- (d) 200,000 custom chips are 160,000 merchant-equivalents, so $P_m^* = 1.0 \times (29{,}438.64 + 800 \times 10^6/160{,}000) - 12{,}000 - 3{,}644.16$ = **\$18,794**.
 
 **Units check.** kW × h × $/kWh = $; $ ÷ ($ per equivalent) = equivalents. ✓
 
@@ -290,13 +290,13 @@ All prices, NRE figures and yields below are **assumed** for teaching unless a s
 
 ### Example 26-04.6 · License now, build later? (tier C)
 
-**Setup.** Extend Example 26-04.2 to a second-generation chip. All figures are present values at year 0, in $ M. If the PHY is built now, porting it to generation 2 costs $3. If it is licensed now, generation 2 can renew the licence ($5 upfront plus $0.80 per unit) or build its own ($22, including risk). Generation 2's discounted volume is 25 million units with probability 0.3 or 6 million with probability 0.7 (all assumed). Find (a) the expected cost of building now, (b) of licensing now and choosing later, (c) of licensing both generations, (d) the value of the flexibility, and (e) the probability of the high-volume outcome above which building now is best.
+**Setup.** Extend Example 26-04.2 to a second-generation chip. All figures are present values at year 0, in \$ M. If the PHY is built now, porting it to generation 2 costs $3. If it is licensed now, generation 2 can renew the licence ($5 upfront plus $0.80 per unit) or build its own ($22, including risk). Generation 2's discounted volume is 25 million units with probability 0.3 or 6 million with probability 0.7 (all assumed). Find (a) the expected cost of building now, (b) of licensing now and choosing later, (c) of licensing both generations, (d) the value of the flexibility, and (e) the probability of the high-volume outcome above which building now is best.
 
 **Solution.**
 
-- (a) Build now: $27.75 + 3$ = **$30.75 M**, whatever the volume.
-- (b) License now ($15.70 M from Example 26-04.2), then in the high case compare renewal $5 + 0.80 \times 25$ = **$25.0 M** with building at $22 M, and build; in the low case compare $5 + 0.80 \times 6$ = **$9.80 M** with $22 M, and renew. Expected: $15.70 + 0.3 \times 22 + 0.7 \times 9.80$ = **$29.16 M**.
-- (c) License both: the expected volume is $0.3 \times 25 + 0.7 \times 6$ = **11.7** million, so $15.70 + 5 + 0.80 \times 11.7$ = **$30.06 M**.
+- (a) Build now: $27.75 + 3$ = **\$30.75 M**, whatever the volume.
+- (b) License now (\$15.70 M from Example 26-04.2), then in the high case compare renewal $5 + 0.80 \times 25$ = **\$25.0 M** with building at \$22 M, and build; in the low case compare $5 + 0.80 \times 6$ = **\$9.80 M** with \$22 M, and renew. Expected: $15.70 + 0.3 \times 22 + 0.7 \times 9.80$ = **\$29.16 M**.
+- (c) License both: the expected volume is $0.3 \times 25 + 0.7 \times 6$ = **11.7** million, so $15.70 + 5 + 0.80 \times 11.7$ = **\$30.06 M**.
 - (d) Keeping the choice open is worth $30.06 - 29.16$ = **$0.90 M** against committing to the licence, and the flexible plan beats building now by **$1.59 M**.
 - (e) Licensing then choosing costs $15.70 + 9.80 + p(22 - 9.80)$, which equals $30.75$ at $p$ = **0.430**. Above a 43% chance of the high-volume outcome, build now.
 
@@ -517,7 +517,7 @@ The lab is [labs/26-04-lab/](../labs/26-04-lab/README.md). `sourcing.py` impleme
 
 <details><summary>Answer</summary>
 
-$(10 - 2)/0.50$ = **16** million units. At 10 million, the licence costs $2 + 5$ = **$7 M** against $10 M: license.
+$(10 - 2)/0.50$ = **16** million units. At 10 million, the licence costs $2 + 5$ = **\$7 M** against \$10 M: license.
 
 </details>
 

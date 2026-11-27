@@ -212,7 +212,7 @@ In datacenters, the reach of copper at hundreds of gigabits per second is a mete
 
 **Setup.** (a) Find the wavelength of a 1 GHz radio wave in air and of a 1 kHz sound wave in air at 20 °C ($v = \sqrt{\gamma RT/M}$ with γ = 1.4, $R$ = 8.314 J/(mol·K), $M$ = 0.02897 kg/mol). (b) A steel string with µ = 0.5 g/m under 60 N tension is 0.65 m long, fixed at both ends. Find the wave speed and the fundamental and third-mode frequencies.
 
-**Solution.** (a) $\lambda = c/f = $ **0.2998 m**. The speed of sound is $\sqrt{1.4\times8.314\times293.15/0.02897} = 343.2$ m/s, so $\lambda = $ **0.3432 m**: similar wavelengths, a million times different frequencies.
+**Solution.** (a) \$\lambda = c/f = \$ **0.2998 m**. The speed of sound is $\sqrt{1.4\times8.314\times293.15/0.02897} = 343.2$ m/s, so \$\lambda = \$ **0.3432 m**: similar wavelengths, a million times different frequencies.
 
 (b) $v = \sqrt{F_T/\mu} = \sqrt{60/5\times10^{-4}} = $ **346.4 m/s**. $f_1 = v/(2L) = $ **266.5 Hz**; $f_3 = 3f_1 = $ **799.4 Hz**.
 
@@ -256,11 +256,11 @@ In datacenters, the reach of copper at hundreds of gigabits per second is a mete
 
 **Setup.** ASML's EUV systems use 13.5 nm light; its 0.33-NA platform prints 13 nm critical dimensions and its 0.55-NA (High-NA) platform 8 nm ([R-084](../../../reference/research-log.md#r-084--optical-interconnect-standards-fiber-euv-and-co-packaged-optics)). (a) Find the $k_1$ each implies. (b) Find each platform's CD at the $k_1$ = 0.25 limit. (c) What NA would 193 nm light need to print 13 nm at the same $k_1$ as the 0.33-NA EUV system? (d) Find the energy of a 13.5 nm photon, $E = hc/\lambda$ (previewing 04-10).
 
-**Solution.** (a) $k_1 = CD\cdot\text{NA}/\lambda$: $13\times0.33/13.5 = $ **0.3178** and $8\times0.55/13.5 = $ **0.3259**.
+**Solution.** (a) $k_1 = CD\cdot\text{NA}/\lambda$: \$13\times0.33/13.5 = \$ **0.3178** and \$8\times0.55/13.5 = \$ **0.3259**.
 
 (b) $0.25\times13.5/\text{NA}$: **10.23 nm** and **6.136 nm**.
 
-(c) $\text{NA} = 193\times0.33/13.5 = $ **4.718**. Since NA = $n\sin\theta$ cannot exceed the index of the medium touching the wafer (about 1.44 for water at 193 nm), this is impossible: hence multiple patterning at 193 nm and the move to EUV.
+(c) \$\text{NA} = 193\times0.33/13.5 = \$ **4.718**. Since NA = $n\sin\theta$ cannot exceed the index of the medium touching the wafer (about 1.44 for water at 193 nm), this is impossible: hence multiple patterning at 193 nm and the move to EUV.
 
 (d) $E = hc/\lambda = 6.626\times10^{-34}\times2.998\times10^8/13.5\times10^{-9}$ J = **91.84 eV**.
 

@@ -127,11 +127,11 @@ With a single source, homogeneity alone says every response is proportional to t
 
 **Setup.** In Figure 1, a 12 V source in series with $R_1$ = 4 Ω feeds node a, $R_2$ = 6 Ω connects node a to ground, and a 2 A source pushes current into node a. Find $v_a$ and the currents by superposition, check with nodal analysis, and compare the true powers in $R_1$ and $R_2$ with the sums of the single-source powers.
 
-**Solution.** *12 V alone* (2 A source open): a divider, $v_a' = 12\times6/10 = $ **7.2 V**; the current in $R_1$ toward node a is $(12 - 7.2)/4 = 1.2$ A. *2 A alone* (12 V source shorted): the 2 A flows into $R_1\parallel R_2 = 2.4$ Ω, so $v_a'' = $ **4.8 V**; $R_1$ now carries $4.8/4 = 1.2$ A *away* from node a, toward the shorted source. Adding: $v_a = 7.2 + 4.8 = $ **12 V**, and the $R_1$ current is $1.2 - 1.2 = $ **0 A**. $R_2$ carries $1.2 + 0.8 = $ **2 A**.
+**Solution.** *12 V alone* (2 A source open): a divider, \$v_a' = 12\times6/10 = \$ **7.2 V**; the current in $R_1$ toward node a is $(12 - 7.2)/4 = 1.2$ A. *2 A alone* (12 V source shorted): the 2 A flows into $R_1\parallel R_2 = 2.4$ Ω, so \$v_a'' = \$ **4.8 V**; $R_1$ now carries $4.8/4 = 1.2$ A *away* from node a, toward the shorted source. Adding: \$v_a = 7.2 + 4.8 = \$ **12 V**, and the $R_1$ current is \$1.2 - 1.2 = \$ **0 A**. $R_2$ carries \$1.2 + 0.8 = \$ **2 A**.
 
 **Check.** Nodal: $(v_a - 12)/4 + v_a/6 = 2$, so $5v_a = 60$ and $v_a = 12$ V ✓.
 
-**Powers.** $R_2$: true $6\times2^2 = $ **24 W**, but $6\times1.2^2 + 6\times0.8^2 = 8.64 + 3.84 = $ **12.48 W**; the cross term $2\times6\times1.2\times0.8 = $ **11.52 W** is the difference. $R_1$: true power **0 W**, while the single-source powers add to $4\times1.2^2 + 4\times1.2^2 = $ **11.52 W**. The 12 V source happens to deliver nothing; the 2 A source delivers $2\times12 = 24$ W, all of it in $R_2$ ✓.
+**Powers.** $R_2$: true \$6\times2^2 = \$ **24 W**, but \$6\times1.2^2 + 6\times0.8^2 = 8.64 + 3.84 = \$ **12.48 W**; the cross term \$2\times6\times1.2\times0.8 = \$ **11.52 W** is the difference. $R_1$: true power **0 W**, while the single-source powers add to \$4\times1.2^2 + 4\times1.2^2 = \$ **11.52 W**. The 12 V source happens to deliver nothing; the 2 A source delivers $2\times12 = 24$ W, all of it in $R_2$ ✓.
 
 **Units check.** A × Ω = V; Ω × A² = W ✓.
 
@@ -143,11 +143,11 @@ With a single source, homogeneity alone says every response is proportional to t
 
 **Solution.** The branch to ground carries $(v_a - 3i_x)/1$ away from node a, and $i_x = (V_s - v_a)/2$ with $V_s$ the source voltage (zero when it is shorted). KCL at node a: $i_x + I_s = v_a - 3i_x$.
 
-*10 V alone* ($I_s = 0$): $i_x = (10 - v_a)/2$ and $4i_x = v_a$, so $2(10 - v_a) = v_a$: $v_a' = $ **6.667 V**, $i_x' = $ **1.667 A**.
+*10 V alone* ($I_s = 0$): $i_x = (10 - v_a)/2$ and $4i_x = v_a$, so $2(10 - v_a) = v_a$: \$v_a' = \$ **6.667 V**, \$i_x' = \$ **1.667 A**.
 
-*2 A alone* ($V_s = 0$, the CCVS still present): $i_x = -v_a/2$, and $i_x + 2 = v_a - 3i_x$ becomes $-v_a/2 + 2 = v_a + 1.5v_a$, so $3v_a = 2$: $v_a'' = $ **0.6667 V**, $i_x'' = $ **−0.3333 A**.
+*2 A alone* ($V_s = 0$, the CCVS still present): $i_x = -v_a/2$, and $i_x + 2 = v_a - 3i_x$ becomes $-v_a/2 + 2 = v_a + 1.5v_a$, so $3v_a = 2$: \$v_a'' = \$ **0.6667 V**, \$i_x'' = \$ **−0.3333 A**.
 
-*Sum:* $v_a = $ **7.333 V** and $i_x = $ **1.333 A**. Direct check with both sources: $(10 - v_a)/2 + 2 = v_a - 1.5(10 - v_a)$, so $6v_a = 44$ and $v_a = 7.333$ V ✓.
+*Sum:* \$v_a = \$ **7.333 V** and \$i_x = \$ **1.333 A**. Direct check with both sources: $(10 - v_a)/2 + 2 = v_a - 1.5(10 - v_a)$, so $6v_a = 44$ and $v_a = 7.333$ V ✓.
 
 **Units check.** Ω × A = V for the CCVS ✓.
 
@@ -157,7 +157,7 @@ With a single source, homogeneity alone says every response is proportional to t
 
 **Setup.** A 12 V source with 4 Ω internal resistance and a 6 V source with 3 Ω are connected in parallel (+ to +) across a 2 Ω load. Find the load current and voltage and each source's current by source transformation (Millman's theorem).
 
-**Solution.** Transform each source: $12/4 = 3$ A in parallel with 4 Ω, and $6/3 = 2$ A in parallel with 3 Ω. In parallel, the currents add to **5 A** and the resistances combine to $4\parallel3 = $ **1.714 Ω**. Transforming back: $V_{eq} = 5\times1.714 = $ **8.571 V** behind 1.714 Ω. The load draws $8.571/(1.714 + 2) = $ **2.308 A** at **4.615 V**. The sources supply $(12 - 4.615)/4 = $ **1.846 A** and $(6 - 4.615)/3 = $ **0.4615 A**, which add to the load current ✓.
+**Solution.** Transform each source: $12/4 = 3$ A in parallel with 4 Ω, and $6/3 = 2$ A in parallel with 3 Ω. In parallel, the currents add to **5 A** and the resistances combine to \$4\parallel3 = \$ **1.714 Ω**. Transforming back: \$V_{eq} = 5\times1.714 = \$ **8.571 V** behind 1.714 Ω. The load draws \$8.571/(1.714 + 2) = \$ **2.308 A** at **4.615 V**. The sources supply \$(12 - 4.615)/4 = \$ **1.846 A** and \$(6 - 4.615)/3 = \$ **0.4615 A**, which add to the load current ✓.
 
 **Units check.** V/Ω = A ✓.
 
@@ -171,7 +171,7 @@ With a single source, homogeneity alone says every response is proportional to t
 
 *Figure 2. The unit-output method. Starting from $v_{out}$ = 1 V and working back, the currents and voltages are Fibonacci numbers.*
 
-**Solution.** Assume $v_{out}$ = 1 V (in kΩ, mA, V). The last shunt carries 1 mA, and so does the last series resistor, so the middle node is at $1 + 1 = 2$ V. Its shunt carries 2 mA; the middle series resistor carries $1 + 2 = 3$ mA, so the first node is at $2 + 3 = 5$ V. Its shunt carries 5 mA, the first series resistor $3 + 5 = 8$ mA, and the input must be $5 + 8 = $ **13 V**. So $v_{out}/v_{in} = 1/13 = $ **0.07692**, a 10 V input gives **0.7692 V**, and the input resistance is $13\ \text{V}/8\ \text{mA} = $ **1.625 kΩ**.
+**Solution.** Assume $v_{out}$ = 1 V (in kΩ, mA, V). The last shunt carries 1 mA, and so does the last series resistor, so the middle node is at $1 + 1 = 2$ V. Its shunt carries 2 mA; the middle series resistor carries $1 + 2 = 3$ mA, so the first node is at $2 + 3 = 5$ V. Its shunt carries 5 mA, the first series resistor $3 + 5 = 8$ mA, and the input must be \$5 + 8 = \$ **13 V**. So \$v_{out}/v_{in} = 1/13 = \$ **0.07692**, a 10 V input gives **0.7692 V**, and the input resistance is \$13\ \text{V}/8\ \text{mA} = \$ **1.625 kΩ**.
 
 **Units check.** kΩ × mA = V ✓.
 
@@ -187,7 +187,7 @@ With a single source, homogeneity alone says every response is proportional to t
 
 **Solution.** (a) With only bit $k$ at 4 V (the others at 0 V, which grounds their resistors), the output is a divider: $4\,G_k/G_{total}$, where $G_{total} = 1 + 0.5 + 0.25 + 0.25 = 2$ mS. The contributions are $4\times1/2 = 2$ V (MSB), 1 V and **0.5 V** (LSB). By superposition, the output for code $(b_2b_1b_0)$ is $2b_2 + b_1 + 0.5b_0$ volts $= 0.5\times\text{code}$: 0, 0.5, 1.0, …, 3.5 V, a perfect staircase with a 0.5 V step (1 LSB).
 
-(b) With $R_{MSB}$ = 1.01 kΩ, $G_{total} = 0.9901 + 1 = 1.9901$ mS. Code 011: $4\times0.75/1.9901 = $ **1.5075 V**. Code 100: $4\times0.9901/1.9901 = $ **1.9900 V**. The step is **0.4826 V** instead of 0.5 V: a differential nonlinearity of **−0.035 LSB** at the "major carry", where every bit changes. (DNL here is measured against the *ideal* LSB, 0.5 V. Measured against the actual end-point LSB, the full-scale span divided by 7, which shifts slightly with the mismatch, the same step gives about −0.034 LSB, as in the lab. Converter datasheets state which definition they use.)
+(b) With $R_{MSB}$ = 1.01 kΩ, $G_{total} = 0.9901 + 1 = 1.9901$ mS. Code 011: \$4\times0.75/1.9901 = \$ **1.5075 V**. Code 100: \$4\times0.9901/1.9901 = \$ **1.9900 V**. The step is **0.4826 V** instead of 0.5 V: a differential nonlinearity of **−0.035 LSB** at the "major carry", where every bit changes. (DNL here is measured against the *ideal* LSB, 0.5 V. Measured against the actual end-point LSB, the full-scale span divided by 7, which shifts slightly with the mismatch, the same step gives about −0.034 LSB, as in the lab. Converter datasheets state which definition they use.)
 
 **Units check.** V × mS/mS = V ✓.
 

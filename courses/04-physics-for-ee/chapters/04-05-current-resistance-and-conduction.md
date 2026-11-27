@@ -245,7 +245,7 @@ That is why interconnect engineering has three levers: lower the resistivity of 
 
 (b) $R_s = \rho/t = 1.68\times10^{-8}/34.06\times10^{-6} = $ **0.4933 mΩ/□**.
 
-(c) $L/W = 50/0.25 = $ **200 squares**, so $R = $ **98.66 mΩ**. The drop is $IR$ = **0.1973 V** and the power $I^2R$ = **0.3946 W**.
+(c) \$L/W = 50/0.25 = \$ **200 squares**, so \$R = \$ **98.66 mΩ**. The drop is $IR$ = **0.1973 V** and the power $I^2R$ = **0.3946 W**.
 
 **Sanity check.** Almost 0.2 V lost on a 1 V rail would be unacceptable, which is why power is carried on wide planes, not traces; and 0.4 W in a thin trace heats it noticeably, which is what board current-capacity tables guard against.
 

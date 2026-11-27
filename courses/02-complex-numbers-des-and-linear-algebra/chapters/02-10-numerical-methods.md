@@ -241,9 +241,9 @@ Each pass multiplies the error by roughly $\kappa\,u_{\text{low}}$, so refinemen
 
 (a) Neither 0.1, 0.2 nor 0.3 is exactly representable. The computed result is **5.551×10⁻¹⁷**, not 0, which is $2^{-54}$: one **ulp** (unit in the last place, the spacing between adjacent doubles) at the scale of 0.3. Never test floating-point results for exact equality; compare with a tolerance.
 
-(b) $\cos(10^{-8}) = 1 - 5\times10^{-17} + \dots$, which rounds to exactly 1 because the gap below 1 is $1.1\times10^{-16}$. The direct formula therefore returns **0**: 100% error. The identity gives $2\sin^2(5\times10^{-9}) = $ **5.000×10⁻¹⁷**, correct to full precision, because it contains no subtraction of nearly equal numbers.
+(b) $\cos(10^{-8}) = 1 - 5\times10^{-17} + \dots$, which rounds to exactly 1 because the gap below 1 is $1.1\times10^{-16}$. The direct formula therefore returns **0**: 100% error. The identity gives \$2\sin^2(5\times10^{-9}) = \$ **5.000×10⁻¹⁷**, correct to full precision, because it contains no subtraction of nearly equal numbers.
 
-(c) Here $\sqrt{b^2 - 4ac} = \sqrt{10^{16} - 4}$ is within one ulp of $10^8$. The textbook formula $(-b + \sqrt{b^2 - 4ac})/2a$ subtracts two numbers that agree in about 16 digits, and returns **−7.451×10⁻⁹**, a 25% error. The stable route computes the large root without cancellation, $x_1 = (-b - \sqrt{b^2 - 4ac})/2a \approx -10^8$, then uses the product of the roots, $x_1x_2 = c/a$: $x_2 = c/(ax_1) = $ **−1.000×10⁻⁸**, correct to full precision.
+(c) Here $\sqrt{b^2 - 4ac} = \sqrt{10^{16} - 4}$ is within one ulp of $10^8$. The textbook formula $(-b + \sqrt{b^2 - 4ac})/2a$ subtracts two numbers that agree in about 16 digits, and returns **−7.451×10⁻⁹**, a 25% error. The stable route computes the large root without cancellation, $x_1 = (-b - \sqrt{b^2 - 4ac})/2a \approx -10^8$, then uses the product of the roots, $x_1x_2 = c/a$: \$x_2 = c/(ax_1) = \$ **−1.000×10⁻⁸**, correct to full precision.
 
 **Check.** For (c), $x_2 \approx -c/b = -10^{-8}$ when $b^2 \gg 4ac$ ✓, and the product $x_1x_2 = 1 = c/a$ ✓.
 
@@ -263,13 +263,13 @@ $$
 f(v) = \frac{5 - v}{R} - I_S\big(e^{v/V_T} - 1\big) = 0, \qquad f'(v) = -\frac1R - \frac{I_S}{V_T}e^{v/V_T} .
 $$
 
-*From $v_0 = 0.7$ V:* the iterates are 0.69378, 0.69290, 0.69289 V. The errors are $7.11\times10^{-3}$, $8.90\times10^{-4}$, $1.51\times10^{-5}$, then $4.35\times10^{-9}$ V, roughly squaring each time. The root is $v^* = $ **0.6929 V**, and Newton reaches it to machine precision in **5** iterations. The current is $(5 - 0.6929)/1\text{ kΩ} = $ **4.307 mA**.
+*From $v_0 = 0.7$ V:* the iterates are 0.69378, 0.69290, 0.69289 V. The errors are $7.11\times10^{-3}$, $8.90\times10^{-4}$, $1.51\times10^{-5}$, then $4.35\times10^{-9}$ V, roughly squaring each time. The root is \$v^* = \$ **0.6929 V**, and Newton reaches it to machine precision in **5** iterations. The current is \$(5 - 0.6929)/1\text{ kΩ} = \$ **4.307 mA**.
 
 *From $v_0 = 0.6$ V:* at 0.6 V the diode carries only 0.12 mA, while the resistor supplies 4.4 mA. The tangent is fairly flat, so the first step jumps to **1.366 V**, where $e^{v/V_T}$ is about $10^{23}$. From there each step can only reduce $v$ by about $V_T$, because $f \approx -I_Se^{v/V_T}$ and $f' \approx f/V_T$. Newton crawls down in 26 mV steps and needs **33** iterations. From $v_0 = 0$, the first step lands at 5 V, and it takes 173 iterations. In a real simulator such a step would overflow the exponential or exceed the iteration limit.
 
-*With limiting:* ngspice's rule caps a junction-voltage step above $V_{crit} = V_T\ln\big(V_T/(\sqrt2I_S)\big) = $ **0.7303 V** to a logarithmic one. From 0.6 V the iterates become 0.7376, 0.7163, 0.7009, 0.6940, … V, converging in **8** iterations; from 0 V, in 9. Under SPICE's looser stopping test the counts are **3** from 0.7 V, and **30** (plain) or **6** (limited) from 0.6 V. With classic SPICE3 limiting, $v_{old} + V_T\ln(1 + a)$, the first limited step from 0.6 V lands at **0.6885 V** instead, and convergence to $10^{-12}$ V takes **6** iterations: the limiting rule changes the path, not the answer.
+*With limiting:* ngspice's rule caps a junction-voltage step above \$V_{crit} = V_T\ln\big(V_T/(\sqrt2I_S)\big) = \$ **0.7303 V** to a logarithmic one. From 0.6 V the iterates become 0.7376, 0.7163, 0.7009, 0.6940, … V, converging in **8** iterations; from 0 V, in 9. Under SPICE's looser stopping test the counts are **3** from 0.7 V, and **30** (plain) or **6** (limited) from 0.6 V. With classic SPICE3 limiting, $v_{old} + V_T\ln(1 + a)$, the first limited step from 0.6 V lands at **0.6885 V** instead, and convergence to $10^{-12}$ V takes **6** iterations: the limiting rule changes the path, not the answer.
 
-**Checks.** At the root, the diode current $10^{-14}e^{0.6929/0.02586} = 4.307$ mA matches the resistor current ✓. The diode's small-signal conductance there is $I/V_T = $ **166.5 mS** (a resistance of about 6 Ω), much larger than the resistor's 1 mS. That is why the error constant $f''/2f'$ is large far from the root and small near it.
+**Checks.** At the root, the diode current $10^{-14}e^{0.6929/0.02586} = 4.307$ mA matches the resistor current ✓. The diode's small-signal conductance there is \$I/V_T = \$ **166.5 mS** (a resistance of about 6 Ω), much larger than the resistor's 1 mS. That is why the error constant $f''/2f'$ is large far from the root and small near it.
 
 ![Error versus iteration on a log scale for three runs: plain Newton from 0.7 V plunges to machine precision in five steps; plain Newton from 0.6 V first overshoots to about 0.67 V of error, then crawls down by about 26 mV per iteration for some 25 iterations before plunging; Newton with junction limiting from 0.6 V reaches machine precision in eight steps.](../../../assets/figures/02-10/newton-convergence.svg)
 
@@ -279,7 +279,7 @@ $$
 
 **Setup.** Repeat the first Newton step of Example 02-10.2 from $v_0 = 0.7$ V, but in SPICE's way. Replace the diode with its companion model, stamp it, solve the resulting linear circuit, and confirm the result equals Newton's $v_1$.
 
-**Solution.** At $v_0 = 0.7$ V, the diode current is $i_0 = I_S(e^{0.7/V_T} - 1) = $ **5.670 mA**, and its slope is $G_0 = I_Se^{0.7/V_T}/V_T = $ **0.2192 S**. The tangent line $i \approx i_0 + G_0(v - v_0) = G_0v + I_{eq}$ has $I_{eq} = i_0 - G_0v_0 = $ **−0.1478 A**. So the companion model is a 0.2192 S conductance in parallel with a current source, both from the node to ground.
+**Solution.** At $v_0 = 0.7$ V, the diode current is \$i_0 = I_S(e^{0.7/V_T} - 1) = \$ **5.670 mA**, and its slope is \$G_0 = I_Se^{0.7/V_T}/V_T = \$ **0.2192 S**. The tangent line $i \approx i_0 + G_0(v - v_0) = G_0v + I_{eq}$ has \$I_{eq} = i_0 - G_0v_0 = \$ **−0.1478 A**. So the companion model is a 0.2192 S conductance in parallel with a current source, both from the node to ground.
 
 KCL at the node, with the source and resistor stamped as usual:
 
@@ -319,9 +319,9 @@ Halving $h$ divides the error by about $2^p$: 2, 4 and 16. That is the operation
 
 *Forward Euler* is stable only if $h \le 2/\lvert\lambda_f\rvert = $ **2 µs**, even though the fast mode has vanished within a few microseconds. Covering 5 ms needs at least **2500** steps.
 
-*Backward Euler* at $h = 50$ µs takes **100** steps and is stable. Its factor for the fast mode is $1/(1 + 50) = $ **0.01961**: the fast mode is crushed in one step, as it should be. For the slow mode it gives $1/(1 + 0.05) = $ **0.9524**, against the exact $e^{-0.05} = 0.9512$.
+*Backward Euler* at $h = 50$ µs takes **100** steps and is stable. Its factor for the fast mode is \$1/(1 + 50) = \$ **0.01961**: the fast mode is crushed in one step, as it should be. For the slow mode it gives \$1/(1 + 0.05) = \$ **0.9524**, against the exact $e^{-0.05} = 0.9512$.
 
-*Trapezoidal* at the same step gives $(1 - 0.025)/(1 + 0.025) = $ **0.9512** for the slow mode, accurate to better than $10^{-5}$ (second order). But for the fast mode, $(1 - 25)/(1 + 25) = $ **−0.9231**. Any fast-mode content flips sign every step and decays only slowly: trapezoidal ringing. It is a numerical artifact, not circuit behavior.
+*Trapezoidal* at the same step gives \$(1 - 0.025)/(1 + 0.025) = \$ **0.9512** for the slow mode, accurate to better than $10^{-5}$ (second order). But for the fast mode, \$(1 - 25)/(1 + 25) = \$ **−0.9231**. Any fast-mode content flips sign every step and decays only slowly: trapezoidal ringing. It is a numerical artifact, not circuit behavior.
 
 **Lesson.** Implicit methods let the step follow the accuracy needs of the slow dynamics (here 25 times fewer steps than explicit Euler), at the cost of a linear solve per step. Each method's handling of the dead fast modes is a modeling choice that the engineer should know about.
 
@@ -335,7 +335,7 @@ $$
 
 Find the condition number. Then perturb $b_2$ by $10^{-4}$, a 0.0035% change in $\mathbf{b}$, and find the new solution. How many digits can a double-precision solve be trusted to?
 
-**Solution.** $\mathbf{A}$ is symmetric, so its singular values are the magnitudes of its eigenvalues, the roots of $\lambda^2 - 2.0001\lambda + 0.0001 = 0$: about 2.00005 and $5.0\times10^{-5}$. So $\kappa = $ **4.000×10⁴**. With $b_2 = 2.0002$, the solution becomes $\mathbf{x} = (0, 2)$: a **100%** change in $\mathbf{x}$ from a 0.0035% change in $\mathbf{b}$. That is within the bound $\kappa\times3.5\times10^{-5} = 1.41$ (141%). In double precision, up to $\log_{10}\kappa = $ **4.6** of the 16 digits may be lost, leaving about 11 trustworthy digits. No algorithm can do better, because the sensitivity belongs to the problem: the two equations are nearly the same line.
+**Solution.** $\mathbf{A}$ is symmetric, so its singular values are the magnitudes of its eigenvalues, the roots of $\lambda^2 - 2.0001\lambda + 0.0001 = 0$: about 2.00005 and $5.0\times10^{-5}$. So \$\kappa = \$ **4.000×10⁴**. With $b_2 = 2.0002$, the solution becomes $\mathbf{x} = (0, 2)$: a **100%** change in $\mathbf{x}$ from a 0.0035% change in $\mathbf{b}$. That is within the bound $\kappa\times3.5\times10^{-5} = 1.41$ (141%). In double precision, up to \$\log_{10}\kappa = \$ **4.6** of the 16 digits may be lost, leaving about 11 trustworthy digits. No algorithm can do better, because the sensitivity belongs to the problem: the two equations are nearly the same line.
 
 **Interpretation.** If the 0.0001 coefficient came from measured data with 0.01% uncertainty, the solution would be meaningless. The fix is to change the problem: make independent measurements (better conditioning), or solve for the well-determined combination $x_1 + x_2$ only. Running a more precise solver would not help.
 

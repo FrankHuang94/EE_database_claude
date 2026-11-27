@@ -165,9 +165,9 @@ i_1 = \frac{20\times8 - (-4)(-8)}{32} = \frac{128}{32} = \mathbf{4\ A}, \qquad
 i_2 = \frac{6\times(-8) - 20\times(-4)}{32} = \frac{32}{32} = \mathbf{1\ A}.
 $$
 
-The load carries $i_1 - i_2 = $ **3 A** downward. The battery carries $i_2$ = **1 A** into its + terminal: it is being charged.
+The load carries \$i_1 - i_2 = \$ **3 A** downward. The battery carries $i_2$ = **1 A** into its + terminal: it is being charged.
 
-**Power balance.** The charger delivers $20\times4 = $ **80 W**. The battery absorbs $8\times1 = $ **8 W**. Resistors: $2\times4^2 + 4\times3^2 + 4\times1^2 = 32 + 36 + 4 = $ **72 W** $= 80 - 8$ ✓.
+**Power balance.** The charger delivers \$20\times4 = \$ **80 W**. The battery absorbs \$8\times1 = \$ **8 W**. Resistors: \$2\times4^2 + 4\times3^2 + 4\times1^2 = 32 + 36 + 4 = \$ **72 W** $= 80 - 8$ ✓.
 
 **Units check.** Ω × A = V on both sides of each row ✓.
 
@@ -187,7 +187,7 @@ $$
 \Delta = 50(60\times120 - 30^2) + 10(-10\times120 - 30\times40) - 40(10\times30 + 60\times40) = 315{,}000 - 24{,}000 - 108{,}000 = 183{,}000\ \Omega^3 .
 $$
 
-Only the first entry of $\mathbf{v}$ is nonzero, so each Cramer numerator is 10 V times a cofactor of the first row: $i_1 = 10\times6300/183{,}000 = $ **0.3443 A**, $i_2 = 10\times2400/183{,}000 = $ **0.1311 A** and $i_3 = 10\times2700/183{,}000 = $ **0.1475 A**. The bridge resistor carries $i_3 - i_2 = $ **16.39 mA** from c to d, and the source current is $i_1$: both exactly as in 06-03 and 06-04.
+Only the first entry of $\mathbf{v}$ is nonzero, so each Cramer numerator is 10 V times a cofactor of the first row: \$i_1 = 10\times6300/183{,}000 = \$ **0.3443 A**, \$i_2 = 10\times2400/183{,}000 = \$ **0.1311 A** and \$i_3 = 10\times2700/183{,}000 = \$ **0.1475 A**. The bridge resistor carries \$i_3 - i_2 = \$ **16.39 mA** from c to d, and the source current is $i_1$: both exactly as in 06-03 and 06-04.
 
 **Units check.** Ω × A = V ✓.
 
@@ -207,11 +207,11 @@ $$
 36 = 4i_1 + 2i_2 + 6i_2 = 4i_1 + 8i_2 .
 $$
 
-Substituting $i_2 = i_1 + 3$: $36 = 12i_1 + 24$, so $i_1 = $ **1 A** and $i_2 = $ **4 A**.
+Substituting $i_2 = i_1 + 3$: $36 = 12i_1 + 24$, so \$i_1 = \$ **1 A** and \$i_2 = \$ **4 A**.
 
-The current source's voltage from KVL around the left mesh alone, top relative to bottom: up through the 36 V source, minus the drop $4\times1$ in $R_1$: **32 V** (check with the right mesh: $2\times4 + 6\times4 = 32$ V ✓). It pushes 3 A out of its top terminal at 32 V, so it delivers $32\times3 = $ **96 W**; the 36 V source delivers $36\times1 = $ **36 W**.
+The current source's voltage from KVL around the left mesh alone, top relative to bottom: up through the 36 V source, minus the drop $4\times1$ in $R_1$: **32 V** (check with the right mesh: $2\times4 + 6\times4 = 32$ V ✓). It pushes 3 A out of its top terminal at 32 V, so it delivers \$32\times3 = \$ **96 W**; the 36 V source delivers \$36\times1 = \$ **36 W**.
 
-**Power balance.** $4\times1^2 + 2\times4^2 + 6\times4^2 = 4 + 32 + 96 = $ **132 W** $= 96 + 36$ ✓.
+**Power balance.** \$4\times1^2 + 2\times4^2 + 6\times4^2 = 4 + 32 + 96 = \$ **132 W** $= 96 + 36$ ✓.
 
 **Units check.** Ω × A = V; V × A = W ✓.
 
@@ -221,7 +221,7 @@ The current source's voltage from KVL around the left mesh alone, top relative t
 
 **Setup.** (a) For the circuit of Figure 1, count the unknowns of each method and solve it with the cheaper one. (b) Build the dual of the circuit and show that its node voltages reproduce the mesh currents.
 
-**Solution.** (a) The circuit has 4 nodes (bottom, top left, the junction above $R_2$, top right) and 5 branches, so 2 meshes but $(4 - 1) - 2 = $ **1** unknown node voltage once the two voltage sources, both with − terminals on the bottom node, fix the top-left node at 20 V and the top-right node at 8 V. With the bottom node as reference, KCL at the junction $v_m$:
+**Solution.** (a) The circuit has 4 nodes (bottom, top left, the junction above $R_2$, top right) and 5 branches, so 2 meshes but \$(4 - 1) - 2 = \$ **1** unknown node voltage once the two voltage sources, both with − terminals on the bottom node, fix the top-left node at 20 V and the top-right node at 8 V. With the bottom node as reference, KCL at the junction $v_m$:
 
 $$
 \frac{v_m - 20}{2} + \frac{v_m}{4} + \frac{v_m - 8}{4} = 0 \;\Rightarrow\; 4v_m = 48 \;\Rightarrow\; v_m = \mathbf{12\ V},
@@ -253,7 +253,7 @@ $$
 i_1 = \frac{5\times1002.54}{2530.08} = \mathbf{1.981\ A}, \qquad i_2 = \frac{5\times2.520}{2530.08} = \mathbf{4.980\ mA}.
 $$
 
-The shared return carries $i_1$, the total current, so G sits at $v_G = R_g\,i_1 = 0.010\times1.981 = $ **19.81 mV** above the supply's −. The sensor's output is produced relative to G, but the ADC measures it relative to the supply's −, so every reading is offset by 19.81 mV. One LSB is $5/4096 = $ **1.221 mV**, so the error is **16.2 LSB**, and it moves whenever the motor current changes.
+The shared return carries $i_1$, the total current, so G sits at \$v_G = R_g\,i_1 = 0.010\times1.981 = \$ **19.81 mV** above the supply's −. The sensor's output is produced relative to G, but the ADC measures it relative to the supply's −, so every reading is offset by 19.81 mV. One LSB is \$5/4096 = \$ **1.221 mV**, so the error is **16.2 LSB**, and it moves whenever the motor current changes.
 
 With a star ground, the sensor's return carries only its own 5.00 mA, so its ground offset is $0.010\times0.00500 = $ **50.0 µV**: about **396** times smaller and now independent of the motor.
 

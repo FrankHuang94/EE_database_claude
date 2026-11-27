@@ -313,7 +313,7 @@ $$
 
 *Average current:* $5(0.1786) + 0.5(0.1071) + 0.002(0.7143) = $ **0.9479 mA**. A 100 mAh battery lasts $100/0.9479 = $ **105.5 h** (4.4 days).
 
-*Convergence:* the other two eigenvalues follow from the trace and determinant, without solving a cubic. Their sum is $\operatorname{tr}\mathbf{P} - 1 = 2.68 - 1 = 1.68$, and their product is $\det\mathbf{P}/1 = 0.6968$. So they solve $\lambda^2 - 1.68\lambda + 0.6968 = 0$: λ = **0.9338** and **0.7462**. The memory of the start decays like $0.9338^k$, which falls to 1% after $k = \ln0.01/\ln0.9338 = $ **67.2** steps, about 67 ms.
+*Convergence:* the other two eigenvalues follow from the trace and determinant, without solving a cubic. Their sum is $\operatorname{tr}\mathbf{P} - 1 = 2.68 - 1 = 1.68$, and their product is $\det\mathbf{P}/1 = 0.6968$. So they solve $\lambda^2 - 1.68\lambda + 0.6968 = 0$: λ = **0.9338** and **0.7462**. The memory of the start decays like $0.9338^k$, which falls to 1% after \$k = \ln0.01/\ln0.9338 = \$ **67.2** steps, about 67 ms.
 
 **Checks.** Each column of $\mathbf{P}$ sums to 1 ✓. $\mathbf{P}\boldsymbol{\pi}$, first entry: $0.90(5/28) + 0.10(3/28) + 0.01(20/28) = (4.5 + 0.3 + 0.2)/28 = 5/28$ ✓. *Sanity:* the device sleeps 71% of the time, but the 18% spent active draws 94% of the charge ($5\times0.1786/0.9479$). Cutting active time pays far more than improving sleep current, the usual conclusion in low-power design. This is a model, not a measurement: real firmware has deterministic schedules too, and a Markov model captures only the statistics of event-driven wake-ups.
 
@@ -329,7 +329,7 @@ $$
 
 the poles of 02-05 ✓: decay rate 2500 s⁻¹, damped frequency 9682 rad/s.
 
-(b) The eigenvalues of $\mathbf{R}_{30°}$ are $e^{\pm j30°}$, so $\mathbf{A}$ has $0.95e^{\pm j30°} = $ **0.8227** $\pm j$**0.475**. Each step rotates by 30°, so one oscillation takes $360/30 = $ **12** steps. Each step scales by 0.95, so after one oscillation the amplitude is $0.95^{12} = $ **0.5404** of its start. The magnitude $\lvert\lambda\rvert = 0.95 < 1$: stable, a decaying spiral.
+(b) The eigenvalues of $\mathbf{R}_{30°}$ are $e^{\pm j30°}$, so $\mathbf{A}$ has \$0.95e^{\pm j30°} = \$ **0.8227** $\pm j$**0.475**. Each step rotates by 30°, so one oscillation takes \$360/30 = \$ **12** steps. Each step scales by 0.95, so after one oscillation the amplitude is \$0.95^{12} = \$ **0.5404** of its start. The magnitude $\lvert\lambda\rvert = 0.95 < 1$: stable, a decaying spiral.
 
 **Check.** $\lvert0.8227 + j0.475\rvert = \sqrt{0.6769 + 0.2256} = 0.95$ ✓. For (a), the sum of the eigenvalues is $-5000$ = trace ✓ and the product is $2500^2 + 9682^2 = 10^8$ = determinant ✓.
 
@@ -379,12 +379,12 @@ That matches Example 02-07.2 ✓. The condition number is $\lambda_{\max}/\lambd
 
 **Solution.** The uncoupled frequency is $f_0 = 1/(2\pi\sqrt{LC}) = 1/(2\pi\sqrt{10^{-15}}) = $ **5.033 MHz**. From §3.8:
 
-- **in-phase mode** $(1, 1)$: eigenvalue $C$ of the capacitance matrix, so $f_1 = f_0 = $ **5.033 MHz**;
-- **out-of-phase mode** $(1, -1)$: eigenvalue $C + 2C_c = 1.2$ nF, so $f_2 = 1/(2\pi\sqrt{L\cdot1.2\text{ nF}}) = $ **4.594 MHz**.
+- **in-phase mode** $(1, 1)$: eigenvalue $C$ of the capacitance matrix, so \$f_1 = f_0 = \$ **5.033 MHz**;
+- **out-of-phase mode** $(1, -1)$: eigenvalue $C + 2C_c = 1.2$ nF, so \$f_2 = 1/(2\pi\sqrt{L\cdot1.2\text{ nF}}) = \$ **4.594 MHz**.
 
 The split is $f_1 - f_2 = $ **438.5 kHz**, and the ratio is $f_1/f_2 = \sqrt{1 + 2C_c/C} = \sqrt{1.2} = $ **1.095**.
 
-If only resonator 1 starts ringing, its initial state $(1, 0)$ is half the sum of the two modes, $\tfrac12(1, 1) + \tfrac12(1, -1)$. The modes oscillate at slightly different frequencies, so they drift in and out of phase. Node 1 sees $\tfrac12(\cos\omega_1t + \cos\omega_2t)$ and node 2 sees $\tfrac12(\cos\omega_1t - \cos\omega_2t)$. The energy therefore sloshes from resonator 1 to resonator 2 and back, with a beat at the difference frequency, 438.5 kHz: essentially complete transfer every $1/(2\times438.5\text{ kHz}) = $ **1.140 µs** (exact only in the limit of weak coupling: here **0.21%** of the initial energy remains in resonator 1's own capacitor and inductor at that instant, starting from $\mathbf{v}(0) = (1, 0)$ with both inductor currents zero). (The beat identity is that of 02-04.)
+If only resonator 1 starts ringing, its initial state $(1, 0)$ is half the sum of the two modes, $\tfrac12(1, 1) + \tfrac12(1, -1)$. The modes oscillate at slightly different frequencies, so they drift in and out of phase. Node 1 sees $\tfrac12(\cos\omega_1t + \cos\omega_2t)$ and node 2 sees $\tfrac12(\cos\omega_1t - \cos\omega_2t)$. The energy therefore sloshes from resonator 1 to resonator 2 and back, with a beat at the difference frequency, 438.5 kHz: essentially complete transfer every \$1/(2\times438.5\text{ kHz}) = \$ **1.140 µs** (exact only in the limit of weak coupling: here **0.21%** of the initial energy remains in resonator 1's own capacitor and inductor at that instant, starting from $\mathbf{v}(0) = (1, 0)$ with both inductor currents zero). (The beat identity is that of 02-04.)
 
 **Checks.** Units: $1/\sqrt{\text{H}\cdot\text{F}} = 1/\sqrt{\text{s}^2}$ = rad/s ✓. Limits: with $C_c \to 0$ the modes merge at $f_0$; with large $C_c$ the out-of-phase mode drops further. The in-phase frequency does not depend on $C_c$ at all, because the coupling capacitor sees no voltage in that mode. The lab confirms both peaks in an ngspice AC sweep, and the 1.140 µs transfer in a transient run ([coupled_lc_beat.cir](../labs/02-08-lab/coupled_lc_beat.cir)).
 
@@ -392,15 +392,15 @@ If only resonator 1 starts ringing, its initial state $(1, 0)$ is half the sum o
 
 **Setup.** For $\mathbf{H} = \begin{bmatrix} 2 & 2 \\ -1 & 1\end{bmatrix}$, read as a 2×2 MIMO channel or simply as a matrix, find the SVD, the best rank-1 approximation and its error, and the condition number. Interpret the singular values as stream gains.
 
-**Solution.** $\mathbf{H}^\mathsf{T}\mathbf{H} = \begin{bmatrix} 5 & 3 \\ 3 & 5\end{bmatrix}$, with eigenvalues $5 \pm 3$, that is 8 and 2, and eigenvectors $\mathbf{v}_1 = \tfrac{1}{\sqrt2}(1, 1)$ and $\mathbf{v}_2 = \tfrac{1}{\sqrt2}(1, -1)$. So $\sigma_1 = \sqrt8 = $ **2.828** and $\sigma_2 = \sqrt2 = $ **1.414**. Then
+**Solution.** $\mathbf{H}^\mathsf{T}\mathbf{H} = \begin{bmatrix} 5 & 3 \\ 3 & 5\end{bmatrix}$, with eigenvalues $5 \pm 3$, that is 8 and 2, and eigenvectors $\mathbf{v}_1 = \tfrac{1}{\sqrt2}(1, 1)$ and $\mathbf{v}_2 = \tfrac{1}{\sqrt2}(1, -1)$. So \$\sigma_1 = \sqrt8 = \$ **2.828** and \$\sigma_2 = \sqrt2 = \$ **1.414**. Then
 
 $$
 \mathbf{u}_1 = \frac{\mathbf{H}\mathbf{v}_1}{\sigma_1} = \frac{(4, 0)/\sqrt2}{2\sqrt2} = (1, 0), \qquad \mathbf{u}_2 = \frac{\mathbf{H}\mathbf{v}_2}{\sigma_2} = \frac{(0, -2)/\sqrt2}{\sqrt2} = (0, -1) .
 $$
 
-*Best rank-1 approximation:* $\mathbf{H}_1 = \sigma_1\mathbf{u}_1\mathbf{v}_1^\mathsf{T} = 2\sqrt2\cdot(1, 0)\tfrac{1}{\sqrt2}(1, 1)^\mathsf{T} = \begin{bmatrix} 2 & 2 \\ 0 & 0\end{bmatrix}$. Its error $\mathbf{H} - \mathbf{H}_1 = \begin{bmatrix} 0 & 0 \\ -1 & 1\end{bmatrix}$ has 2-norm $\sigma_2 = $ **1.414**, as Eckart–Young promises. The condition number is $\sigma_1/\sigma_2 = $ **2**.
+*Best rank-1 approximation:* $\mathbf{H}_1 = \sigma_1\mathbf{u}_1\mathbf{v}_1^\mathsf{T} = 2\sqrt2\cdot(1, 0)\tfrac{1}{\sqrt2}(1, 1)^\mathsf{T} = \begin{bmatrix} 2 & 2 \\ 0 & 0\end{bmatrix}$. Its error $\mathbf{H} - \mathbf{H}_1 = \begin{bmatrix} 0 & 0 \\ -1 & 1\end{bmatrix}$ has 2-norm \$\sigma_2 = \$ **1.414**, as Eckart–Young promises. The condition number is \$\sigma_1/\sigma_2 = \$ **2**.
 
-*As a channel:* precoding with $\mathbf{V}$ and receiving with $\mathbf{U}^\mathsf{T}$ creates two independent streams, with power gains $\sigma_1^2 = 8$ and $\sigma_2^2 = 2$. The second stream is $10\log_{10}(8/2) = $ **6.021 dB** weaker. If $\sigma_2$ were near zero (a rank-1 channel, as in a line-of-sight link with closely spaced, co-polarized antennas; dual-polarized antennas often keep rank 2 even in line of sight), the second stream would carry nothing useful.
+*As a channel:* precoding with $\mathbf{V}$ and receiving with $\mathbf{U}^\mathsf{T}$ creates two independent streams, with power gains $\sigma_1^2 = 8$ and $\sigma_2^2 = 2$. The second stream is \$10\log_{10}(8/2) = \$ **6.021 dB** weaker. If $\sigma_2$ were near zero (a rank-1 channel, as in a line-of-sight link with closely spaced, co-polarized antennas; dual-polarized antennas often keep rank 2 even in line of sight), the second stream would carry nothing useful.
 
 **Checks.** $\sigma_1\sigma_2 = 4 = \lvert\det\mathbf{H}\rvert$ ✓ (a square matrix's singular values multiply to $\lvert\det\rvert$). $\sigma_1^2 + \sigma_2^2 = 10$ = sum of squared entries $4 + 4 + 1 + 1$ ✓ (the Frobenius norm). $\mathbf{u}_1\cdot\mathbf{u}_2 = 0$ ✓.
 

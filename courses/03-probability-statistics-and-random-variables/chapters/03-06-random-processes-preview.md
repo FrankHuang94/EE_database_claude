@@ -234,11 +234,11 @@ The spread grows like $\sqrt t$ without bound. A random walk is not stationary, 
 
 **Setup.** $X(t) = A\cos(2\pi f_0t + \Theta)$ with $A = 2$ V, $f_0 = 1$ MHz and Θ uniform on $[0, 2\pi)$. (a) Find the mean, the autocorrelation and the average power. (b) Evaluate $R_X(\tau)$ at τ = 250 ns and at τ = 1/6 µs. (c) Show that a time average of $x^2$ over one period of any single sample function equals the ensemble power.
 
-**Solution.** (a) From §3.2, $\mu_X = 0$ and $R_X(\tau) = (A^2/2)\cos(2\pi f_0\tau)$, so the power is $R_X(0) = $ **2 V²** (into 1 Ω).
+**Solution.** (a) From §3.2, $\mu_X = 0$ and $R_X(\tau) = (A^2/2)\cos(2\pi f_0\tau)$, so the power is \$R_X(0) = \$ **2 V²** (into 1 Ω).
 
-(b) At 250 ns, $2\pi f_0\tau = \pi/2$ and $R_X = $ **0**: samples a quarter period apart are uncorrelated (but not independent: one determines the other up to sign). At 1/6 µs, $2\pi f_0\tau = \pi/3$ and $R_X = 2\cos(\pi/3) = $ **1 V²**.
+(b) At 250 ns, $2\pi f_0\tau = \pi/2$ and \$R_X = \$ **0**: samples a quarter period apart are uncorrelated (but not independent: one determines the other up to sign). At 1/6 µs, $2\pi f_0\tau = \pi/3$ and \$R_X = 2\cos(\pi/3) = \$ **1 V²**.
 
-(c) $\frac{1}{T_0}\int_0^{T_0}A^2\cos^2(2\pi f_0t + \theta)\,dt = A^2/2$ for every phase θ, the same as the ensemble power: the process is ergodic in power. Its spectrum is two lines of $A^2/4 = $ **1 V²** each at ±1 MHz.
+(c) $\frac{1}{T_0}\int_0^{T_0}A^2\cos^2(2\pi f_0t + \theta)\,dt = A^2/2$ for every phase θ, the same as the ensemble power: the process is ergodic in power. Its spectrum is two lines of \$A^2/4 = \$ **1 V²** each at ±1 MHz.
 
 ### Example 03-06.2 — A non-ergodic population of offsets (tier B)
 
@@ -268,7 +268,7 @@ The spread grows like $\sqrt t$ without bound. A random walk is not stationary, 
 
 (b) $\sqrt{4kTR} = $ **12.87 nV/√Hz**, and the total is $\sqrt{4kTR\,B_N} = \sqrt{kT/C} = $ **20.35 µV** rms. A 1 MΩ resistor would raise the density tenfold and shrink the bandwidth a hundredfold, leaving the total unchanged.
 
-(c) $\tau_c = RC = $ **100 ns**, so samples 50 ns apart have correlation $e^{-0.5} = $ **0.6065**. A sampler that takes successive samples faster than about $RC$ sees strongly correlated noise.
+(c) \$\tau_c = RC = \$ **100 ns**, so samples 50 ns apart have correlation \$e^{-0.5} = \$ **0.6065**. A sampler that takes successive samples faster than about $RC$ sees strongly correlated noise.
 
 **Simulation.** The netlist [labs/03-06-lab/rc_noise.cir](../labs/03-06-lab/rc_noise.cir) runs an ngspice noise analysis: the 10 kΩ output density at 1 kHz is 12.87 nV/√Hz, and the integrated noise is 20.35 µV for both 10 kΩ and 1 MΩ.
 
@@ -278,7 +278,7 @@ The spread grows like $\sqrt t$ without bound. A random walk is not stationary, 
 
 **Solution.** (a) $\sqrt{2qI} = \sqrt{2\times1.602\times10^{-19}\times10^{-3}} = $ **17.90 pA/√Hz**; over 1 GHz, **0.5661 µA** rms. The ratio is $10^{-3}/0.5661\times10^{-6} = $ **1767**, or **64.94 dB**.
 
-(b) $\sqrt{4kT/R} = $ **4.070 pA/√Hz**. Setting $2qI = 4kT/R$ gives $I = 2kT/(qR) = 2V_T/R = $ **51.70 µA**. Below about 52 µA the 1 kΩ resistor's thermal noise dominates; above it, shot noise does. The crossover $2V_T/R$ falls as $R$ rises: with a 1 MΩ transimpedance resistor it is only **51.70 nA**. That is why photodiode receivers, which use large resistors for gain, are often shot-noise limited even at nanoamp currents.
+(b) \$\sqrt{4kT/R} = \$ **4.070 pA/√Hz**. Setting $2qI = 4kT/R$ gives \$I = 2kT/(qR) = 2V_T/R = \$ **51.70 µA**. Below about 52 µA the 1 kΩ resistor's thermal noise dominates; above it, shot noise does. The crossover $2V_T/R$ falls as $R$ rises: with a 1 MΩ transimpedance resistor it is only **51.70 nA**. That is why photodiode receivers, which use large resistors for gain, are often shot-noise limited even at nanoamp currents.
 
 ### Example 03-06.6 — Averaging correlated noise: how many independent samples? (tier C)
 
@@ -300,7 +300,7 @@ so σ of the average is **44.70 µV** exactly and **44.72 µV** approximately.
 
 **Setup.** An amplifier has white noise $e_w = 10$ nV/√Hz with a 1/f corner at 100 Hz. (a) Find its rms noise in the 0.1–10 Hz band, and compare with the white part alone. (b) Extend the band down to 1 mHz (a measurement lasting about 1000 s). (c) How much does each decade below the corner contribute? (d) A chopper-stabilized ("zero-drift") amplifier has flat noise of 5.2 nV/√Hz. Find its 0.1–10 Hz noise.
 
-**Solution.** (a) $e^2 = (10^{-8})^2[100\ln100 + 9.9] = 4.704\times10^{-14}$ V², so **216.9 nV** rms. The white part alone would give $10\sqrt{9.9} = $ **31.46 nV**: flicker noise dominates by a factor of seven.
+**Solution.** (a) $e^2 = (10^{-8})^2[100\ln100 + 9.9] = 4.704\times10^{-14}$ V², so **216.9 nV** rms. The white part alone would give \$10\sqrt{9.9} = \$ **31.46 nV**: flicker noise dominates by a factor of seven.
 
 (b) Down to 1 mHz: $(10^{-8})^2[100\ln10^4 + 10]$ gives **305.1 nV** rms. Observing longer made the noise *larger*.
 

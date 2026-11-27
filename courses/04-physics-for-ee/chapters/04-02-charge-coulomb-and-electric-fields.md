@@ -46,7 +46,7 @@ Every electronic device moves electric charge, and every force that moves it beg
 
 ### 3.1 Electric charge
 
-Charge is measured in **coulombs** (C), one ampere flowing for one second. It comes in whole multiples of the elementary charge $e = 1.602\,176\,634\times10^{-19}$ C, exact by the SI definition: an electron carries $-e$ and a proton $+e$. One coulomb is therefore $1/e = $ **6.242×10¹⁸** elementary charges. Charge is **conserved**: in every process the total charge before equals the total after.
+Charge is measured in **coulombs** (C), one ampere flowing for one second. It comes in whole multiples of the elementary charge $e = 1.602\,176\,634\times10^{-19}$ C, exact by the SI definition: an electron carries $-e$ and a proton $+e$. One coulomb is therefore \$1/e = \$ **6.242×10¹⁸** elementary charges. Charge is **conserved**: in every process the total charge before equals the total after.
 
 **Conductors** (metals) have electrons free to move through the material; **insulators** (glass, oxides, plastics) hold their electrons bound to atoms; **semiconductors** sit in between, and their free charge can be controlled ([04-11](04-11-intro-solid-state-physics.md)). A conductor can be charged by **contact** (electrons flow onto or off it) or by **induction**: bring a charged object near, let the conductor's free charges rearrange, ground the far side, then remove the ground. Rubbing two insulators together transfers charge by contact electrification, the origin of most ESD.
 
@@ -164,7 +164,7 @@ An electron accelerated through 100 V reaches about $5.9\times10^6$ m/s, about 2
 
 **Solution.** (a) $1/1.602176634\times10^{-19} = $ **6.242×10¹⁸**.
 
-(b) $Q = CV = 10^{-12}$ C, or $10^{-12}/e = $ **6.242×10⁶** electrons: about six million.
+(b) $Q = CV = 10^{-12}$ C, or \$10^{-12}/e = \$ **6.242×10⁶** electrons: about six million.
 
 (c) $4.5\times3600 = $ **16,200 C**.
 
@@ -226,7 +226,7 @@ That is **1.271×10⁵ V/m**. The infinite-line formula gives **1.798×10⁵ V/m
 
 **Solution.** (a) $p = qd = $ **1×10⁻¹² C·m**.
 
-(b) Exactly, $E = k_eq[1/0.0995^2 - 1/0.1005^2] = $ **17.976 V/m**; the approximation gives $2k_ep/r^3 = $ **17.975 V/m**. The relative error is **5.000×10⁻⁵**. It matches the first correction term: the exact expression equals the approximation times $1/(1 - d^2/4r^2)^2 \approx 1 + d^2/(2r^2)$, and $d^2/(2r^2) = 5\times10^{-5}$ here.
+(b) Exactly, \$E = k_eq[1/0.0995^2 - 1/0.1005^2] = \$ **17.976 V/m**; the approximation gives \$2k_ep/r^3 = \$ **17.975 V/m**. The relative error is **5.000×10⁻⁵**. It matches the first correction term: the exact expression equals the approximation times $1/(1 - d^2/4r^2)^2 \approx 1 + d^2/(2r^2)$, and $d^2/(2r^2) = 5\times10^{-5}$ here.
 
 (c) $\tau_{\max} = pE = $ **1×10⁻⁷ N·m**; turning costs $2pE = $ **2×10⁻⁷ J**.
 
@@ -236,11 +236,11 @@ That is **1.271×10⁵ V/m**. The infinite-line formula gives **1.798×10⁵ V/m
 
 **Solution.** (a) $E = V/d = $ **10⁴ V/m**; $a = eE/m_e = 1.602\times10^{-15}/9.109\times10^{-31} = $ **1.759×10¹⁵ m/s²**.
 
-(b) $d = \tfrac12at^2$ gives $t = \sqrt{2d/a} = $ **3.372 ns**.
+(b) $d = \tfrac12at^2$ gives \$t = \sqrt{2d/a} = \$ **3.372 ns**.
 
 (c) $v = \sqrt{2eV/m_e} = $ **5.931×10⁶ m/s**; $K = eV = $ **1.602×10⁻¹⁷ J** = 100 eV.
 
-(d) $v/c = $ **0.01978**: about 2%, so the classical treatment is accurate (the relativistic correction to the speed is about $\tfrac38(v/c)^2$, 0.015%).
+(d) \$v/c = \$ **0.01978**: about 2%, so the classical treatment is accurate (the relativistic correction to the speed is about $\tfrac38(v/c)^2$, 0.015%).
 
 **Sanity check.** $v = at = 1.759\times10^{15}\times3.372\times10^{-9} = 5.93\times10^6$ m/s ✓.
 

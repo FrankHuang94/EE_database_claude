@@ -26,15 +26,15 @@ $$
 y(t) = 2 - 2\cos2t .
 $$
 
-The largest value is **4**, first at $2t = \pi$, $t = $ **1.571**. With no damping, ζ = 0 and the overshoot formula of 02-03 gives $e^{0} = 1$, that is, 100%: nothing removes the energy that carried the system past its new equilibrium, so it swings as far beyond as it started below.
+The largest value is **4**, first at $2t = \pi$, \$t = \$ **1.571**. With no damping, ζ = 0 and the overshoot formula of 02-03 gives $e^{0} = 1$, that is, 100%: nothing removes the energy that carried the system past its new equilibrium, so it swings as far beyond as it started below.
 
 ### Solution 02-04.3
 
-$p(s) = s^2 + 2s + 5$, and $p(-3) = 9 - 6 + 5 = 8 \ne 0$, so $y_p = 10e^{-3t}/8 = $ **1.25** $e^{-3t}$.
+$p(s) = s^2 + 2s + 5$, and $p(-3) = 9 - 6 + 5 = 8 \ne 0$, so \$y_p = 10e^{-3t}/8 = \$ **1.25** $e^{-3t}$.
 
 ### Solution 02-04.4
 
-$p(j) = (j)^2 + 2j + 5 = 4 + 2j$. The steady state is $\operatorname{Re}\big[e^{jt}/(4 + 2j)\big] = \frac{1}{\lvert4 + 2j\rvert}\cos\big(t - \angle(4 + 2j)\big)$: amplitude $1/\sqrt{20} = $ **0.2236**, phase $-\arctan(2/4) = $ **−26.57°**.
+$p(j) = (j)^2 + 2j + 5 = 4 + 2j$. The steady state is $\operatorname{Re}\big[e^{jt}/(4 + 2j)\big] = \frac{1}{\lvert4 + 2j\rvert}\cos\big(t - \angle(4 + 2j)\big)$: amplitude \$1/\sqrt{20} = \$ **0.2236**, phase \$-\arctan(2/4) = \$ **−26.57°**.
 
 ### Solution 02-04.5
 
@@ -44,7 +44,7 @@ $p(j) = (j)^2 + 2j + 5 = 4 + 2j$. The steady state is $\operatorname{Re}\big[e^{
 
 ### Solution 02-04.6
 
-$p(j) = -1 + 3j + 2 = 1 + 3j$, so $y_p = \operatorname{Re}\big[10e^{jt}/(1 + 3j)\big] = \operatorname{Re}\big[(1 - 3j)(\cos t + j\sin t)\big] = \cos t + 3\sin t$, with amplitude $\sqrt{10} = $ **3.162**. The total is $y = c_1e^{-t} + c_2e^{-2t} + \cos t + 3\sin t$. The initial conditions give $c_1 + c_2 + 1 = 0$ and $-c_1 - 2c_2 + 3 = 0$, so $c_2 = 4$ and $c_1 = -5$:
+$p(j) = -1 + 3j + 2 = 1 + 3j$, so $y_p = \operatorname{Re}\big[10e^{jt}/(1 + 3j)\big] = \operatorname{Re}\big[(1 - 3j)(\cos t + j\sin t)\big] = \cos t + 3\sin t$, with amplitude \$\sqrt{10} = \$ **3.162**. The total is $y = c_1e^{-t} + c_2e^{-2t} + \cos t + 3\sin t$. The initial conditions give $c_1 + c_2 + 1 = 0$ and $-c_1 - 2c_2 + 3 = 0$, so $c_2 = 4$ and $c_1 = -5$:
 
 $$
 y(t) = \underbrace{-5e^{-t} + 4e^{-2t}}_{\text{transient}} + \underbrace{\cos t + 3\sin t}_{\text{steady state}}, \qquad y(1) = 1.767 .
@@ -54,7 +54,7 @@ $$
 
 (a) $r_{peak} = \sqrt{1 - 2(0.01)} = $ **0.9899**, and the peak is $1/\big(0.2\sqrt{0.99}\big) = $ **5.025**, or **14.02 dB**.
 
-(b) At $r = 1$, $\lvert H\rvert = 1/(2\zeta) = Q = $ **5**: just below the peak, as expected for light damping.
+(b) At $r = 1$, \$\lvert H\rvert = 1/(2\zeta) = Q = \$ **5**: just below the peak, as expected for light damping.
 
 (c) $H(10) = 1/(1 - 100 + j2) $, with magnitude **0.01010**, or **−39.91 dB**, within 0.1 dB of the −40 dB asymptote.
 
@@ -62,7 +62,7 @@ $$
 
 (a) $\omega_0 = 1/\sqrt{10^{-3}\times10^{-8}} = $ **316.2 krad/s**, $f_0 = $ **50.33 kHz**, and $Q = \omega_0L/R = 316.2/10 = $ **31.62**.
 
-(b) Bandwidth $f_0/Q = $ **1.592 kHz**. From chapter §3.5, $f_{1,2} = f_0\big(\sqrt{1 + 1/(4Q^2)} \mp 1/(2Q)\big)$ = **49.54 kHz** and **51.13 kHz**.
+(b) Bandwidth \$f_0/Q = \$ **1.592 kHz**. From chapter §3.5, $f_{1,2} = f_0\big(\sqrt{1 + 1/(4Q^2)} \mp 1/(2Q)\big)$ = **49.54 kHz** and **51.13 kHz**.
 
 (c) $49.540\times51.131 = 2533.0$ kHz², and $f_0^2 = 50.329^2 = 2533.0$ kHz² ✓: the band is centered geometrically.
 
@@ -70,7 +70,7 @@ $$
 
 (a) $\omega_0 = 1/\sqrt{10^{-4}\times10^{-9}} = $ **3.162 Mrad/s**, $f_0 = $ **503.3 kHz**, and $Q = R\sqrt{C/L} = 10^4\sqrt{10^{-5}} = $ **31.62**.
 
-(b) At resonance the inductor's and capacitor's admittances cancel, so the tank looks like $R$ alone: $V = 1\text{ mA}\times10\text{ kΩ} = $ **10 V** (peak). The capacitor current is $\omega_0CV = 3.162\times10^6\times10^{-9}\times10 = $ **31.62 mA**, which is $Q$ times the source current. The inductor carries an equal current in the opposite phase. The energy circulates between L and C, and the source only replaces what the resistor dissipates, so the circulating current can far exceed the source's.
+(b) At resonance the inductor's and capacitor's admittances cancel, so the tank looks like $R$ alone: \$V = 1\text{ mA}\times10\text{ kΩ} = \$ **10 V** (peak). The capacitor current is \$\omega_0CV = 3.162\times10^6\times10^{-9}\times10 = \$ **31.62 mA**, which is $Q$ times the source current. The inductor carries an equal current in the opposite phase. The energy circulates between L and C, and the source only replaces what the resistor dissipates, so the circulating current can far exceed the source's.
 
 ### Solution 02-04.10
 
@@ -80,7 +80,7 @@ $$
 
 ### Solution 02-04.11
 
-(a) With $y_1 = \cos t$, $y_2 = \sin t$ and $W = \cos^2t + \sin^2t = 1$: $u_1' = -\sin t\sec t = -\tan t$, so $u_1 = \ln(\cos t)$ (cos t > 0 on the interval); $u_2' = \cos t\sec t = 1$, so $u_2 = t$. Hence $y_p = \cos t\ln(\cos t) + t\sin t$, and $y_p(\pi/4) = 0.7071\times\ln0.7071 + 0.7854\times0.7071 = $ **0.3103**.
+(a) With $y_1 = \cos t$, $y_2 = \sin t$ and $W = \cos^2t + \sin^2t = 1$: $u_1' = -\sin t\sec t = -\tan t$, so $u_1 = \ln(\cos t)$ (cos t > 0 on the interval); $u_2' = \cos t\sec t = 1$, so $u_2 = t$. Hence $y_p = \cos t\ln(\cos t) + t\sin t$, and \$y_p(\pi/4) = 0.7071\times\ln0.7071 + 0.7854\times0.7071 = \$ **0.3103**.
 
 (b) $u_1' = -\sin t\tan t = -\dfrac{\sin^2t}{\cos t} = -\sec t + \cos t$, so $u_1 = -\ln(\sec t + \tan t) + \sin t$. $u_2' = \cos t\tan t = \sin t$, so $u_2 = -\cos t$. Then
 
@@ -92,9 +92,9 @@ and $y_p(\pi/4) = -0.7071\ln(1.4142 + 1) = $ **−0.6232**.
 
 ### Solution 02-04.12
 
-(a) $\omega_0 = 1/\sqrt{10^{-3}\times10^{-6}} = 31.62$ krad/s, so $f_0 = $ **5.033 kHz**, and $Q = \omega_0L/R = 31.62/5 = $ **6.325**.
+(a) $\omega_0 = 1/\sqrt{10^{-3}\times10^{-6}} = 31.62$ krad/s, so \$f_0 = \$ **5.033 kHz**, and \$Q = \omega_0L/R = 31.62/5 = \$ **6.325**.
 
-(b) At resonance the impedance is $R$: $I = 10/5 = $ **2 A** rms and $P = I^2R = $ **20 W**. The capacitor voltage is $I/(\omega_0C) = 2/(31\,623\times10^{-6}) = $ **63.25 V** rms, which is $Q$ times the source voltage.
+(b) At resonance the impedance is $R$: \$I = 10/5 = \$ **2 A** rms and \$P = I^2R = \$ **20 W**. The capacitor voltage is \$I/(\omega_0C) = 2/(31\,623\times10^{-6}) = \$ **63.25 V** rms, which is $Q$ times the source voltage.
 
 (c) No. 63.25 V rms is 89.4 V peak, far above the 50 V rating, even though the source is only 10 V. Resonant circuits need components rated for $Q$ times the drive.
 
@@ -133,7 +133,7 @@ $$
 
 At $\omega_0 = 1/\sqrt{LC}$ the real part of the denominator vanishes, so $Z = \dfrac{R + j\omega_0L}{j\omega_0RC} \approx \dfrac{j\omega_0L}{j\omega_0RC} = \dfrac{L}{RC}$ when $R \ll \omega_0L$. Since $Q = \sqrt{L/C}/R$, this is $Q\sqrt{L/C}$: the characteristic impedance multiplied by $Q$.
 
-(b) $f_0 = $ **100.7 MHz**. At $f_0$, $\lvert Z\rvert = $ **250.5 mΩ** (the approximation gives 250 mΩ). At 50 MHz, $\lvert Z\rvert = $ **10.50 mΩ**. At DC it is just $R = $ **1.000 mΩ**.
+(b) \$f_0 = \$ **100.7 MHz**. At $f_0$, \$\lvert Z\rvert = \$ **250.5 mΩ** (the approximation gives 250 mΩ). At 50 MHz, \$\lvert Z\rvert = \$ **10.50 mΩ**. At DC it is just \$R = \$ **1.000 mΩ**.
 
 (c) The ripple is $\lvert Z\rvert\times1$ A: **250.5 mV** at resonance, **10.50 mV** at 50 MHz and **1.000 mV** at DC. A workload whose activity oscillates at the PDN resonance pumps it like a swing, producing a ripple 250 times larger than the DC drop, enough to cause timing failures in some code loops and not others. Hardware teams damp and lower the impedance peak; some products also detect droop on the fly and stretch the clock, and validation teams write "power virus" tests that deliberately toggle at the resonance to find the worst case.
 
@@ -155,7 +155,7 @@ $$
 u_2 = -\int\frac{w}{1 + w}\,dw = -\int\left(1 - \frac{1}{1 + w}\right)dw = -e^{-t} + \ln\left(1 + e^{-t}\right).
 $$
 
-So $y_p = u_1y_1 + u_2y_2 = \left(e^t + e^{2t}\right)\ln\left(1 + e^{-t}\right) - e^t$. At $t = 0$: $y_p(0) = 2\ln2 - 1 = $ **0.3863**. Check numerically: substituting $y_p$ into the equation leaves a residual of zero (the verify script does this symbolically).
+So $y_p = u_1y_1 + u_2y_2 = \left(e^t + e^{2t}\right)\ln\left(1 + e^{-t}\right) - e^t$. At $t = 0$: \$y_p(0) = 2\ln2 - 1 = \$ **0.3863**. Check numerically: substituting $y_p$ into the equation leaves a residual of zero (the verify script does this symbolically).
 
 (c) The input $1/(1 + e^{-t})$ is not a polynomial, exponential or sinusoid, and differentiating it keeps producing new functions, so no finite guess closes.
 

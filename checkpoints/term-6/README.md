@@ -140,7 +140,7 @@
 **44.** An EUV scanner (13.5 nm, NA 0.33) prints lines at $k_1$ = 0.30. The half-pitch, $k_1\lambda/\text{NA}$, is:
 (A) 12.3 nm · (B) 40.9 nm · (C) 6.14 nm · (D) 20.5 nm
 
-**45.** *Numeric entry.* A 200 mm² die is built on 300 mm wafers costing $17,000 at $D_0$ = 0.1 cm⁻². Find the cost per good die, in dollars.
+**45.** *Numeric entry.* A 200 mm² die is built on 300 mm wafers costing \$17,000 at $D_0$ = 0.1 cm⁻². Find the cost per good die, in dollars.
 
 **46.** A mechanism with $E_a$ = 0.7 eV is stressed at 125 °C for a 55 °C application. The Arrhenius acceleration factor is:
 (A) 4.35 · (B) 2.27 · (C) 77.7 · (D) 41.7

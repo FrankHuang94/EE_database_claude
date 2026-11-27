@@ -267,7 +267,7 @@ A 1 mV signal already produces about 1% second harmonic (Example 01-08.5, Figure
 
 **Setup.** A 1 V step source with $R_s = 10\ \Omega$ drives a 50 Ω line open at the far end ($\Gamma_L = +1$). The launched wave is $V_l = 1\times\frac{50}{60}$ V, and the source reflection coefficient is $\Gamma_s = \frac{10 - 50}{10 + 50}$. The far-end voltage after the $n$-th arrival is the partial sum $V_l(1 + \Gamma_L)\sum_{k=0}^{n-1}(\Gamma_s\Gamma_L)^k$. Find the partial sums after the first four arrivals, and the limit.
 
-**Solution.** $V_l = $ **0.8333 V**, $\Gamma_s = $ **−0.6667**, $\Gamma_s\Gamma_L = -2/3$. The partial sums are $1.6667\times\big(1, \tfrac{1}{3}, \tfrac{7}{9}, \tfrac{13}{27}\big)$: **1.667, 0.5556, 1.296, 0.8025 V**. The limit is $V_l(1 + \Gamma_L)/(1 - \Gamma_s\Gamma_L) = 1.6667/1.6667 = $ **1.000 V**.
+**Solution.** \$V_l = \$ **0.8333 V**, \$\Gamma_s = \$ **−0.6667**, $\Gamma_s\Gamma_L = -2/3$. The partial sums are $1.6667\times\big(1, \tfrac{1}{3}, \tfrac{7}{9}, \tfrac{13}{27}\big)$: **1.667, 0.5556, 1.296, 0.8025 V**. The limit is \$V_l(1 + \Gamma_L)/(1 - \Gamma_s\Gamma_L) = 1.6667/1.6667 = \$ **1.000 V**.
 
 **Interpretation.** The infinite sum of reflections reproduces exactly what a lumped (DC) analysis says: an open load sees the full source voltage. The geometric ratio −2/3 sets how violently, and for how long, it rings on the way.
 
@@ -279,7 +279,7 @@ A 1 mV signal already produces about 1% second harmonic (Example 01-08.5, Figure
 
 **Solution.**
 
-(a) $T_4(0.5) = 1 + 0.5 + 0.125 + 0.0208333 + 0.0026042 = $ **1.648438**, against $e^{0.5} = $ **1.648721**: an error of **2.84×10^−4**. The bound is $e^{\xi}\frac{0.5^5}{5!}$ with $0 < \xi < 0.5$. We must not use the value of $e^{0.5}$ we are estimating, but $e^\xi < e^{0.5} < \sqrt4 = 2$ (since $e < 4$) is safe, so the error is at most $2\times\frac{0.03125}{120} = $ **5.21×10^−4** ✓ (actual ≤ bound).
+(a) \$T_4(0.5) = 1 + 0.5 + 0.125 + 0.0208333 + 0.0026042 = \$ **1.648438**, against \$e^{0.5} = \$ **1.648721**: an error of **2.84×10^−4**. The bound is $e^{\xi}\frac{0.5^5}{5!}$ with $0 < \xi < 0.5$. We must not use the value of $e^{0.5}$ we are estimating, but $e^\xi < e^{0.5} < \sqrt4 = 2$ (since $e < 4$) is safe, so the error is at most \$2\times\frac{0.03125}{120} = \$ **5.21×10^−4** ✓ (actual ≤ bound).
 
 (b) Using $e^\xi < 3$, we need $3/(n + 1)! \le 10^{-6}$. $3/9! = 8.3\times10^{-6}$ is too large, while $3/10! = 8.3\times10^{-7}$ works. So $n + 1 = 10$: **10 terms** (degree 9).
 
@@ -289,7 +289,7 @@ A 1 mV signal already produces about 1% second harmonic (Example 01-08.5, Figure
 
 **Setup.** An op-amp with open-loop gain $A = 10^5$ is configured for an ideal gain of $1/\beta = 100$. Find the exact closed-loop gain and its relative error, and compare with the first-order approximation $1/(A\beta)$.
 
-**Solution.** Exact: $G = \dfrac{10^5}{1 + 10^5\times0.01} = \dfrac{10^5}{1001} = $ **99.90**, a relative error of $-1/1001 = $ **−0.0999%**. First-order: $1/(A\beta) = 1/1000 = $ **0.1%**, so $G \approx 100(1 - 0.001) = 99.9$. The two agree to about one part in $10^6$, the size of the neglected $(1/A\beta)^2$ term.
+**Solution.** Exact: \$G = \dfrac{10^5}{1 + 10^5\times0.01} = \dfrac{10^5}{1001} = \$ **99.90**, a relative error of \$-1/1001 = \$ **−0.0999%**. First-order: \$1/(A\beta) = 1/1000 = \$ **0.1%**, so $G \approx 100(1 - 0.001) = 99.9$. The two agree to about one part in $10^6$, the size of the neglected $(1/A\beta)^2$ term.
 
 **Interpretation.** Accuracy is bought with loop gain: 1% accuracy needs $A\beta \ge 100$, and 0.01% needs $10^4$. The open-loop gain falls with frequency, so accuracy does too ([15](../../15-control-systems/README.md)).
 
@@ -303,7 +303,7 @@ A 1 mV signal already produces about 1% second harmonic (Example 01-08.5, Figure
 
 (a) The error is $0.1 - \sin0.1 = $ **1.666×10^−4**. The bound $x^3/6 = $ **1.667×10^−4** is essentially exact here, since the next term is tiny.
 
-(b) $\sqrt{1.02} \approx 1.01$; the exact value is **1.009950**. The next term is $-x^2/8 = $ **−5×10^−5**, and the actual error is −4.95×10^−5 ✓.
+(b) $\sqrt{1.02} \approx 1.01$; the exact value is **1.009950**. The next term is \$-x^2/8 = \$ **−5×10^−5**, and the actual error is −4.95×10^−5 ✓.
 
 (c) $1.001^{1000} = e^{1000\ln1.001} = e^{1000(0.001 - 0.0000005 + \cdots)} = e^{0.9995}$, which is **2.7169**, against $e = 2.7183$. This is the compounding limit of 01-02. The $\ln(1 + x) \approx x - x^2/2$ correction explains the small shortfall.
 
@@ -315,8 +315,8 @@ A 1 mV signal already produces about 1% second harmonic (Example 01-08.5, Figure
 
 **Solution.** From §3.8, HD2 $\approx A/(4V_T)$ and HD3 $\approx A^2/(24V_T^2)$.
 
-- $A = 1$ mV: HD2 $= 1/(4\times25.85) = $ **0.967%** (**−40.3 dB**); HD3 $= 1/(24\times25.85^2) = $ **6.24×10^−5** (**−84.1 dB**).
-- $A = 10$ mV: HD2 $= $ **9.67%** (**−20.3 dB**); HD3 $= $ **0.624%** (**−44.1 dB**).
+- $A = 1$ mV: HD2 \$= 1/(4\times25.85) = \$ **0.967%** (**−40.3 dB**); HD3 \$= 1/(24\times25.85^2) = \$ **6.24×10^−5** (**−84.1 dB**).
+- $A = 10$ mV: HD2 \$= \$ **9.67%** (**−20.3 dB**); HD3 \$= \$ **0.624%** (**−44.1 dB**).
 
 Ten times the amplitude gives 20 dB more HD2 and 40 dB more HD3, as predicted.
 

@@ -255,7 +255,7 @@ Read across the rows and the tradeoffs appear. MRAM and FeRAM have DRAM-like end
 
 ### Example 23-08.8 · Density and market scale (tier B)
 
-**Setup.** TechInsights measured Everspin's 1 Gb (1,024 Mb) STT-MRAM die at 105.1 mm², with a cell of 0.0396 µm² on a 28 nm process [9]. Find (a) its bit density and (b) its cell size in units of $F^2$ ($F$ = 28 nm). (c) How much denser is Kioxia's 37.6 Gb/mm² QLC NAND (23-06)? (d) Everspin's fourth-quarter 2025 revenue was $14.8 million [10]; the top five NAND makers' combined revenue in 2Q26 was $68.87 billion (23-06). What is the ratio?
+**Setup.** TechInsights measured Everspin's 1 Gb (1,024 Mb) STT-MRAM die at 105.1 mm², with a cell of 0.0396 µm² on a 28 nm process [9]. Find (a) its bit density and (b) its cell size in units of $F^2$ ($F$ = 28 nm). (c) How much denser is Kioxia's 37.6 Gb/mm² QLC NAND (23-06)? (d) Everspin's fourth-quarter 2025 revenue was \$14.8 million [10]; the top five NAND makers' combined revenue in 2Q26 was \$68.87 billion (23-06). What is the ratio?
 
 **Solution.**
 

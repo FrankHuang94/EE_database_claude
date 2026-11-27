@@ -180,7 +180,7 @@ The phase confirms it is minimum-phase: −45° at the first corner, then −135
 (d) For a 1 V step, $Y(s) = H_2(s)/s$:
 
 - $y(0^+) = \lim_{s\to\infty}sY = H_2(\infty) = $ **0**, since the denominator's degree is higher;
-- the initial slope is $\lim_{s\to\infty}s^2Y = \lim sH_2(s)$, which tends to $10\times(-1/10^4)/(10^{-3}\times10^{-5}) = $ **−100 000 V/s**;
+- the initial slope is $\lim_{s\to\infty}s^2Y = \lim sH_2(s)$, which tends to \$10\times(-1/10^4)/(10^{-3}\times10^{-5}) = \$ **−100 000 V/s**;
 - the final value is $H_2(0) = $ **10 V**.
 
 The response starts by heading the wrong way, below zero, before turning round and rising to +10 V: the time-domain signature of a right-half-plane zero (07-04 §9). $H_1$'s slope starts at +100 000 V/s and heads straight for 10 V.

@@ -291,7 +291,7 @@ The factor $t$ in front of the exponential is the signature of a **repeated root
 
 **Setup.** A source has $V_s = 10$ V and $R_s = 50\ \Omega$. Find the load that maximizes load power, the maximum power, and the efficiency there. What fraction of the maximum does a 100 Ω load receive?
 
-**Solution.** From §3.4, $R_L = R_s = $ **50 Ω**, and $P_{max} = V_s^2/(4R_s) = 100/200 = $ **0.5 W**. The efficiency is **50%**: another 0.5 W is dissipated in $R_s$. For $R_L = 100\ \Omega$: $P = 100\times100/150^2 = $ **0.4444 W**, or **88.9%** of the maximum, although $R_L$ is 2× off.
+**Solution.** From §3.4, \$R_L = R_s = \$ **50 Ω**, and \$P_{max} = V_s^2/(4R_s) = 100/200 = \$ **0.5 W**. The efficiency is **50%**: another 0.5 W is dissipated in $R_s$. For $R_L = 100\ \Omega$: \$P = 100\times100/150^2 = \$ **0.4444 W**, or **88.9%** of the maximum, although $R_L$ is 2× off.
 
 **Sanity check.** At $R_L = R_s$ the load voltage is $V_s/2 = 5$ V, and $5^2/50 = 0.5$ W ✓. The lab confirms the optimum with an ngspice resistance sweep.
 
@@ -299,7 +299,7 @@ The factor $t$ in front of the exponential is the signature of a **repeated root
 
 **Setup.** A digital block's energy per operation follows $E(V) = AV^2 + B/V$ with $A = 1$ pJ/V² and $B = 0.05$ pJ·V (a stylized model; §3.4). Find the minimum-energy supply voltage $V^\ast$, the minimum energy, and the saving compared with operating at 1.0 V. What is the ratio of leakage to switching energy at the optimum?
 
-**Solution.** $V^\ast = (B/2A)^{1/3} = (0.025)^{1/3} = $ **0.2924 V**. Then $E(V^\ast) = 1\times0.2924^2 + 0.05/0.2924 = 0.0855 + 0.1710 = $ **0.2565 pJ**. At 1.0 V, $E = 1 + 0.05 = 1.05$ pJ, so the optimum saves a factor of **4.09**. At the optimum, $2AV^{\ast 2} = B/V^\ast$, so leakage energy is **2×** switching energy (0.1710 against 0.0855).
+**Solution.** \$V^\ast = (B/2A)^{1/3} = (0.025)^{1/3} = \$ **0.2924 V**. Then \$E(V^\ast) = 1\times0.2924^2 + 0.05/0.2924 = 0.0855 + 0.1710 = \$ **0.2565 pJ**. At 1.0 V, $E = 1 + 0.05 = 1.05$ pJ, so the optimum saves a factor of **4.09**. At the optimum, $2AV^{\ast 2} = B/V^\ast$, so leakage energy is **2×** switching energy (0.1710 against 0.0855).
 
 **Interpretation.** Below $V^\ast$, leakage acting over ever-longer operations wins; above it, $CV^2$ wins. Energy-harvesting and always-on wearable chips run near this point, trading speed for battery life ([R-027](../../../reference/research-log.md#r-027--subthreshold-and-near-threshold-operation)).
 
@@ -309,7 +309,7 @@ The factor $t$ in front of the exponential is the signature of a **repeated root
 
 **Setup.** An RC low-pass filter uses $R = 10$ kΩ ± 1% and $C = 10$ nF ± 5%. Find the nominal corner $f_c = 1/(2\pi RC)$ and its uncertainty by (a) worst-case linear analysis, (b) root sum of squares, and (c) exact worst-case evaluation.
 
-**Solution.** Nominal: $f_c = 1/(2\pi\times10^4\times10^{-8}) = $ **1591.5 Hz**. The elasticities are $S_R = S_C = -1$, so $df_c/f_c = -dR/R - dC/C$.
+**Solution.** Nominal: \$f_c = 1/(2\pi\times10^4\times10^{-8}) = \$ **1591.5 Hz**. The elasticities are $S_R = S_C = -1$, so $df_c/f_c = -dR/R - dC/C$.
 
 (a) Worst case: $1\% + 5\% = 6\%$, i.e. ±**95.5 Hz**.
 
@@ -346,9 +346,9 @@ The number of correct digits goes roughly 1, 2, 5, 11.
 
 (a) By L'Hôpital (§3.8), $h(t) = \dfrac{t}{\tau^2}e^{-t/\tau}$.
 
-(b) Product rule: $h'(t) = \dfrac{1}{\tau^2}e^{-t/\tau}\left(1 - \dfrac{t}{\tau}\right)$, which is zero at $t = \tau = $ **1 ms**. The sign changes from + to −, so it is a maximum. The peak value is $h(\tau) = \dfrac{1}{e\tau} = $ **367.9 s⁻¹**.
+(b) Product rule: $h'(t) = \dfrac{1}{\tau^2}e^{-t/\tau}\left(1 - \dfrac{t}{\tau}\right)$, which is zero at \$t = \tau = \$ **1 ms**. The sign changes from + to −, so it is a maximum. The peak value is \$h(\tau) = \dfrac{1}{e\tau} = \$ **367.9 s⁻¹**.
 
-(c) $\big(e^{-1} - e^{-1/1.001}\big)/(-10^{-6}\text{ s}) = $ **367.7 s⁻¹**, within 0.05% of the limit, and approaching it as $\tau_2 \to \tau_1$.
+(c) \$\big(e^{-1} - e^{-1/1.001}\big)/(-10^{-6}\text{ s}) = \$ **367.7 s⁻¹**, within 0.05% of the limit, and approaching it as $\tau_2 \to \tau_1$.
 
 **Units check.** An impulse response has units of 1/s (output per unit area of input impulse): $t/\tau^2$ is s/s² ✓.
 

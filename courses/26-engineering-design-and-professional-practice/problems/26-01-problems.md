@@ -52,7 +52,7 @@ Chapter: [26-01](../chapters/26-01-requirements-and-specifications.md) · Worked
 
 ### Problem 26-01.10 [C]
 
-**When is a review worth it?** (a) Show that the downstream average cost obeys the recursion $\bar c_k = p_kc_k + (1 - p_k)\bar c_{k+1}$, starting from the field phase, and use it to confirm Problem 26-01.9(a). (b) Using §3.6's result, find the value of one percentage point of review catch rate for Problem 26-01.9's program at $8,000 per unit. (c) A formal review costs $250,000. What increase in catch rate pays for it? (d) Why might the answer overstate the value of reviews?
+**When is a review worth it?** (a) Show that the downstream average cost obeys the recursion $\bar c_k = p_kc_k + (1 - p_k)\bar c_{k+1}$, starting from the field phase, and use it to confirm Problem 26-01.9(a). (b) Using §3.6's result, find the value of one percentage point of review catch rate for Problem 26-01.9's program at \$8,000 per unit. (c) A formal review costs \$250,000. What increase in catch rate pays for it? (d) Why might the answer overstate the value of reviews?
 
 ### Problem 26-01.11 [B]
 

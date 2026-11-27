@@ -16,7 +16,7 @@ The meter and the source's resistance form a divider: $V_m = 10\,R_{in}/(0.1\ \t
 
 ### Solution 06-11.2
 
-Without the meter $I_0 = 1.5/15 = 100$ mA. With it, $1.5/(15 + 2) = $ **88.24 mA**, an error of **−11.8%**. The burden voltage is $88.24\ \text{mA}\times2\ \Omega = $ **176.5 mV**. The circuit seen from the break is 15 Ω, so the corrected current is $88.24\times(1 + 2/15) = $ **100.0 mA**.
+Without the meter $I_0 = 1.5/15 = 100$ mA. With it, \$1.5/(15 + 2) = \$ **88.24 mA**, an error of **−11.8%**. The burden voltage is \$88.24\ \text{mA}\times2\ \Omega = \$ **176.5 mV**. The circuit seen from the break is 15 Ω, so the corrected current is \$88.24\times(1 + 2/15) = \$ **100.0 mA**.
 
 ### Solution 06-11.3
 
@@ -32,7 +32,7 @@ $$
 4.0\,(R_{th} + 5) = 5\,V_{th}.
 $$
 
-The second gives $V_{th} = 0.8\,(R_{th} + 5)$; substituting, $4.5R_{th} + 45 = 8R_{th} + 40$, so $R_{th} = 5/3.5 = $ **1.429 MΩ** and $V_{th} = 0.8\times6.429 = $ **5.143 V**. The meter alone read 12.5% low: a 10 MΩ meter on a megohm source.
+The second gives $V_{th} = 0.8\,(R_{th} + 5)$; substituting, $4.5R_{th} + 45 = 8R_{th} + 40$, so \$R_{th} = 5/3.5 = \$ **1.429 MΩ** and \$V_{th} = 0.8\times6.429 = \$ **5.143 V**. The meter alone read 12.5% low: a 10 MΩ meter on a megohm source.
 
 ### Solution 06-11.5
 
@@ -60,9 +60,9 @@ The motor current develops $3\ \text{A}\times20\ \text{mΩ} = $ **60 mV** across
 
 ### Solution 06-11.9
 
-(a) The ratio is $10/150 = 1/15$, so the ADC sees $48/15 = $ **3.2 V**.
+(a) The ratio is $10/150 = 1/15$, so the ADC sees \$48/15 = \$ **3.2 V**.
 
-(b) The divider's Thévenin resistance is $140\parallel10 = 9.333$ kΩ, so the 1 MΩ input loads it by $-9.333/(9.333 + 1000) = $ **−0.925%**. Including it, the bottom leg is $10\ \text{kΩ}\parallel1\ \text{MΩ} = 9.901$ kΩ and the ADC sees $48\times9.901/(140 + 9.901) = $ **3.170 V**. This is systematic: the firmware should use the loaded ratio.
+(b) The divider's Thévenin resistance is $140\parallel10 = 9.333$ kΩ, so the 1 MΩ input loads it by \$-9.333/(9.333 + 1000) = \$ **−0.925%**. Including it, the bottom leg is $10\ \text{kΩ}\parallel1\ \text{MΩ} = 9.901$ kΩ and the ADC sees \$48\times9.901/(140 + 9.901) = \$ **3.170 V**. This is systematic: the firmware should use the loaded ratio.
 
 (c) The ratio $R_2/(R_1 + R_2)$ is highest with $R_2$ high and $R_1$ low: $10.1/(138.6 + 10.1) = 0.067922$, **+1.88%**; lowest with $R_2$ low and $R_1$ high: $9.9/(141.4 + 9.9) = 0.065433$, **−1.85%**.
 
@@ -76,7 +76,7 @@ The motor current develops $3\ \text{A}\times20\ \text{mΩ} = $ **60 mV** across
 
 (b) 16 AWG has 13.17 mΩ/m (Example 06-11.6), and the pair has twice the one-way length: $0.05/(2\times0.01317) = $ **1.90 m**.
 
-(c) $d_{14} = 0.127\times92^{22/39} = $ **1.628 mm**, so $A = 2.081$ mm² and $\rho/A = $ **8.285 mΩ/m**; the longest pair is $0.05/(2\times0.008285) = $ **3.02 m**.
+(c) \$d_{14} = 0.127\times92^{22/39} = \$ **1.628 mm**, so $A = 2.081$ mm² and \$\rho/A = \$ **8.285 mΩ/m**; the longest pair is \$0.05/(2\times0.008285) = \$ **3.02 m**.
 
 ### Solution 06-11.11
 
@@ -84,7 +84,7 @@ The motor current develops $3\ \text{A}\times20\ \text{mΩ} = $ **60 mV** across
 
 5 mΩ: $P = 225\times0.005 = $ **1.125 W**, above the 1.0 W rating: **not usable** without a larger package.
 
-3 mΩ: $P = 0.675$ W, a rise of **33.75 °C**, and a change of $75\times33.75\ \text{ppm} = $ **0.25%**. Its signal is **45 mV** against **30 mV** for the 2 mΩ part. The larger value runs hotter yet drifts less, because its TCR band is three times better; it also gives 50% more signal. Choose it if 0.675 W is acceptable for the board's thermal design.
+3 mΩ: $P = 0.675$ W, a rise of **33.75 °C**, and a change of \$75\times33.75\ \text{ppm} = \$ **0.25%**. Its signal is **45 mV** against **30 mV** for the 2 mΩ part. The larger value runs hotter yet drifts less, because its TCR band is three times better; it also gives 50% more signal. Choose it if 0.675 W is acceptable for the board's thermal design.
 
 ### Solution 06-11.12
 

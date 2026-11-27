@@ -19,7 +19,7 @@
 
 **Part 2 · Clustering** (notebook). For 1 cm² dies at an average 1 cm⁻², *predict* the yield with uniform defects and with gamma-clustered defects ($\alpha$ = 3), then simulate 2,000 wafers of 600 dies each and compare with the formulas.
 
-**Part 3 · Cost against area** (notebook). On a $20,000 wafer with $D_0$ = 0.1 cm⁻² and $\alpha$ = 3, *predict* the die area at which cost per good mm² is twice that of a 50 mm² die, then sweep the area.
+**Part 3 · Cost against area** (notebook). On a \$20,000 wafer with $D_0$ = 0.1 cm⁻² and $\alpha$ = 3, *predict* the die area at which cost per good mm² is twice that of a 50 mm² die, then sweep the area.
 
 **Part 4 · Learning** (notebook). *Predict* when Example 25-04.4's 1 cm² die reaches 80% yield if the learning time constant halves to 3 months, then compute it and plot both learning curves.
 

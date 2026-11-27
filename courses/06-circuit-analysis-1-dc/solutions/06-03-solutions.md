@@ -16,7 +16,7 @@ Problems: [06-03 problems](../problems/06-03-problems.md) · Chapter: [06-03](..
 
 ### Solution 06-03.2
 
-(a) $1 + 2.2 + 4.7 = $ **7.9 kΩ**. (b) $1\ \text{kΩ}/3 = $ **333.3 Ω**. (c) $2\parallel3 = 6/5 = 1.2$ kΩ, plus 1.8 kΩ: **3.0 kΩ**. (d) $G = 1/10 + 1/15 + 1/30 = (3 + 2 + 1)/30 = 6/30$ S, so $R$ = **5 Ω**.
+(a) \$1 + 2.2 + 4.7 = \$ **7.9 kΩ**. (b) \$1\ \text{kΩ}/3 = \$ **333.3 Ω**. (c) $2\parallel3 = 6/5 = 1.2$ kΩ, plus 1.8 kΩ: **3.0 kΩ**. (d) $G = 1/10 + 1/15 + 1/30 = (3 + 2 + 1)/30 = 6/30$ S, so $R$ = **5 Ω**.
 
 ### Solution 06-03.3
 
@@ -26,27 +26,27 @@ Problems: [06-03 problems](../problems/06-03-problems.md) · Chapter: [06-03](..
 
 ### Solution 06-03.4
 
-(a) $1 + R_1/R_2 = 3.30/0.800 = 4.125$, so $R_1 = 3.125\times10.0 = $ **31.25 kΩ**, not a standard value.
+(a) $1 + R_1/R_2 = 3.30/0.800 = 4.125$, so \$R_1 = 3.125\times10.0 = \$ **31.25 kΩ**, not a standard value.
 
 (b) $0.8(1 + 3.16) = $ **3.328 V** (+0.85%) with 31.6 kΩ; $0.8(1 + 3.09) = $ **3.272 V** (−0.85%) with 30.9 kΩ.
 
-(c) The output depends on the ratio $R_1/R_2$. It is largest with $R_1$ high and $R_2$ low: $31.6\times1.01/(10.0\times0.99) = 3.2238$, giving $0.8\times4.2238 = $ **3.379 V**; smallest with $R_1$ low and $R_2$ high: $31.6\times0.99/(10.0\times1.01) = 3.0974$, giving **3.278 V**. The ratio's error approaches the *sum* of the two tolerances because the worst case moves them in opposite directions; a matched pair, whose errors move together, does much better. (The reference voltage's own tolerance adds on top.)
+(c) The output depends on the ratio $R_1/R_2$. It is largest with $R_1$ high and $R_2$ low: $31.6\times1.01/(10.0\times0.99) = 3.2238$, giving \$0.8\times4.2238 = \$ **3.379 V**; smallest with $R_1$ low and $R_2$ high: $31.6\times0.99/(10.0\times1.01) = 3.0974$, giving **3.278 V**. The ratio's error approaches the *sum* of the two tolerances because the worst case moves them in opposite directions; a matched pair, whose errors move together, does much better. (The reference voltage's own tolerance adds on top.)
 
 ### Solution 06-03.5
 
 The meter is in parallel with the bottom 100 kΩ.
 
-(a) $100\ \text{k}\parallel10\ \text{M} = 99.01$ kΩ, so the reading is $10\times99.01/199.01 = $ **4.975 V**, low by **0.50%** (the divider's source resistance, 50 kΩ, is 1/200 of the meter's).
+(a) $100\ \text{k}\parallel10\ \text{M} = 99.01$ kΩ, so the reading is \$10\times99.01/199.01 = \$ **4.975 V**, low by **0.50%** (the divider's source resistance, 50 kΩ, is 1/200 of the meter's).
 
-(b) $100\ \text{k}\parallel1\ \text{M} = 90.91$ kΩ: $10\times90.91/190.91 = $ **4.762 V**, low by **4.76%**. High-resistance circuits need high-resistance meters (06-11).
+(b) $100\ \text{k}\parallel1\ \text{M} = 90.91$ kΩ: \$10\times90.91/190.91 = \$ **4.762 V**, low by **4.76%**. High-resistance circuits need high-resistance meters (06-11).
 
 ### Solution 06-03.6
 
-$R_2\parallel R_3 = 6\times3/9 = 2$ Ω, so $R_{eq} = 2 + 2 + 1 = $ **5 Ω** and $I = 12/5 = $ **2.4 A**. The parallel pair has $2.4\times2 = 4.8$ V across it: $i_2 = 4.8/6 = $ **0.8 A** and $i_3 = 4.8/3 = $ **1.6 A** (KCL: $0.8 + 1.6 = 2.4$ ✓). Powers: $R_1$: $2.4^2\times2 = $ **11.52 W**; $R_2$: $4.8^2/6 = $ **3.84 W**; $R_3$: $4.8^2/3 = $ **7.68 W**; $R_4$: $2.4^2\times1 = $ **5.76 W**. Total 28.8 W $= 12\times2.4$ ✓.
+$R_2\parallel R_3 = 6\times3/9 = 2$ Ω, so \$R_{eq} = 2 + 2 + 1 = \$ **5 Ω** and \$I = 12/5 = \$ **2.4 A**. The parallel pair has $2.4\times2 = 4.8$ V across it: \$i_2 = 4.8/6 = \$ **0.8 A** and \$i_3 = 4.8/3 = \$ **1.6 A** (KCL: $0.8 + 1.6 = 2.4$ ✓). Powers: $R_1$: \$2.4^2\times2 = \$ **11.52 W**; $R_2$: \$4.8^2/6 = \$ **3.84 W**; $R_3$: \$4.8^2/3 = \$ **7.68 W**; $R_4$: \$2.4^2\times1 = \$ **5.76 W**. Total 28.8 W $= 12\times2.4$ ✓.
 
 ### Solution 06-03.7
 
-(a) Balance: $R_1R_4 = R_2R_3$, so $R_2 = R_1R_4/R_3 = 1000\times1372.5/1000 = $ **1372.5 Ω**.
+(a) Balance: $R_1R_4 = R_2R_3$, so \$R_2 = R_1R_4/R_3 = 1000\times1372.5/1000 = \$ **1372.5 Ω**.
 
 (b) $v_{out} = 5\left(\dfrac{1372.5}{2372.5} - \dfrac{1373.5}{2373.5}\right) = $ **−0.888 mV**: a 1 Ω (0.07%) imbalance gives under a millivolt, which is why a bridge needs a sensitive detector.
 
@@ -54,13 +54,13 @@ $R_2\parallel R_3 = 6\times3/9 = 2$ Ω, so $R_{eq} = 2 + 2 + 1 = $ **5 Ω** and 
 
 ### Solution 06-03.8
 
-Exact: $10\left(\dfrac{1010}{2010} - \dfrac12\right) = $ **24.88 mV**. Approximation: $\dfrac{10}{4}\times0.010 = $ **25.0 mV**, high by 0.5%, about $\Delta R/(2R)$.
+Exact: \$10\left(\dfrac{1010}{2010} - \dfrac12\right) = \$ **24.88 mV**. Approximation: \$\dfrac{10}{4}\times0.010 = \$ **25.0 mV**, high by 0.5%, about $\Delta R/(2R)$.
 
 ### Solution 06-03.9
 
-(a) $S = 60$ Ω: $R_a = R_{ab}R_{ca}/S = 10\times30/60 = $ **5 Ω**; $R_b = R_{ab}R_{bc}/S = 10\times20/60 = $ **3.333 Ω**; $R_c = R_{bc}R_{ca}/S = 20\times30/60 = $ **10 Ω**.
+(a) $S = 60$ Ω: \$R_a = R_{ab}R_{ca}/S = 10\times30/60 = \$ **5 Ω**; \$R_b = R_{ab}R_{bc}/S = 10\times20/60 = \$ **3.333 Ω**; \$R_c = R_{bc}R_{ca}/S = 20\times30/60 = \$ **10 Ω**.
 
-(b) $P = R_aR_b + R_bR_c + R_cR_a = 200 + 600 + 300 = 1100$ Ω²: $R_{ab} = P/R_c = $ **36.67 Ω**; $R_{bc} = P/R_a = $ **110 Ω**; $R_{ca} = P/R_b = $ **55 Ω**.
+(b) $P = R_aR_b + R_bR_c + R_cR_a = 200 + 600 + 300 = 1100$ Ω²: \$R_{ab} = P/R_c = \$ **36.67 Ω**; \$R_{bc} = P/R_a = \$ **110 Ω**; \$R_{ca} = P/R_b = \$ **55 Ω**.
 
 (c) Wye: $R_a + R_b = 8.333$ Ω. Delta with c open: $R_{ab}\parallel(R_{bc} + R_{ca}) = 10\parallel50 = 500/60 = 8.333$ Ω ✓.
 
@@ -72,7 +72,7 @@ Conductances 50, 40 and 33.33 S sum to 123.33 S; the current divider gives $i_k 
 
 Let $a = \text{GF}\,\varepsilon = 2.0\times500\times10^{-6} = 10^{-3}$ and $t = 5\times10^{-4}$ (the thermal change).
 
-(a) Quarter bridge, active gauge $R(1 + a + t)$ in the bottom arm, three fixed arms $R$: $v_{out} = V\,\dfrac{a + t}{2(2 + a + t)} = 2.5\times\dfrac{1.5\times10^{-3}}{2\times2.0015} = $ **0.9368 mV**. Dividing by $V\,\text{GF}/4 = 1.25$ V per unit strain gives **749 µε** (750 µε in the linear approximation): the 10 K warm-up has added about 250 µε of false strain.
+(a) Quarter bridge, active gauge $R(1 + a + t)$ in the bottom arm, three fixed arms $R$: \$v_{out} = V\,\dfrac{a + t}{2(2 + a + t)} = 2.5\times\dfrac{1.5\times10^{-3}}{2\times2.0015} = \$ **0.9368 mV**. Dividing by $V\,\text{GF}/4 = 1.25$ V per unit strain gives **749 µε** (750 µε in the linear approximation): the 10 K warm-up has added about 250 µε of false strain.
 
 (b) With the dummy $R(1 + t)$ on top and the active gauge $R(1 + a + t)$ below it: $v_A = V\,\dfrac{1 + a + t}{2 + a + 2t}$ and $v_B = V/2$, so
 
@@ -86,17 +86,17 @@ against **0.6247 mV** at the reference temperature ($t = 0$): the temperature ef
 
 ### Solution 06-03.12
 
-(a) Work from the far end. At N4 the 2R leg and the 2R termination are in parallel: $2R\parallel2R = R$. Seen from N3, the series $R$ plus that $R$ make $2R$, in parallel with N3's own 2R leg: $R$ again. The same holds at N2 and N1, so the resistance looking into N1 is **$R$ = 10 kΩ**, and the input current is $5/10\ \text{k} = $ **0.5 mA**.
+(a) Work from the far end. At N4 the 2R leg and the 2R termination are in parallel: $2R\parallel2R = R$. Seen from N3, the series $R$ plus that $R$ make $2R$, in parallel with N3's own 2R leg: $R$ again. The same holds at N2 and N1, so the resistance looking into N1 is **$R$ = 10 kΩ**, and the input current is \$5/10\ \text{k} = \$ **0.5 mA**.
 
 (b) At each node the current meets two equal paths of $2R$ (the leg, and the rest of the ladder), so it halves: legs at N1 to N4 carry **0.25, 0.125, 0.0625 and 0.03125 mA**, and the termination another 0.03125 mA.
 
-(c) Code 1011 sums the legs of N1, N3 and N4: $0.25 + 0.0625 + 0.03125 = $ **0.34375 mA** (that is $\tfrac{11}{16}$ of 0.5 mA). The legs return to ground or to a virtual ground at the same potential, so steering them does not change the ladder's currents. Only two values, $R$ and $2R$, are needed whatever the number of bits, and their *ratio* is what must be accurate: easy to match on a chip (06-02), far easier than binary-weighted resistors spanning a range of $2^N$.
+(c) Code 1011 sums the legs of N1, N3 and N4: \$0.25 + 0.0625 + 0.03125 = \$ **0.34375 mA** (that is $\tfrac{11}{16}$ of 0.5 mA). The legs return to ground or to a virtual ground at the same potential, so steering them does not change the ladder's currents. Only two values, $R$ and $2R$, are needed whatever the number of bits, and their *ratio* is what must be accurate: easy to match on a chip (06-02), far easier than binary-weighted resistors spanning a range of $2^N$.
 
 ### Solution 06-03.13
 
-(a) Delta a–c–d ($R_{ac}$ = 6, $R_{ad}$ = 12, $R_{cd}$ = 6; $S$ = 24 Ω) to wye: $R_{na} = 6\times12/24 = 3$ Ω, $R_{nc} = 6\times6/24 = 1.5$ Ω, $R_{nd} = 12\times6/24 = 3$ Ω. Then $(1.5 + 12)\parallel(3 + 6) = 13.5\parallel9 = 5.4$ Ω, and $R_{eq} = 3 + 5.4 = $ **8.4 Ω**.
+(a) Delta a–c–d ($R_{ac}$ = 6, $R_{ad}$ = 12, $R_{cd}$ = 6; $S$ = 24 Ω) to wye: $R_{na} = 6\times12/24 = 3$ Ω, $R_{nc} = 6\times6/24 = 1.5$ Ω, $R_{nd} = 12\times6/24 = 3$ Ω. Then $(1.5 + 12)\parallel(3 + 6) = 13.5\parallel9 = 5.4$ Ω, and \$R_{eq} = 3 + 5.4 = \$ **8.4 Ω**.
 
-(b) With 1 A in: $v_a - v_n = 3$ V; the two paths share the 1 A as $9/22.5 = 0.4$ A through $13.5$ Ω and $0.6$ A through 9 Ω. Taking node b as 0 V: $v_n = 5.4$ V, $v_c = 0.4\times12 = 4.8$ V, $v_d = 0.6\times6 = 3.6$ V. The bridge current is $(4.8 - 3.6)/6 = $ **0.2 A, from c to d**.
+(b) With 1 A in: $v_a - v_n = 3$ V; the two paths share the 1 A as $9/22.5 = 0.4$ A through $13.5$ Ω and $0.6$ A through 9 Ω. Taking node b as 0 V: $v_n = 5.4$ V, $v_c = 0.4\times12 = 4.8$ V, $v_d = 0.6\times6 = 3.6$ V. The bridge current is \$(4.8 - 3.6)/6 = \$ **0.2 A, from c to d**.
 
 ### Solution 06-03.14
 
@@ -108,14 +108,14 @@ against **0.6247 mV** at the reference temperature ($t = 0$): the temperature ef
 
 ### Solution 06-03.15
 
-(a) KVL around a → b → d → a: the voltage from a to d equals the sum along the path, $v_{ad} = v_{ab} + v_{bd}$. X's reference has + at a, so $v_{ab} = v_X$; Y's has + at b, so $v_{bd} = v_Y = 4$ V; the source fixes $v_{ad} = 10$ V. Hence $v_X = 10 - 4 = $ **6 V**. Around c → b → d: $v_{cd} = v_{cb} + v_{bd} = v_Z + v_Y = -3 + 4$, and W's reference has + at c, so $v_W = $ **1 V**.
+(a) KVL around a → b → d → a: the voltage from a to d equals the sum along the path, $v_{ad} = v_{ab} + v_{bd}$. X's reference has + at a, so $v_{ab} = v_X$; Y's has + at b, so $v_{bd} = v_Y = 4$ V; the source fixes $v_{ad} = 10$ V. Hence \$v_X = 10 - 4 = \$ **6 V**. Around c → b → d: $v_{cd} = v_{cb} + v_{bd} = v_Z + v_Y = -3 + 4$, and W's reference has + at c, so \$v_W = \$ **1 V**.
 
-(b) KCL at b, counting currents *into* b. X's reference runs from b to a, so the current into b through X is $-i_X = +2$ A (2 A actually flows from a to b). Y's reference runs from d to b, so it brings $i_Y = 0.5$ A into b. Z's runs from c to b, so it brings $i_Z$ into b. The sum is zero: $2 + 0.5 + i_Z = 0$, so $i_Z = $ **−2.5 A** (2.5 A actually flows from b to c). KCL at c: Z carries $-i_Z = 2.5$ A into c, and W carries $i_W$ out of c, so $i_W = $ **2.5 A**. KCL at a: X carries $i_X = -2$ A into a, so the source must push **2 A** out of its + terminal into a.
+(b) KCL at b, counting currents *into* b. X's reference runs from b to a, so the current into b through X is $-i_X = +2$ A (2 A actually flows from a to b). Y's reference runs from d to b, so it brings $i_Y = 0.5$ A into b. Z's runs from c to b, so it brings $i_Z$ into b. The sum is zero: $2 + 0.5 + i_Z = 0$, so \$i_Z = \$ **−2.5 A** (2.5 A actually flows from b to c). KCL at c: Z carries $-i_Z = 2.5$ A into c, and W carries $i_W$ out of c, so \$i_W = \$ **2.5 A**. KCL at a: X carries $i_X = -2$ A into a, so the source must push **2 A** out of its + terminal into a.
 
 (c) Passive convention: power absorbed = (voltage) × (current entering the + terminal).
 
-- X: + at a; its current enters at b and leaves at a, so the current entering the + terminal is $-i_X = 2$ A: $6\times2 = $ **12 W** absorbed.
-- Y: + at b; its current enters at d (the − terminal), so the current into + is $-0.5$ A: $4\times(-0.5) = $ **−2 W**, so Y delivers 2 W.
+- X: + at a; its current enters at b and leaves at a, so the current entering the + terminal is $-i_X = 2$ A: \$6\times2 = \$ **12 W** absorbed.
+- Y: + at b; its current enters at d (the − terminal), so the current into + is $-0.5$ A: \$4\times(-0.5) = \$ **−2 W**, so Y delivers 2 W.
 - Z: + at c; its current enters at c: $(-3)\times(-2.5) = $ **7.5 W** absorbed.
 - W: + at c; its current enters at c: $1\times2.5 = $ **2.5 W** absorbed.
 - Source: 2 A leaves its + terminal, so it absorbs $10\times(-2) = $ **−20 W**: it delivers 20 W.

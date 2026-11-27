@@ -8,7 +8,7 @@ Problems: [06-01 problems](../problems/06-01-problems.md) · Chapter: [06-01](..
 
 ### Solution 06-01.1
 
-(a) Charge: $4000\ \text{mAh} = 4.000\ \text{A}\times 3600\ \text{s} = $ **14 400 C**. Energy: $4.000\ \text{Ah}\times 3.7\ \text{V} = $ **14.8 Wh**, and $14.8\ \text{Wh}\times 3600\ \text{J/Wh} = 53\,280$ J $=$ **53.28 kJ**.
+(a) Charge: \$4000\ \text{mAh} = 4.000\ \text{A}\times 3600\ \text{s} = \$ **14 400 C**. Energy: \$4.000\ \text{Ah}\times 3.7\ \text{V} = \$ **14.8 Wh**, and $14.8\ \text{Wh}\times 3600\ \text{J/Wh} = 53\,280$ J $=$ **53.28 kJ**.
 
 (b) $q = I t = 50\times10^{-6}\ \text{A}\times(365\times 86\,400\ \text{s}) = $ **1577 C** (1576.8 C). In mAh: $1576.8\ \text{C}/3.6\ \text{C/mAh} = $ **438 mAh**, more than the whole capacity of a coin cell. Leakage matters.
 
@@ -18,7 +18,7 @@ Problems: [06-01 problems](../problems/06-01-problems.md) · Chapter: [06-01](..
 
 ### Solution 06-01.2
 
-(a) $i = dq/dt$. With $\tau$ = 2 ms, $\dfrac{d}{dt}\left[5(1 - e^{-t/\tau})\right] = \dfrac{5}{\tau}e^{-t/\tau}$, and $5\ \mu\text{C}/2\ \text{ms} = 2.5$ mA, so $i(t) = $ **2.5 e^{−t/2 ms} mA** for $t \ge 0$.
+(a) $i = dq/dt$. With $\tau$ = 2 ms, $\dfrac{d}{dt}\left[5(1 - e^{-t/\tau})\right] = \dfrac{5}{\tau}e^{-t/\tau}$, and $5\ \mu\text{C}/2\ \text{ms} = 2.5$ mA, so \$i(t) = \$ **2.5 e^{−t/2 ms} mA** for $t \ge 0$.
 
 (b) $i(0) = $ **2.5 mA**; $i(2\ \text{ms}) = 2.5/e = $ **0.920 mA**.
 
@@ -38,7 +38,7 @@ The passive convention needs the current *entering* the + terminal; $p = vi$ wit
 
 ### Solution 06-01.4
 
-(a) From 04-05, $I = n e A v_d$, so $v_d = I/(neA) = 1.0/(8.491\times10^{28}\times1.602\,176\,634\times10^{-19}\times1.0\times10^{-6}) = $ **7.35×10⁻⁵ m/s**, about 0.07 mm/s.
+(a) From 04-05, $I = n e A v_d$, so \$v_d = I/(neA) = 1.0/(8.491\times10^{28}\times1.602\,176\,634\times10^{-19}\times1.0\times10^{-6}) = \$ **7.35×10⁻⁵ m/s**, about 0.07 mm/s.
 
 (b) $t = 1\ \text{m}/7.35\times10^{-5}\ \text{m/s} = 1.36\times10^4$ s $=$ **3.78 h**.
 
@@ -73,17 +73,17 @@ $$
 \frac{9 - v_A}{1} + \frac{12 - v_A}{2} = \frac{v_A}{4} \;\Rightarrow\; 4(9 - v_A) + 2(12 - v_A) = v_A \;\Rightarrow\; 60 = 7v_A ,
 $$
 
-so $v_A = 60/7 = $ **8.571 V**, $i_1 = 9 - 8.571 = $ **0.4286 A**, $i_2 = (12 - 8.571)/2 = $ **1.714 A** and $i_3 = 8.571/4 = $ **2.143 A** ($i_1 + i_2 = i_3$ ✓).
+so \$v_A = 60/7 = \$ **8.571 V**, \$i_1 = 9 - 8.571 = \$ **0.4286 A**, \$i_2 = (12 - 8.571)/2 = \$ **1.714 A** and \$i_3 = 8.571/4 = \$ **2.143 A** ($i_1 + i_2 = i_3$ ✓).
 
-(b) Absorbed powers: 9 V source $9\times(-0.4286) = $ **−3.857 W**; 12 V source $12\times(-1.714) = $ **−20.571 W**; 1 Ω: $0.4286^2\times1 = $ **0.1837 W**; 2 Ω: $1.714^2\times2 = $ **5.878 W**; 4 Ω: $2.143^2\times4 = $ **18.367 W**. Sum: $-3.857 - 20.571 + 0.184 + 5.878 + 18.367 = 0$ ✓. Both sources deliver this time.
+(b) Absorbed powers: 9 V source \$9\times(-0.4286) = \$ **−3.857 W**; 12 V source \$12\times(-1.714) = \$ **−20.571 W**; 1 Ω: \$0.4286^2\times1 = \$ **0.1837 W**; 2 Ω: \$1.714^2\times2 = \$ **5.878 W**; 4 Ω: \$2.143^2\times4 = \$ **18.367 W**. Sum: $-3.857 - 20.571 + 0.184 + 5.878 + 18.367 = 0$ ✓. Both sources deliver this time.
 
-(c) The 9 V source carries no current when $v_A = 9$ V. Then the load takes $9/4 = 2.25$ A, all of which must come through the 2 Ω resistor: $(V_2 - 9)/2 = 2.25$, so $V_2 = $ **13.5 V**.
+(c) The 9 V source carries no current when $v_A = 9$ V. Then the load takes $9/4 = 2.25$ A, all of which must come through the 2 Ω resistor: $(V_2 - 9)/2 = 2.25$, so \$V_2 = \$ **13.5 V**.
 
 (d) For $V_2 > 13.5$ V, $v_A$ exceeds 9 V, $i_1$ becomes negative, and current flows *into* the 9 V source's + terminal: it absorbs power. If it is a rechargeable battery, it is being charged; if it is a primary cell or a power supply that cannot sink current, this is a fault condition, which is why real designs add diodes or "ideal-diode" controllers to stop back-feeding.
 
 ### Solution 06-01.7
 
-(a) Energy is the area under $p(t)$: $2.0\ \text{W}\times0.10\ \text{s} + \tfrac12\times2.0\ \text{W}\times0.20\ \text{s} = 0.20 + 0.20 = $ **0.40 J** per flash.
+(a) Energy is the area under $p(t)$: \$2.0\ \text{W}\times0.10\ \text{s} + \tfrac12\times2.0\ \text{W}\times0.20\ \text{s} = 0.20 + 0.20 = \$ **0.40 J** per flash.
 
 (b) $P_{\text{avg}} = 0.40\ \text{J}/2.0\ \text{s} = $ **0.20 W**.
 
@@ -93,11 +93,11 @@ so $v_A = 60/7 = $ **8.571 V**, $i_1 = 9 - 8.571 = $ **0.4286 A**, $i_2 = (12 - 
 
 The period is $T$ = 1 ms; the average voltage is $\overline v = 2.5$ V in every case.
 
-(a) $p = 10$ W for half the period and 0 for the other half: $\overline{p} = $ **5 W**. $\overline i = 1$ A, so $\overline v\,\overline i = $ **2.5 W**.
+(a) $p = 10$ W for half the period and 0 for the other half: \$\overline{p} = \$ **5 W**. $\overline i = 1$ A, so \$\overline v\,\overline i = \$ **2.5 W**.
 
-(b) The current flows only when the voltage is zero: $p = 0$ always, $\overline p = $ **0 W**; but $\overline v\,\overline i = $ **2.5 W** again.
+(b) The current flows only when the voltage is zero: $p = 0$ always, \$\overline p = \$ **0 W**; but \$\overline v\,\overline i = \$ **2.5 W** again.
 
-(c) $p = 5$ W for half the period: $\overline p = $ **2.5 W** $= \overline v\,\overline i$.
+(c) $p = 5$ W for half the period: \$\overline p = \$ **2.5 W** $= \overline v\,\overline i$.
 
 The average of a product depends on *when* the two factors are large together. Exactly, $\overline{vi} = \overline v\,\overline i + \operatorname{cov}(v, i)$, where the covariance over one period measures how much the two factors rise and fall together (03-04). The product of averages is right only when that covariance is zero: always when one factor is constant (case c, or DC), and otherwise only by coincidence (for example $v = 1 + \sin\omega t$, $i = 1 + \cos\omega t$, whose fluctuations are uncorrelated over a period). In AC circuits the timing is the phase between voltage and current, and this is the origin of the power factor (07-06).
 
@@ -115,11 +115,11 @@ The average of a product depends on *when* the two factors are large together. E
 
 ### Solution 06-01.10
 
-(a) $t_d < t_r/6 = 1000\ \text{ps}/6 = 166.7$ ps, so $\ell < 166.7/7.154 = $ **23.3 mm**.
+(a) $t_d < t_r/6 = 1000\ \text{ps}/6 = 166.7$ ps, so \$\ell < 166.7/7.154 = \$ **23.3 mm**.
 
 (b) $\ell < 16.67/7.154 = $ **2.33 mm**: at 100 ps edges almost every board trace is a transmission line.
 
-(c) Delay $= \sqrt{3.0}/c = 5.777\times10^{-9}$ s/m $=$ **5.78 ps/mm**. Longest lumped wire: $(20/6)\ \text{ps}/5.778\ \text{ps/mm} = $ **0.577 mm**.
+(c) Delay $= \sqrt{3.0}/c = 5.777\times10^{-9}$ s/m $=$ **5.78 ps/mm**. Longest lumped wire: \$(20/6)\ \text{ps}/5.778\ \text{ps/mm} = \$ **0.577 mm**.
 
 (d) On-chip wires are thin and resistive, so their delay is dominated by distributed RC charging, which grows as the square of length (04-05), long before the speed-of-light delay matters. Long on-chip wires are broken up with repeaters for that reason.
 
@@ -127,27 +127,27 @@ The average of a product depends on *when* the two factors are large together. E
 
 The loss is $I^2R$ and the drop $IR$, with $I = P/V$.
 
-(a) $I = 100/20 = 5$ A: loss $5^2\times0.20 = $ **5.0 W**; drop $5\times0.20 = 1.0$ V, $1.0/20 = $ **5.0%**.
+(a) $I = 100/20 = 5$ A: loss \$5^2\times0.20 = \$ **5.0 W**; drop $5\times0.20 = 1.0$ V, \$1.0/20 = \$ **5.0%**.
 
-(b) $I = 240/48 = 5$ A: loss **5.0 W**; drop 1.0 V, $1.0/48 = $ **2.08%**.
+(b) $I = 240/48 = 5$ A: loss **5.0 W**; drop 1.0 V, \$1.0/48 = \$ **2.08%**.
 
-(c) $I = 240/20 = 12$ A: loss $12^2\times0.20 = $ **28.8 W**; drop 2.4 V, **12%**.
+(c) $I = 240/20 = 12$ A: loss \$12^2\times0.20 = \$ **28.8 W**; drop 2.4 V, **12%**.
 
 (d) The current, and hence the cable's loss and heating, is the same in (a) and (b), yet (b) delivers 2.4 times the power with a smaller fractional drop. Raising the current instead (c) would multiply the loss by $(12/5)^2 = 5.76$ and require thicker conductors and connectors rated for 12 A. Keeping the cable's 5 A limit and raising the voltage is the cheap direction, at the price of insulation and protection suited to 48 V.
 
 ### Solution 06-01.12
 
-(a) $I = P/V$: at 54 V, $120\,000/54 = $ **2222 A**; at 800 V, $120\,000/800 = $ **150 A**.
+(a) $I = P/V$: at 54 V, \$120\,000/54 = \$ **2222 A**; at 800 V, \$120\,000/800 = \$ **150 A**.
 
-(b) $I^2R$ with 50 µΩ: at 54 V, $2222^2\times50\times10^{-6} = $ **246.9 W**; at 800 V, $150^2\times50\times10^{-6} = $ **1.125 W**.
+(b) $I^2R$ with 50 µΩ: at 54 V, \$2222^2\times50\times10^{-6} = \$ **246.9 W**; at 800 V, \$150^2\times50\times10^{-6} = \$ **1.125 W**.
 
-(c) Equal loss means $P^2R/V^2$ is the same, so $R$ may grow as $V^2$; resistance is inversely proportional to cross-section (06-02), so the area shrinks by $(800/54)^2 = $ **219.5**. Two hundred times less copper for the same loss: this is the economic argument for high-voltage DC distribution in AI data centers.
+(c) Equal loss means $P^2R/V^2$ is the same, so $R$ may grow as $V^2$; resistance is inversely proportional to cross-section (06-02), so the area shrinks by \$(800/54)^2 = \$ **219.5**. Two hundred times less copper for the same loss: this is the economic argument for high-voltage DC distribution in AI data centers.
 
 (d) Any two: 800 V needs much larger insulation and creepage distances and arc-safe connectors; it falls under stricter electrical-safety rules for service personnel; it adds a high-ratio conversion stage (800 V down to the board's 48 V or 12 V) with its own efficiency and cost; the protection and fault-handling equipment for high-voltage DC is less mature than for AC.
 
 ### Solution 06-01.13
 
-(a) KCL at node A in circuit 2: $\dfrac{6 - v'}{1} + \dfrac{0 - v'}{1} = \dfrac{v'}{1}$, so $3v' = 6$ and $v' = $ **2 V**; $i_1' = 6 - 2 = $ **4 A**, $i_2' = 0 - 2 = $ **−2 A**, $i_3' = $ **2 A**.
+(a) KCL at node A in circuit 2: $\dfrac{6 - v'}{1} + \dfrac{0 - v'}{1} = \dfrac{v'}{1}$, so $3v' = 6$ and \$v' = \$ **2 V**; \$i_1' = 6 - 2 = \$ **4 A**, \$i_2' = 0 - 2 = \$ **−2 A**, \$i_3' = \$ **2 A**.
 
 (b) Circuit 1's branch voltages (+ to −) are $V_1$: 12 V, $R_1$: 4 V, $V_2$: 6 V, $R_2$: −2 V, $R_3$: 8 V (Example 06-01.2). Circuit 2's currents entering each + terminal are $V_1$: $-i_1' = -4$ A, $R_1$: $i_1' = 4$ A, $V_2$: $-i_2' = 2$ A, $R_2$: $i_2' = -2$ A, $R_3$: $i_3' = 2$ A. So
 
@@ -159,11 +159,11 @@ $$
 
 ### Solution 06-01.14
 
-(a) The field along the wire is $E = V/L = 10/0.50 = $ **20 V/m**. By Ampère's law (04-06), $H$ at radius $a$ around a straight current is $I/(2\pi a) = 2.0/(2\pi\times0.25\times10^{-3}) = $ **1273 A/m**.
+(a) The field along the wire is \$E = V/L = 10/0.50 = \$ **20 V/m**. By Ampère's law (04-06), $H$ at radius $a$ around a straight current is \$I/(2\pi a) = 2.0/(2\pi\times0.25\times10^{-3}) = \$ **1273 A/m**.
 
-(b) $\vec E$ points along the wire (in the direction of the current) and $\vec H$ circles it, so $\vec S = \vec E\times\vec H$ points **radially inward**, into the wire, with magnitude $EH = 20\times1273 = $ **2.546×10⁴ W/m²**.
+(b) $\vec E$ points along the wire (in the direction of the current) and $\vec H$ circles it, so $\vec S = \vec E\times\vec H$ points **radially inward**, into the wire, with magnitude \$EH = 20\times1273 = \$ **2.546×10⁴ W/m²**.
 
-(c) Surface area $2\pi a L = 2\pi\times0.25\times10^{-3}\times0.50 = 7.854\times10^{-4}$ m², so the inflow is $2.546\times10^4\times7.854\times10^{-4} = $ **20.0 W** $= VI = 10\times2.0$ ✓. Symbolically, $(V/L)\,(I/2\pi a)\,(2\pi a L) = VI$ for any wire.
+(c) Surface area $2\pi a L = 2\pi\times0.25\times10^{-3}\times0.50 = 7.854\times10^{-4}$ m², so the inflow is \$2.546\times10^4\times7.854\times10^{-4} = \$ **20.0 W** $= VI = 10\times2.0$ ✓. Symbolically, $(V/L)\,(I/2\pi a)\,(2\pi a L) = VI$ for any wire.
 
 (d) The energy that heats a resistor arrives through the space around it, carried by the fields, and enters through its surface; the conduction electrons only set up the fields. Circuit theory's $p = vi$ gives the right total while saying nothing about the path.
 
@@ -179,9 +179,9 @@ $$
 
 (a) Draw a closed surface around the joint. The charge inside can change only by current crossing the surface: $dq_{\text{inside}}/dt = \sum i_{\text{in}}$. Condition 2 of the discipline (no net charge accumulates in a node or an element, because a node is an ideal conductor of negligible capacitance) says $dq_{\text{inside}}/dt = 0$. Hence $\sum i_{\text{in}} = 0$ at every instant: KCL.
 
-(b) Faraday's law gives $\oint\vec E\cdot d\vec l = -d\Phi_B/dt$, with $\Phi_B = BA$. The flux changes at $10\times10^{-4}\ \text{m}^2\times2\ \text{T/s} = $ **2 mV** (2 mWb/s), so the branch voltages around the loop sum to 2 mV in magnitude instead of zero. The loop violates condition 1 (no changing flux through closed paths outside the elements). Two millivolts is negligible for a power rail but not for a microvolt sensor, which is why sensitive inputs keep their loop areas small.
+(b) Faraday's law gives $\oint\vec E\cdot d\vec l = -d\Phi_B/dt$, with $\Phi_B = BA$. The flux changes at \$10\times10^{-4}\ \text{m}^2\times2\ \text{T/s} = \$ **2 mV** (2 mWb/s), so the branch voltages around the loop sum to 2 mV in magnitude instead of zero. The loop violates condition 1 (no changing flux through closed paths outside the elements). Two millivolts is negligible for a power rail but not for a microvolt sensor, which is why sensitive inputs keep their loop areas small.
 
-(c) Efficiencies multiply: $0.97\times0.90 = $ **87.3%**. The regulator draws $500/0.90 = 555.6$ W; the converter draws $555.6/0.97 = $ **572.7 W** from the bus. Losses: converter $572.7 - 555.6 = $ **17.18 W**; regulator $555.6 - 500 = $ **55.56 W**, so the low-voltage stage, near the load, dominates the loss.
+(c) Efficiencies multiply: \$0.97\times0.90 = \$ **87.3%**. The regulator draws $500/0.90 = 555.6$ W; the converter draws \$555.6/0.97 = \$ **572.7 W** from the bus. Losses: converter \$572.7 - 555.6 = \$ **17.18 W**; regulator \$555.6 - 500 = \$ **55.56 W**, so the low-voltage stage, near the load, dominates the loss.
 
 ---
 

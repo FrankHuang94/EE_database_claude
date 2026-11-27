@@ -130,7 +130,7 @@ $$
 (p_i - p_i')\,C_i > M_i,
 $$
 
-that is, if it reduces the expected loss by more than it costs. With a limited budget $B$, choose the set of mitigations that maximizes the total net benefit $\sum_i [(p_i - p_i')C_i - M_i]$ subject to $\sum_i M_i \le B$, a small knapsack problem that can be solved by listing the combinations (Example 26-05.4). The best set is not always the one with the best individual ratios. With a $4 M budget and three mitigations, A ($1.5 M, net benefit $1.2 M), B ($2.5 M, net $1.5 M) and C ($2.0 M, net $1.3 M), ranking by net benefit per dollar picks A then C (net **$2.5 M**), after which B no longer fits; but A and B together use the budget exactly and net **$2.7 M**.
+that is, if it reduces the expected loss by more than it costs. With a limited budget $B$, choose the set of mitigations that maximizes the total net benefit $\sum_i [(p_i - p_i')C_i - M_i]$ subject to $\sum_i M_i \le B$, a small knapsack problem that can be solved by listing the combinations (Example 26-05.4). The best set is not always the one with the best individual ratios. With a $4 M budget and three mitigations, A ($1.5 M, net benefit $1.2 M), B ($2.5 M, net $1.5 M) and C ($2.0 M, net $1.3 M), ranking by net benefit per dollar picks A then C (net **$2.5 M**), after which B no longer fits; but A and B together use the budget exactly and net **\$2.7 M**.
 
 **What EMV leaves out.** Correlated risks (a staffing shortfall raises several probabilities at once), the size of the worst case (a company that cannot survive a $30 M loss should not treat it as a $4.5 M expected cost), and risks nobody listed. A register is reviewed at every milestone (26-02): risks are retired, new ones added and probabilities updated as evidence arrives.
 
@@ -195,7 +195,7 @@ All probabilities, durations and costs are **assumed** for teaching unless a sou
 - (a) $1 - 0.25$ = **0.75**.
 - (b) $P(N = 1) = 0.25$; $P(N = 2) = 0.75 \times 0.70$ = **0.525**; $P(N = 3) = 0.75 \times 0.30 \times 0.95$ = **0.21375**; $P(N = 4) = 0.75 \times 0.30 \times 0.05$ = **0.01125** (exact products, shown in full).
 - (c) $E[N] = 1 + 0.75 + 0.75 \times 0.30 + 0.75 \times 0.30 \times 0.05 = 1 + 0.75 + 0.225 + 0.01125$ = **1.99**.
-- (d) Expected extra tape-outs 0.986, so the expected delay is $0.986 \times 18$ = **17.8** weeks and the expected respin cost $0.986 \times 21$ = **$20.7 M**.
+- (d) Expected extra tape-outs 0.986, so the expected delay is $0.986 \times 18$ = **17.8** weeks and the expected respin cost $0.986 \times 21$ = **\$20.7 M**.
 - (e) With $q$ = 0.25 every time, $N$ is geometric: $E[N] = 1/0.25$ = **4**.
 
 **Units check.** Tape-outs are counts; counts × weeks = weeks; counts × $ M = $ M. ✓
@@ -224,9 +224,9 @@ All probabilities, durations and costs are **assumed** for teaching unless a sou
 **Solution.**
 
 - (a) Full: $80 \times 1.2$ = **96** days = **13.7** weeks. Metal ECO: $25 \times 1.2$ = **30** days = **4.29** weeks.
-- (b) Full respin: $13.7 + 4$ = **17.7** weeks, costing $18 + 3 + 17.7 \times 1.5$ = **$47.6 M**. Metal ECO: $4.29 + 3$ = **7.29** weeks, costing $4 + 1 + 7.29 \times 1.5$ = **$15.9 M**.
+- (b) Full respin: $13.7 + 4$ = **17.7** weeks, costing $18 + 3 + 17.7 \times 1.5$ = **\$47.6 M**. Metal ECO: $4.29 + 3$ = **7.29** weeks, costing $4 + 1 + 7.29 \times 1.5$ = **\$15.9 M**.
 - (c) The ECO saves **$31.6 M** and **10.4** weeks.
-- (d) $24 \times 12{,}000$ = **$288,000**, small against the $31.6 M the hold can save: a wafer hold is cheap insurance.
+- (d) $24 \times 12{,}000$ = **\$288,000**, small against the \$31.6 M the hold can save: a wafer hold is cheap insurance.
 
 **Units check.** Layers × days/layer = days; weeks × $ M/week = $ M. ✓
 
@@ -234,14 +234,14 @@ All probabilities, durations and costs are **assumed** for teaching unless a sou
 
 ### Example 26-05.4 · A risk register under a budget (tier B)
 
-**Setup.** A program's register has four risks (probability, impact): R1, the SerDes test chip shows insufficient jitter margin (0.25, $20 M); R2, HBM supply allocation falls short (0.15, $30 M); R3, timing does not close at the target frequency (0.30, $8 M); R4, a firmware boot bug delays bring-up (0.20, $5 M). Mitigations (cost, probability after): R1, an extra test-chip shuttle ($2.0 M, 0.08); R2, qualifying a second HBM supplier ($2.5 M, 0.05); R3, 5% extra timing margin ($1.5 M, 0.10); R4, booting firmware on the emulator ($0.8 M, 0.05) (all assumed). Find (a) the register's EMV, (b) each mitigation's net benefit, (c) the best set with a $4 M budget and with a $5 M budget, and (d) the expected cost, mitigation included, with the $4 M set.
+**Setup.** A program's register has four risks (probability, impact): R1, the SerDes test chip shows insufficient jitter margin (0.25, \$20 M); R2, HBM supply allocation falls short (0.15, \$30 M); R3, timing does not close at the target frequency (0.30, \$8 M); R4, a firmware boot bug delays bring-up (0.20, $5 M). Mitigations (cost, probability after): R1, an extra test-chip shuttle ($2.0 M, 0.08); R2, qualifying a second HBM supplier ($2.5 M, 0.05); R3, 5% extra timing margin ($1.5 M, 0.10); R4, booting firmware on the emulator (\$0.8 M, 0.05) (all assumed). Find (a) the register's EMV, (b) each mitigation's net benefit, (c) the best set with a \$4 M budget and with a \$5 M budget, and (d) the expected cost, mitigation included, with the \$4 M set.
 
 **Solution.**
 
-- (a) $0.25 \times 20 + 0.15 \times 30 + 0.30 \times 8 + 0.20 \times 5 = 5.0 + 4.5 + 2.4 + 1.0$ = **$12.9 M**.
-- (b) R1: $0.17 \times 20 - 2.0$ = **$1.40 M**; R2: $0.10 \times 30 - 2.5$ = **$0.50 M**; R3: $0.20 \times 8 - 1.5$ = **$0.10 M**; R4: $0.15 \times 5 - 0.8$ = **−$0.05 M** (not worth doing).
-- (c) With $4 M: R1 and R3 ($3.5 M spent, net **$1.50 M**); R1 and R2 would cost $4.5 M. With $5 M: R1 and R2 ($4.5 M, net **$1.90 M**), better than R1 and R3 because R2's larger net benefit now fits.
-- (d) The residual EMV is $0.08 \times 20 + 4.5 + 0.10 \times 8 + 1.0$ = **$7.9 M**, plus $3.5 M of mitigation: **$11.4 M**, $1.50 M below the unmitigated $12.9 M.
+- (a) $0.25 \times 20 + 0.15 \times 30 + 0.30 \times 8 + 0.20 \times 5 = 5.0 + 4.5 + 2.4 + 1.0$ = **\$12.9 M**.
+- (b) R1: $0.17 \times 20 - 2.0$ = **\$1.40 M**; R2: $0.10 \times 30 - 2.5$ = **\$0.50 M**; R3: $0.20 \times 8 - 1.5$ = **\$0.10 M**; R4: $0.15 \times 5 - 0.8$ = **−\$0.05 M** (not worth doing).
+- (c) With $4 M: R1 and R3 ($3.5 M spent, net **\$1.50 M**); R1 and R2 would cost \$4.5 M. With $5 M: R1 and R2 ($4.5 M, net **\$1.90 M**), better than R1 and R3 because R2's larger net benefit now fits.
+- (d) The residual EMV is $0.08 \times 20 + 4.5 + 0.10 \times 8 + 1.0$ = **\$7.9 M**, plus $3.5 M of mitigation: **$11.4 M**, \$1.50 M below the unmitigated \$12.9 M.
 
 **Units check.** Probability × $ M = $ M. ✓
 
@@ -249,14 +249,14 @@ All probabilities, durations and costs are **assumed** for teaching unless a sou
 
 ### Example 26-05.5 · When to tape out (tier C)
 
-**Setup.** At the start of final verification, the team estimates $N_0$ = 40 remaining bugs with a mean discovery time $\tau$ = 4 weeks; a quarter of them ($\phi$ = 0.25) would force a respin. A respin costs $C_r$ = $40 M including its delay, and each week of verification costs $c_w$ = $1.5 M (all assumed). Find (a) the condition for the optimum, (b) the optimal verification time, the respin probability and the expected cost there, (c) the same quantities if the team tapes out after 8 weeks, and (d) the cost of taping out at once and the worst time to stop.
+**Setup.** At the start of final verification, the team estimates $N_0$ = 40 remaining bugs with a mean discovery time $\tau$ = 4 weeks; a quarter of them ($\phi$ = 0.25) would force a respin. A respin costs $C_r$ = \$40 M including its delay, and each week of verification costs $c_w$ = \$1.5 M (all assumed). Find (a) the condition for the optimum, (b) the optimal verification time, the respin probability and the expected cost there, (c) the same quantities if the team tapes out after 8 weeks, and (d) the cost of taping out at once and the worst time to stop.
 
 **Solution.**
 
 - (a) $k = c_w\tau/C_r = 1.5 \times 4/40$ = **0.15**, so $\lambda e^{-\lambda} = 0.15$, whose smaller root is $\lambda^*$ = **0.179**.
-- (b) $t^* = 4\ln(0.25 \times 40/0.179)$ = **16.1** weeks; $P_r = 1 - e^{-0.179}$ = **0.164**; $f(t^*) = 1.5 \times 16.1 + 40 \times 0.164$ = **$30.7 M**.
-- (c) At 8 weeks, $\lambda = 10e^{-2}$ = **1.35**, $P_r$ = **0.742**, $f$ = $12 + 29.7$ = **$41.7 M**, $11.0 M worse.
-- (d) At $t$ = 0, $\lambda$ = 10 and a respin is almost certain: $f$ = **$40.0 M**. The larger root of $\lambda e^{-\lambda} = 0.15$, $\lambda$ = **2.99** at $t$ = **4.82** weeks, is the cost maximum, **$45.2 M**: stopping partway through verification costs the weeks without buying down the respin.
+- (b) $t^* = 4\ln(0.25 \times 40/0.179)$ = **16.1** weeks; $P_r = 1 - e^{-0.179}$ = **0.164**; $f(t^*) = 1.5 \times 16.1 + 40 \times 0.164$ = **\$30.7 M**.
+- (c) At 8 weeks, $\lambda = 10e^{-2}$ = **1.35**, $P_r$ = **0.742**, $f$ = $12 + 29.7$ = **\$41.7 M**, \$11.0 M worse.
+- (d) At $t$ = 0, $\lambda$ = 10 and a respin is almost certain: $f$ = **\$40.0 M**. The larger root of $\lambda e^{-\lambda} = 0.15$, $\lambda$ = **2.99** at $t$ = **4.82** weeks, is the cost maximum, **\$45.2 M**: stopping partway through verification costs the weeks without buying down the respin.
 
 **Units check.** $c_w\tau/C_r$ is dimensionless; $\tau\ln(\cdot)$ is in weeks. ✓
 
@@ -264,18 +264,18 @@ All probabilities, durations and costs are **assumed** for teaching unless a sou
 
 ### Example 26-05.6 · Is emulation worth $3 M? (tier C)
 
-**Setup.** In Example 26-05.5, renting emulation capacity for the final phase costs $3 M and lowers the mean discovery time to $\tau$ = 2.5 weeks (assumed). Find (a) the new optimal verification time, (b) the respin probability, (c) the expected cost including the emulation, and (d) whether to buy it.
+**Setup.** In Example 26-05.5, renting emulation capacity for the final phase costs \$3 M and lowers the mean discovery time to $\tau$ = 2.5 weeks (assumed). Find (a) the new optimal verification time, (b) the respin probability, (c) the expected cost including the emulation, and (d) whether to buy it.
 
 **Solution.**
 
 - (a) $k = 1.5 \times 2.5/40$ = **0.0938**, $\lambda^*$ = **0.104**, $t^* = 2.5\ln(10/0.104)$ = **11.4** weeks.
 - (b) $P_r = 1 - e^{-0.104}$ = **0.0988**.
-- (c) $f = 3 + 1.5 \times 11.4 + 40 \times 0.0988$ = **$24.1 M**.
-- (d) Yes: it saves $30.7 - 24.1$ = **$6.6 M**, tapes out **4.7** weeks earlier and lowers the respin probability.
+- (c) $f = 3 + 1.5 \times 11.4 + 40 \times 0.0988$ = **\$24.1 M**.
+- (d) Yes: it saves $30.7 - 24.1$ = **\$6.6 M**, tapes out **4.7** weeks earlier and lowers the respin probability.
 
 **Units check.** As in Example 26-05.5. ✓
 
-**Sanity check.** Faster discovery helps twice: the same confidence arrives sooner, and because weeks are now more productive, the optimum also accepts less residual risk (**9.9**% against **16.4**%). Emulation would stop paying if its cost exceeded $6.6 M + $3 M = **$9.6 M**, the cost difference before its own price.
+**Sanity check.** Faster discovery helps twice: the same confidence arrives sooner, and because weeks are now more productive, the optimum also accepts less residual risk (**9.9**% against **16.4**%). Emulation would stop paying if its cost exceeded \$6.6 M + $3 M = **$9.6 M**, the cost difference before its own price.
 
 <!-- answer-key -->
 
@@ -496,7 +496,7 @@ It changes only the metal and via layers. Wafers held at the contact layer need 
 
 <details><summary>Answer</summary>
 
-No: it lowers the expected loss by $0.1 \times 6$ = **$0.6 M**, less than its $1 M cost.
+No: it lowers the expected loss by $0.1 \times 6$ = **\$0.6 M**, less than its \$1 M cost.
 
 </details>
 

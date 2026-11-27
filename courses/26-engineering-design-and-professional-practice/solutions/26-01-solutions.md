@@ -84,11 +84,11 @@ with $\rho_{ii}$ = 1.
 
 (a) $231/250$ = **92.4**%.
 
-(b) $4 \times 0.25 + 15 \times 0.04$ = **1.6** expected escapes, costing $1.6 \times 1.5$ = **$2.40 M**.
+(b) $4 \times 0.25 + 15 \times 0.04$ = **1.6** expected escapes, costing $1.6 \times 1.5$ = **\$2.40 M**.
 
-(c) $19 \times 0.015$ = **$0.285 M**, so the expected loss is **8.4** times the cost of closing the gaps.
+(c) $19 \times 0.015$ = **\$0.285 M**, so the expected loss is **8.4** times the cost of closing the gaps.
 
-(d) Write the four high-risk tests first (they carry **1.0** of the 1.6 expected escapes), then two low-risk ones. That leaves 13 low-risk gaps: $13 \times 0.04 \times 1.5$ = **$0.78 M** expected. Ranking by risk, not by order in the document, is what makes a limited budget go furthest.
+(d) Write the four high-risk tests first (they carry **1.0** of the 1.6 expected escapes), then two low-risk ones. That leaves 13 low-risk gaps: $13 \times 0.04 \times 1.5$ = **\$0.78 M** expected. Ranking by risk, not by order in the document, is what makes a limited budget go furthest.
 
 ### Solution 26-01.9
 
@@ -108,7 +108,7 @@ whose terms are **2.0**, **1.2**, **11.2** and **24.0**, so $\bar c_{down}$ = **
 
 (a) Let $\bar c_k$ be the expected cost of an error that has reached phase $k$. It is caught there with probability $p_k$ at cost $c_k$, or passes on with probability $1 - p_k$ and then costs $\bar c_{k+1}$; hence $\bar c_k = p_kc_k + (1 - p_k)\bar c_{k+1}$, with $\bar c$ = 200 in the field (everything left is caught there). For Problem 26-01.9: test, $0.7 \times 40 + 0.3 \times 200$ = **88**; build, $0.2 \times 12 + 0.8 \times 88$ = **72.8**; design, $0.5 \times 4 + 0.5 \times 72.8$ = **38.4**, which confirms (a).
 
-(b) $\partial C/\partial p_1 = -N(\bar c_{down} - c_1) = -60 \times$ **37.4** = **−2244** units per unit of $p_1$, so one percentage point is worth **22.44** units, or **$1.80e5** at $8,000 per unit.
+(b) $\partial C/\partial p_1 = -N(\bar c_{down} - c_1) = -60 \times$ **37.4** = **−2244** units per unit of $p_1$, so one percentage point is worth **22.44** units, or **\$1.80e5** at \$8,000 per unit.
 
 (c) $250{,}000/(2244 \times 8000)$ = **0.0139**, so the review pays for itself if it raises the catch rate by **1.39** percentage points.
 
@@ -146,9 +146,9 @@ $$
 
 ### Solution 26-01.14
 
-(a) $40 \times 2.5$ = **100** engineer-weeks, costing $100 \times 5{,}000$ = **$0.50 M**.
+(a) $40 \times 2.5$ = **100** engineer-weeks, costing $100 \times 5{,}000$ = **\$0.50 M**.
 
-(b) $40 \times 0.15 \times 1.0$ = **6.0** weeks of expected slip, costing $6.0 \times 2.0$ = **$12.0 M**.
+(b) $40 \times 0.15 \times 1.0$ = **6.0** weeks of expected slip, costing $6.0 \times 2.0$ = **\$12.0 M**.
 
 (c) Delay dominates, by a factor of **24**. Changes after freeze should therefore be approved against their schedule impact, by someone who owns the schedule, using the traceability links to find what each change touches; the engineering hours are the small part.
 

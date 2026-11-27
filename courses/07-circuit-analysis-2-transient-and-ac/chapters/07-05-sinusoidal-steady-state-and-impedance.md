@@ -174,7 +174,7 @@ Every frequency passes with unchanged amplitude, but delayed by a different phas
 
 **Solution.**
 
-(a) At 1 kHz, $\omega = 6283$ rad/s: $X = \omega L - 1/(\omega C) = 1.257\times10^{-5} - 15.915 = -15.92$ Ω, so $Z = 0.1 - j15.92$ Ω $= $ **15.92 Ω ∠ −89.64°**. At 100 kHz: $X = 1.257\times10^{-3} - 0.1592 = -0.1579$ Ω, so $Z = 0.1 - j0.1579$ Ω $= $ **0.1869 Ω ∠ −57.65°**.
+(a) At 1 kHz, $\omega = 6283$ rad/s: $X = \omega L - 1/(\omega C) = 1.257\times10^{-5} - 15.915 = -15.92$ Ω, so $Z = 0.1 - j15.92$ Ω \$= \$ **15.92 Ω ∠ −89.64°**. At 100 kHz: $X = 1.257\times10^{-3} - 0.1592 = -0.1579$ Ω, so $Z = 0.1 - j0.1579$ Ω \$= \$ **0.1869 Ω ∠ −57.65°**.
 
 (b) $D = R/\lvert X\rvert$: **0.006283** at 1 kHz (essentially $\omega CR$, the ESL being negligible) and **0.6333** at 100 kHz.
 
@@ -212,7 +212,7 @@ Solving (Cramer's rule or a complex linear solver): $\mathbf{V}_1 = 2.539 - j7.1
 
 **Solution.**
 
-(a) $Z_C = 1/(j\omega C) = -j1591.5$ Ω. Open-circuit voltage: the divider $\mathbf{V}_{Th} = 10\,Z_C/(R_1 + Z_C) = 7.170 - j4.505$ V $=$ **8.467 V ∠ −32.14°** (no current in $R_2$). Thévenin impedance, source shorted: $Z_{Th} = R_2 + R_1\parallel Z_C = 500 + (716.96 - j450.48) = $ **1217 − j450.5 Ω** ($1298\angle{-20.31°}$ Ω).
+(a) $Z_C = 1/(j\omega C) = -j1591.5$ Ω. Open-circuit voltage: the divider $\mathbf{V}_{Th} = 10\,Z_C/(R_1 + Z_C) = 7.170 - j4.505$ V $=$ **8.467 V ∠ −32.14°** (no current in $R_2$). Thévenin impedance, source shorted: \$Z_{Th} = R_2 + R_1\parallel Z_C = 500 + (716.96 - j450.48) = \$ **1217 − j450.5 Ω** ($1298\angle{-20.31°}$ Ω).
 
 (b) $\mathbf{V}_{load} = \mathbf{V}_{Th}\,R_L/(Z_{Th} + R_L) = 3.502 - j1.320$ V $=$ **3.743 V ∠ −20.66°**. Nodal analysis at node a and the output node gives the same phasor (the lab's notebook does it in two lines).
 
@@ -227,7 +227,7 @@ Solving (Cramer's rule or a complex linear solver): $\mathbf{V}_1 = 2.539 - j7.1
 
 (a) $\mathbf{I} = 23/(18.4 + j13.8) = 0.8 - j0.6$ A $=$ **1.000 A ∠ −36.87°**: the load is inductive, so the current lags by θ = 36.87° ($\cos\theta = 0.8$, $\sin\theta = 0.6$).
 
-(b) $\mathbf{V}_S = 23 + (0.8 - j0.6)(0.5 + j0.3) = 23 + (0.58 - j0.06) = 23.58 - j0.06$ V, so $\lvert\mathbf{V}_S\rvert = $ **23.58 V** at an angle of −0.146°. The drop is $0.580/23 = $ **2.522%** of the load voltage.
+(b) $\mathbf{V}_S = 23 + (0.8 - j0.6)(0.5 + j0.3) = 23 + (0.58 - j0.06) = 23.58 - j0.06$ V, so \$\lvert\mathbf{V}_S\rvert = \$ **23.58 V** at an angle of −0.146°. The drop is \$0.580/23 = \$ **2.522%** of the load voltage.
 
 (c) The approximation gives $I(R\cos\theta + X\sin\theta) = 1\times(0.5\times0.8 + 0.3\times0.6) = $ **0.580 V**, matching the exact 0.5801 V to within 0.1 mV: the quadrature component (−0.06 V) changes the magnitude only in second order.
 
@@ -257,7 +257,7 @@ Equating real and imaginary parts gives two conditions: $R_x = R_2R_3/R_4$ and $
 (c) No: ω cancels from both conditions, so the bridge balances at every frequency. That makes it convenient (the source frequency need not be stable) and is one reason this particular arrangement measures inductors with a capacitor standard, which is easier to make precise than an inductor standard.
 
 **Units check.** Ω²·F = Ω·(Ω·F) = Ω·s = H ✓.
-**Sanity check.** The inductor's $Q$ at 1 kHz is $\omega L/R = 314.2/20 = $ **15.71**; arm 4's matching $Q$ is $\omega C_4R_4 = 6283\times50\times10^{-9}\times5\times10^4 = 15.71$ ✓: at balance the two arms have equal phase angles. This is a Maxwell bridge, with the parallel RC in arm 4. For coils with $Q$ above about 10, like this one, practitioners usually prefer the Hay bridge, which puts the RC in series and whose balance is easier to reach at high $Q$.
+**Sanity check.** The inductor's $Q$ at 1 kHz is \$\omega L/R = 314.2/20 = \$ **15.71**; arm 4's matching $Q$ is $\omega C_4R_4 = 6283\times50\times10^{-9}\times5\times10^4 = 15.71$ ✓: at balance the two arms have equal phase angles. This is a Maxwell bridge, with the parallel RC in arm 4. For coils with $Q$ above about 10, like this one, practitioners usually prefer the Hay bridge, which puts the RC in series and whose balance is easier to reach at high $Q$.
 
 ### Example 07-05.6 · An all-pass filter changes a waveform's shape (tier C)
 
@@ -265,7 +265,7 @@ Equating real and imaginary parts gives two conditions: $R_x = R_2R_3/R_4$ and $
 
 **Solution.**
 
-(a) $\omega RC = 1$ at 1 kHz gives $C = 1/(2\pi\times1000\times10^4) = $ **15.92 nF**. The phase $-2\arctan(\omega RC)$ with $\omega RC = f/1\text{ kHz}$: at 3 kHz **−143.13°**, at 100 Hz **−11.42°**, at 10 kHz **−168.58°**.
+(a) $\omega RC = 1$ at 1 kHz gives \$C = 1/(2\pi\times1000\times10^4) = \$ **15.92 nF**. The phase $-2\arctan(\omega RC)$ with $\omega RC = f/1\text{ kHz}$: at 3 kHz **−143.13°**, at 100 Hz **−11.42°**, at 10 kHz **−168.58°**.
 
 (b) Each frequency is treated separately (§3.4) and added in time:
 
@@ -273,7 +273,7 @@ $$
 v_{out}(t) = \cos(2\pi\cdot1000\,t - 90°) + \tfrac13\cos(2\pi\cdot3000\,t - 143.13°)\ \text{V}.
 $$
 
-Both amplitudes are unchanged, yet the waveform is different: the input peaks at $1 + \tfrac13 = $ **1.333 V** (both cosines peak together at $t = 0$), while the output's components no longer line up, and its peak, found numerically, is **1.134 V**.
+Both amplitudes are unchanged, yet the waveform is different: the input peaks at \$1 + \tfrac13 = \$ **1.333 V** (both cosines peak together at $t = 0$), while the output's components no longer line up, and its peak, found numerically, is **1.134 V**.
 
 (c) A phase lag φ at frequency $f$ is a time delay $\varphi/(360°\,f)$: the 1 kHz component is delayed **0.2500 ms** and the 3 kHz component only **132.5 µs**. Different frequencies arrive at different times, so the shape changes.
 

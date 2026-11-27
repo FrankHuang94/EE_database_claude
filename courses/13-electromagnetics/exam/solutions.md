@@ -50,7 +50,7 @@ which is (**−2**, **−3**, **−1**) at (1, 2, 3).
 
 (a) $\delta = 1/\sqrt{\pi f\mu_0\sigma} = 1/\sqrt{\pi(3 \times 10^8)(4\pi \times 10^{-7})(3.5 \times 10^7)}$ = **4.912** µm and $R_s = 1/(\sigma\delta)$ = **5.817** mΩ. With the current in a skin of depth δ around the circumference $\pi d$, $R_{ac} = R_s\ell/(\pi d) = 5.817 \times 10^{-3}/(\pi \times 10^{-3})$ = **1.852** Ω, while $R_{dc} = \ell/(\sigma\pi d^2/4)$ = **36.38** mΩ. The ratio is $a/(2\delta)$ = **50.90**: at 300 MHz only the outer 5 µm of the 1 mm wire carries current. (The exact Bessel-function solution for a round wire is **0.5**% higher: the skin sits on a curved surface, and the correction is about $\delta/(2a)$, small because $a/\delta \approx 100$.)
 
-(b) $\sigma/(\omega\varepsilon) = 4/(2\pi \times 4 \times 10^4 \times 81 \times 8.854 \times 10^{-12}) = $ **2.219 × 10⁴** ≫ 1, a good conductor. $\delta = 1/\sqrt{\pi f\mu_0\sigma}$ = **1.258** m, the attenuation is $8.686/\delta$ = **6.903** dB/m, the wavelength in the water is $2\pi\delta$ = **7.906** m (against 7.5 km in air), and an 80 dB loss takes $80/6.903$ = **11.59** m. Submarine communication therefore uses very low frequencies (and still only reaches shallow depths).
+(b) \$\sigma/(\omega\varepsilon) = 4/(2\pi \times 4 \times 10^4 \times 81 \times 8.854 \times 10^{-12}) = \$ **2.219 × 10⁴** ≫ 1, a good conductor. $\delta = 1/\sqrt{\pi f\mu_0\sigma}$ = **1.258** m, the attenuation is $8.686/\delta$ = **6.903** dB/m, the wavelength in the water is $2\pi\delta$ = **7.906** m (against 7.5 km in air), and an 80 dB loss takes $80/6.903$ = **11.59** m. Submarine communication therefore uses very low frequencies (and still only reaches shallow depths).
 
 ### Solution 6
 

@@ -40,7 +40,7 @@ NPU: $5 \times 10^{13}/(20 \times 10^{12})$ = **2.50** s; energy $5 \times 10^{1
 
 ### Solution 27-05.8
 
-Monolithic: **143** dies per wafer, yield $e^{-0.40}$ = **0.670**, cost **$193.00**. Tiles: 200 mm² gives **306** dies per wafer at yield 0.819, **$73.84** each; package $(2 \times 73.84 + 10)/0.97$ = **$162.56**. Ratio **0.842**: on the same node and with no interface area, splitting a large die still saves 16% because yield falls exponentially with area.
+Monolithic: **143** dies per wafer, yield $e^{-0.40}$ = **0.670**, cost **$193.00**. Tiles: 200 mm² gives **306** dies per wafer at yield 0.819, **$73.84** each; package $(2 \times 73.84 + 10)/0.97$ = **\$162.56**. Ratio **0.842**: on the same node and with no interface area, splitting a large die still saves 16% because yield falls exponentially with area.
 
 ### Solution 27-05.9
 

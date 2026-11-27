@@ -36,7 +36,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-04.5 [B]
 
-**Its cost.** For Problem 25-04.4's die on a $30,000 wafer with $D_0$ = 0.1 cm⁻² and $\alpha$ = 3 (assumed), find (a) the yield, (b) the good dies per wafer and (c) the cost per good die.
+**Its cost.** For Problem 25-04.4's die on a \$30,000 wafer with $D_0$ = 0.1 cm⁻² and $\alpha$ = 3 (assumed), find (a) the yield, (b) the good dies per wafer and (c) the cost per good die.
 
 ### Problem 25-04.6 [C]
 

@@ -300,7 +300,7 @@ $$
 | 1 | $j0.5$ | **2.000** | **−90°** |
 | 2 | $-3 + j1$ | **0.3162** | **−161.57°** |
 
-The peak is at $\omega_0\sqrt{1 - 2(0.0625)} = $ **9354 rad/s**, with height $1/\big(2\times0.25\sqrt{1 - 0.0625}\big) = $ **2.066**, which is **+6.30 dB**, barely above the value $Q = 2$ at $\omega_0$.
+The peak is at \$\omega_0\sqrt{1 - 2(0.0625)} = \$ **9354 rad/s**, with height \$1/\big(2\times0.25\sqrt{1 - 0.0625}\big) = \$ **2.066**, which is **+6.30 dB**, barely above the value $Q = 2$ at $\omega_0$.
 
 **Units check.** $r$ and $2\zeta r$ are dimensionless, so $H$ is a pure ratio ✓. **Sanity check.** At $2\omega_0$ the asymptote $1/r^2 = 0.25$ is below the exact 0.316 because the asymptote drops the 1 in $1 - r^2$, which is not negligible at $r^2 = 4$: without damping the gain would be $1/\lvert1 - 4\rvert = 0.333$, and damping lowers that slightly, to 0.316 ✓.
 
@@ -310,7 +310,7 @@ The peak is at $\omega_0\sqrt{1 - 2(0.0625)} = $ **9354 rad/s**, with height $1/
 
 **Solution.** (a) The resonant formula gives $x = \frac{1}{2\omega_0}t\sin\omega_0t = 0.05\,t\sin10t$. At 5 s the envelope is **0.25 m**, and still growing.
 
-(b) From §3.6, $x = \frac{2}{\omega_0^2 - \omega^2}\sin\frac{(\omega_0 - \omega)t}{2}\sin\frac{(\omega_0 + \omega)t}{2}$, with $\omega_0^2 - \omega^2 = 100 - 90.25 = 9.75$. The envelope peaks at $2/9.75 = $ **0.2051 m** when $\sin(0.25t) = 1$, first at $t = \pi/0.5 = $ **6.283 s**. The envelope repeats every $2\pi/(\omega_0 - \omega) = $ **12.57 s**: the beat period. At 6.283 s the exactly tuned system of (a) has already reached $0.05\times6.283 = $ **0.3142 m**, and it keeps growing, while the detuned one turns back down.
+(b) From §3.6, $x = \frac{2}{\omega_0^2 - \omega^2}\sin\frac{(\omega_0 - \omega)t}{2}\sin\frac{(\omega_0 + \omega)t}{2}$, with $\omega_0^2 - \omega^2 = 100 - 90.25 = 9.75$. The envelope peaks at \$2/9.75 = \$ **0.2051 m** when $\sin(0.25t) = 1$, first at \$t = \pi/0.5 = \$ **6.283 s**. The envelope repeats every \$2\pi/(\omega_0 - \omega) = \$ **12.57 s**: the beat period. At 6.283 s the exactly tuned system of (a) has already reached \$0.05\times6.283 = \$ **0.3142 m**, and it keeps growing, while the detuned one turns back down.
 
 **Sanity check.** As $\omega \to \omega_0$, $\sin\frac{(\omega_0 - \omega)t}{2} \approx \frac{(\omega_0 - \omega)t}{2}$ and $\omega_0^2 - \omega^2 \approx 2\omega_0(\omega_0 - \omega)$, so the beat formula tends to $\frac{t}{2\omega_0}\sin\omega_0t$, the resonant result ✓.
 
@@ -320,9 +320,9 @@ The peak is at $\omega_0\sqrt{1 - 2(0.0625)} = $ **9354 rad/s**, with height $1/
 
 **Solution.** (a) $C = 1/\big((2\pi f_0)^2L\big) = $ **137.8 pF**. $Q = \omega_0L/R = 85.20/3 = $ **28.40**, so the bandwidth is $f_0/Q = $ **477.5 kHz**. The half-power frequencies, from §3.5, are **13.32 MHz** and **13.80 MHz**.
 
-(b) At $f = 13.56 + 0.8475$ MHz, $\lvert H_{BP}\rvert = 1/\sqrt{1 + Q^2(f/f_0 - f_0/f)^2} = $ **0.2787**, or **−11.10 dB**; the lower sideband sees **0.2630**. The data sidebands are about 3.59 and 3.80 times weaker than the carrier (Figure 5).
+(b) At $f = 13.56 + 0.8475$ MHz, \$\lvert H_{BP}\rvert = 1/\sqrt{1 + Q^2(f/f_0 - f_0/f)^2} = \$ **0.2787**, or **−11.10 dB**; the lower sideband sees **0.2630**. The data sidebands are about 3.59 and 3.80 times weaker than the carrier (Figure 5).
 
-(c) Requiring $f_0/Q = 2\times847.5$ kHz gives $Q = $ **8.0**, and $R = \omega_0L/Q = $ **10.65 Ω**: about 7.65 Ω of deliberate damping resistance added. Because the band is centered geometrically rather than arithmetically, the upper sideband then sees **0.718** and the lower **0.695**: the lower sideband falls just *outside* the half-power band. To keep it at or above 0.707, solve $Q(r - 1/r) = -1$ at $r = f_l/f_0 = 1 - 0.8475/13.56$: $Q \le$ **7.742**, which needs a total resistance of at least **11.00 Ω**.
+(c) Requiring $f_0/Q = 2\times847.5$ kHz gives \$Q = \$ **8.0**, and \$R = \omega_0L/Q = \$ **10.65 Ω**: about 7.65 Ω of deliberate damping resistance added. Because the band is centered geometrically rather than arithmetically, the upper sideband then sees **0.718** and the lower **0.695**: the lower sideband falls just *outside* the half-power band. To keep it at or above 0.707, solve $Q(r - 1/r) = -1$ at $r = f_l/f_0 = 1 - 0.8475/13.56$: $Q \le$ **7.742**, which needs a total resistance of at least **11.00 Ω**.
 
 **Interpretation.** Higher $Q$ means a larger resonant current, so more field and more power delivered to the card, but a narrower band that attenuates the data. Antenna designers therefore lower $Q$ on purpose, trading field strength for data integrity. The same tradeoff appears in every tuned receiver.
 
@@ -336,11 +336,11 @@ The peak is at $\omega_0\sqrt{1 - 2(0.0625)} = $ **9354 rad/s**, with height $1/
 
 **Setup.** A 32.768 kHz tuning-fork crystal has $Q = 50\,000$, within the typical range for such crystals ([R-035](../../../reference/research-log.md#r-035--32768-khz-tuning-fork-crystals-q-and-start-up)). It is driven exactly at resonance, starting from rest. (a) Find the build-up time constant and the time to reach 99% of the steady amplitude, in seconds and in cycles. (b) Find the half-power bandwidth. (c) If the drive is 1 Hz off resonance, what fraction of the resonant amplitude results?
 
-**Solution.** (a) $\omega_0 = 2\pi\times32\,768 = 2.059\times10^5$ rad/s and $1/\alpha = 2Q/\omega_0 = $ **0.4857 s**. Reaching 99% needs $\ln100 = 4.605$ time constants: **2.237 s**, or about **73,300** cycles.
+**Solution.** (a) $\omega_0 = 2\pi\times32\,768 = 2.059\times10^5$ rad/s and \$1/\alpha = 2Q/\omega_0 = \$ **0.4857 s**. Reaching 99% needs $\ln100 = 4.605$ time constants: **2.237 s**, or about **73,300** cycles.
 
 (b) $f_0/Q = 32\,768/50\,000 = $ **0.6554 Hz**.
 
-(c) Near resonance, $r - 1/r \approx 2\Delta f/f_0$, so the band-pass factor is $1/\sqrt{1 + (2Q\Delta f/f_0)^2} = 1/\sqrt{1 + (3.052)^2} = $ **0.3114**: a 1 Hz error, about 31 parts per million, cuts the response to under a third.
+(c) Near resonance, $r - 1/r \approx 2\Delta f/f_0$, so the band-pass factor is \$1/\sqrt{1 + (2Q\Delta f/f_0)^2} = 1/\sqrt{1 + (3.052)^2} = \$ **0.3114**: a 1 Hz error, about 31 parts per million, cuts the response to under a third.
 
 **Interpretation.** A watch's accuracy is set mainly by the crystal's frequency tolerance and temperature coefficient (an error of 20 ppm is $20\times10^{-6}\times30\times86\,400 \approx 52$ s in a 30-day month). What the enormous $Q$ buys is a frequency that is insensitive to the amplifier and the rest of the circuit, and the same $Q$ makes it slow. An oscillator built around it starts from noise, and its start-up time is set by how much excess negative resistance the amplifier provides, but it cannot settle faster than the crystal's own time scale. Vendor guides put typical start-up of 32.768 kHz crystal oscillators within about a second, and list high $Q$, high series resistance and heavy load capacitance as causes of slow starts ([R-035](../../../reference/research-log.md#r-035--32768-khz-tuning-fork-crystals-q-and-start-up)). For a wearable that wakes its clock often, that start-up time and the oscillator's current are real product tradeoffs.
 

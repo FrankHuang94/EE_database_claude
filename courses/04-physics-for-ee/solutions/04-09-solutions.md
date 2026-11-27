@@ -14,7 +14,7 @@ $\lambda = c/f = $ **12.49 cm**; $T = 1/f = $ **0.4167 ns**; $k = 2\pi/\lambda =
 
 (a) $v = \sqrt{F_T/\mu} = \sqrt{100/0.002} = $ **223.6 m/s**; $f_1 = v/(2L) = $ **223.6 Hz**.
 
-(b) $f_1 = \sqrt{F_T/\mu}/(2L)$, so $F_T = \mu(2Lf_1)^2 = 0.002\times(440)^2 = $ **387.2 N**. Frequency goes as the square root of tension: doubling the pitch needs four times the tension.
+(b) $f_1 = \sqrt{F_T/\mu}/(2L)$, so \$F_T = \mu(2Lf_1)^2 = 0.002\times(440)^2 = \$ **387.2 N**. Frequency goes as the square root of tension: doubling the pitch needs four times the tension.
 
 ### Solution 04-09.3
 
@@ -28,11 +28,11 @@ $\Delta y = \lambda L/d = 532\times10^{-9}\times2/0.5\times10^{-3} = $ **2.128 m
 
 (a) $\sin\theta = 0.5 - 1/0.75 = -0.8333$, so θ = **−56.44°**: a second beam on the other side of broadside, wasting power and picking up interference.
 
-(b) The grating lobe at $\sin\theta_0 - \lambda/d$ stays outside the visible range ($|\sin\theta| > 1$) only if $\lambda/d > 1 + \sin\theta_0$, i.e. $d/\lambda < 1/(1 + 0.5) = $ **0.6667**. Arrays that steer widely use about λ/2.
+(b) The grating lobe at $\sin\theta_0 - \lambda/d$ stays outside the visible range ($|\sin\theta| > 1$) only if $\lambda/d > 1 + \sin\theta_0$, i.e. \$d/\lambda < 1/(1 + 0.5) = \$ **0.6667**. Arrays that steer widely use about λ/2.
 
 ### Solution 04-09.6
 
-$\sin\theta = \lambda/a = 0.0633$, so θ = **3.629°**. The central band runs between the first minima on either side: width $2L\tan\theta = $ **126.9 mm** on a screen 1 m away. A slit only 16 wavelengths wide spreads light substantially.
+$\sin\theta = \lambda/a = 0.0633$, so θ = **3.629°**. The central band runs between the first minima on either side: width \$2L\tan\theta = \$ **126.9 mm** on a screen 1 m away. A slit only 16 wavelengths wide spreads light substantially.
 
 ### Solution 04-09.7
 

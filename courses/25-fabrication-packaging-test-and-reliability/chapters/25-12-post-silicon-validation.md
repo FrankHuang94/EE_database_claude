@@ -162,8 +162,8 @@ The Siemens EDA and Wilson Research Group study is the industry's main public da
 
 **Solution.**
 
-- (a) $2 + 10 \times 5 + 0.2 \times (25 + 20 \times 5)$ = **$77 M**.
-- (b) $25 + 20 \times 5$ = **$125 M**.
+- (a) $2 + 10 \times 5 + 0.2 \times (25 + 20 \times 5)$ = **\$77 M**.
+- (b) $25 + 20 \times 5$ = **\$125 M**.
 - (c) $52 + (1 - p) \times 125 = 125$ gives $p$ = **0.416**.
 
 **Units check.** $ M + weeks × $ M/week = $ M.

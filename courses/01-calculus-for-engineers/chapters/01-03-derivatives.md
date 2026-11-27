@@ -340,9 +340,9 @@ $$
 
 **Solution.**
 
-(a) $i = C\,dv/dt = 10^{-6}\times5\times2\pi\cdot1000\cos(2\pi\cdot1000\,t)$ A. The amplitude is $C\cdot5\cdot\omega = $ **31.42 mA**, and the current leads the voltage by 90° (Figure 2).
+(a) $i = C\,dv/dt = 10^{-6}\times5\times2\pi\cdot1000\cos(2\pi\cdot1000\,t)$ A. The amplitude is \$C\cdot5\cdot\omega = \$ **31.42 mA**, and the current leads the voltage by 90° (Figure 2).
 
-(b) The slope is $5\text{ V}/1\text{ ms} = 5000$ V/s, so $i = 10^{-6}\times5000 = $ **5.000 mA**, constant during the ramp.
+(b) The slope is $5\text{ V}/1\text{ ms} = 5000$ V/s, so \$i = 10^{-6}\times5000 = \$ **5.000 mA**, constant during the ramp.
 
 **Units check.** F·V/s = (C/V)(V/s) = C/s = A ✓.
 
@@ -352,7 +352,7 @@ $$
 
 **Setup.** A relay coil with $L = 10$ mH carries 100 mA. A transistor switch turns it off, and the current falls linearly to zero in 1 µs. What voltage appears across the coil? What is the instantaneous power?
 
-**Solution.** $di/dt = (0 - 0.1\text{ A})/10^{-6}\text{ s} = -10^5$ A/s. Then $v_L = L\,di/dt = 10^{-2}\times(-10^5) = $ **−1000 V**. At the start of the turn-off, while the current is still 0.1 A, the power is $p = vi = -1000\times0.1 = $ **−100 W**, and it falls linearly to zero with the current. The sign means the coil is *delivering* energy: its stored $\tfrac{1}{2}Li^2 = $ **50 µJ** is dumped in a microsecond (the average of 100 W and 0 W over 1 µs is exactly 50 µJ ✓).
+**Solution.** $di/dt = (0 - 0.1\text{ A})/10^{-6}\text{ s} = -10^5$ A/s. Then \$v_L = L\,di/dt = 10^{-2}\times(-10^5) = \$ **−1000 V**. At the start of the turn-off, while the current is still 0.1 A, the power is \$p = vi = -1000\times0.1 = \$ **−100 W**, and it falls linearly to zero with the current. The sign means the coil is *delivering* energy: its stored \$\tfrac{1}{2}Li^2 = \$ **50 µJ** is dumped in a microsecond (the average of 100 W and 0 W over 1 µs is exactly 50 µJ ✓).
 
 **Interpretation.** A kilovolt spike would destroy the switching transistor. This is why every relay, solenoid and motor winding gets a **flyback diode** that gives the current a path and caps the voltage ([07-02](../../07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md)). The same $L\,di/dt$ shows up inside chips, where fast load current steps through package inductance make the supply voltage droop (§9).
 
@@ -368,8 +368,8 @@ $$
 \frac{dv}{dt} = 10\left[-\frac{1}{\tau}e^{-t/\tau}\cos\omega t - \omega e^{-t/\tau}\sin\omega t\right] = -10e^{-t/\tau}\left[\frac{\cos\omega t}{\tau} + \omega\sin\omega t\right].
 $$
 
-- At $t = 0$: $dv/dt = -10/\tau = -5000$ V/s, so $i = 10^{-7}\times(-5000) = $ **−0.500 mA**.
-- At $t = 0.5$ ms: $\omega t = \pi/2$, so $\cos = 0$ and $\sin = 1$. Then $dv/dt = -10e^{-0.25}\omega = -24\,467$ V/s, and $i = $ **−2.447 mA**.
+- At $t = 0$: $dv/dt = -10/\tau = -5000$ V/s, so \$i = 10^{-7}\times(-5000) = \$ **−0.500 mA**.
+- At $t = 0.5$ ms: $\omega t = \pi/2$, so $\cos = 0$ and $\sin = 1$. Then $dv/dt = -10e^{-0.25}\omega = -24\,467$ V/s, and \$i = \$ **−2.447 mA**.
 
 **Interpretation.** At $t = 0.5$ ms the voltage is crossing zero, and that is where the current is large. At $t = 0$ the voltage is at its peak, so its slope comes only from the slow decay. Current is about slope, not level.
 
@@ -381,9 +381,9 @@ $$
 
 **Solution.**
 
-(a) $g_d = I/V_T = 10^{-3}/0.02585 = $ **38.68 mS**, so $r_d = V_T/I = $ **25.85 Ω**. (The $I_s$ correction is negligible.)
+(a) \$g_d = I/V_T = 10^{-3}/0.02585 = \$ **38.68 mS**, so \$r_d = V_T/I = \$ **25.85 Ω**. (The $I_s$ correction is negligible.)
 
-(b) The linear estimate is $\Delta I \approx g_d\Delta V = 38.68\text{ mS}\times1\text{ mV} = $ **38.68 µA**, a 3.868% change. The exact change is $I\left(e^{\Delta V/V_T} - 1\right) = 1\text{ mA}\times\left(e^{1/25.85} - 1\right)$, a **3.944%** change. The tangent underestimates by about 2% of the change itself, because the exponential curves upward.
+(b) The linear estimate is \$\Delta I \approx g_d\Delta V = 38.68\text{ mS}\times1\text{ mV} = \$ **38.68 µA**, a 3.868% change. The exact change is $I\left(e^{\Delta V/V_T} - 1\right) = 1\text{ mA}\times\left(e^{1/25.85} - 1\right)$, a **3.944%** change. The tangent underestimates by about 2% of the change itself, because the exponential curves upward.
 
 (c) $S = \dfrac{V}{I}\dfrac{dI}{dV} = \dfrac{V}{V_T} = 0.6547/0.02585 = $ **25.33**. A 1% change in voltage changes the current by about 25%. This extreme sensitivity is why diodes and transistors are biased with current sources, not voltage sources ([10-01](../../10-electronics-1/chapters/10-01-diodes-and-diode-circuits.md)).
 

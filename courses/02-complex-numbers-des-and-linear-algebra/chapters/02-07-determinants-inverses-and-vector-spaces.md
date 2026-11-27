@@ -345,7 +345,7 @@ The same $\mathbf{A}^\mathsf{T}\mathbf{C}\mathbf{A}$ pattern describes spring ne
 
 **Setup.** (a) Find $\det\begin{bmatrix} 3 & 1 \\ 2 & 4\end{bmatrix}$, and interpret it as an area. (b) Find the determinant of Example 02-06.3's matrix $\mathbf{A} = \begin{bmatrix} 2 & 1 & -1 \\ 4 & 5 & -3 \\ -2 & 5 & 4\end{bmatrix}$ by cofactor expansion, and compare with its pivots. (c) Find $\det(2\mathbf{A})$, $\det\mathbf{A}^\mathsf{T}$ and $\det\mathbf{A}^{-1}$.
 
-**Solution.** (a) $3\cdot4 - 1\cdot2 = $ **10**. The columns $(3, 2)$ and $(1, 4)$ span a parallelogram of area 10, so the matrix multiplies every area by 10. The sign is positive, so it preserves orientation.
+**Solution.** (a) \$3\cdot4 - 1\cdot2 = \$ **10**. The columns $(3, 2)$ and $(1, 4)$ span a parallelogram of area 10, so the matrix multiplies every area by 10. The sign is positive, so it preserves orientation.
 
 (b) Expand along row 1:
 
@@ -411,10 +411,10 @@ $$
 \mathbf{R} = \begin{bmatrix} 1 & 2 & 0 & 1 \\ 0 & 0 & 1 & 2 \\ 0 & 0 & 0 & 0\end{bmatrix} .
 $$
 
-(Here $\mathbf{U}$ is already reduced.) The pivots are in columns 1 and 3, so the rank is $r = $ **2**.
+(Here $\mathbf{U}$ is already reduced.) The pivots are in columns 1 and 3, so the rank is \$r = \$ **2**.
 
 - **Column space:** the pivot columns of $\mathbf{A}$, $(1, 2, 3)$ and $(0, 1, 2)$, are a basis. $C(\mathbf{A})$ is a plane in $\mathbb{R}^3$.
-- **Null space:** $x_2$ and $x_4$ are free, so $\dim N(\mathbf{A}) = 4 - 2 = $ **2**. Setting $x_2 = 1, x_4 = 0$ gives $x_3 = 0$ and $x_1 = -2$: the special solution $(-2, 1, 0, 0)$. Setting $x_2 = 0, x_4 = 1$ gives $x_3 = -2$ and $x_1 = -1$: the special solution $(-1, 0, -2, 1)$.
+- **Null space:** $x_2$ and $x_4$ are free, so \$\dim N(\mathbf{A}) = 4 - 2 = \$ **2**. Setting $x_2 = 1, x_4 = 0$ gives $x_3 = 0$ and $x_1 = -2$: the special solution $(-2, 1, 0, 0)$. Setting $x_2 = 0, x_4 = 1$ gives $x_3 = -2$ and $x_1 = -1$: the special solution $(-1, 0, -2, 1)$.
 - **Solvability:** carry $\mathbf{b}$ through the same steps. The last row becomes $b_3 - 3b_1 - 2(b_2 - 2b_1) = b_1 - 2b_2 + b_3$, which must be zero. For $\mathbf{b} = (3, 8, 13)$: $3 - 16 + 13 = 0$ ✓.
 - **Particular solution:** set the free variables to zero. Row 2 gives $x_3 = b_2 - 2b_1 = 2$, and row 1 gives $x_1 = 3$, so $\mathbf{x}_p = (3, 0, 2, 0)$.
 
@@ -442,9 +442,9 @@ $$
 \begin{bmatrix} 5 & 200 \\ 200 & 12000\end{bmatrix}\begin{bmatrix} c \\ d\end{bmatrix} = \begin{bmatrix} 4.003 \\ 200.22\end{bmatrix} .
 $$
 
-Eliminate: subtract 40 × row 1 from row 2, giving $(12000 - 8000)d = 200.22 - 160.12$, so $4000\,d = 40.10$ and $d = $ **0.010025 V/°C = 10.025 mV/°C** (exact for these data). Then $c = (4.003 - 200d)/5 = $ **0.3996 V**.
+Eliminate: subtract 40 × row 1 from row 2, giving $(12000 - 8000)d = 200.22 - 160.12$, so $4000\,d = 40.10$ and \$d = \$ **0.010025 V/°C = 10.025 mV/°C** (exact for these data). Then \$c = (4.003 - 200d)/5 = \$ **0.3996 V**.
 
-The residuals $V_i - (c + dT_i)$ are $(2.4, -2.1, 0.4, -4.1, 3.4)$ mV. Their sum of squares is $3.87\times10^{-5}$ V², so their RMS is $\sqrt{3.87\times10^{-5}/5} = $ **2.782 mV**. As an estimate of the measurement noise, divide by the degrees of freedom instead: two fitted parameters leave $5 - 2 = 3$, so $\sqrt{3.87\times10^{-5}/3} = $ **3.592 mV**. A reading of 1.000 V corresponds to $T = (1.000 - c)/d = $ **59.89 °C**.
+The residuals $V_i - (c + dT_i)$ are $(2.4, -2.1, 0.4, -4.1, 3.4)$ mV. Their sum of squares is $3.87\times10^{-5}$ V², so their RMS is \$\sqrt{3.87\times10^{-5}/5} = \$ **2.782 mV**. As an estimate of the measurement noise, divide by the degrees of freedom instead: two fitted parameters leave $5 - 2 = 3$, so \$\sqrt{3.87\times10^{-5}/3} = \$ **3.592 mV**. A reading of 1.000 V corresponds to \$T = (1.000 - c)/d = \$ **59.89 °C**.
 
 **Checks.** The residuals sum to zero ($2.4 - 2.1 + 0.4 - 4.1 + 3.4 = 0$) ✓, and they are orthogonal to the temperatures: $0(2.4) + 20(-2.1) + 40(0.4) + 60(-4.1) + 80(3.4) = 0$ ✓. Both conditions are $\mathbf{A}^\mathsf{T}\mathbf{e} = \mathbf{0}$. The regression formula agrees: $\bar{T} = 40$, $\bar{V} = 0.8006$, and $\hat{d} = \sum(T_i - \bar{T})(V_i - \bar{V})/\sum(T_i - \bar{T})^2 = 40.10/4000$ ✓. *Sanity:* the RMS residual of a few millivolts is a few tenths of a degree at 10 mV/°C, a plausible calibration quality. The fit itself absorbs some of the noise, which is why the degrees-of-freedom estimate is the larger of the two.
 
@@ -459,7 +459,7 @@ $$
 \begin{matrix} \leftarrow a \\ \leftarrow b \\ \leftarrow c \\ \leftarrow d \\ \leftarrow e\end{matrix}
 $$
 
-Each row sums to zero, so $(1, 1, 1, 1)$ is in the null space. The graph is connected, so that is the whole null space, and the rank is $4 - 1 = $ **3**. The number of independent loops is $b - \operatorname{rank} = 5 - 3 = $ **2**: for example, the loop 1→2→3→1 (branches $a$, $d$, $b$) and the loop 2→3→0→2 (branches $d$, $e$, $c$).
+Each row sums to zero, so $(1, 1, 1, 1)$ is in the null space. The graph is connected, so that is the whole null space, and the rank is \$4 - 1 = \$ **3**. The number of independent loops is \$b - \operatorname{rank} = 5 - 3 = \$ **2**: for example, the loop 1→2→3→1 (branches $a$, $d$, $b$) and the loop 2→3→0→2 (branches $d$, $e$, $c$).
 
 (b) Delete the ground column. With $\mathbf{C} = \operatorname{diag}(1, 0.5, 1, 0.5, 2)$ mS, the product $\mathbf{A}_r^\mathsf{T}\mathbf{C}\mathbf{A}_r$ sums, branch by branch, $g_k$ times the outer product of that branch's row with itself. Branch $a$, row $(1, -1, 0)$, contributes $1\cdot\begin{bmatrix} 1 & -1 & 0 \\ -1 & 1 & 0 \\ 0 & 0 & 0\end{bmatrix}$, which is the resistor stamp. Adding all five gives
 
@@ -477,7 +477,7 @@ $$
 
 For example, $R_{11} = C_{11}/\det\mathbf{G} = (2.5\cdot3 - 0.25)/6.75 = 7.25/6.75$. And $R_{21} = C_{12}/\det\mathbf{G}$, where $C_{12} = -\det\begin{bmatrix} -1 & -0.5 \\ -0.5 & 3\end{bmatrix} = 3.25$, so $R_{21} = 3.25/6.75$.
 
-Column 1 gives the node voltages per milliampere injected at node 1, so 10 mA gives $(10.74, 4.815, 2.593)$ V, exactly the solution of Example 02-06.5 ✓. The driving-point resistances are **1.074 kΩ** (node 1, matching 02-06's input resistance), **0.6296 kΩ** (node 2) and **0.4074 kΩ** (node 3). The transfer resistance $R_{31} = $ **0.2593 kΩ** says that 1 mA injected at node 1 raises node 3 by 0.2593 V. By reciprocity, 1 mA injected at node 3 raises node 1 by the same amount.
+Column 1 gives the node voltages per milliampere injected at node 1, so 10 mA gives $(10.74, 4.815, 2.593)$ V, exactly the solution of Example 02-06.5 ✓. The driving-point resistances are **1.074 kΩ** (node 1, matching 02-06's input resistance), **0.6296 kΩ** (node 2) and **0.4074 kΩ** (node 3). The transfer resistance \$R_{31} = \$ **0.2593 kΩ** says that 1 mA injected at node 1 raises node 3 by 0.2593 V. By reciprocity, 1 mA injected at node 3 raises node 1 by the same amount.
 
 **Checks.** $R_{33}$ by series and parallel combination, with the current source removed (an open circuit). From node 3 there are two ways to node 2: through $R_b$ and $R_a$ in series via node 1 (3 kΩ), or directly through $R_d$ (2 kΩ). In parallel they give $3\parallel2 = 1.2$ kΩ. Adding $R_c$ (1 kΩ) from node 2 to ground gives 2.2 kΩ. That is in parallel with $R_e$ (0.5 kΩ) from node 3 to ground: $0.5\parallel2.2 = 0.4074$ kΩ ✓. Symmetry $R_{kj} = R_{jk}$ ✓, and all entries are positive ✓. The lab injects 1 mA at node 2 in ngspice and reads column 2.
 
@@ -487,13 +487,13 @@ Column 1 gives the node voltages per milliampere injected at node 1, so 10 mA gi
 
 **Solution.** The columns are $\mathbf{a}_1 = (1, 1, 1)$ and $\mathbf{a}_2 = (0, 1, 2)$, and $\mathbf{b} = (1, 2, 4)$.
 
-*Gram–Schmidt.* $r_{11} = \lVert\mathbf{a}_1\rVert = \sqrt3 = $ **1.732**, so $\mathbf{q}_1 = (1, 1, 1)/\sqrt3$. Then $r_{12} = \mathbf{q}_1^\mathsf{T}\mathbf{a}_2 = 3/\sqrt3 = \sqrt3$, and $\mathbf{w}_2 = \mathbf{a}_2 - \sqrt3\,\mathbf{q}_1 = (0, 1, 2) - (1, 1, 1) = (-1, 0, 1)$. So $r_{22} = \lVert\mathbf{w}_2\rVert = \sqrt2 = $ **1.414** and $\mathbf{q}_2 = (-1, 0, 1)/\sqrt2$:
+*Gram–Schmidt.* \$r_{11} = \lVert\mathbf{a}_1\rVert = \sqrt3 = \$ **1.732**, so $\mathbf{q}_1 = (1, 1, 1)/\sqrt3$. Then $r_{12} = \mathbf{q}_1^\mathsf{T}\mathbf{a}_2 = 3/\sqrt3 = \sqrt3$, and $\mathbf{w}_2 = \mathbf{a}_2 - \sqrt3\,\mathbf{q}_1 = (0, 1, 2) - (1, 1, 1) = (-1, 0, 1)$. So \$r_{22} = \lVert\mathbf{w}_2\rVert = \sqrt2 = \$ **1.414** and $\mathbf{q}_2 = (-1, 0, 1)/\sqrt2$:
 
 $$
 \mathbf{Q} = \begin{bmatrix} 1/\sqrt3 & -1/\sqrt2 \\ 1/\sqrt3 & 0 \\ 1/\sqrt3 & 1/\sqrt2\end{bmatrix}, \qquad \mathbf{R} = \begin{bmatrix}\sqrt3 & \sqrt3 \\ 0 & \sqrt2\end{bmatrix}.
 $$
 
-*Solve.* $\mathbf{Q}^\mathsf{T}\mathbf{b} = (7/\sqrt3,\ 3/\sqrt2) = ($**4.041**, **2.121**$)$. Back substitution: $\sqrt2\,d = 3/\sqrt2$ gives $d = $ **1.5** LSB/V, and $\sqrt3\,c + \sqrt3\,d = 7/\sqrt3$ gives $c = 7/3 - 1.5 = $ **0.8333** LSB.
+*Solve.* $\mathbf{Q}^\mathsf{T}\mathbf{b} = (7/\sqrt3,\ 3/\sqrt2) = ($**4.041**, **2.121**$)$. Back substitution: $\sqrt2\,d = 3/\sqrt2$ gives \$d = \$ **1.5** LSB/V, and $\sqrt3\,c + \sqrt3\,d = 7/\sqrt3$ gives \$c = 7/3 - 1.5 = \$ **0.8333** LSB.
 
 **Checks.** $\mathbf{Q}^\mathsf{T}\mathbf{Q} = \mathbf{I}$: $\mathbf{q}_1\cdot\mathbf{q}_2 = (-1 + 0 + 1)/\sqrt6 = 0$ ✓. $\mathbf{Q}\mathbf{R}$ reproduces $\mathbf{A}$: column 2 is $\sqrt3\,\mathbf{q}_1 + \sqrt2\,\mathbf{q}_2 = (1, 1, 1) + (-1, 0, 1) = (0, 1, 2)$ ✓. The normal equations $\begin{bmatrix}3 & 3\\ 3 & 5\end{bmatrix}\begin{bmatrix}c\\ d\end{bmatrix} = \begin{bmatrix}7\\ 10\end{bmatrix}$ give $2d = 3$ and the same $c$ ✓. The residual $\mathbf{b} - \mathbf{A}\hat{\mathbf{x}} = (0.1667, -0.3333, 0.1667)$ is orthogonal to both $\mathbf{q}$'s ✓. *Why bother:* QR works with $\mathbf{A}$'s own columns, so its sensitivity to rounding is that of $\mathbf{A}$, not the squared sensitivity of $\mathbf{A}^\mathsf{T}\mathbf{A}$ ([02-10](02-10-numerical-methods.md) §3.6).
 

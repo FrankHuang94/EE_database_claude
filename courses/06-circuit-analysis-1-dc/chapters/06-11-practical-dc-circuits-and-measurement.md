@@ -170,7 +170,7 @@ Problem 06-11.9 applies this to a 48 V bus monitor: two 1% resistors alone give 
 
 **Setup.** A 10 V source drives a divider of two 1 MΩ resistors. The midpoint is measured with (a) a handheld meter with 10 MΩ input resistance and (b) a bench meter in its high-impedance mode, 10 GΩ. Find each reading and its error, and correct reading (a).
 
-**Solution.** At the midpoint, $V_{th} = 5$ V and $R_{th} = 1\ \text{MΩ}\parallel1\ \text{MΩ} = $ **500 kΩ**.
+**Solution.** At the midpoint, $V_{th} = 5$ V and \$R_{th} = 1\ \text{MΩ}\parallel1\ \text{MΩ} = \$ **500 kΩ**.
 
 (a) $V_m = 5\times10/(0.5 + 10) = $ **4.762 V**, an error of $-0.5/10.5 = $ **−4.76%**.
 
@@ -222,7 +222,7 @@ Correction: $94.83\times(1 + 1.8/33) = $ **100.0 mA**.
 
 **Solution.** (a) $R_{2w} = 1 + 2\times0.08 = $ **1.16 Ω**, **16%** high.
 
-(b) From Section 3.4 with $R_s$ = 0.16 Ω: the sensed voltage is $10\ \text{mA}\times R_{4w}$, with $R_{4w} = 1\times10^7/(1 + 10^7 + 0.16) = $ **1.0000 Ω**, so the sensed voltage is **10.00 mV**. The relative error is $-(1 + 0.16)/10^7$, **−0.12 ppm**.
+(b) From Section 3.4 with $R_s$ = 0.16 Ω: the sensed voltage is $10\ \text{mA}\times R_{4w}$, with \$R_{4w} = 1\times10^7/(1 + 10^7 + 0.16) = \$ **1.0000 Ω**, so the sensed voltage is **10.00 mV**. The relative error is $-(1 + 0.16)/10^7$, **−0.12 ppm**.
 
 **Units check.** Ω·Ω/Ω = Ω ✓.
 
@@ -236,7 +236,7 @@ Correction: $94.83\times(1 + 1.8/33) = $ **100.0 mA**.
 
 (b) $1 + 2\times0.05 = $ **1.1 mΩ**, so the reading is **10%** high.
 
-(c) Kelvin: $250\ \text{ppm/°C}\times50\ \text{°C} = $ **1.25%** worst case. With the copper included, the resistance changes by $1\ \text{mΩ}\times250\times10^{-6}\times50 + 0.1\ \text{mΩ}\times0.00393\times50 = 12.5 + 19.65$ µΩ, which is **2.92%** of 1.1 mΩ: the copper's share is larger than the shunt's. The effective coefficient is $(0.25 + 0.393)\ \text{µΩ/°C}\,/\,1.1\ \text{mΩ} = $ **585 ppm/°C**.
+(c) Kelvin: \$250\ \text{ppm/°C}\times50\ \text{°C} = \$ **1.25%** worst case. With the copper included, the resistance changes by $1\ \text{mΩ}\times250\times10^{-6}\times50 + 0.1\ \text{mΩ}\times0.00393\times50 = 12.5 + 19.65$ µΩ, which is **2.92%** of 1.1 mΩ: the copper's share is larger than the shunt's. The effective coefficient is \$(0.25 + 0.393)\ \text{µΩ/°C}\,/\,1.1\ \text{mΩ} = \$ **585 ppm/°C**.
 
 **Units check.** A × mΩ = mV; A² × Ω = W; mΩ × (1/°C) × °C = mΩ ✓.
 
@@ -246,7 +246,7 @@ Correction: $94.83\times(1 + 1.8/33) = $ **100.0 mA**.
 
 **Setup.** A 12 V bench supply feeds an electronic load set to draw 10 A through 1.5 m of 16 AWG copper wire each way, at 20 °C. Find (a) the wire's diameter and resistance per meter, (b) the round-trip resistance, the load voltage and the cable's dissipation without remote sensing, and (c) the supply's output voltage with remote sensing.
 
-**Solution.** (a) $d = 0.127\times92^{20/39} = $ **1.291 mm**, so $A = \pi d^2/4 = 1.309\ \text{mm}^2$ and $\rho/A = 1.7241\times10^{-8}/1.309\times10^{-6} = $ **13.17 mΩ/m**.
+**Solution.** (a) \$d = 0.127\times92^{20/39} = \$ **1.291 mm**, so $A = \pi d^2/4 = 1.309\ \text{mm}^2$ and \$\rho/A = 1.7241\times10^{-8}/1.309\times10^{-6} = \$ **13.17 mΩ/m**.
 
 (b) Round trip 3 m: **39.52 mΩ**. Load voltage $12 - 10\times0.03952 = $ **11.605 V** (3.3% low); cable dissipation $10^2\times0.03952 = $ **3.95 W**.
 

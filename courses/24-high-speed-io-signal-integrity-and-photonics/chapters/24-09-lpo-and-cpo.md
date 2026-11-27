@@ -235,8 +235,8 @@ Note that 400 FIT per engine is 50 FIT per port served, four times better per po
 
 **Solution.**
 
-- (a) $2.25\ \text{B}/27.2\ \text{M}$ = **$82.7** per share.
-- (b) $3.25 + 2.25$ = **$5.5 B**.
+- (a) $2.25\ \text{B}/27.2\ \text{M}$ = **\$82.7** per share.
+- (b) $3.25 + 2.25$ = **\$5.5 B**.
 - (c) $3.25/0.5$ = **6.5**×.
 - (d) $5.5/1.0$ = **5.5**×.
 - (e) $2.25/5.5$ = **41**%.

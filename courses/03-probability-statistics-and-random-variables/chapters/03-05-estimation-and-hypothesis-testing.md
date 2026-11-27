@@ -227,7 +227,7 @@ $$
 
 **Setup.** Ten amplifiers have input offsets (mV) 1.2, 0.8, 1.5, 0.9, 1.1, 1.4, 0.7, 1.3, 1.0, 1.1. Find the sample mean, the sample standard deviation, the standard error and a 95% confidence interval for the mean offset. How much narrower would a (wrong) z-interval be?
 
-**Solution.** $\bar x = 11.0/10 = $ **1.1 mV**. The squared deviations sum to 0.60 mV², so $s^2 = 0.60/9$ and $s = $ **0.2582 mV**. The standard error is $s/\sqrt{10} = $ **0.08165 mV**. With $t_{0.025,9} = 2.262$, the interval is $1.1 \pm 0.1847$: **[0.9153, 1.285] mV**. A z-interval would use 1.960, a half-width of **0.1600 mV**, 13% too narrow.
+**Solution.** \$\bar x = 11.0/10 = \$ **1.1 mV**. The squared deviations sum to 0.60 mV², so $s^2 = 0.60/9$ and \$s = \$ **0.2582 mV**. The standard error is \$s/\sqrt{10} = \$ **0.08165 mV**. With $t_{0.025,9} = 2.262$, the interval is $1.1 \pm 0.1847$: **[0.9153, 1.285] mV**. A z-interval would use 1.960, a half-width of **0.1600 mV**, 13% too narrow.
 
 **Interpretation.** The interval describes the *mean* offset of the population. Individual parts spread about $\pm2s$, roughly 0.6 to 1.6 mV, which is what a datasheet's maximum must cover: a confidence interval for the mean is not a tolerance interval for parts.
 
@@ -235,9 +235,9 @@ $$
 
 **Setup.** (a) A test floor passes 912 of 1000 dies. Find the yield estimate, its standard error and a 95% confidence interval. (b) A different lot ships 300 parts to a customer with zero returns. What is the 95% upper bound on the return rate?
 
-**Solution.** (a) $\hat p = $ **0.912**, standard error $\sqrt{0.912\times0.088/1000} = $ **0.008959**, and the 95% interval is $0.912 \pm 0.01756$: **[0.8944, 0.9296]**. Distinguishing yields that differ by one point takes thousands of dies per group (Example 03-05.8).
+**Solution.** (a) \$\hat p = \$ **0.912**, standard error \$\sqrt{0.912\times0.088/1000} = \$ **0.008959**, and the 95% interval is $0.912 \pm 0.01756$: **[0.8944, 0.9296]**. Distinguishing yields that differ by one point takes thousands of dies per group (Example 03-05.8).
 
-(b) $p_U = 1 - 0.05^{1/300} = $ **0.009936**, close to the rule of three, $3/300 = 0.01$. Zero returns from 300 parts cannot demonstrate better than about 1%.
+(b) \$p_U = 1 - 0.05^{1/300} = \$ **0.009936**, close to the rule of three, $3/300 = 0.01$. Zero returns from 300 parts cannot demonstrate better than about 1%.
 
 ### Example 03-05.3 — How well can you measure noise power? (tier B)
 
@@ -255,9 +255,9 @@ that is, **[0.7001, 1.545] mV²**, or **−1.549 dB to +1.890 dB** around the es
 
 **Setup.** A vendor's rate predicts a mean of λ₀ = $10^4\times1140\text{ FIT}\times8766\text{ h} = 99.932$ upsets per year across a fleet (Example 03-02.2). A year of operation records 80. (a) Test $H_0$: the vendor's rate is right, against $H_1$: the true rate is lower, at α = 0.05. (b) If the true rate were 20% lower, how likely is this test to detect it?
 
-**Solution.** (a) Under $H_0$ the count is Poisson(99.932). The one-sided p-value is $P(N \le 80) = $ **0.02300** (03-02). Since 0.023 < 0.05, reject $H_0$: the fleet's rate is significantly below the vendor's figure, perhaps because of altitude, shielding or conservative vendor data.
+**Solution.** (a) Under $H_0$ the count is Poisson(99.932). The one-sided p-value is \$P(N \le 80) = \$ **0.02300** (03-02). Since 0.023 < 0.05, reject $H_0$: the fleet's rate is significantly below the vendor's figure, perhaps because of altitude, shielding or conservative vendor data.
 
-(b) The rejection region is $N \le k$ with $P(N \le k \mid H_0) \le 0.05$; the largest such $k$ is **83** (probability **0.04696**). If the true mean is $0.8\times99.932 = 79.946$, the power is $P(N \le 83 \mid 79.946) = $ **0.6602**: a one-year, fleet-wide test misses a 20% reduction a third of the time.
+(b) The rejection region is $N \le k$ with $P(N \le k \mid H_0) \le 0.05$; the largest such $k$ is **83** (probability **0.04696**). If the true mean is $0.8\times99.932 = 79.946$, the power is \$P(N \le 83 \mid 79.946) = \$ **0.6602**: a one-year, fleet-wide test misses a 20% reduction a third of the time.
 
 **Practitioner note.** Before acting on (a), ask whether the fleet's logging catches every upset (an undercount looks like a lower rate) and whether conditions match the vendor's normalization (03-02's rates are normalized to a New York City reference flux).
 
@@ -275,7 +275,7 @@ that is, **[0.7001, 1.545] mV²**, or **−1.549 dB to +1.890 dB** around the es
 
 **Setup.** Eight gate-oxide test capacitors fail on an accelerated time-dependent dielectric breakdown (TDDB) stress, in which a sustained electric field eventually shorts the oxide, at 457, 714, 823, 912, 976, 1182, 1600 and 1706 hours. Fit a Weibull distribution on a Weibull plot, and find the $B_{10}$ life and the MTTF at stress.
 
-**Solution.** Plotting positions $F_i = (i - 0.3)/8.4$ run from **0.08333** to **0.9167**. With $x_i = \ln t_i$ and $y_i = \ln(-\ln(1 - F_i))$, the means are $\bar x = 6.875$ and $\bar y = -0.5141$, and the least-squares slope is $\hat\gamma = $ **2.498** (Figure 3). The intercept $\bar y - \hat\gamma\bar x$ equals $-\hat\gamma\ln\hat\alpha$, giving $\hat\alpha = $ **1189 h**.
+**Solution.** Plotting positions $F_i = (i - 0.3)/8.4$ run from **0.08333** to **0.9167**. With $x_i = \ln t_i$ and $y_i = \ln(-\ln(1 - F_i))$, the means are $\bar x = 6.875$ and $\bar y = -0.5141$, and the least-squares slope is \$\hat\gamma = \$ **2.498** (Figure 3). The intercept $\bar y - \hat\gamma\bar x$ equals $-\hat\gamma\ln\hat\alpha$, giving \$\hat\alpha = \$ **1189 h**.
 
 $B_{10} = 1189\times(-\ln0.9)^{1/2.498} = $ **483.1 h** and $\text{MTTF} = 1189\,\Gamma(1 + 1/2.498) = $ **1055 h**.
 
@@ -285,7 +285,7 @@ $B_{10} = 1189\times(-\ln0.9)^{1/2.498} = $ **483.1 h** and $\text{MTTF} = 1189\
 
 **Setup.** A qualification runs 231 units (3 lots × 77) for 1000 h at a junction temperature of 125 °C with zero failures. Assume a single mechanism with $E_a = 0.7$ eV and use at 55 °C, and a year of 8766 h. (a) Find the acceleration factor and the equivalent field time. (b) Find upper bounds on the field failure rate at 60% and 90% confidence. (c) What bound at 90% if one unit had failed? (d) How many units would a zero-failure, 1000 h test need to demonstrate 10 FIT at 90% confidence?
 
-**Solution.** (a) $AF = \exp\big[(0.7/8.617333\times10^{-5})(1/328.15 - 1/398.15)\big] = $ **77.65**, so 1000 h of stress represents $77{,}650$ h, or **8.858 years**, of use per unit.
+**Solution.** (a) \$AF = \exp\big[(0.7/8.617333\times10^{-5})(1/328.15 - 1/398.15)\big] = \$ **77.65**, so 1000 h of stress represents $77{,}650$ h, or **8.858 years**, of use per unit.
 
 (b) Equivalent device-hours $D = 231\times1000\times77.65 = 1.794\times10^7$. At 60%, $\lambda_U = 0.9163$ gives **51.09 FIT**; at 90%, $\lambda_U = 2.303$ gives **128.4 FIT**.
 
@@ -299,7 +299,7 @@ $B_{10} = 1189\times(-\ln0.9)^{1/2.498} = $ **483.1 h** and $\text{MTTF} = 1189\
 
 **Setup.** A split lot runs 1000 dies through the old recipe A (912 pass) and 1000 through a new recipe B (931 pass). (a) At α = 0.05, one-sided, is B better? (b) How many dies per arm would detect a true improvement from 0.91 to 0.92 with 80% power?
 
-**Solution.** (a) Under $H_0$ (equal yields) the pooled estimate is $\hat p = 1843/2000 = $ **0.9215**, so
+**Solution.** (a) Under $H_0$ (equal yields) the pooled estimate is \$\hat p = 1843/2000 = \$ **0.9215**, so
 
 $$
 \text{SE} = \sqrt{0.9215\times0.0785\times\big(\tfrac1{1000} + \tfrac1{1000}\big)} = 0.01203, \qquad z = \frac{0.931 - 0.912}{0.01203} = 1.580 .

@@ -16,13 +16,13 @@ Every numerical answer below is recomputed by [verify_02_06.py](../verify/verify
 
 (c) $\lVert\mathbf{a}\rVert = \sqrt{1 + 4 + 4} = $ **3** and $\lVert\mathbf{b}\rVert = \sqrt{16 + 0 + 9} = $ **5**.
 
-(d) $\mathbf{a}/\lVert\mathbf{a}\rVert = (1/3, -2/3, 2/3) = (0.3333, $ **−0.6667**$, 0.6667)$. Check: $1/9 + 4/9 + 4/9 = 1$ ✓.
+(d) \$\mathbf{a}/\lVert\mathbf{a}\rVert = (1/3, -2/3, 2/3) = (0.3333, \$ **−0.6667**$, 0.6667)$. Check: $1/9 + 4/9 + 4/9 = 1$ ✓.
 
 (e) $\cos\theta = -2/(3\cdot5) = -0.1333$, so θ = **97.66°**: slightly obtuse, as the negative dot product requires.
 
 ### Solution 02-06.2
 
-(a) $(1, c, 2)\cdot(3, -1, c) = 3 - c + 2c = 3 + c = 0$, so $c = $ **−3**. Check: $(1, -3, 2)\cdot(3, -1, -3) = 3 + 3 - 6 = 0$ ✓.
+(a) $(1, c, 2)\cdot(3, -1, c) = 3 - c + 2c = 3 + c = 0$, so \$c = \$ **−3**. Check: $(1, -3, 2)\cdot(3, -1, -3) = 3 + 3 - 6 = 0$ ✓.
 
 (b) $\cos\theta = \dfrac{(1, 1, 1)\cdot(1, 0, 0)}{\sqrt3\cdot1} = \dfrac{1}{\sqrt3}$, so θ = **54.74°**.
 
@@ -40,7 +40,7 @@ The sampled sine and cosine are orthogonal. This is the discrete version of the 
 
 (a) *Row picture:* $(1\cdot2 + 2(-1),\ 3\cdot2 + (-1)(-1),\ 0\cdot2 + 4(-1)) = (\mathbf{0}, \mathbf{7}, \mathbf{-4})$. *Column picture:* $2(1, 3, 0) - 1(2, -1, 4) = (0, 7, -4)$, the same ✓.
 
-(b) The equations are $x_1 + 2x_2 = 5$, $3x_1 - x_2 = 1$ and $4x_2 = 8$. The third gives $x_2 = $ **2**, the first then gives $x_1 = $ **1**, and the second checks: $3 - 2 = 1$ ✓. A solution exists because $\mathbf{b} = 1\cdot(1, 3, 0) + 2\cdot(2, -1, 4)$ happens to lie in the plane spanned by the two columns. A generic $\mathbf{b}$ in $\mathbb{R}^3$ would lie off that plane, and there would be no exact solution; the best approximate one is a least-squares problem ([02-07](../chapters/02-07-determinants-inverses-and-vector-spaces.md)).
+(b) The equations are $x_1 + 2x_2 = 5$, $3x_1 - x_2 = 1$ and $4x_2 = 8$. The third gives \$x_2 = \$ **2**, the first then gives \$x_1 = \$ **1**, and the second checks: $3 - 2 = 1$ ✓. A solution exists because $\mathbf{b} = 1\cdot(1, 3, 0) + 2\cdot(2, -1, 4)$ happens to lie in the plane spanned by the two columns. A generic $\mathbf{b}$ in $\mathbb{R}^3$ would lie off that plane, and there would be no exact solution; the best approximate one is a least-squares problem ([02-07](../chapters/02-07-determinants-inverses-and-vector-spaces.md)).
 
 ### Solution 02-06.4
 
@@ -62,11 +62,11 @@ In fact $\mathbf{A}^\mathsf{T}\mathbf{B}^\mathsf{T} = (\mathbf{B}\mathbf{A})^\ma
 
 ### Solution 02-06.5
 
-(a) $\hat{x} = \dfrac{\mathbf{a}\cdot\mathbf{b}}{\mathbf{a}\cdot\mathbf{a}} = \dfrac{1 + 2 + 6}{3} = $ **3**, so $\mathbf{p} = (3, 3, 3)$, $\mathbf{e} = (-2, -1, 3)$ and $\lVert\mathbf{e}\rVert^2 = 4 + 1 + 9 = $ **14**.
+(a) \$\hat{x} = \dfrac{\mathbf{a}\cdot\mathbf{b}}{\mathbf{a}\cdot\mathbf{a}} = \dfrac{1 + 2 + 6}{3} = \$ **3**, so $\mathbf{p} = (3, 3, 3)$, $\mathbf{e} = (-2, -1, 3)$ and \$\lVert\mathbf{e}\rVert^2 = 4 + 1 + 9 = \$ **14**.
 
-In general, with $\mathbf{a} = (1, \dots, 1)$, $\mathbf{a}\cdot\mathbf{b} = \sum b_i$ and $\mathbf{a}\cdot\mathbf{a} = n$, so $\hat{x} = \sum b_i/n$ is the mean. The error components $e_i = b_i - \hat{x}$ are the deviations from the mean, so $\lVert\mathbf{e}\rVert^2/n$ is the population variance: here $14/3 = $ **4.667**. The orthogonality condition $\mathbf{e}\cdot(1, \dots, 1) = 0$ is the familiar fact that deviations from the mean sum to zero.
+In general, with $\mathbf{a} = (1, \dots, 1)$, $\mathbf{a}\cdot\mathbf{b} = \sum b_i$ and $\mathbf{a}\cdot\mathbf{a} = n$, so $\hat{x} = \sum b_i/n$ is the mean. The error components $e_i = b_i - \hat{x}$ are the deviations from the mean, so $\lVert\mathbf{e}\rVert^2/n$ is the population variance: here \$14/3 = \$ **4.667**. The orthogonality condition $\mathbf{e}\cdot(1, \dots, 1) = 0$ is the familiar fact that deviations from the mean sum to zero.
 
-(b) $\mathbf{a}\cdot\mathbf{b} = 1 + 4 + 12 = 17$ and $\mathbf{a}\cdot\mathbf{a} = 9$, so $\hat{x} = 17/9 = $ **1.889** and $\mathbf{p} = (1.889, 3.778, 3.778)$. The error is $\mathbf{e} = (-0.8889, -1.778, 2.222)$, and $\mathbf{e}\cdot\mathbf{a} = -0.8889 - 3.556 + 4.444 = 0$ ✓. Its length is $\sqrt{0.7901 + 3.160 + 4.938} = $ **2.981**.
+(b) $\mathbf{a}\cdot\mathbf{b} = 1 + 4 + 12 = 17$ and $\mathbf{a}\cdot\mathbf{a} = 9$, so \$\hat{x} = 17/9 = \$ **1.889** and $\mathbf{p} = (1.889, 3.778, 3.778)$. The error is $\mathbf{e} = (-0.8889, -1.778, 2.222)$, and $\mathbf{e}\cdot\mathbf{a} = -0.8889 - 3.556 + 4.444 = 0$ ✓. Its length is \$\sqrt{0.7901 + 3.160 + 4.938} = \$ **2.981**.
 
 *Check by Pythagoras:* $\lVert\mathbf{b}\rVert^2 = 41$ should equal $\lVert\mathbf{p}\rVert^2 + \lVert\mathbf{e}\rVert^2 = (17/9)^2\cdot9 + 8.889 = 32.11 + 8.889 = 41$ ✓.
 
@@ -93,7 +93,7 @@ The pivots are 1, 1 and **−7**. Back substitution: $x_3 = -7/-7 = $ **1**; $x_
 (a) The permutation exchanging rows 1 and 2 is $\mathbf{P} = \begin{bmatrix} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1\end{bmatrix}$. It gives $\mathbf{P}\mathbf{A}$ with rows $(1, 2, 1)$, $(0, 1, 2)$ and $(2, 7, 9)$, and $\mathbf{P}\mathbf{b} = (0, 1, 4)$.
 
 - Column 1: $\ell_{21} = 0$ and $\ell_{31} = 2$. Row 3 becomes $(0, 3, 7 \mid 4)$.
-- Column 2: $\ell_{32} = $ **3**. Row 3 becomes $(0, 0, 1 \mid 1)$.
+- Column 2: \$\ell_{32} = \$ **3**. Row 3 becomes $(0, 0, 1 \mid 1)$.
 
 So
 
@@ -101,9 +101,9 @@ $$
 \mathbf{L} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 2 & 3 & 1\end{bmatrix}, \qquad \mathbf{U} = \begin{bmatrix} 1 & 2 & 1 \\ 0 & 1 & 2 \\ 0 & 0 & 1\end{bmatrix} .
 $$
 
-Back substitution: $x_3 = $ **1**, $x_2 = 1 - 2x_3 = $ **−1**, $x_1 = 0 - 2x_2 - x_3 = $ **1**. Check row 1 of the original: $0 - 1 + 2 = 1$ ✓.
+Back substitution: \$x_3 = \$ **1**, \$x_2 = 1 - 2x_3 = \$ **−1**, \$x_1 = 0 - 2x_2 - x_3 = \$ **1**. Check row 1 of the original: $0 - 1 + 2 = 1$ ✓.
 
-(b) *Column 1:* the largest magnitude is the 2 in row 3, so exchange rows 1 and 3: $(2, 7, 9 \mid 4)$, $(1, 2, 1 \mid 0)$, $(0, 1, 2 \mid 1)$. Then $\ell_{21} = $ **0.5**, so row 2 becomes $(0, -1.5, -3.5 \mid -2)$; and $\ell_{31} = 0$.
+(b) *Column 1:* the largest magnitude is the 2 in row 3, so exchange rows 1 and 3: $(2, 7, 9 \mid 4)$, $(1, 2, 1 \mid 0)$, $(0, 1, 2 \mid 1)$. Then \$\ell_{21} = \$ **0.5**, so row 2 becomes $(0, -1.5, -3.5 \mid -2)$; and $\ell_{31} = 0$.
 
 *Column 2:* the candidates are −1.5 and 1, so −1.5 stays as pivot. Then $\ell_{32} = 1/(-1.5) = $ **−0.6667**, and row 3 becomes
 
@@ -117,19 +117,19 @@ Note that the two sets of pivots differ, but their products ($1\cdot1\cdot1$ and
 
 ### Solution 02-06.8
 
-(a) $R_2 - 2R_1$ gives $0 = k - 6$. If $k = $ **6**, that row is $0 = 0$, $x_2$ is free, and there are infinitely many solutions $(3 - 2t, t)$. Otherwise the row reads $0 = $ nonzero, so there is no solution. Exactly one solution is impossible, since the second column is twice the first.
+(a) $R_2 - 2R_1$ gives $0 = k - 6$. If \$k = \$ **6**, that row is $0 = 0$, $x_2$ is free, and there are infinitely many solutions $(3 - 2t, t)$. Otherwise the row reads \$0 = \$ nonzero, so there is no solution. Exactly one solution is impossible, since the second column is twice the first.
 
-(b) $R_2 - 2R_1$ gives $(a - 4)x_2 = -1$. For $a = $ **4** this reads $0 = -1$: no solution (parallel lines). Otherwise $x_2 = -1/(a - 4)$. For $a = 5$: $x_2 = $ **−1** and $x_1 = 3 - 2x_2 = $ **5**. Check: $2\cdot5 + 5(-1) = 5$ ✓.
+(b) $R_2 - 2R_1$ gives $(a - 4)x_2 = -1$. For \$a = \$ **4** this reads $0 = -1$: no solution (parallel lines). Otherwise $x_2 = -1/(a - 4)$. For $a = 5$: \$x_2 = \$ **−1** and \$x_1 = 3 - 2x_2 = \$ **5**. Check: $2\cdot5 + 5(-1) = 5$ ✓.
 
-(c) $R_2 - 2R_1 = (0, 1, 1)$, $R_3 - 3R_1 = (0, 1, q - 9)$, then $R_3 - R_2 = (0, 0, q - 10)$. The third pivot is $q - 10$, so the matrix is singular exactly when $q = $ **10**. Then column 3 = column 1 + column 2, since $(1 + 2, 2 + 5, 3 + 7) = (3, 7, 10)$ ✓.
+(c) $R_2 - 2R_1 = (0, 1, 1)$, $R_3 - 3R_1 = (0, 1, q - 9)$, then $R_3 - R_2 = (0, 0, q - 10)$. The third pivot is $q - 10$, so the matrix is singular exactly when \$q = \$ **10**. Then column 3 = column 1 + column 2, since $(1 + 2, 2 + 5, 3 + 7) = (3, 7, 10)$ ✓.
 
 ### Solution 02-06.9
 
-(a) $\ell_{21} = 6/4 = $ **1.5**. Row 2 of $\mathbf{U}$ is $(6, 3) - 1.5(4, 3) = (0, $ **−1.5**$)$. So $\mathbf{L} = \begin{bmatrix} 1 & 0 \\ 1.5 & 1\end{bmatrix}$ and $\mathbf{U} = \begin{bmatrix} 4 & 3 \\ 0 & -1.5\end{bmatrix}$.
+(a) \$\ell_{21} = 6/4 = \$ **1.5**. Row 2 of $\mathbf{U}$ is \$(6, 3) - 1.5(4, 3) = (0, \$ **−1.5**$)$. So $\mathbf{L} = \begin{bmatrix} 1 & 0 \\ 1.5 & 1\end{bmatrix}$ and $\mathbf{U} = \begin{bmatrix} 4 & 3 \\ 0 & -1.5\end{bmatrix}$.
 
-(b) For $\mathbf{b} = (10, 12)$: $c_1 = 10$ and $c_2 = 12 - 1.5\cdot10 = -3$; then $x_2 = -3/-1.5 = $ **2** and $x_1 = (10 - 3\cdot2)/4 = $ **1**. For $\mathbf{b} = (1, 0)$: $\mathbf{c} = (1, -1.5)$, so $x_2 = 1$ and $x_1 = (1 - 3)/4 = $ **−0.5**.
+(b) For $\mathbf{b} = (10, 12)$: $c_1 = 10$ and $c_2 = 12 - 1.5\cdot10 = -3$; then \$x_2 = -3/-1.5 = \$ **2** and \$x_1 = (10 - 3\cdot2)/4 = \$ **1**. For $\mathbf{b} = (1, 0)$: $\mathbf{c} = (1, -1.5)$, so $x_2 = 1$ and \$x_1 = (1 - 3)/4 = \$ **−0.5**.
 
-(c) The first column of $\mathbf{A}^{-1}$ is the second solution of (b), $(-0.5, 1)$. For $(0, 1)$: $\mathbf{c} = (0, 1)$, so $x_2 = 1/(-1.5) = $ **−0.6667** and $x_1 = (0 - 3x_2)/4 = $ **0.5**. So
+(c) The first column of $\mathbf{A}^{-1}$ is the second solution of (b), $(-0.5, 1)$. For $(0, 1)$: $\mathbf{c} = (0, 1)$, so \$x_2 = 1/(-1.5) = \$ **−0.6667** and \$x_1 = (0 - 3x_2)/4 = \$ **0.5**. So
 
 $$
 \mathbf{A}^{-1} = \begin{bmatrix} -0.5 & 0.5 \\ 1 & -0.6667\end{bmatrix}, \qquad \mathbf{A}\mathbf{A}^{-1} = \begin{bmatrix} -2 + 3 & 2 - 2 \\ -3 + 3 & 3 - 2\end{bmatrix} = \mathbf{I}\ ✓.
@@ -169,15 +169,15 @@ $$
 \mathbf{G} = \begin{bmatrix} g_1 + g_2 & -g_2 \\ -g_2 & g_2 + g_3\end{bmatrix} = \begin{bmatrix} 1.5 & -1 \\ -1 & 1.25\end{bmatrix}\text{ mS}, \qquad \mathbf{i} = \begin{bmatrix} 5 \\ -1\end{bmatrix}\text{ mA}.
 $$
 
-Eliminate with $\ell_{21} = -2/3$: $u_{22} = 1.25 - 2/3 = 0.5833$ and $c_2 = -1 + (2/3)\cdot5 = 2.333$. So $v_2 = 2.333/0.5833 = $ **4 V** and $v_1 = (5 + v_2)/1.5 = $ **6 V**.
+Eliminate with $\ell_{21} = -2/3$: $u_{22} = 1.25 - 2/3 = 0.5833$ and $c_2 = -1 + (2/3)\cdot5 = 2.333$. So \$v_2 = 2.333/0.5833 = \$ **4 V** and \$v_1 = (5 + v_2)/1.5 = \$ **6 V**.
 
 (b) $i_{R2} = (6 - 4)\text{ V}/1\text{ kΩ} = $ **2 mA**, from node 1 to node 2.
 
-(c) The 5 mA source delivers $6\text{ V}\times5\text{ mA} = $ **30 mW**. The 1 mA source carries current out of node 2 down to ground, so it absorbs $4\text{ V}\times1\text{ mA} = $ **4 mW**. The resistors dissipate $R_1$: $36/2 = 18$ mW, $R_2$: $2^2/1 = 4$ mW, and $R_3$: $16/4 = 4$ mW, in total **26 mW** = 30 − 4 ✓. KCL at node 2: 2 mA in = 1 mA through $R_3$ + 1 mA through the sink ✓.
+(c) The 5 mA source delivers \$6\text{ V}\times5\text{ mA} = \$ **30 mW**. The 1 mA source carries current out of node 2 down to ground, so it absorbs \$4\text{ V}\times1\text{ mA} = \$ **4 mW**. The resistors dissipate $R_1$: $36/2 = 18$ mW, $R_2$: $2^2/1 = 4$ mW, and $R_3$: $16/4 = 4$ mW, in total **26 mW** = 30 − 4 ✓. KCL at node 2: 2 mA in = 1 mA through $R_3$ + 1 mA through the sink ✓.
 
 ### Solution 02-06.12
 
-(a) $\tfrac23(2000)^3 = $ **5.333×10⁹ flops**; at $5\times10^{10}$ flops/s that takes **0.1067 s**.
+(a) \$\tfrac23(2000)^3 = \$ **5.333×10⁹ flops**; at $5\times10^{10}$ flops/s that takes **0.1067 s**.
 
 (b) $2n^2 = 8\times10^6$ flops, which takes **0.16 ms**.
 
@@ -203,7 +203,7 @@ $$
 \begin{bmatrix} 1.5 & -1 \\ -1 & 2\end{bmatrix}\begin{bmatrix} v_1 \\ v_2\end{bmatrix} = \begin{bmatrix} 1 \\ 0\end{bmatrix} .
 $$
 
-With $\ell_{21} = -2/3$: $u_{22} = 4/3$ and $c_2 = 2/3$, so $v_2 = $ **0.5 V** and $v_1 = (1 + 0.5)/1.5 = $ **1 V**. The resistance between nodes 1 and 3 is $v_1/(1\text{ mA}) = $ **1 kΩ**. *Check:* the path 1→2→3 (2 kΩ) is in parallel with the direct 2 kΩ, giving 1 kΩ ✓.
+With $\ell_{21} = -2/3$: $u_{22} = 4/3$ and $c_2 = 2/3$, so \$v_2 = \$ **0.5 V** and \$v_1 = (1 + 0.5)/1.5 = \$ **1 V**. The resistance between nodes 1 and 3 is \$v_1/(1\text{ mA}) = \$ **1 kΩ**. *Check:* the path 1→2→3 (2 kΩ) is in parallel with the direct 2 kΩ, giving 1 kΩ ✓.
 
 (c) Adding the three equations gives $(1, 1, 1)\cdot(\mathbf{G}\mathbf{v}) = 0$ on the left, because $\mathbf{G}$ is symmetric and its rows sum to zero. So a solution requires $i_1 + i_2 + i_3 = 0$: the net current injected into a floating network must be zero. That is charge conservation, since current cannot flow into an isolated network without flowing out again. If the condition fails there is no solution; if it holds there are infinitely many. These are the two singular cases of §3.6.
 
@@ -219,7 +219,7 @@ $$
 \begin{bmatrix} 1.5 & -1 & -1 \\ -1 & 2 & 0 \\ 1 & 0 & 0\end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \\ i_V\end{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ 2\end{bmatrix} .
 $$
 
-This gives $v_1 = 2$ V, $v_2 = $ **1 V** and $i_V = 3 - 1 = $ **2 mA**. *Check:* 2 V across the 1 kΩ found in (b) drives 2 mA ✓. If instead $i_V$ is defined as the current *entering* the source's positive terminal from node 1, its column becomes $(+1, 0, 0)$ and the matrix is symmetric. That is SPICE's convention, which is why SPICE reports a negative current for a source that delivers power ([00-04](../../00-orientation/chapters/00-04-toolchain-walkthrough.md)).
+This gives $v_1 = 2$ V, \$v_2 = \$ **1 V** and \$i_V = 3 - 1 = \$ **2 mA**. *Check:* 2 V across the 1 kΩ found in (b) drives 2 mA ✓. If instead $i_V$ is defined as the current *entering* the source's positive terminal from node 1, its column becomes $(+1, 0, 0)$ and the matrix is symmetric. That is SPICE's convention, which is why SPICE reports a negative current for a source that delivers power ([00-04](../../00-orientation/chapters/00-04-toolchain-walkthrough.md)).
 
 ### Solution 02-06.14
 
@@ -243,13 +243,13 @@ $$
 
 Solving the 5×5 system numerically gives the same drops.
 
-(c) By symmetry, each pad supplies half of the 1.0 A total, and the middle tap is fed 0.1 A from each side. From the left pad the segment currents are 0.5, 0.3 and 0.1 A, so the drops are $d_1 = 10$ mV, $d_2 = 16$ mV and $d_3 = $ **18 mV**, then 16 and 10 mV on the way to the right pad. The worst drop is at the middle tap, tap 3.
+(c) By symmetry, each pad supplies half of the 1.0 A total, and the middle tap is fed 0.1 A from each side. From the left pad the segment currents are 0.5, 0.3 and 0.1 A, so the drops are $d_1 = 10$ mV, $d_2 = 16$ mV and \$d_3 = \$ **18 mV**, then 16 and 10 mV on the way to the right pad. The worst drop is at the middle tap, tap 3.
 
-(d) $60/18 = $ **3.333**. For a long rail with $N$ taps, the drop fed from one end grows as $RIN^2/2$. Fed from both ends, each half carries half the current over half the length, giving about $RIN^2/8$, an improvement approaching 4×. More generally, the worst drop falls as the *square* of the pad spacing. That is why flip-chip packages place supply bumps in an array across the whole die, not just at its edges: pad spacing is the most powerful knob on IR drop ([22-10](../../22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md)).
+(d) \$60/18 = \$ **3.333**. For a long rail with $N$ taps, the drop fed from one end grows as $RIN^2/2$. Fed from both ends, each half carries half the current over half the length, giving about $RIN^2/8$, an improvement approaching 4×. More generally, the worst drop falls as the *square* of the pad spacing. That is why flip-chip packages place supply bumps in an array across the whole die, not just at its edges: pad spacing is the most powerful knob on IR drop ([22-10](../../22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md)).
 
 ### Solution 02-06.15
 
-(a) Peak throughput is $512\times2\times10^9 = 1.024\times10^{12}$ ops/s = **1.024 TOPS**. The layer needs $2\times1024^2 = $ **2.097×10⁶** operations and reads $1024^2 = 1{,}048{,}576$ bytes = **1.049 MB** of weights. Its arithmetic intensity is **2** operations per byte, because each weight byte feeds exactly one multiply–add.
+(a) Peak throughput is $512\times2\times10^9 = 1.024\times10^{12}$ ops/s = **1.024 TOPS**. The layer needs \$2\times1024^2 = \$ **2.097×10⁶** operations and reads $1024^2 = 1{,}048{,}576$ bytes = **1.049 MB** of weights. Its arithmetic intensity is **2** operations per byte, because each weight byte feeds exactly one multiply–add.
 
 (b) The memory time is $1{,}048{,}576/(8\times10^9) = $ **131.1 µs** and the compute time is $2.097\times10^6/(1.024\times10^{12}) = $ **2.048 µs**. The layer takes about the longer of the two, so it achieves $2.048/131.1 = $ **1.56%** of peak.
 

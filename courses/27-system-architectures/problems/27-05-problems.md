@@ -40,7 +40,7 @@ Chapter: [27-05](../chapters/27-05-pc-soc.md) · Worked solutions: [27-05 soluti
 
 ### Problem 27-05.8 [B]
 
-**A big die.** Compare a 400 mm² monolithic die on a 3 nm-class wafer at $18,500 with $D_0$ = 0.10 cm⁻² against two 200 mm² tiles on the same wafer type in a $10 package with 97% assembly yield, assuming the split adds no interface area. Find both costs and their ratio.
+**A big die.** Compare a 400 mm² monolithic die on a 3 nm-class wafer at \$18,500 with $D_0$ = 0.10 cm⁻² against two 200 mm² tiles on the same wafer type in a \$10 package with 97% assembly yield, assuming the split adds no interface area. Find both costs and their ratio.
 
 ### Problem 27-05.9 [B]
 

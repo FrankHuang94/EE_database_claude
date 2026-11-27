@@ -21,7 +21,7 @@
 
 **Part 3 · The cost of stopping** (notebook). *Predict* the shape of Example 26-05.5's expected cost from 0 to 30 weeks of verification, including its value at 24 weeks. Then plot it, with and without emulation (Figure 1 of the chapter).
 
-**Part 4 · What emulation must deliver** (notebook). *Predict* how far emulation must shorten the mean discovery time $\tau$ (from 4 weeks) to repay its $3 M price. Then plot the minimum expected cost against $\tau$ and find the break-even.
+**Part 4 · What emulation must deliver** (notebook). *Predict* how far emulation must shorten the mean discovery time $\tau$ (from 4 weeks) to repay its \$3 M price. Then plot the minimum expected cost against $\tau$ and find the break-even.
 
 ## Expected results
 
@@ -43,7 +43,7 @@
 1. The Monte Carlo gives 0.77 against the normal approximation's 0.826, and needs about 21 weeks for 90% confidence against 20.7. The beta-PERT tasks are wider than $(b - a)/6$ implies, and skewed, which the normal approximation ignores; for a committed date, simulate.
 2. Doubling A0's success probability lowers the expected tape-outs from 1.99 to 1.66, worth **0.33** of a tape-out (**5.9** weeks at 18 weeks a spin).
 3. The cost curve starts at $40 M (respin nearly certain), rises to a ridge near 5 weeks, falls to its minimum at 16.1 weeks and then rises slowly as the weekly cost dominates ($37.0 M at 24 weeks). Stopping on the ridge is the worst time to stop short of the optimum.
-4. Emulation at $3 M pays only if it shortens $\tau$ below 3.51 weeks, a **12**% faster discovery; the assumed 2.5 weeks clears that easily, which is why most large SoC programs use it.
+4. Emulation at \$3 M pays only if it shortens $\tau$ below 3.51 weeks, a **12**% faster discovery; the assumed 2.5 weeks clears that easily, which is why most large SoC programs use it.
 
 ## Optional hardware
 

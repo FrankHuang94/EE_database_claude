@@ -180,7 +180,7 @@ the current ratio following from power conservation ($v_1i_1 = v_2i_2$). A trans
 
 **Setup.** (a) A rod 0.5 m long slides at 4 m/s on rails in a 0.5 T field, closing a 2 Ω circuit. Find the EMF, the current, the retarding force and the mechanical power required. (b) A generator coil of 200 turns and 0.01 m² rotates at 3000 rpm in 0.5 T. Find the peak and rms EMF.
 
-**Solution.** (a) $\mathcal E = B\ell v = $ **1 V**; $I = 1/2 = $ **0.5 A**; $F = I\ell B = $ **0.125 N**; $P = Fv = $ **0.5 W**, equal to $I^2R = 0.25\times2$ ✓.
+**Solution.** (a) \$\mathcal E = B\ell v = \$ **1 V**; \$I = 1/2 = \$ **0.5 A**; \$F = I\ell B = \$ **0.125 N**; \$P = Fv = \$ **0.5 W**, equal to $I^2R = 0.25\times2$ ✓.
 
 (b) 3000 rpm is 50 rev/s, ω = 2π×50 = 314.16 rad/s. Peak $NBA\omega = 200\times0.5\times0.01\times314.16 = $ **314.2 V**; rms $314.2/\sqrt2 = $ **222.1 V**.
 
@@ -190,7 +190,7 @@ the current ratio following from power conservation ($v_1i_1 = v_2i_2$). A trans
 
 **Solution.** (a) $\delta = \sqrt{\rho/(\pi f\mu_0)}$: **8.422 mm**, **0.2063 mm**, **65.23 µm** and **2.063 µm**.
 
-(b) The current flows in a shell of area about $2\pi a\delta$ instead of $\pi a^2$, so $R_{ac}/R_{dc} \approx a/(2\delta) = 0.5/(2\times0.06523) = $ **3.832**.
+(b) The current flows in a shell of area about $2\pi a\delta$ instead of $\pi a^2$, so \$R_{ac}/R_{dc} \approx a/(2\delta) = 0.5/(2\times0.06523) = \$ **3.832**.
 
 (c) For a flat conductor, exponential decay is exactly equivalent to a uniform layer of thickness δ, so the decay itself is not the error; curvature is. A shell of thickness δ in a round wire has area $\pi a^2 - \pi(a - \delta)^2 = 2\pi a\delta - \pi\delta^2$, smaller than $2\pi a\delta$; using it gives $a^2/(2a\delta - \delta^2)$ = **4.100**, whose first-order form is $a/(2\delta) + \tfrac14$ = **4.082**. The exact Bessel-function result, **4.094**, lies between them.
 
@@ -206,7 +206,7 @@ the current ratio following from power conservation ($v_1i_1 = v_2i_2$). A trans
 
 (c) $B = \mu_0NI/\ell = $ **12.57 mT**.
 
-(d) $u = B^2/(2\mu_0) = $ **62.83 J/m³**; times the volume $\pi r^2\ell = 3.142\times10^{-5}$ m³ gives **1.974 mJ** ✓. (A real 10 cm × 1 cm coil is not quite "long": its inductance is about 8% lower, Nagaoka's end correction, which the lab computes.)
+(d) \$u = B^2/(2\mu_0) = \$ **62.83 J/m³**; times the volume $\pi r^2\ell = 3.142\times10^{-5}$ m³ gives **1.974 mJ** ✓. (A real 10 cm × 1 cm coil is not quite "long": its inductance is about 8% lower, Nagaoka's end correction, which the lab computes.)
 
 ### Example 04-07.5 — A gapped ferrite inductor (tier C)
 
@@ -216,9 +216,9 @@ the current ratio following from power conservation ($v_1i_1 = v_2i_2$). A trans
 
 (b) $L = N^2/\mathcal R$: **38.30 µH** gapped and **804.2 µH** ungapped.
 
-(c) Saturation when $\Phi = B_sA$: $I = B_sA\mathcal R/N = 0.39\times4\times10^{-5}\times1.0445\times10^7/20 = $ **8.147 A**.
+(c) Saturation when $\Phi = B_sA$: \$I = B_sA\mathcal R/N = 0.39\times4\times10^{-5}\times1.0445\times10^7/20 = \$ **8.147 A**.
 
-(d) $U = \tfrac12LI^2 = $ **1.271 mJ**; the fraction in the gap is $\mathcal R_g/\mathcal R$ = **95.24%** (energy divides like voltage across series resistors, since the same flux crosses both).
+(d) \$U = \tfrac12LI^2 = \$ **1.271 mJ**; the fraction in the gap is $\mathcal R_g/\mathcal R$ = **95.24%** (energy divides like voltage across series resistors, since the same flux crosses both).
 
 (e) Ungapped, saturation comes at 0.388 A, storing only **60.52 µJ**: the gap multiplies the storable energy by 21.
 

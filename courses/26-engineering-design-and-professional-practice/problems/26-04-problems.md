@@ -60,7 +60,7 @@ Chapter: [26-04](../chapters/26-04-engineering-economics-2.md) · Worked solutio
 
 ### Problem 26-04.12 [B]
 
-**What the older node is worth.** In Example 26-04.4, suppose the I/O die were made on N3 instead of N6 (55 mm², $20,000 wafers, $D_0$ = 0.10 cm⁻², $2 test). Find (a) its dies per wafer, yield and good-die cost, (b) the chiplet S package cost, and (c) the extra cost per S unit.
+**What the older node is worth.** In Example 26-04.4, suppose the I/O die were made on N3 instead of N6 (55 mm², \$20,000 wafers, $D_0$ = 0.10 cm⁻², \$2 test). Find (a) its dies per wafer, yield and good-die cost, (b) the chiplet S package cost, and (c) the extra cost per S unit.
 
 ### Problem 26-04.13 [B]
 
@@ -72,7 +72,7 @@ Chapter: [26-04](../chapters/26-04-engineering-economics-2.md) · Worked solutio
 
 ### Problem 26-04.15 [C]
 
-**More on the option to build later.** For Example 26-04.6: (a) at $p$ = 0.3, what port cost would make building now tie with licensing now and choosing later? (b) If the port cost is $1 M, above what probability of the high-volume outcome should the team build now? (c) At $p$ = 0.6 (port cost $3 M), find the expected cost of each strategy, the best one, and the value of flexibility against licensing both generations.
+**More on the option to build later.** For Example 26-04.6: (a) at $p$ = 0.3, what port cost would make building now tie with licensing now and choosing later? (b) If the port cost is \$1 M, above what probability of the high-volume outcome should the team build now? (c) At $p$ = 0.6 (port cost \$3 M), find the expected cost of each strategy, the best one, and the value of flexibility against licensing both generations.
 
 ### Problem 26-04.16 [B]
 

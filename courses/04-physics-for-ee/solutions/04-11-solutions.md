@@ -118,7 +118,7 @@ Problems: [04-11 problems](../problems/04-11-problems.md) · Chapter: [04-11](..
 
 ### Solution 04-11.15
 
-Discount the 2031 values by six years of growth. SiC: $11/1.2^6 = 11/2.986$ = **$3.684 billion**. GaN: $3.5/1.35^6 = 3.5/6.053$ = **$0.5782 billion**. These are implied starting points, not reported figures; check them against the analyst's stated 2025 base before using them.
+Discount the 2031 values by six years of growth. SiC: $11/1.2^6 = 11/2.986$ = **\$3.684 billion**. GaN: $3.5/1.35^6 = 3.5/6.053$ = **\$0.5782 billion**. These are implied starting points, not reported figures; check them against the analyst's stated 2025 base before using them.
 
 ---
 

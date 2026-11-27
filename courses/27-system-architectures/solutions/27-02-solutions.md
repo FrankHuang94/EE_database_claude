@@ -52,7 +52,7 @@ Solve $1.2(0.45 + 0.12f)^2f + 0.10 = 2.0$: $f$ = **2.67** GHz, **63.5**% of maxi
 
 (b) DPW **572**, yield **0.895**, cost **$36.15**.
 
-(c) Modem DPW **2694**, yield **0.980**, cost **$4.54**; total $36.15 + 4.54 + 1.50$ = **$42.19**.
+(c) Modem DPW **2694**, yield **0.980**, cost **\$4.54**; total $36.15 + 4.54 + 1.50$ = **\$42.19**.
 
 Integration is cheaper by about **$0.21** here, a small margin. The decision also weighs the chip-to-chip link's power, board area, the schedule coupling of the modem to the AP's node, and strategy (who designs the modem).
 

@@ -42,7 +42,7 @@ $$
 
 (b) $v(10\text{ ms}) = 5 - 4e^{-0.5} = 2.574$ V. For $v = 4$ V: $4e^{-t/\tau} = 1$, so $t = \tau\ln4 = 27.73$ ms.
 
-(c) Forward Euler on $v' = (5 - v)/\tau$ multiplies the deviation from the final value, $v - 5$, by $1 - h/\tau$ each step. Stability needs $|1 - h/\tau| < 1$, so $h < 2\tau = $ **40 ms**. The factor is negative for $h > \tau$, so the deviation alternates in sign, and the numerical solution overshoots the final value back and forth, unless $h \le \tau = $ **20 ms**. Accuracy needs a much smaller step still, say $\tau/20$.
+(c) Forward Euler on $v' = (5 - v)/\tau$ multiplies the deviation from the final value, $v - 5$, by $1 - h/\tau$ each step. Stability needs $|1 - h/\tau| < 1$, so \$h < 2\tau = \$ **40 ms**. The factor is negative for $h > \tau$, so the deviation alternates in sign, and the numerical solution overshoots the final value back and forth, unless \$h \le \tau = \$ **20 ms**. Accuracy needs a much smaller step still, say $\tau/20$.
 
 **4.** *(02-02)* (a) Divide by $t$: $y' + (3/t)y = 1$. The integrating factor is $\mu = e^{\int 3/t\,dt} = t^3$, and $t^3y' + 3t^2y = (t^3y)'$, so $(t^3y)' = t^3$ and $t^3y = t^4/4 + K$. From $y(1) = 0$, $K = -1/4$:
 
@@ -58,9 +58,9 @@ $$
 v_{out}(t) = k(t - \tau) + k\tau e^{-t/\tau}.
 $$
 
-At 1 ms: $2(1 - 0.5) + 2(0.5)e^{-2} = 1 + 0.1353 = 1.135$ V. Once the exponential dies, $v_{in} - v_{out} = k\tau = $ **1 V**: the output is the input delayed by exactly $\tau = $ **0.5 ms**. This is why a slow RC node delays a ramping signal by one time constant.
+At 1 ms: $2(1 - 0.5) + 2(0.5)e^{-2} = 1 + 0.1353 = 1.135$ V. Once the exponential dies, \$v_{in} - v_{out} = k\tau = \$ **1 V**: the output is the input delayed by exactly \$\tau = \$ **0.5 ms**. This is why a slow RC node delays a ramping signal by one time constant.
 
-(c) $f(y) = 1 - y^2 = 0$ at $y = \pm1$. Since $f'(y) = -2y$, $f'(1) = -2 < 0$ (stable) and $f'(-1) = 2 > 0$ (unstable). On the phase line, $y' > 0$ between −1 and 1, and $y' < 0$ outside, so solutions flow toward +1 and away from −1 ✓. Near +1 a deviation decays as $e^{-2t}$: local time constant $1/|f'(1)| = $ **0.5**. Separating, $\int dy/(1 - y^2) = \int dt$. With partial fractions, $\tfrac12\ln\frac{1 + y}{1 - y} = t + K$, and $y(0) = 0$ gives $K = 0$, so $y = \tanh t$ and $y(1) = 0.7616$. It approaches the stable equilibrium +1, as the phase line predicts.
+(c) $f(y) = 1 - y^2 = 0$ at $y = \pm1$. Since $f'(y) = -2y$, $f'(1) = -2 < 0$ (stable) and $f'(-1) = 2 > 0$ (unstable). On the phase line, $y' > 0$ between −1 and 1, and $y' < 0$ outside, so solutions flow toward +1 and away from −1 ✓. Near +1 a deviation decays as $e^{-2t}$: local time constant \$1/|f'(1)| = \$ **0.5**. Separating, $\int dy/(1 - y^2) = \int dt$. With partial fractions, $\tfrac12\ln\frac{1 + y}{1 - y} = t + K$, and $y(0) = 0$ gives $K = 0$, so $y = \tanh t$ and $y(1) = 0.7616$. It approaches the stable equilibrium +1, as the phase line predicts.
 
 **5.** *(02-03)* (a) KVL around the loop with $i = C\,dv_C/dt$: $v_s = Ri + L\,di/dt + v_C$, so
 
@@ -80,7 +80,7 @@ $$
 
 The first peak is where $v_C' = 0$ first, at $t_p = \pi/\omega_d = 3.245$ µs. There the bracket equals $-1$, so $v_C = 1 + e^{-\alpha\pi/\omega_d}$ and the overshoot is $e^{-\pi\zeta/\sqrt{1 - \zeta^2}} = e^{-0.8112} = 44.43\%$, a peak of **1.444 V**. The envelope rule gives the 2% settling time as $4/\alpha = 16$ µs. That is about 2.5 ring periods, consistent with $Q = 2$.
 
-(d) Critical damping needs ζ = 1, $\alpha = \omega_0$: $R = 2\sqrt{L/C} = $ **2 Ω**.
+(d) Critical damping needs ζ = 1, $\alpha = \omega_0$: \$R = 2\sqrt{L/C} = \$ **2 Ω**.
 
 **6.** *(02-04)* (a) The homogeneous roots are $\pm j2$, and the input is at that same frequency, so the ordinary guess fails: multiply it by $t$. Write $y_p = t\,g(t)$ with $g = A\cos2t + B\sin2t$, which satisfies $g'' = -4g$. Then $y_p'' = 2g' + tg''$, so $y_p'' + 4y_p = 2g'$. Setting $2g' = 3\cos2t$ needs $g' = -2A\sin2t + 2B\cos2t = 1.5\cos2t$, so $A = 0$, $B = 0.75$ and $y_p = 0.75\,t\sin2t$. The general solution adds $c_1\cos2t + c_2\sin2t$; $y(0) = 0$ gives $c_1 = 0$ and $y'(0) = 2c_2 = 0$ gives $c_2 = 0$. So
 
@@ -96,9 +96,9 @@ $$
 y_{ss}(t) = 2.425\cos(2t - 75.96°).
 $$
 
-The amplitude is $10/|p(j\omega)|$, with $|p(j\omega)|^2 = (5 - \omega^2)^2 + 4\omega^2$. Setting the derivative with respect to $\omega^2$ to zero, $2(\omega^2 - 5) + 4 = 0$, gives $\omega^2 = 3$: the peak is at $\omega = \sqrt3 = 1.732$ rad/s, where $|p|^2 = 4 + 12 = 16$ and the amplitude is $10/4 = $ **2.5**. Check with the peak formula: here $\omega_0 = \sqrt5$ and $\zeta = 1/\sqrt5$, so $\omega_0\sqrt{1 - 2\zeta^2} = \sqrt5\sqrt{0.6} = \sqrt3$ ✓.
+The amplitude is $10/|p(j\omega)|$, with $|p(j\omega)|^2 = (5 - \omega^2)^2 + 4\omega^2$. Setting the derivative with respect to $\omega^2$ to zero, $2(\omega^2 - 5) + 4 = 0$, gives $\omega^2 = 3$: the peak is at $\omega = \sqrt3 = 1.732$ rad/s, where $|p|^2 = 4 + 12 = 16$ and the amplitude is \$10/4 = \$ **2.5**. Check with the peak formula: here $\omega_0 = \sqrt5$ and $\zeta = 1/\sqrt5$, so $\omega_0\sqrt{1 - 2\zeta^2} = \sqrt5\sqrt{0.6} = \sqrt3$ ✓.
 
-(c) $\omega_0 = 2\pi\times10^7 = 6.283\times10^7$ rad/s, so $C = 1/(\omega_0^2L) = 253.3$ pF. For a series RLC, $Q = \omega_0L/R$, so $R = \omega_0L/Q = 62.83/50 = 1.257\ \Omega$. The half-power bandwidth is $f_0/Q = $ **200 kHz**. The free ring decays as $e^{-\alpha t}$ with $1/\alpha = 2L/R = 2Q/\omega_0 = 1.592$ µs, which is $1.592\text{ µs}\times10\text{ MHz} = 15.92$ cycles, or $Q/\pi$ ✓. The narrow bandwidth and the slow ring are the same fact.
+(c) $\omega_0 = 2\pi\times10^7 = 6.283\times10^7$ rad/s, so $C = 1/(\omega_0^2L) = 253.3$ pF. For a series RLC, $Q = \omega_0L/R$, so $R = \omega_0L/Q = 62.83/50 = 1.257\ \Omega$. The half-power bandwidth is \$f_0/Q = \$ **200 kHz**. The free ring decays as $e^{-\alpha t}$ with $1/\alpha = 2L/R = 2Q/\omega_0 = 1.592$ µs, which is $1.592\text{ µs}\times10\text{ MHz} = 15.92$ cycles, or $Q/\pi$ ✓. The narrow bandwidth and the slow ring are the same fact.
 
 **7.** *(02-05)* (a) Transform with the initial conditions: $\mathcal{L}\{y''\} = s^2Y - s$ and $\mathcal{L}\{3y'\} = 3sY - 3$. So $(s^2 + 3s + 2)Y - s - 3 = 4/s$, and
 
@@ -209,7 +209,7 @@ $$
 
 Positive definite three ways: both eigenvalues are positive; the pivots, 2 and $2 - (-1)(-1)/2 = 1.5$, are positive; and the energy is $\mathbf{x}^{\mathsf{T}}\mathbf{K}\mathbf{x} = 2x_1^2 - 2x_1x_2 + 2x_2^2 = x_1^2 + x_2^2 + (x_1 - x_2)^2 > 0$ for every $\mathbf{x} \ne \mathbf{0}$.
 
-(b) $\mathbf{H}^{\mathsf{T}}\mathbf{H} = \begin{bmatrix}25 & 20\\ 20 & 25\end{bmatrix}$, with eigenvalues $45$ and $5$ and eigenvectors $\mathbf{v}_1 = (1, 1)/\sqrt2$ and $\mathbf{v}_2 = (1, -1)/\sqrt2$. So $\sigma_1 = \sqrt{45} = 6.708$ and $\sigma_2 = \sqrt5 = 2.236$. The left singular vectors are $\mathbf{u}_i = \mathbf{H}\mathbf{v}_i/\sigma_i$: $\mathbf{u}_1 = (3, 9)/(\sqrt2\sqrt{45}) = (1, 3)/\sqrt{10}$ and $\mathbf{u}_2 = (3, -1)/(\sqrt2\sqrt5) = (3, -1)/\sqrt{10}$, which are orthogonal ✓. Checks: $\sigma_1\sigma_2 = 15 = |\det\mathbf{H}|$ ✓, and $\sigma_1^2 + \sigma_2^2 = 50 = 9 + 16 + 25$, the sum of squared entries ✓. The condition number is $\sigma_1/\sigma_2 = $ **3**.
+(b) $\mathbf{H}^{\mathsf{T}}\mathbf{H} = \begin{bmatrix}25 & 20\\ 20 & 25\end{bmatrix}$, with eigenvalues $45$ and $5$ and eigenvectors $\mathbf{v}_1 = (1, 1)/\sqrt2$ and $\mathbf{v}_2 = (1, -1)/\sqrt2$. So $\sigma_1 = \sqrt{45} = 6.708$ and $\sigma_2 = \sqrt5 = 2.236$. The left singular vectors are $\mathbf{u}_i = \mathbf{H}\mathbf{v}_i/\sigma_i$: $\mathbf{u}_1 = (3, 9)/(\sqrt2\sqrt{45}) = (1, 3)/\sqrt{10}$ and $\mathbf{u}_2 = (3, -1)/(\sqrt2\sqrt5) = (3, -1)/\sqrt{10}$, which are orthogonal ✓. Checks: $\sigma_1\sigma_2 = 15 = |\det\mathbf{H}|$ ✓, and $\sigma_1^2 + \sigma_2^2 = 50 = 9 + 16 + 25$, the sum of squared entries ✓. The condition number is \$\sigma_1/\sigma_2 = \$ **3**.
 
 (c) Sending along $\mathbf{v}_i$ and receiving along $\mathbf{u}_i$ gives two independent channels with power gains $\sigma_1^2 = 45$ (16.53 dB) and $\sigma_2^2 = 5$ (6.990 dB). The best rank-1 approximation, $\sigma_1\mathbf{u}_1\mathbf{v}_1^{\mathsf{T}}$, has 2-norm error $\sigma_2 = 2.236$. Dropping the weak channel loses that much gain.
 
@@ -235,9 +235,9 @@ $$
 \frac{V_C(s)}{U(s)} = \frac{3}{s^2 + 4s + 3}\quad(s\text{ in rad/µs}), \quad\text{or}\quad \frac{3\times10^{12}}{s^2 + 4\times10^6s + 3\times10^{12}}\ \text{in SI}.
 $$
 
-The DC gain is $3/3 = $ **1**. The steady state is $-\mathbf{A}^{-1}\mathbf{B}\cdot1$, with $\mathbf{A}^{-1} = \tfrac13\begin{bmatrix}-4 & -3\\ 1 & 0\end{bmatrix}$, giving $(1, 0)$: $v_C = 1$ V and no current, as a capacitor in DC steady state requires.
+The DC gain is \$3/3 = \$ **1**. The steady state is $-\mathbf{A}^{-1}\mathbf{B}\cdot1$, with $\mathbf{A}^{-1} = \tfrac13\begin{bmatrix}-4 & -3\\ 1 & 0\end{bmatrix}$, giving $(1, 0)$: $v_C = 1$ V and no current, as a capacitor in DC steady state requires.
 
-(d) The eigenvalues of $\mathbf{A}_d = e^{\mathbf{A}T}$ are $e^{\lambda T}$: $e^{-0.1} = 0.9048$ and $e^{-0.3} = 0.7408$, inside the unit circle as they must be. Forward Euler multiplies each mode by $1 + h\lambda$. It needs $|1 - 3h| < 1$ for the fast mode, so $h < 2/3 = $ **0.6667 µs**; the slow mode allows up to 2 µs. The fast mode sets the limit.
+(d) The eigenvalues of $\mathbf{A}_d = e^{\mathbf{A}T}$ are $e^{\lambda T}$: $e^{-0.1} = 0.9048$ and $e^{-0.3} = 0.7408$, inside the unit circle as they must be. Forward Euler multiplies each mode by $1 + h\lambda$. It needs $|1 - 3h| < 1$ for the fast mode, so \$h < 2/3 = \$ **0.6667 µs**; the slow mode allows up to 2 µs. The fast mode sets the limit.
 
 **14.** *(02-10)* (a) With 23 fraction bits, the floats in $[1, 2)$ are $2^{-23}$ apart, and those in $[\tfrac12, 1)$ half as far: the spacing just below 1 is $2^{-24} = 5.960\times10^{-8}$. The Taylor series gives $1 - \cos x = x^2/2 - x^4/24 + \dots = 5.000\times10^{-9}$ for $x = 10^{-4}$ (the second term is $4\times10^{-18}$). In single precision the computed cosine, $0.999\,999\,995$, must be rounded to a float. It lies less than half a spacing ($2.98\times10^{-8}$) below 1, so it rounds to exactly 1, and the subtraction gives 0: a 100% error. The information was destroyed when the cosine was rounded, and the subtraction exposes it. The fix uses $1 - \cos x = 2\sin^2(x/2)$: $\sin(5\times10^{-5})$ is stored to full relative precision, and squaring and doubling it gives $5.000\times10^{-9}$ correctly.
 

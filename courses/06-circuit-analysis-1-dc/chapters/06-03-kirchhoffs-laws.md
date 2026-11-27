@@ -199,9 +199,9 @@ For a balanced network with all three resistors equal, $R_Y = R_\Delta/3$. The s
 
 **Setup.** At node P, branch 1 carries 3 A into the node, branch 2 carries 1 A out of the node, branch 3 carries $i_3$ referenced out of the node, and branch 4 carries −0.5 A referenced into the node. Separately, a loop passes through three elements: a 12 V source traversed from − to +, a resistor whose voltage is 5 V traversed from + to −, and an element X traversed from + to −. Find $i_3$ and the voltage of X (with its + terminal met first).
 
-**Solution.** KCL at P, in = out: $3 + (-0.5) = 1 + i_3$, so $i_3 = $ **1.5 A**. (Branch 4's −0.5 A "in" is really 0.5 A out.)
+**Solution.** KCL at P, in = out: $3 + (-0.5) = 1 + i_3$, so \$i_3 = \$ **1.5 A**. (Branch 4's −0.5 A "in" is really 0.5 A out.)
 
-KVL, drops positive: traversing the source from − to + is a rise, $-12$; the resistor is a drop, $+5$; X is a drop, $+v_X$. So $-12 + 5 + v_X = 0$ and $v_X = $ **7 V**.
+KVL, drops positive: traversing the source from − to + is a rise, $-12$; the resistor is a drop, $+5$; X is a drop, $+v_X$. So $-12 + 5 + v_X = 0$ and \$v_X = \$ **7 V**.
 
 **Units check.** A and V throughout ✓.
 
@@ -215,9 +215,9 @@ KVL, drops positive: traversing the source from − to + is a rise, $-12$; the r
 
 *Figure 4. The network of Example 06-03.2.*
 
-**Solution.** Reduce from the far end: $R_3 + R_4 = 6$ Ω (series); $12\parallel6 = 72/18 = 4$ Ω (parallel); $R_{eq} = 4 + 4 = $ **8 Ω**. Source current $I = 24/8 = $ **3 A**, all of it through $R_1$.
+**Solution.** Reduce from the far end: $R_3 + R_4 = 6$ Ω (series); $12\parallel6 = 72/18 = 4$ Ω (parallel); \$R_{eq} = 4 + 4 = \$ **8 Ω**. Source current \$I = 24/8 = \$ **3 A**, all of it through $R_1$.
 
-Now expand back. $R_1$ drops $3\times4 = 12$ V, leaving $v_p = $ **12 V** across the parallel part (check by divider: $24\times4/(4 + 4) = 12$ V ✓). The current divider splits the 3 A: $i_2 = 12/12 = $ **1 A** through $R_2$ and $i_{34} = 12/6 = $ **2 A** through $R_3$ and $R_4$ (the 6 Ω branch takes twice the current of the 12 Ω branch). Then $v_3 = 2\times2 = 4$ V and $v_4 = 2\times4 = $ **8 V**.
+Now expand back. $R_1$ drops $3\times4 = 12$ V, leaving \$v_p = \$ **12 V** across the parallel part (check by divider: $24\times4/(4 + 4) = 12$ V ✓). The current divider splits the 3 A: \$i_2 = 12/12 = \$ **1 A** through $R_2$ and \$i_{34} = 12/6 = \$ **2 A** through $R_3$ and $R_4$ (the 6 Ω branch takes twice the current of the 12 Ω branch). Then $v_3 = 2\times2 = 4$ V and \$v_4 = 2\times4 = \$ **8 V**.
 
 **Power balance.** Source: $24\times3 = 72$ W delivered. Resistors: $R_1$ $3^2\times4 = 36$ W; $R_2$ $1^2\times12 = 12$ W; $R_3$ $2^2\times2 = 8$ W; $R_4$ $2^2\times4 = 16$ W; total 72 W ✓.
 
@@ -233,7 +233,7 @@ Now expand back. $R_1$ drops $3\times4 = 12$ V, leaving $v_p = $ **12 V** across
 
 (b) $i = 12.6\ \text{V}/133\ \text{kΩ} = $ **94.7 µA**. That is small but not negligible: it is three times the whole average current of the sensor tag of Example 06-01.4, drawn day and night. Battery products often switch the divider off between measurements, or use megohm resistors with a buffer.
 
-(c) $R_2\parallel R_L = 33\times1000/1033 = 31.95$ kΩ, so $v_{out} = 12.6\times31.95/(100 + 31.95) = $ **3.051 V**, low by **2.42%**. Check with the Thevenin form: $R_1\parallel R_2 = 24.81$ kΩ, and $24.81/(24.81 + 1000) = 2.42\%$ ✓.
+(c) $R_2\parallel R_L = 33\times1000/1033 = 31.95$ kΩ, so \$v_{out} = 12.6\times31.95/(100 + 31.95) = \$ **3.051 V**, low by **2.42%**. Check with the Thevenin form: $R_1\parallel R_2 = 24.81$ kΩ, and $24.81/(24.81 + 1000) = 2.42\%$ ✓.
 
 (d) **24.81 kΩ**, the parallel combination of the two divider resistors. (This source resistance also matters dynamically: the ADC's sampling capacitor must charge through it, 07-02.)
 
@@ -247,7 +247,7 @@ Now expand back. $R_1$ drops $3\times4 = 12$ V, leaving $v_p = $ **12 V** across
 
 **Solution.** (a) $\Delta R = R\cdot\text{GF}\cdot\varepsilon = 350\times2.0\times1000\times10^{-6} = $ **0.700 Ω**, a 0.2% change.
 
-(b) Exact: $v_{out} = 2.5\left(\dfrac{350.7}{700.7} - \dfrac12\right) = 2.5\times\dfrac{0.7}{2\times700.7} = $ **1.2488 mV**. Linear approximation: $\dfrac{V}{4}\,\dfrac{\Delta R}{R} = \dfrac{2.5}{4}\times0.002 = $ **1.25 mV**, high by **0.10%** (the predicted $\Delta R/(2R)$).
+(b) Exact: \$v_{out} = 2.5\left(\dfrac{350.7}{700.7} - \dfrac12\right) = 2.5\times\dfrac{0.7}{2\times700.7} = \$ **1.2488 mV**. Linear approximation: \$\dfrac{V}{4}\,\dfrac{\Delta R}{R} = \dfrac{2.5}{4}\times0.002 = \$ **1.25 mV**, high by **0.10%** (the predicted $\Delta R/(2R)$).
 
 (c) Each arm of a balanced bridge has half the excitation across it: $1.25^2/350 = $ **4.46 mW**, which warms the gauge slightly; excitation is limited partly by this self-heating.
 
@@ -271,9 +271,9 @@ $$
 R_{na} = \frac{10\times20}{60} = 3.333\ \Omega, \qquad R_{nc} = \frac{10\times30}{60} = 5\ \Omega, \qquad R_{nd} = \frac{20\times30}{60} = 10\ \Omega.
 $$
 
-Now $R_{nc}$ is in series with $R_{cb}$ (45 Ω), $R_{nd}$ with $R_{db}$ (60 Ω), those two are in parallel ($45\parallel60 = 25.71$ Ω), and the result is in series with $R_{na}$: $R_{eq} = 3.333 + 25.714 = $ **29.05 Ω**. Source current $I = 10/29.05 = $ **0.3443 A**.
+Now $R_{nc}$ is in series with $R_{cb}$ (45 Ω), $R_{nd}$ with $R_{db}$ (60 Ω), those two are in parallel ($45\parallel60 = 25.71$ Ω), and the result is in series with $R_{na}$: \$R_{eq} = 3.333 + 25.714 = \$ **29.05 Ω**. Source current \$I = 10/29.05 = \$ **0.3443 A**.
 
-For the bridge current, return to the original network. The wye's center sits at $v_n = 10 - 0.3443\times3.333 = 8.852$ V. The 45 Ω path carries $8.852/45 = 0.1967$ A, so $v_c = 0.1967\times40 = 7.869$ V; the 60 Ω path carries $8.852/60 = 0.1475$ A, so $v_d = 0.1475\times50 = 7.377$ V. (Nodes c and d exist in both networks, because the transformation preserves the terminal voltages.) The bridge current is $(7.869 - 7.377)/30 = $ **16.39 mA**, from c to d.
+For the bridge current, return to the original network. The wye's center sits at $v_n = 10 - 0.3443\times3.333 = 8.852$ V. The 45 Ω path carries $8.852/45 = 0.1967$ A, so $v_c = 0.1967\times40 = 7.869$ V; the 60 Ω path carries $8.852/60 = 0.1475$ A, so $v_d = 0.1475\times50 = 7.377$ V. (Nodes c and d exist in both networks, because the transformation preserves the terminal voltages.) The bridge current is \$(7.869 - 7.377)/30 = \$ **16.39 mA**, from c to d.
 
 **Units check.** Ω, V and A consistent ✓.
 

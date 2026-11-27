@@ -6,7 +6,7 @@ Exam: [README.md](README.md). All numbers are recomputed by [verify_06_exam.py](
 
 (b) $3\ \text{Ah}\times3600\ \text{s/h} = $ **10,800 C**.
 
-(c) $3.7\ \text{V}\times3\ \text{Ah} = $ **11.1 Wh** $= 11.1\times3600$ J = **39.96 kJ**.
+(c) \$3.7\ \text{V}\times3\ \text{Ah} = \$ **11.1 Wh** $= 11.1\times3600$ J = **39.96 kJ**.
 
 (d) $11.1/1.5 = $ **7.4 h**.
 
@@ -18,9 +18,9 @@ Exam: [README.md](README.md). All numbers are recomputed by [verify_06_exam.py](
 
 **3.** *(06-03, 06-11)* (a) $12\times4/12 = $ **4 V**.
 
-(b) $R_2\parallel R_L = 2$ kΩ, so $12\times2/(8 + 2) = $ **2.4 V**.
+(b) $R_2\parallel R_L = 2$ kΩ, so \$12\times2/(8 + 2) = \$ **2.4 V**.
 
-(c) The divider's Thévenin resistance is $8\parallel4 = 2.667$ kΩ; the loading error $R_{th}/(R_{th} + R_L)$ stays below 1% if $R_L \ge 99R_{th} = $ **264.0 kΩ**.
+(c) The divider's Thévenin resistance is $8\parallel4 = 2.667$ kΩ; the loading error $R_{th}/(R_{th} + R_L)$ stays below 1% if \$R_L \ge 99R_{th} = \$ **264.0 kΩ**.
 
 (d) The parallel resistance is 1 kΩ, so the voltage is 6 V, and the currents are **3 mA**, **2 mA** and **1 mA**: inversely proportional to resistance.
 
@@ -36,27 +36,27 @@ The first row is the constraint $v_1 - v_2 = 6$; the second is KCL for the super
 
 (b) Substituting $v_1 = v_2 + 6$ into the supernode equation gives $1.25v_2 = 0.5v_3$, so $v_3 = 2.5v_2$; node 3 then gives $3.25v_2 = 1$. Hence **$v_2$ = 0.3077 V**, **$v_3$ = 0.7692 V** and **$v_1$ = 6.308 V**.
 
-(c) KCL at node 1: 3 mA enters from I1 and $v_1/2 = 3.154$ mA leaves through R1, so 0.1538 mA flows *out of* V1's + terminal into node 1. V1 delivers $6\times0.1538 = $ **0.9231 mW**.
+(c) KCL at node 1: 3 mA enters from I1 and $v_1/2 = 3.154$ mA leaves through R1, so 0.1538 mA flows *out of* V1's + terminal into node 1. V1 delivers \$6\times0.1538 = \$ **0.9231 mW**.
 
 **5.** *(06-05)* (a) The current source is shared by meshes 2 and 3 and points up, against mesh 2's clockwise direction and with mesh 3's: $i_3 - i_2 = 1$. Mesh 1: $12 = 2i_1 + 4(i_1 - i_2)$. The supermesh around meshes 2 and 3 (avoiding the current source): $0 = 4(i_2 - i_1) + 3i_2 + 6i_3$. Substituting $i_3 = i_2 + 1$ gives $13i_2 - 4i_1 = -6$; with $6i_1 - 4i_2 = 12$, **$i_1$ = 2.129 A**, **$i_2$ = 0.1935 A** and **$i_3$ = 1.194 A**.
 
-(b) R4 carries $i_1 - i_2$ downward: $4\times1.935 = $ **7.742 V**.
+(b) R4 carries $i_1 - i_2$ downward: \$4\times1.935 = \$ **7.742 V**.
 
-(c) V1 delivers $12\times2.129 = $ **25.55 W**. The current source's voltage (node 3 to 0) is $6i_3 = 7.161$ V, and it pushes 1 A up into node 3, so it delivers **7.161 W**. Check: the resistors absorb $2(2.129)^2 + 4(1.935)^2 + 3(0.1935)^2 + 6(1.194)^2 = 32.71$ W, equal to $25.55 + 7.161$.
+(c) V1 delivers \$12\times2.129 = \$ **25.55 W**. The current source's voltage (node 3 to 0) is $6i_3 = 7.161$ V, and it pushes 1 A up into node 3, so it delivers **7.161 W**. Check: the resistors absorb $2(2.129)^2 + 4(1.935)^2 + 3(0.1935)^2 + 6(1.194)^2 = 32.71$ W, equal to $25.55 + 7.161$.
 
-**6.** *(06-06)* (a) KVL from b through $r_\pi$ and $R_E$: $v_b = i_br_\pi + (\beta + 1)i_bR_E$, so $R_{in} = r_\pi + (\beta + 1)R_E = 2.5 + 101\times0.2 = $ **22.7 kΩ**: the emitter resistor appears multiplied by $\beta + 1$.
+**6.** *(06-06)* (a) KVL from b through $r_\pi$ and $R_E$: $v_b = i_br_\pi + (\beta + 1)i_bR_E$, so \$R_{in} = r_\pi + (\beta + 1)R_E = 2.5 + 101\times0.2 = \$ **22.7 kΩ**: the emitter resistor appears multiplied by $\beta + 1$.
 
-(b) $i_b = v_s/(R_s + R_{in})$ and $v_c = -\beta i_bR_C$, so $v_c/v_s = -100\times4/23.7 = $ **−16.88**.
+(b) $i_b = v_s/(R_s + R_{in})$ and $v_c = -\beta i_bR_C$, so \$v_c/v_s = -100\times4/23.7 = \$ **−16.88**.
 
-(c) With $R_E$ shorted, $R_{in} = 2.5$ kΩ and the gain is $-100\times4/3.5 = $ **−114.3**. $R_E$ trades gain (about 7×) for a much higher input resistance and a gain set mostly by $R_C/R_E$ rather than by β, which varies from part to part (degeneration, Course 10).
+(c) With $R_E$ shorted, $R_{in} = 2.5$ kΩ and the gain is \$-100\times4/3.5 = \$ **−114.3**. $R_E$ trades gain (about 7×) for a much higher input resistance and a gain set mostly by $R_C/R_E$ rather than by β, which varies from part to part (degeneration, Course 10).
 
-**7.** *(06-07)* (a) V1 alone (I1 open): $10\times3/5 = $ **6 V**. I1 alone (V1 shorted): $3\ \text{mA}\times(2\parallel3) = $ **3.6 V**. Total **$v_x$ = 9.6 V**.
+**7.** *(06-07)* (a) V1 alone (I1 open): \$10\times3/5 = \$ **6 V**. I1 alone (V1 shorted): \$3\ \text{mA}\times(2\parallel3) = \$ **3.6 V**. Total **$v_x$ = 9.6 V**.
 
-(b) $9.6^2/3\ \text{kΩ} = $ **30.72 mW**, while the separate powers are $6^2/3 = 12$ mW and $3.6^2/3 = 4.32$ mW, summing to **16.32 mW**. Power is quadratic, so it does not superpose; superpose voltages or currents, then compute power.
+(b) \$9.6^2/3\ \text{kΩ} = \$ **30.72 mW**, while the separate powers are $6^2/3 = 12$ mW and $3.6^2/3 = 4.32$ mW, summing to **16.32 mW**. Power is quadratic, so it does not superpose; superpose voltages or currents, then compute power.
 
 (c) Linearity: V1's contribution doubles to 12 V, so $v_x$ = **15.6 V**.
 
-(d) *(06-07, source transformation)* 10 V behind 2 kΩ becomes $10/2 = $ **5 mA** in parallel with 2 kΩ. Together with I1, 8 mA flows into $2\parallel3 = 1.2$ kΩ: $v_x = 8\times1.2 = $ **9.6 V**, as in (a).
+(d) *(06-07, source transformation)* 10 V behind 2 kΩ becomes \$10/2 = \$ **5 mA** in parallel with 2 kΩ. Together with I1, 8 mA flows into $2\parallel3 = 1.2$ kΩ: \$v_x = 8\times1.2 = \$ **9.6 V**, as in (a).
 
 **8.** *(06-08)* (a) With the port open, no current flows in R3 or the CCVS, so R1 and R2 form a divider: $v_a = 12\times3/9 = 4$ V, $i_x = 4/3$ mA, and $v_b = v_a + 2000\times(4/3\times10^{-3}) = 4 + 2.667$. The port voltage is **$V_{oc}$ = 6.667 V**.
 
@@ -64,9 +64,9 @@ The first row is the constraint $v_1 - v_2 = 6$; the second is KCL for the super
 
 (c) $I_{sc} = V_{oc}/R_{th} = $ **1.538 mA**; $P_{max} = V_{oc}^2/(4R_{th}) = $ **2.564 mW**.
 
-**9.** *(06-09)* (a) $R_L = R_{th}$ = **0.5 Ω**; $P_{max} = 48^2/(4\times0.5) = $ **1152 W**, at 50% efficiency.
+**9.** *(06-09)* (a) $R_L = R_{th}$ = **0.5 Ω**; \$P_{max} = 48^2/(4\times0.5) = \$ **1152 W**, at 50% efficiency.
 
-(b) $\eta = R_L/(R_L + R_{th}) = 0.9$ gives $R_L$ = **4.5 Ω**, receiving $48^2\times4.5/5^2 = $ **414.7 W**, **36%** of the maximum ($4\eta(1 - \eta) = 0.36$).
+(b) $\eta = R_L/(R_L + R_{th}) = 0.9$ gives $R_L$ = **4.5 Ω**, receiving \$48^2\times4.5/5^2 = \$ **414.7 W**, **36%** of the maximum ($4\eta(1 - \eta) = 0.36$).
 
 (c) **Zero** source resistance: then the load receives $48^2/2$ = 1152 W. Maximum power transfer chooses the *load* for a *given* source; when the source can be chosen, lower source resistance always delivers more power to a fixed load.
 
@@ -78,19 +78,19 @@ The first row is the constraint $v_1 - v_2 = 6$; the second is KCL for the super
 
 (d) Directly, the 10 kΩ input and the 90 kΩ source form a divider: $1\times10/100 = $ **0.1 V**. A follower draws no input current, so its input sits at the full 1 V and its output delivers **1 V** to the 10 kΩ from zero output resistance.
 
-**11.** *(06-10)* (a) $G = 5$: $5\times0.020 = $ **0.1 V**.
+**11.** *(06-10)* (a) $G = 5$: \$5\times0.020 = \$ **0.1 V**.
 
-(b) $v_+ = 2.5\times50.5/60.5 = 2.0868$ V and $v_{out} = 2.0868\times6 - 2.5\times5 = $ **20.66 mV**. The common-mode gain is $0.02066/2.5 = $ **0.008264**, and the CMRR is $5/0.008264 = $ **605**, or **55.6 dB**.
+(b) $v_+ = 2.5\times50.5/60.5 = 2.0868$ V and \$v_{out} = 2.0868\times6 - 2.5\times5 = \$ **20.66 mV**. The common-mode gain is \$0.02066/2.5 = \$ **0.008264**, and the CMRR is \$5/0.008264 = \$ **605**, or **55.6 dB**.
 
 (c) $(1 + G)/(4t) = 6/0.04 = 150$, or **43.5 dB**: four resistors at their worst are four times worse than one.
 
-**12.** *(06-10, 06-06)* (a) $G = 50/(1 + 50/(2\times10^4)) = $ **49.88**, an error of **0.249%** (noise gain over $A$); the output is $49.875\times20\ \text{mV} = $ **0.9975 V**.
+**12.** *(06-10, 06-06)* (a) \$G = 50/(1 + 50/(2\times10^4)) = \$ **49.88**, an error of **0.249%** (noise gain over $A$); the output is \$49.875\times20\ \text{mV} = \$ **0.9975 V**.
 
-(b) Offset: $\pm2\ \text{mV}\times50 = $ **±100 mV** (sign varies by unit). Bias current into the − input: it is drawn from the output through $R_2$, so $v_{out} = +I_BR_2 = $ **+4.9 mV**. Bias current into the + input: drawn from the source through 5 kΩ, so $v_+ = -I_BR_s$ and $v_{out} = -I_BR_s\times50 = $ **−25 mV**.
+(b) Offset: \$\pm2\ \text{mV}\times50 = \$ **±100 mV** (sign varies by unit). Bias current into the − input: it is drawn from the output through $R_2$, so \$v_{out} = +I_BR_2 = \$ **+4.9 mV**. Bias current into the + input: drawn from the source through 5 kΩ, so $v_+ = -I_BR_s$ and \$v_{out} = -I_BR_s\times50 = \$ **−25 mV**.
 
 (c) Sum of magnitudes: **129.9 mV**. Signed: the bias terms give $4.9 - 25 = -20.1$ mV, and the worst case adds the offset in the same direction: **120.1 mV**.
 
-(d) $120.1/997.5 = $ **12.0%** of the signal. The offset dominates: use a precision (low-offset) op-amp. Then balance the resistances the two inputs see. The − input sees $R_1\parallel R_2 = 0.98$ kΩ against 5 kΩ at the + input; scaling $R_1$ and $R_2$ up about fivefold (5.1 kΩ and 249.9 kΩ keep the gain at 50) makes $R_1\parallel R_2 \approx 5$ kΩ, and the two bias terms then cancel except for the offset current times $R_2$. (Buffering the sensor would not help: with zero source resistance the + term vanishes but the − term, +4.9 mV, remains.)
+(d) \$120.1/997.5 = \$ **12.0%** of the signal. The offset dominates: use a precision (low-offset) op-amp. Then balance the resistances the two inputs see. The − input sees $R_1\parallel R_2 = 0.98$ kΩ against 5 kΩ at the + input; scaling $R_1$ and $R_2$ up about fivefold (5.1 kΩ and 249.9 kΩ keep the gain at 50) makes $R_1\parallel R_2 \approx 5$ kΩ, and the two bias terms then cancel except for the offset current times $R_2$. (Buffering the sensor would not help: with zero source resistance the + term vanishes but the − term, +4.9 mV, remains.)
 
 **13.** *(06-11)* (a) $3.3\times10/10.22 = $ **3.229 V**, **−2.15%**; corrected $3.229\times(1 + 0.22/10) = $ **3.300 V**.
 

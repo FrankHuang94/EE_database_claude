@@ -184,7 +184,7 @@ so a new node lowers cost per transistor only if its density gain beats its wafe
 
 ### Example 25-04.3 · Cost per good die against area (tier B)
 
-**Setup.** A $20,000 wafer (assumed) carries either 100 mm² or 600 mm² dies, with $D_0$ = 0.1 cm⁻² and $\alpha$ = 3 (assumed), no edge exclusion. For each, find (a) DPW, (b) yield, (c) good dies and (d) cost per good die. (e) By what factor does cost rise for six times the area?
+**Setup.** A \$20,000 wafer (assumed) carries either 100 mm² or 600 mm² dies, with $D_0$ = 0.1 cm⁻² and $\alpha$ = 3 (assumed), no edge exclusion. For each, find (a) DPW, (b) yield, (c) good dies and (d) cost per good die. (e) By what factor does cost rise for six times the area?
 
 **Solution.**
 
@@ -232,7 +232,7 @@ so a new node lowers cost per transistor only if its density gain beats its wafe
 **Solution.**
 
 - (a) $50{,}000 \times 12$ = **6.0e5** wafers a year.
-- (b) $28 \times 10^9/(5 \times 6.0 \times 10^5)$ = **$9,333**.
+- (b) $28 \times 10^9/(5 \times 6.0 \times 10^5)$ = **\$9,333**.
 - (c) $9{,}333/30{,}000$ = **31**%.
 - (d) **$0**: the capital is fully written off.
 

@@ -260,7 +260,7 @@ using $b = m\omega_0/Q$. It falls with a heavier proof mass and a higher Q, and 
 
 **Setup.** A phone battery is rated 4.5 Ah at a nominal 3.87 V (illustrative values). (a) Find its energy in Wh, J and kWh. (b) How high could that energy lift the 0.2 kg phone against gravity? (c) How many electrons does a full discharge move, and how much energy does each deliver, in eV?
 
-**Solution.** (a) $4.5\text{ Ah}\times3.87\text{ V} = $ **17.415 Wh**; times 3600 s/h, **62,694 J**; divided by $3.6\times10^6$, **0.017415 kWh**.
+**Solution.** (a) \$4.5\text{ Ah}\times3.87\text{ V} = \$ **17.415 Wh**; times 3600 s/h, **62,694 J**; divided by $3.6\times10^6$, **0.017415 kWh**.
 
 (b) $h = E/(mg) = 62{,}694/(0.2\times9.80665) = $ **31,965 m**, about 32 km: a battery stores a surprising amount of mechanical energy.
 
@@ -292,7 +292,7 @@ with a pure number $C$ set by the shape and the mode.
 
 **Setup.** A 0.2 kg phone falls 1.5 m onto concrete and stops in 0.2 ms with a half-sine deceleration pulse. (a) Find the impact speed and the kinetic energy at impact. (b) Find the average and peak deceleration, in m/s² and *g*. (c) Find the impulse and the average and peak force on the phone.
 
-**Solution.** (a) $v = \sqrt{2gh} = \sqrt{2\times9.80665\times1.5} = $ **5.424 m/s**, and $K = \tfrac12mv^2 = $ **2.942 J**, equal to $mgh$ as energy conservation requires.
+**Solution.** (a) \$v = \sqrt{2gh} = \sqrt{2\times9.80665\times1.5} = \$ **5.424 m/s**, and \$K = \tfrac12mv^2 = \$ **2.942 J**, equal to $mgh$ as energy conservation requires.
 
 (b) Average: $v/\Delta t = 5.424/0.0002 = $ **27,120 m/s²**, or **2765** *g*. Peak: $(\pi/2)\times27{,}120 = $ **42,600 m/s²**, or **4344** *g*.
 
@@ -306,7 +306,7 @@ with a pure number $C$ set by the shape and the mode.
 
 **Solution.** (a) $\omega = 2\pi\times4500/60 = $ **471.2 rad/s**, so $P = \tau\omega = 310\times471.24 = $ **146.1 kW**, or $146{,}084/745.7 = $ **195.9 hp**.
 
-(b) Electrical input $146.1/0.94$ kW, so $I = 146{,}084/(0.94\times400) = $ **388.5 A**.
+(b) Electrical input $146.1/0.94$ kW, so \$I = 146{,}084/(0.94\times400) = \$ **388.5 A**.
 
 **Units check.** N·m × rad/s = J/s = W ✓ (the radian is dimensionless). **Sanity check.** Hundreds of amperes at hundreds of volts is the regime of EV power electronics ([22](../../22-power-electronics-and-energy-conversion/README.md)) ✓.
 
@@ -316,7 +316,7 @@ with a pure number $C$ set by the shape and the mode.
 
 **Solution.** (a) $\omega_0 = \sqrt{1000/0.01} = $ **316.2 rad/s**, $f_0 = $ **50.33 Hz**; $\zeta = 0.4/(2\sqrt{1000\times0.01}) = $ **0.06325**, so $Q = 1/(2\zeta) = $ **7.906**.
 
-(b) $\alpha = b/(2m) = $ **20 s⁻¹**: the amplitude falls by $e$ in $1/\alpha = $ **50 ms**, which is $Q/\pi = $ **2.516** cycles of the natural frequency (2.511 cycles of the slightly slower damped ringing; Figure 1, right).
+(b) \$\alpha = b/(2m) = \$ **20 s⁻¹**: the amplitude falls by $e$ in \$1/\alpha = \$ **50 ms**, which is \$Q/\pi = \$ **2.516** cycles of the natural frequency (2.511 cycles of the slightly slower damped ringing; Figure 1, right).
 
 (c) $L = 0.01$ H, $R = 0.4$ Ω and $C = 1/1000$ F = 1 mF. The current's half-power frequencies are $\omega = \sqrt{\alpha^2 + \omega_0^2} \mp \alpha$ (02-04), giving **47.25 Hz** and **53.61 Hz**, a bandwidth of **6.366 Hz** = $f_0/Q$.
 
@@ -332,9 +332,9 @@ with a pure number $C$ set by the shape and the mode.
 
 (b) $x = g/\omega_0^2 = 9.80665/(2\pi\times4000)^2 = $ **15.53 nm** per *g*, and **15.53 pm** per m*g*.
 
-(c) With $Q = 1/\sqrt2$, the −3 dB bandwidth is $f_0$ = **4 kHz**. At $r = f/f_0 = 0.25$ the magnitude relative to DC is $1/\sqrt{(1 - r^2)^2 + (r/Q)^2} = $ **0.9981**: flat within 0.2%.
+(c) With $Q = 1/\sqrt2$, the −3 dB bandwidth is $f_0$ = **4 kHz**. At $r = f/f_0 = 0.25$ the magnitude relative to DC is \$1/\sqrt{(1 - r^2)^2 + (r/Q)^2} = \$ **0.9981**: flat within 0.2%.
 
-(d) Deflection scales as $1/f_0^2$, so doubling it needs $f_0 = 4/\sqrt2 = $ **2.828 kHz**, and the bandwidth falls to that value.
+(d) Deflection scales as $1/f_0^2$, so doubling it needs \$f_0 = 4/\sqrt2 = \$ **2.828 kHz**, and the bandwidth falls to that value.
 
 **Units check.** kg × (1/s)² = kg/s² = N/m ✓; (m/s²)/(1/s²) = m ✓.
 
@@ -342,13 +342,13 @@ with a pure number $C$ set by the shape and the mode.
 
 **Setup.** For the accelerometer of Example 04-01.6 at 300 K: (a) find the thermal force noise density and the equivalent acceleration noise density in µ*g*/√Hz; (b) find the rms acceleration noise in a 100 Hz noise bandwidth; (c) find the rms thermal motion of the proof mass from equipartition; (d) what proof mass would bring the floor to 10 µ*g*/√Hz at the same $f_0$ and Q?
 
-**Solution.** (a) $\sqrt{4kTb} = \sqrt{4\times1.380649\times10^{-23}\times300\times1.777\times10^{-4}} = $ **1.716×10⁻¹² N/√Hz**. Dividing by $m$: $a_n = $ **3.432×10⁻⁴ m/s²/√Hz**, or $3.432\times10^{-4}/9.80665 = $ **34.99 µ*g*/√Hz**.
+**Solution.** (a) \$\sqrt{4kTb} = \sqrt{4\times1.380649\times10^{-23}\times300\times1.777\times10^{-4}} = \$ **1.716×10⁻¹² N/√Hz**. Dividing by $m$: \$a_n = \$ **3.432×10⁻⁴ m/s²/√Hz**, or \$3.432\times10^{-4}/9.80665 = \$ **34.99 µ*g*/√Hz**.
 
 (b) $34.99\times\sqrt{100} = $ **349.9 µ*g*** rms, about 0.35 m*g*.
 
 (c) $\sqrt{kT/k_s} = \sqrt{4.142\times10^{-21}/3.158} = $ **36.21 pm** rms: the proof mass jiggles thermally by a few times the motion that 1 m*g* produces.
 
-(d) $a_n \propto 1/\sqrt m$, so $m = 5\text{ µg}\times(a_n/10\text{ µ}g/\sqrt{\text{Hz}})^2 = $ **61.23 µg** (using the unrounded $a_n$), twelve times heavier. The alternatives are a higher Q (vacuum packaging, at the cost of a peaky response that needs electronic damping) or a lower $f_0$ (at the cost of bandwidth).
+(d) $a_n \propto 1/\sqrt m$, so \$m = 5\text{ µg}\times(a_n/10\text{ µ}g/\sqrt{\text{Hz}})^2 = \$ **61.23 µg** (using the unrounded $a_n$), twelve times heavier. The alternatives are a higher Q (vacuum packaging, at the cost of a peaky response that needs electronic damping) or a lower $f_0$ (at the cost of bandwidth).
 
 **Units check.** $\sqrt{\text{J/K}\cdot\text{K}\cdot\text{N·s/m}} = \sqrt{\text{N}^2\cdot\text{s}} = \text{N}/\sqrt{\text{Hz}}$ ✓.
 

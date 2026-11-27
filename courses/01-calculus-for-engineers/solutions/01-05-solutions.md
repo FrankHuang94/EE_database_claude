@@ -33,14 +33,14 @@ The midpoint error is about half the trapezoid error, with the opposite sign, as
 (b) $\big[-\cos x\big]_0^\pi = 1 + 1 = $ **2**.
 (c) $\big[\ln x\big]_1^e = 1 - 0 = $ **1**.
 (d) $\big[x^3 - x^2 + x\big]_0^2 = 8 - 4 + 2 = $ **6**.
-(e) $\big[\tfrac{1}{2}e^{2x}\big]_0^{\ln 2} = \tfrac{1}{2}(4 - 1) = $ **1.5**, using $e^{2\ln 2} = 4$.
+(e) \$\big[\tfrac{1}{2}e^{2x}\big]_0^{\ln 2} = \tfrac{1}{2}(4 - 1) = \$ **1.5**, using $e^{2\ln 2} = 4$.
 (f) $\big[\tan x\big]_0^{\pi/4} = $ **1**.
 
 ### Solution 01-05.3
 
 (a) By FTC part 1 directly: $\cos(x^2)$. (Its antiderivative has no elementary formula, but the derivative is immediate.)
 
-(b) Let $G(u) = \int_1^u\ln t\,dt$, so $G'(u) = \ln u$. The integral is $G(x^2)$, and by the chain rule its derivative is $\ln(x^2)\cdot2x = 4x\ln x$. At $x = 2$: $8\ln 2 = $ **5.545**.
+(b) Let $G(u) = \int_1^u\ln t\,dt$, so $G'(u) = \ln u$. The integral is $G(x^2)$, and by the chain rule its derivative is $\ln(x^2)\cdot2x = 4x\ln x$. At $x = 2$: \$8\ln 2 = \$ **5.545**.
 
 (c) Reverse the limits: $\int_x^5 = -\int_5^x$, so the derivative is $-e^{-x}$.
 
@@ -48,7 +48,7 @@ The midpoint error is about half the trapezoid error, with the opposite sign, as
 
 (a) $x^3$ is odd and $\cos x$ is even, so the product is odd. Over a symmetric interval the negative half cancels the positive half exactly.
 
-(b) $x^2$ is even, so the integral is $2\int_0^2x^2\,dx = 2\times8/3 = $ **5.333**.
+(b) $x^2$ is even, so the integral is \$2\int_0^2x^2\,dx = 2\times8/3 = \$ **5.333**.
 
 (c) On $[0, 1]$, $e^{-x^2}$ decreases from 1 to $e^{-1}$. So $e^{-1}\times1 \le I \le 1\times1$, i.e. **0.3679** ≤ I ≤ **1**. The true 0.7468 lies inside. These bounds take no calculus beyond the comparison property, and they are often enough for a sanity check.
 
@@ -59,7 +59,7 @@ The midpoint error is about half the trapezoid error, with the opposite sign, as
 - At 1 ms: $1 + (10\times10^{-3})(10^{-3})/(2\times10^{-6}) = 1 + 5 = $ **6 V**.
 - At 3 ms: $6 + (-5\times10^{-3})(2\times10^{-3})/(2\times10^{-6}) = 6 - 5 = $ **1 V**.
 
-(b) Net charge $= 10\text{ mA}\times1\text{ ms} - 5\text{ mA}\times2\text{ ms} = 10 - 10 = $ **0 µC**. The voltage change is net charge over $C$, so with zero net charge the capacitor returns to 1 V. The *path* went up to 6 V and back, but only the net integral matters for the end point.
+(b) Net charge \$= 10\text{ mA}\times1\text{ ms} - 5\text{ mA}\times2\text{ ms} = 10 - 10 = \$ **0 µC**. The voltage change is net charge over $C$, so with zero net charge the capacitor returns to 1 V. The *path* went up to 6 V and back, but only the net integral matters for the end point.
 
 (c) A linear rise from 1 V to 6 V over the first millisecond, a linear fall back to 1 V by 3 ms, then flat (chapter Figure 3).
 
@@ -76,7 +76,7 @@ The midpoint error is about half the trapezoid error, with the opposite sign, as
 
 ### Solution 01-05.7
 
-(a) Stored: $\tfrac{1}{2}CV^2 = \tfrac{1}{2}\times10^{-5}\times144 = $ **0.72 mJ**. Supplied: the source pushes charge $CV$ at constant voltage $V$, so $CV^2 = $ **1.44 mJ**.
+(a) Stored: \$\tfrac{1}{2}CV^2 = \tfrac{1}{2}\times10^{-5}\times144 = \$ **0.72 mJ**. Supplied: the source pushes charge $CV$ at constant voltage $V$, so \$CV^2 = \$ **1.44 mJ**.
 
 (b) With $i = (V/R)e^{-t/\tau}$ and $\tau = RC$:
 
@@ -100,7 +100,7 @@ $R$ cancels.
 
 ### Solution 01-05.9
 
-(a) Charge per hour: $15\times3 + 1.2\times57 = 45 + 68.4 = 113.4$ mA·min. The average is $113.4/60 = $ **1.890 mA**. Life $= 300/1.89 = $ **158.7 h** $= $ **6.61 days**.
+(a) Charge per hour: $15\times3 + 1.2\times57 = 45 + 68.4 = 113.4$ mA·min. The average is \$113.4/60 = \$ **1.890 mA**. Life \$= 300/1.89 = \$ **158.7 h** \$= \$ **6.61 days**.
 
 (b) $50\text{ µA}\times24\text{ h} = $ **1.2 mAh** per day, or **0.4%** of capacity per day. Without recalibration, the error accumulates linearly, by 8.4 mAh over a week.
 
@@ -108,17 +108,17 @@ $R$ cancels.
 
 ### Solution 01-05.10
 
-(a) Trapezoid with $n = 4$ ($h = \pi/4$): $\dfrac{h}{2}\big[0 + 2(0.7071 + 1 + 0.7071) + 0\big] = $ **1.8961**, an error of **0.1039**. With $n = 8$: **1.9742**, an error of **0.02577**. The ratio of errors is **4.03**: halving $h$ quarters the error, so the rule is second order.
+(a) Trapezoid with $n = 4$ ($h = \pi/4$): \$\dfrac{h}{2}\big[0 + 2(0.7071 + 1 + 0.7071) + 0\big] = \$ **1.8961**, an error of **0.1039**. With $n = 8$: **1.9742**, an error of **0.02577**. The ratio of errors is **4.03**: halving $h$ quarters the error, so the rule is second order.
 
 (b) Midpoint with $n = 4$, at $\pi/8$, $3\pi/8$, $5\pi/8$, $7\pi/8$: **2.0523**, an error of **−0.0523**. That is about half the trapezoid error in magnitude, with the opposite sign.
 
-(c) $(2M + T)/3 = (4.1047 + 1.8961)/3 = $ **2.00027**, an error of only $2.7\times10^{-4}$, nearly 400 times smaller than the trapezoid's at the same $n$. The leading errors of the two rules cancel.
+(c) \$(2M + T)/3 = (4.1047 + 1.8961)/3 = \$ **2.00027**, an error of only $2.7\times10^{-4}$, nearly 400 times smaller than the trapezoid's at the same $n$. The leading errors of the two rules cancel.
 
 ### Solution 01-05.11
 
-(a) $RC = 10^4\times10^{-7} = 1$ ms. For a constant input the integral is $0.5t$, so $v_{out} = -0.5t/RC$. At 2 ms: **−1.0 V**. The slope is $-0.5/10^{-3} = $ **−500 V/s**.
+(a) $RC = 10^4\times10^{-7} = 1$ ms. For a constant input the integral is $0.5t$, so $v_{out} = -0.5t/RC$. At 2 ms: **−1.0 V**. The slope is \$-0.5/10^{-3} = \$ **−500 V/s**.
 
-(b) $-500t = -12$ gives $t = $ **24 ms**.
+(b) $-500t = -12$ gives \$t = \$ **24 ms**.
 
 (c) Each half period (0.5 ms) at ±1 V changes the output by $1\times0.5\times10^{-3}/10^{-3} = 0.5$ V, alternately down and up. The output is a triangle of **0.5 V** peak-to-peak. (It starts at 0 and swings between 0 and −0.5 V, since the first half-cycle is positive. Any input offset would make it drift, hence the parallel resistor in practice.)
 
@@ -134,25 +134,25 @@ $R$ cancels.
 
 (a) By FTC part 1, $A'(x) = x^2 - 4$. It is negative on $[0, 2)$ (decreasing) and positive for $x > 2$ (increasing). So the minimum is at **x = 2**.
 
-(b) $A(x) = x^3/3 - 4x$. The minimum value is $A(2) = 8/3 - 8 = $ **−5.333**. $A(x) = 0$ with $x > 0$ gives $x^2 = 12$, so $x = \sqrt{12} = $ **3.464**.
+(b) $A(x) = x^3/3 - 4x$. The minimum value is \$A(2) = 8/3 - 8 = \$ **−5.333**. $A(x) = 0$ with $x > 0$ gives $x^2 = 12$, so \$x = \sqrt{12} = \$ **3.464**.
 
 (c) At $x = 3.464$, the positive area accumulated beyond $x = 2$ exactly cancels the negative area from 0 to 2: net signed area zero.
 
 ### Solution 01-05.14
 
-(a) $q = \displaystyle\int_0^5C_0(1 + av)\,dv = C_0\big[v + \tfrac{a}{2}v^2\big]_0^5 = C_0(5 - 1.25) = $ **3.75 µC**, against the nominal $C_0V = 5$ µC: 25% less charge.
+(a) \$q = \displaystyle\int_0^5C_0(1 + av)\,dv = C_0\big[v + \tfrac{a}{2}v^2\big]_0^5 = C_0(5 - 1.25) = \$ **3.75 µC**, against the nominal $C_0V = 5$ µC: 25% less charge.
 
-(b) $w = \displaystyle\int_0^5vC_0(1 + av)\,dv = C_0\big[\tfrac{v^2}{2} + \tfrac{a}{3}v^3\big]_0^5 = C_0(12.5 - 4.167) = $ **8.333 µJ**, against $\tfrac{1}{2}C_0V^2 = 12.5$ µJ: 33% less energy.
+(b) \$w = \displaystyle\int_0^5vC_0(1 + av)\,dv = C_0\big[\tfrac{v^2}{2} + \tfrac{a}{3}v^3\big]_0^5 = C_0(12.5 - 4.167) = \$ **8.333 µJ**, against $\tfrac{1}{2}C_0V^2 = 12.5$ µJ: 33% less energy.
 
 (c) $q/V = 3.75/5 = $ **0.75 µF**. A part sold as "1 µF" behaves like 0.75 µF (or less, for real X5R parts at high bias) in this circuit. Decoupling networks, hold-up capacitors and filters designed with the nominal value can then fail their specifications. Engineers read the manufacturer's DC-bias derating curves, not just the nominal capacitance.
 
 ### Solution 01-05.15
 
-(a) $v\cdot i = 3250\sin(\omega t)\sin(\omega t - 30^\circ)$. Using $\sin A\sin B = \tfrac{1}{2}\big[\cos(A - B) - \cos(A + B)\big]$, the product is $1625\big[\cos30^\circ - \cos(2\omega t - 30^\circ)\big]$. The second term averages to zero over a cycle, so $P = 1625\cos30^\circ = $ **1407 W**.
+(a) $v\cdot i = 3250\sin(\omega t)\sin(\omega t - 30^\circ)$. Using $\sin A\sin B = \tfrac{1}{2}\big[\cos(A - B) - \cos(A + B)\big]$, the product is $1625\big[\cos30^\circ - \cos(2\omega t - 30^\circ)\big]$. The second term averages to zero over a cycle, so \$P = 1625\cos30^\circ = \$ **1407 W**.
 
-(b) $N = 80$: $P_{80} = $ **1407 W**. $N = 3$: $P_3 = $ **1407 W**, exact as well.
+(b) $N = 80$: \$P_{80} = \$ **1407 W**. $N = 3$: \$P_3 = \$ **1407 W**, exact as well.
 
-(c) $N = 2$, starting at 1 ms: $P_2 = $ **−208.8 W**, completely wrong (even negative). The product contains DC and a component at twice the line frequency. Averaging $N$ equally spaced samples cancels a sinusoid of $m$ cycles per period unless $m$ is a multiple of $N$. With $N = 2$, the $2\times$ component ($m = 2$) is sampled at the same phase every time, so it does not cancel. It *aliases* to DC ([11-10](../../11-signals-and-systems/chapters/11-10-sampling-aliasing-reconstruction.md)). Any $N \ge 3$ cancels it exactly. Real meters sample much faster than this minimum to handle harmonics.
+(c) $N = 2$, starting at 1 ms: \$P_2 = \$ **−208.8 W**, completely wrong (even negative). The product contains DC and a component at twice the line frequency. Averaging $N$ equally spaced samples cancels a sinusoid of $m$ cycles per period unless $m$ is a multiple of $N$. With $N = 2$, the $2\times$ component ($m = 2$) is sampled at the same phase every time, so it does not cancel. It *aliases* to DC ([11-10](../../11-signals-and-systems/chapters/11-10-sampling-aliasing-reconstruction.md)). Any $N \ge 3$ cancels it exactly. Real meters sample much faster than this minimum to handle harmonics.
 
 (d) $1.407\text{ kW}\times1\text{ h} = $ **1.407 kWh**.
 

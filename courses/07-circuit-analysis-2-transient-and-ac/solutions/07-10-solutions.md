@@ -22,7 +22,7 @@ $Y_a$ = 0.01 S, $Y_b$ = 0.005 S, $Y_c$ = 0.02 S. From §3.3: $y_{11}$ = **0.0300
 
 - (a) $z_{12} = z_{21}$ and $z_{11} = z_{22}$: **reciprocal and symmetric**.
 - (b) $y_{12} = y_{21}$, $y_{11} \ne y_{22}$: **reciprocal, not symmetric**.
-- (c) $h_{12} = -h_{21}$: **reciprocal**. $\Delta_h = 50\times0.01 - 0.5\times(-0.5) = $ **0.75** $\ne 1$: **not symmetric**.
+- (c) $h_{12} = -h_{21}$: **reciprocal**. \$\Delta_h = 50\times0.01 - 0.5\times(-0.5) = \$ **0.75** $\ne 1$: **not symmetric**.
 - (d) $AD - BC = 2 - 1$ = **1**: reciprocal; $A \ne D$: not symmetric.
 - (e) $AD - BC = 3 - 1$ = **2**: **not reciprocal** (an active network); $A \ne D$: not symmetric either.
 

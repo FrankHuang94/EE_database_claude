@@ -16,9 +16,9 @@ Problems: [07-06 problems](../problems/07-06-problems.md) · Chapter: [07-06](..
 
 ### Solution 07-06.2
 
-$S = \tfrac12\mathbf{V}\mathbf{I}^* = \tfrac12(100\angle20°)(5\angle15°) = 250\angle35°$ VA $= 204.8 + j143.4$ VA. So $\lvert S\rvert$ = **250.0 VA**, $P$ = **204.8 W**, $Q$ = **143.4 var**, and PF $= \cos35° = $ **0.8192**, lagging (voltage leads current, $Q > 0$).
+$S = \tfrac12\mathbf{V}\mathbf{I}^* = \tfrac12(100\angle20°)(5\angle15°) = 250\angle35°$ VA $= 204.8 + j143.4$ VA. So $\lvert S\rvert$ = **250.0 VA**, $P$ = **204.8 W**, $Q$ = **143.4 var**, and PF \$= \cos35° = \$ **0.8192**, lagging (voltage leads current, $Q > 0$).
 
-With the current's phase as the time reference, the decomposition of 07-06 §3.4 gives $p(t) = 204.8(1 + \cos2\omega t) - 143.4\sin2\omega t$ W. The two oscillating terms combine into one sinusoid of amplitude $\sqrt{P^2 + Q^2} = \lvert S\rvert$, so $p$ swings between $P + \lvert S\rvert = $ **454.8 W** and $P - \lvert S\rvert = $ **−45.2 W**. For part of each cycle the load returns energy to the source.
+With the current's phase as the time reference, the decomposition of 07-06 §3.4 gives $p(t) = 204.8(1 + \cos2\omega t) - 143.4\sin2\omega t$ W. The two oscillating terms combine into one sinusoid of amplitude $\sqrt{P^2 + Q^2} = \lvert S\rvert$, so $p$ swings between \$P + \lvert S\rvert = \$ **454.8 W** and \$P - \lvert S\rvert = \$ **−45.2 W**. For part of each cycle the load returns energy to the source.
 
 ### Solution 07-06.3
 
@@ -26,7 +26,7 @@ An ideal inductor absorbs **0 W**. Its reactive power is $Q = I_{rms}^2X = 1^2\t
 
 ### Solution 07-06.4
 
-The loads in parallel: $Z_p = Z_1Z_2/(Z_1 + Z_2) = (36\,750 + j13\,500)/2725 = $ **13.49 + j4.954 Ω**. The line current is $\mathbf{I}_{rms} = 230/(Z_{line} + Z_p) = $ **15.65 A ∠ −21.37°**, and the load voltage $\mathbf{V}_{load,rms} = \mathbf{I}_{rms}Z_p = $ **224.9 V ∠ −1.195°**. All phasors in this solution are RMS, so $S = \mathbf{V}_{rms}\mathbf{I}_{rms}^*$ with no factor ½. Complex powers (source delivering, others absorbing):
+The loads in parallel: \$Z_p = Z_1Z_2/(Z_1 + Z_2) = (36\,750 + j13\,500)/2725 = \$ **13.49 + j4.954 Ω**. The line current is \$\mathbf{I}_{rms} = 230/(Z_{line} + Z_p) = \$ **15.65 A ∠ −21.37°**, and the load voltage \$\mathbf{V}_{load,rms} = \mathbf{I}_{rms}Z_p = \$ **224.9 V ∠ −1.195°**. All phasors in this solution are RMS, so $S = \mathbf{V}_{rms}\mathbf{I}_{rms}^*$ with no factor ½. Complex powers (source delivering, others absorbing):
 
 | Element | $S$ (VA) |
 |---|---|
@@ -40,11 +40,11 @@ The absorbed powers sum exactly to the delivered power: **3352 W** and **1311 va
 
 ### Solution 07-06.5
 
-$\theta_1 = \arccos0.70 = 45.57°$, $\tan\theta_1 = 1.0202$; $\tan\theta_2 = \tan(\arccos0.95) = 0.3287$. Then $Q_C = 5000(1.0202 - 0.3287) = $ **3458 var** and $C = Q_C/(\omega V^2) = 3458/(314.16\times230^2) = $ **208.1 µF**. The current falls from $5000/(230\times0.70) = $ **31.06 A** to $5000/(230\times0.95) = $ **22.88 A**.
+$\theta_1 = \arccos0.70 = 45.57°$, $\tan\theta_1 = 1.0202$; $\tan\theta_2 = \tan(\arccos0.95) = 0.3287$. Then \$Q_C = 5000(1.0202 - 0.3287) = \$ **3458 var** and \$C = Q_C/(\omega V^2) = 3458/(314.16\times230^2) = \$ **208.1 µF**. The current falls from \$5000/(230\times0.70) = \$ **31.06 A** to \$5000/(230\times0.95) = \$ **22.88 A**.
 
 ### Solution 07-06.6
 
-Unity: $Q_C = Q_1 = 5101$ var, $C = $ **306.9 µF**. 0.95 leading: the capacitor must cancel the motor's 5101 var and add **1643 var** leading, $Q_C = 6744$ var, $C = $ **405.8 µF**. Going from 0.95 lagging (208.1 µF) to unity takes **47.5%** more capacitance for a current reduction of only **5.0%** (22.88 A to 21.74 A; current scales as 1/PF), and going leading gives back that improvement while adding even more capacitance: a leading power factor of 0.95 draws the same current as a lagging one. Near unity, $\tan\theta$ changes little, so the last increment of power factor is expensive.
+Unity: $Q_C = Q_1 = 5101$ var, \$C = \$ **306.9 µF**. 0.95 leading: the capacitor must cancel the motor's 5101 var and add **1643 var** leading, $Q_C = 6744$ var, \$C = \$ **405.8 µF**. Going from 0.95 lagging (208.1 µF) to unity takes **47.5%** more capacitance for a current reduction of only **5.0%** (22.88 A to 21.74 A; current scales as 1/PF), and going leading gives back that improvement while adding even more capacitance: a leading power factor of 0.95 draws the same current as a lagging one. Near unity, $\tan\theta$ changes little, so the last increment of power factor is expensive.
 
 ### Solution 07-06.7
 
@@ -54,7 +54,7 @@ Unity: $Q_C = Q_1 = 5101$ var, $C = $ **306.9 µF**. 0.95 leading: the capacitor
 
 ### Solution 07-06.8
 
-Conjugate match $Z_L = 4 - j3$ Ω gives $P_{max} = V_{Th,rms}^2/(4R_{Th}) = 400/16 = $ **25.00 W**. The best resistor is $R_L = \lvert Z_{Th}\rvert = $ **5.000 Ω**, with $I_{rms} = 20/\lvert9 + j3\rvert = 2.108$ A and $P = 2.108^2\times5 = $ **22.22 W**.
+Conjugate match $Z_L = 4 - j3$ Ω gives \$P_{max} = V_{Th,rms}^2/(4R_{Th}) = 400/16 = \$ **25.00 W**. The best resistor is \$R_L = \lvert Z_{Th}\rvert = \$ **5.000 Ω**, with $I_{rms} = 20/\lvert9 + j3\rvert = 2.108$ A and \$P = 2.108^2\times5 = \$ **22.22 W**.
 
 ### Solution 07-06.9
 
@@ -76,7 +76,7 @@ $I = P/(V\,\text{PF})$ and $P_{loss} = I^2R = P^2R/(V^2\text{PF}^2)$:
 - (b) 230 V, PF 0.8: $I$ = 271.7 A, loss **3692 W** = **7.384%**.
 - (c) 400 V, PF 0.8: $I$ = 156.3 A, loss **1221 W** = **2.441%**.
 
-The loss scales as $1/(V^2\,\text{PF}^2)$: raising the voltage from 230 V to 400 V cuts it by $(400/230)^2 = $ **3.025**, more than enough to offset the poor power factor. This is why distribution moves to higher voltages (data centers to 400/230 V or above, 07-11) as well as correcting power factor.
+The loss scales as $1/(V^2\,\text{PF}^2)$: raising the voltage from 230 V to 400 V cuts it by \$(400/230)^2 = \$ **3.025**, more than enough to offset the poor power factor. This is why distribution moves to higher voltages (data centers to 400/230 V or above, 07-11) as well as correcting power factor.
 
 ---
 

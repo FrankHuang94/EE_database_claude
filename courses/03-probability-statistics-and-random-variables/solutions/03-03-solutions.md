@@ -22,9 +22,9 @@ $\operatorname{Var}(X) = 1.35 - 0.75^2 = $ **0.7875**, so $\sigma_X = $ **0.8874
 
 ### Solution 03-03.3
 
-(a) The median $m$ solves $e^{-m/1000} = 1/2$: $m = 1000\ln2 = $ **693.1 h**. The density $e^{-t/1000}/1000$ is largest at $t = 0$, so the mode is **0**.
+(a) The median $m$ solves $e^{-m/1000} = 1/2$: \$m = 1000\ln2 = \$ **693.1 h**. The density $e^{-t/1000}/1000$ is largest at $t = 0$, so the mode is **0**.
 
-(b) Maximize $f_Y(y) \propto \exp[-(\ln y)^2/(2\sigma_\ell^2)]/y$. Its logarithm is $-(\ln y)^2/(2\sigma_\ell^2) - \ln y$; the derivative with respect to $\ln y$ is $-\ln y/\sigma_\ell^2 - 1 = 0$, so $\ln y = -\sigma_\ell^2$ and the mode is $e^{-\sigma_\ell^2} = e^{-0.4771} = $ **0.6206**.
+(b) Maximize $f_Y(y) \propto \exp[-(\ln y)^2/(2\sigma_\ell^2)]/y$. Its logarithm is $-(\ln y)^2/(2\sigma_\ell^2) - \ln y$; the derivative with respect to $\ln y$ is $-\ln y/\sigma_\ell^2 - 1 = 0$, so $\ln y = -\sigma_\ell^2$ and the mode is \$e^{-\sigma_\ell^2} = e^{-0.4771} = \$ **0.6206**.
 
 (c) For these two distributions, as computed, mode < median < mean: 0 < 693.1 h < 1000 h, and 0.6206 < 1 < 1.269. This ordering is typical of right-skewed distributions but not guaranteed by skewness alone. A "typical" value should be the median (half the parts are better, half worse) and should say so; the mean is the right number for totals over many parts (fleet failures, array leakage).
 
@@ -38,7 +38,7 @@ $\operatorname{Var}(X) = 1.35 - 0.75^2 = $ **0.7875**, so $\sigma_X = $ **0.8874
 
 ### Solution 03-03.5
 
-(a) The number of attempts is geometric with $q = 0.98$. $\mathbb{E}[K] = 1/0.98 = $ **1.0204**, $\operatorname{Var}(K) = 0.02/0.98^2 = $ **0.02082**, $\sigma_K = $ **0.1443**.
+(a) The number of attempts is geometric with $q = 0.98$. \$\mathbb{E}[K] = 1/0.98 = \$ **1.0204**, \$\operatorname{Var}(K) = 0.02/0.98^2 = \$ **0.02082**, \$\sigma_K = \$ **0.1443**.
 
 (b) $1/q \le 1.5$ requires $q \ge 2/3$, so the failure probability must be at most **0.3333**.
 
@@ -46,13 +46,13 @@ $\operatorname{Var}(X) = 1.35 - 0.75^2 = $ **0.7875**, so $\sigma_X = $ **0.8874
 
 (a) $\sigma = \sqrt{100} = $ **10**.
 
-(b) A deviation of 20 is $k = 2$ standard deviations, so Chebyshev gives $P \le 1/4 = $ **0.25**.
+(b) A deviation of 20 is $k = 2$ standard deviations, so Chebyshev gives \$P \le 1/4 = \$ **0.25**.
 
 (c) Exactly, $P(N \le 80) + P(N \ge 120) = 0.02265 + 0.02823 = $ **0.05088**. The Gaussian approximation $2Q(2) = $ **0.04550** is close; Chebyshev, which must hold for every distribution, is **4.914** times too pessimistic. The Poisson's right tail is a little heavier than its left (it is skewed right), so the two exact tails differ.
 
 ### Solution 03-03.7
 
-(a) The rate is $10^{-6}$ per hour, so the mean is $10^6$ h $= $ **114.1 years**, and for an exponential the standard deviation equals the mean: **114.1 years**.
+(a) The rate is $10^{-6}$ per hour, so the mean is $10^6$ h \$= \$ **114.1 years**, and for an exponential the standard deviation equals the mean: **114.1 years**.
 
 (b) Median $= \ln2\times114.1 = $ **79.07 years**.
 
@@ -66,7 +66,7 @@ $\operatorname{Var}(X) = 1.35 - 0.75^2 = $ **0.7875**, so $\sigma_X = $ **0.8874
 
 (c) $\int_0^\infty(3e^{-2rt} - 2e^{-3rt})dt = 3/(2r) - 2/(3r) = 5/(6r) = $ **83,333 h**, less than a single part.
 
-(d) At $t = 10{,}000$ h ($rt = 0.1$): single part $e^{-0.1} = $ **0.9048**; TMR $3e^{-0.2} - 2e^{-0.3} = $ **0.9746**. TMR is far better over short missions, where it masks any single failure, but once one part has failed the system needs both survivors, which is worse than needing one. The curves cross where $R = 1/2$, at $rt = \ln2$, or **69,315 h**. MTTF averages over the whole life and hides this: choose redundancy by the mission time and repair interval, not by MTTF.
+(d) At $t = 10{,}000$ h ($rt = 0.1$): single part \$e^{-0.1} = \$ **0.9048**; TMR \$3e^{-0.2} - 2e^{-0.3} = \$ **0.9746**. TMR is far better over short missions, where it masks any single failure, but once one part has failed the system needs both survivors, which is worse than needing one. The curves cross where $R = 1/2$, at $rt = \ln2$, or **69,315 h**. MTTF averages over the whole life and hides this: choose redundancy by the mission time and repair interval, not by MTTF.
 
 ### Solution 03-03.9
 
@@ -74,7 +74,7 @@ $I = 10B$ A, where $B$ is Bernoulli with $p = 0.25$.
 
 (a) $\mathbb{E}[I] = 10\times0.25 = $ **2.5 A**.
 
-(b) $\mathbb{E}[I^2] = 100\times0.25 = 25$ A², so $I_{\text{rms}} = $ **5 A**, twice the average.
+(b) $\mathbb{E}[I^2] = 100\times0.25 = 25$ A², so \$I_{\text{rms}} = \$ **5 A**, twice the average.
 
 (c) The AC part has variance $25 - 2.5^2 = 18.75$ A², so the ripple RMS is **4.330 A**. Pulsed loads stress input capacitors with ripple currents far above the average current.
 
@@ -90,15 +90,15 @@ The sinusoid's mean square is $(10\text{ mV})^2/2 = 5\times10^{-5}$ V² and the 
 
 ### Solution 03-03.11
 
-(a) For uniform noise on $[-a, a]$: $\mathbb{E}[|V|] = a/2$ and the RMS is $a/\sqrt3$, so the meter reads $1.1107\times(a/2)/(a/\sqrt3) - 1 = $ **−3.809%**. A triangle wave sampled at a random time is exactly this uniform variable, which is why the 01-07 triangle result is the same. For Gaussian noise, $1.1107\times0.7979 - 1 = $ **−11.38%** (−1.049 dB, Example 03-03.4).
+(a) For uniform noise on $[-a, a]$: $\mathbb{E}[|V|] = a/2$ and the RMS is $a/\sqrt3$, so the meter reads \$1.1107\times(a/2)/(a/\sqrt3) - 1 = \$ **−3.809%**. A triangle wave sampled at a random time is exactly this uniform variable, which is why the 01-07 triangle result is the same. For Gaussian noise, \$1.1107\times0.7979 - 1 = \$ **−11.38%** (−1.049 dB, Example 03-03.4).
 
-(b) Clipping occurs when $|X| > 3\sigma$, a fraction $2Q(3) = $ **0.2700%** of the time. A clipped sample contributes $9\sigma^2$ instead of $X^2$, so the meter loses
+(b) Clipping occurs when $|X| > 3\sigma$, a fraction \$2Q(3) = \$ **0.2700%** of the time. A clipped sample contributes $9\sigma^2$ instead of $X^2$, so the meter loses
 
 $$
 \mathbb{E}[X^2] - \mathbb{E}[\text{clip}(X)^2] = 2\int_3^\infty(z^2 - 9)\phi(z)\,dz\cdot\sigma^2 = 2\big[(1 - k^2)Q(k) + k\phi(k)\big]\sigma^2\Big|_{k=3} = 4.993\times10^{-3}\,\sigma^2 ,
 $$
 
-using $\int_k^\infty z^2\phi\,dz = k\phi(k) + Q(k)$ from §3.9. So **4.993×10⁻³**σ², and the reading falls by $\sqrt{1 - 0.004993}$: a bias of **−0.2499%**. The clipping-noise power of §3.9, $D_{\text{clip}} = $ **4.069×10⁻⁴**σ², is the power of the *error* $(z - k)$, whereas the meter loses $z^2 - k^2 = (z - k)(z + k)$, about $2k$ times larger. A 0.25% bias is comparable to a basic meter's accuracy, so a crest factor of 3 is marginal for precise noise measurement; with a rating of 4 the bias falls to **−0.006025%**. Signals with rarer, higher peaks (OFDM over long captures, pulsed loads) need more still.
+using $\int_k^\infty z^2\phi\,dz = k\phi(k) + Q(k)$ from §3.9. So **4.993×10⁻³**σ², and the reading falls by $\sqrt{1 - 0.004993}$: a bias of **−0.2499%**. The clipping-noise power of §3.9, \$D_{\text{clip}} = \$ **4.069×10⁻⁴**σ², is the power of the *error* $(z - k)$, whereas the meter loses $z^2 - k^2 = (z - k)(z + k)$, about $2k$ times larger. A 0.25% bias is comparable to a basic meter's accuracy, so a crest factor of 3 is marginal for precise noise measurement; with a rating of 4 the bias falls to **−0.006025%**. Signals with rarer, higher peaks (OFDM over long captures, pulsed loads) need more still.
 
 ### Solution 03-03.12
 
@@ -112,7 +112,7 @@ using $\int_k^\infty z^2\phi\,dz = k\phi(k) + Q(k)$ from §3.9. So **4.993×10�
 
 (a) $R = \sqrt P$ is increasing, $P = R^2$, $dP/dR = 2R$: $f_R(r) = f_P(r^2)\cdot2r = (2r/\bar P)e^{-r^2/\bar P}$ for $r \ge 0$.
 
-(b) $\mathbb{E}[R] = \int_0^\infty r\cdot(2r/\bar P)e^{-r^2/\bar P}dr$. With $r = \sqrt{\bar P}\,u/\sqrt2$, this becomes $\sqrt{\bar P/2}\int_0^\infty u^2e^{-u^2/2}du = \sqrt{\bar P/2}\cdot\sqrt{2\pi}/2 = \sqrt{\pi\bar P}/2$, using $\int_0^\infty u^2e^{-u^2/2}du = \tfrac12\sqrt{2\pi}$ (half of the Gaussian second moment). So $\mathbb{E}[R] = $ **0.8862**$\sqrt{\bar P}$. The median solves $e^{-m^2/\bar P} = 1/2$: $m = \sqrt{\bar P\ln2} = $ **0.8326**$\sqrt{\bar P}$.
+(b) $\mathbb{E}[R] = \int_0^\infty r\cdot(2r/\bar P)e^{-r^2/\bar P}dr$. With $r = \sqrt{\bar P}\,u/\sqrt2$, this becomes $\sqrt{\bar P/2}\int_0^\infty u^2e^{-u^2/2}du = \sqrt{\bar P/2}\cdot\sqrt{2\pi}/2 = \sqrt{\pi\bar P}/2$, using $\int_0^\infty u^2e^{-u^2/2}du = \tfrac12\sqrt{2\pi}$ (half of the Gaussian second moment). So \$\mathbb{E}[R] = \$ **0.8862**$\sqrt{\bar P}$. The median solves $e^{-m^2/\bar P} = 1/2$: \$m = \sqrt{\bar P\ln2} = \$ **0.8326**$\sqrt{\bar P}$.
 
 (c) $P(R > 2\mathbb{E}[R]) = \exp(-4\cdot\pi\bar P/4/\bar P) = e^{-\pi} = $ **0.04321**.
 
@@ -120,7 +120,7 @@ using $\int_k^\infty z^2\phi\,dz = k\phi(k) + Q(k)$ from §3.9. So **4.993×10�
 
 ### Solution 03-03.14
 
-(a) With $T$ in kelvin and $E_a/k = 0.7/8.617333\times10^{-5} = $ **8123** K:
+(a) With $T$ in kelvin and \$E_a/k = 0.7/8.617333\times10^{-5} = \$ **8123** K:
 
 $$
 \frac{r(358.15)}{r(338.15)} = \exp\Big[8123\Big(\frac{1}{338.15} - \frac{1}{358.15}\Big)\Big] = 3.825, \qquad \frac{r(318.15)}{r(338.15)} = 0.2209 .
@@ -150,7 +150,7 @@ So the upper tail gives $k\phi + Q - 2k\phi + k^2Q = (1 + k^2)Q(k) - k\phi(k)$, 
 | 4 | 52.94 dB | 52.09 dB | **49.48 dB** | both, about equally |
 | 5 | 51.00 dB | 74.12 dB | **50.98 dB** | granular |
 
-(c) Maximizing numerically gives $k = $ **4.494** and SNR **51.56 dB**, against **51.92 dB** from granular noise alone at that $k$. At the optimum, clipping costs only **0.366 dB**, and the remaining loss relative to a full-scale sine (**61.97 dB**) is the price of headroom for a peaky signal.
+(c) Maximizing numerically gives \$k = \$ **4.494** and SNR **51.56 dB**, against **51.92 dB** from granular noise alone at that $k$. At the optimum, clipping costs only **0.366 dB**, and the remaining loss relative to a full-scale sine (**61.97 dB**) is the price of headroom for a peaky signal.
 
 ### Solution 03-03.16
 
@@ -190,7 +190,7 @@ where $\phi$ is the standard normal density (σ = 1). Unlike the zero-mean case,
 
 (c) $\mathbb{E}[Y] = \mathbb{E}[X^2] = \operatorname{Var}(X) + (\mathbb{E}[X])^2 = 1 + 0.25 = $ **1.25 V²**: the detector reports noise power plus the offset's DC power.
 
-(d) $Y > 4$ when $X > 2$ or $X < -2$: $Q(1.5) + Q(2.5) = $ **0.06681** + **0.006210** = **0.07302**.
+(d) $Y > 4$ when $X > 2$ or $X < -2$: \$Q(1.5) + Q(2.5) = \$ **0.06681** + **0.006210** = **0.07302**.
 
 ---
 

@@ -282,7 +282,7 @@ The **crest factor** is the peak value divided by the RMS value; the **peak-to-a
 A Gaussian model has no peak: any level is eventually exceeded. Its PAPR is defined **at a stated probability** $p$, read from the complementary CDF (CCDF) of its power ([R-066](../../../reference/research-log.md#r-066--papr-ccdf-and-crest-factor-of-communication-signals)). (A real OFDM symbol of $N$ subcarriers with bounded constellations cannot exceed about $10\log_{10}N$ dB, **24.08 dB** for $N = 256$, but such peaks are so improbable that the Gaussian CCDF governs practical levels.)
 
 - **Real Gaussian noise** (real-waveform convention; the up-converted OFDM waveform at the carrier looks like this), $X \sim \mathcal{N}(0, \sigma^2)$: the power exceeds $x\sigma^2$ when $|X| > \sqrt{x}\,\sigma$, with probability $2Q(\sqrt{x})$. At $p = 10^{-4}$, $\sqrt{x} = Q^{-1}(5\times10^{-5}) = 3.891$ and the PAPR is **11.80 dB**.
-- **A complex Gaussian signal** (envelope convention), the many-subcarrier limit of OFDM at baseband: by the central limit theorem ([03-04](03-04-joint-distributions-and-clt.md)) a sum of many independently modulated subcarriers has independent Gaussian real and imaginary parts, and 03-04 shows that its envelope power $P$ is then **exponential**, $\Pr(P > x\bar P) = e^{-x}$ for average power $\bar P$. The PAPR at probability $p$ is $10\log_{10}\ln(1/p)$ dB: **6.632 dB** at $10^{-2}$, **8.393** at $10^{-3}$, **9.643** at $10^{-4}$ and **11.40** at $10^{-6}$ (Figure 3). Like for like, OFDM needs 9.643 dB more headroom than a constant-envelope carrier at $10^{-4}$, or $11.80 - 3.010 = $ **8.790 dB** more in the real-waveform convention.
+- **A complex Gaussian signal** (envelope convention), the many-subcarrier limit of OFDM at baseband: by the central limit theorem ([03-04](03-04-joint-distributions-and-clt.md)) a sum of many independently modulated subcarriers has independent Gaussian real and imaginary parts, and 03-04 shows that its envelope power $P$ is then **exponential**, $\Pr(P > x\bar P) = e^{-x}$ for average power $\bar P$. The PAPR at probability $p$ is $10\log_{10}\ln(1/p)$ dB: **6.632 dB** at $10^{-2}$, **8.393** at $10^{-3}$, **9.643** at $10^{-4}$ and **11.40** at $10^{-6}$ (Figure 3). Like for like, OFDM needs 9.643 dB more headroom than a constant-envelope carrier at $10^{-4}$, or \$11.80 - 3.010 = \$ **8.790 dB** more in the real-waveform convention.
 
 ![CCDF of power relative to average on a log scale, in two conventions: a sinusoid's real-waveform power drops to zero at 3.01 dB and a real Gaussian reaches 1e-4 at 11.80 dB; a complex Gaussian's envelope power reaches 1e-4 at 9.64 dB, while a constant envelope sits at 0 dB.](../../../assets/figures/03-03/papr-ccdf.svg)
 
@@ -322,7 +322,7 @@ with $\phi(z) = e^{-z^2/2}/\sqrt{2\pi}$. (Expand $(z - k)^2$ and use $\int_k^\in
 
 *Figure 4. Loading an ADC with a Gaussian signal. Left of the peak, clipping dominates; right of it, headroom costs 6 dB per doubling. More bits shrink granular noise, moving the optimum to more headroom.*
 
-Numerically, the optimum is $k = $ **3.924** for 8 bits (SNR **40.60 dB**) and $k = $ **5.013** for 12 bits (SNR **62.71 dB**). A 12-bit converter loaded at $k = 4$ reaches only **51.87 dB**: clipping wastes **1.80** bits. More resolution deserves more headroom.
+Numerically, the optimum is \$k = \$ **3.924** for 8 bits (SNR **40.60 dB**) and \$k = \$ **5.013** for 12 bits (SNR **62.71 dB**). A 12-bit converter loaded at $k = 4$ reaches only **51.87 dB**: clipping wastes **1.80** bits. More resolution deserves more headroom.
 
 ## 4. Worked examples
 
@@ -336,9 +336,9 @@ $$
 \mathbb{E}[X] = 0.2916 + 2(0.0486) + 3(0.0036) + 4(0.0001) = 0.4, \qquad \mathbb{E}[X^2] = 0.2916 + 4(0.0486) + 9(0.0036) + 16(0.0001) = 0.52 .
 $$
 
-So $\mathbb{E}[X] = $ **0.4**, $\mathbb{E}[X^2] = $ **0.52**, $\operatorname{Var}(X) = 0.52 - 0.16 = $ **0.36** and $\sigma_X = $ **0.6** dies. The formulas agree: $np = 0.4$ and $np(1 - p) = 0.36$.
+So \$\mathbb{E}[X] = \$ **0.4**, \$\mathbb{E}[X^2] = \$ **0.52**, \$\operatorname{Var}(X) = 0.52 - 0.16 = \$ **0.36** and \$\sigma_X = \$ **0.6** dies. The formulas agree: $np = 0.4$ and $np(1 - p) = 0.36$.
 
-(b) $K$ is geometric with $q = 1 - p_e = $ **0.8869** (from the unrounded $p_e = 0.11308$). $\mathbb{E}[K] = 1/q = $ **1.1275** transmissions, $\operatorname{Var}(K) = p_e/q^2 = $ **0.1438** and $\sigma_K = $ **0.3791**. The efficiency, $1/\mathbb{E}[K] = q$, so retransmission costs **11.31%** of capacity.
+(b) $K$ is geometric with \$q = 1 - p_e = \$ **0.8869** (from the unrounded $p_e = 0.11308$). \$\mathbb{E}[K] = 1/q = \$ **1.1275** transmissions, \$\operatorname{Var}(K) = p_e/q^2 = \$ **0.1438** and \$\sigma_K = \$ **0.3791**. The efficiency, $1/\mathbb{E}[K] = q$, so retransmission costs **11.31%** of capacity.
 
 **Sanity check.** Mean 0.4, σ = 0.6: most packages have none ✓.
 
@@ -354,7 +354,7 @@ $$
 
 So **540** good dies on average, a yield of $540/600 = $ **0.9** (90%), and an expected revenue of $540\times\$50 = $ **\$27,000** per wafer.
 
-(b) With independence the variances add ([03-04](03-04-joint-distributions-and-clt.md)), each die contributing $p(1 - p)$: $400(0.95)(0.05) + 200(0.80)(0.20) = 19 + 32 = $ **51** dies², so $\sigma = $ **7.141** dies.
+(b) With independence the variances add ([03-04](03-04-joint-distributions-and-clt.md)), each die contributing $p(1 - p)$: \$400(0.95)(0.05) + 200(0.80)(0.20) = 19 + 32 = \$ **51** dies², so \$\sigma = \$ **7.141** dies.
 
 (c) The expectations in (a) hold exactly, since linearity needs no independence. The standard deviation in (b) does not: clustering makes dies fail together, adding positive covariance terms that widen the wafer-to-wafer spread (Lab 03-03, Part 2). Expected values suffice for planning average output; inventory buffers need the measured spread.
 
@@ -370,7 +370,7 @@ $$
 
 $I_{\text{rms}} = $ **10.04 A**, and the loss is $100.75\times0.004 = $ **0.4030 W**. The ripple adds only **0.75%** to the loss.
 
-(b) Now the current is uniform on $[0, 20]$ A, with variance $20^2/12$ A², so $\mathbb{E}[I^2] = 100 + 33.33$ A², $I_{\text{rms}} = $ **11.55 A**, and the loss is **0.5333 W**: **33.33%** more than DC alone.
+(b) Now the current is uniform on $[0, 20]$ A, with variance $20^2/12$ A², so $\mathbb{E}[I^2] = 100 + 33.33$ A², \$I_{\text{rms}} = \$ **11.55 A**, and the loss is **0.5333 W**: **33.33%** more than DC alone.
 
 **Units check.** A² × Ω = W ✓. **Sanity check.** $I_{\text{rms}} \ge |\mathbb{E}[I]|$ always (Jensen), with equality only for pure DC ✓. Designers size inductors and switches by RMS current: large ripple saves inductance but costs efficiency ([22](../../22-power-electronics-and-energy-conversion/README.md)).
 
@@ -384,7 +384,7 @@ $$
 \mathbb{E}[|X|] = 2\int_0^\infty x\frac{e^{-x^2/(2\sigma^2)}}{\sigma\sqrt{2\pi}}dx = \frac{2\sigma^2}{\sigma\sqrt{2\pi}}\Big[-e^{-x^2/(2\sigma^2)}\Big]_0^\infty = \sigma\sqrt{\frac2\pi} = 0.7979\,\sigma .
 $$
 
-The meter reads $1.1107\times0.7979\,\sigma = $ **0.8862**σ (exactly $\sqrt\pi/2$), which is **−1.049 dB**: it underreads noise by **11.38%**. The same factor $\sqrt\pi/2$, and the same 1.05 dB, appears when an instrument averages the Rayleigh-distributed envelope of noise instead of its power (Problem 03-03.13).
+The meter reads \$1.1107\times0.7979\,\sigma = \$ **0.8862**σ (exactly $\sqrt\pi/2$), which is **−1.049 dB**: it underreads noise by **11.38%**. The same factor $\sqrt\pi/2$, and the same 1.05 dB, appears when an instrument averages the Rayleigh-distributed envelope of noise instead of its power (Problem 03-03.13).
 
 **Sanity check.** Noise spends more time near zero than a sine, so its rectified average is a smaller fraction of its RMS ✓.
 
@@ -408,13 +408,13 @@ $$
 
 **Setup.** A transistor's off-current is $I_{\text{off}} = I_0\exp\big(-\Delta V_{TH}/(nV_T)\big)$, with threshold-voltage deviation $\Delta V_{TH} \sim \mathcal{N}(0, (25\text{ mV})^2)$, $n = 1.4$ and $V_T = kT/q$ at 300 K (illustrative values, not data for a specific process). (a) Find the distribution of $I_{\text{off}}/I_0$, its median and its mean. (b) What fraction of transistors leak more than twice the median? What is the 99.9th-percentile leakage? (c) A block has $10^8$ such transistors with $I_0 = 1$ nA. Estimate its total leakage, and the error of using the median device.
 
-**Solution.** (a) $V_T = 1.380649\times10^{-23}\times300/1.602177\times10^{-19} = $ **25.85 mV**. The exponent $X = -\Delta V_{TH}/(nV_T)$ is Gaussian with mean 0 and standard deviation
+**Solution.** (a) \$V_T = 1.380649\times10^{-23}\times300/1.602177\times10^{-19} = \$ **25.85 mV**. The exponent $X = -\Delta V_{TH}/(nV_T)$ is Gaussian with mean 0 and standard deviation
 
 $$
 \sigma_\ell = \frac{25\text{ mV}}{1.4\times25.85\text{ mV}} = 0.6907 .
 $$
 
-So $I_{\text{off}}/I_0 = e^X$ is log-normal with median $e^0 = 1$ and mean $e^{\sigma_\ell^2/2} = $ **1.269**. The coefficient of variation (standard deviation over mean) is $\sqrt{e^{\sigma_\ell^2} - 1} = $ **0.7819**.
+So $I_{\text{off}}/I_0 = e^X$ is log-normal with median $e^0 = 1$ and mean \$e^{\sigma_\ell^2/2} = \$ **1.269**. The coefficient of variation (standard deviation over mean) is \$\sqrt{e^{\sigma_\ell^2} - 1} = \$ **0.7819**.
 
 (b) $P(e^X > 2) = P(X > \ln2) = Q(\ln2/\sigma_\ell) = Q(1.0035) = $ **0.1578**: about one transistor in six leaks more than twice the median. The 99.9th percentile is $e^{\sigma_\ell\,Q^{-1}(10^{-3})} = e^{0.690745\times3.090232} = $ **8.453** times the median.
 
@@ -428,7 +428,7 @@ So $I_{\text{off}}/I_0 = e^X$ is log-normal with median $e^0 = 1$ and mean $e^{\
 
 **Solution.** (a) $\Pr(P > x\bar P) = e^{-x} = 10^{-4}$ gives $x = \ln10^4 = 9.210$, a PAPR of **9.643 dB** in the envelope convention, against 0 dB for a constant-envelope carrier. (In the real-waveform convention, 11.80 dB against **3.010 dB** for a sinusoid, a similar gap of 8.790 dB.)
 
-(b) $x = 10^{0.8} = 6.310$: the clipping probability is $e^{-6.310} = $ **1.819×10⁻³**, and by the memoryless result of §3.8 the lost fraction of the power is also $1.819\times10^{-3}$, or **−27.40 dB** relative to the average. The error signal's power, integrating $(r - \sqrt x)^2$ against the Rayleigh density beyond $\sqrt x$, is **−39.25 dB**: about 12 dB lower, and the quantity that error-vector and spectrum limits constrain.
+(b) $x = 10^{0.8} = 6.310$: the clipping probability is \$e^{-6.310} = \$ **1.819×10⁻³**, and by the memoryless result of §3.8 the lost fraction of the power is also $1.819\times10^{-3}$, or **−27.40 dB** relative to the average. The error signal's power, integrating $(r - \sqrt x)^2$ against the Rayleigh density beyond $\sqrt x$, is **−39.25 dB**: about 12 dB lower, and the quantity that error-vector and spectrum limits constrain.
 
 (c) Average efficiency is average output power over average DC power, both expectations over the envelope $R$:
 
@@ -444,7 +444,7 @@ $$
 
 The average efficiency is **29.20%**, against **78.54%** ($\pi/4$) for a full-scale sinusoid. (The $10^{-4}$ of samples above $a_{\max}$ are ignored here.)
 
-**Units check.** The ratio of powers is dimensionless ✓. **Sanity check.** A constant-envelope sinusoid with the same average power, $a = \sqrt{\bar P}$, would give $(\pi/4)/\sqrt{9.210} = $ **25.88%**. The OFDM signal does slightly better because class-B DC power follows the average envelope $\mathbb{E}[R]$, which is below the RMS envelope $\sqrt{\bar P}$ (Jensen) ✓. This loss drives crest-factor reduction, predistortion and single-carrier-like uplinks (§9; [21](../../21-rf-and-microwave-engineering/README.md)).
+**Units check.** The ratio of powers is dimensionless ✓. **Sanity check.** A constant-envelope sinusoid with the same average power, $a = \sqrt{\bar P}$, would give \$(\pi/4)/\sqrt{9.210} = \$ **25.88%**. The OFDM signal does slightly better because class-B DC power follows the average envelope $\mathbb{E}[R]$, which is below the RMS envelope $\sqrt{\bar P}$ (Jensen) ✓. This loss drives crest-factor reduction, predistortion and single-carrier-like uplinks (§9; [21](../../21-rf-and-microwave-engineering/README.md)).
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |

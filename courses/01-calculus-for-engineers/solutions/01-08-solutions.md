@@ -10,22 +10,22 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 01-08.1
 
-(a) Divide by $n$: $\dfrac{2 + 1/n}{3 - 2/n} \to $ **0.6667** (2/3).
+(a) Divide by $n$: \$\dfrac{2 + 1/n}{3 - 2/n} \to \$ **0.6667** (2/3).
 
-(b) Take logs: $n\ln(1 + 2/n) \to 2$ (01-02), so the limit is $e^2 = $ **7.389**.
+(b) Take logs: $n\ln(1 + 2/n) \to 2$ (01-02), so the limit is \$e^2 = \$ **7.389**.
 
-(c) Geometric, $a = 1$, $r = \tfrac{1}{3}$: $1/(1 - \tfrac{1}{3}) = $ **1.5**.
+(c) Geometric, $a = 1$, $r = \tfrac{1}{3}$: \$1/(1 - \tfrac{1}{3}) = \$ **1.5**.
 
-(d) First term $a = 0.9$, $r = 0.9$: $0.9/0.1 = $ **9**.
+(d) First term $a = 0.9$, $r = 0.9$: \$0.9/0.1 = \$ **9**.
 
 (e) Finite geometric: $(2^{10} - 1)/(2 - 1) = $ **1023**: the largest 10-bit unsigned integer.
 
 ### Solution 01-08.2
 
-(a) A p-series with $p = 2 > 1$: **converges**, to $\pi^2/6 = $ **1.645**.
+(a) A p-series with $p = 2 > 1$: **converges**, to \$\pi^2/6 = \$ **1.645**.
 (b) The harmonic series: **diverges** ($p = 1$).
 (c) Ratio test: $\dfrac{(k + 1)/2^{k+1}}{k/2^k} = \dfrac{k + 1}{2k} \to \tfrac{1}{2} < 1$, so it **converges**, to **2**.
-(d) Alternating, with $1/k$ decreasing to 0: **converges** (conditionally), to $\ln2 = $ **0.6931**.
+(d) Alternating, with $1/k$ decreasing to 0: **converges** (conditionally), to \$\ln2 = \$ **0.6931**.
 (e) Ratio test: $\dfrac{(k + 1)!/10^{k+1}}{k!/10^k} = \dfrac{k + 1}{10} \to \infty$: **diverges**. The terms shrink for $k < 9$, then grow without bound: factorials beat exponentials eventually.
 
 ### Solution 01-08.3
@@ -38,7 +38,7 @@ Every numerical answer below is listed in the answer key at the end and is recom
 - $\ln(1 + x) = x - \dfrac{x^2}{2} + \dfrac{x^3}{3} - \dfrac{x^4}{4} + \cdots$
 - $\sqrt{1 + x} = 1 + \dfrac{x}{2} - \dfrac{x^2}{8} + \dfrac{x^3}{16} - \cdots$ (binomial, $\alpha = \tfrac{1}{2}$)
 
-(b) $1 - 0.1 + 0.005 - 0.000167 = $ **0.904833**, against $e^{-0.1} = $ **0.904837**: an error of $-4.1\times10^{-6}$. That is within the alternating bound $0.1^4/24 = 4.2\times10^{-6}$ ✓.
+(b) \$1 - 0.1 + 0.005 - 0.000167 = \$ **0.904833**, against \$e^{-0.1} = \$ **0.904837**: an error of $-4.1\times10^{-6}$. That is within the alternating bound $0.1^4/24 = 4.2\times10^{-6}$ ✓.
 
 ### Solution 01-08.4
 
@@ -83,9 +83,9 @@ So **6 terms** (through $x^{11}$) are needed. Reducing the argument to $\lvert x
 
 ### Solution 01-08.8
 
-(a) $\sqrt{1.05} \approx 1 + 0.025 = $ **1.025**. The next term is $-x^2/8 = $ **−3.125×10^−4**. Exact: **1.024695**, an actual error of $-3.05\times10^{-4}$ ✓.
+(a) \$\sqrt{1.05} \approx 1 + 0.025 = \$ **1.025**. The next term is \$-x^2/8 = \$ **−3.125×10^−4**. Exact: **1.024695**, an actual error of $-3.05\times10^{-4}$ ✓.
 
-(b) $1/(1 - 0.02) \approx 1.02$. The next term is $+x^2 = $ **4×10^−4**. Exact: **1.020408** ✓.
+(b) $1/(1 - 0.02) \approx 1.02$. The next term is \$+x^2 = \$ **4×10^−4**. Exact: **1.020408** ✓.
 
 (c) $1.03^5 \approx 1 + 5(0.03) = $ **1.15**. The next term is $\binom{5}{2}x^2 = $ **0.009**. Exact: **1.159274**, an actual error of 0.00927 ✓. Compounding adds visibly to the linear estimate even at 3%.
 
@@ -93,9 +93,9 @@ So **6 terms** (through $x^{11}$) are needed. Reducing the argument to $\lvert x
 
 (a) $G = \dfrac{2\times10^5}{1 + 2\times10^5/11} = $ **10.99940**. The relative error is $1 - G\beta = $ **55.00 ppm**, and $1/(A\beta) = 11/2\times10^5 = $ **55.00 ppm**: identical to four digits.
 
-(b) With $A = 1000$: $G = $ **10.88032**, an error of **1.088%**. The first-order estimate gives **1.1%**. It is still adequate as a rough figure, but the second-order term (**0.012%**) is now visible.
+(b) With $A = 1000$: \$G = \$ **10.88032**, an error of **1.088%**. The first-order estimate gives **1.1%**. It is still adequate as a rough figure, but the second-order term (**0.012%**) is now visible.
 
-(c) $1/(A\beta) = 10^{-4}$ gives $A\beta = 10^4$, so $A = $ **1.1×10^5** (**101 dB**) for this gain of 11.
+(c) $1/(A\beta) = 10^{-4}$ gives $A\beta = 10^4$, so \$A = \$ **1.1×10^5** (**101 dB**) for this gain of 11.
 
 ### Solution 01-08.10
 
@@ -116,13 +116,13 @@ So **6 terms** (through $x^{11}$) are needed. Reducing the argument to $\lvert x
 
 ### Solution 01-08.12
 
-(a) With $a_1 = 1$ and $a_3 = -0.05$: fundamental $a_1A + \tfrac{3}{4}a_3A^3 = 1 - 0.0375 = $ **0.9625 V**. Third harmonic $\tfrac{1}{4}\lvert a_3\rvert A^3 = 0.0125$ V, so HD3 $= 0.0125/0.9625 = $ **1.299%** relative to the compressed fundamental. The chapter's small-signal formula $\lvert a_3\rvert A^2/(4a_1)$ divides by the *uncompressed* fundamental $a_1A$ instead and gives **1.250%**. The two agree when compression is small; here the fundamental is already 3.75% compressed.
+(a) With $a_1 = 1$ and $a_3 = -0.05$: fundamental \$a_1A + \tfrac{3}{4}a_3A^3 = 1 - 0.0375 = \$ **0.9625 V**. Third harmonic $\tfrac{1}{4}\lvert a_3\rvert A^3 = 0.0125$ V, so HD3 \$= 0.0125/0.9625 = \$ **1.299%** relative to the compressed fundamental. The chapter's small-signal formula $\lvert a_3\rvert A^2/(4a_1)$ divides by the *uncompressed* fundamental $a_1A$ instead and gives **1.250%**. The two agree when compression is small; here the fundamental is already 3.75% compressed.
 
-(b) The fundamental's gain is $1 - \tfrac{3}{4}(0.05)A^2$. Set it to $10^{-1/20} = 0.8913$: $0.0375A^2 = 0.1087$, so $A_{1dB} = $ **1.703 V**.
+(b) The fundamental's gain is $1 - \tfrac{3}{4}(0.05)A^2$. Set it to $10^{-1/20} = 0.8913$: $0.0375A^2 = 0.1087$, so \$A_{1dB} = \$ **1.703 V**.
 
 (c) *Derivation.* With $x = A(c_1 + c_2)$, where $c_i = \cos\omega_it$, the cubic term gives $a_3A^3(c_1 + c_2)^3$, which contains $3a_3A^3c_1^2c_2$. Since $c_1^2c_2 = \tfrac12(1 + \cos2\omega_1t)\cos\omega_2t$ and $\cos2\omega_1t\cos\omega_2t = \tfrac12[\cos(2\omega_1 - \omega_2)t + \cos(2\omega_1 + \omega_2)t]$, the product at $2\omega_1 - \omega_2$ has amplitude $3\cdot\tfrac12\cdot\tfrac12\lvert a_3\rvert A^3 = \tfrac34\lvert a_3\rvert A^3$. This third-order intermodulation product (IM3) lands right next to the wanted tones, which is why it matters. Extrapolating the small-signal lines $a_1A$ and $\tfrac34\lvert a_3\rvert A^3$ until they meet gives $A_{IP3}^2 = \tfrac43\lvert a_1/a_3\rvert$.
 
-Numerically, $A_{IP3} = \sqrt{\tfrac{4}{3}\cdot\tfrac{1}{0.05}} = $ **5.164 V**. The ratio is $20\log_{10}(5.164/1.703) = $ **9.636 dB**. Both amplitudes scale as $\sqrt{a_1/\lvert a_3\rvert}$, so $a_3$ cancels from their ratio: $A_{IP3}^2/A_{1dB}^2 = \dfrac{4/3}{\tfrac{4}{3}(1 - 10^{-1/20})} = $ **9.20**, i.e. 9.6 dB. This is the textbook "IP3 is about 10 dB above P1dB" rule.
+Numerically, \$A_{IP3} = \sqrt{\tfrac{4}{3}\cdot\tfrac{1}{0.05}} = \$ **5.164 V**. The ratio is \$20\log_{10}(5.164/1.703) = \$ **9.636 dB**. Both amplitudes scale as $\sqrt{a_1/\lvert a_3\rvert}$, so $a_3$ cancels from their ratio: \$A_{IP3}^2/A_{1dB}^2 = \dfrac{4/3}{\tfrac{4}{3}(1 - 10^{-1/20})} = \$ **9.20**, i.e. 9.6 dB. This is the textbook "IP3 is about 10 dB above P1dB" rule.
 
 ### Solution 01-08.13
 
@@ -147,13 +147,13 @@ The Taylor estimate overstates HD2 slightly, and its relative error grows roughl
 
 (a) Launched wave $1\times50/75 = $ **0.6667 V**; $\Gamma_s = (25 - 50)/75 = $ **−0.3333**; $\Gamma_L = (100 - 50)/150 = $ **0.3333**.
 
-(b) The far-end voltage after $n$ arrivals is $V_l(1 + \Gamma_L)\sum_{k=0}^{n-1}(\Gamma_s\Gamma_L)^k$, with ratio $-1/9$. The limit is $\dfrac{0.6667\times1.3333}{1 + 1/9} = $ **0.8 V**, equal to the DC divider $100/125 = 0.8$ ✓.
+(b) The far-end voltage after $n$ arrivals is $V_l(1 + \Gamma_L)\sum_{k=0}^{n-1}(\Gamma_s\Gamma_L)^k$, with ratio $-1/9$. The limit is \$\dfrac{0.6667\times1.3333}{1 + 1/9} = \$ **0.8 V**, equal to the DC divider $100/125 = 0.8$ ✓.
 
 (c) The partial sums are **0.8889**, **0.7901**, **0.8011**, …, with errors of **11.1%**, **1.23%** and **0.137%**. The first arrival within 1% is **the 3rd**. A ratio of $-1/9$ settles fast; the open line of chapter Example 01-08.1 (ratio $-2/3$) rings much longer.
 
 ### Solution 01-08.16
 
-(a) Limit comparison with $\sum1/k^2$: $\dfrac{1/(k^2 + 3k)}{1/k^2} = \dfrac{k^2}{k^2 + 3k} \to 1$, and $\sum 1/k^2$ converges ($p = 2$), so this converges. Its sum: $\dfrac{1}{k(k + 3)} = \dfrac13\left(\dfrac1k - \dfrac1{k + 3}\right)$. In the partial sums every $1/k$ with $k \ge 4$ is cancelled by a later $-1/(k + 3)$, leaving $\dfrac13\left(1 + \dfrac12 + \dfrac13\right) = \dfrac{11}{18} = $ **0.6111**.
+(a) Limit comparison with $\sum1/k^2$: $\dfrac{1/(k^2 + 3k)}{1/k^2} = \dfrac{k^2}{k^2 + 3k} \to 1$, and $\sum 1/k^2$ converges ($p = 2$), so this converges. Its sum: $\dfrac{1}{k(k + 3)} = \dfrac13\left(\dfrac1k - \dfrac1{k + 3}\right)$. In the partial sums every $1/k$ with $k \ge 4$ is cancelled by a later $-1/(k + 3)$, leaving \$\dfrac13\left(1 + \dfrac12 + \dfrac13\right) = \dfrac{11}{18} = \$ **0.6111**.
 
 (b) Limit comparison with the harmonic series: $\dfrac{1/(2k + 1)}{1/k} \to \dfrac12$, and $\sum1/k$ diverges, so this **diverges**.
 
@@ -165,7 +165,7 @@ The Taylor estimate overstates HD2 slightly, and its relative error grows roughl
 
 (a) $S_{10} = 1 + \tfrac18 + \tfrac1{27} + \cdots + \tfrac1{1000} = $ **1.197532**.
 
-(b) With $f(x) = x^{-3}$, $\int_n^\infty x^{-3}dx = 1/(2n^2)$. The remainder lies between $\int_{11}^\infty = 1/242 = $ **0.004132** and $\int_{10}^\infty = 1/200 = $ **0.005**. So **1.201664 ≤ S ≤ 1.202532**.
+(b) With $f(x) = x^{-3}$, $\int_n^\infty x^{-3}dx = 1/(2n^2)$. The remainder lies between \$\int_{11}^\infty = 1/242 = \$ **0.004132** and \$\int_{10}^\infty = 1/200 = \$ **0.005**. So **1.201664 ≤ S ≤ 1.202532**.
 
 (c) The midpoint is **1.202098**, against the true 1.2020569: an error of **4.1×10^−5**, about 100 times smaller than the remainder itself (**0.004525**). Ten terms plus an integral correction beat hundreds of terms without it.
 

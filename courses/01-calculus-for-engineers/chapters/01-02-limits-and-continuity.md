@@ -298,7 +298,7 @@ Shrinking $h$ reduces the first error and inflates the second. The total is smal
 
 **Setup.** \$1 grows at 100% per year, compounded $n$ times. Evaluate $(1 + 1/n)^n$ for $n = 1, 12, 365$ and compare with $e$. Then find the effective annual return of a 6% rate compounded continuously.
 
-**Solution.** $n = 1$: **2**. $n = 12$: $(1 + 1/12)^{12} = $ **2.613**. $n = 365$: $(1 + 1/365)^{365} = $ **2.715**. The limit is $e = $ **2.718** (§3.3). Each increase in $n$ adds less, and the sequence approaches $e$ from below. At 6% continuously compounded, one year multiplies the balance by $e^{0.06} = 1.06184$: an effective annual return of **6.184%**, slightly above 6%.
+**Solution.** $n = 1$: **2**. $n = 12$: \$(1 + 1/12)^{12} = \$ **2.613**. $n = 365$: \$(1 + 1/365)^{365} = \$ **2.715**. The limit is \$e = \$ **2.718** (§3.3). Each increase in $n$ adds less, and the sequence approaches $e$ from below. At 6% continuously compounded, one year multiplies the balance by $e^{0.06} = 1.06184$: an effective annual return of **6.184%**, slightly above 6%.
 
 **Sanity check.** $(1 + 1/n)^n < e$ for every finite $n$, and the gap at $n = 365$ is $2.718 - 2.715 = 0.004$, small but nonzero ✓.
 
@@ -306,10 +306,10 @@ Shrinking $h$ reduces the first error and inflates the second. The total is smal
 
 **Setup.** At $t = 0$ a switch connects a 5 V source through $R = 10$ kΩ to an uncharged $C = 100$ nF capacitor. For $t > 0$, $v_C(t) = 5\left(1 - e^{-t/\tau}\right)$ V and $i_C(t) = (5\text{ V}/R)\,e^{-t/\tau}$, with $\tau = RC$ ([07-02](../../07-circuit-analysis-2-transient-and-ac/chapters/07-02-first-order-rc-rl-transients.md) derives these). Find $\tau$; the one-sided limits of $v_C$ and $i_C$ at $t = 0$; and their limits as $t \to \infty$. Which quantity is continuous at the switching instant?
 
-**Solution.** $\tau = 10^4 \times 10^{-7} = 10^{-3}$ s $= $ **1.000 ms**.
+**Solution.** $\tau = 10^4 \times 10^{-7} = 10^{-3}$ s \$= \$ **1.000 ms**.
 
 - Voltage: $v_C(0^-) = 0$ (uncharged) and $v_C(0^+) = \lim_{t\to0^+}5(1 - e^{-t/\tau}) = 5(1 - 1) = 0$. The voltage is **continuous**.
-- Current: $i_C(0^-) = 0$ (no current flows before the switch closes), but $i_C(0^+) = 5/10^4 = $ **0.500 mA**. The current **jumps**.
+- Current: $i_C(0^-) = 0$ (no current flows before the switch closes), but \$i_C(0^+) = 5/10^4 = \$ **0.500 mA**. The current **jumps**.
 - As $t \to \infty$, $e^{-t/\tau} \to 0$, so $v_C \to$ **5 V** and $i_C \to 0$.
 
 ![Capacitor voltage and current at a switching instant](../../../assets/figures/01-02/switch-one-sided-limits.svg)
@@ -348,9 +348,9 @@ Show that a solution exists in $[0, 1]$ V. How many bisection steps reach a 1 mV
 **Solution.**
 
 - **Limits.** As $f \to 0$, $\lvert H\rvert \to 1$ (0 dB). As $f \to \infty$, $\lvert H\rvert \to 0$, and more precisely $\lvert H\rvert \sim f_c/f$. In dB the asymptote is $-20\log_{10}(f/f_c)$, falling **20 dB per decade**.
-- **At the corner** $f = f_c$: exact $20\log_{10}(1/\sqrt{2}) = $ **−3.010 dB**, while both asymptotes give 0 dB. The error is 3.01 dB, the largest anywhere.
-- **At $10f_c$** (10 kHz): exact $20\log_{10}(1/\sqrt{101}) = $ **−20.04 dB** against the asymptote's −20 dB, an error of **0.043 dB**.
-- **At $100f_c$:** the error is $10\log_{10}(1 + 10^{-4}) = $ **4.3×10^−4 dB**.
+- **At the corner** $f = f_c$: exact \$20\log_{10}(1/\sqrt{2}) = \$ **−3.010 dB**, while both asymptotes give 0 dB. The error is 3.01 dB, the largest anywhere.
+- **At $10f_c$** (10 kHz): exact \$20\log_{10}(1/\sqrt{101}) = \$ **−20.04 dB** against the asymptote's −20 dB, an error of **0.043 dB**.
+- **At $100f_c$:** the error is \$10\log_{10}(1 + 10^{-4}) = \$ **4.3×10^−4 dB**.
 
 The error shrinks by about 100× per decade, because it is $10\log_{10}\big(1 + (f_c/f)^2\big) \approx 4.34\,(f_c/f)^2$ dB, which tends to zero.
 

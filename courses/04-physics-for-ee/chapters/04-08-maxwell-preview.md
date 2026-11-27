@@ -192,13 +192,13 @@ Radio waves at these frequencies heat tissue (they are non-ionizing; [04-10](04-
 
 **Setup.** A capacitor with circular plates of radius 5 cm is charged by a steady 1 A. Find (a) the rate of change of the field between the plates, (b) the displacement current, and the magnetic field (c) 3 cm from the axis between the plates, (d) at the plates' edge and (e) 10 cm from the axis.
 
-**Solution.** (a) $E = q/(\varepsilon_0A)$, so $dE/dt = i/(\varepsilon_0A) = 1/(8.854\times10^{-12}\times7.854\times10^{-3}) = $ **1.438×10¹³ V/(m·s)**.
+**Solution.** (a) $E = q/(\varepsilon_0A)$, so \$dE/dt = i/(\varepsilon_0A) = 1/(8.854\times10^{-12}\times7.854\times10^{-3}) = \$ **1.438×10¹³ V/(m·s)**.
 
 (b) $i_d = \varepsilon_0A\,dE/dt = $ **1 A**, equal to the wire current.
 
-(c) A circle of radius $r < R$ encloses displacement current $i\,r^2/R^2$, so $B = \mu_0ir/(2\pi R^2) = $ **2.4 µT**.
+(c) A circle of radius $r < R$ encloses displacement current $i\,r^2/R^2$, so \$B = \mu_0ir/(2\pi R^2) = \$ **2.4 µT**.
 
-(d) At $r = R$: $\mu_0i/(2\pi R) = $ **4 µT**.
+(d) At $r = R$: \$\mu_0i/(2\pi R) = \$ **4 µT**.
 
 (e) Outside, all the displacement current is enclosed: $\mu_0i/(2\pi r) = $ **2 µT**, the same as 10 cm from the wire.
 
@@ -224,7 +224,7 @@ Radio waves at these frequencies heat tissue (they are non-ionizing; [04-10](04-
 
 (b) $\langle S\rangle = E_0^2/(2\eta_0) = 10^4/753.5 = $ **13.27 W/m²**.
 
-(c) The electric and magnetic energies are equal in a plane wave; each averages $\tfrac14\varepsilon_0E_0^2$, so $\langle u\rangle = \tfrac12\varepsilon_0E_0^2 = $ **4.427×10⁻⁸ J/m³**.
+(c) The electric and magnetic energies are equal in a plane wave; each averages $\tfrac14\varepsilon_0E_0^2$, so \$\langle u\rangle = \tfrac12\varepsilon_0E_0^2 = \$ **4.427×10⁻⁸ J/m³**.
 
 (d) $4.427\times10^{-8}\times2.998\times10^8 = 13.27$ W/m² ✓.
 
@@ -232,9 +232,9 @@ Radio waves at these frequencies heat tissue (they are non-ionizing; [04-10](04-
 
 **Setup.** (a) A copper wire 1 m long and 0.5 mm in radius carries 10 A. Find its resistance, the voltage along it, the magnetic field at its surface, the Poynting vector there, and the total power flowing in through its surface. (b) The capacitor of Example 04-08.2 has a 1 mm gap; at the instant its voltage is 100 V (still charged at 1 A), find the Poynting vector at the rim of the gap and the power flowing into the gap.
 
-**Solution.** (a) $R = \rho L/(\pi a^2) = $ **21.39 mΩ**; $V = IR = $ **0.2139 V**, so $E = 0.2139$ V/m. $B = \mu_0I/(2\pi a) = $ **4 mT**. $S = EB/\mu_0 = $ **680.9 W/m²**, pointing inward. Over the surface $2\pi aL = 3.142\times10^{-3}$ m²: **2.139 W**, which is $I^2R$ ✓.
+**Solution.** (a) \$R = \rho L/(\pi a^2) = \$ **21.39 mΩ**; \$V = IR = \$ **0.2139 V**, so $E = 0.2139$ V/m. \$B = \mu_0I/(2\pi a) = \$ **4 mT**. \$S = EB/\mu_0 = \$ **680.9 W/m²**, pointing inward. Over the surface $2\pi aL = 3.142\times10^{-3}$ m²: **2.139 W**, which is $I^2R$ ✓.
 
-(b) $E = V/d = 10^5$ V/m between the plates; at the rim $B = \mu_0i/(2\pi R) = 4$ µT, circling; $S = EB/\mu_0 = $ **3.183×10⁵ W/m²**, pointing inward through the rim. Over the rim area $2\pi Rd = 3.142\times10^{-4}$ m²: **100 W**, which is $VI$, the rate at which the capacitor's stored energy grows ✓.
+(b) $E = V/d = 10^5$ V/m between the plates; at the rim $B = \mu_0i/(2\pi R) = 4$ µT, circling; \$S = EB/\mu_0 = \$ **3.183×10⁵ W/m²**, pointing inward through the rim. Over the rim area $2\pi Rd = 3.142\times10^{-4}$ m²: **100 W**, which is $VI$, the rate at which the capacitor's stored energy grows ✓.
 
 **Interpretation.** In both cases energy enters from the sides, through the field outside the conductors, not along the wires. The wires shape the field; the field carries the energy.
 

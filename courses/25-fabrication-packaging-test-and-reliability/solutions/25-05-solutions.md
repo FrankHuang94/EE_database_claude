@@ -12,7 +12,7 @@ Every number is recomputed by [verify_25_05.py](../verify/verify_25_05.py).
 
 (a) $5.9 - 5.4$ = **0.5** percentage points.
 
-(b) $0.054 \times 55.4$ = **$3.0 B**, consistent with TrendForce's "over $3 B" given that 5.4% is itself rounded.
+(b) $0.054 \times 55.4$ = **\$3.0 B**, consistent with TrendForce's "over \$3 B" given that 5.4% is itself rounded.
 
 ### Solution 25-05.2
 

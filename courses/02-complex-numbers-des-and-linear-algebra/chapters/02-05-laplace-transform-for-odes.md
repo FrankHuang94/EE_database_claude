@@ -228,7 +228,7 @@ $$
 y(t) = 2 - 3e^{-2t} + 2e^{-3t}, \qquad y(1) = 1.694 .
 $$
 
-**Checks.** $y(0) = 2 - 3 + 2 = 1$ ✓ and $y'(0) = 6 - 6 = 0$ ✓. The poles of $sY$ are −2 and −3, both in the left half-plane, so the final-value theorem applies: $\lim_{s\to0}sY = 12/6 = $ **2**, matching $y(\infty) = 2$ ✓.
+**Checks.** $y(0) = 2 - 3 + 2 = 1$ ✓ and $y'(0) = 6 - 6 = 0$ ✓. The poles of $sY$ are −2 and −3, both in the left half-plane, so the final-value theorem applies: \$\lim_{s\to0}sY = 12/6 = \$ **2**, matching $y(\infty) = 2$ ✓.
 
 ### Example 02-05.3 — The RLC step response, rederived in one page (tier B)
 
@@ -240,7 +240,7 @@ $$
 \frac{\omega_0^2}{s(s^2 + 2\alpha s + \omega_0^2)} = \frac{1}{s} - \frac{s + 2\alpha}{s^2 + 2\alpha s + \omega_0^2} = \frac{1}{s} - \frac{(s + \alpha) + \alpha}{(s + \alpha)^2 + \omega_d^2},
 $$
 
-(the cover-up at $s = 0$ gives 1, and matching the $s^2$ and $s$ coefficients gives the rest), with $\omega_d = \sqrt{\omega_0^2 - \alpha^2} = $ **9682 rad/s**. Inverting with the $s$-shift rule:
+(the cover-up at $s = 0$ gives 1, and matching the $s^2$ and $s$ coefficients gives the rest), with \$\omega_d = \sqrt{\omega_0^2 - \alpha^2} = \$ **9682 rad/s**. Inverting with the $s$-shift rule:
 
 $$
 v_C(t) = 1 - e^{-\alpha t}\left(\cos\omega_dt + \frac{\alpha}{\omega_d}\sin\omega_dt\right)\text{ V},
@@ -274,13 +274,13 @@ $$
 Z(s) = \frac{R + sL}{1 + sC(R + sL)} = \frac{R + sL}{LCs^2 + RCs + 1} .
 $$
 
-Its poles solve $LCs^2 + RCs + 1 = 0$: $s = -\alpha \pm j\omega_d$ with α = $R/(2L) = $ **2.000×10⁷ s⁻¹** and $\omega_d = \sqrt{1/(LC) - \alpha^2} = $ **6.321×10⁸ rad/s**, a ring at **100.6 MHz**, as in 02-03. It has one zero, at $s = -R/L = -4\times10^7$ s⁻¹.
+Its poles solve $LCs^2 + RCs + 1 = 0$: $s = -\alpha \pm j\omega_d$ with α = \$R/(2L) = \$ **2.000×10⁷ s⁻¹** and \$\omega_d = \sqrt{1/(LC) - \alpha^2} = \$ **6.321×10⁸ rad/s**, a ring at **100.6 MHz**, as in 02-03. It has one zero, at $s = -R/L = -4\times10^7$ s⁻¹.
 
 (b) The load draws $\Delta I\,u(t)$, so $\Delta V(s) = -Z(s)\dfrac{\Delta I}{s}$.
 
 - *Initial value:* $\lim_{s\to\infty}s\Delta V = -\Delta I\lim_{s\to\infty}Z(s) = 0$, since $Z \approx 1/(sC)$ at high frequency. The voltage is continuous, as a capacitor requires.
-- *Initial slope:* the transform of $\Delta V'$ is $s\Delta V - \Delta V(0) = s\Delta V$, so the initial slope is $\lim_{s\to\infty}s\cdot s\Delta V = -\Delta I\lim_{s\to\infty}sZ(s) = -\Delta I/C = $ **−1.000×10⁸ V/s**: the capacitor alone feeds the load at first, falling 0.1 V per nanosecond.
-- *Final value:* the poles of $s\Delta V = -\Delta I\,Z(s)$ lie in the left half-plane, so $\Delta V(\infty) = -\Delta I\,Z(0) = -\Delta I\,R = $ **−10 mV**: only the resistive drop remains.
+- *Initial slope:* the transform of $\Delta V'$ is $s\Delta V - \Delta V(0) = s\Delta V$, so the initial slope is \$\lim_{s\to\infty}s\cdot s\Delta V = -\Delta I\lim_{s\to\infty}sZ(s) = -\Delta I/C = \$ **−1.000×10⁸ V/s**: the capacitor alone feeds the load at first, falling 0.1 V per nanosecond.
+- *Final value:* the poles of $s\Delta V = -\Delta I\,Z(s)$ lie in the left half-plane, so \$\Delta V(\infty) = -\Delta I\,Z(0) = -\Delta I\,R = \$ **−10 mV**: only the resistive drop remains.
 
 Inverting $\Delta V(s)$ by partial fractions reproduces the 160.3 mV worst droop of 02-03 (Problem 02-05.14).
 

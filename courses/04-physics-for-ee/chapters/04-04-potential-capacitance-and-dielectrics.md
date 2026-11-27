@@ -264,7 +264,7 @@ The pressure is set by the field in the gap, $D/\varepsilon_0$, which is $\varep
 
 (b) $E_z = -\dfrac{d}{dz}\dfrac{k_eQ}{(z^2 + R^2)^{1/2}} = \dfrac{k_eQz}{(z^2 + R^2)^{3/2}} = $ **1.271×10⁴ V/m**, agreeing with the direct integration of 04-02.
 
-(c) At $z = 0$: $V = k_eQ/R = $ **1798 V**, the highest potential on the axis, while $E = 0$: the potential has a maximum along the axis there, so its slope is zero.
+(c) At $z = 0$: \$V = k_eQ/R = \$ **1798 V**, the highest potential on the axis, while $E = 0$: the potential has a maximum along the axis there, so its slope is zero.
 
 ### Example 04-04.3 — Conducting spheres at high voltage (tier B)
 
@@ -320,7 +320,7 @@ The pressure is set by the field in the gap, $D/\varepsilon_0$, which is $\varep
 
 (b) $\text{EOT} = 0.5 + 2\times3.9/25 = $ **0.812 nm**, for a physical thickness of 2.5 nm. Tunneling depends on the physical thickness, capacitance on the EOT: that is the point of high-k.
 
-(c) $D = (C/A)V = 4.253\times10^{-2}\times0.7 = 2.977\times10^{-2}$ C/m², the same in both layers. In the SiO₂, $E = D/(3.9\varepsilon_0) = $ **8.621 MV/cm** across 0.5 nm, a drop of **0.4310 V**; in the HfO₂, $E = D/(25\varepsilon_0) = $ **1.345 MV/cm** across 2 nm, a drop of **0.2690 V**.
+(c) $D = (C/A)V = 4.253\times10^{-2}\times0.7 = 2.977\times10^{-2}$ C/m², the same in both layers. In the SiO₂, \$E = D/(3.9\varepsilon_0) = \$ **8.621 MV/cm** across 0.5 nm, a drop of **0.4310 V**; in the HfO₂, \$E = D/(25\varepsilon_0) = \$ **1.345 MV/cm** across 2 nm, a drop of **0.2690 V**.
 
 **Sanity check.** The voltages add to 0.7 V ✓. The thin low-k interface layer carries the strongest field, within a factor of about 1.2 of SiO₂'s breakdown field of about 10 MV/cm: the interface layer is where reliability engineers look first.
 
@@ -328,7 +328,7 @@ The pressure is set by the field in the gap, $D/\varepsilon_0$, which is $\varep
 
 **Setup.** (a) A 1 µF capacitor at 10 V is connected through a resistor to an uncharged 1 µF capacitor. Find the final voltage, the energies before and after, and the energy dissipated. Confirm in ngspice for 10 Ω and 1 kΩ. (b) A DRAM cell of 10 fF holding 1 V is connected to a bit line of 100 fF precharged to 0.5 V. Find the bit line's voltage change, and the stored charge in electrons.
 
-**Solution.** (a) Charge is conserved: $10\ \mu\text{C}$ shared over $2\ \mu\text{F}$ gives **5 V**. The energy before is $\tfrac12(10^{-6})(10^2) = $ **50 µJ**; after, $2\times\tfrac12(10^{-6})(5^2) = $ **25 µJ**. The resistor dissipated **25 µJ**, the same for both resistors (Figure 4): $\int i^2R\,dt$ with $i = (10/R)e^{-t/\tau}$ and $\tau = RC/2$ gives $(100/R)(\tau/2) = 25$ µJ, independent of $R$.
+**Solution.** (a) Charge is conserved: $10\ \mu\text{C}$ shared over $2\ \mu\text{F}$ gives **5 V**. The energy before is \$\tfrac12(10^{-6})(10^2) = \$ **50 µJ**; after, \$2\times\tfrac12(10^{-6})(5^2) = \$ **25 µJ**. The resistor dissipated **25 µJ**, the same for both resistors (Figure 4): $\int i^2R\,dt$ with $i = (10/R)e^{-t/\tau}$ and $\tau = RC/2$ gives $(100/R)(\tau/2) = 25$ µJ, independent of $R$.
 
 (b) $V_f = (10\times1 + 100\times0.5)/110 = 0.5455$ V, so the bit line rises by **45.45 mV** (a stored 0 would lower it by the same amount). The cell held $Q = 10$ fC = **6.242×10⁴ electrons**.
 
@@ -344,7 +344,7 @@ The pressure is set by the field in the gap, $D/\varepsilon_0$, which is $\varep
 
 **Solution.** The area is $S = \pi(0.1)^2 = 0.03142$ m².
 
-(a) $C = \varepsilon_r\varepsilon_0S/l = 8.8\times8.854\times10^{-12}\times0.03142/5.4\times10^{-4} = $ **4.533 nF**, so $Q = CV$ = **4.533 µC**.
+(a) \$C = \varepsilon_r\varepsilon_0S/l = 8.8\times8.854\times10^{-12}\times0.03142/5.4\times10^{-4} = \$ **4.533 nF**, so $Q = CV$ = **4.533 µC**.
 
 (b) $D = Q/S = \varepsilon_r\varepsilon_0V/l = $ **1.443×10⁻⁴ C/m²**.
 

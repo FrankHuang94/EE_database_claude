@@ -264,7 +264,7 @@ The defect level falls in proportion to the *untested* fraction $1 - T$, and it 
 
 **Setup.** At final test, 5% of dies show a logic fault and 4% a memory fault; 1% show both. (a) What fraction fail? (b) What would it be if the two faults were independent? (c) Are they independent, and what might explain the difference?
 
-**Solution.** (a) $P(L \cup M) = 0.05 + 0.04 - 0.01 = $ **0.08**. (b) Independence would make $P(L \cap M) = 0.05\times0.04 = 0.002$, so $P(L \cup M) = $ **0.088**. (c) They are not independent: $P(L \cap M) = 0.01$ is five times the product. Equivalently, $P(M \mid L) = 0.01/0.05 = $ **0.2**, against $P(M) = 0.04$: a die with a logic fault is five times as likely to have a memory fault. A shared cause, such as a defect-dense wafer region, is the usual explanation. Positive correlation *lowers* the total failure rate here, because the failures pile onto the same dies.
+**Solution.** (a) \$P(L \cup M) = 0.05 + 0.04 - 0.01 = \$ **0.08**. (b) Independence would make $P(L \cap M) = 0.05\times0.04 = 0.002$, so \$P(L \cup M) = \$ **0.088**. (c) They are not independent: $P(L \cap M) = 0.01$ is five times the product. Equivalently, \$P(M \mid L) = 0.01/0.05 = \$ **0.2**, against $P(M) = 0.04$: a die with a logic fault is five times as likely to have a memory fault. A shared cause, such as a defect-dense wafer region, is the usual explanation. Positive correlation *lowers* the total failure rate here, because the failures pile onto the same dies.
 
 **Sanity check.** $0.08 \le 0.05 + 0.04$ (the union bound) and $0.08 \ge 0.05$ (the larger single event) ✓.
 
@@ -290,7 +290,7 @@ The defect level falls in proportion to the *untested* fraction $1 - T$, and it 
 
 (c) $P(\text{good} \mid \text{fail}) = 0.9\times0.02/0.117 = $ **0.1538**. Over 15% of the scrap is good silicon: the overkill rate applies to the large good population. This is the base-rate effect in reverse, and it is why failing parts are often retested.
 
-(d) With escape probability $e$, $\text{DL} = 0.1e/(0.882 + 0.1e) = 10^{-5}$. Solving, $0.1e(1 - 10^{-5}) = 8.82\times10^{-6}$, so $e = $ **8.820×10⁻⁵**: the test must catch 99.991% of bad dies. Cutting the escape probability by a factor of about 113 cuts DPPM by the same factor.
+(d) With escape probability $e$, $\text{DL} = 0.1e/(0.882 + 0.1e) = 10^{-5}$. Solving, $0.1e(1 - 10^{-5}) = 8.82\times10^{-6}$, so \$e = \$ **8.820×10⁻⁵**: the test must catch 99.991% of bad dies. Cutting the escape probability by a factor of about 113 cuts DPPM by the same factor.
 
 **Sanity check.** DL ≈ (bad fraction × escape probability)/(pass fraction) = $0.1\times0.01/0.883$ ✓, and DPPM scales linearly with the escape probability ✓.
 
@@ -298,11 +298,11 @@ The defect level falls in proportion to the *untested* fraction $1 - T$, and it 
 
 **Setup.** A sensor transmits 0 with probability 0.95 and 1 with probability 0.05 (alarms are rare). The channel flips each bit with probability 0.1. (a) Given a received 1, what is the probability a 1 was sent? Given a received 0? (b) Find the MAP decision rule and its error probability, and compare with the ML rule (believe the received bit). (c) How rare must alarms be before MAP ignores a received 1?
 
-**Solution.** (a) $P(\text{recv }1) = 0.05\times0.9 + 0.95\times0.1 = 0.045 + 0.095 = 0.14$. So $P(\text{sent }1 \mid \text{recv }1) = 0.045/0.14 = $ **0.3214**, and $P(\text{sent }1 \mid \text{recv }0) = 0.05\times0.1/0.86 = $ **0.005814**.
+**Solution.** (a) $P(\text{recv }1) = 0.05\times0.9 + 0.95\times0.1 = 0.045 + 0.095 = 0.14$. So \$P(\text{sent }1 \mid \text{recv }1) = 0.045/0.14 = \$ **0.3214**, and \$P(\text{sent }1 \mid \text{recv }0) = 0.05\times0.1/0.86 = \$ **0.005814**.
 
 (b) After either observation, "0 was sent" is more probable (0.6786 and 0.9942). So MAP always decides 0, and it errs exactly when a 1 was sent: probability **0.05**. The ML rule believes the received bit and errs whenever the channel flips it: probability **0.1**. Here MAP halves the error rate by ignoring the data entirely.
 
-(c) MAP follows a received 1 only when $P(1)\times0.9 > P(0)\times0.1$, that is when $P(1) > $ **0.1**. Below that prior, the channel's 10% flip rate produces more false 1s than true ones.
+(c) MAP follows a received 1 only when $P(1)\times0.9 > P(0)\times0.1$, that is when \$P(1) > \$ **0.1**. Below that prior, the channel's 10% flip rate produces more false 1s than true ones.
 
 **Sanity check.** The posteriors for each received bit sum to 1 ($0.3214 + 0.6786$, $0.005814 + 0.9942$) ✓, and the MAP error 0.05 can be no worse than "always guess 0", which it equals ✓.
 
@@ -322,7 +322,7 @@ The defect level falls in proportion to the *untested* fraction $1 - T$, and it 
 
 At $R = 0.99$, TMR cuts the failure probability from 1% to 0.03%, about 34-fold. At $R = 0.4$ it makes things worse.
 
-(b) Independent: $q^2 = $ **1×10⁻⁴**. With β = 0.1: $\beta q + (1 - \beta q)\big((1 - \beta)q\big)^2 = 0.001 + 0.999\times(0.009)^2 = $ **1.081×10⁻³**, about **10.81** times worse. The common-mode term $\beta q = 0.001$ dominates. With repair, a failed supply is replaced within hours, so independent double failures need overlapping outages and become far rarer still, which makes the common-mode term dominate even more.
+(b) Independent: \$q^2 = \$ **1×10⁻⁴**. With β = 0.1: \$\beta q + (1 - \beta q)\big((1 - \beta)q\big)^2 = 0.001 + 0.999\times(0.009)^2 = \$ **1.081×10⁻³**, about **10.81** times worse. The common-mode term $\beta q = 0.001$ dominates. With repair, a failed supply is replaced within hours, so independent double failures need overlapping outages and become far rarer still, which makes the common-mode term dominate even more.
 
 (c) $(1 - 0.99999)\times8766\text{ h}\times60 = $ **5.260 minutes** of downtime a year.
 
@@ -334,7 +334,7 @@ At $R = 0.99$, TMR cuts the failure probability from 1% to 0.03%, about 34-fold.
 
 **Solution.** (a) $\text{DL} = 1 - 0.8^{0.01} = 1 - e^{0.01\ln0.8} = 1 - e^{-0.0022314} = 2.229\times10^{-3}$: **2229 DPPM**.
 
-(b) Solve $1 - Y^{1 - T} = \text{DL}$ for $T$: $1 - T = \ln(1 - \text{DL})/\ln Y$. For 100 DPPM, $1 - T = \ln(0.9999)/\ln(0.8) = 4.482\times10^{-4}$, so $T = $ **0.99955**. For 10 DPPM, $T = $ **0.999955**. Each tenfold cut in DPPM needs ten times fewer untested faults.
+(b) Solve $1 - Y^{1 - T} = \text{DL}$ for $T$: $1 - T = \ln(1 - \text{DL})/\ln Y$. For 100 DPPM, $1 - T = \ln(0.9999)/\ln(0.8) = 4.482\times10^{-4}$, so \$T = \$ **0.99955**. For 10 DPPM, \$T = \$ **0.999955**. Each tenfold cut in DPPM needs ten times fewer untested faults.
 
 (c) $1 - 0.5^{0.001} = $ **692.9 DPPM**, about 7 per 10,000 shipped parts, even at "three nines" of coverage. The headline coverage number means little without the yield.
 
@@ -486,7 +486,7 @@ Probability numbers are contract terms. A link's BER sets how much forward error
 
    <details><summary>Answer</summary>
 
-   The union bound gives $1000\times10^{-5} = 0.01$. It is valid with no assumption at all, and accurate because the events are rare. If failures are independent, the exact value $1 - (1 - 10^{-5})^{1000} = $ **0.00995** agrees. Positively correlated failures make the true value smaller, never larger than the bound.
+   The union bound gives $1000\times10^{-5} = 0.01$. It is valid with no assumption at all, and accurate because the events are rare. If failures are independent, the exact value \$1 - (1 - 10^{-5})^{1000} = \$ **0.00995** agrees. Positively correlated failures make the true value smaller, never larger than the bound.
 
    </details>
 

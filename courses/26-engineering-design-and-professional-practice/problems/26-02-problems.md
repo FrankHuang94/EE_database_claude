@@ -52,7 +52,7 @@ Chapter: [26-02](../chapters/26-02-design-reviews-and-standards.md) · Worked so
 
 ### Problem 26-02.10 [C]
 
-**When the royalty eats the chip.** A chip priced $P_c$ goes into a device priced $P_d$. (a) Show that a device-level royalty rate $r_d$ is equivalent to a chip-level rate $r_c = r_dP_d/P_c$, and find the device rate at which the royalty equals the chip's whole price. (b) Evaluate both for $P_c$ = $20 and $P_d$ = $500 with $r_d$ = 1%. (c) If the chip supplier itself paid that 1% device-level royalty, what would happen to a 55% gross margin? (d) Explain why the "smallest saleable compliant implementation" language matters to component suppliers.
+**When the royalty eats the chip.** A chip priced $P_c$ goes into a device priced $P_d$. (a) Show that a device-level royalty rate $r_d$ is equivalent to a chip-level rate $r_c = r_dP_d/P_c$, and find the device rate at which the royalty equals the chip's whole price. (b) Evaluate both for $P_c$ = \$20 and $P_d$ = \$500 with $r_d$ = 1%. (c) If the chip supplier itself paid that 1% device-level royalty, what would happen to a 55% gross margin? (d) Explain why the "smallest saleable compliant implementation" language matters to component suppliers.
 
 ### Problem 26-02.11 [B]
 

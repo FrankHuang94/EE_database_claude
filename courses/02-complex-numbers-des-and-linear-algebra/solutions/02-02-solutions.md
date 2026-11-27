@@ -21,19 +21,19 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (b) $y' = 3e^{-3t}$, and $6 - 3y = 6 - 6 + 3e^{-3t} = 3e^{-3t}$ ✓. Also $y(0) = 2 - 1 = 1$ ✓.
 
-(c) $y' = -1/(1 + t)^2 = -y^2$ ✓, and $y(0) = $ **1**.
+(c) $y' = -1/(1 + t)^2 = -y^2$ ✓, and \$y(0) = \$ **1**.
 
 ### Solution 02-02.2
 
-(a) Separate: $dy/y = -2t\,dt$, so $\ln\lvert y\rvert = -t^2 + C$ and $y = 5e^{-t^2}$. Then $y(1) = 5/e = $ **1.839**. (The equilibrium $y = 0$ is the case $y_0 = 0$.)
+(a) Separate: $dy/y = -2t\,dt$, so $\ln\lvert y\rvert = -t^2 + C$ and $y = 5e^{-t^2}$. Then \$y(1) = 5/e = \$ **1.839**. (The equilibrium $y = 0$ is the case $y_0 = 0$.)
 
-(b) Separate: $dy/(1 + y^2) = dt$, so $\arctan y = t + C$, and $y(0) = 0$ gives $C = 0$: $y = \tan t$. It blows up at $t = \pi/2 = $ **1.571**, although $1 + y^2$ is perfectly smooth. The growth rate rises faster than $y$ itself, as in the chapter's $y' = y^2$.
+(b) Separate: $dy/(1 + y^2) = dt$, so $\arctan y = t + C$, and $y(0) = 0$ gives $C = 0$: $y = \tan t$. It blows up at \$t = \pi/2 = \$ **1.571**, although $1 + y^2$ is perfectly smooth. The growth rate rises faster than $y$ itself, as in the chapter's $y' = y^2$.
 
 ### Solution 02-02.3
 
 (a) $f(y) = y^2 - y - 2 = (y - 2)(y + 1)$, so the equilibria are $-1$ and $2$. With $f'(y) = 2y - 1$: $f'(-1) = -3 < 0$, so $-1$ is **stable**; $f'(2) = 3 > 0$, so $2$ is **unstable**.
 
-(b) The local time constant at $-1$ is $-1/f'(-1) = 1/3 = $ **0.3333** (in the time units of the equation).
+(b) The local time constant at $-1$ is \$-1/f'(-1) = 1/3 = \$ **0.3333** (in the time units of the equation).
 
 (c) $f$ is positive below $-1$, negative between $-1$ and 2, and positive above 2. From $y(0) = 1$, $f(1) = -2 < 0$, so $y$ falls toward $-1$ and settles there. From $y(0) = 3$, $f(3) = 4 > 0$, so $y$ rises away from 2. Because the growth is quadratic, it blows up in finite time.
 
@@ -45,19 +45,19 @@ $$
 y = 2\left(1 - e^{-3t}\right).
 $$
 
-The time constant is $1/3$ and the steady state is 2. $y = 1.9$ when $e^{-3t} = 0.05$, so $t = \ln 20/3 = $ **0.9986**.
+The time constant is $1/3$ and the steady state is 2. $y = 1.9$ when $e^{-3t} = 0.05$, so \$t = \ln 20/3 = \$ **0.9986**.
 
 ### Solution 02-02.5
 
-Standard form: $y' - y/t = t^2$, so $p = -1/t$ and $\mu = e^{-\ln t} = 1/t$ (for $t > 0$). Then $(y/t)' = t$, so $y/t = t^2/2 + C$ and $y = t^3/2 + Ct$. From $y(1) = 2$, $C = 3/2$. So $y = t^3/2 + 3t/2$ and $y(2) = 4 + 3 = $ **7**.
+Standard form: $y' - y/t = t^2$, so $p = -1/t$ and $\mu = e^{-\ln t} = 1/t$ (for $t > 0$). Then $(y/t)' = t$, so $y/t = t^2/2 + C$ and $y = t^3/2 + Ct$. From $y(1) = 2$, $C = 3/2$. So $y = t^3/2 + 3t/2$ and \$y(2) = 4 + 3 = \$ **7**.
 
 **Check:** $y' = 3t^2/2 + 3/2$, so $ty' - y = 3t^3/2 + 3t/2 - t^3/2 - 3t/2 = t^3$ ✓, and $y(1) = 1/2 + 3/2 = 2$ ✓.
 
 ### Solution 02-02.6
 
-(a) Separable: $B = B_0e^{\int_0^t r\,d\lambda}$. Here $\int_0^{10}(0.02 + 0.004\lambda)\,d\lambda = 0.2 + 0.2 = 0.4$, so $B(10) = 100\,000\,e^{0.4} = $ **\$149,182**.
+(a) Separable: $B = B_0e^{\int_0^t r\,d\lambda}$. Here $\int_0^{10}(0.02 + 0.004\lambda)\,d\lambda = 0.2 + 0.2 = 0.4$, so \$B(10) = 100\,000\,e^{0.4} = \$ **\$149,182**.
 
-(b) $D(t) = e^{-\int_0^t r\,d\lambda} = e^{-(0.02t + 0.002t^2)}$, and $D(10) = e^{-0.4} = $ **0.6703**. It is the present value of \$1 due at year 10 under this rate path. Multiplying the ODE $B' - rB = 0$ by $D$ gives $(DB)' = 0$: the present value of the balance stays constant, which is just another way to say $B(10) = B_0/D(10)$.
+(b) $D(t) = e^{-\int_0^t r\,d\lambda} = e^{-(0.02t + 0.002t^2)}$, and \$D(10) = e^{-0.4} = \$ **0.6703**. It is the present value of \$1 due at year 10 under this rate path. Multiplying the ODE $B' - rB = 0$ by $D$ gives $(DB)' = 0$: the present value of the balance stays constant, which is just another way to say $B(10) = B_0/D(10)$.
 
 (c) $\mu = e^{-0.05t}$, so $(e^{-0.05t}B)' = 10\,000\,e^{-0.05t}$. Integrating from 0 to $t$:
 
@@ -65,7 +65,7 @@ $$
 B(t) = B_0e^{0.05t} + \frac{10\,000}{0.05}\left(e^{0.05t} - 1\right).
 $$
 
-At $t = 10$: $50\,000\,e^{0.5} = $ **\$82,436** from the initial balance, plus $200\,000(e^{0.5} - 1) = $ **\$129,744** from the deposits, total **\$212,180**. The second term is the continuous-time future value of an annuity.
+At $t = 10$: \$50\,000\,e^{0.5} = \$ **\$82,436** from the initial balance, plus \$200\,000(e^{0.5} - 1) = \$ **\$129,744** from the deposits, total **\$212,180**. The second term is the continuous-time future value of an annuity.
 
 ### Solution 02-02.7
 
@@ -79,9 +79,9 @@ So $e = 8(1 - e^{-t/4})$ °C.
 
 (a) The steady lag is $\tau = $ **4 s** in time, and $m\tau = 2 \times 4 = $ **8 °C** in temperature.
 
-(b) Within 1% of the final error when $e^{-t/4} \le 0.01$: $t = 4\ln100 = $ **18.42 s**.
+(b) Within 1% of the final error when $e^{-t/4} \le 0.01$: \$t = 4\ln100 = \$ **18.42 s**.
 
-(c) At $t = 10$ s, $e = 8(1 - e^{-2.5}) = $ **7.343 °C**. The oven is at 45 °C, so the probe reads **37.66 °C**.
+(c) At $t = 10$ s, \$e = 8(1 - e^{-2.5}) = \$ **7.343 °C**. The oven is at 45 °C, so the probe reads **37.66 °C**.
 
 ### Solution 02-02.8
 
@@ -91,7 +91,7 @@ $$
 v(t) = 5\left(e^{-t/\tau} - e^{-2t/\tau}\right)\text{ V}.
 $$
 
-Setting $v' = 0$: $e^{-t/\tau} = 2e^{-2t/\tau}$, so $e^{-t/\tau} = 1/2$ and $t = \tau\ln2 = $ **0.6931 ms**. The peak is $5(1/2 - 1/4) = $ **1.25 V**.
+Setting $v' = 0$: $e^{-t/\tau} = 2e^{-2t/\tau}$, so $e^{-t/\tau} = 1/2$ and \$t = \tau\ln2 = \$ **0.6931 ms**. The peak is \$5(1/2 - 1/4) = \$ **1.25 V**.
 
 (b) Now $\alpha\tau = 1$ and the guess must be $ate^{-t/\tau}$, which gives $a = 5/\tau$ (chapter §3.6). The homogeneous part must vanish to keep $v(0) = 0$, so
 
@@ -99,7 +99,7 @@ $$
 v(t) = 5\,\frac{t}{\tau}\,e^{-t/\tau}\text{ V}.
 $$
 
-$v' = \frac{5}{\tau}e^{-t/\tau}(1 - t/\tau) = 0$ at $t = \tau = $ **1 ms**, where $v = 5/e = $ **1.839 V**.
+$v' = \frac{5}{\tau}e^{-t/\tau}(1 - t/\tau) = 0$ at \$t = \tau = \$ **1 ms**, where \$v = 5/e = \$ **1.839 V**.
 
 (c) In (b) the input $e^{-t/\tau}$ already solves the homogeneous equation, so substituting $ae^{-t/\tau}$ gives $0 = 5e^{-t/\tau}$: no constant $a$ works. The formula $1/(1 - \alpha\tau)$ blows up for the same reason. Multiplying the guess by $t$ fixes it. This is the first-order version of resonance.
 
@@ -107,7 +107,7 @@ $v' = \frac{5}{\tau}e^{-t/\tau}(1 - t/\tau) = 0$ at $t = \tau = $ **1 ms**, wher
 
 (a) $\tau = L/R = 10^{-3}/10 = $ **0.1 ms**, and $\omega\tau = 2\pi\times5000\times10^{-4} = \pi = $ **3.142**.
 
-(b) In standard form, $\tau i' + i = (V_0/R)\cos\omega t$ with $V_0/R = 1$ A. The phasor answer is $\mathbf{I} = (1\text{ A})/(1 + j\pi)$: amplitude $1/\sqrt{1 + \pi^2} = $ **0.3033 A**, lagging the source by $\arctan\pi = $ **72.34°**.
+(b) In standard form, $\tau i' + i = (V_0/R)\cos\omega t$ with $V_0/R = 1$ A. The phasor answer is $\mathbf{I} = (1\text{ A})/(1 + j\pi)$: amplitude \$1/\sqrt{1 + \pi^2} = \$ **0.3033 A**, lagging the source by \$\arctan\pi = \$ **72.34°**.
 
 (c) Undetermined coefficients give $i_p = a\cos\omega t + b\sin\omega t$ with $a = 1/(1 + \pi^2) = 0.09200$ A and $b = \pi/(1 + \pi^2) = 0.2890$ A. The transient must cancel $i_p(0) = a$, so
 
@@ -119,13 +119,13 @@ $$
 
 Use $N(t) = K\big/\big(1 + \frac{K - N_0}{N_0}e^{-rt}\big)$ with $(K - N_0)/N_0 = 99$.
 
-(a) $N = K/2$ when $99e^{-0.8t} = 1$: $t = \ln99/0.8 = $ **5.744 years**.
+(a) $N = K/2$ when $99e^{-0.8t} = 1$: \$t = \ln99/0.8 = \$ **5.744 years**.
 
 (b) $2\ln9/r = 4.394/0.8 = $ **5.493 years**.
 
 (c) $N(3) = 200/(1 + 99e^{-2.4}) = $ **20.04 million**.
 
-(d) With the fitted rate equal to the true $r = 0.8$/yr (an actual fit to noisy data returns a slightly different rate, and so a different extrapolation), pure exponential growth from 2 million predicts $2e^{0.8\times6} = $ **243.0 million** at year 6, more than the entire capacity of 200 million. The logistic model gives $200/(1 + 99e^{-4.8}) = $ **110.2 million**. In the early phase the two curves are indistinguishable, so early data pin down $r$ but say almost nothing about $K$. Market sizing that extrapolates early growth overstates the market; the capacity must come from independent evidence (addressable users, replacement cycles).
+(d) With the fitted rate equal to the true $r = 0.8$/yr (an actual fit to noisy data returns a slightly different rate, and so a different extrapolation), pure exponential growth from 2 million predicts \$2e^{0.8\times6} = \$ **243.0 million** at year 6, more than the entire capacity of 200 million. The logistic model gives \$200/(1 + 99e^{-4.8}) = \$ **110.2 million**. In the early phase the two curves are indistinguishable, so early data pin down $r$ but say almost nothing about $K$. Market sizing that extrapolates early growth overstates the market; the capacity must come from independent evidence (addressable users, replacement cycles).
 
 ### Solution 02-02.11
 
@@ -133,11 +133,11 @@ Use $N(t) = K\big/\big(1 + \frac{K - N_0}{N_0}e^{-rt}\big)$ with $(K - N_0)/N_0 
 
 (b) $p(t) = \tan t$ is continuous on $(-\pi/2, \pi/2)$, which contains $t_0 = 0$, so a unique solution exists on all of that interval. $\mu = e^{\int\tan t\,dt} = e^{-\ln\cos t} = \sec t$. Then $(y\sec t)' = \cos t\sec t = 1$, so $y\sec t = t + C$, and $y(0) = 1$ gives $C = 1$: $y = (t + 1)\cos t$. **Check:** $y' + y\tan t = \cos t - (t + 1)\sin t + (t + 1)\sin t = \cos t$ ✓.
 
-(c) Separate: $-1/y = t + C$, and $y(0) = 2$ gives $C = -1/2$. So $y = 2/(1 - 2t)$, which blows up at $t = $ **0.5**.
+(c) Separate: $-1/y = t + C$, and $y(0) = 2$ gives $C = -1/2$. So $y = 2/(1 - 2t)$, which blows up at \$t = \$ **0.5**.
 
 ### Solution 02-02.12
 
-(a) Forward Euler multiplies by $1 - h/\tau$ each step, so it is stable for $h < 2\tau = $ **2 µs**.
+(a) Forward Euler multiplies by $1 - h/\tau$ each step, so it is stable for \$h < 2\tau = \$ **2 µs**.
 
 (b) Four steps of 0.5 µs reach 2 µs:
 
@@ -170,11 +170,11 @@ The equation is $y' = -y(1 - y)$: a logistic equation running backward in time. 
 
 The model is $C_{th}T' = P - (T - 25)/R_{th}$, with $\tau = R_{th}C_{th} = 300$ s.
 
-(a) The steady temperature is $25 + 10P$. Setting it to 43 °C gives $P = $ **1.8 W**.
+(a) The steady temperature is $25 + 10P$. Setting it to 43 °C gives \$P = \$ **1.8 W**.
 
 (b) $25 + 10\times1.0 = $ **35 °C**.
 
-(c) At 5 W the target is $25 + 50 = 75$ °C, so $T(t) = 75 - 40e^{-t/300}$. $T = 43$ when $e^{-t/300} = 32/40$: $t = 300\ln1.25 = $ **66.94 s**. At 3 W the target is 55 °C, $T = 55 - 20e^{-t/300}$, and $t = 300\ln(20/12) = $ **153.2 s**.
+(c) At 5 W the target is $25 + 50 = 75$ °C, so $T(t) = 75 - 40e^{-t/300}$. $T = 43$ when $e^{-t/300} = 32/40$: \$t = 300\ln1.25 = \$ **66.94 s**. At 3 W the target is 55 °C, $T = 55 - 20e^{-t/300}$, and \$t = 300\ln(20/12) = \$ **153.2 s**.
 
 (d) At 1.8 W the equilibrium is exactly 43 °C. The temperature is already there, so it stays at 43 °C: the governor has found the sustainable operating point.
 
@@ -194,9 +194,9 @@ $$
 v(t) = v_0\exp\!\left[-2\left(1 - e^{-t/T}\right)\right].
 $$
 
-(b) At $t = 2$ ns: $\exp[-2(1 - e^{-1})] = $ **0.2825**. As $t \to \infty$: $e^{-2} = $ **0.1353**. The capacitor *never* discharges below 13.5%.
+(b) At $t = 2$ ns: \$\exp[-2(1 - e^{-1})] = \$ **0.2825**. As $t \to \infty$: \$e^{-2} = \$ **0.1353**. The capacitor *never* discharges below 13.5%.
 
-(c) With a constant $R_0$, $v = v_0e^{-t/(1\text{ ns})}$: 0.1353 at 2 ns and zero eventually. The slowly opening switch delivers a total "discharge budget" of only $T/(R_0C) = 2$ time constants, however long you wait. In general the fraction left is $e^{-T/(R_0C)}$, so leaving less than 0.1% needs $T/(R_0C) \ge \ln1000 = $ **6.908**: a reset switch must turn off no faster than about $7R_0C$, or stay fully on that long before it starts to turn off. A track-and-hold switch is the opposite case. There the goal is to freeze the voltage at an instant, so it should turn off *fast* (Course 20 treats its charge-injection and signal-dependent turn-off errors).
+(c) With a constant $R_0$, $v = v_0e^{-t/(1\text{ ns})}$: 0.1353 at 2 ns and zero eventually. The slowly opening switch delivers a total "discharge budget" of only $T/(R_0C) = 2$ time constants, however long you wait. In general the fraction left is $e^{-T/(R_0C)}$, so leaving less than 0.1% needs \$T/(R_0C) \ge \ln1000 = \$ **6.908**: a reset switch must turn off no faster than about $7R_0C$, or stay fully on that long before it starts to turn off. A track-and-hold switch is the opposite case. There the goal is to freeze the voltage at an instant, so it should turn off *fast* (Course 20 treats its charge-injection and signal-dependent turn-off errors).
 
 ---
 
@@ -208,7 +208,7 @@ $$
 
 (c) On the isocline $c = 1$, the line $y = t - 1$, the field's slope is 1, the same as the line's own slope. So the field is tangent to the line all along it, and it is a solution. Check: $y' = 1$ and $t - y = t - (t - 1) = 1$ ✓. Above the line, $y > t - 1$, so the slope $t - y < 1$: a solution there rises more slowly than the line and the gap closes. Below it the slope exceeds 1 and the solution catches up. Solutions cannot cross (uniqueness, §3.7), so every solution approaches the line from its own side.
 
-(d) Standard form $y' + y = t$, with $\mu = e^t$: $(ye^t)' = te^t$, so $ye^t = (t - 1)e^t + C$ and $y = t - 1 + Ce^{-t}$. From $y(0) = 0$, $C = 1$: $y = t - 1 + e^{-t}$, which approaches the line $t - 1$ as (c) predicted. Then $y(2) = 1 + e^{-2} = $ **1.135**.
+(d) Standard form $y' + y = t$, with $\mu = e^t$: $(ye^t)' = te^t$, so $ye^t = (t - 1)e^t + C$ and $y = t - 1 + Ce^{-t}$. From $y(0) = 0$, $C = 1$: $y = t - 1 + e^{-t}$, which approaches the line $t - 1$ as (c) predicted. Then \$y(2) = 1 + e^{-2} = \$ **1.135**.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |

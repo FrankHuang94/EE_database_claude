@@ -204,11 +204,11 @@ All core, cache and DRAM-energy parameters below are **assumed** for teaching; s
 
 ### Example 27-02.6 · What does the die cost? (tier B)
 
-**Setup.** Using 25-04's dies-per-wafer formula (300 mm wafers, rounded down) and Poisson yield: (a) a 98.6 mm² die [R-664] on a 3 nm-class wafer at $18,500 [R-575] with $D_0$ = 0.10 cm⁻² (assumed); (b) a 140.79 mm² die [R-664] on the same wafer; (c) the 98.6 mm² die on a 2 nm wafer at $30,000 [R-575] with $D_0$ = 0.15 cm⁻² (assumed, an early node).
+**Setup.** Using 25-04's dies-per-wafer formula (300 mm wafers, rounded down) and Poisson yield: (a) a 98.6 mm² die [R-664] on a 3 nm-class wafer at \$18,500 [R-575] with $D_0$ = 0.10 cm⁻² (assumed); (b) a 140.79 mm² die [R-664] on the same wafer; (c) the 98.6 mm² die on a 2 nm wafer at \$30,000 [R-575] with $D_0$ = 0.15 cm⁻² (assumed, an early node).
 
 **Solution.**
 
-- (a) DPW **649**, yield **0.906**, cost $18{,}500/(649 \times 0.906)$ = **$31.46**.
+- (a) DPW **649**, yield **0.906**, cost $18{,}500/(649 \times 0.906)$ = **\$31.46**.
 - (b) DPW **445**, yield **0.869**, cost **$47.86**: 43% more area costs 52% more.
 - (c) DPW 649, yield **0.863**, cost **$53.59**, **1.70** times the 3 nm cost for the same area.
 

@@ -12,19 +12,19 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (a) The CDF jumps at each value: $F_X(x) = 0$ for $x < 0$, **0.5** on $[0, 1)$, **0.8** on $[1, 2)$, **0.95** on $[2, 3)$ and **1** from 3 on: a staircase.
 
-(b) $P(1 \le X \le 2) = F_X(2) - F_X(0) = 0.95 - 0.5 = $ **0.45** (the CDF at 0, not at 1, because $X = 1$ is included). $P(X > 1) = 1 - F_X(1) = $ **0.2**.
+(b) \$P(1 \le X \le 2) = F_X(2) - F_X(0) = 0.95 - 0.5 = \$ **0.45** (the CDF at 0, not at 1, because $X = 1$ is included). \$P(X > 1) = 1 - F_X(1) = \$ **0.2**.
 
 ### Solution 03-02.2
 
-(a) $\int_0^2cx^2dx = 8c/3 = 1$, so $c = 3/8 = $ **0.375** (units of 1/(units of $x$)³).
+(a) $\int_0^2cx^2dx = 8c/3 = 1$, so \$c = 3/8 = \$ **0.375** (units of 1/(units of $x$)³).
 
-(b) $F_X(x) = \int_0^x\tfrac38u^2du = x^3/8$ for $0 \le x \le 2$ (0 below, 1 above). $F_X(1.5) = 3.375/8 = $ **0.4219**.
+(b) $F_X(x) = \int_0^x\tfrac38u^2du = x^3/8$ for $0 \le x \le 2$ (0 below, 1 above). \$F_X(1.5) = 3.375/8 = \$ **0.4219**.
 
 (c) $P(X > 1) = 1 - F_X(1) = 1 - 1/8 = $ **0.875**. Most of the probability sits near 2, where the density is largest.
 
 ### Solution 03-02.3
 
-Binomial with $n = 20$, $p = 0.05$. (a) $0.95^{20} = $ **0.3585**. (b) $0.95^{20} + 20\times0.05\times0.95^{19} = 0.3585 + $ **0.3774** $= $ **0.7358**. (c) $P(2) = \binom{20}{2}0.05^2\,0.95^{18} = $ **0.1887**, so $P(X \ge 3) = 1 - P(X \le 2) = 1 - (0.7358 + 0.1887) = $ **0.07548**.
+Binomial with $n = 20$, $p = 0.05$. (a) \$0.95^{20} = \$ **0.3585**. (b) \$0.95^{20} + 20\times0.05\times0.95^{19} = 0.3585 + \$ **0.3774** \$= \$ **0.7358**. (c) \$P(2) = \binom{20}{2}0.05^2\,0.95^{18} = \$ **0.1887**, so \$P(X \ge 3) = 1 - P(X \le 2) = 1 - (0.7358 + 0.1887) = \$ **0.07548**.
 
 ### Solution 03-02.4
 
@@ -59,7 +59,7 @@ Geometric with success probability 0.98. (a) Fail, fail, succeed: $0.02^2\times0
 
 ### Solution 03-02.8
 
-(a) Rate $= 1/\text{MTTF} = 10^{-6}$ per hour $= $ **1000 FIT**.
+(a) Rate $= 1/\text{MTTF} = 10^{-6}$ per hour \$= \$ **1000 FIT**.
 
 (b) $1 - e^{-10^{-6}\times8766} = $ **0.8728%**. This annualized failure rate is the useful number; the MTTF of **114** years is not a lifetime.
 
@@ -75,29 +75,29 @@ Geometric with success probability 0.98. (a) Fail, fail, succeed: $0.02^2\times0
 
 (a) $f_e(x) = 1$ mV⁻¹ on $[-0.5, 0.5]$ mV, zero elsewhere. $F_e(x) = 0$ below −0.5, $(x + 0.5)/1$ (with $x$ in mV) on the interval, and 1 above.
 
-(b) $|e| > 0.4$ covers two strips of width 0.1 mV: probability **0.2**. $F_e(0.3) = 0.3 + 0.5 = $ **0.8**.
+(b) $|e| > 0.4$ covers two strips of width 0.1 mV: probability **0.2**. \$F_e(0.3) = 0.3 + 0.5 = \$ **0.8**.
 
 ### Solution 03-02.11
 
-(a) Each limit is $50/15 = 3.333$σ away, so the out-of-spec fraction is $2Q(3.333) = $ **8.581×10⁻⁴**, or **858.1** ppm.
+(a) Each limit is $50/15 = 3.333$σ away, so the out-of-spec fraction is \$2Q(3.333) = \$ **8.581×10⁻⁴**, or **858.1** ppm.
 
-(b) Need $2Q(k) = 10^{-6}$, so $Q(k) = 5\times10^{-7}$ and $k = Q^{-1}(5\times10^{-7}) = $ **4.892**. Then $\sigma = 50/4.892 = $ **10.22 mV**. A **32%** cut in σ buys an **858**-fold cut in violations: Gaussian tails reward tighter control very steeply.
+(b) Need $2Q(k) = 10^{-6}$, so $Q(k) = 5\times10^{-7}$ and \$k = Q^{-1}(5\times10^{-7}) = \$ **4.892**. Then \$\sigma = 50/4.892 = \$ **10.22 mV**. A **32%** cut in σ buys an **858**-fold cut in violations: Gaussian tails reward tighter control very steeply.
 
 ### Solution 03-02.12
 
-(a) 1 dB less signal divides $A/\sigma$ by $10^{1/20} = $ **1.122**: $7.0345/1.122 = $ **6.269**, and $Q(6.269) = $ **1.811×10⁻¹⁰**.
+(a) 1 dB less signal divides $A/\sigma$ by \$10^{1/20} = \$ **1.122**: \$7.0345/1.122 = \$ **6.269**, and \$Q(6.269) = \$ **1.811×10⁻¹⁰**.
 
 (b) 1 dB more: $7.0345\times1.122 = $ **7.893**, and $Q(7.893) = $ **1.477×10⁻¹⁵**.
 
 (c) The BER rises **181**-fold for the lost decibel and falls **677**-fold for the gained one. The asymmetry is the $e^{-x^2/2}$ tail: each step further out buys more.
 
-*Sensitivity check.* Starting from the rounded 7.034 instead gives $Q(6.2691) = $ **1.816×10⁻¹⁰**, 0.3% higher. Near $10^{-12}$, $d\ln Q/dx \approx -x$, so an error of $\delta$ in $A/\sigma$ shifts the BER by about $7\delta$ in relative terms: keep four decimals when working this deep in the tail.
+*Sensitivity check.* Starting from the rounded 7.034 instead gives \$Q(6.2691) = \$ **1.816×10⁻¹⁰**, 0.3% higher. Near $10^{-12}$, $d\ln Q/dx \approx -x$, so an error of $\delta$ in $A/\sigma$ shifts the BER by about $7\delta$ in relative terms: keep four decimals when working this deep in the tail.
 
 ### Solution 03-02.13
 
-(a) With the threshold at $+0.5\sigma$, a sent 1 ($+A$) is misread when the noise is below $-(A - 0.5\sigma)$, probability $Q(5.5)$; a sent 0 when the noise exceeds $A + 0.5\sigma$, probability $Q(6.5)$. With equal priors, $\text{BER} = \tfrac12\big(Q(5.5) + Q(6.5)\big) = \tfrac12(1.899\times10^{-8} + 4.016\times10^{-11}) = $ **9.515×10⁻⁹**.
+(a) With the threshold at $+0.5\sigma$, a sent 1 ($+A$) is misread when the noise is below $-(A - 0.5\sigma)$, probability $Q(5.5)$; a sent 0 when the noise exceeds $A + 0.5\sigma$, probability $Q(6.5)$. With equal priors, \$\text{BER} = \tfrac12\big(Q(5.5) + Q(6.5)\big) = \tfrac12(1.899\times10^{-8} + 4.016\times10^{-11}) = \$ **9.515×10⁻⁹**.
 
-(b) The ideal threshold gives $Q(6) = $ **9.866×10⁻¹⁰**, so the offset costs a factor of **9.644**. Moving the threshold toward $+A$ helps the far level ($-A$) and hurts the near one ($+A$), but not equally in absolute terms. The far level's error probability can fall by at most $Q(6)$, from $9.866\times10^{-10}$ to $Q(6.5) = $ **4.016×10⁻¹¹**, while the near level's rises from $Q(6)$ to $Q(5.5) = $ **1.899×10⁻⁸**, an increase of **1.800×10⁻⁸**. The tail is so steep that the larger term dominates the average. Comparator offsets must be small compared with σ, or calibrated out.
+(b) The ideal threshold gives \$Q(6) = \$ **9.866×10⁻¹⁰**, so the offset costs a factor of **9.644**. Moving the threshold toward $+A$ helps the far level ($-A$) and hurts the near one ($+A$), but not equally in absolute terms. The far level's error probability can fall by at most $Q(6)$, from $9.866\times10^{-10}$ to \$Q(6.5) = \$ **4.016×10⁻¹¹**, while the near level's rises from $Q(6)$ to \$Q(5.5) = \$ **1.899×10⁻⁸**, an increase of **1.800×10⁻⁸**. The tail is so steep that the larger term dominates the average. Comparator offsets must be small compared with σ, or calibrated out.
 
 ### Solution 03-02.14
 
@@ -105,7 +105,7 @@ Geometric with success probability 0.98. (a) Fail, fail, succeed: $0.02^2\times0
 
 (b) $\sqrt{0.3^2 + 0.25^2} = $ **0.3905 ps** rms, consistent with 0.4 ps after rounding. Attack the 0.3 ps source first: halving it gives $\sqrt{0.15^2 + 0.25^2} = $ **0.2915** ps, while halving the other gives only $\sqrt{0.3^2 + 0.125^2} = $ **0.325** ps. In quadrature, the largest term dominates.
 
-(c) At 64 GT/s, each 0.1 ps rms of random jitter costs $14.069\times0.1 = $ **1.407** ps of eye at $10^{-12}$, or **9.0%** of the 15.625 ps unit interval. Reference clocks and PLLs must therefore be specified at the 100 fs level and below.
+(c) At 64 GT/s, each 0.1 ps rms of random jitter costs \$14.069\times0.1 = \$ **1.407** ps of eye at $10^{-12}$, or **9.0%** of the 15.625 ps unit interval. Reference clocks and PLLs must therefore be specified at the 100 fs level and below.
 
 ### Solution 03-02.15
 
@@ -131,27 +131,27 @@ Geometric with success probability 0.98. (a) Fail, fail, succeed: $0.02^2\times0
 
 ### Solution 03-02.18
 
-(a) The Gaussian densities share the factor $1/(\sigma\sqrt{2\pi})$, so the rule is $P_1e^{-(y - A)^2/(2\sigma^2)} > P_0e^{-(y + A)^2/(2\sigma^2)}$. Take logarithms: $\ln P_1 - (y - A)^2/(2\sigma^2) > \ln P_0 - (y + A)^2/(2\sigma^2)$. Expanding, the $y^2$ and $A^2$ terms cancel and $(y + A)^2 - (y - A)^2 = 4Ay$, so $4Ay/(2\sigma^2) > \ln(P_0/P_1)$, that is $y > (\sigma^2/2A)\ln(P_0/P_1)$. Here $y_{\text{th}} = (400/200)\ln9 = $ **4.394 mV**.
+(a) The Gaussian densities share the factor $1/(\sigma\sqrt{2\pi})$, so the rule is $P_1e^{-(y - A)^2/(2\sigma^2)} > P_0e^{-(y + A)^2/(2\sigma^2)}$. Take logarithms: $\ln P_1 - (y - A)^2/(2\sigma^2) > \ln P_0 - (y + A)^2/(2\sigma^2)$. Expanding, the $y^2$ and $A^2$ terms cancel and $(y + A)^2 - (y - A)^2 = 4Ay$, so $4Ay/(2\sigma^2) > \ln(P_0/P_1)$, that is $y > (\sigma^2/2A)\ln(P_0/P_1)$. Here \$y_{\text{th}} = (400/200)\ln9 = \$ **4.394 mV**.
 
-(b) With threshold $y_{\text{th}}$: $\text{BER} = P_1Q\big((A - y_{\text{th}})/\sigma\big) + P_0Q\big((A + y_{\text{th}})/\sigma\big) = 0.1\,Q(4.780) + 0.9\,Q(5.220) = $ **1.682×10⁻⁷**. With threshold 0: $Q(5) = $ **2.867×10⁻⁷**. The MAP threshold is better by a factor of **1.705**.
+(b) With threshold $y_{\text{th}}$: \$\text{BER} = P_1Q\big((A - y_{\text{th}})/\sigma\big) + P_0Q\big((A + y_{\text{th}})/\sigma\big) = 0.1\,Q(4.780) + 0.9\,Q(5.220) = \$ **1.682×10⁻⁷**. With threshold 0: \$Q(5) = \$ **2.867×10⁻⁷**. The MAP threshold is better by a factor of **1.705**.
 
 (c) Toward the less likely level ($+A$), making it harder to decide 1. Fewer of the frequent 0s are misread, at the cost of more misses of the rare 1s; with 9 times as many 0s, the trade pays.
 
 ### Solution 03-02.19
 
-(a) $\phi(5) = e^{-12.5}/\sqrt{2\pi} = 1.487\times10^{-6}$. Lower bound $5\phi(5)/26 = $ **2.859×10⁻⁷**; upper bound $\phi(5)/5 = $ **2.973×10⁻⁷**; exact $Q(5) = $ **2.867×10⁻⁷**, between them and much closer to the lower bound.
+(a) $\phi(5) = e^{-12.5}/\sqrt{2\pi} = 1.487\times10^{-6}$. Lower bound \$5\phi(5)/26 = \$ **2.859×10⁻⁷**; upper bound \$\phi(5)/5 = \$ **2.973×10⁻⁷**; exact \$Q(5) = \$ **2.867×10⁻⁷**, between them and much closer to the lower bound.
 
-(b) $\tfrac12e^{-12.5} = $ **1.863×10⁻⁶**, 6.5 times too high: a valid bound, useful for proofs and quick exponents, but loose at a given $x$ because it misses the $1/x$ factor.
+(b) \$\tfrac12e^{-12.5} = \$ **1.863×10⁻⁶**, 6.5 times too high: a valid bound, useful for proofs and quick exponents, but loose at a given $x$ because it misses the $1/x$ factor.
 
-(c) $Q(x) = \tfrac12\operatorname{erfc}(x/\sqrt2)$, so $\tfrac12\operatorname{erfc}(3) = Q(3\sqrt2) = Q(4.243) = $ **1.105×10⁻⁵**.
+(c) $Q(x) = \tfrac12\operatorname{erfc}(x/\sqrt2)$, so \$\tfrac12\operatorname{erfc}(3) = Q(3\sqrt2) = Q(4.243) = \$ **1.105×10⁻⁵**.
 
 ### Solution 03-02.20
 
 (a) $\text{BER} = \tfrac12\big[Q\big((11 - 1)/1\big) + Q\big((21 - 11)/3\big)\big] = \tfrac12[Q(10) + Q(3.333)] = $ **2.145×10⁻⁴**, almost all from the noisy 1 level.
 
-(b) Equal distances in σ: $(t - I_0)/\sigma_0 = (I_1 - t)/\sigma_1$ gives $t = (\sigma_1I_0 + \sigma_0I_1)/(\sigma_0 + \sigma_1) = (3 + 21)/4 = $ **6 µA**. Both distances are then $(I_1 - I_0)/(\sigma_0 + \sigma_1) = 20/4 = 5$ standard deviations, so $\text{BER} = \tfrac12[Q(5) + Q(5)] = Q(5) = $ **2.867×10⁻⁷**.
+(b) Equal distances in σ: $(t - I_0)/\sigma_0 = (I_1 - t)/\sigma_1$ gives \$t = (\sigma_1I_0 + \sigma_0I_1)/(\sigma_0 + \sigma_1) = (3 + 21)/4 = \$ **6 µA**. Both distances are then $(I_1 - I_0)/(\sigma_0 + \sigma_1) = 20/4 = 5$ standard deviations, so \$\text{BER} = \tfrac12[Q(5) + Q(5)] = Q(5) = \$ **2.867×10⁻⁷**.
 
-(c) Minimizing $\tfrac12[Q((t - 1)/1) + Q((21 - t)/3)]$ numerically gives $t = $ **6.163 µA** and $\text{BER} = $ **2.505×10⁻⁷**, only slightly better than (b), and **857** times better than the midway threshold.
+(c) Minimizing $\tfrac12[Q((t - 1)/1) + Q((21 - t)/3)]$ numerically gives \$t = \$ **6.163 µA** and \$\text{BER} = \$ **2.505×10⁻⁷**, only slightly better than (b), and **857** times better than the midway threshold.
 
 (d) The equal-σ threshold of (b): it is almost optimal, simple to compute from the two levels and noises, and it reduces the link to one number, the Q-factor $(I_1 - I_0)/(\sigma_0 + \sigma_1)$. Because the levels and noises drift with laser power, temperature and aging, receivers track the optimum adaptively (Course 24); a fixed midway threshold would waste three orders of magnitude of BER.
 

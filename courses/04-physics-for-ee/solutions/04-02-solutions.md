@@ -42,7 +42,7 @@ Between the charges both fields point the same way (away from +2 nC, toward −8
 
 (a) $E_z = k_eQz/(z^2 + R^2)^{3/2} = 8.988\times10^9\times10^{-8}\times0.05/(0.005)^{3/2} = $ **1.271×10⁴ V/m**.
 
-(b) Differentiate: $\frac{d}{dz}\frac{z}{(z^2 + R^2)^{3/2}} = \frac{(z^2 + R^2) - 3z^2}{(z^2 + R^2)^{5/2}} = 0$ gives $z = R/\sqrt2 = $ **3.536 cm**, where $E_{\max} = 2k_eQ/(3\sqrt3R^2) = $ **1.384×10⁴ V/m**.
+(b) Differentiate: $\frac{d}{dz}\frac{z}{(z^2 + R^2)^{3/2}} = \frac{(z^2 + R^2) - 3z^2}{(z^2 + R^2)^{5/2}} = 0$ gives \$z = R/\sqrt2 = \$ **3.536 cm**, where \$E_{\max} = 2k_eQ/(3\sqrt3R^2) = \$ **1.384×10⁴ V/m**.
 
 (c) Zero: at the center every piece of the ring is balanced by the piece opposite it.
 
@@ -76,9 +76,9 @@ Between the charges both fields point the same way (away from +2 nC, toward −8
 
 ### Solution 04-02.11
 
-(a) $v = \sqrt{2eV_a/m_e} = \sqrt{2\times1.602\times10^{-19}\times2000/9.109\times10^{-31}} = $ **2.652×10⁷ m/s**, so $v/c$ = **0.08847**. Relativity lowers the speed by about $\tfrac38(v/c)^2$ = 0.3% here, which we neglect.
+(a) \$v = \sqrt{2eV_a/m_e} = \sqrt{2\times1.602\times10^{-19}\times2000/9.109\times10^{-31}} = \$ **2.652×10⁷ m/s**, so $v/c$ = **0.08847**. Relativity lowers the speed by about $\tfrac38(v/c)^2$ = 0.3% here, which we neglect.
 
-(b) Field $E = 50/0.005 = 10^4$ V/m and $a = eE/m_e = 1.759\times10^{15}$ m/s². Time in the plates $t = 0.02/v = $ **0.7540 ns**. Deflection $\tfrac12at^2 = $ **0.5000 mm**. The exit angle has $\tan\theta = at/v = $ **0.05000**.
+(b) Field $E = 50/0.005 = 10^4$ V/m and $a = eE/m_e = 1.759\times10^{15}$ m/s². Time in the plates \$t = 0.02/v = \$ **0.7540 ns**. Deflection \$\tfrac12at^2 = \$ **0.5000 mm**. The exit angle has \$\tan\theta = at/v = \$ **0.05000**.
 
 (c) $\tan\theta = \frac{(eV_d/(md))(L/v)}{v} = \frac{eV_dL}{mdv^2}$, and $mv^2 = 2eV_a$, so $\tan\theta = V_dL/(2V_ad) = 50\times0.02/(2\times2000\times0.005) = 0.05$ ✓. Charge and mass cancel: any particle accelerated through $V_a$ follows the same path, which is why ion and electron optics are designed in volts.
 
@@ -102,13 +102,13 @@ Between the charges both fields point the same way (away from +2 nC, toward −8
 
 Close in, the infinite line is right; far out, the point charge is right; at $y = L/2$ both approximations give the same wrong answer, $\sqrt2$ times too high.
 
-(b) The infinite-line formula is 10% high when $\sqrt{y^2 + (L/2)^2}/(L/2) = 1.1$, so $y = (L/2)\sqrt{1.21 - 1} = $ **2.291 cm**.
+(b) The infinite-line formula is 10% high when $\sqrt{y^2 + (L/2)^2}/(L/2) = 1.1$, so \$y = (L/2)\sqrt{1.21 - 1} = \$ **2.291 cm**.
 
 ### Solution 04-02.14
 
 (a) For $z \gg R$, $z/\sqrt{z^2 + R^2} = (1 + R^2/z^2)^{-1/2} \approx 1 - R^2/(2z^2)$, so $E \approx \frac{\sigma}{2\varepsilon_0}\cdot\frac{R^2}{2z^2} = \frac{\sigma\pi R^2}{4\pi\varepsilon_0z^2} = k_eQ/z^2$ ✓.
 
-(b) $1 - z/\sqrt{z^2 + R^2} = 0.99$ gives $z/\sqrt{z^2 + R^2} = 0.01$, so $z/R = 0.01/\sqrt{1 - 0.0001} = $ **0.01000**: within a hundredth of its radius, a disk is 99% of an infinite sheet.
+(b) $1 - z/\sqrt{z^2 + R^2} = 0.99$ gives $z/\sqrt{z^2 + R^2} = 0.01$, so \$z/R = 0.01/\sqrt{1 - 0.0001} = \$ **0.01000**: within a hundredth of its radius, a disk is 99% of an infinite sheet.
 
 ### Solution 04-02.15
 
@@ -116,7 +116,7 @@ Close in, the infinite line is right; far out, the point charge is right; at $y 
 
 (b) **1.2 V**. In practice oxides run well below breakdown, because they wear out over years at fields far below the instantaneous limit.
 
-(c) $\sigma = 3.9\times8.854\times10^{-12}\times8.333\times10^8 = $ **0.02878 C/m²**, or $0.02878/1.602\times10^{-19} = 1.796\times10^{17}$ per m² = **0.1796 electrons per nm²**: one electron per **5.568 nm²**. A gate a few tens of nanometers on a side carries only a few hundred electrons, so random fluctuations in their number and position are a real source of device variability.
+(c) \$\sigma = 3.9\times8.854\times10^{-12}\times8.333\times10^8 = \$ **0.02878 C/m²**, or $0.02878/1.602\times10^{-19} = 1.796\times10^{17}$ per m² = **0.1796 electrons per nm²**: one electron per **5.568 nm²**. A gate a few tens of nanometers on a side carries only a few hundred electrons, so random fluctuations in their number and position are a real source of device variability.
 
 ### Solution 04-02.16
 

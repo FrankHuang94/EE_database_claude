@@ -10,7 +10,7 @@ Problems: [04-03 problems](../problems/04-03-problems.md) · Chapter: [04-03](..
 
 (a) The roof's normal is vertical, parallel to the field: $|\Phi| = EA = 500\times6 = $ **3000 V·m**.
 
-(b) Tilting the roof by 40° tilts its normal by 40° from the field: $|\Phi| = EA\cos40° = 3000\times0.7660 = $ **2298 V·m**. Equivalently, the field sees the roof's horizontal projection, $6\cos40°$ m².
+(b) Tilting the roof by 40° tilts its normal by 40° from the field: \$|\Phi| = EA\cos40° = 3000\times0.7660 = \$ **2298 V·m**. Equivalently, the field sees the roof's horizontal projection, $6\cos40°$ m².
 
 (c) **Zero.** The shed encloses no charge; every field line that enters through the roof leaves through the floor.
 
@@ -32,7 +32,7 @@ Problems: [04-03 problems](../problems/04-03-problems.md) · Chapter: [04-03](..
 
 ### Solution 04-03.4
 
-(a) Eight cubes of side 10 cm meeting at the charge's corner would together form a 20 cm cube with the charge at its center, carrying total flux $q/\varepsilon_0$. By symmetry each small cube gets an eighth: $\Phi = q/(8\varepsilon_0) = 8\times10^{-9}/(8\times8.854\times10^{-12}) = $ **112.9 V·m**.
+(a) Eight cubes of side 10 cm meeting at the charge's corner would together form a 20 cm cube with the charge at its center, carrying total flux $q/\varepsilon_0$. By symmetry each small cube gets an eighth: \$\Phi = q/(8\varepsilon_0) = 8\times10^{-9}/(8\times8.854\times10^{-12}) = \$ **112.9 V·m**.
 
 (b) The three faces that meet at the charge's corner contain the charge's position in their planes, so the field there lies in the face (radial from a point in the plane) and carries **no flux**. The other three faces share the 112.9 V·m equally by symmetry: **37.65 V·m** each.
 
@@ -40,7 +40,7 @@ Problems: [04-03 problems](../problems/04-03-problems.md) · Chapter: [04-03](..
 
 At 5 cm, a concentric Gaussian sphere encloses only the −5 nC: $E = k_e(5\times10^{-9})/0.05^2 = $ **1.798×10⁴ V/m**, pointing **inward** (toward the negative charge). The shell's charge contributes nothing inside.
 
-At 15 cm the sphere encloses $+20 - 5 = +15$ nC: $E = k_e(15\times10^{-9})/0.15^2 = $ **5992 V/m**, pointing **outward**.
+At 15 cm the sphere encloses $+20 - 5 = +15$ nC: \$E = k_e(15\times10^{-9})/0.15^2 = \$ **5992 V/m**, pointing **outward**.
 
 ### Solution 04-03.6
 
@@ -60,13 +60,13 @@ At 0.5 cm a coaxial cylinder encloses nothing: **0**. At 2 cm it encloses +3 nC/
 
 ### Solution 04-03.8
 
-(a) By symmetry the field at the midplane is **0**. A pillbox from the midplane to distance $x$ gives $EA = \rho xA/\varepsilon_0$, so $E = \rho x/\varepsilon_0$ inside. At 0.5 mm: $10^{-4}\times5\times10^{-4}/8.854\times10^{-12} = $ **5647 V/m**. At the surface (1 mm): **1.129×10⁴ V/m**. Outside, the pillbox encloses the full half-thickness, $\rho t/2$, at any distance, so 1 cm outside the field is still **1.129×10⁴ V/m**.
+(a) By symmetry the field at the midplane is **0**. A pillbox from the midplane to distance $x$ gives $EA = \rho xA/\varepsilon_0$, so $E = \rho x/\varepsilon_0$ inside. At 0.5 mm: \$10^{-4}\times5\times10^{-4}/8.854\times10^{-12} = \$ **5647 V/m**. At the surface (1 mm): **1.129×10⁴ V/m**. Outside, the pillbox encloses the full half-thickness, $\rho t/2$, at any distance, so 1 cm outside the field is still **1.129×10⁴ V/m**.
 
 (b) $E(x)$ is an odd function: a straight line through zero across the slab, pointing away from the midplane on both sides, then flat outside.
 
 ### Solution 04-03.9
 
-(a) $E = \sigma/\varepsilon_0$ just outside a conductor, so $\sigma_{\max} = \varepsilon_0E_{\text{bd}} = 8.854\times10^{-12}\times3\times10^6 = $ **2.656×10⁻⁵ C/m²**.
+(a) $E = \sigma/\varepsilon_0$ just outside a conductor, so \$\sigma_{\max} = \varepsilon_0E_{\text{bd}} = 8.854\times10^{-12}\times3\times10^6 = \$ **2.656×10⁻⁵ C/m²**.
 
 (b) $2.656\times10^{-5}/1.602\times10^{-19} = 1.658\times10^{14}$ per m², which is **1.658×10¹⁰ electrons per cm²**.
 
@@ -122,7 +122,7 @@ Convert: $N_A = 10^{24}$ m⁻³, $N_D = 10^{21}$ m⁻³, $\varepsilon_s = 11.7\v
 
 (b) $E_{\text{Si}} = E_{\text{ox}}\varepsilon_{\text{ox}}/\varepsilon_{\text{Si}} = 5\times3.9/11.7 = $ **1.667 MV/cm**: three times weaker than in the oxide.
 
-(c) The gate charge per area equals $\varepsilon_{\text{ox}}E_{\text{ox}}$ (a pillbox with one face in the gate metal): $3.9\times8.854\times10^{-12}\times5\times10^8 = $ **1.727×10⁻² C/m²**. In electrons: $1.727\times10^{-2}/1.602\times10^{-19} = 1.078\times10^{17}$ m⁻², which is **1.078×10¹³ cm⁻²**: about one electron per 9 nm², or roughly a hundred under a 30 nm × 30 nm gate.
+(c) The gate charge per area equals $\varepsilon_{\text{ox}}E_{\text{ox}}$ (a pillbox with one face in the gate metal): \$3.9\times8.854\times10^{-12}\times5\times10^8 = \$ **1.727×10⁻² C/m²**. In electrons: $1.727\times10^{-2}/1.602\times10^{-19} = 1.078\times10^{17}$ m⁻², which is **1.078×10¹³ cm⁻²**: about one electron per 9 nm², or roughly a hundred under a 30 nm × 30 nm gate.
 
 ### Solution 04-03.14
 

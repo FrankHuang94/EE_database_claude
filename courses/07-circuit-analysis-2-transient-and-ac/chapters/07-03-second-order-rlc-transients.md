@@ -319,11 +319,11 @@ Section 9 gives sourced values for several of these.
 
 (a) $Z_0 = \sqrt{10^{-4}/10^{-6}} = $ **10.00 Ω**; $\omega_0 = 1/\sqrt{10^{-4}\times10^{-6}} = $ **100.0 krad/s**, so $f_0 = \omega_0/2\pi = $ **15.92 kHz**.
 
-(b) Series: α = $R/(2L) = 5/(2\times10^{-4}) = $ **25.00 × 10³ s⁻¹**; ζ = $R/(2Z_0) = 5/20 = $ **0.2500**, underdamped; $Q = Z_0/R = $ **2.000**; $\omega_d = \sqrt{\omega_0^2 - \alpha^2} = \sqrt{10^{10} - 6.25\times10^8} = $ **96.82 krad/s**. The roots are $s = -25.00 \pm j96.82$ krad/s.
+(b) Series: α = \$R/(2L) = 5/(2\times10^{-4}) = \$ **25.00 × 10³ s⁻¹**; ζ = \$R/(2Z_0) = 5/20 = \$ **0.2500**, underdamped; \$Q = Z_0/R = \$ **2.000**; \$\omega_d = \sqrt{\omega_0^2 - \alpha^2} = \sqrt{10^{10} - 6.25\times10^8} = \$ **96.82 krad/s**. The roots are $s = -25.00 \pm j96.82$ krad/s.
 
-(c) Parallel: α = $1/(2RC) = 1/(2\times5\times10^{-6}) = $ **100.0 × 10³ s⁻¹** = $\omega_0$, so ζ = $Z_0/(2R) = 10/10 = $ **1.000**: critically damped, with the repeated root $s = -100.0$ krad/s. $Q = R/Z_0 = $ **0.5000**.
+(c) Parallel: α = \$1/(2RC) = 1/(2\times5\times10^{-6}) = \$ **100.0 × 10³ s⁻¹** = $\omega_0$, so ζ = \$Z_0/(2R) = 10/10 = \$ **1.000**: critically damped, with the repeated root $s = -100.0$ krad/s. \$Q = R/Z_0 = \$ **0.5000**.
 
-(d) Series critical damping needs $R = 2Z_0 = $ **20.00 Ω**. The parallel circuit has ζ = 0.25 when $Z_0/(2R) = 0.25$, so $R = 2Z_0 = $ **20.00 Ω** as well.
+(d) Series critical damping needs \$R = 2Z_0 = \$ **20.00 Ω**. The parallel circuit has ζ = 0.25 when $Z_0/(2R) = 0.25$, so \$R = 2Z_0 = \$ **20.00 Ω** as well.
 
 **Units check.** $\sqrt{\text{H/F}} = \sqrt{(\text{V·s/A})/(\text{A·s/V})} = \text{V/A} = \Omega$ ✓.
 **Sanity check.** In series, 5 Ω is a quarter of the critical 20 Ω, so the tank rings; in parallel, 5 Ω equals the critical $Z_0/2$, so the response is exactly critical. In series a resistor adds friction to the shared current; in parallel it drains the shared voltage, and draining harder takes a *smaller* resistor ✓.
@@ -338,19 +338,19 @@ Section 9 gives sourced values for several of these.
 
 **Solution.**
 
-(a) Before the switch opens, the inductor is a short circuit at DC, so $v(0^-) = 0$, no current flows in $R_2$ or $C$, and $i_L(0^-) = 10/10 = 1.000$ A. Continuity: $i_L(0^+) = $ **1.000 A** and $v(0^+) = v_C(0^+) = $ **0 V**. In the $0^+$ circuit (switch open, inductor a 1 A current source pulling current down out of node a, capacitor a 0 V source), $R_2$ carries no current, so the capacitor must supply the inductor's 1 A: $i_C(0^+) = -1$ A, and $dv/dt(0^+) = i_C(0^+)/C = $ **−1.000 × 10⁶ V/s**, that is −1 V/µs.
+(a) Before the switch opens, the inductor is a short circuit at DC, so $v(0^-) = 0$, no current flows in $R_2$ or $C$, and $i_L(0^-) = 10/10 = 1.000$ A. Continuity: \$i_L(0^+) = \$ **1.000 A** and \$v(0^+) = v_C(0^+) = \$ **0 V**. In the $0^+$ circuit (switch open, inductor a 1 A current source pulling current down out of node a, capacitor a 0 V source), $R_2$ carries no current, so the capacitor must supply the inductor's 1 A: $i_C(0^+) = -1$ A, and \$dv/dt(0^+) = i_C(0^+)/C = \$ **−1.000 × 10⁶ V/s**, that is −1 V/µs.
 
-(b) With the switch open the circuit is a source-free parallel RLC: α = $1/(2R_2C) = 1/(5\times10^{-5}) = $ **20.00 × 10³ s⁻¹**, $\omega_0 = 1/\sqrt{10^{-2}\times10^{-6}} = $ **10.00 krad/s**, so ζ = **2.000** (equivalently $Z_0 = 100$ Ω and $Z_0/(2R_2) = 2$): overdamped. Roots: $s_{1,2} = -20\,000 \pm \sqrt{4\times10^8 - 10^8} = -20\,000 \pm 17\,321$, so $s_1 = $ **−2.679 × 10³ s⁻¹** and $s_2 = $ **−37.32 × 10³ s⁻¹** (time constants 373.2 µs and 26.79 µs).
+(b) With the switch open the circuit is a source-free parallel RLC: α = \$1/(2R_2C) = 1/(5\times10^{-5}) = \$ **20.00 × 10³ s⁻¹**, \$\omega_0 = 1/\sqrt{10^{-2}\times10^{-6}} = \$ **10.00 krad/s**, so ζ = **2.000** (equivalently $Z_0 = 100$ Ω and $Z_0/(2R_2) = 2$): overdamped. Roots: $s_{1,2} = -20\,000 \pm \sqrt{4\times10^8 - 10^8} = -20\,000 \pm 17\,321$, so \$s_1 = \$ **−2.679 × 10³ s⁻¹** and \$s_2 = \$ **−37.32 × 10³ s⁻¹** (time constants 373.2 µs and 26.79 µs).
 
-(c) Final value $v(\infty) = 0$, so $D = 0$, and the overdamped constants of §3.6 give $A_1 = \dot v(0^+)/(s_1 - s_2) = -10^6/34\,641 = $ **−28.87 V** and $A_2 = -A_1$:
+(c) Final value $v(\infty) = 0$, so $D = 0$, and the overdamped constants of §3.6 give \$A_1 = \dot v(0^+)/(s_1 - s_2) = -10^6/34\,641 = \$ **−28.87 V** and $A_2 = -A_1$:
 
 $$
 v(t) = 28.87\big(e^{s_2t} - e^{s_1t}\big)\ \text{V}.
 $$
 
-(d) The minimum is where $\dot v = 0$: $s_1A_1e^{s_1t} = -s_2A_2e^{s_2t}$, so $e^{(s_1 - s_2)t} = s_2/s_1$ and $t = \ln(s_2/s_1)/(s_1 - s_2) = \ln 13.93/34\,641 = $ **76.03 µs**. There, $v = 28.87\,(e^{-2.837} - e^{-0.2037}) = $ **−21.86 V**.
+(d) The minimum is where $\dot v = 0$: $s_1A_1e^{s_1t} = -s_2A_2e^{s_2t}$, so $e^{(s_1 - s_2)t} = s_2/s_1$ and \$t = \ln(s_2/s_1)/(s_1 - s_2) = \ln 13.93/34\,641 = \$ **76.03 µs**. There, \$v = 28.87\,(e^{-2.837} - e^{-0.2037}) = \$ **−21.86 V**.
 
-(e) All of the inductor's energy ends in $R_2$ (the capacitor starts and ends empty): $\tfrac12Li_L^2 = \tfrac12(0.01)(1^2) = $ **5.000 mJ**.
+(e) All of the inductor's energy ends in $R_2$ (the capacitor starts and ends empty): \$\tfrac12Li_L^2 = \tfrac12(0.01)(1^2) = \$ **5.000 mJ**.
 
 (f) Without the capacitor this is 07-02's inductive kick: node a jumps instantly to $-i_LR_2 = $ **−25.00 V**. The capacitor softens the kick twice over: the voltage starts at zero and falls at a finite 1 V/µs, and it bottoms out at −21.86 V rather than −25 V, because by 76 µs part of the inductor's current has already decayed.
 
@@ -367,15 +367,15 @@ $$
 
 **Solution.**
 
-(a) $Z_0 = \sqrt{10^{-6}/10^{-5}} = $ **0.3162 Ω**, $f_0 = 1/(2\pi\sqrt{10^{-11}}) = $ **50.33 kHz**, and ζ = $R/(2Z_0) = 0.05/0.6325 = $ **0.07906**: very lightly damped ($Q = 6.32$).
+(a) \$Z_0 = \sqrt{10^{-6}/10^{-5}} = \$ **0.3162 Ω**, \$f_0 = 1/(2\pi\sqrt{10^{-11}}) = \$ **50.33 kHz**, and ζ = \$R/(2Z_0) = 0.05/0.6325 = \$ **0.07906**: very lightly damped ($Q = 6.32$).
 
-(b) $v_C$ is the all-pole variable (§3.7), so the 02-03 formulas apply. α = $R/(2L) = 25\,000$ s⁻¹ and $\omega_d = \sqrt{\omega_0^2 - \alpha^2} = 315.2$ krad/s. OS = $e^{-\pi\zeta/\sqrt{1 - \zeta^2}} = e^{-0.2492} = $ **77.95%**, so the input peaks at $12\times1.7795 = $ **21.35 V** at $t_p = \pi/\omega_d = $ **9.966 µs**.
+(b) $v_C$ is the all-pole variable (§3.7), so the 02-03 formulas apply. α = $R/(2L) = 25\,000$ s⁻¹ and $\omega_d = \sqrt{\omega_0^2 - \alpha^2} = 315.2$ krad/s. OS = \$e^{-\pi\zeta/\sqrt{1 - \zeta^2}} = e^{-0.2492} = \$ **77.95%**, so the input peaks at \$12\times1.7795 = \$ **21.35 V** at \$t_p = \pi/\omega_d = \$ **9.966 µs**.
 
 (c) By §3.7, $i_{pk} = (V/Z_0)\exp\big(-\zeta\arccos\zeta/\sqrt{1 - \zeta^2}\big) = 37.95\times e^{-0.1183} = $ **33.71 A**, at $t = \arccos(\zeta)/\omega_d = 1.4917/315\,238 = $ **4.732 µs**.
 
-(d) At $0^+$ no current flows yet, so the full 12 V appears across the cable inductance: $v_L(0^+) = $ **12.00 V**.
+(d) At $0^+$ no current flows yet, so the full 12 V appears across the cable inductance: \$v_L(0^+) = \$ **12.00 V**.
 
-(e) The envelope $e^{-\alpha t}$ falls to 2% after $\ln 50/\alpha = 3.912/25\,000 = $ **156.5 µs**, about eight ring cycles.
+(e) The envelope $e^{-\alpha t}$ falls to 2% after \$\ln 50/\alpha = 3.912/25\,000 = \$ **156.5 µs**, about eight ring cycles.
 
 ![Hot-plug waveforms, undamped and damped](../../../assets/figures/07-03/hot-plug.svg)
 
@@ -402,11 +402,11 @@ L\dot i_L = V_S - R_si_L - v, \qquad C\dot v = i_L - \frac{v}{R_L},
 \mathbf{A} = \begin{pmatrix}-R_s/L & -1/L\\ 1/C & -1/(R_LC)\end{pmatrix}.
 $$
 
-So $2\alpha = -\operatorname{tr}\mathbf{A} = R_s/L + 1/(R_LC) = 6383 + 4545 = 10\,928$ s⁻¹, α = **5464 s⁻¹**, and $\omega_0^2 = \det\mathbf{A} = (1 + R_s/R_L)/(LC)$, so $\omega_0 = $ **98.49 krad/s** ($f_0 = $ **15.68 kHz**). Then ζ = α/$\omega_0$ = **0.05548**.
+So $2\alpha = -\operatorname{tr}\mathbf{A} = R_s/L + 1/(R_LC) = 6383 + 4545 = 10\,928$ s⁻¹, α = **5464 s⁻¹**, and $\omega_0^2 = \det\mathbf{A} = (1 + R_s/R_L)/(LC)$, so \$\omega_0 = \$ **98.49 krad/s** (\$f_0 = \$ **15.68 kHz**). Then ζ = α/$\omega_0$ = **0.05548**.
 
-(b) $Z_0 = \sqrt{L/C} = 0.4622$ Ω. Series share $R_s/(2Z_0) = $ **0.03245**; load share $Z_0/(2R_L) = $ **0.02311**; sum 0.05556, within 0.2% of the exact 0.05548. The 30 mΩ of winding resistance does more damping than the 10 Ω load.
+(b) $Z_0 = \sqrt{L/C} = 0.4622$ Ω. Series share \$R_s/(2Z_0) = \$ **0.03245**; load share \$Z_0/(2R_L) = \$ **0.02311**; sum 0.05556, within 0.2% of the exact 0.05548. The 30 mΩ of winding resistance does more damping than the 10 Ω load.
 
-(c) At DC the inductor is a short and the capacitor open: $v(\infty) = 5\times10/10.03 = $ **4.985 V**. The transfer from $V_S$ to $v$ has no zeros (the filter's only path to the output is through $L$ and then $C$), so with the filter starting from rest the 02-03 overshoot applies: OS = $e^{-\pi(0.05548)/\sqrt{1 - 0.05548^2}} = $ **83.98%**, and the peak is $4.985\times1.8398 = $ **9.172 V**.
+(c) At DC the inductor is a short and the capacitor open: \$v(\infty) = 5\times10/10.03 = \$ **4.985 V**. The transfer from $V_S$ to $v$ has no zeros (the filter's only path to the output is through $L$ and then $C$), so with the filter starting from rest the 02-03 overshoot applies: OS = \$e^{-\pi(0.05548)/\sqrt{1 - 0.05548^2}} = \$ **83.98%**, and the peak is \$4.985\times1.8398 = \$ **9.172 V**.
 
 (d) With $R_L = 100$ Ω the load share falls to 0.0023 and ζ = **0.03476**; the peak is **9.480 V** (OS 89.6%).
 
@@ -419,7 +419,7 @@ So $2\alpha = -\operatorname{tr}\mathbf{A} = R_s/L + 1/(R_LC) = 6383 + 4545 = 10
 
 **Solution.**
 
-(a) $Z_0 = \sqrt{2\times10^{-9}/250\times10^{-12}} = \sqrt8 = $ **2.828 Ω**; $f_0 = 1/(2\pi\sqrt{5\times10^{-19}}) = $ **225.1 MHz**; ζ = $0.1/(2\times2.828) = $ **0.01768**. OS = $e^{-\pi(0.01768)} = 94.60\%$, so the node peaks at $48\times1.946 = $ **93.41 V**: nearly twice the bus voltage. The envelope falls to 5% after about $\ln 20/\alpha$ with α = $R/(2L) = 2.5\times10^7$ s⁻¹: **119.8 ns**, about 27 ring cycles.
+(a) \$Z_0 = \sqrt{2\times10^{-9}/250\times10^{-12}} = \sqrt8 = \$ **2.828 Ω**; \$f_0 = 1/(2\pi\sqrt{5\times10^{-19}}) = \$ **225.1 MHz**; ζ = \$0.1/(2\times2.828) = \$ **0.01768**. OS = $e^{-\pi(0.01768)} = 94.60\%$, so the node peaks at \$48\times1.946 = \$ **93.41 V**: nearly twice the bus voltage. The envelope falls to 5% after about $\ln 20/\alpha$ with α = $R/(2L) = 2.5\times10^7$ s⁻¹: **119.8 ns**, about 27 ring cycles.
 
 (b) With the snubber, write KVL for the loop and KCL at the switch node and at the snubber's internal node:
 
@@ -462,7 +462,7 @@ C_1\dot v_1 = \frac{V - v_1}{R_1} - \frac{v_1 - v_2}{R_2}, \qquad C_2\dot v_2 = 
 \mathbf{A} = \begin{pmatrix}-2000 & 1000\\ 1000 & -1000\end{pmatrix}\ \text{s}^{-1}.
 $$
 
-$\operatorname{tr}\mathbf{A} = -3000$ s⁻¹ and $\det\mathbf{A} = 2\times10^6 - 10^6 = 10^6$ s⁻², so α = 1500 s⁻¹, $\omega_0 = 1000$ s⁻¹ and ζ = **1.500**. The discriminant is $(a - d)^2 + 4bc = 10^6 + 4\times10^6 = 5\times10^6 > 0$, so the roots are real: $s = (-3000 \pm 2236)/2$, that is $s_1 = $ **−382.0 s⁻¹** and $s_2 = $ **−2618 s⁻¹**.
+$\operatorname{tr}\mathbf{A} = -3000$ s⁻¹ and $\det\mathbf{A} = 2\times10^6 - 10^6 = 10^6$ s⁻², so α = 1500 s⁻¹, $\omega_0 = 1000$ s⁻¹ and ζ = **1.500**. The discriminant is $(a - d)^2 + 4bc = 10^6 + 4\times10^6 = 5\times10^6 > 0$, so the roots are real: $s = (-3000 \pm 2236)/2$, that is \$s_1 = \$ **−382.0 s⁻¹** and \$s_2 = \$ **−2618 s⁻¹**.
 
 (b) The time constants are $-1/s_1 = 2.618$ ms and $-1/s_2 = 0.3820$ ms, summing to **3.000 ms**. Algebraically, $-1/s_1 - 1/s_2 = -(s_1 + s_2)/(s_1s_2) = -\operatorname{tr}\mathbf{A}/\det\mathbf{A} = 3000/10^6$ s, and $R_1(C_1 + C_2) + R_2C_2 = 2 + 1 = 3$ ms ✓. This sum is the **Elmore delay** that 19-05 uses to estimate wire delay.
 

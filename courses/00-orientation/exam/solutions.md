@@ -22,7 +22,7 @@ Exam: [README.md](README.md). All numbers are recomputed by [verify_00_exam.py](
 
 **7.** (a) **10 mF**: `M` is milli in SPICE; mega is `MEG`. (b) $3.3 \times 20/30 = 2.200$ V.
 
-**8.** (a) $\sqrt{b^2 - 4} = 10^8\sqrt{1 - 4\times10^{-16}} \approx 10^8 - 2\times10^{-8}$. Near $10^8$, adjacent doubles are $1.49\times10^{-8}$ apart, so the square root is stored as $10^8 - 1.49\times10^{-8}$. Subtracting it from $b$ keeps only that rounding step: **catastrophic cancellation**. The literal result is $1.49\times10^{-8}/2 = 7.45\times10^{-9}$. (b) Multiplying top and bottom by $b + \sqrt{b^2 - 4}$ gives $x = \dfrac{b^2 - (b^2 - 4)}{2\big(b + \sqrt{b^2 - 4}\big)} = \dfrac{2}{b + \sqrt{b^2 - 4}} = 1.000\times10^{-8}$. Check: the roots multiply to 1 and the large root is about $10^8$, so the small one is about $10^{-8}$ ✓. (c) $(7.45 - 10)/10 = $ **−25.5%**, an error no tolerance would forgive.
+**8.** (a) $\sqrt{b^2 - 4} = 10^8\sqrt{1 - 4\times10^{-16}} \approx 10^8 - 2\times10^{-8}$. Near $10^8$, adjacent doubles are $1.49\times10^{-8}$ apart, so the square root is stored as $10^8 - 1.49\times10^{-8}$. Subtracting it from $b$ keeps only that rounding step: **catastrophic cancellation**. The literal result is $1.49\times10^{-8}/2 = 7.45\times10^{-9}$. (b) Multiplying top and bottom by $b + \sqrt{b^2 - 4}$ gives $x = \dfrac{b^2 - (b^2 - 4)}{2\big(b + \sqrt{b^2 - 4}\big)} = \dfrac{2}{b + \sqrt{b^2 - 4}} = 1.000\times10^{-8}$. Check: the roots multiply to 1 and the large root is about $10^8$, so the small one is about $10^{-8}$ ✓. (c) \$(7.45 - 10)/10 = \$ **−25.5%**, an error no tolerance would forgive.
 
 **9.**
 
@@ -37,7 +37,7 @@ Exam: [README.md](README.md). All numbers are recomputed by [verify_00_exam.py](
 
 **12.** Sum of the most-likely values: $10 + 14 = 24$ weeks. Expected: $(8 + 10 + 15)/3 + (12 + 14 + 22)/3 = 11 + 16 = 27.0$ weeks. Each phase can overrun much more than it can underrun, so the averages sit above the most-likely values. Adding the most-likely values therefore produces a plan that is met well under half the time.
 
-**13.** SNR $= 10^{1.5} = 31.62$, so $C = 40\times10^6 \times \log_2(32.62) = 201.1$ Mb/s. Doubling the bandwidth doubles $C$ to **402.2 Mb/s** (assuming the noise power, which grows with bandwidth, is held fixed by raising signal power to keep SNR at 15 dB). Doubling the SNR adds only about 1 bit/s/Hz: $40\times10^6\log_2(64.25) = $ **240.2 Mb/s**, a gain of **39.1 Mb/s**. Choose bandwidth when it is available; at high SNR, capacity grows only logarithmically with power.
+**13.** SNR $= 10^{1.5} = 31.62$, so $C = 40\times10^6 \times \log_2(32.62) = 201.1$ Mb/s. Doubling the bandwidth doubles $C$ to **402.2 Mb/s** (assuming the noise power, which grows with bandwidth, is held fixed by raising signal power to keep SNR at 15 dB). Doubling the SNR adds only about 1 bit/s/Hz: \$40\times10^6\log_2(64.25) = \$ **240.2 Mb/s**, a gain of **39.1 Mb/s**. Choose bandwidth when it is available; at high SNR, capacity grows only logarithmically with power.
 
 **14.** Rubric: 8 points (3 for (a) and (b), 2 for (c)).
 

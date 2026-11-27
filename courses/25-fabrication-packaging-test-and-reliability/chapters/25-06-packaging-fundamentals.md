@@ -308,7 +308,7 @@ Perishable rows are as of Nov 2026; the date column gives the source's own date.
 
 **State of the art (as of Nov 2026).**
 
-- *OSATs* [Industry estimate]. The top 10 earned $41.56 B in 2024 (+3%); ASE $18.54 B, nearly 45% of the top ten, then Amkor ($6.32 B, −2.8%) and JCET ($5 B, +19.3%); no 2025 ranking from the same source was found [R-582].
+- *OSATs* [Industry estimate]. The top 10 earned \$41.56 B in 2024 (+3%); ASE $18.54 B, nearly 45% of the top ten, then Amkor ($6.32 B, −2.8%) and JCET (\$5 B, +19.3%); no 2025 ranking from the same source was found [R-582].
 - *Substrates and film* [Industry estimate]. Ajinomoto supplies a reported 95% or more of build-up film and was at full capacity in 2Q26; it announced a roughly 30% price rise from 3Q26. Unimicron, Ibiden and Shinko hold about three-quarters of the substrate market. Ibiden's roadmap moves from 90 × 90 mm substrates in 2026 to 110 × 110 mm in 2028 [R-583].
 - *Fan-out* [Established]. InFO entered high volume with Apple's A10 in 2016 and remains in TSMC's portfolio for smartphone customers [R-584].
 - *Technology mix* [Industry estimate, qualitative]. TechInsights describes wire bonding as still dominant in traditional packages, with flip-chip and fan-out growing fastest, and forecast area-array bonding to overtake peripheral bonding in 2024; no credible free unit-share figure exists [R-585].

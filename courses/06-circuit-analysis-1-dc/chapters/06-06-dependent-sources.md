@@ -140,13 +140,13 @@ Every stamp puts entries in rows and columns that do not mirror each other, whic
 
 **Setup.** In Figure 2, find $v_1$, $v_2$ and the gain $v_2/v_1$, and show that the dependent source delivers power.
 
-**Solution.** In kΩ, mA and V. Node 1: $v_1/2 + (v_1 - v_2)/4 = 1$. Node 2: $(v_2 - v_1)/4 + v_2/4 + g\,v_1 = 0$ with $g$ = 1 mS (the VCCS current leaves node 2). In matrix form (§3.2), $\begin{bmatrix} 0.75 & -0.25 \\ 0.75 & 0.5\end{bmatrix}\mathbf{v} = \begin{bmatrix} 1 \\ 0\end{bmatrix}$, with determinant $0.375 + 0.1875 = $ **0.5625 mS²**. Node 2 gives $v_2 = -1.5\,v_1$; substituting in node 1, $0.75v_1 + 0.375v_1 = 1$:
+**Solution.** In kΩ, mA and V. Node 1: $v_1/2 + (v_1 - v_2)/4 = 1$. Node 2: $(v_2 - v_1)/4 + v_2/4 + g\,v_1 = 0$ with $g$ = 1 mS (the VCCS current leaves node 2). In matrix form (§3.2), $\begin{bmatrix} 0.75 & -0.25 \\ 0.75 & 0.5\end{bmatrix}\mathbf{v} = \begin{bmatrix} 1 \\ 0\end{bmatrix}$, with determinant \$0.375 + 0.1875 = \$ **0.5625 mS²**. Node 2 gives $v_2 = -1.5\,v_1$; substituting in node 1, $0.75v_1 + 0.375v_1 = 1$:
 
 $$
 v_1 = \mathbf{0.8889\ V}, \qquad v_2 = \mathbf{-1.333\ V}, \qquad v_2/v_1 = \mathbf{-1.5}.
 $$
 
-**Power.** The independent source delivers $1\times0.8889 = $ **0.8889 mW**. The VCCS carries $g\,v_1 = 0.8889$ mA from node 2 (at −1.333 V) to ground (0 V), uphill in potential, so it delivers $1.333\times0.8889 = $ **1.185 mW**. Resistors: $0.8889^2/2 + 2.222^2/4 + 1.333^2/4 = 0.395 + 1.235 + 0.444 = $ **2.074 mW** $= 0.889 + 1.185$ ✓. The dependent source supplies more power than the input does: in the circuit it models, that energy would come from a DC supply.
+**Power.** The independent source delivers \$1\times0.8889 = \$ **0.8889 mW**. The VCCS carries $g\,v_1 = 0.8889$ mA from node 2 (at −1.333 V) to ground (0 V), uphill in potential, so it delivers \$1.333\times0.8889 = \$ **1.185 mW**. Resistors: \$0.8889^2/2 + 2.222^2/4 + 1.333^2/4 = 0.395 + 1.235 + 0.444 = \$ **2.074 mW** $= 0.889 + 1.185$ ✓. The dependent source supplies more power than the input does: in the circuit it models, that energy would come from a DC supply.
 
 **Units check.** mS × V = mA ✓.
 
@@ -169,9 +169,9 @@ $$
 \frac{v_d}{v_{in}} = \mathbf{-6.211}, \qquad v_s = \mathbf{0.6211}\,v_{in}.
 $$
 
-The VCCS carries $g_m(v_{in} - v_s) = $ **0.7578 mA per volt**, but that is not the drain current. The drain current (by the definition of §3.5, the VCCS current plus the current in $r_o$) is $0.7578 + (v_d - v_s)/50 = 0.7578 + (-6.211 - 0.621)/50 = $ **0.6211 mA per volt**, equal to $-v_d/R_D$ and to $v_s/R_S$, as KCL requires: **0.1366 mA per volt** of the VCCS current circulates back through $r_o$.
+The VCCS carries \$g_m(v_{in} - v_s) = \$ **0.7578 mA per volt**, but that is not the drain current. The drain current (by the definition of §3.5, the VCCS current plus the current in $r_o$) is \$0.7578 + (v_d - v_s)/50 = 0.7578 + (-6.211 - 0.621)/50 = \$ **0.6211 mA per volt**, equal to $-v_d/R_D$ and to $v_s/R_S$, as KCL requires: **0.1366 mA per volt** of the VCCS current circulates back through $r_o$.
 
-The approximation (ignoring $r_o$) gives $-2\times10/(1 + 2\times1) = $ **−6.667**; without degeneration the gain is $-g_m(R_D\parallel r_o) = -2\times8.333 = $ **−16.67**.
+The approximation (ignoring $r_o$) gives \$-2\times10/(1 + 2\times1) = \$ **−6.667**; without degeneration the gain is \$-g_m(R_D\parallel r_o) = -2\times8.333 = \$ **−16.67**.
 
 **Units check.** mS × kΩ = dimensionless gain ✓.
 
@@ -187,11 +187,11 @@ $$
 v_s = (R_s + r_\pi + R_E)\,i_1 + R_E\,i_2 = \bigl(R_s + r_\pi + (\beta + 1)R_E\bigr)\,i_b .
 $$
 
-In kΩ: $1 + 2.5 + 101\times0.1 = 13.6$ kΩ, so $i_b = 10\ \text{mV}/13.6\ \text{kΩ} = $ **0.7353 µA**. The collector current $100\,i_b$ flows from the (small-signal grounded) supply down through $R_C$ into the collector, so the output node sits below ground: $v_o = -\beta i_bR_C = -100\times0.7353\ \text{µA}\times4\ \text{kΩ} = $ **−294.1 mV**: a gain of **−29.41**. The base sees $r_\pi + (\beta + 1)R_E = $ **12.6 kΩ**.
+In kΩ: $1 + 2.5 + 101\times0.1 = 13.6$ kΩ, so \$i_b = 10\ \text{mV}/13.6\ \text{kΩ} = \$ **0.7353 µA**. The collector current $100\,i_b$ flows from the (small-signal grounded) supply down through $R_C$ into the collector, so the output node sits below ground: \$v_o = -\beta i_bR_C = -100\times0.7353\ \text{µA}\times4\ \text{kΩ} = \$ **−294.1 mV**: a gain of **−29.41**. The base sees \$r_\pi + (\beta + 1)R_E = \$ **12.6 kΩ**.
 
 **Units check.** kΩ × µA = mV ✓.
 
-**Sanity check.** Without $R_E$ the gain would be $-\beta R_C/(R_s + r_\pi) = $ **−114.3**; the 100 Ω emitter resistor, multiplied by $\beta + 1$ to 10.1 kΩ, dominates the input loop and cuts the gain by a factor of about 4 while making it far less sensitive to $\beta$ ✓.
+**Sanity check.** Without $R_E$ the gain would be \$-\beta R_C/(R_s + r_\pi) = \$ **−114.3**; the 100 Ω emitter resistor, multiplied by $\beta + 1$ to 10.1 kΩ, dominates the input loop and cuts the gain by a factor of about 4 while making it far less sensitive to $\beta$ ✓.
 
 ### Example 06-06.4 · The Miller effect and a negative resistance (tier B)
 
@@ -203,7 +203,7 @@ $$
 i_t = \frac{v_t - \mu v_t}{R_f} \;\Rightarrow\; R_{in} = \frac{v_t}{i_t} = \frac{R_f}{1 - \mu}.
 $$
 
-(a) $\mu = -99$: $R_{in} = 100\ \text{kΩ}/100 = $ **1 kΩ**. The amplifier multiplies the voltage across $R_f$ a hundredfold, so the input supplies a hundred times the current a grounded $R_f$ would draw: the **Miller effect**. (b) $\mu = +2$: $R_{in} = 100\ \text{kΩ}/(1 - 2) = $ **−100 kΩ**. With 1 V applied, the output sits at 2 V and pushes **10 µA** *into* the test source: the port delivers power, a **negative resistance**.
+(a) $\mu = -99$: \$R_{in} = 100\ \text{kΩ}/100 = \$ **1 kΩ**. The amplifier multiplies the voltage across $R_f$ a hundredfold, so the input supplies a hundred times the current a grounded $R_f$ would draw: the **Miller effect**. (b) $\mu = +2$: \$R_{in} = 100\ \text{kΩ}/(1 - 2) = \$ **−100 kΩ**. With 1 V applied, the output sits at 2 V and pushes **10 µA** *into* the test source: the port delivers power, a **negative resistance**.
 
 **Units check.** kΩ/(V/V) = kΩ ✓.
 
@@ -226,13 +226,13 @@ $$
 \end{aligned}
 $$
 
-The second row contains $+A/0.1 = 10^6$ in the $v_-$ column but the first row has only $-1/9$ in the $v_{out}$ column: strongly nonsymmetric. Solving (by computer; the lab does it) gives $v_{out}$ = **9.9989 V** and $v_s - v_- = $ **106.0 µV**, so the + input draws $106\ \text{µV}/1\ \text{MΩ} = $ **0.106 nA**. The gain error is **106 ppm**. The same answer follows by hand in two steps. *The feedback formula.* If the amplifier's input drew no current and its output were unloaded, the divider would give $v_- = \beta v_{out}$ with $\beta = R_1/(R_1 + R_2) = 0.1$, and the VCVS would give $v_{out} = A(v_s - \beta v_{out})$. Solving, $v_{out}(1 + A\beta) = Av_s$:
+The second row contains $+A/0.1 = 10^6$ in the $v_-$ column but the first row has only $-1/9$ in the $v_{out}$ column: strongly nonsymmetric. Solving (by computer; the lab does it) gives $v_{out}$ = **9.9989 V** and \$v_s - v_- = \$ **106.0 µV**, so the + input draws \$106\ \text{µV}/1\ \text{MΩ} = \$ **0.106 nA**. The gain error is **106 ppm**. The same answer follows by hand in two steps. *The feedback formula.* If the amplifier's input drew no current and its output were unloaded, the divider would give $v_- = \beta v_{out}$ with $\beta = R_1/(R_1 + R_2) = 0.1$, and the VCVS would give $v_{out} = A(v_s - \beta v_{out})$. Solving, $v_{out}(1 + A\beta) = Av_s$:
 
 $$
 \frac{v_{out}}{v_s} = \frac{A}{1 + A\beta} = \frac{1}{\beta}\cdot\frac{1}{1 + 1/(A\beta)},
 $$
 
-$10^5/(1 + 10^4) = $ **9.9990**, an error of about $1/(A\beta)$ = 100 ppm. *The loading.* $R_o$ drives $R_L$ in parallel with $R_1 + R_2$, that is $2\parallel10 = 1.667$ kΩ, so only the fraction $1.667/(1.667 + 0.1)$ of the VCVS voltage reaches the output: the effective open-loop gain is $A' = 10^5\times0.9434 = $ **94,340**, and $1/(A'\beta) = $ **106.0 ppm**, matching the computer result. ($R_{id}$, with only 106 µV across 1 MΩ, changes nothing visible.)
+\$10^5/(1 + 10^4) = \$ **9.9990**, an error of about $1/(A\beta)$ = 100 ppm. *The loading.* $R_o$ drives $R_L$ in parallel with $R_1 + R_2$, that is $2\parallel10 = 1.667$ kΩ, so only the fraction $1.667/(1.667 + 0.1)$ of the VCVS voltage reaches the output: the effective open-loop gain is \$A' = 10^5\times0.9434 = \$ **94,340**, and \$1/(A'\beta) = \$ **106.0 ppm**, matching the computer result. ($R_{id}$, with only 106 µV across 1 MΩ, changes nothing visible.)
 
 **Units check.** V/kΩ = mA in every term ✓.
 

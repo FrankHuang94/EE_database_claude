@@ -8,7 +8,7 @@ Problems: [04-06 problems](../problems/04-06-problems.md) · Chapter: [04-06](..
 
 ### Solution 04-06.1
 
-$\vec v = (2\times10^5, 0, 0)$ m/s and $\vec B = 0.2(\cos30°, \sin30°, 0)$ T. Then $\vec v\times\vec B = (0, 0, v_xB_y) = (0, 0, 2\times10^5\times0.1)$, so $\vec F = e\vec v\times\vec B$ points along $+z$ with magnitude $evB\sin30° = 1.602\times10^{-19}\times2\times10^5\times0.2\times0.5 = $ **3.204×10⁻¹⁵ N**. Only the field component perpendicular to $\vec v$ matters.
+$\vec v = (2\times10^5, 0, 0)$ m/s and $\vec B = 0.2(\cos30°, \sin30°, 0)$ T. Then $\vec v\times\vec B = (0, 0, v_xB_y) = (0, 0, 2\times10^5\times0.1)$, so $\vec F = e\vec v\times\vec B$ points along $+z$ with magnitude \$evB\sin30° = 1.602\times10^{-19}\times2\times10^5\times0.2\times0.5 = \$ **3.204×10⁻¹⁵ N**. Only the field component perpendicular to $\vec v$ matters.
 
 ### Solution 04-06.2
 
@@ -20,7 +20,7 @@ $\vec v = (2\times10^5, 0, 0)$ m/s and $\vec B = 0.2(\cos30°, \sin30°, 0)$ T. 
 
 (a) $f_c = eB/(2\pi m_p) = 1.602\times10^{-19}\times1.5/(2\pi\times1.6726\times10^{-27}) = $ **22.87 MHz**.
 
-(b) $v = \sqrt{2K/m_p} = \sqrt{2\times1.602\times10^{-13}/1.6726\times10^{-27}} = 1.384\times10^7$ m/s (4.6% of $c$, so non-relativistic is fair), and $r = m_pv/(eB) = $ **9.633 cm**.
+(b) $v = \sqrt{2K/m_p} = \sqrt{2\times1.602\times10^{-13}/1.6726\times10^{-27}} = 1.384\times10^7$ m/s (4.6% of $c$, so non-relativistic is fair), and \$r = m_pv/(eB) = \$ **9.633 cm**.
 
 ### Solution 04-06.4
 
@@ -46,7 +46,7 @@ $F = ILB\sin\theta = 10\times0.5\times0.2\times\sin60° = $ **0.8660 N**, perpen
 
 ### Solution 04-06.8
 
-From the segment formula with $x$ from −5 to +5 cm at $y$ = 2 cm: $B = \dfrac{\mu_0I}{4\pi y}\cdot\dfrac{2\times0.05}{\sqrt{0.05^2 + 0.02^2}} = \dfrac{10^{-7}\times5}{0.02}\times1.857 = $ **46.42 µT**. An infinite wire gives $\mu_0I/(2\pi y)$ = **50 µT**: the segment delivers **0.9285** of it, because at 2 cm the 10 cm segment already looks fairly long.
+From the segment formula with $x$ from −5 to +5 cm at $y$ = 2 cm: \$B = \dfrac{\mu_0I}{4\pi y}\cdot\dfrac{2\times0.05}{\sqrt{0.05^2 + 0.02^2}} = \dfrac{10^{-7}\times5}{0.02}\times1.857 = \$ **46.42 µT**. An infinite wire gives $\mu_0I/(2\pi y)$ = **50 µT**: the segment delivers **0.9285** of it, because at 2 cm the 10 cm segment already looks fairly long.
 
 ### Solution 04-06.9
 
@@ -56,19 +56,19 @@ From the segment formula with $x$ from −5 to +5 cm at $y$ = 2 cm: $B = \dfrac{
 
 ### Solution 04-06.10
 
-(a) $B = \mu_0(N/L)I$, so $I = BL/(\mu_0N) = 0.01\times0.3/(1.2566\times10^{-6}\times600) = $ **3.979 A**.
+(a) $B = \mu_0(N/L)I$, so \$I = BL/(\mu_0N) = 0.01\times0.3/(1.2566\times10^{-6}\times600) = \$ **3.979 A**.
 
 (b) $B = \mu_0NI/(2\pi r)$: **5 mT** at 4 cm and **3.333 mT** at 6 cm.
 
 ### Solution 04-06.11
 
-Inside, $B = \mu_0Ir/(2\pi a^2)$: at 0.5 mm, $2\times10^{-7}\times10\times0.5\times10^{-3}/10^{-6} = $ **1 mT**. At the surface: **2 mT**. Outside, $\mu_0I/(2\pi r)$: at 5 mm, **0.4 mT**.
+Inside, $B = \mu_0Ir/(2\pi a^2)$: at 0.5 mm, \$2\times10^{-7}\times10\times0.5\times10^{-3}/10^{-6} = \$ **1 mT**. At the surface: **2 mT**. Outside, $\mu_0I/(2\pi r)$: at 5 mm, **0.4 mT**.
 
 ### Solution 04-06.12
 
 (a) $V_H = IB/(net) = 10\times0.5/(8.491\times10^{28}\times1.602\times10^{-19}\times10^{-4}) = $ **3.675 µV**.
 
-(b) $n = 10^{21}$ m⁻³: $V_H = 0.5\times10^{-3}\times0.05/(10^{21}\times1.602\times10^{-19}\times5\times10^{-6}) = $ **31.21 mV**, about 8,500 times larger with 1/20,000 of the current, a tenth of the field and a twentieth of the thickness.
+(b) $n = 10^{21}$ m⁻³: \$V_H = 0.5\times10^{-3}\times0.05/(10^{21}\times1.602\times10^{-19}\times5\times10^{-6}) = \$ **31.21 mV**, about 8,500 times larger with 1/20,000 of the current, a tenth of the field and a twentieth of the thickness.
 
 (c) $R_H = 1/(ne) = $ **6.242×10⁻³ m³/C** in magnitude (negative for electrons).
 
@@ -104,7 +104,7 @@ which is **0.04787 T/A**: the 0.5 mm gap has 20 times the magnetic "resistance" 
 
 (a) For $z \gg R$, $(R^2 + z^2)^{3/2} \approx z^3$, so $B \approx \mu_0IR^2/(2z^3) = \mu_0(I\pi R^2)/(2\pi z^3) = \mu_0m/(2\pi z^3)$.
 
-(b) Exact: $1.2566\times10^{-6}\times10^{-4}/(2\times(0.0101)^{3/2}) = $ **61.90 nT**. Dipole: $m = \pi\times10^{-4}$ A·m², giving **62.83 nT**. Ratio **0.9852**: within 1.5% at ten radii, the correction being $(1 + R^2/z^2)^{-3/2} \approx 1 - \tfrac32(R/z)^2$.
+(b) Exact: \$1.2566\times10^{-6}\times10^{-4}/(2\times(0.0101)^{3/2}) = \$ **61.90 nT**. Dipole: $m = \pi\times10^{-4}$ A·m², giving **62.83 nT**. Ratio **0.9852**: within 1.5% at ten radii, the correction being $(1 + R^2/z^2)^{-3/2} \approx 1 - \tfrac32(R/z)^2$.
 
 ### Solution 04-06.17
 

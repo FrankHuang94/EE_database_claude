@@ -12,17 +12,17 @@ $|\mathcal E| = N\,\Delta\Phi/\Delta t = 50\times0.5\times20\times10^{-4}/0.1 = 
 
 ### Solution 04-07.2
 
-(a) The flux inside is $Bx\ell$ with $x$ shrinking at 2 m/s: $|\mathcal E| = B\ell v = 0.3\times0.1\times2 = $ **0.06 V**.
+(a) The flux inside is $Bx\ell$ with $x$ shrinking at 2 m/s: \$|\mathcal E| = B\ell v = 0.3\times0.1\times2 = \$ **0.06 V**.
 
 (b) $I = 0.06/0.5 = $ **0.12 A**.
 
 (c) The side still in the field feels $I\ell B = 0.12\times0.1\times0.3 = $ **3.6×10⁻³ N**, opposing the pull (Lenz), so you must supply that force.
 
-(d) $I^2R = $ **7.2×10⁻³ W**, equal to $Fv$ ✓.
+(d) \$I^2R = \$ **7.2×10⁻³ W**, equal to $Fv$ ✓.
 
 ### Solution 04-07.3
 
-Peak EMF $NBA\omega = \sqrt2\times230 = 325.3$ V, so $N = 325.3/(1.2\times0.02\times2\pi\times50) = $ **43.14**: 44 turns.
+Peak EMF $NBA\omega = \sqrt2\times230 = 325.3$ V, so \$N = 325.3/(1.2\times0.02\times2\pi\times50) = \$ **43.14**: 44 turns.
 
 ### Solution 04-07.4
 
@@ -30,7 +30,7 @@ Peak EMF $NBA\omega = \sqrt2\times230 = 325.3$ V, so $N = 325.3/(1.2\times0.02\t
 
 (b) At stall there is no back-EMF: $12/0.5 = $ **24 A**, six times the running current. Motor drivers limit start-up current for this reason.
 
-(c) The power converted is back-EMF × current, $10\times4 = $ **40 W** (the other $4^2\times0.5 = 8$ W heats the winding).
+(c) The power converted is back-EMF × current, \$10\times4 = \$ **40 W** (the other $4^2\times0.5 = 8$ W heats the winding).
 
 ### Solution 04-07.5
 
@@ -40,21 +40,21 @@ Peak EMF $NBA\omega = \sqrt2\times230 = 325.3$ V, so $N = 325.3/(1.2\times0.02\t
 
 ### Solution 04-07.6
 
-(a) Inside the toroid, $B = \mu_0Ni/(2\pi r)$. The flux through one turn's rectangular cross-section is $\int_a^bB\,h\,dr = \frac{\mu_0Nih}{2\pi}\ln\frac ba$, linked by $N$ turns, so $L = \mu_0N^2h\ln(b/a)/(2\pi)$. Numerically, $1.2566\times10^{-6}\times10^4\times0.01\times\ln1.5/(2\pi) = $ **8.109 µH**.
+(a) Inside the toroid, $B = \mu_0Ni/(2\pi r)$. The flux through one turn's rectangular cross-section is $\int_a^bB\,h\,dr = \frac{\mu_0Nih}{2\pi}\ln\frac ba$, linked by $N$ turns, so $L = \mu_0N^2h\ln(b/a)/(2\pi)$. Numerically, \$1.2566\times10^{-6}\times10^4\times0.01\times\ln1.5/(2\pi) = \$ **8.109 µH**.
 
 (b) With $\mu_r$ = 2000: **16.22 mH**.
 
 ### Solution 04-07.7
 
-(a) $\tau = L/R = $ **2 ms**. (b) $I_\infty = 10/5 = $ **2 A**. (c) $\tfrac12LI^2 = $ **20 mJ**. (d) $i = 2(1 - e^{-t/\tau}) = 1$ at $t = \tau\ln2 = $ **1.386 ms**.
+(a) \$\tau = L/R = \$ **2 ms**. (b) \$I_\infty = 10/5 = \$ **2 A**. (c) \$\tfrac12LI^2 = \$ **20 mJ**. (d) $i = 2(1 - e^{-t/\tau}) = 1$ at \$t = \tau\ln2 = \$ **1.386 ms**.
 
 ### Solution 04-07.8
 
 (a) $L/\ell = (\mu_0/2\pi)\ln(1.475/0.45) = 2\times10^{-7}\times1.187 = $ **0.2374 µH/m**.
 
-(b) With $C/\ell$ = 105.4 pF/m: $\sqrt{L/C} = $ **47.45 Ω**, close to the 50 Ω standard.
+(b) With $C/\ell$ = 105.4 pF/m: \$\sqrt{L/C} = \$ **47.45 Ω**, close to the 50 Ω standard.
 
-(c) $1/\sqrt{LC} = $ **1.999×10⁸ m/s**, which is **c/1.5**: exactly $c/\sqrt{\varepsilon_r}$, because the product $LC$ per unit length is $\mu_0\varepsilon$ for any coaxial geometry ([04-08](../chapters/04-08-maxwell-preview.md)).
+(c) \$1/\sqrt{LC} = \$ **1.999×10⁸ m/s**, which is **c/1.5**: exactly $c/\sqrt{\varepsilon_r}$, because the product $LC$ per unit length is $\mu_0\varepsilon$ for any coaxial geometry ([04-08](../chapters/04-08-maxwell-preview.md)).
 
 ### Solution 04-07.9
 
@@ -64,19 +64,19 @@ $u_B = B^2/(2\mu_0) = 2.25/(2\times1.2566\times10^{-6}) = $ **8.952×10⁵ J/m³
 
 (a) $M = k\sqrt{L_1L_2} = 0.98\times\sqrt{100\times25}$ µH = **49 µH**.
 
-(b) $\sqrt{25/100} = $ **0.5**: since $L\propto N^2$ on a shared core, the inductance ratio gives the turns ratio squared.
+(b) \$\sqrt{25/100} = \$ **0.5**: since $L\propto N^2$ on a shared core, the inductance ratio gives the turns ratio squared.
 
 ### Solution 04-07.11
 
-$R_{\text{seen}} = (N_1/N_2)^2R_L$, so $N_1/N_2 = \sqrt{800/8} = $ **10**.
+$R_{\text{seen}} = (N_1/N_2)^2R_L$, so \$N_1/N_2 = \sqrt{800/8} = \$ **10**.
 
 ### Solution 04-07.12
 
-(a) At saturation the flux linkage is $N B_sA = LI$, so $N = LI/(B_sA) = 10^{-5}\times10/(0.39\times4\times10^{-5}) = $ **6.410**; round up to 7 turns.
+(a) At saturation the flux linkage is $N B_sA = LI$, so \$N = LI/(B_sA) = 10^{-5}\times10/(0.39\times4\times10^{-5}) = \$ **6.410**; round up to 7 turns.
 
-(b) Neglecting the core, $L = \mu_0N^2A/g$, so $g = \mu_0\times49\times4\times10^{-5}/10^{-5} = $ **0.2463 mm**.
+(b) Neglecting the core, $L = \mu_0N^2A/g$, so \$g = \mu_0\times49\times4\times10^{-5}/10^{-5} = \$ **0.2463 mm**.
 
-(c) $B = \mu_0NI/g$ reaches 0.39 T at $I = 0.39\times2.463\times10^{-4}/(1.2566\times10^{-6}\times7) = $ **10.92 A**, above 10 A ✓. (The problem neglects the core's reluctance. For a typical ferrite path, 5 cm long with $\mu_r$ = 2000, it would be $0.05/(2000\times2.463\times10^{-4}) \approx 10\%$ of the gap's, raising the saturation current slightly further while lowering $L$ by a similar fraction; a real design iterates.)
+(c) $B = \mu_0NI/g$ reaches 0.39 T at \$I = 0.39\times2.463\times10^{-4}/(1.2566\times10^{-6}\times7) = \$ **10.92 A**, above 10 A ✓. (The problem neglects the core's reluctance. For a typical ferrite path, 5 cm long with $\mu_r$ = 2000, it would be $0.05/(2000\times2.463\times10^{-4}) \approx 10\%$ of the gap's, raising the saturation current slightly further while lowering $L$ by a similar fraction; a real design iterates.)
 
 ### Solution 04-07.13
 
@@ -110,11 +110,11 @@ With $B = B_{\max}\sin\omega t$, the time average of $(dB/dt)^2$ is $\omega^2B_{
 
 ### Solution 04-07.16
 
-(a) At resonance the receiver loop is purely resistive, $R_2 + R_L$. A transmitter current $i_1$ induces $j\omega Mi_1$ in it, driving $i_2 = j\omega Mi_1/(R_2 + R_L)$; that current induces back $j\omega Mi_2 = -(\omega M)^2i_1/(R_2 + R_L)$ in the transmitter, which looks like an added series resistance $(\omega M)^2/(R_2 + R_L)$. With $\omega M = 11.31$ Ω: $127.9/5.1 = $ **25.08 Ω**.
+(a) At resonance the receiver loop is purely resistive, $R_2 + R_L$. A transmitter current $i_1$ induces $j\omega Mi_1$ in it, driving $i_2 = j\omega Mi_1/(R_2 + R_L)$; that current induces back $j\omega Mi_2 = -(\omega M)^2i_1/(R_2 + R_L)$ in the transmitter, which looks like an added series resistance $(\omega M)^2/(R_2 + R_L)$. With $\omega M = 11.31$ Ω: \$127.9/5.1 = \$ **25.08 Ω**.
 
 (b) $\eta = \frac{25.08}{25.18}\times\frac{5}{5.1} = $ **0.9765**.
 
-(c) $Q = \omega L/R = 2\pi\times360\times10^3\times10^{-5}/0.1 = $ **226.2**. High-Q coils and good coupling ($kQ \gg 1$) are what make efficient wireless power possible; real phone coils have lower Q and coupling, and real systems lose more in rectifiers and electronics.
+(c) \$Q = \omega L/R = 2\pi\times360\times10^3\times10^{-5}/0.1 = \$ **226.2**. High-Q coils and good coupling ($kQ \gg 1$) are what make efficient wireless power possible; real phone coils have lower Q and coupling, and real systems lose more in rectifiers and electronics.
 
 ### Solution 04-07.17
 

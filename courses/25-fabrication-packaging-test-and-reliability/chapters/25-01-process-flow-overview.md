@@ -340,7 +340,7 @@ All examples use $k$ = 8.61733 × 10⁻⁵ eV/K, $c$ = 2.998 × 10⁸ m/s, the c
 
 - (a) $0.9999^{1000}$ = **0.905**; $0.999^{1000}$ = **0.368**.
 - (b) $70 \times 1.5$ = **105** days, **15** weeks.
-- (c) 12 weeks is **2.76** average months, so WIP = $100{,}000 \times 2.76$ = **2.76e5** wafers, worth **1.38** $B.
+- (c) 12 weeks is **2.76** average months, so WIP = $100{,}000 \times 2.76$ = **2.76e5** wafers, worth **1.38** \$B.
 - (d) 12 weeks is **0.230** years, so WIP = $17 \times 10^6 \times 0.230$ = **3.91e6** wafers.
 
 **Units check.** (wafers/month) × months = wafers. ✓

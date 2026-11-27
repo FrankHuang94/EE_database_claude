@@ -30,9 +30,9 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 02-05.4
 
-(a) Cover-up: $\dfrac{6}{s(s + 3)} = \dfrac{2}{s} - \dfrac{2}{s + 3}$, so $f = 2(1 - e^{-3t})$ and $f(1) = $ **1.900**.
-(b) $\dfrac{2s}{s^2 + 9} + \dfrac{3}{s^2 + 9}$, so $f = 2\cos3t + \sin3t$ and $f(1) = $ **−1.839**.
-(c) $\mathcal{L}\{t^2e^{-2t}\} = 2/(s + 2)^3$, so $f = \tfrac12t^2e^{-2t}$ and $f(1) = $ **0.06767**.
+(a) Cover-up: $\dfrac{6}{s(s + 3)} = \dfrac{2}{s} - \dfrac{2}{s + 3}$, so $f = 2(1 - e^{-3t})$ and \$f(1) = \$ **1.900**.
+(b) $\dfrac{2s}{s^2 + 9} + \dfrac{3}{s^2 + 9}$, so $f = 2\cos3t + \sin3t$ and \$f(1) = \$ **−1.839**.
+(c) $\mathcal{L}\{t^2e^{-2t}\} = 2/(s + 2)^3$, so $f = \tfrac12t^2e^{-2t}$ and \$f(1) = \$ **0.06767**.
 
 ### Solution 02-05.5
 
@@ -42,7 +42,7 @@ Write $\dfrac{s + 4}{s^2(s + 2)} = \dfrac{A}{s} + \dfrac{B}{s^2} + \dfrac{C}{s +
 - $A = \dfrac{d}{ds}\left[\dfrac{s + 4}{s + 2}\right]_{s=0} = \left[\dfrac{(s + 2) - (s + 4)}{(s + 2)^2}\right]_{s=0} = -\dfrac{2}{4} = -0.5$.
 - Cover-up at −2: $C = \big[(s + 4)/s^2\big]_{s=-2} = 2/4 = 0.5$.
 
-So $y = -0.5 + 2t + 0.5e^{-2t}$ and $y(1) = $ **1.568**. **Check:** $y(0) = 0$, consistent with the initial-value theorem, $\lim_{s\to\infty}sY = \lim\frac{s + 4}{s(s + 2)} = 0$ ✓.
+So $y = -0.5 + 2t + 0.5e^{-2t}$ and \$y(1) = \$ **1.568**. **Check:** $y(0) = 0$, consistent with the initial-value theorem, $\lim_{s\to\infty}sY = \lim\frac{s + 4}{s(s + 2)} = 0$ ✓.
 
 ### Solution 02-05.6
 
@@ -52,11 +52,11 @@ $$
 Y = 3\frac{s + 2}{(s + 2)^2 + 9} + \frac13\cdot\frac{3}{(s + 2)^2 + 9}, \qquad y = e^{-2t}\left(3\cos3t + \tfrac13\sin3t\right).
 $$
 
-$y(0.5) = $ **0.2004**. Initial-value theorem: $\lim_{s\to\infty}\frac{s(3s + 7)}{s^2 + 4s + 13} = 3 = y(0^+)$ ✓.
+\$y(0.5) = \$ **0.2004**. Initial-value theorem: $\lim_{s\to\infty}\frac{s(3s + 7)}{s^2 + 4s + 13} = 3 = y(0^+)$ ✓.
 
 ### Solution 02-05.7
 
-$sY - 5 + 4Y = 8/s$, so $Y = \dfrac{5}{s + 4} + \dfrac{8}{s(s + 4)} = \dfrac{5}{s + 4} + \dfrac{2}{s} - \dfrac{2}{s + 4} = \dfrac{2}{s} + \dfrac{3}{s + 4}$. Then $y = 2 + 3e^{-4t}$, and $y(0.25) = 2 + 3e^{-1} = $ **3.104**.
+$sY - 5 + 4Y = 8/s$, so $Y = \dfrac{5}{s + 4} + \dfrac{8}{s(s + 4)} = \dfrac{5}{s + 4} + \dfrac{2}{s} - \dfrac{2}{s + 4} = \dfrac{2}{s} + \dfrac{3}{s + 4}$. Then $y = 2 + 3e^{-4t}$, and \$y(0.25) = 2 + 3e^{-1} = \$ **3.104**.
 
 ### Solution 02-05.8
 
@@ -82,15 +82,15 @@ $$
 
 (b) $y(0^+) = 0$, and $y' = \tfrac32e^{-t}(2\cos2t - \sin2t)$ gives $y'(0^+) = 3$. The impulse delivers its whole area to the highest derivative: integrating $y'' = 3\delta - 2y' - 5y$ across $t = 0$ gives a jump of 3 in $y'$ and none in $y$. (Mechanically: a hammer blow changes the velocity instantly, not the position.)
 
-(c) $y' = 0$ when $\tan2t = 2$, first at $t = \tfrac12\arctan2 = $ **0.5536**, where $y = $ **0.7713**.
+(c) $y' = 0$ when $\tan2t = 2$, first at \$t = \tfrac12\arctan2 = \$ **0.5536**, where \$y = \$ **0.7713**.
 
 ### Solution 02-05.11
 
-(a) $f(0^+) = \lim_{s\to\infty}\dfrac{2s + 3}{(s + 1)(s + 3)} = $ **0**. The poles of $sF$ are −1 and −3, so $f(\infty) = \lim_{s\to0}\dfrac{2s + 3}{(s + 1)(s + 3)} = $ **1**.
+(a) \$f(0^+) = \lim_{s\to\infty}\dfrac{2s + 3}{(s + 1)(s + 3)} = \$ **0**. The poles of $sF$ are −1 and −3, so \$f(\infty) = \lim_{s\to0}\dfrac{2s + 3}{(s + 1)(s + 3)} = \$ **1**.
 
 (b) $sF = 4/(s^2 - s + 2)$ has poles $s = \tfrac12 \pm j\tfrac{\sqrt7}{2}$, in the right half-plane, so $f$ grows in an oscillation and has no final value. The theorem would give the meaningless answer 2.
 
-(c) $H(0) = 10\times2/20 = $ **1**. The poles $-1.5 \pm j4.21$ are stable, so the unit-step response settles to $H(0) = 1$.
+(c) \$H(0) = 10\times2/20 = \$ **1**. The poles $-1.5 \pm j4.21$ are stable, so the unit-step response settles to $H(0) = 1$.
 
 ### Solution 02-05.12
 
@@ -98,9 +98,9 @@ Directly: $\int_0^te^{-\lambda}e^{-2t + 2\lambda}d\lambda = e^{-2t}\int_0^te^{\l
 
 ### Solution 02-05.13
 
-(a) In the $s$-domain the series impedance is $R + sL + 1/(sC)$, so the resistor voltage is $V_R = \dfrac{R}{R + sL + 1/(sC)}V_{in}$. Multiplying top and bottom by $s/L$ gives the stated $H(s)$. With $R/L = 10^4$ s⁻¹ and $1/(LC) = 10^8$ s⁻²: poles $-5000 \pm j\sqrt{10^8 - 2.5\times10^7} = -5000 \pm j$ **8660** s⁻¹; a zero at $s = 0$; $\zeta = 5000/10^4 = $ **0.5** and $Q = $ **1**.
+(a) In the $s$-domain the series impedance is $R + sL + 1/(sC)$, so the resistor voltage is $V_R = \dfrac{R}{R + sL + 1/(sC)}V_{in}$. Multiplying top and bottom by $s/L$ gives the stated $H(s)$. With $R/L = 10^4$ s⁻¹ and $1/(LC) = 10^8$ s⁻²: poles $-5000 \pm j\sqrt{10^8 - 2.5\times10^7} = -5000 \pm j$ **8660** s⁻¹; a zero at $s = 0$; \$\zeta = 5000/10^4 = \$ **0.5** and \$Q = \$ **1**.
 
-(b) $Y = H/s = \dfrac{10^4}{(s + 5000)^2 + 8660^2}$, so $y = \dfrac{10^4}{8660}e^{-5000t}\sin8660t = 1.155\,e^{-5000t}\sin8660t$. The peak is where $\tan(8660t) = 8660/5000 = \sqrt3$, at $t = (\pi/3)/8660 = $ **120.9 µs**, with value **0.5463**.
+(b) $Y = H/s = \dfrac{10^4}{(s + 5000)^2 + 8660^2}$, so $y = \dfrac{10^4}{8660}e^{-5000t}\sin8660t = 1.155\,e^{-5000t}\sin8660t$. The peak is where $\tan(8660t) = 8660/5000 = \sqrt3$, at \$t = (\pi/3)/8660 = \$ **120.9 µs**, with value **0.5463**.
 
 (c) $\lim_{s\to0}sY = H(0) = 0$: the zero at the origin blocks DC. Physically, once the capacitor has charged to the step voltage no current flows, so the resistor voltage returns to zero.
 
@@ -118,7 +118,7 @@ $$
 \Delta V(t) = -\Delta I\,R + e^{-\alpha t}\big(A\cos\omega_dt + B\sin\omega_dt\big), \qquad A = R\Delta I, \quad B = -\frac{\Delta I\left(\frac1C - R\alpha\right)}{\omega_d} .
 $$
 
-Numerically $A = $ **10.00 mV** and $B = -10(10^7 - 2\times10^4)/(6.321\times10^8) = $ **−157.9 mV**, exactly the constants of 02-03 Example 5. Minimizing numerically, the worst value of $\Delta V$ is **−160.3 mV** at **2.535 ns** ✓.
+Numerically \$A = \$ **10.00 mV** and \$B = -10(10^7 - 2\times10^4)/(6.321\times10^8) = \$ **−157.9 mV**, exactly the constants of 02-03 Example 5. Minimizing numerically, the worst value of $\Delta V$ is **−160.3 mV** at **2.535 ns** ✓.
 
 ### Solution 02-05.15
 
@@ -130,7 +130,7 @@ $$
 
 (b) The slow term's amplitude is $0.01111/0.11 = $ **10.10%** of the final value: a 10% tolerance on the zero leaves a 10% tail with the slow pole's time constant of 1 s.
 
-(c) The fast term is gone after about half a second, after which the slow tail sets settling: solving $\lvert y - 0.11\rvert = 0.0011$ numerically gives **2.313 s**. With perfect cancellation, $y = 0.1(1 - e^{-10t})$ settles within 1% in $\ln100/10 = $ **0.4605 s**: the imperfect cancellation makes settling five times slower, through a small, slow "doublet" tail that is easy to miss on a coarse plot.
+(c) The fast term is gone after about half a second, after which the slow tail sets settling: solving $\lvert y - 0.11\rvert = 0.0011$ numerically gives **2.313 s**. With perfect cancellation, $y = 0.1(1 - e^{-10t})$ settles within 1% in \$\ln100/10 = \$ **0.4605 s**: the imperfect cancellation makes settling five times slower, through a small, slow "doublet" tail that is easy to miss on a coarse plot.
 
 ---
 
@@ -144,21 +144,21 @@ $$
 y(t) = r(t)u(t) - r(t - 1)u(t - 1),
 $$
 
-and $y(2) = (1 + e^{-2}) - e^{-1} = $ **0.7675**. (Check: for $t \ge 1$ the input is constant at 1, so $y$ should approach 1, and $y(t) = 1 + e^{-t} - e^{-(t - 1)} \to 1$ ✓.)
+and \$y(2) = (1 + e^{-2}) - e^{-1} = \$ **0.7675**. (Check: for $t \ge 1$ the input is constant at 1, so $y$ should approach 1, and $y(t) = 1 + e^{-t} - e^{-(t - 1)} \to 1$ ✓.)
 
-(c) $Y = 0.5e^{-s}/(s + 1)$, so $y = 0.5e^{-(t - 1)}u(t - 1)$: nothing until 1 s, then a jump to 0.5 and a decay. $y(2) = 0.5e^{-1} = $ **0.1839**. The impulse of area 0.5 delivers its whole "charge" at once, so $y$ jumps by 0.5 (for $y' + y = q_0\delta$ the jump in $y$ is $q_0$).
+(c) $Y = 0.5e^{-s}/(s + 1)$, so $y = 0.5e^{-(t - 1)}u(t - 1)$: nothing until 1 s, then a jump to 0.5 and a decay. \$y(2) = 0.5e^{-1} = \$ **0.1839**. The impulse of area 0.5 delivers its whole "charge" at once, so $y$ jumps by 0.5 (for $y' + y = q_0\delta$ the jump in $y$ is $q_0$).
 
-(d) One period: $F_1 = \int_0^1e^{-st}dt = (1 - e^{-s})/s$, with $T = 2$. So $F = \dfrac{1 - e^{-s}}{s(1 - e^{-2s})} = \dfrac{1}{s(1 + e^{-s})}$, and $F(1) = 1/(1 + e^{-1}) = $ **0.7311**.
+(d) One period: $F_1 = \int_0^1e^{-st}dt = (1 - e^{-s})/s$, with $T = 2$. So $F = \dfrac{1 - e^{-s}}{s(1 - e^{-2s})} = \dfrac{1}{s(1 + e^{-s})}$, and \$F(1) = 1/(1 + e^{-1}) = \$ **0.7311**.
 
 ### Solution 02-05.17
 
 (a) $H = \dfrac{1}{s^2 + 3s + 2} = \dfrac{1}{s + 1} - \dfrac{1}{s + 2}$, so $h(t) = e^{-t} - e^{-2t}$, and by the convolution theorem $y(t) = \displaystyle\int_0^t\big(e^{-(t - \lambda)} - e^{-2(t - \lambda)}\big)g(\lambda)\,d\lambda$.
 
-(b) With $g = 1$: $\int_0^te^{-(t - \lambda)}d\lambda = 1 - e^{-t}$ and $\int_0^te^{-2(t - \lambda)}d\lambda = \tfrac12(1 - e^{-2t})$, so $y = \tfrac12 - e^{-t} + \tfrac12e^{-2t}$. Partial fractions agree: $\dfrac{1}{s(s + 1)(s + 2)} = \dfrac{1/2}{s} - \dfrac{1}{s + 1} + \dfrac{1/2}{s + 2}$ ✓. $y(1) = 0.5 - 0.3679 + 0.0677 = $ **0.1998**.
+(b) With $g = 1$: $\int_0^te^{-(t - \lambda)}d\lambda = 1 - e^{-t}$ and $\int_0^te^{-2(t - \lambda)}d\lambda = \tfrac12(1 - e^{-2t})$, so $y = \tfrac12 - e^{-t} + \tfrac12e^{-2t}$. Partial fractions agree: $\dfrac{1}{s(s + 1)(s + 2)} = \dfrac{1/2}{s} - \dfrac{1}{s + 1} + \dfrac{1/2}{s + 2}$ ✓. \$y(1) = 0.5 - 0.3679 + 0.0677 = \$ **0.1998**.
 
-(c) $Y = \dfrac{1}{(s + 1)(s + 2)(s + 3)} = \dfrac{1/2}{s + 1} - \dfrac{1}{s + 2} + \dfrac{1/2}{s + 3}$, so $y = \tfrac12e^{-t} - e^{-2t} + \tfrac12e^{-3t}$ and $y(1) = 0.1839 - 0.1353 + 0.0249 = $ **0.07350**.
+(c) $Y = \dfrac{1}{(s + 1)(s + 2)(s + 3)} = \dfrac{1/2}{s + 1} - \dfrac{1}{s + 2} + \dfrac{1/2}{s + 3}$, so $y = \tfrac12e^{-t} - e^{-2t} + \tfrac12e^{-3t}$ and \$y(1) = 0.1839 - 0.1353 + 0.0249 = \$ **0.07350**.
 
-(d) $\mathcal{L}\{t\sin2t\} = -\dfrac{d}{ds}\dfrac{2}{s^2 + 4} = \dfrac{4s}{(s^2 + 4)^2}$, which is $4/25 = $ **0.16** at $s = 1$. The integral rule gives $\mathcal{L}\{\int_0^t\sin2\lambda\,d\lambda\} = \dfrac{1}{s}\cdot\dfrac{2}{s^2 + 4}$, which is $2/5 = $ **0.4** at $s = 1$. Check: $\int_0^t\sin2\lambda\,d\lambda = \tfrac12(1 - \cos2t)$, whose transform is $\tfrac12\left(\dfrac1s - \dfrac{s}{s^2 + 4}\right) = \dfrac{2}{s(s^2 + 4)}$ ✓.
+(d) $\mathcal{L}\{t\sin2t\} = -\dfrac{d}{ds}\dfrac{2}{s^2 + 4} = \dfrac{4s}{(s^2 + 4)^2}$, which is \$4/25 = \$ **0.16** at $s = 1$. The integral rule gives $\mathcal{L}\{\int_0^t\sin2\lambda\,d\lambda\} = \dfrac{1}{s}\cdot\dfrac{2}{s^2 + 4}$, which is \$2/5 = \$ **0.4** at $s = 1$. Check: $\int_0^t\sin2\lambda\,d\lambda = \tfrac12(1 - \cos2t)$, whose transform is $\tfrac12\left(\dfrac1s - \dfrac{s}{s^2 + 4}\right) = \dfrac{2}{s(s^2 + 4)}$ ✓.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |

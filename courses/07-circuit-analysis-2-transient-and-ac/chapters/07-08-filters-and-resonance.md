@@ -446,9 +446,9 @@ and the order is **3**. The sections (§3.7) are one real pole at 20 kHz and one
 
 **Solution.**
 
-(a) Butterworth needs $Q = 1/\sqrt2$, so $R_2 = 2R_1$, and then $\omega_0 = 1/(CR_1\sqrt2)$. So $R_1 = 1/(\sqrt2\times2\pi\times300\times100\ \text{nF}) = $ **3.751 kΩ** and $R_2 = $ **7.503 kΩ**.
+(a) Butterworth needs $Q = 1/\sqrt2$, so $R_2 = 2R_1$, and then $\omega_0 = 1/(CR_1\sqrt2)$. So \$R_1 = 1/(\sqrt2\times2\pi\times300\times100\ \text{nF}) = \$ **3.751 kΩ** and \$R_2 = \$ **7.503 kΩ**.
 
-(b) $C_1 = 4.5\,C_2$ and $\omega_0 = 1/(R\sqrt{C_1C_2}) = 1/(RC_2\sqrt{4.5})$, so $C_2 = 1/(2\pi\times3400\times10^4\times2.121) = $ **2.207 nF** and $C_1 = $ **9.930 nF**.
+(b) $C_1 = 4.5\,C_2$ and $\omega_0 = 1/(R\sqrt{C_1C_2}) = 1/(RC_2\sqrt{4.5})$, so \$C_2 = 1/(2\pi\times3400\times10^4\times2.121) = \$ **2.207 nF** and \$C_1 = \$ **9.930 nF**.
 
 (c) Each section is Butterworth, so the cascade's gain is $1/\sqrt{[1 + (300/f)^4][1 + (f/3400)^4]}$ in magnitude:
 

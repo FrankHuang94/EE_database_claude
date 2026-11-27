@@ -389,7 +389,7 @@ flowchart LR
 
 **Setup.** For $\mathbf{u} = (2, -1, 2)$ and $\mathbf{v} = (3, 0, 4)$, find $\mathbf{u}\cdot\mathbf{v}$, both lengths, the angle between the vectors, the projection of $\mathbf{v}$ onto the line through $\mathbf{u}$, and the length of the error.
 
-**Solution.** $\mathbf{u}\cdot\mathbf{v} = 2\cdot3 + (-1)\cdot0 + 2\cdot4 = $ **14**. Lengths: $\lVert\mathbf{u}\rVert = \sqrt{4 + 1 + 4} = $ **3** and $\lVert\mathbf{v}\rVert = \sqrt{9 + 0 + 16} = $ **5**. Angle: $\cos\theta = 14/(3\cdot5) = 0.9333$, so θ = **21.04°**.
+**Solution.** \$\mathbf{u}\cdot\mathbf{v} = 2\cdot3 + (-1)\cdot0 + 2\cdot4 = \$ **14**. Lengths: \$\lVert\mathbf{u}\rVert = \sqrt{4 + 1 + 4} = \$ **3** and \$\lVert\mathbf{v}\rVert = \sqrt{9 + 0 + 16} = \$ **5**. Angle: $\cos\theta = 14/(3\cdot5) = 0.9333$, so θ = **21.04°**.
 
 Projection: $\hat{x} = \mathbf{u}\cdot\mathbf{v}/\mathbf{u}\cdot\mathbf{u} = 14/9 = 1.556$, so $\mathbf{p} = \tfrac{14}{9}(2, -1, 2) = (3.111, -1.556, 3.111)$. Error: $\mathbf{e} = \mathbf{v} - \mathbf{p} = (-0.1111, 1.556, 0.8889)$, with length **1.795**.
 
@@ -407,13 +407,13 @@ $$
 
 So $\mathbf{S}\mathbf{R}\mathbf{x} = (\mathbf{-2}, \mathbf{1})$: rotate $(1, 1)$ to $(-1, 1)$, then stretch to $(-2, 1)$. And $\mathbf{R}\mathbf{S}\mathbf{x} = (\mathbf{-1}, \mathbf{2})$: stretch to $(2, 1)$, then rotate to $(-1, 2)$. The products differ because the operations do not commute. Note also the reading order: $\mathbf{S}\mathbf{R}\mathbf{x}$ applies $\mathbf{R}$ *first*.
 
-(b) $\mathbf{A}$ is 2×3 and $\mathbf{B}$ is 3×2, so $\mathbf{A}\mathbf{B}$ is 2×2, costing $2\cdot3\cdot2 = $ **12** multiplications. $\mathbf{B}\mathbf{A}$ is 3×3, costing $3\cdot2\cdot3 = $ **18**. Computing:
+(b) $\mathbf{A}$ is 2×3 and $\mathbf{B}$ is 3×2, so $\mathbf{A}\mathbf{B}$ is 2×2, costing \$2\cdot3\cdot2 = \$ **12** multiplications. $\mathbf{B}\mathbf{A}$ is 3×3, costing \$3\cdot2\cdot3 = \$ **18**. Computing:
 
 $$
 \mathbf{A}\mathbf{B} = \begin{bmatrix} 1\cdot2 + 2\cdot0 + 0\cdot4 & 1\cdot1 + 2(-1) + 0\cdot2 \\ (-1)2 + 3\cdot0 + 1\cdot4 & (-1)1 + 3(-1) + 1\cdot2\end{bmatrix} = \begin{bmatrix} 2 & -1 \\ 2 & -2\end{bmatrix} .
 $$
 
-The $(1, 2)$ entry of $\mathbf{B}\mathbf{A}$ is (row 1 of $\mathbf{B}$)·(column 2 of $\mathbf{A}$) $= 2\cdot2 + 1\cdot3 = $ **7**: not even the same size of matrix as $\mathbf{A}\mathbf{B}$.
+The $(1, 2)$ entry of $\mathbf{B}\mathbf{A}$ is (row 1 of $\mathbf{B}$)·(column 2 of $\mathbf{A}$) \$= 2\cdot2 + 1\cdot3 = \$ **7**: not even the same size of matrix as $\mathbf{A}\mathbf{B}$.
 
 **Check.** Column picture: column 1 of $\mathbf{A}\mathbf{B}$ should be $\mathbf{A}$ times column 1 of $\mathbf{B}$, $2(1, -1) + 0(2, 3) + 4(0, 1) = (2, 2)$ ✓. Transpose rule: $\mathbf{B}^\mathsf{T}\mathbf{A}^\mathsf{T}$ has first row (row 1 of $\mathbf{B}^\mathsf{T}$)·(columns of $\mathbf{A}^\mathsf{T}$) $= (2, 0, 4)\cdot(1, 2, 0), (2, 0, 4)\cdot(-1, 3, 1) = (2, 2)$, which is the first column of $\mathbf{A}\mathbf{B}$, as $(\mathbf{A}\mathbf{B})^\mathsf{T} = \mathbf{B}^\mathsf{T}\mathbf{A}^\mathsf{T}$ requires ✓.
 
@@ -451,9 +451,9 @@ $$
 \mathbf{L} = \begin{bmatrix} 1 & 0 & 0 \\ 2 & 1 & 0 \\ -1 & 2 & 1\end{bmatrix}, \qquad \mathbf{U} = \begin{bmatrix} 2 & 1 & -1 \\ 0 & 3 & -1 \\ 0 & 0 & 5\end{bmatrix} .
 $$
 
-*Second right-hand side* $\mathbf{b}' = (0, 3, 6)$. Forward substitution in $\mathbf{L}\mathbf{c} = \mathbf{b}'$: $c_1 = 0$, $c_2 = 3 - 2c_1 = 3$, $c_3 = 6 + c_1 - 2c_2 = 0$. Back substitution in $\mathbf{U}\mathbf{x} = \mathbf{c}$: $x_3 = 0$, $x_2 = (3 + 0)/3 = 1$, $x_1 = (0 - 1 + 0)/2 = $ **−0.5**. No elimination was repeated.
+*Second right-hand side* $\mathbf{b}' = (0, 3, 6)$. Forward substitution in $\mathbf{L}\mathbf{c} = \mathbf{b}'$: $c_1 = 0$, $c_2 = 3 - 2c_1 = 3$, $c_3 = 6 + c_1 - 2c_2 = 0$. Back substitution in $\mathbf{U}\mathbf{x} = \mathbf{c}$: $x_3 = 0$, $x_2 = (3 + 0)/3 = 1$, \$x_1 = (0 - 1 + 0)/2 = \$ **−0.5**. No elimination was repeated.
 
-**Checks.** Multiply $\mathbf{L}\mathbf{U}$: row 3 is $-1\cdot(2, 1, -1) + 2\cdot(0, 3, -1) + (0, 0, 5) = (-2, 5, 4)$ ✓, matching row 3 of $\mathbf{A}$. Substitute the first solution into equation 3: $-2 + 10 + 12 = 20$ ✓. Substitute the second, $(-0.5, 1, 0)$, into equation 2: $-2 + 5 - 0 = 3$ ✓. A preview of [02-07](02-07-determinants-inverses-and-vector-spaces.md): the product of the pivots, $2\cdot3\cdot5 = $ **30**, is the determinant of $\mathbf{A}$.
+**Checks.** Multiply $\mathbf{L}\mathbf{U}$: row 3 is $-1\cdot(2, 1, -1) + 2\cdot(0, 3, -1) + (0, 0, 5) = (-2, 5, 4)$ ✓, matching row 3 of $\mathbf{A}$. Substitute the first solution into equation 3: $-2 + 10 + 12 = 20$ ✓. Substitute the second, $(-0.5, 1, 0)$, into equation 2: $-2 + 5 - 0 = 3$ ✓. A preview of [02-07](02-07-determinants-inverses-and-vector-spaces.md): the product of the pivots, \$2\cdot3\cdot5 = \$ **30**, is the determinant of $\mathbf{A}$.
 
 ### Example 02-06.4 — Why libraries pivot (tier B)
 
@@ -471,7 +471,7 @@ $$
 u_{22} = 1 - 10^{17}, \qquad c_2 = 2 - 10^{17} .
 $$
 
-Near $10^{17}$, adjacent doubles are 16 apart, so both results round to $-10^{17}$: the 1 and the 2 are lost. Back substitution then gives $x_2 = c_2/u_{22} = 1$, which is fine, but $x_1 = (1 - x_2)/\varepsilon = 0/\varepsilon = $ **0**. The answer should be 1, so the error is 100%. Nothing was wrong with the matrix; the tiny pivot destroyed the information in row 2.
+Near $10^{17}$, adjacent doubles are 16 apart, so both results round to $-10^{17}$: the 1 and the 2 are lost. Back substitution then gives $x_2 = c_2/u_{22} = 1$, which is fine, but \$x_1 = (1 - x_2)/\varepsilon = 0/\varepsilon = \$ **0**. The answer should be 1, so the error is 100%. Nothing was wrong with the matrix; the tiny pivot destroyed the information in row 2.
 
 *With partial pivoting*, the larger entry of column 1 is the 1 in row 2, so exchange the rows. Now the multiplier is $\ell_{21} = \varepsilon/1 = $ **10⁻¹⁷**, and
 
@@ -479,7 +479,7 @@ $$
 u_{22} = 1 - 10^{-17} \to 1, \qquad c_2 = 1 - 2\times10^{-17} \to 1 ,
 $$
 
-so $x_2 = 1$ and $x_1 = 2 - x_2 = $ **1**, correct to full precision. The rounding now discards only the $10^{-17}$ corrections, which are below the precision of the answer anyway.
+so $x_2 = 1$ and \$x_1 = 2 - x_2 = \$ **1**, correct to full precision. The rounding now discards only the $10^{-17}$ corrections, which are below the precision of the answer anyway.
 
 **Sanity check.** The damage scales with the size of the multiplier. For $\varepsilon = 10^{-12}$, the unpivoted $x_1$ has relative error **2.2×10⁻⁵**: about $10^{-16}$ (the rounding error in $x_2$) amplified by $1/\varepsilon = 10^{12}$ through the division in $x_1 = (1 - x_2)/\varepsilon$. Figure 02-06.3 plots this trend, and the lab reproduces it.
 
@@ -505,7 +505,7 @@ $$
 v_3 = \frac{70/11}{27/11} = \frac{70}{27}, \qquad v_2 = \frac{\tfrac{20}{3} + \tfrac56v_3}{11/6} = \frac{130}{27}, \qquad v_1 = \frac{10 + v_2 + 0.5\,v_3}{1.5} = \frac{290}{27} .
 $$
 
-So $v_1 = $ **10.74 V**, $v_2 = $ **4.815 V** and $v_3 = $ **2.593 V**. The current in $R_a$ is $g_a(v_1 - v_2) = 160/27 = $ **5.926 mA**, flowing from node 1 to node 2. The source delivers $P = v_1 \times 10\text{ mA} = $ **107.4 mW**.
+So \$v_1 = \$ **10.74 V**, \$v_2 = \$ **4.815 V** and \$v_3 = \$ **2.593 V**. The current in $R_a$ is \$g_a(v_1 - v_2) = 160/27 = \$ **5.926 mA**, flowing from node 1 to node 2. The source delivers \$P = v_1 \times 10\text{ mA} = \$ **107.4 mW**.
 
 **Checks.** *KCL at node 2:* in through $R_a$, 5.926 mA; out through $R_c$, $v_2/1\text{ kΩ} = 4.815$ mA; out through $R_d$, $(v_2 - v_3)/2\text{ kΩ} = 1.111$ mA. And $4.815 + 1.111 = 5.926$ ✓. *Energy:* the resistors dissipate $\sum g\,(\Delta v)^2 = 1(5.926)^2 + 0.5(8.148)^2 + 1(4.815)^2 + 0.5(2.222)^2 + 2(2.593)^2 = 107.4$ mW, in units of mS × V² = mW ✓. *Sanity:* the input resistance seen by the source is $v_1/10\text{ mA} = 1.074$ kΩ. That is plausible: less than $R_a + R_c = 2$ kΩ alone, because other paths share the current. The lab confirms all three voltages in ngspice.
 
@@ -513,9 +513,9 @@ So $v_1 = $ **10.74 V**, $v_2 = $ **4.815 V** and $v_3 = $ **2.593 V**. The curr
 
 **Setup.** (a) An on-chip power grid is modeled as a resistor mesh with $n = 10^6$ nodes, each connected to about four neighbors. Compare a dense LU solve of $\mathbf{G}\mathbf{v} = \mathbf{i}$ with what sparsity allows. (b) In a large language model, generating one token for one user multiplies each weight matrix by a vector. For a $d\times d$ matrix with $d = 8192$ stored in 16-bit floating point (2 bytes per weight), find the flops, the bytes read and their ratio. Using NVIDIA's published H100 SXM figures (FP16 Tensor Core 1,979 TFLOPS with sparsity, so about 989.5 TFLOPS dense, and 3.35 TB/s of memory bandwidth, as of Nov 2026 [R-040]), decide whether the product is limited by arithmetic or by memory. (c) How many users' tokens must be batched into one matrix–matrix product to use the arithmetic fully?
 
-**Solution.** (a) *Dense:* factoring costs $\tfrac23n^3 = $ **6.667×10¹⁷ flops**, and storing the matrix in double precision takes $8n^2 = 8\times10^{12}$ bytes = **8 TB**. Even at the H100's 67 TFLOPS FP64 Tensor Core peak, the arithmetic would take **2.8 hours**, and merely holding the matrix would take the memory of **100** such GPUs (80 GB each). Storage, not arithmetic, is the first wall. *Sparse:* each row has the diagonal plus about four neighbors, so $\mathbf{G}$ has only about $5n = $ **5×10⁶** nonzeros: **40 MB** of values in double precision. A sparse LU that orders the unknowns cleverly (nested dissection, which numbers a grid's separators last) needs on the order of $n^{1.5} = $ **10⁹** operations for a 2-D grid, times a modest constant: a fraction of a second on a laptop. Against the matrix $\mathbf{G}$ itself, the gap is a factor of about **7×10⁸** in arithmetic (before the modest constant) and **2×10⁵** in storage. The factors $\mathbf{L}$ and $\mathbf{U}$ fill in, though: nested dissection on a 2-D grid stores on the order of $n\log n$ entries, a few times $10^7$ in practice here, so the real dense-versus-sparse storage gap is nearer $10^4$–$10^5$. Either way, it is why every circuit and power-grid solver is sparse.
+**Solution.** (a) *Dense:* factoring costs \$\tfrac23n^3 = \$ **6.667×10¹⁷ flops**, and storing the matrix in double precision takes $8n^2 = 8\times10^{12}$ bytes = **8 TB**. Even at the H100's 67 TFLOPS FP64 Tensor Core peak, the arithmetic would take **2.8 hours**, and merely holding the matrix would take the memory of **100** such GPUs (80 GB each). Storage, not arithmetic, is the first wall. *Sparse:* each row has the diagonal plus about four neighbors, so $\mathbf{G}$ has only about \$5n = \$ **5×10⁶** nonzeros: **40 MB** of values in double precision. A sparse LU that orders the unknowns cleverly (nested dissection, which numbers a grid's separators last) needs on the order of \$n^{1.5} = \$ **10⁹** operations for a 2-D grid, times a modest constant: a fraction of a second on a laptop. Against the matrix $\mathbf{G}$ itself, the gap is a factor of about **7×10⁸** in arithmetic (before the modest constant) and **2×10⁵** in storage. The factors $\mathbf{L}$ and $\mathbf{U}$ fill in, though: nested dissection on a 2-D grid stores on the order of $n\log n$ entries, a few times $10^7$ in practice here, so the real dense-versus-sparse storage gap is nearer $10^4$–$10^5$. Either way, it is why every circuit and power-grid solver is sparse.
 
-(b) Each of the $d^2$ weights is used once, in one multiply–add, so the product costs $2d^2 = $ **1.342×10⁸ flops** and must read $2d^2$ bytes = **134.2 MB** of weights. (The input and output vectors add only $4d = $ **32,768 bytes**.) The ratio, the **arithmetic intensity**, is
+(b) Each of the $d^2$ weights is used once, in one multiply–add, so the product costs \$2d^2 = \$ **1.342×10⁸ flops** and must read $2d^2$ bytes = **134.2 MB** of weights. (The input and output vectors add only \$4d = \$ **32,768 bytes**.) The ratio, the **arithmetic intensity**, is
 
 $$
 I = \frac{2d^2\ \text{flops}}{2d^2 + 4d\ \text{bytes}} = \frac{d}{d + 2} \approx 1\ \text{flop/byte}.
@@ -523,7 +523,7 @@ $$
 
 At 3.35 TB/s, reading the weights takes $134.2\text{ MB}/3.35\text{ TB/s} = $ **40.06 µs**. At 989.5 TFLOPS, the arithmetic would take only **0.1356 µs**. The product is **memory-bound**: the arithmetic units are busy only $0.1356/40.06 = $ **0.34%** of the time. The machine's balance point, its *ridge point*, is $989.5\text{ TFLOPS}/3.35\text{ TB/s} = $ **295.4 flops per byte**, and this workload delivers 1.
 
-(c) Batching $B$ tokens turns the matrix–vector product into a $d\times d$ by $d\times B$ matrix product. Each weight is read once but used $B$ times, so $I = 2Bd^2/(2d^2 + 4Bd) = B/(1 + 2B/d)$. Ignoring the small activation term, $I \approx B$, and the arithmetic is fully used once $B \gtrsim 295$. Keeping the activation term and solving $B/(1 + 2B/d) = 295.4$ gives $B = 295.4/(1 - 2\cdot295.4/d) \approx $ **318**.
+(c) Batching $B$ tokens turns the matrix–vector product into a $d\times d$ by $d\times B$ matrix product. Each weight is read once but used $B$ times, so $I = 2Bd^2/(2d^2 + 4Bd) = B/(1 + 2B/d)$. Ignoring the small activation term, $I \approx B$, and the arithmetic is fully used once $B \gtrsim 295$. Keeping the activation term and solving $B/(1 + 2B/d) = 295.4$ gives \$B = 295.4/(1 - 2\cdot295.4/d) \approx \$ **318**.
 
 **Sanity check.** Units: flops ÷ (flops/s) = s and bytes ÷ (bytes/s) = s ✓. The memory-bound time ratio, $40.06/0.1356 = 295$, equals the ridge point, as it must when $I = 1$. The conclusion matches common practice: inference servers batch requests from many users, and the token rate of a single user is set by memory bandwidth, not by advertised TFLOPS. The roofline model ([14-15](../../14-computer-organization-and-architecture/chapters/14-15-roofline-and-benchmarks.md)) makes this a standard tool.
 

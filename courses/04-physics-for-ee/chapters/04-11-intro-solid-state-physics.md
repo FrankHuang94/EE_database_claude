@@ -445,7 +445,7 @@ The lab ([labs/04-11-lab/](../labs/04-11-lab/README.md)) is a notebook in five p
 - **Wide-bandgap power.** Yole Group forecasts, as reported in the trade press in June and August 2026 (Yole's own pages were not reachable) **[Industry estimate]**:
   - power SiC devices reach $11 billion by 2031, a 20% compound annual growth rate (CAGR) from 2025, with 800 V platforms about half of battery-EV shipments by 2031;
   - xEV power devices reach $14.5 billion by 2031, with SiC MOSFETs growing at 21.5% a year while silicon IGBT modules remain a market of almost $7 billion; Bosch, Renesas and Rohm were reported to be reassessing SiC manufacturing footprints amid overcapacity;
-  - power GaN reaches $3.5 billion by 2031 at a 35% CAGR, consumer and mobile the largest segment ($1.7 billion), Innoscience the 2025 leader; the previous edition forecast $3 billion by 2030 at 42% ([R-086](../../../reference/research-log.md#r-086--crystals-band-gaps-intrinsic-carriers-and-wide-bandgap-markets)).
+  - power GaN reaches $3.5 billion by 2031 at a 35% CAGR, consumer and mobile the largest segment ($1.7 billion), Innoscience the 2025 leader; the previous edition forecast \$3 billion by 2030 at 42% ([R-086](../../../reference/research-log.md#r-086--crystals-band-gaps-intrinsic-carriers-and-wide-bandgap-markets)).
 
 ### Why it matters commercially
 

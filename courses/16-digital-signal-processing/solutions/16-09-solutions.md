@@ -16,7 +16,7 @@ The spectrum repeats every 8 kHz: $1$, $8 \pm 1$, $16 - 1$ kHz, so **1**, **7**,
 
 ### Solution 16-09.3
 
-(a) $H(z^2) = 1 + z^{-2}$: $v[n] = x[n] + x[n - 2] = (1, 2, 4, 6, 8, 10)$; keeping samples 0, 2, 4 gives **(1, 4, 8)**. (b) $\downarrow 2$ gives $(1, 3, 5)$; $1 + z^{-1}$ gives $(1, 1 + 3, 3 + 5) = $ **(1, 4, 8)**. Identical, as the first noble identity requires.
+(a) $H(z^2) = 1 + z^{-2}$: $v[n] = x[n] + x[n - 2] = (1, 2, 4, 6, 8, 10)$; keeping samples 0, 2, 4 gives **(1, 4, 8)**. (b) $\downarrow 2$ gives $(1, 3, 5)$; $1 + z^{-1}$ gives \$(1, 1 + 3, 3 + 5) = \$ **(1, 4, 8)**. Identical, as the first noble identity requires.
 
 ### Solution 16-09.4
 

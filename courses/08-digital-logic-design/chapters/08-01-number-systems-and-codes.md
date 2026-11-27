@@ -252,7 +252,7 @@ Codes for communication links go much further than these: convolutional, Reed–
 
 **Solution.**
 
-(a) 100 = 0110 0100 and 50 = 0011 0010. Their sum is 1001 0110: the top bit is 1, so it reads as $-128 + 22 = $ **−106**. The carry into the top column is $c_7 = 1$ and the carry out is $c_8 = 0$, so $V = c_8 \oplus c_7 = 1$: overflow, since the true sum 150 exceeds +127. By the sign rule, two positive operands gave a negative result.
+(a) 100 = 0110 0100 and 50 = 0011 0010. Their sum is 1001 0110: the top bit is 1, so it reads as \$-128 + 22 = \$ **−106**. The carry into the top column is $c_7 = 1$ and the carry out is $c_8 = 0$, so $V = c_8 \oplus c_7 = 1$: overflow, since the true sum 150 exceeds +127. By the sign rule, two positive operands gave a negative result.
 
 −100 = 1001 1100 and −50 = 1100 1110. Their sum is (1)0110 1010, which keeps the low 8 bits 0110 1010 = **+106**, with $c_7 = 0$ and $c_8 = 1$: again $V = 1$, since −150 is below −128.
 
@@ -272,7 +272,7 @@ Codes for communication links go much further than these: convolutional, Reed–
 
 (b) The sum of 1024 such products can reach 1024 × 16 384 = **16 777 216** = $2^{24}$, which needs **26** bits signed (25 bits stop at $2^{24} - 1$). This is 16 bits for the product plus $\log_2 1024 = 10$ guard bits.
 
-(c) A 32-bit signed accumulator holds up to $2^{31} - 1$, so in the worst case it can sum $\lfloor(2^{31} - 1)/2^{14}\rfloor = $ **131 071** terms, far more than any layer needs, which is why 32-bit int8 accumulators never overflow in practice.
+(c) A 32-bit signed accumulator holds up to $2^{31} - 1$, so in the worst case it can sum \$\lfloor(2^{31} - 1)/2^{14}\rfloor = \$ **131 071** terms, far more than any layer needs, which is why 32-bit int8 accumulators never overflow in practice.
 
 **Sanity check.** Real weights and activations rarely sit at −128 together, so typical sums are far smaller; but hardware must be correct for every input, and the worst case sets the width ✓.
 
@@ -300,7 +300,7 @@ Every error is within the bound: half the spacing, relative to the smallest valu
 
 **Solution.**
 
-(a) $G = B \oplus (B \gg 1) = 1011 \oplus 0101 = $ **1110**. Back: $b_3 = g_3 = 1$, $b_2 = g_2 \oplus b_3 = 1 \oplus 1 = 0$, $b_1 = g_1 \oplus b_2 = 1$, $b_0 = g_0 \oplus b_1 = 0 \oplus 1 = 1$, giving 1011 ✓.
+(a) \$G = B \oplus (B \gg 1) = 1011 \oplus 0101 = \$ **1110**. Back: $b_3 = g_3 = 1$, $b_2 = g_2 \oplus b_3 = 1 \oplus 1 = 0$, $b_1 = g_1 \oplus b_2 = 1$, $b_0 = g_0 \oplus b_1 = 0 \oplus 1 = 1$, giving 1011 ✓.
 
 (b) 0111 → 1000 changes **all 4** bits. While the sensors switch at slightly different moments, any combination can be read, from 0000 to 1111. In Gray code, 7 = 0100 and 8 = 1100 differ in **1** bit, so a reading taken mid-transition is either 7 or 8.
 

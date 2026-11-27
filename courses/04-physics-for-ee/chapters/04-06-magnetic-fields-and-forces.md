@@ -236,13 +236,13 @@ Saturation is a design limit for every power inductor: a MnZn ferrite such as TD
 
 **Solution.** (a) $F/L = \mu_0I^2/(2\pi d) = $ **20 N/m**, repulsive (opposite currents). During the fault, with 10 times the current: **2000 N/m**, a hundred times more, because force goes as current squared.
 
-(b) $m = NIA = 100\times0.1\times4\times10^{-4} = $ **0.004 A·m²**; $\tau_{\max} = mB = $ **0.002 N·m**; turning it over costs $2mB$ = **0.004 J**.
+(b) \$m = NIA = 100\times0.1\times4\times10^{-4} = \$ **0.004 A·m²**; \$\tau_{\max} = mB = \$ **0.002 N·m**; turning it over costs $2mB$ = **0.004 J**.
 
 ### Example 04-06.4 — Loops: circle against square (tier B)
 
 **Setup.** (a) A circular loop of radius 5 cm carries 2 A. Find the field at its center and on its axis 5 cm away. (b) A square loop of side 10 cm carries 2 A. Find the field at its center by adding four finite segments. (c) Compare the two centers.
 
-**Solution.** (a) $B_{\text{center}} = \mu_0I/(2R) = $ **25.13 µT**. At $z = R$: $B = \mu_0IR^2/(2(2R^2)^{3/2}) = B_{\text{center}}/2^{3/2} = $ **8.886 µT**.
+**Solution.** (a) \$B_{\text{center}} = \mu_0I/(2R) = \$ **25.13 µT**. At $z = R$: \$B = \mu_0IR^2/(2(2R^2)^{3/2}) = B_{\text{center}}/2^{3/2} = \$ **8.886 µT**.
 
 (b) Each side is a segment at distance $a = 5$ cm from the center, extending from −45° to +45° as seen from it, so its contribution is $\frac{\mu_0I}{4\pi a}(2\sin45°)$; all four add. One side gives $10^{-7}\times2/0.05\times1.4142 = 5.657$ µT, so the total is **22.63 µT**.
 
@@ -252,7 +252,7 @@ Saturation is a design limit for every power inductor: a MnZn ferrite such as TD
 
 **Setup.** (a) A long solenoid has 1000 turns per 10 cm and carries 0.5 A. Find its internal field. (b) A toroid of 200 turns, inner radius 2 cm and outer radius 3 cm, carries 1 A. Find the field at its inner and outer radii.
 
-**Solution.** (a) $n = 10^4$ turns/m, so $B = \mu_0nI = $ **6.283 mT**.
+**Solution.** (a) $n = 10^4$ turns/m, so \$B = \mu_0nI = \$ **6.283 mT**.
 
 (b) $B = \mu_0NI/(2\pi r)$: **2 mT** at 2 cm and **1.333 mT** at 3 cm; the field is 50% stronger at the inside edge, which is where a toroidal core saturates first.
 
@@ -262,7 +262,7 @@ Saturation is a design limit for every power inductor: a MnZn ferrite such as TD
 
 **Solution.** (a) $V_H = IB/(net) = 1\times1/(8.491\times10^{28}\times1.602\times10^{-19}\times10^{-4}) = $ **0.7351 µV**.
 
-(b) $n = 10^{22}$ m⁻³: $V_H = 10^{-3}\times0.1/(10^{22}\times1.602\times10^{-19}\times10^{-5}) = $ **6.242 mV**, about 8500 times copper's at a thousandth of the current, a tenth of the field and a tenth of the thickness.
+(b) $n = 10^{22}$ m⁻³: \$V_H = 10^{-3}\times0.1/(10^{22}\times1.602\times10^{-19}\times10^{-5}) = \$ **6.242 mV**, about 8500 times copper's at a thousandth of the current, a tenth of the field and a tenth of the thickness.
 
 (c) $n = IB/(etV_H)$ = **1.000×10¹⁶ cm⁻³**.
 

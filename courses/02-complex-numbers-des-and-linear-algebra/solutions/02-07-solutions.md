@@ -39,7 +39,7 @@ $$
 
 Check: $\begin{bmatrix} 3 & 5 \\ 1 & 2\end{bmatrix}\begin{bmatrix} 2 & -5 \\ -1 & 3\end{bmatrix} = \begin{bmatrix} 6 - 5 & -15 + 15 \\ 2 - 2 & -5 + 6\end{bmatrix} = \mathbf{I}$ ✓.
 
-(b) $\det = 12 - 4k = 0$ when $k = $ **3**. Then the second column $(3, 6)$ is 1.5 times the first column $(2, 4)$: the columns are parallel, and the parallelogram they span has zero area.
+(b) $\det = 12 - 4k = 0$ when \$k = \$ **3**. Then the second column $(3, 6)$ is 1.5 times the first column $(2, 4)$: the columns are parallel, and the parallelogram they span has zero area.
 
 ### Solution 02-07.4
 
@@ -49,7 +49,7 @@ $$
 1(5\cdot9 - 8\cdot6) - 4(2\cdot9 - 8\cdot3) + 7(2\cdot6 - 5\cdot3) = -3 + 24 - 21 = \mathbf{0},
 $$
 
-so the vectors are dependent. The middle vector is the average of the outer two: $(1, 2, 3) - $ **2**$(4, 5, 6) + (7, 8, 9) = \mathbf{0}$.
+so the vectors are dependent. The middle vector is the average of the outer two: \$(1, 2, 3) - \$ **2**$(4, 5, 6) + (7, 8, 9) = \mathbf{0}$.
 
 (b) With columns $(1, 0, 1)$, $(1, 1, 0)$ and $(0, 1, 1)$:
 
@@ -69,19 +69,19 @@ $$
 
 *Check:* row 1 of $\mathbf{A}$ times the columns of $\mathbf{A}^{-1}$ gives $(-11 + 12, -2 + 2, 6 - 6) = (1, 0, 0)$ ✓. Row 3 gives $(-22 + 24 - 2, -4 + 4 + 0, 12 - 12 + 1) = (0, 0, 1)$ ✓.
 
-*Why integers:* $\det\mathbf{A} = $ **1** (the pivots are 1, 1 and 1). By the adjugate formula, $\mathbf{A}^{-1} = \mathbf{C}^\mathsf{T}/\det\mathbf{A}$ with integer cofactors.
+*Why integers:* \$\det\mathbf{A} = \$ **1** (the pivots are 1, 1 and 1). By the adjugate formula, $\mathbf{A}^{-1} = \mathbf{C}^\mathsf{T}/\det\mathbf{A}$ with integer cofactors.
 
 ### Solution 02-07.6
 
-(a) $\det\mathbf{A} = 1(1 - 2) - 1(-2 - 1) + 1(4 + 1) = $ **7**. Replacing columns 1, 2 and 3 in turn by $\mathbf{b} = (6, 3, 2)$:
+(a) \$\det\mathbf{A} = 1(1 - 2) - 1(-2 - 1) + 1(4 + 1) = \$ **7**. Replacing columns 1, 2 and 3 in turn by $\mathbf{b} = (6, 3, 2)$:
 
 $$
 \det\mathbf{B}_1 = \begin{vmatrix} 6 & 1 & 1 \\ 3 & -1 & 1 \\ 2 & 2 & -1\end{vmatrix} = 7, \quad \det\mathbf{B}_2 = \begin{vmatrix} 1 & 6 & 1 \\ 2 & 3 & 1 \\ 1 & 2 & -1\end{vmatrix} = 14, \quad \det\mathbf{B}_3 = \begin{vmatrix} 1 & 1 & 6 \\ 2 & -1 & 3 \\ 1 & 2 & 2\end{vmatrix} = 21 .
 $$
 
-So $\mathbf{x} = (7, 14, 21)/7 = $ **(1, 2, 3)**. Check equation 3: $1 + 4 - 3 = 2$ ✓.
+So \$\mathbf{x} = (7, 14, 21)/7 = \$ **(1, 2, 3)**. Check equation 3: $1 + 4 - 3 = 2$ ✓.
 
-(b) $20! = 2.433\times10^{18}$ terms, at $10^9$ per second, is $2.433\times10^9$ s, or about **77.09 years**. Elimination needs about $\tfrac23\cdot20^3 \approx $ **5333** flops, a few microseconds.
+(b) $20! = 2.433\times10^{18}$ terms, at $10^9$ per second, is $2.433\times10^9$ s, or about **77.09 years**. Elimination needs about \$\tfrac23\cdot20^3 \approx \$ **5333** flops, a few microseconds.
 
 ### Solution 02-07.7
 
@@ -102,7 +102,7 @@ The pivots are in columns 1 and 3, so the rank is **2**. A column-space basis is
 
 (a) Elimination with $\mathbf{b}$ carried along: $R_2 - 2R_1$ gives $(0, 1, 1 \mid b_2 - 2b_1)$, and $R_3 - R_1$ gives $(0, 1, 1 \mid b_3 - b_1)$. Subtracting the new row 2 from the new row 3 leaves $(0, 0, 0 \mid b_1 - b_2 + b_3)$. So the system is solvable exactly when $b_1 - b_2 + b_3 = 0$. The rank is 2, so $C(\mathbf{A})$ is the plane of $\mathbf{b}$ vectors satisfying this.
 
-(b) For $(4, 9, 5)$: $4 - 9 + 5 = $ **0** ✓. With the free variable $x_3 = 0$: $x_2 = b_2 - 2b_1 = $ **1** and $x_1 = 4 - x_2 = $ **3**. Null space: $x_3 = 1$ gives $x_2 = -1$ and $x_1 = -x_2 - 2 = -1$. So
+(b) For $(4, 9, 5)$: \$4 - 9 + 5 = \$ **0** ✓. With the free variable $x_3 = 0$: \$x_2 = b_2 - 2b_1 = \$ **1** and \$x_1 = 4 - x_2 = \$ **3**. Null space: $x_3 = 1$ gives $x_2 = -1$ and $x_1 = -x_2 - 2 = -1$. So
 
 $$
 \mathbf{x} = (3, 1, 0) + c\,(-1, -1, 1) .
@@ -110,7 +110,7 @@ $$
 
 Check: $\mathbf{A}(-1, -1, 1) = (-1 - 1 + 2, -2 - 3 + 5, -1 - 2 + 3) = \mathbf{0}$ ✓.
 
-(c) $1 - 0 + 0 = $ **1** $\ne 0$: no solution.
+(c) \$1 - 0 + 0 = \$ **1** $\ne 0$: no solution.
 
 ### Solution 02-07.9
 
@@ -118,7 +118,7 @@ Check: $\mathbf{A}(-1, -1, 1) = (-1 - 1 + 2, -2 - 3 + 5, -1 - 2 + 3) = \mathbf{0
 
 (b) $\det\begin{bmatrix} 1 & 1 & 1 \\ 0 & 2 & 1 \\ 0 & 0 & 3\end{bmatrix} = 1\cdot2\cdot3 = $ **6** (the edges are the columns, and the matrix is triangular).
 
-(c) $\det\mathbf{A} = 6$, so every area is multiplied by 6. The unit disk, area π, becomes an ellipse of area $6\pi = $ **18.85**.
+(c) $\det\mathbf{A} = 6$, so every area is multiplied by 6. The unit disk, area π, becomes an ellipse of area \$6\pi = \$ **18.85**.
 
 ### Solution 02-07.10
 
@@ -128,7 +128,7 @@ $$
 \begin{bmatrix} 4 & 6 \\ 6 & \mathbf{14}\end{bmatrix}\begin{bmatrix} c \\ d\end{bmatrix} = \begin{bmatrix} 12 \\ \mathbf{23}\end{bmatrix} .
 $$
 
-Subtracting 1.5 × row 1 from row 2 gives $5d = 5$, so $d = $ **1**, and then $c = (12 - 6)/4 = $ **1.5**. The line is $b = 1.5 + t$.
+Subtracting 1.5 × row 1 from row 2 gives $5d = 5$, so \$d = \$ **1**, and then \$c = (12 - 6)/4 = \$ **1.5**. The line is $b = 1.5 + t$.
 
 The residuals are $(1 - 1.5, 3 - 2.5, 4 - 3.5, 4 - 4.5) = (-0.5, 0.5, 0.5, -0.5)$, with sum of squares **1**.
 
@@ -136,13 +136,13 @@ The residuals are $(1 - 1.5, 3 - 2.5, 4 - 3.5, 4 - 4.5) = (-0.5, 0.5, 0.5, -0.5)
 
 ### Solution 02-07.11
 
-(a) $\mathbf{G} = \begin{bmatrix} 1.5 & -1 \\ -1 & 1.25\end{bmatrix}$ mS, with $\det\mathbf{G} = 1.875 - 1 = $ **0.875**. So
+(a) $\mathbf{G} = \begin{bmatrix} 1.5 & -1 \\ -1 & 1.25\end{bmatrix}$ mS, with \$\det\mathbf{G} = 1.875 - 1 = \$ **0.875**. So
 
 $$
 \mathbf{R} = \frac{1}{0.875}\begin{bmatrix} 1.25 & 1 \\ 1 & 1.5\end{bmatrix} = \begin{bmatrix} \mathbf{1.429} & \mathbf{1.143} \\ 1.143 & \mathbf{1.714}\end{bmatrix}\text{ kΩ}.
 $$
 
-(b) $\mathbf{v} = \mathbf{R}(5, -1)$ mA: $v_1 = 1.429\cdot5 - 1.143 = $ **6 V** and $v_2 = 1.143\cdot5 - 1.714 = $ **4 V**, as in Problem 02-06.11 ✓. (Exactly: $(6.25 - 1)/0.875 = 6$ and $(5 - 1.5)/0.875 = 4$.)
+(b) $\mathbf{v} = \mathbf{R}(5, -1)$ mA: \$v_1 = 1.429\cdot5 - 1.143 = \$ **6 V** and \$v_2 = 1.143\cdot5 - 1.714 = \$ **4 V**, as in Problem 02-06.11 ✓. (Exactly: $(6.25 - 1)/0.875 = 6$ and $(5 - 1.5)/0.875 = 4$.)
 
 (c) From node 1, with the sources removed, $R_1 = 2$ kΩ is in parallel with $R_2 + R_3 = 5$ kΩ: $2\parallel5 = 1.429$ kΩ ✓. From node 2, $R_3 = 4$ kΩ is in parallel with $R_2 + R_1 = 3$ kΩ: $4\parallel3 = 1.714$ kΩ ✓.
 
@@ -182,7 +182,7 @@ $$
 \mathbf{G} = \begin{bmatrix} 2 & -1 & -1 \\ -1 & 3 & -1 \\ -1 & -1 & 3\end{bmatrix}\text{ mS}.
 $$
 
-Solving $\mathbf{G}\mathbf{v} = (1, 0, 0)$: rows 2 and 3 are symmetric, so $v_2 = v_3$. Then row 2 gives $-v_1 + 2v_2 = 0$, and row 1 gives $2v_1 - 2v_2 = 1$. So $v_1 = $ **1 V** and $v_2 = v_3 = $ **0.5 V**. The 2–3 resistor carries $(v_2 - v_3)/1\text{ kΩ} = $ **0**: the bridge is **balanced**, because the two sides are identical, so nodes 2 and 3 sit at the same voltage.
+Solving $\mathbf{G}\mathbf{v} = (1, 0, 0)$: rows 2 and 3 are symmetric, so $v_2 = v_3$. Then row 2 gives $-v_1 + 2v_2 = 0$, and row 1 gives $2v_1 - 2v_2 = 1$. So \$v_1 = \$ **1 V** and \$v_2 = v_3 = \$ **0.5 V**. The 2–3 resistor carries \$(v_2 - v_3)/1\text{ kΩ} = \$ **0**: the bridge is **balanced**, because the two sides are identical, so nodes 2 and 3 sit at the same voltage.
 
 (c) Now $G_{33} = 1 + 1 + 0.5 = 2.5$ mS. Solving gives
 
@@ -190,7 +190,7 @@ $$
 \mathbf{v} = \left(\tfrac{13}{11}, \tfrac{7}{11}, \tfrac{8}{11}\right) = (\mathbf{1.182}, \mathbf{0.6364}, \mathbf{0.7273})\text{ V}.
 $$
 
-The 2–3 resistor carries $(v_2 - v_3)/1\text{ kΩ} = -1/11$ mA, that is **0.09091 mA** flowing from node 3 to node 2. Raising the 3–0 resistance lifted node 3 above node 2. The source sees $v_1/(1\text{ mA}) = $ **1.182 kΩ**.
+The 2–3 resistor carries $(v_2 - v_3)/1\text{ kΩ} = -1/11$ mA, that is **0.09091 mA** flowing from node 3 to node 2. Raising the 3–0 resistance lifted node 3 above node 2. The source sees \$v_1/(1\text{ mA}) = \$ **1.182 kΩ**.
 
 *Check (KCL at node 3):* in from node 1, $(1.182 - 0.7273)/1 = 0.4545$ mA; out to ground, $0.7273/2 = 0.3636$ mA; out to node 2, 0.0909 mA. And $0.3636 + 0.0909 = 0.4545$ ✓.
 
@@ -202,7 +202,7 @@ $$
 \begin{bmatrix} 5 & 10 \\ 10 & 30\end{bmatrix}\begin{bmatrix} a \\ b\end{bmatrix} = \begin{bmatrix} \sum\ln v_i \\ \sum t_i\ln v_i\end{bmatrix} .
 $$
 
-They give $b = $ **−0.4992** ms⁻¹ and $a = 1.6119$. So $V_0 = e^a = $ **5.012 V** and $\tau = -1/b = $ **2.003 ms**.
+They give \$b = \$ **−0.4992** ms⁻¹ and $a = 1.6119$. So \$V_0 = e^a = \$ **5.012 V** and \$\tau = -1/b = \$ **2.003 ms**.
 
 (b) The log fit minimizes squared errors in $\ln v$, which are roughly *relative* errors $\Delta v/v$. A ±5 mV reading error at 0.68 V is a 0.7% relative error, but at 5 V only 0.1%. So the log fit gives the small, late readings as much influence as the large, early ones. The direct fit minimizes squared errors in volts and so trusts the large readings more. Which is right depends on the noise. If each reading has the same *absolute* uncertainty, the direct fit (or a log fit weighted by $v_i^2$) is the appropriate one. If the uncertainty is a fixed *percentage*, the plain log fit is. Here the two estimates of τ differ by **0.3%**, small but larger than the rounding of the data alone would suggest. That is why calibration procedures state which error model they assume.
 
@@ -245,7 +245,7 @@ So **3** of the six are subspaces.
 
 (b) Adding a multiple of column $j$ to column $i$ of $\mathbf{A}$ is adding a multiple of row $j$ to row $i$ of $\mathbf{A}^\mathsf{T}$, which does not change $\det\mathbf{A}^\mathsf{T}$. Since $\det\mathbf{A} = \det\mathbf{A}^\mathsf{T}$, $\det\mathbf{A}$ is unchanged too.
 
-(c) The (1, 1) entry is zero, so exchange rows 1 and 2 (one exchange, a factor −1): $\begin{bmatrix}1 & 1 & 1\\ 0 & 2 & 1\\ 2 & 0 & 3\end{bmatrix}$. Subtract 2 × row 1 from row 3: $(0, -2, 1)$. Add row 2 to row 3: $(0, 0, 2)$. The pivots are 1, 2 and 2, so $\det = -(1\cdot2\cdot2) = $ **−4**. Cofactor check down column 1: $0\cdot C_{11} - 1\cdot\det\begin{bmatrix}2 & 1\\ 0 & 3\end{bmatrix} + 2\cdot\det\begin{bmatrix}2 & 1\\ 1 & 1\end{bmatrix} = -6 + 2 = -4$ ✓.
+(c) The (1, 1) entry is zero, so exchange rows 1 and 2 (one exchange, a factor −1): $\begin{bmatrix}1 & 1 & 1\\ 0 & 2 & 1\\ 2 & 0 & 3\end{bmatrix}$. Subtract 2 × row 1 from row 3: $(0, -2, 1)$. Add row 2 to row 3: $(0, 0, 2)$. The pivots are 1, 2 and 2, so \$\det = -(1\cdot2\cdot2) = \$ **−4**. Cofactor check down column 1: $0\cdot C_{11} - 1\cdot\det\begin{bmatrix}2 & 1\\ 0 & 3\end{bmatrix} + 2\cdot\det\begin{bmatrix}2 & 1\\ 1 & 1\end{bmatrix} = -6 + 2 = -4$ ✓.
 
 ### Solution 02-07.18
 
@@ -263,7 +263,7 @@ so $P_{11} = $ **0.1111** and $P_{22} = $ **0.4444**. Its trace is $(1 + 4 + 4)/
 
 ### Solution 02-07.19
 
-(a) With $m = 5$, $n = 7$ and $r = 3$: the column space has dimension **3** (in $\mathbb{R}^5$), the null space $n - r = $ **4** (in $\mathbb{R}^7$), the row space **3** (in $\mathbb{R}^7$) and the left null space $m - r = $ **2** (in $\mathbb{R}^5$).
+(a) With $m = 5$, $n = 7$ and $r = 3$: the column space has dimension **3** (in $\mathbb{R}^5$), the null space \$n - r = \$ **4** (in $\mathbb{R}^7$), the row space **3** (in $\mathbb{R}^7$) and the left null space \$m - r = \$ **2** (in $\mathbb{R}^5$).
 
 (b) With $+1$ at each branch's start and $-1$ at its end:
 
@@ -281,9 +281,9 @@ $$
 \mathbf{A} = \begin{bmatrix}1/3 & 2/3\\ 2/3 & -2/3\\ 2/3 & 1/3\end{bmatrix}\begin{bmatrix}3 & 1\\ 0 & 1\end{bmatrix}.
 $$
 
-(b) $\mathbf{Q}^\mathsf{T}\mathbf{b} = \big((3 + 6 + 6)/3,\ (6 - 6 + 3)/3\big) = (5, 1)$. Back substitution: $x_2 = $ **1**, then $3x_1 + 1 = 5$ gives $x_1 = 4/3 = $ **1.333**. Normal equations: $\mathbf{A}^\mathsf{T}\mathbf{A} = \begin{bmatrix}9 & 3\\ 3 & 2\end{bmatrix}$ and $\mathbf{A}^\mathsf{T}\mathbf{b} = (15, 6)$; then $9(4/3) + 3 = 15$ ✓ and $3(4/3) + 2 = 6$ ✓.
+(b) $\mathbf{Q}^\mathsf{T}\mathbf{b} = \big((3 + 6 + 6)/3,\ (6 - 6 + 3)/3\big) = (5, 1)$. Back substitution: \$x_2 = \$ **1**, then $3x_1 + 1 = 5$ gives \$x_1 = 4/3 = \$ **1.333**. Normal equations: $\mathbf{A}^\mathsf{T}\mathbf{A} = \begin{bmatrix}9 & 3\\ 3 & 2\end{bmatrix}$ and $\mathbf{A}^\mathsf{T}\mathbf{b} = (15, 6)$; then $9(4/3) + 3 = 15$ ✓ and $3(4/3) + 2 = 6$ ✓.
 
-(c) $\mathbf{e} = \mathbf{b} - \mathbf{A}\hat{\mathbf{x}} = (3, 3, 3) - (7/3, 8/3, 11/3) = (2/3, 1/3, -2/3)$, of length $\sqrt{(4 + 1 + 4)/9} = $ **1**. Dot products: with $\mathbf{a}_1$, $(2 + 2 - 4)/3 = 0$ ✓; with $\mathbf{a}_2$, $(2 + 0 - 2)/3 = 0$ ✓.
+(c) $\mathbf{e} = \mathbf{b} - \mathbf{A}\hat{\mathbf{x}} = (3, 3, 3) - (7/3, 8/3, 11/3) = (2/3, 1/3, -2/3)$, of length \$\sqrt{(4 + 1 + 4)/9} = \$ **1**. Dot products: with $\mathbf{a}_1$, $(2 + 2 - 4)/3 = 0$ ✓; with $\mathbf{a}_2$, $(2 + 0 - 2)/3 = 0$ ✓.
 
 <!-- answer-key -->
 | ID | Quantity | Value | Unit |

@@ -242,7 +242,7 @@ $$
 v_C(t) = 12 + e^{-2000t}\big(-4\cos6000t + 5.333\sin6000t\big)\ \text{V},
 $$
 
-the same answer 07-03 found (at 0.5 ms, **13.73 V**). **Checks:** the initial-value theorem gives $\lim_{s\to\infty}sV_C = $ **8 V** $= v_C(0^+)$, and the final-value theorem (poles of $sV_C$ in the left half-plane) gives **12 V** ✓.
+the same answer 07-03 found (at 0.5 ms, **13.73 V**). **Checks:** the initial-value theorem gives \$\lim_{s\to\infty}sV_C = \$ **8 V** $= v_C(0^+)$, and the final-value theorem (poles of $sV_C$ in the left half-plane) gives **12 V** ✓.
 
 **What the s-domain saved.** No initial slope had to be found by hand: the initial-condition sources carried both $v_C(0^-)$ and $i_L(0^-)$ into the algebra, and the slope $\dot v_C(0^+) = i_L(0^+)/C$ is implied.
 
@@ -278,13 +278,13 @@ $$
 
 (b) The poles are $p = -1$ and $p = -\tfrac12 \pm j\tfrac{\sqrt3}{2}$, all on the unit circle: $s = -\omega_c$ and $s = \omega_c\,(-0.5 \pm j0.866)$. Three poles equally spaced on a circle in the left half-plane is the **Butterworth** pattern of 07-08. There are no finite zeros: the series inductor and shunt capacitors can only block at infinite frequency.
 
-(c) DC gain: $H(0) = $ **0.5**, the 50 Ω divider (inductor short, capacitors open). The step response, from the partial fractions $\tfrac{1}{2p} - \tfrac{1}{2(p + 1)} - \tfrac{1}{2(p^2 + p + 1)}$, is
+(c) DC gain: \$H(0) = \$ **0.5**, the 50 Ω divider (inductor short, capacitors open). The step response, from the partial fractions $\tfrac{1}{2p} - \tfrac{1}{2(p + 1)} - \tfrac{1}{2(p^2 + p + 1)}$, is
 
 $$
 y(\theta) = \tfrac12 - \tfrac12e^{-\theta} - \tfrac{1}{\sqrt3}\,e^{-\theta/2}\sin\!\big(\tfrac{\sqrt3}{2}\theta\big), \qquad \theta = \omega_ct .
 $$
 
-It peaks at $\theta = 4.922$ (θ is dimensionless time, not a time constant), that is $t = $ **0.7834 µs**, at $y = 0.5407$: an overshoot of **8.15%**. A complex pole pair with ζ = 0.5 alone would overshoot 16.3%; the real pole slows the start and halves the overshoot.
+It peaks at $\theta = 4.922$ (θ is dimensionless time, not a time constant), that is \$t = \$ **0.7834 µs**, at $y = 0.5407$: an overshoot of **8.15%**. A complex pole pair with ζ = 0.5 alone would overshoot 16.3%; the real pole slows the start and halves the overshoot.
 
 **Units check.** $RC$ and $L/R$ are in seconds; $p$ is dimensionless ✓.
 **Sanity check.** $H(0) = 0.5$ and $H(p) \approx 1/(2p^3)$ for large $p$: a third-order filter falls three times as fast as an RC above its corner ✓.
@@ -301,7 +301,7 @@ $$
 H(s) = \frac{Z_p}{R_1 + Z_p} = \frac{R_2 + sL}{R_1LCs^2 + (L + R_1R_2C)s + R_1 + R_2} = \frac{10^4\,(s + 1000)}{s^2 + 11\,000s + 1.1\times10^8} .
 $$
 
-(b) The zero is at $s = $ **−1000 s⁻¹**: the frequency where the shunt branch $R_2 + sL$ has zero impedance and shorts node a. The poles are $-5500 \pm j8930$ s⁻¹, and the DC gain is $H(0) = 10/110 = $ **0.09091**.
+(b) The zero is at \$s = \$ **−1000 s⁻¹**: the frequency where the shunt branch $R_2 + sL$ has zero impedance and shorts node a. The poles are $-5500 \pm j8930$ s⁻¹, and the DC gain is \$H(0) = 10/110 = \$ **0.09091**.
 
 (c) Factor $H(s) = (1 + s/1000)\,H_{ap}(s)$, with $H_{ap}$ the same poles and DC gain but no zero. Then $v = v_{ap} + 10^{-3}\,dv_{ap}/dt$. The zero sits ten times below the poles' natural frequency (10.49 krad/s), so the derivative term is large: during the fast initial rise, $dv_{ap}/dt$ reaches thousands of volts per second, and $10^{-3}$ times that is several volts. The all-pole part alone would peak at 1.144 V (the 02-03 overshoot for ζ = 0.524); the derivative term carries the response to 6.066 V.
 
@@ -318,7 +318,7 @@ $$
 I(s) = \frac{10/s}{1/(sC_1) + 1/(sC_2)} = 10\,\frac{C_1C_2}{C_1 + C_2} = 8\times10^{-6}\ \text{A·s},
 $$
 
-a constant: $i(t) = 8\ \mu\text{C}\times\delta(t)$, an impulse carrying **8 µC** in zero time. The first capacitor ends at $10 - 8/1 = $ **2.000 V** and the second at $8/4 = 2.000$ V: equal, as charge conservation requires ($10\ \mu\text{C}$ shared over 5 µF). Energy: before, $\tfrac12(1\ \mu\text{F})(10^2) = $ **50.00 µJ**; after, $\tfrac12(5\ \mu\text{F})(2^2) = $ **10.00 µJ**. The 40 µJ difference has no home in the ideal circuit; with any series resistance, however small, it is dissipated there (07-01 Problem 07-01.6), and with series inductance the charge would oscillate instead.
+a constant: $i(t) = 8\ \mu\text{C}\times\delta(t)$, an impulse carrying **8 µC** in zero time. The first capacitor ends at \$10 - 8/1 = \$ **2.000 V** and the second at $8/4 = 2.000$ V: equal, as charge conservation requires ($10\ \mu\text{C}$ shared over 5 µF). Energy: before, \$\tfrac12(1\ \mu\text{F})(10^2) = \$ **50.00 µJ**; after, \$\tfrac12(5\ \mu\text{F})(2^2) = \$ **10.00 µJ**. The 40 µJ difference has no home in the ideal circuit; with any series resistance, however small, it is dissipated there (07-01 Problem 07-01.6), and with series inductance the charge would oscillate instead.
 
 **Sanity check.** Charge: $1\times10 = 10$ µC before, $1\times2 + 4\times2 = 10$ µC after ✓.
 
@@ -361,7 +361,7 @@ $$
 \frac{Z_p}{Z_s + Z_p} = \frac{s\tau}{(s\tau)^2 + 3s\tau + 1}, \qquad\text{so}\qquad (s\tau)^2 + (3 - K)\,s\tau + 1 = 0 ,
 $$
 
-that is $s^2 + (3 - K)\,\omega_0s + \omega_0^2 = 0$ with $\omega_0 = 1/RC = $ **10.00 krad/s** ($f_0 = $ **1.592 kHz**).
+that is $s^2 + (3 - K)\,\omega_0s + \omega_0^2 = 0$ with \$\omega_0 = 1/RC = \$ **10.00 krad/s** (\$f_0 = \$ **1.592 kHz**).
 
 (b) By §3.8 the quadratic is stable exactly when $3 - K > 0$.
 
@@ -369,7 +369,7 @@ that is $s^2 + (3 - K)\,\omega_0s + \omega_0^2 = 0$ with $\omega_0 = 1/RC = $ **
 - $K = 3$: $s = \pm j10^4$: on the imaginary axis, a sustained sinusoid at 1.592 kHz.
 - $K = 3.1$: $s = +500 \pm j9987$: right half-plane, unstable, a growing sinusoid.
 
-(c) The envelope grows as $e^{500t}$ (time constant **2.000 ms**), so 1 mV becomes 1 V after $\ln1000/500 = $ **13.82 ms**, about 22 cycles. In a real oscillator the amplitude then limits as the amplifier saturates or an amplitude-control element lowers $K$ back to 3 ([12-09](../../12-electronics-2/chapters/12-09-oscillators.md)).
+(c) The envelope grows as $e^{500t}$ (time constant **2.000 ms**), so 1 mV becomes 1 V after \$\ln1000/500 = \$ **13.82 ms**, about 22 cycles. In a real oscillator the amplitude then limits as the amplifier saturates or an amplitude-control element lowers $K$ back to 3 ([12-09](../../12-electronics-2/chapters/12-09-oscillators.md)).
 
 **Units check.** $RC$ in s, so $\omega_0$ in 1/s ✓.
 **Sanity check.** The Wien network alone is passive (two R, two C), and its poles are real and negative ($K = 0$ gives $s\tau = (-3 \pm\sqrt5)/2$), as 07-03 §3.9 requires of an RC circuit. Only the amplifier can make it ring or grow ✓.

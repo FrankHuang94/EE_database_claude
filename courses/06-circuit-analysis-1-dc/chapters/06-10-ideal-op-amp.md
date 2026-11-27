@@ -169,7 +169,7 @@ Two practical points. A slowly varying or noisy input near the threshold makes t
 
 **Setup.** An inverting amplifier has $R_1$ = 10 kΩ and $R_2$ = 47 kΩ. For a 0.5 V input, find the gain, the output, the input current and the input resistance.
 
-**Solution.** Gain $-47/10 = $ **−4.7**; output $-4.7\times0.5 = $ **−2.35 V**. The − input is a virtual ground, so the input current is $0.5/10\ \text{kΩ} = $ **50 µA** and the input resistance is **10 kΩ**. The same 50 µA flows through $R_2$: $50\ \text{µA}\times47\ \text{kΩ} = 2.35$ V across it, with the output end negative ✓.
+**Solution.** Gain \$-47/10 = \$ **−4.7**; output \$-4.7\times0.5 = \$ **−2.35 V**. The − input is a virtual ground, so the input current is \$0.5/10\ \text{kΩ} = \$ **50 µA** and the input resistance is **10 kΩ**. The same 50 µA flows through $R_2$: $50\ \text{µA}\times47\ \text{kΩ} = 2.35$ V across it, with the output end negative ✓.
 
 **Units check.** V/kΩ = mA ✓.
 
@@ -179,7 +179,7 @@ Two practical points. A slowly varying or noisy input near the threshold makes t
 
 **Setup.** A 3-bit DAC uses a summing amplifier: bits $b_2$, $b_1$, $b_0$ (0 or 5 V) drive 10 kΩ, 20 kΩ and 40 kΩ into the virtual ground, with $R_f$ = 10 kΩ. Find the output for codes 101, 111 and 001, and compare with the passive DAC of Example 06-07.5.
 
-**Solution.** $v_{out} = -10\ \text{kΩ}\times\sum_k v_k/R_k = -(b_2 + b_1/2 + b_0/4)\times5$ V. Code 101: $-(5 + 1.25) = $ **−6.25 V**; 111: **−8.75 V**; 001: **−1.25 V** (1 LSB = 1.25 V).
+**Solution.** $v_{out} = -10\ \text{kΩ}\times\sum_k v_k/R_k = -(b_2 + b_1/2 + b_0/4)\times5$ V. Code 101: \$-(5 + 1.25) = \$ **−6.25 V**; 111: **−8.75 V**; 001: **−1.25 V** (1 LSB = 1.25 V).
 
 **Units check.** kΩ × V/kΩ = V ✓.
 
@@ -191,7 +191,7 @@ Two practical points. A slowly varying or noisy input near the threshold makes t
 
 **Solution.** (a) $100\times1.249\ \text{mV} = $ **124.9 mV**.
 
-(b) Apply 1.25 V to both inputs and search all 16 corner combinations of the four tolerances. The worst corner (the − path's ratio $R_2/R_1$ high and the + path's ratio $R_4/R_3$ low) gives **50.5 mV**; the opposite corner gives a slightly smaller 48.5 mV, because the denominator $1 + R_4/R_3$ is then larger. The worst corner's output is a common-mode gain of 0.0404 and a CMRR of $100/0.0404 = $ **2475** (**67.9 dB**). The approximation gives $101/0.04 = 2525$ (68.0 dB). The common-mode error is **40%** of the signal.
+(b) Apply 1.25 V to both inputs and search all 16 corner combinations of the four tolerances. The worst corner (the − path's ratio $R_2/R_1$ high and the + path's ratio $R_4/R_3$ low) gives **50.5 mV**; the opposite corner gives a slightly smaller 48.5 mV, because the denominator $1 + R_4/R_3$ is then larger. The worst corner's output is a common-mode gain of 0.0404 and a CMRR of \$100/0.0404 = \$ **2475** (**67.9 dB**). The approximation gives $101/0.04 = 2525$ (68.0 dB). The common-mode error is **40%** of the signal.
 
 (c) The amplifier's input resistance on the − side is only $R_1$ = 1 kΩ (and about 101 kΩ on the + side), unequal and comparable to the bridge's 350 Ω output resistance (Problem 06-08.4): it loads the bridge unequally, unbalancing it. Both problems point to the instrumentation amplifier.
 

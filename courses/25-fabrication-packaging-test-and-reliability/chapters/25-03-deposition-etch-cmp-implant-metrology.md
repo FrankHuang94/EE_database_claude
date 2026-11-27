@@ -283,7 +283,7 @@ A noisy gauge therefore makes a capable process look incapable (lower apparent $
 
 - (a) $143.9/116.9 - 1$ = **23.1**%.
 - (b) Foundry and logic **54.2**%, DRAM **27.0**%, NAND **9.7**%.
-- (c) $165.9/1.232$ = **134.7** $B; TechInsights is **1.1**% higher.
+- (c) $165.9/1.232$ = **134.7** \$B; TechInsights is **1.1**% higher.
 
 **Units check.** $B ÷ $B is dimensionless. ✓
 

@@ -126,7 +126,7 @@ No single geometry achieves both. A 50 Ω air line has 10.3% more loss than the 
 
 **Setup.** A source has $V_{th}$ = 10 V and $R_{th}$ = 8 Ω. Find the power and the efficiency for loads of 8 Ω, 4 Ω and 16 Ω.
 
-**Solution.** 8 Ω: $100\times8/16^2 = $ **3.125 W** $= V_{th}^2/4R_{th}$, at **50%** efficiency. 4 Ω: $100\times4/12^2 = $ **2.778 W**, at $4/12 = $ **33.3%**. 16 Ω: $100\times16/24^2 = $ **2.778 W**, at $16/24 = $ **66.7%**.
+**Solution.** 8 Ω: \$100\times8/16^2 = \$ **3.125 W** $= V_{th}^2/4R_{th}$, at **50%** efficiency. 4 Ω: \$100\times4/12^2 = \$ **2.778 W**, at \$4/12 = \$ **33.3%**. 16 Ω: \$100\times16/24^2 = \$ **2.778 W**, at \$16/24 = \$ **66.7%**.
 
 **Units check.** V²/Ω = W ✓.
 
@@ -138,7 +138,7 @@ No single geometry achieves both. A 50 Ω air line has 10.3% more loss than the 
 
 **Solution.** (a) $12^2/(4\times0.1) = $ **360 W** into 0.1 Ω, at 50% efficiency: the battery would dissipate another 360 W internally, at a current of $12/0.2 = $ **60 A**.
 
-(b) $\eta = R_L/(R_L + 0.1) = 0.95$ gives $R_L = $ **1.9 Ω**. The current is $12/2 = 6$ A, the load receives $6^2\times1.9 = $ **68.4 W** (19% of the maximum, as $4\times0.95\times0.05$ predicts) and the battery dissipates only $6^2\times0.1 = $ **3.6 W**.
+(b) $\eta = R_L/(R_L + 0.1) = 0.95$ gives \$R_L = \$ **1.9 Ω**. The current is $12/2 = 6$ A, the load receives \$6^2\times1.9 = \$ **68.4 W** (19% of the maximum, as $4\times0.95\times0.05$ predicts) and the battery dissipates only \$6^2\times0.1 = \$ **3.6 W**.
 
 (c) At maximum power the battery heats as much as the load is powered, wastes half its energy and draws a current far beyond its rating. Designers choose batteries with internal resistance small compared with the load, so they always operate on the right-hand side of Figure 1.
 
@@ -150,7 +150,7 @@ No single geometry achieves both. A 50 Ω air line has 10.3% more loss than the 
 
 **Setup.** The feedback amplifier of Example 06-08.3 has the Thévenin equivalent $V_{th}$ = −4 V (per volt of input) and $R_{th}$ = 909.1 Ω. What load extracts the most power, and how much is it for a 1 V input? (Power scales as the square of the input, so this is the power per V² of input.)
 
-**Solution.** $R_L = R_{th} = $ **909.1 Ω**, and $p_{max} = 4^2/(4\times909.1) = $ **4.4 mW** (in kΩ and V, $16/(4\times0.9091) = 4.4$ mW). The sign of $V_{th}$ does not matter: power depends on its square.
+**Solution.** \$R_L = R_{th} = \$ **909.1 Ω**, and \$p_{max} = 4^2/(4\times909.1) = \$ **4.4 mW** (in kΩ and V, $16/(4\times0.9091) = 4.4$ mW). The sign of $V_{th}$ does not matter: power depends on its square.
 
 **Units check.** V²/kΩ = mW ✓.
 
@@ -160,9 +160,9 @@ No single geometry achieves both. A 50 Ω air line has 10.3% more loss than the 
 
 **Setup.** A small thermoelectric generator (TEG) on a warm surface behaves as a source of 0.5 V open-circuit behind 2 Ω. (a) What is the most power it can deliver, and at what voltage? (b) A converter that holds its input at 0.4 V instead receives how much? And at 0.1 V? (c) Why do harvesting converters track this point instead of presenting a fixed load?
 
-**Solution.** (a) $0.5^2/(4\times2) = $ **31.25 mW**, at $V_{oc}/2$ = **0.25 V** (and 125 mA).
+**Solution.** (a) \$0.5^2/(4\times2) = \$ **31.25 mW**, at $V_{oc}/2$ = **0.25 V** (and 125 mA).
 
-(b) With $p = v(V_{oc} - v)/R$: at 0.4 V, $0.4\times0.1/2 = $ **20 mW**; at 0.1 V, $0.1\times0.4/2 = $ **20 mW**. Both are 64% of the maximum: the parabola in $v$ is symmetric.
+(b) With $p = v(V_{oc} - v)/R$: at 0.4 V, \$0.4\times0.1/2 = \$ **20 mW**; at 0.1 V, \$0.1\times0.4/2 = \$ **20 mW**. Both are 64% of the maximum: the parabola in $v$ is symmetric.
 
 (c) The TEG's open-circuit voltage rises with the temperature difference across it (Seebeck effect), so the best operating voltage moves as conditions change. A **maximum-power-point tracking** (MPPT) converter measures its input power and adjusts its input voltage to stay near $V_{oc}/2$. Solar cells are not linear sources (their $i$–$v$ curve is a diode curve, 06-02), so their maximum-power point is not at half the open-circuit voltage, but the tracking principle is the same.
 
@@ -174,9 +174,9 @@ No single geometry achieves both. A 50 Ω air line has 10.3% more loss than the 
 
 **Setup.** For air-dielectric coax with fixed outer radius, (a) find the ratio $b/a$ and $Z_0$ that minimize conductor loss, and those that maximize peak power; (b) evaluate a 50 Ω line's loss and power capacity relative to these optima; (c) find the minimum-loss impedance with polyethylene ($\varepsilon_r$ = 2.25); (d) a popular account says 50 Ω is the geometric mean of 30 Ω and 77 Ω. Check the arithmetic.
 
-**Solution.** (a) *Loss:* minimize $f(x) = (1 + x)/\ln x$. Its derivative vanishes where $\ln x = (1 + x)/x$, that is $\ln x = 1 + 1/x$; numerically $x = $ **3.591**, giving $Z_0 = 60\ln 3.591 = $ **76.7 Ω**. (At the optimum $f = x$, a curiosity of this function.) *Power:* maximize $g(x) = \ln x/x^2$. Its derivative vanishes where $1 - 2\ln x = 0$, so $x = \sqrt e = $ **1.649** and $Z_0 = 60\times0.5 = $ **30.0 Ω**.
+**Solution.** (a) *Loss:* minimize $f(x) = (1 + x)/\ln x$. Its derivative vanishes where $\ln x = (1 + x)/x$, that is $\ln x = 1 + 1/x$; numerically \$x = \$ **3.591**, giving \$Z_0 = 60\ln 3.591 = \$ **76.7 Ω**. (At the optimum $f = x$, a curiosity of this function.) *Power:* maximize $g(x) = \ln x/x^2$. Its derivative vanishes where $1 - 2\ln x = 0$, so \$x = \sqrt e = \$ **1.649** and \$Z_0 = 60\times0.5 = \$ **30.0 Ω**.
 
-(b) 50 Ω in air means $\ln x = 50/60$, $x = 2.301$. Then $f(2.301)/f(3.591) = 3.961/3.591 = $ **1.103**: 10.3% more loss than the optimum. And $g(2.301)/g(1.649) = 0.1574/0.1839 = $ **0.856**: 85.6% of the maximum peak power.
+(b) 50 Ω in air means $\ln x = 50/60$, $x = 2.301$. Then \$f(2.301)/f(3.591) = 3.961/3.591 = \$ **1.103**: 10.3% more loss than the optimum. And \$g(2.301)/g(1.649) = 0.1574/0.1839 = \$ **0.856**: 85.6% of the maximum peak power.
 
 (c) $Z_0 = 76.7/\sqrt{2.25} = $ **51.1 Ω**.
 

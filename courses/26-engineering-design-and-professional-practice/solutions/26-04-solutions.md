@@ -10,9 +10,9 @@ Problems: [26-04 problems](../problems/26-04-problems.md) · Chapter: [26-04](..
 
 (a) $0.45/18$ = **2.50**%.
 
-(b) $0.015 \times 22$ = **$0.330** per unit.
+(b) $0.015 \times 22$ = **\$0.330** per unit.
 
-(c) The royalty is $0.005 \times 300$ = **$1.50** per phone, which is $1.50/15$ = **10.0**% of the chip's price (26-02 §3.6).
+(c) The royalty is $0.005 \times 300$ = **\$1.50** per phone, which is $1.50/15$ = **10.0**% of the chip's price (26-02 §3.6).
 
 (d) The royalty takes 10 points of price, so the margin falls from 55% to **45.0**%.
 
@@ -32,37 +32,37 @@ Problems: [26-04 problems](../problems/26-04-problems.md) · Chapter: [26-04](..
 
 (a) $(9 - 1.5)/0.25$ = **30** million units.
 
-(b) The licence costs $1.5 + 0.25 \times 20$ = **$6.5 M** against $9 M: license, saving **$2.5 M**.
+(b) The licence costs $1.5 + 0.25 \times 20$ = **\$6.5 M** against $9 M: license, saving **$2.5 M**.
 
-(c) The expected build cost is $9 + 0.2 \times 6$ = **$10.2 M**, so $V^* = (10.2 - 1.5)/0.25$ = **34.8** million units.
+(c) The expected build cost is $9 + 0.2 \times 6$ = **\$10.2 M**, so $V^* = (10.2 - 1.5)/0.25$ = **34.8** million units.
 
 ### Solution 26-04.4
 
 (a) $U = 2/1.1^2 + 6/1.1^3 + 8/1.1^4 + 6/1.1^5 + 3/1.1^6 = 1.653 + 4.508 + 5.464 + 3.726 + 1.693$ = **17.04** million units.
 
-(b) Build: $10 + 10/1.1$ = **$19.09 M**. Licence: $4 + 0.60 \times 17.04$ = **$14.23 M** (royalties **$10.23 M**). License, saving **$4.86 M**.
+(b) Build: $10 + 10/1.1$ = **\$19.09 M**. Licence: $4 + 0.60 \times 17.04$ = **$14.23 M** (royalties **$10.23 M**). License, saving **\$4.86 M**.
 
-(c) $U^* = (19.09 - 4)/0.60$ = **25.2** million discounted units, **1.48** times the plan. The margin is thinner than in Example 26-04.2 because the planned royalties are a larger share of the build cost: **54**% ($10.23 M of $19.09 M) against **35**% ($9.70 M of $27.75 M).
+(c) $U^* = (19.09 - 4)/0.60$ = **25.2** million discounted units, **1.48** times the plan. The margin is thinner than in Example 26-04.2 because the planned royalties are a larger share of the build cost: **54**% (\$10.23 M of $19.09 M) against **35**% ($9.70 M of \$27.75 M).
 
 ### Solution 26-04.5
 
-(a) The ASPs are $25.00, $20.00, $16.00 and $12.80, so the royalties are **$0.400**, **$0.320**, **$0.256** and **$0.205** per unit.
+(a) The ASPs are \$25.00, \$20.00, \$16.00 and $12.80, so the royalties are **$0.400**, **$0.320**, **$0.256** and **\$0.205** per unit.
 
-(b) $U = 10 \times (P/A, 10\%, 4) = 10 \times 3.1699$ = **31.70** million units. Per-unit form: $0.40 \times 31.70$ = **$12.68 M**. Percentage form: $10 \times (0.400/1.1 + 0.320/1.1^2 + 0.256/1.1^3 + 0.2048/1.1^4)$ = **$9.60 M**.
+(b) $U = 10 \times (P/A, 10\%, 4) = 10 \times 3.1699$ = **31.70** million units. Per-unit form: $0.40 \times 31.70$ = **\$12.68 M**. Percentage form: $10 \times (0.400/1.1 + 0.320/1.1^2 + 0.256/1.1^3 + 0.2048/1.1^4)$ = **\$9.60 M**.
 
-(c) $r_{eq} = 9.60/31.70$ = **$0.303** per unit.
+(c) $r_{eq} = 9.60/31.70$ = **\$0.303** per unit.
 
-(d) With ASPs falling 10% a year, the percentage form is worth **$11.04 M** (equivalent to **$0.348** per unit). The licensee, expecting 20% erosion, prefers the percentage form ($9.60 M against $12.68 M); the licensor, even with its milder forecast, prefers the per-unit form ($12.68 M against $11.04 M). Their different forecasts leave room for a deal. A percentage rate above $1.6\% \times 12.68/11.04$ = **1.84**% is worth more to the licensor than $0.40 a unit, and a rate below $1.6\% \times 12.68/9.60$ = **2.11**% costs the licensee less than $0.40 a unit, so any rate between the two is preferred by both sides to the per-unit offer.
+(d) With ASPs falling 10% a year, the percentage form is worth **$11.04 M** (equivalent to **$0.348** per unit). The licensee, expecting 20% erosion, prefers the percentage form (\$9.60 M against $12.68 M); the licensor, even with its milder forecast, prefers the per-unit form ($12.68 M against \$11.04 M). Their different forecasts leave room for a deal. A percentage rate above $1.6\% \times 12.68/11.04$ = **1.84**% is worth more to the licensor than \$0.40 a unit, and a rate below $1.6\% \times 12.68/9.60$ = **2.11**% costs the licensee less than \$0.40 a unit, so any rate between the two is preferred by both sides to the per-unit offer.
 
 ### Solution 26-04.6
 
-(a) $0.015 \times 30 + 0.20 + 0.05 + 0.30 + 0.25 = 0.45 + 0.80$ = **$1.25** per unit.
+(a) $0.015 \times 30 + 0.20 + 0.05 + 0.30 + 0.25 = 0.45 + 0.80$ = **\$1.25** per unit.
 
 (b) $1.25/30$ = **4.17**% of ASP.
 
 (c) Before royalties $(30 - 14)/30$ = **53.3**%; after, $(30 - 14 - 1.25)/30$ = **49.2**%.
 
-(d) $1.25/16$ = **7.8**% of the gross profit, although no single royalty exceeds $0.45.
+(d) $1.25/16$ = **7.8**% of the gross profit, although no single royalty exceeds \$0.45.
 
 ### Solution 26-04.7
 
@@ -84,7 +84,7 @@ Problems: [26-04 problems](../problems/26-04-problems.md) · Chapter: [26-04](..
 
 ### Solution 26-04.9
 
-(a) Cost per function is unchanged when $W_{N3}/W_{N5} = s_{eff}$: $17{,}000 \times 1.378$ = **$23,400**.
+(a) Cost per function is unchanged when $W_{N3}/W_{N5} = s_{eff}$: $17{,}000 \times 1.378$ = **\$23,400**.
 
 (b) $(30{,}000/20{,}000)/1.15$ = **1.30**: cost per function rises 30%.
 
@@ -102,31 +102,31 @@ Problems: [26-04 problems](../problems/26-04-problems.md) · Chapter: [26-04](..
 | 2 | 0.15 | **0.8968** | **$24.92** | **$4.44** | 2 M |
 | 3 | 0.10 | 0.9300 | $24.03 | $5.33 | 3 M |
 
-The total saving is $2.56 + 2 \times 4.44 + 3 \times 5.33$ = **$27.4 M**, less than the $30 M of NRE: N3 does not pay over 6 million units, although at the mature yield alone it would have saved $6 \times 5.33$ = **$32.0 M**. The yield ramp falls on the earliest units, and here it decides the case.
+The total saving is $2.56 + 2 \times 4.44 + 3 \times 5.33$ = **\$27.4 M**, less than the \$30 M of NRE: N3 does not pay over 6 million units, although at the mature yield alone it would have saved $6 \times 5.33$ = **\$32.0 M**. The yield ramp falls on the earliest units, and here it decides the case.
 
 ### Solution 26-04.11
 
-(a) DPW = **82**, $Y = e^{-0.65}$ = **0.5220**, good die $(20{,}000/82 + 2)/0.5220$ = **$471.04**.
+(a) DPW = **82**, $Y = e^{-0.65}$ = **0.5220**, good die $(20{,}000/82 + 2)/0.5220$ = **\$471.04**.
 
-(b) Monolithic: $(471.04 + 15)/0.99$ = **$490.95**. Chiplets: $(4 \times 65.09 + 10.83 + 50)/0.99^5$ = **$337.76**, **$153.19** less.
+(b) Monolithic: $(471.04 + 15)/0.99$ = **\$490.95**. Chiplets: $(4 \times 65.09 + 10.83 + 50)/0.99^5$ = **$337.76**, **$153.19** less.
 
-(c) Monolithic: $110 + 0.5 \times 490.95$ = **$355.5 M**. Chiplets: $8 + 0.5 \times 337.76$ = **$176.9 M**. Adding XL costs **$178.6 M** less with chiplets, because no new die is designed.
+(c) Monolithic: $110 + 0.5 \times 490.95$ = **\$355.5 M**. Chiplets: $8 + 0.5 \times 337.76$ = **$176.9 M**. Adding XL costs **$178.6 M** less with chiplets, because no new die is designed.
 
-(d) Monolithic $773.7 + 355.5$ = **$1,129.2 M**; chiplets $719.3 + 176.9$ = **$896.2 M**; chiplets save **$233.0 M**. Each additional product built from existing chiplets widens the gap; the largest products gain the most yield.
+(d) Monolithic $773.7 + 355.5$ = **\$1,129.2 M**; chiplets $719.3 + 176.9$ = **$896.2 M**; chiplets save **$233.0 M**. Each additional product built from existing chiplets widens the gap; the largest products gain the most yield.
 
 ### Solution 26-04.12
 
 (a) DPW = **1195**, $Y = e^{-0.055}$ = **0.9465**, good die $(20{,}000/1195 + 2)/0.9465$ = **$19.80**, **$8.96** more than on N6.
 
-(b) $(65.09 + 19.80 + 25)/0.99^2$ = **$112.12**.
+(b) $(65.09 + 19.80 + 25)/0.99^2$ = **\$112.12**.
 
 (c) **$9.14** more per S unit than with the N6 I/O die: the I/O area costs twice as much per wafer on N3 and gains nothing from the denser node.
 
 ### Solution 26-04.13
 
-(a) Merchant $1.0 \times 1.3 \times 8760 \times 5 \times 0.12$ = **$6,833**; custom $0.7 \times$ that = **$4,783**.
+(a) Merchant $1.0 \times 1.3 \times 8760 \times 5 \times 0.12$ = **\$6,833**; custom $0.7 \times$ that = **\$4,783**.
 
-(b) Merchant $30{,}000 + 12{,}000 + 6{,}833$ = **$48,833**; custom $(9{,}000 + 12{,}000 + 4{,}783)/0.8$ = **$32,229**.
+(b) Merchant $30{,}000 + 12{,}000 + 6{,}833$ = **\$48,833**; custom $(9{,}000 + 12{,}000 + 4{,}783)/0.8$ = **\$32,229**.
 
 (c) **$16,604** per merchant-equivalent.
 
@@ -136,27 +136,27 @@ The total saving is $2.56 + 2 \times 4.44 + 3 \times 5.33$ = **$27.4 M**, less t
 
 ### Solution 26-04.14
 
-(a) $0.30 \times 30{,}000$ = **$9,000**.
+(a) $0.30 \times 30{,}000$ = **\$9,000**.
 
-(b) $N_{eq}$ = 80,000, so $P_m^* = 29{,}438.64 + 800 \times 10^6/80{,}000 - 12{,}000 - 3{,}644.16$ = **$23,794**, at which the merchant keeps $1 - 9{,}000/23{,}794$ = **62.2**%.
+(b) $N_{eq}$ = 80,000, so $P_m^* = 29{,}438.64 + 800 \times 10^6/80{,}000 - 12{,}000 - 3{,}644.16$ = **\$23,794**, at which the merchant keeps $1 - 9{,}000/23{,}794$ = **62.2**%.
 
-(c) At $9,000 the merchant's cost per equivalent would be $9{,}000 + 12{,}000 + 3{,}644$ = **$24,644**, below the custom chip's **$29,439** even with no NRE at all. Equivalently, the lowest ceiling, reached as the fleet grows without limit, is $29{,}439 - 12{,}000 - 3{,}644$ = **$13,794**, above the merchant's cost. This custom chip is less efficient per unit of work than the merchant part; its whole advantage is the merchant's margin.
+(c) At \$9,000 the merchant's cost per equivalent would be $9{,}000 + 12{,}000 + 3{,}644$ = **$24,644**, below the custom chip's **$29,439** even with no NRE at all. Equivalently, the lowest ceiling, reached as the fleet grows without limit, is $29{,}439 - 12{,}000 - 3{,}644$ = **\$13,794**, above the merchant's cost. This custom chip is less efficient per unit of work than the merchant part; its whole advantage is the merchant's margin.
 
 ### Solution 26-04.15
 
-(a) Licensing then choosing costs $29.16 M at $p$ = 0.3; building now costs $27.75 + c_{port}$, so they tie at $c_{port}$ = **$1.41 M**.
+(a) Licensing then choosing costs \$29.16 M at $p$ = 0.3; building now costs $27.75 + c_{port}$, so they tie at $c_{port}$ = **\$1.41 M**.
 
 (b) $27.75 + 1 = 15.70 + 9.80 + 12.2p$ gives $p$ = **0.266**.
 
-(c) Build now **$30.75 M**; license then choose $15.70 + 0.6 \times 22 + 0.4 \times 9.80$ = **$32.82 M**; license both, with expected volume **17.4** million, $15.70 + 5 + 0.80 \times 17.4$ = **$34.62 M**. Building now is best. Flexibility is worth **$1.80 M** against licensing both, but committing to the build is worth more, because the high-volume outcome is now likely and the port is cheap.
+(c) Build now **\$30.75 M**; license then choose $15.70 + 0.6 \times 22 + 0.4 \times 9.80$ = **\$32.82 M**; license both, with expected volume **17.4** million, $15.70 + 5 + 0.80 \times 17.4$ = **$34.62 M**. Building now is best. Flexibility is worth **$1.80 M** against licensing both, but committing to the build is worth more, because the high-volume outcome is now likely and the port is cheap.
 
 ### Solution 26-04.16
 
-(a) $6{,}000/0.60$ = **$10,000**; $6{,}000/0.40$ = **$15,000**.
+(a) $6{,}000/0.60$ = **\$10,000**; $6{,}000/0.40$ = **\$15,000**.
 
-(b) $(15{,}000 + 12{,}000 + 2{,}551)/0.8$ = **$36,939** per merchant-equivalent; saving $45{,}644.16 - 36{,}938.64$ = **$8,706**; break-even $800 \times 10^6/8{,}706$ = **91,900** merchant-equivalents.
+(b) $(15{,}000 + 12{,}000 + 2{,}551)/0.8$ = **\$36,939** per merchant-equivalent; saving $45{,}644.16 - 36{,}938.64$ = **\$8,706**; break-even $800 \times 10^6/8{,}706$ = **91,900** merchant-equivalents.
 
-(c) The merchant would earn $30{,}000 - 6{,}000$ = **$24,000** per unit; the partner $10{,}000 - 6{,}000$ = **$4,000**; the buyer captures **$20,000** of the merchant's margin per chip, before the throughput shortfall, the extra slots and the NRE take their share.
+(c) The merchant would earn $30{,}000 - 6{,}000$ = **\$24,000** per unit; the partner $10{,}000 - 6{,}000$ = **$4,000**; the buyer captures **$20,000** of the merchant's margin per chip, before the throughput shortfall, the extra slots and the NRE take their share.
 
 ---
 

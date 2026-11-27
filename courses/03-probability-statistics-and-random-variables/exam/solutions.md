@@ -26,9 +26,9 @@ that is, **20,000 DPPM**, exactly the incoming defect rate and **31.71** times w
 
 (b) Failure needs two or more errors: $1 - e^{-0.2}(1 + 0.2) = $ **0.01752**.
 
-(c) Transmissions are geometric with success probability $1 - 0.01752$: mean $1/0.98248 = $ **1.018**.
+(c) Transmissions are geometric with success probability $1 - 0.01752$: mean \$1/0.98248 = \$ **1.018**.
 
-**4.** *(03-05)* (a) The standard error is $0.8/\sqrt{25} = $ **0.16 mA**, so $z = (11.6 - 12.0)/0.16 = $ **−2.5** and the one-sided p-value is $Q(2.5) = $ **6.210×10⁻³**. Since $p < 0.05$, reject $H_0$: the fix lowered the mean.
+**4.** *(03-05)* (a) The standard error is \$0.8/\sqrt{25} = \$ **0.16 mA**, so \$z = (11.6 - 12.0)/0.16 = \$ **−2.5** and the one-sided p-value is \$Q(2.5) = \$ **6.210×10⁻³**. Since $p < 0.05$, reject $H_0$: the fix lowered the mean.
 
 (b) The test rejects when $\bar X \le 12.0 - 1.645\times0.16 = $ **11.7368 mA**. If μ = 11.7 mA, $P(\bar X \le 11.7368) = 1 - Q\big((11.7368 - 11.7)/0.16\big) = 1 - Q(0.23) = $ **0.5910**: a 25-part test misses a real 0.3 mA improvement 41% of the time.
 
@@ -40,15 +40,15 @@ that is, **20,000 DPPM**, exactly the incoming defect rate and **31.71** times w
 
 (b) $\sigma = 90/Q^{-1}(10^{-12}) = 90/7.034 = $ **12.79 mV**.
 
-(c) The near level's errors need noise beyond $(90 - 4)/12 = 7.1667$σ and the far level's beyond 7.8333σ: BER $= \tfrac12\big(3.842\times10^{-13} + 2.376\times10^{-15}\big) = $ **1.933×10⁻¹³**, **6.058** times worse.
+(c) The near level's errors need noise beyond $(90 - 4)/12 = 7.1667$σ and the far level's beyond 7.8333σ: BER \$= \tfrac12\big(3.842\times10^{-13} + 2.376\times10^{-15}\big) = \$ **1.933×10⁻¹³**, **6.058** times worse.
 
 (d) Deep in a Gaussian tail, each fraction of a σ is worth a large factor in probability: losing 0.33σ on one side costs far more than gaining it on the other side returns (03-02 Problem 13).
 
 **6.** *(03-02, 03-04)* (a) $1/25\text{ GHz} = $ **40 ps**; random jitters add in quadrature: $\sqrt{1.2^2 + 0.9^2} = $ **1.5 ps**.
 
-(b) $TJ = 12 + 14.069\times1.5 = $ **33.10 ps**; the eye is $40 - 33.10 = $ **6.897 ps**, or **0.1724 UI**. At $10^{-15}$: $12 + 15.883\times1.5 = $ **35.82 ps**.
+(b) \$TJ = 12 + 14.069\times1.5 = \$ **33.10 ps**; the eye is \$40 - 33.10 = \$ **6.897 ps**, or **0.1724 UI**. At $10^{-15}$: \$12 + 15.883\times1.5 = \$ **35.82 ps**.
 
-(c) $TJ \le 40 - 8 = 32$ ps requires $\sigma_{RJ} \le (32 - 12)/14.069 = $ **1.422 ps**. With the 0.9 ps source fixed, the other must satisfy $\sqrt{1.422^2 - 0.9^2}$: at most **1.100 ps**, an 8% cut.
+(c) $TJ \le 40 - 8 = 32$ ps requires \$\sigma_{RJ} \le (32 - 12)/14.069 = \$ **1.422 ps**. With the 0.9 ps source fixed, the other must satisfy $\sqrt{1.422^2 - 0.9^2}$: at most **1.100 ps**, an 8% cut.
 
 **7.** *(03-03)* (a) Mean **0.5 V**. The three parts are uncorrelated, so their powers add: $0.5^2 + 0.2^2/2 + 0.03^2 = 0.25 + 0.02 + 0.0009 = $ **0.2709 V²**. RMS **0.5205 V**; AC RMS $\sqrt{0.0209} = $ **0.1446 V**.
 
@@ -62,17 +62,17 @@ that is, **20,000 DPPM**, exactly the incoming defect rate and **31.71** times w
 
 (b) $P(I > 3I_0) = Q(\ln3/\sigma_\ell) = Q(2.0512) = $ **0.02012**; the 99th percentile is $e^{2.326\sigma_\ell} = $ **3.476** times the median.
 
-(c) The sum of $2\times10^7$ independent leakages is close to $2\times10^7$ times the mean: $2\times10^7\times0.2\text{ nA}\times1.154 = $ **4.617 mA**. A median-device model predicts 4 mA, low by **13.36%** of the true value.
+(c) The sum of $2\times10^7$ independent leakages is close to $2\times10^7$ times the mean: \$2\times10^7\times0.2\text{ nA}\times1.154 = \$ **4.617 mA**. A median-device model predicts 4 mA, low by **13.36%** of the true value.
 
 (d) Jensen's inequality: for convex $g$, $\mathbb{E}[g(X)] \ge g(\mathbb{E}[X])$. Evaluating any convex dependence at the typical input underestimates the average.
 
 **9.** *(03-04)* (a) $\operatorname{Cov} = 0.6\times3\times4 = 7.2$ mV². $\operatorname{Var}(X - Y) = 9 + 16 - 14.4 = 10.6$, so σ = **3.256 mV**; $\operatorname{Var}\big((X + Y)/2\big) = (9 + 16 + 14.4)/4 = 9.85$, so σ = **3.138 mV**, *worse* than the better sensor alone (3 mV): with correlated errors and unequal noise, equal weighting lets the noisier sensor degrade the result.
 
-(b) $\operatorname{Var} = w^2\sigma_X^2 + (1 - w)^2\sigma_Y^2 + 2w(1 - w)c$; setting its derivative to zero gives $w = (\sigma_Y^2 - c)/(\sigma_X^2 + \sigma_Y^2 - 2c) = 8.8/10.6 = $ **0.8302**, and σ = **2.949 mV**.
+(b) $\operatorname{Var} = w^2\sigma_X^2 + (1 - w)^2\sigma_Y^2 + 2w(1 - w)c$; setting its derivative to zero gives \$w = (\sigma_Y^2 - c)/(\sigma_X^2 + \sigma_Y^2 - 2c) = 8.8/10.6 = \$ **0.8302**, and σ = **2.949 mV**.
 
 (c) With ρ = 0, $w = 16/25 = $ **0.64** and σ = $\sqrt{9\times16/25} = $ **2.4 mV**. Shared error (here 60% correlation) cannot be averaged away; combining helps only with the independent part (03-04 §3.3).
 
-**10.** *(03-04)* (a) λ = $2000\times5\times10^{-4} = 1$. Failure needs 5 or more errors: exactly (binomial) **3.648×10⁻³**; Poisson $1 - e^{-1}(1 + 1 + \tfrac12 + \tfrac16 + \tfrac1{24}) = $ **3.660×10⁻³**.
+**10.** *(03-04)* (a) λ = $2000\times5\times10^{-4} = 1$. Failure needs 5 or more errors: exactly (binomial) **3.648×10⁻³**; Poisson \$1 - e^{-1}(1 + 1 + \tfrac12 + \tfrac16 + \tfrac1{24}) = \$ **3.660×10⁻³**.
 
 (b) σ = $\sqrt{2000\times5\times10^{-4}\times(1 - 5\times10^{-4})} = $ **0.9997**; $z = (4.5 - 1)/0.9997 = $ **3.501**; $Q(3.5009) = $ **2.319×10⁻⁴**, about **15.73** times too small.
 
@@ -80,23 +80,23 @@ that is, **20,000 DPPM**, exactly the incoming defect rate and **31.71** times w
 
 (d) Mean $10^6\times3.648\times10^{-3} = $ **3648**, standard deviation $\sqrt{3648\times(1 - 0.003648)} = $ **60.29**.
 
-**11.** *(03-05)* (a) $\bar x = $ **1200.35 mV**, $s = $ **1.068 mV**, standard error $1.068/\sqrt8 = 0.3775$ mV, and the 95% interval is $1200.35 \pm 2.365\times0.3775$: **[1199.46, 1201.24] mV**.
+**11.** *(03-05)* (a) \$\bar x = \$ **1200.35 mV**, \$s = \$ **1.068 mV**, standard error $1.068/\sqrt8 = 0.3775$ mV, and the 95% interval is $1200.35 \pm 2.365\times0.3775$: **[1199.46, 1201.24] mV**.
 
 (b) $\hat C_p = 12/(6\times1.068) = $ **1.873**; $\hat C_{pk} = (1206 - 1200.35)/(3\times1.068) = $ **1.764** (the upper limit is nearer).
 
 (c) $\text{SE} = \sqrt{1/72 + 1.764^2/14} = $ **0.4859**, and the bound is $1.764 - 1.645\times0.4859 = $ **0.965** (the fourth digit depends on how intermediates are rounded). No: eight parts cannot demonstrate 1.33.
 
-(d) Solve $1.764 - 1.645\sqrt{1/(9n) + 1.764^2/(2(n - 1))} = 1.33$, which needs $\text{SE} = 0.434/1.645 = $ **0.2638**. Neglecting the small $1/(9n)$ term, $1.764^2/(2(n - 1)) = 0.2638^2$ gives $n - 1 \approx $ **22.35**. Then check whole numbers near 23 with the full formula: at $n = 24$ the bound is **1.322**, just short; at $n = 25$ it is **1.331**, just enough. About **25** parts.
+(d) Solve $1.764 - 1.645\sqrt{1/(9n) + 1.764^2/(2(n - 1))} = 1.33$, which needs \$\text{SE} = 0.434/1.645 = \$ **0.2638**. Neglecting the small $1/(9n)$ term, $1.764^2/(2(n - 1)) = 0.2638^2$ gives \$n - 1 \approx \$ **22.35**. Then check whole numbers near 23 with the full formula: at $n = 24$ the bound is **1.322**, just short; at $n = 25$ it is **1.331**, just enough. About **25** parts.
 
 **12.** *(03-05)* (a) $AF = \exp\big[(0.6/8.617333\times10^{-5})(1/343.15 - 1/398.15)\big] = $ **16.49**; device-hours $300\times1000\times16.49 = $ **4.948×10⁶ h**.
 
-(b) Point estimate $1/(4.948\times10^6)$ per hour $= $ **202.1 FIT**. Upper bounds: $2.022/D = $ **408.7 FIT** (60%) and $3.890/D = $ **786.2 FIT** (90%).
+(b) Point estimate $1/(4.948\times10^6)$ per hour \$= \$ **202.1 FIT**. Upper bounds: \$2.022/D = \$ **408.7 FIT** (60%) and \$3.890/D = \$ **786.2 FIT** (90%).
 
-(c) $B_1 = 25{,}000(-\ln0.99)^{1/3} = $ **5395 h** at stress; at use $\times16.49$: **8.898×10⁴ h**, or **10.15 years**.
+(c) \$B_1 = 25{,}000(-\ln0.99)^{1/3} = \$ **5395 h** at stress; at use $\times16.49$: **8.898×10⁴ h**, or **10.15 years**.
 
-(d) $F(1000\text{ h}) = 1 - e^{-(1000/25{,}000)^3} = $ **6.400×10⁻⁵**, so about $300\times6.4\times10^{-5} = $ **0.01920** expected failures: the HTOL could not see this mechanism, and its one failure was probably a different one. A FIT rate assumes a constant hazard, but this mechanism's hazard rises as $t^2$: it is negligible early, takes about 1% of parts by 10 years of use, and keeps climbing. So (b)'s FIT number describes neither mechanism; report the random-failure rate and the wear-out B-life separately, against the product's mission profile.
+(d) \$F(1000\text{ h}) = 1 - e^{-(1000/25{,}000)^3} = \$ **6.400×10⁻⁵**, so about \$300\times6.4\times10^{-5} = \$ **0.01920** expected failures: the HTOL could not see this mechanism, and its one failure was probably a different one. A FIT rate assumes a constant hazard, but this mechanism's hazard rises as $t^2$: it is negligible early, takes about 1% of parts by 10 years of use, and keeps climbing. So (b)'s FIT number describes neither mechanism; report the random-failure rate and the wear-out B-life separately, against the product's mission profile.
 
-**13.** *(03-06)* (a) $\sqrt{4kT_0R} = \sqrt{4\times1.380649\times10^{-23}\times290\times200} = $ **1.790 nV/√Hz**. The current noise in the source becomes $1\text{ pA}\times200\ \Omega = 0.2$ nV/√Hz. Total: $\sqrt{1.790^2 + 1.5^2 + 0.2^2} = $ **2.344 nV/√Hz**.
+**13.** *(03-06)* (a) \$\sqrt{4kT_0R} = \sqrt{4\times1.380649\times10^{-23}\times290\times200} = \$ **1.790 nV/√Hz**. The current noise in the source becomes $1\text{ pA}\times200\ \Omega = 0.2$ nV/√Hz. Total: \$\sqrt{1.790^2 + 1.5^2 + 0.2^2} = \$ **2.344 nV/√Hz**.
 
 (b) $F = 2.344^2/1.790^2 = $ **1.715**, so NF = **2.342 dB**.
 
@@ -113,13 +113,13 @@ that is, **20,000 DPPM**, exactly the incoming defect rate and **31.71** times w
 
 Weak answers accept a number without its conditions, or dismiss the claims without saying what would make them testable.
 
-**15.** *(03-06)* (a) $\operatorname{Var} \approx 2\times(1\text{ mV})^2\times0.002/1 = 0.004$ mV², so σ = **0.06325 mV**, and $N_{\text{eff}} = T/(2\tau_c) = $ **250**.
+**15.** *(03-06)* (a) $\operatorname{Var} \approx 2\times(1\text{ mV})^2\times0.002/1 = 0.004$ mV², so σ = **0.06325 mV**, and \$N_{\text{eff}} = T/(2\tau_c) = \$ **250**.
 
-(b) $1/10^{-5} = $ **100,000** samples, but samples closer than about $\tau_c$ are strongly correlated, so they add numbers, not information: the record still holds only about 250 independent samples (03-06 §3.3).
+(b) \$1/10^{-5} = \$ **100,000** samples, but samples closer than about $\tau_c$ are strongly correlated, so they add numbers, not information: the record still holds only about 250 independent samples (03-06 §3.3).
 
-(c) $e_w^2[f_c\ln(f_2/f_1) + (f_2 - f_1)] = 25\times10^{-18}\times[20\ln100 + 9.9] = 2.550\times10^{-15}$ V², so **50.50 nV** rms. The white part alone would be $5\sqrt{9.9} = $ **15.73 nV**: 1/f noise dominates.
+(c) $e_w^2[f_c\ln(f_2/f_1) + (f_2 - f_1)] = 25\times10^{-18}\times[20\ln100 + 9.9] = 2.550\times10^{-15}$ V², so **50.50 nV** rms. The white part alone would be \$5\sqrt{9.9} = \$ **15.73 nV**: 1/f noise dominates.
 
-(d) $25\times10^{-18}\times[20\ln1000 + 9.99] = 3.704\times10^{-15}$ V², so **60.86 nV** rms. Each extra decade below the corner adds the same power, $e_w^2f_c\ln10 = $ **1.151×10⁻¹⁵ V²**. Measuring for longer lowers the band's lower edge ($f_1 \approx 1/T$) and so admits more decades of 1/f noise; the average does not converge as it would for white noise.
+(d) $25\times10^{-18}\times[20\ln1000 + 9.99] = 3.704\times10^{-15}$ V², so **60.86 nV** rms. Each extra decade below the corner adds the same power, \$e_w^2f_c\ln10 = \$ **1.151×10⁻¹⁵ V²**. Measuring for longer lowers the band's lower edge ($f_1 \approx 1/T$) and so admits more decades of 1/f noise; the average does not converge as it would for white noise.
 
 ---
 

@@ -14,7 +14,7 @@ $\eta = 1 - (2.4 - 1.5)/(7 \times 1.5)$ = **0.914**; gain $8 \times 1.5/2.4$ = *
 
 ### Solution 25-11.2
 
-$(300/3600) \times (2.4 + 0.5)/8$ = **$0.0302** per die.
+$(300/3600) \times (2.4 + 0.5)/8$ = **\$0.0302** per die.
 
 ### Solution 25-11.3
 
@@ -50,11 +50,11 @@ $1306/769 - 1$ = **69.8**% growth; $1072/1306$ = **82.1**% from semiconductor te
 
 ### Solution 25-11.11
 
-$9.0/1.5$ = **$6.0 B**.
+$9.0/1.5$ = **\$6.0 B**.
 
 ### Solution 25-11.12
 
-Without sort, $1000 \times 0.14$ = **140** bad dies are packaged: **$420** wasted. With sort: $1000 \times 0.05$ = **$50** of sort plus $140 \times 0.05 \times 3$ = **$21** of wasted packaging, **$71**. Saving **$349** per wafer; for chiplets, where a bad die scraps a whole module, the case is far stronger (25-07).
+Without sort, $1000 \times 0.14$ = **140** bad dies are packaged: **\$420** wasted. With sort: $1000 \times 0.05$ = **\$50** of sort plus $140 \times 0.05 \times 3$ = **$21** of wasted packaging, **$71**. Saving **\$349** per wafer; for chiplets, where a bad die scraps a whole module, the case is far stronger (25-07).
 
 ### Solution 25-11.13
 

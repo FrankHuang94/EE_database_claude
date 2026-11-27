@@ -37,15 +37,15 @@ $$
 47v_1 - 17v_3 = 90, \qquad -17v_1 + 23v_3 = -30 .
 $$
 
-The determinant is $47\times23 - 17^2 = 792$, so $v_1 = (90\times23 - 17\times30)/792 = 1560/792 = $ **1.970 V**, $v_3 = (47\times(-30) + 17\times90)/792 = 120/792 = $ **0.1515 V**, and $v_2 = (2\times1.9697 + 0.1515)/3 = $ **1.364 V**. (Exactly 65/33, 45/33 and 5/33 V.)
+The determinant is $47\times23 - 17^2 = 792$, so \$v_1 = (90\times23 - 17\times30)/792 = 1560/792 = \$ **1.970 V**, \$v_3 = (47\times(-30) + 17\times90)/792 = 120/792 = \$ **0.1515 V**, and \$v_2 = (2\times1.9697 + 0.1515)/3 = \$ **1.364 V**. (Exactly 65/33, 45/33 and 5/33 V.)
 
-Resistor currents (mA): $R_a$, $1.970/1 = $ **1.970** to ground; $R_b$, $(1.970 - 1.364)/2 = $ **0.3030** from 1 to 2; $R_c$, $(1.364 - 0.1515)/4 = $ **0.3030** from 2 to 3; $R_d$, $0.1515/5 = $ **0.0303** to ground; $R_e$, $(1.970 - 0.1515)/2.5 = $ **0.7273** from 1 to 3. KCL at node 1: $1.970 + 0.303 + 0.727 = 3.000$ ✓.
+Resistor currents (mA): $R_a$, \$1.970/1 = \$ **1.970** to ground; $R_b$, \$(1.970 - 1.364)/2 = \$ **0.3030** from 1 to 2; $R_c$, \$(1.364 - 0.1515)/4 = \$ **0.3030** from 2 to 3; $R_d$, \$0.1515/5 = \$ **0.0303** to ground; $R_e$, \$(1.970 - 0.1515)/2.5 = \$ **0.7273** from 1 to 3. KCL at node 1: $1.970 + 0.303 + 0.727 = 3.000$ ✓.
 
-(d) The 3 mA source delivers $3\times1.9697 = $ **5.909 mW**. The 1 mA sink carries current from node 3 (at +0.1515 V) to ground, so it *absorbs* $0.1515$ mW. Net delivered: $5.909 - 0.152 = $ **5.758 mW**. Resistors: $3.880 + 0.184 + 0.367 + 0.005 + 1.322 = 5.758$ mW ✓.
+(d) The 3 mA source delivers \$3\times1.9697 = \$ **5.909 mW**. The 1 mA sink carries current from node 3 (at +0.1515 V) to ground, so it *absorbs* $0.1515$ mW. Net delivered: \$5.909 - 0.152 = \$ **5.758 mW**. Resistors: $3.880 + 0.184 + 0.367 + 0.005 + 1.322 = 5.758$ mW ✓.
 
 ### Solution 06-04.3
 
-(a) $\mathbf{G} = \begin{bmatrix} 1/3 + 1/6 & -1/6 \\ -1/6 & 1/6 + 1/3\end{bmatrix} = \begin{bmatrix} 0.5 & -0.1667 \\ -0.1667 & 0.5\end{bmatrix}$ mS, $\mathbf{i} = (2, -1)$ mA. $\Delta = 0.25 - 1/36 = $ **0.2222 mS²**.
+(a) $\mathbf{G} = \begin{bmatrix} 1/3 + 1/6 & -1/6 \\ -1/6 & 1/6 + 1/3\end{bmatrix} = \begin{bmatrix} 0.5 & -0.1667 \\ -0.1667 & 0.5\end{bmatrix}$ mS, $\mathbf{i} = (2, -1)$ mA. \$\Delta = 0.25 - 1/36 = \$ **0.2222 mS²**.
 
 $$
 v_1 = \frac{2\times0.5 - (-\tfrac16)(-1)}{0.2222} = \frac{0.8333}{0.2222} = \mathbf{3.75\ V}, \qquad
@@ -54,15 +54,15 @@ $$
 
 (b) Node 2 sits 0.75 V *below* the reference. The sink pulls 1 mA out of node 2, but only $(3.75 + 0.75)/6 = 0.75$ mA arrives through $R_2$; the other 0.25 mA must flow up from ground through $R_3$, which requires node 2 to be below ground. A negative node voltage is a normal answer, not an error.
 
-(c) The 2 mA source delivers $2\times3.75 = $ **7.5 mW**. The sink pushes −1 mA into a node at −0.75 V: it delivers $(-1)(-0.75) = $ **0.75 mW** (current passes through it from −0.75 V up to 0 V, so it supplies energy). Resistors: $3.75^2/3 + 4.5^2/6 + 0.75^2/3 = 4.6875 + 3.375 + 0.1875 = $ **8.25 mW** $= 7.5 + 0.75$ ✓.
+(c) The 2 mA source delivers \$2\times3.75 = \$ **7.5 mW**. The sink pushes −1 mA into a node at −0.75 V: it delivers \$(-1)(-0.75) = \$ **0.75 mW** (current passes through it from −0.75 V up to 0 V, so it supplies energy). Resistors: \$3.75^2/3 + 4.5^2/6 + 0.75^2/3 = 4.6875 + 3.375 + 0.1875 = \$ **8.25 mW** $= 7.5 + 0.75$ ✓.
 
 ### Solution 06-04.4
 
 (a) **2** unknowns, $v_B$ and $v_C$; $v_A = 9$ V is fixed by the source. KCL at A would only involve the source's unknown current, so it is not needed to find the node voltages (it gives that current afterwards).
 
-(b) In kΩ, mA and V. Node B: $(v_B - 9)/1 + v_B/2 + (v_B - v_C)/1 = 0$, so $2.5v_B - v_C = 9$. Node C: $(v_C - v_B)/1 + v_C/1 = 2$, so $-v_B + 2v_C = 2$. From the second, $v_C = (2 + v_B)/2$; substituting, $2v_B - 1 = 9$: $v_B = $ **5 V** and $v_C = $ **3.5 V**.
+(b) In kΩ, mA and V. Node B: $(v_B - 9)/1 + v_B/2 + (v_B - v_C)/1 = 0$, so $2.5v_B - v_C = 9$. Node C: $(v_C - v_B)/1 + v_C/1 = 2$, so $-v_B + 2v_C = 2$. From the second, $v_C = (2 + v_B)/2$; substituting, $2v_B - 1 = 9$: \$v_B = \$ **5 V** and \$v_C = \$ **3.5 V**.
 
-(c) The source current is the current leaving node A through $R_{AB}$: $(9 - 5)/1 = $ **4 mA**, and it delivers $9\times4 = $ **36 mW**. The current source delivers $2\times3.5 = 7$ mW. Resistors: $4^2\times1 + 5^2/2 + 1.5^2\times1 + 3.5^2/1 = 16 + 12.5 + 2.25 + 12.25 = $ **43 mW** $= 36 + 7$ ✓.
+(c) The source current is the current leaving node A through $R_{AB}$: \$(9 - 5)/1 = \$ **4 mA**, and it delivers \$9\times4 = \$ **36 mW**. The current source delivers $2\times3.5 = 7$ mW. Resistors: \$4^2\times1 + 5^2/2 + 1.5^2\times1 + 3.5^2/1 = 16 + 12.5 + 2.25 + 12.25 = \$ **43 mW** $= 36 + 7$ ✓.
 
 ### Solution 06-04.5
 
@@ -72,9 +72,9 @@ $$
 \frac{v_1}{4} + \frac{v_2}{6} = 3, \qquad v_2 - v_1 = 10 .
 $$
 
-Substituting and multiplying by 12: $3v_1 + 2(v_1 + 10) = 36$, so $v_1 = $ **3.2 V** and $v_2 = $ **13.2 V**.
+Substituting and multiplying by 12: $3v_1 + 2(v_1 + 10) = 36$, so \$v_1 = \$ **3.2 V** and \$v_2 = \$ **13.2 V**.
 
-(b) KCL at node 2 alone: 2.2 A leaves through the 6 Ω, and the only other branch is the source, so the source delivers **2.2 A** out of its + terminal and $10\times2.2 = $ **22 W**. (Node 1 check: 3 A in = 0.8 A through 4 Ω + 2.2 A into the source's − terminal ✓.) The current source delivers $3\times3.2 = $ **9.6 W**. Resistors: $3.2^2/4 + 13.2^2/6 = 2.56 + 29.04 = 31.6$ W $= 22 + 9.6$ ✓.
+(b) KCL at node 2 alone: 2.2 A leaves through the 6 Ω, and the only other branch is the source, so the source delivers **2.2 A** out of its + terminal and \$10\times2.2 = \$ **22 W**. (Node 1 check: 3 A in = 0.8 A through 4 Ω + 2.2 A into the source's − terminal ✓.) The current source delivers \$3\times3.2 = \$ **9.6 W**. Resistors: $3.2^2/4 + 13.2^2/6 = 2.56 + 29.04 = 31.6$ W $= 22 + 9.6$ ✓.
 
 (c) The source column has +1 at node 2 (its + terminal) and −1 at node 1:
 
@@ -97,7 +97,7 @@ $$
 
 (b) $(v_B - v_A)/0.1\ \text{kΩ} = 0.010593/0.1 = $ **0.1059 mA** (105.9 µA), flowing from B to A through the galvanometer.
 
-(c) With the galvanometer removed, $v_A = 2.5$ V and $v_B = 5\times1.1/2.1 = 2.6190$ V, so $v_{BA} = $ **119.0 mV**. Dividing by 100 Ω would give 1.19 mA, but the bridge's own resistances are in series with the meter: seen from A and B, with the source replaced by a short, the bridge is $1\parallel1 + 1\parallel1.1 = $ **1.024 kΩ**. Then $119.05\ \text{mV}/(1.024 + 0.1)\ \text{kΩ} = 0.1059$ mA ✓. This "open-circuit voltage over total resistance" shortcut is Thévenin's theorem ([06-08](../chapters/06-08-thevenin-and-norton.md)).
+(c) With the galvanometer removed, $v_A = 2.5$ V and $v_B = 5\times1.1/2.1 = 2.6190$ V, so \$v_{BA} = \$ **119.0 mV**. Dividing by 100 Ω would give 1.19 mA, but the bridge's own resistances are in series with the meter: seen from A and B, with the source replaced by a short, the bridge is \$1\parallel1 + 1\parallel1.1 = \$ **1.024 kΩ**. Then $119.05\ \text{mV}/(1.024 + 0.1)\ \text{kΩ} = 0.1059$ mA ✓. This "open-circuit voltage over total resistance" shortcut is Thévenin's theorem ([06-08](../chapters/06-08-thevenin-and-norton.md)).
 
 (d) $(5 - 2.5530)/1 + (5 - 2.5636)/1 = 2.4470 + 2.4364 = $ **4.883 mA**.
 
@@ -111,17 +111,17 @@ $$
 \begin{bmatrix} 0 \\ 1 \\ 10 \end{bmatrix}.
 $$
 
-Row 3: $v_1 = 10$ V. Row 2: $-5 + 0.625v_2 = 1$, so $v_2 = $ **9.6 V**. Row 1: $5 - 4.8 + j = 0$, so $j = $ **−0.2 A**: 0.2 A flows out of V1's + terminal, and V1 delivers $10\times0.2 = $ **2 W**.
+Row 3: $v_1 = 10$ V. Row 2: $-5 + 0.625v_2 = 1$, so \$v_2 = \$ **9.6 V**. Row 1: $5 - 4.8 + j = 0$, so \$j = \$ **−0.2 A**: 0.2 A flows out of V1's + terminal, and V1 delivers \$10\times0.2 = \$ **2 W**.
 
-KCL at node 2: 0.2 A in through R1 plus 1 A from I1 equals $9.6/8 = 1.2$ A out through R2 ✓. Power: I1 delivers $1\times9.6 = 9.6$ W; R1 absorbs $0.2^2\times2 = 0.08$ W and R2 $9.6^2/8 = 11.52$ W; $0.08 + 11.52 = $ **11.6 W** $= 2 + 9.6$ ✓.
+KCL at node 2: 0.2 A in through R1 plus 1 A from I1 equals $9.6/8 = 1.2$ A out through R2 ✓. Power: I1 delivers $1\times9.6 = 9.6$ W; R1 absorbs $0.2^2\times2 = 0.08$ W and R2 $9.6^2/8 = 11.52$ W; \$0.08 + 11.52 = \$ **11.6 W** $= 2 + 9.6$ ✓.
 
 ### Solution 06-04.8
 
-(a) In mS and mA: $\mathbf{G} = \begin{bmatrix} 1 & -1 \\ -1 & 1\end{bmatrix}$, $\mathbf{i} = (1, -1)$. $\det\mathbf{G} = 1 - 1 = $ **0**: singular. Its rows sum to zero, so $\mathbf{G}(1, 1)^\mathsf{T} = \mathbf{0}$.
+(a) In mS and mA: $\mathbf{G} = \begin{bmatrix} 1 & -1 \\ -1 & 1\end{bmatrix}$, $\mathbf{i} = (1, -1)$. \$\det\mathbf{G} = 1 - 1 = \$ **0**: singular. Its rows sum to zero, so $\mathbf{G}(1, 1)^\mathsf{T} = \mathbf{0}$.
 
 (b) The difference is determined: 1 mA through 1 kΩ gives $v_1 - v_2 = $ **1 V**. The common level is not: adding the same constant to both node voltages changes no current, because the pair has no connection to ground. The equations have infinitely many solutions, and a simulator reports a singular matrix.
 
-(c) $\mathbf{G} = \begin{bmatrix} 1 & -1 \\ -1 & 1 + 10^{-6}\end{bmatrix}$ mS, determinant $10^{-6}$ mS². Adding the two rows gives $10^{-6}v_2 = 1 - 1 = 0$, so $v_2 = $ **0 V** and $v_1 = $ **1 V**. The source's current circulates inside the pair, so no net current crosses a surface enclosing both nodes; the only branch crossing it, the 1 GΩ resistor, therefore carries zero current and has zero voltage, whatever its value.
+(c) $\mathbf{G} = \begin{bmatrix} 1 & -1 \\ -1 & 1 + 10^{-6}\end{bmatrix}$ mS, determinant $10^{-6}$ mS². Adding the two rows gives $10^{-6}v_2 = 1 - 1 = 0$, so \$v_2 = \$ **0 V** and \$v_1 = \$ **1 V**. The source's current circulates inside the pair, so no net current crosses a surface enclosing both nodes; the only branch crossing it, the 1 GΩ resistor, therefore carries zero current and has zero voltage, whatever its value.
 
 ### Solution 06-04.9
 
@@ -141,7 +141,7 @@ $$
 
 The edge conductance is $g = 1/0.020 = 50$ S.
 
-(a) By symmetry the four edge-center nodes share one voltage $v_E$ and the four corners share $v_C$. Corner: its two neighbors are edge centers, and it draws 1 A: $2g(v_C - v_E) = -1$, so $v_E - v_C = 1/100 = 0.01$ V. Edge center: neighbors are the bump (0.75 V) and two corners: $g(v_E - 0.75) + 2g(v_E - v_C) = -1$, so $50(v_E - 0.75) + 1 = -1$ and $v_E = $ **0.71 V**; then $v_C = $ **0.70 V**. The worst nodes are the corners, with a drop of **50 mV**. Each edge center receives $g\times0.04 = 2$ A from the bump, so the bump supplies $4\times2 = 8$ A through the grid plus the center's own 1 A.
+(a) By symmetry the four edge-center nodes share one voltage $v_E$ and the four corners share $v_C$. Corner: its two neighbors are edge centers, and it draws 1 A: $2g(v_C - v_E) = -1$, so $v_E - v_C = 1/100 = 0.01$ V. Edge center: neighbors are the bump (0.75 V) and two corners: $g(v_E - 0.75) + 2g(v_E - v_C) = -1$, so $50(v_E - 0.75) + 1 = -1$ and \$v_E = \$ **0.71 V**; then \$v_C = \$ **0.70 V**. The worst nodes are the corners, with a drop of **50 mV**. Each edge center receives $g\times0.04 = 2$ A from the bump, so the bump supplies $4\times2 = 8$ A through the grid plus the center's own 1 A.
 
 (b) Solving the eight unknowns numerically (bump at the top-left corner):
 
@@ -157,7 +157,7 @@ The worst node is the **opposite corner**, at 0.615 V: a drop of **135 mV**.
 
 ### Solution 06-04.11
 
-(a) In S: $\mathbf{G} = \begin{bmatrix} 1.5 & -1 & 0 \\ -1 & 2.5 & -1 \\ 0 & -1 & 1.5\end{bmatrix}$ (each node: 0.5 S to ground plus 1 S to each neighbor), $\mathbf{i} = (1, 0, 0)$ A. Expanding along the first row: $\Delta = 1.5(2.5\times1.5 - 1) - (-1)(-1\times1.5 - 0) = 4.125 - 1.5 = $ **2.625 S³**.
+(a) In S: $\mathbf{G} = \begin{bmatrix} 1.5 & -1 & 0 \\ -1 & 2.5 & -1 \\ 0 & -1 & 1.5\end{bmatrix}$ (each node: 0.5 S to ground plus 1 S to each neighbor), $\mathbf{i} = (1, 0, 0)$ A. Expanding along the first row: \$\Delta = 1.5(2.5\times1.5 - 1) - (-1)(-1\times1.5 - 0) = 4.125 - 1.5 = \$ **2.625 S³**.
 
 (b) Replace column $k$ by $\mathbf{i}$:
 
@@ -177,11 +177,11 @@ $$
 
 (a) Each of the $N^2$ nodes has a diagonal entry. A grid has $N(N - 1)$ horizontal and $N(N - 1)$ vertical edges, $2N(N - 1)$ in all, and each edge creates two symmetric off-diagonal entries. Total: $N^2 + 4N(N - 1)$.
 
-(b) $N$ = 100: **10,000** unknowns; $10^4 + 4\times100\times99 = $ **49,600** nonzeros, out of $10^8$ entries: **0.0496%**.
+(b) $N$ = 100: **10,000** unknowns; \$10^4 + 4\times100\times99 = \$ **49,600** nonzeros, out of $10^8$ entries: **0.0496%**.
 
 (c) Dense: $10^8\times8 = 8\times10^8$ bytes, **800 MB**. Sparse: $49{,}600\times12 + 10{,}001\times4 = 595{,}200 + 40{,}004 = 635{,}204$ bytes, **0.635 MB**, about **1259** times less.
 
-(d) Dense LU: $(10^4)^3/3 = $ **3.33 × 10^11** operations, for a matrix that sparse methods factor almost instantly. For $N$ = 1000 ($10^6$ unknowns) the dense matrix alone needs $8\times10^{12}$ bytes, **8 TB**, while its about $5\times10^6$ nonzeros fit in tens of megabytes. Power grids are therefore solved only with sparse direct solvers or with iterative methods (such as conjugate gradients, which suit symmetric positive definite matrices like this one), never with dense ones.
+(d) Dense LU: \$(10^4)^3/3 = \$ **3.33 × 10^11** operations, for a matrix that sparse methods factor almost instantly. For $N$ = 1000 ($10^6$ unknowns) the dense matrix alone needs $8\times10^{12}$ bytes, **8 TB**, while its about $5\times10^6$ nonzeros fit in tens of megabytes. Power grids are therefore solved only with sparse direct solvers or with iterative methods (such as conjugate gradients, which suit symmetric positive definite matrices like this one), never with dense ones.
 
 ### Solution 06-04.13
 
@@ -191,7 +191,7 @@ $$
 \frac{v - 5}{1000} + g\,v + I_{eq} = 0 \;\Rightarrow\; v^{(k+1)} = \frac{5/1000 - I_{eq}}{1/1000 + g}.
 $$
 
-(b) At 0.7 V: $0.7/0.025852 = 27.077$, $f = 10^{-14}e^{27.077} = 5.748$ mA, $g = 5.748\ \text{mA}/25.852\ \text{mV} = $ **0.2223 S**, $I_{eq} = 0.005748 - 0.2223\times0.7 = $ **−0.1499 A**. Then $v^{(1)} = (0.005 + 0.1499)/(0.001 + 0.2223) = $ **0.6935 V**. Repeating at 0.6935 V ($g$ = 0.1730 S, $I_{eq}$ = −0.1155 A) gives $v^{(2)} = $ **0.6926 V**.
+(b) At 0.7 V: $0.7/0.025852 = 27.077$, $f = 10^{-14}e^{27.077} = 5.748$ mA, \$g = 5.748\ \text{mA}/25.852\ \text{mV} = \$ **0.2223 S**, \$I_{eq} = 0.005748 - 0.2223\times0.7 = \$ **−0.1499 A**. Then \$v^{(1)} = (0.005 + 0.1499)/(0.001 + 0.2223) = \$ **0.6935 V**. Repeating at 0.6935 V ($g$ = 0.1730 S, $I_{eq}$ = −0.1155 A) gives \$v^{(2)} = \$ **0.6926 V**.
 
 (c) The next iterates agree to better than 1 µV: $v_D = $ **0.6925 V** (0.692544 V) and $i_D = (5 - 0.6925)/1000 = $ **4.307 mA**. The lab's ngspice run gives the same operating point.
 
@@ -211,7 +211,7 @@ $$
 
 (c) The actual source current flows through its 2 Ω: $(10 - 3.366)/2 = $ **3.317 A**, not 5 A. The Norton source's 5 A splits between its own 2 Ω shunt (1.683 A) and the external circuit (3.317 A).
 
-(d) The 10 V source delivers $10\times3.317 = $ **33.17 W**, of which its series 2 Ω dissipates $3.317^2\times2 = $ **22.01 W**. The Norton source delivers $5\times3.366 = $ **16.83 W**, of which its shunt 2 Ω dissipates $3.366^2/2 = $ **5.664 W**. Both pass the same $33.17 - 22.01 = 16.83 - 5.66 = $ **11.16 W** to the external circuit (3 Ω: 3.776 W, 1 Ω: 4.819 W, 6 Ω: 0.228 W, and the sink absorbs $2\times1.171 = 2.341$ W). Equivalent sources agree at their terminals only; what happens inside them is not equivalent ([06-08](../chapters/06-08-thevenin-and-norton.md)).
+(d) The 10 V source delivers \$10\times3.317 = \$ **33.17 W**, of which its series 2 Ω dissipates \$3.317^2\times2 = \$ **22.01 W**. The Norton source delivers \$5\times3.366 = \$ **16.83 W**, of which its shunt 2 Ω dissipates \$3.366^2/2 = \$ **5.664 W**. Both pass the same \$33.17 - 22.01 = 16.83 - 5.66 = \$ **11.16 W** to the external circuit (3 Ω: 3.776 W, 1 Ω: 4.819 W, 6 Ω: 0.228 W, and the sink absorbs $2\times1.171 = 2.341$ W). Equivalent sources agree at their terminals only; what happens inside them is not equivalent ([06-08](../chapters/06-08-thevenin-and-norton.md)).
 
 ### Solution 06-04.15
 
@@ -225,7 +225,7 @@ The branch made of the current source and the 5 kΩ resistor delivers exactly 2 
 
 (b) Node 2 gives $v_1 = 2v_2 - 8$; substituting into node 1, $0.75(2v_2 - 8) - 0.25v_2 = 2$, so $1.25v_2 = 8$: **$v_2$ = 6.4 V** and **$v_1$ = 4.8 V**.
 
-(c) The source's output terminal sits $2\ \text{mA}\times5\ \text{kΩ} = 10$ V above node 1: **14.8 V**. The source delivers $14.8\times2 = $ **29.6 mW**, of which the 5 kΩ resistor dissipates $2^2\times5 = $ **20 mW**: the series resistor wastes power without changing any node voltage.
+(c) The source's output terminal sits $2\ \text{mA}\times5\ \text{kΩ} = 10$ V above node 1: **14.8 V**. The source delivers \$14.8\times2 = \$ **29.6 mW**, of which the 5 kΩ resistor dissipates \$2^2\times5 = \$ **20 mW**: the series resistor wastes power without changing any node voltage.
 
 ### Solution 06-04.16
 
@@ -241,7 +241,7 @@ Row 1 is the constraint $v_1 - v_2 = 4$; row 2 is the supernode's KCL (2 mA in, 
 
 (b) Substitute $v_1 = v_2 + 4$ into row 2: $1.75v_2 - v_3 = 0$, so $v_3 = 1.75v_2$. Row 4 gives $v_4 = (1 + 0.5v_3)/1.5$. Row 3 becomes $-v_2 + 2(1.75v_2) - 0.5v_4 = 0$, that is $2.5v_2 = 0.5v_4 = (1 + 0.875v_2)/3$, so $v_2(7.5 - 0.875) = 1$: **$v_2$ = 0.1509 V**, **$v_1$ = 4.151 V**, **$v_3$ = 0.2642 V**, **$v_4$ = 0.7547 V**.
 
-(c) KCL at node 1: 2 mA arrives from the source, and $v_1/2 = 2.075$ mA leaves through the 2 kΩ, so **0.07547 mA** flows from node 2 up through the 4 V source and out of its + terminal into node 1. The source delivers $4\times0.07547 = $ **0.3019 mW**.
+(c) KCL at node 1: 2 mA arrives from the source, and $v_1/2 = 2.075$ mA leaves through the 2 kΩ, so **0.07547 mA** flows from node 2 up through the 4 V source and out of its + terminal into node 1. The source delivers \$4\times0.07547 = \$ **0.3019 mW**.
 
 ---
 

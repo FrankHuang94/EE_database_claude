@@ -279,7 +279,7 @@ $$
 
 in units that make $\mathbf{x}'$ come out in V/s and A/s. The trace is −5000 and the determinant is $0 + 10^6\times100 = 10^8$, so the eigenvalues solve $\lambda^2 + 5000\lambda + 10^8 = 0$: $\lambda = -2500 \pm j$**9682** s⁻¹, the poles found in 02-05 and 02-08.
 
-*DC gain:* $\mathbf{A}^{-1} = \frac{1}{10^8}\begin{bmatrix} -5000 & -10^6 \\ 100 & 0\end{bmatrix}$, so $-\mathbf{C}\mathbf{A}^{-1}\mathbf{B} = -\frac{1}{10^8}(-10^6\times100) = $ **1**. At DC the capacitor charges to the source voltage.
+*DC gain:* $\mathbf{A}^{-1} = \frac{1}{10^8}\begin{bmatrix} -5000 & -10^6 \\ 100 & 0\end{bmatrix}$, so \$-\mathbf{C}\mathbf{A}^{-1}\mathbf{B} = -\frac{1}{10^8}(-10^6\times100) = \$ **1**. At DC the capacitor charges to the source voltage.
 
 *Transfer function:* $(s\mathbf{I} - \mathbf{A})^{-1}\mathbf{B} = \dfrac{1}{s^2 + 5000s + 10^8}\begin{bmatrix} s + 5000 & 10^6 \\ -100 & s\end{bmatrix}\begin{bmatrix} 0 \\ 100\end{bmatrix}$, and taking the first entry gives
 
@@ -309,7 +309,7 @@ $$
 v_1(t) = \tfrac12\big(e^{-t/\tau} + e^{-3t/\tau}\big), \qquad v_2(t) = \tfrac12\big(e^{-t/\tau} - e^{-3t/\tau}\big)\ \text{V}.
 $$
 
-The peak of $v_2$ is where $-e^{-t/\tau} + 3e^{-3t/\tau} = 0$, that is, $e^{2t/\tau} = 3$, at $t = \tfrac{\ln3}{2}\tau = $ **0.5493 ms**. There, $v_2 = \tfrac12(3^{-1/2} - 3^{-3/2}) = $ **0.1925 V**. At $t = τ$: $v_1 = $ **0.2088 V** and $v_2 = $ **0.1590 V**.
+The peak of $v_2$ is where $-e^{-t/\tau} + 3e^{-3t/\tau} = 0$, that is, $e^{2t/\tau} = 3$, at \$t = \tfrac{\ln3}{2}\tau = \$ **0.5493 ms**. There, \$v_2 = \tfrac12(3^{-1/2} - 3^{-3/2}) = \$ **0.1925 V**. At $t = τ$: \$v_1 = \$ **0.2088 V** and \$v_2 = \$ **0.1590 V**.
 
 **Checks.** $v_1(0) = 1$, $v_2(0) = 0$ ✓. Initially $v_2' = (v_1 - 2v_2)/\tau = 1/\tau > 0$: node 2 starts charging from node 1 ✓. Both decay to zero, since all the charge eventually drains through the grounded resistors ✓. The lab confirms the peak in ngspice.
 
@@ -339,7 +339,7 @@ $$
 e^{\mathbf{A}t} = \begin{bmatrix} e^{-t} & te^{-t} \\ 0 & e^{-t}\end{bmatrix} .
 $$
 
-At $t = 1$ the $(1, 2)$ entry is $e^{-1} = $ **0.3679**: the $te^{-t}$ of a repeated root.
+At $t = 1$ the $(1, 2)$ entry is \$e^{-1} = \$ **0.3679**: the $te^{-t}$ of a repeated root.
 
 **Check.** For (c), $\frac{d}{dt}e^{\mathbf{A}t}$ at $t = 0$ equals $\begin{bmatrix} -1 & 1 \\ 0 & -1\end{bmatrix} = \mathbf{A}$ ✓. For (b), $\det e^{\mathbf{A}t} = 1 = e^{\operatorname{tr}(\mathbf{A})t}$ ✓. (In general, $\det e^{\mathbf{A}t} = e^{\operatorname{tr}(\mathbf{A})t}$, because the determinant is the product of the $e^{\lambda_it}$.)
 
@@ -380,15 +380,15 @@ $$
 \mathbf{A} = \begin{bmatrix} -1 & 1 \\ 0.04 & -0.05333\end{bmatrix}\text{ s}^{-1}, \qquad \mathbf{B} = \begin{bmatrix} 0.5 \\ 0\end{bmatrix}\text{ K/J}.
 $$
 
-*Steady state:* setting $\mathbf{x}' = \mathbf{0}$ makes all the heat flow through both resistances in series. So $T_h = PR_{ha} = $ **15 K** and $T_d = P(R_{dh} + R_{ha}) = $ **20 K**.
+*Steady state:* setting $\mathbf{x}' = \mathbf{0}$ makes all the heat flow through both resistances in series. So \$T_h = PR_{ha} = \$ **15 K** and \$T_d = P(R_{dh} + R_{ha}) = \$ **20 K**.
 
-*Modes:* $T = -1.05333$ and $\Delta = 0.05333 - 0.04 = 0.01333$, so the eigenvalues are $\lambda = -1.0405$ and $-0.01281$ s⁻¹. The time constants are $\tau_1 = $ **0.9611 s** (the die equilibrating with the sink) and $\tau_2 = $ **78.04 s** (the sink heating up).
+*Modes:* $T = -1.05333$ and $\Delta = 0.05333 - 0.04 = 0.01333$, so the eigenvalues are $\lambda = -1.0405$ and $-0.01281$ s⁻¹. The time constants are \$\tau_1 = \$ **0.9611 s** (the die equilibrating with the sink) and \$\tau_2 = \$ **78.04 s** (the sink heating up).
 
 The eigenvalues come from $\lambda^2 + 1.05333\lambda + 0.01333 = 0$: $\lambda = \tfrac12\big(-1.05333 \pm \sqrt{1.05333^2 - 4\times0.01333}\big) = \tfrac12(-1.05333 \pm 1.02771)$.
 
-*Die temperature:* $\mathbf{x}(t) = \mathbf{x}_{ss} + e^{\mathbf{A}t}(\mathbf{0} - \mathbf{x}_{ss})$, so expand the initial deviation $\mathbf{0} - \mathbf{x}_{ss} = (-20, -15)$ K in eigenvectors. Row 1 of $(\mathbf{A} - \lambda\mathbf{I})\mathbf{v} = \mathbf{0}$ reads $(-1 - \lambda)v_1 + v_2 = 0$, so with $v_1 = 1$, $v_2 = 1 + \lambda$: $\mathbf{v}_1 = (1,\ $**−0.04052**$)$ and $\mathbf{v}_2 = (1,\ $**0.9872**$)$. Solve $c_1\mathbf{v}_1 + c_2\mathbf{v}_2 = (-20, -15)$: the first row gives $c_1 = -20 - c_2$, and the second then gives $0.8104 + 1.0277c_2 = -15$, so $c_2 = $ **−15.38** and $c_1 = $ **−4.616**. The die temperature is the first component, $T_d(t) = 20 - 4.616e^{-t/\tau_1} - 15.38e^{-t/\tau_2}$ K. That gives **3.181 K** at 1 s, **6.466 K** at 10 s and **15.73 K** at 100 s.
+*Die temperature:* $\mathbf{x}(t) = \mathbf{x}_{ss} + e^{\mathbf{A}t}(\mathbf{0} - \mathbf{x}_{ss})$, so expand the initial deviation $\mathbf{0} - \mathbf{x}_{ss} = (-20, -15)$ K in eigenvectors. Row 1 of $(\mathbf{A} - \lambda\mathbf{I})\mathbf{v} = \mathbf{0}$ reads $(-1 - \lambda)v_1 + v_2 = 0$, so with $v_1 = 1$, $v_2 = 1 + \lambda$: \$\mathbf{v}_1 = (1,\ $**−0.04052**$)\$ and \$\mathbf{v}_2 = (1,\ $**0.9872**$)\$. Solve $c_1\mathbf{v}_1 + c_2\mathbf{v}_2 = (-20, -15)$: the first row gives $c_1 = -20 - c_2$, and the second then gives $0.8104 + 1.0277c_2 = -15$, so \$c_2 = \$ **−15.38** and \$c_1 = \$ **−4.616**. The die temperature is the first component, $T_d(t) = 20 - 4.616e^{-t/\tau_1} - 15.38e^{-t/\tau_2}$ K. That gives **3.181 K** at 1 s, **6.466 K** at 10 s and **15.73 K** at 100 s.
 
-*Foster model:* $Z_{th}(t) = T_d(t)/P = R_1(1 - e^{-t/\tau_1}) + R_2(1 - e^{-t/\tau_2})$, with $R_1 = $ **0.4616 K/W** and $R_2 = $ **1.538 K/W**.
+*Foster model:* $Z_{th}(t) = T_d(t)/P = R_1(1 - e^{-t/\tau_1}) + R_2(1 - e^{-t/\tau_2})$, with \$R_1 = \$ **0.4616 K/W** and \$R_2 = \$ **1.538 K/W**.
 
 **Checks.**
 
@@ -409,9 +409,9 @@ The lab simulates the electrical analog in ngspice.
 
 **Solution.** The continuous eigenvalues are $-1/\tau$ and $-3/\tau$.
 
-- **T = 0.5 ms.** Exact: $e^{-0.5} = $ **0.6065** and $e^{-1.5} = $ **0.2231**, both positive and less than 1: smooth decay. Euler: $1 - 0.5 = 0.5$ and $1 - 1.5 = $ **−0.5**. Still stable, but the negative eigenvalue makes the fast mode flip sign every step, an oscillation the real circuit does not have.
-- **T = 1 ms.** Exact: $e^{-1} = 0.3679$ and $e^{-3} = 0.04979$, still stable. Euler: $1 - 1 = 0$ and $1 - 3 = $ **−2**: unstable. The simulated voltages double in size and flip sign every step.
-- **Stability limit.** Euler needs $\lvert1 + \lambda T\rvert < 1$ for both eigenvalues. The fast one is binding: $T < 2/\lvert{-3/\tau}\rvert = 2\tau/3 = $ **0.6667 ms**.
+- **T = 0.5 ms.** Exact: \$e^{-0.5} = \$ **0.6065** and \$e^{-1.5} = \$ **0.2231**, both positive and less than 1: smooth decay. Euler: $1 - 0.5 = 0.5$ and \$1 - 1.5 = \$ **−0.5**. Still stable, but the negative eigenvalue makes the fast mode flip sign every step, an oscillation the real circuit does not have.
+- **T = 1 ms.** Exact: $e^{-1} = 0.3679$ and $e^{-3} = 0.04979$, still stable. Euler: $1 - 1 = 0$ and \$1 - 3 = \$ **−2**: unstable. The simulated voltages double in size and flip sign every step.
+- **Stability limit.** Euler needs $\lvert1 + \lambda T\rvert < 1$ for both eigenvalues. The fast one is binding: \$T < 2/\lvert{-3/\tau}\rvert = 2\tau/3 = \$ **0.6667 ms**.
 
 The slow mode, the one that matters at long times, would allow $T < 2$ ms. But the fast mode, which has died out after a millisecond or so, still limits the step. That is stiffness in miniature.
 
@@ -425,11 +425,11 @@ The slow mode, the one that matters at long times, would allow $T < 2$ ms. But t
 
 **Setup.** Model a latch as in §3.8 with inverter gain $a = 3$ and τ = 10 ps. (a) Classify the equilibrium at the origin and find its time constants. (b) An input leaves the two nodes imbalanced by $\delta_0 = 1$ µV (normalized units, where the stable states sit near ±1). How long until the imbalance reaches 0.5 and the latch has effectively decided? (c) Find the stable states and their decay rate.
 
-**Solution.** (a) $\mathbf{J} = \frac{1}{\tau}\begin{bmatrix} -1 & -3 \\ -3 & -1\end{bmatrix}$ has trace $-2/\tau$ and determinant $-8/\tau^2 < 0$: a saddle. The eigenvalues are $-4/\tau$ along $(1, 1)$, time constant **2.5 ps**, and $+2/\tau$ along $(1, -1)$, growth time constant $\tau/(a - 1) = $ **5 ps**.
+**Solution.** (a) $\mathbf{J} = \frac{1}{\tau}\begin{bmatrix} -1 & -3 \\ -3 & -1\end{bmatrix}$ has trace $-2/\tau$ and determinant $-8/\tau^2 < 0$: a saddle. The eigenvalues are $-4/\tau$ along $(1, 1)$, time constant **2.5 ps**, and $+2/\tau$ along $(1, -1)$, growth time constant \$\tau/(a - 1) = \$ **5 ps**.
 
-(b) The imbalance grows as $\delta_0e^{2t/\tau}$, so it reaches 0.5 when $t = \frac{\tau}{2}\ln\frac{0.5}{10^{-6}} = 5\text{ ps}\times\ln(5\times10^5) = $ **65.61 ps**. Every factor of 10 closer to perfect balance adds $5\ln10 = $ **11.51 ps**: the decision time grows without bound as the imbalance shrinks, which is why it cannot be guaranteed.
+(b) The imbalance grows as $\delta_0e^{2t/\tau}$, so it reaches 0.5 when \$t = \frac{\tau}{2}\ln\frac{0.5}{10^{-6}} = 5\text{ ps}\times\ln(5\times10^5) = \$ **65.61 ps**. Every factor of 10 closer to perfect balance adds \$5\ln10 = \$ **11.51 ps**: the decision time grows without bound as the imbalance shrinks, which is why it cannot be guaranteed.
 
-(c) By symmetry look for $x_1 = s$, $x_2 = -s$: then $s = \tanh(3s)$, and iterating $s \leftarrow \tanh(3s)$ from 1 gives $s = $ **0.9949**. There $\frac{d}{dx}\tanh(3x) = 3(1 - s^2) = 0.0305$, so $\mathbf{J} = \frac{1}{\tau}\begin{bmatrix} -1 & -0.0305 \\ -0.0305 & -1\end{bmatrix}$, with eigenvalues of about $-0.97/\tau$ and $-1.03/\tau$: a stable node. The latch holds its bit.
+(c) By symmetry look for $x_1 = s$, $x_2 = -s$: then $s = \tanh(3s)$, and iterating $s \leftarrow \tanh(3s)$ from 1 gives \$s = \$ **0.9949**. There $\frac{d}{dx}\tanh(3x) = 3(1 - s^2) = 0.0305$, so $\mathbf{J} = \frac{1}{\tau}\begin{bmatrix} -1 & -0.0305 \\ -0.0305 & -1\end{bmatrix}$, with eigenvalues of about $-0.97/\tau$ and $-1.03/\tau$: a stable node. The latch holds its bit.
 
 **Units check.** τ in ps, so the growth rate $(a - 1)/\tau$ is per ps, and the times come out in ps ✓. **Sanity check.** A larger gain shortens the growth time constant $\tau/(a - 1)$, which is why synchronizer flip-flops are designed for high gain at the switching point ✓.
 

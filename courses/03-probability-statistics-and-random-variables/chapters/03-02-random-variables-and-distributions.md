@@ -207,7 +207,7 @@ $$
 \boxed{\text{BER} = Q\!\left(\frac{A}{\sigma}\right)} .
 $$
 
-The ratio $A/\sigma$, the distance from each level to the threshold measured in noise standard deviations, is the whole story. A BER of $10^{-12}$ needs $A/\sigma = 7.034$; in decibels, $20\log_{10}7.034 = $ **16.94 dB**. Losing 1 dB of signal at that operating point drops $A/\sigma$ to 6.269 and raises the BER **181**-fold, to $1.811\times10^{-10}$ (Problem 03-02.12), which is why link budgets are fought over in tenths of a decibel. With more than two levels (PAM4) each pair of neighbors contributes its own Q term (Course 17).
+The ratio $A/\sigma$, the distance from each level to the threshold measured in noise standard deviations, is the whole story. A BER of $10^{-12}$ needs $A/\sigma = 7.034$; in decibels, \$20\log_{10}7.034 = \$ **16.94 dB**. Losing 1 dB of signal at that operating point drops $A/\sigma$ to 6.269 and raises the BER **181**-fold, to $1.811\times10^{-10}$ (Problem 03-02.12), which is why link budgets are fought over in tenths of a decibel. With more than two levels (PAM4) each pair of neighbors contributes its own Q term (Course 17).
 
 ### 3.8 Timing jitter at a target BER: the dual-Dirac model
 
@@ -232,7 +232,7 @@ $$
 TJ(\text{BER}) = DJ(\delta\delta) + 2\,Q_{\text{BER}}\,\sigma_{RJ} ,
 $$
 
-with $2Q_{\text{BER}} = $ **14.069** at $10^{-12}$ and **15.883** at $10^{-15}$ ([R-063](../../../reference/research-log.md#r-063--jitter-the-dual-dirac-model-and-the-q-scale)). The literal model at $\rho_T = 1/2$ needs $Q(x) = 4\times10^{-12}$, giving $2x = $ **13.68**: the convention is slightly conservative, by **0.47 ps** of eye in Example 03-02.7. Use 14.069 because specifications and instruments do, and state the convention when comparing numbers. (Some tools use the erfc form with $\rho_T = 1$, giving **14.26**.) Two composition rules follow from the model and the Gaussian's properties ([03-04](03-04-joint-distributions-and-clt.md)): independent random jitters add in quadrature, $\sigma = \sqrt{\sigma_1^2 + \sigma_2^2}$, while deterministic jitters add roughly linearly.
+with \$2Q_{\text{BER}} = \$ **14.069** at $10^{-12}$ and **15.883** at $10^{-15}$ ([R-063](../../../reference/research-log.md#r-063--jitter-the-dual-dirac-model-and-the-q-scale)). The literal model at $\rho_T = 1/2$ needs $Q(x) = 4\times10^{-12}$, giving \$2x = \$ **13.68**: the convention is slightly conservative, by **0.47 ps** of eye in Example 03-02.7. Use 14.069 because specifications and instruments do, and state the convention when comparing numbers. (Some tools use the erfc form with $\rho_T = 1$, giving **14.26**.) Two composition rules follow from the model and the Gaussian's properties ([03-04](03-04-joint-distributions-and-clt.md)): independent random jitters add in quadrature, $\sigma = \sqrt{\sigma_1^2 + \sigma_2^2}$, while deterministic jitters add roughly linearly.
 
 The eye's horizontal opening at the target BER is $1\,\text{UI} - TJ$. Plotting the BER against the sampling instant gives the **bathtub curve** (Figure 4), whose walls are Gaussian tails.
 
@@ -264,7 +264,7 @@ They sum to 1 ✓. $F_X(1) = 0.6561 + 0.2916 = $ **0.9477**.
 
 **Setup.** A 7 nm FPGA family has an SRAM soft-error rate of 11.4 FIT/Mb (neutron-induced, normalized to New York City, as of Nov 2026, [R-064](../../../reference/research-log.md#r-064--soft-error-rates-and-fit)). A design uses 100 Mb of it. (a) Find the device's upset rate in FIT and the expected number of upsets per device-year. (b) Find the probability that one device sees no upset in a year, and at least one in 5 years. (c) A fleet of 10,000 devices runs for a year. What is the expected number of upsets, and the probability of 80 or fewer?
 
-**Solution.** (a) $11.4\times100 = $ **1140 FIT**, a rate of $1.14\times10^{-6}$ per hour. Over a year of 8766 hours: $\lambda = $ **9.993×10⁻³** upsets.
+**Solution.** (a) \$11.4\times100 = \$ **1140 FIT**, a rate of $1.14\times10^{-6}$ per hour. Over a year of 8766 hours: \$\lambda = \$ **9.993×10⁻³** upsets.
 
 (b) $P(0) = e^{-0.009993} = $ **0.9901**. Over 5 years, $\lambda = $ **0.04997** and $P(\ge1) = 1 - e^{-0.04997} = $ **0.04874**: about one device in 20.
 
@@ -287,7 +287,7 @@ They sum to 1 ✓. $F_X(1) = 0.6561 + 0.2916 = $ **0.9477**.
 
 They agree to four digits (Figure 2). A code that corrects one error per packet would still fail a third of packets here: this BER is far too high for such a code. **Check:** $P(0) + P(1) + P(\ge2) = 0.3012 + 0.3614 + 0.3374 = 1$ ✓.
 
-(b) A packet fails with $p_e = 1 - e^{-0.12}$ (to excellent accuracy) $= $ **0.1131**. Transmissions are geometric with $q = 1 - p_e$: $P(K = 2) = p_e(1 - p_e) = $ **0.1003**, and $P(K > 3) = p_e^3 = $ **1.446×10⁻³**.
+(b) A packet fails with $p_e = 1 - e^{-0.12}$ (to excellent accuracy) \$= \$ **0.1131**. Transmissions are geometric with $q = 1 - p_e$: \$P(K = 2) = p_e(1 - p_e) = \$ **0.1003**, and \$P(K > 3) = p_e^3 = \$ **1.446×10⁻³**.
 
 ### Example 03-02.4 — Exponential lifetimes and FIT (tier B)
 
@@ -301,7 +301,7 @@ They agree to four digits (Figure 2). A code that corrects one error per packet 
 
 (c) Memoryless: $1 - e^{-5\times10^{-8}\times43{,}830} = $ **2.189×10⁻³**, the same as for a new part over 5 years.
 
-(d) With replacement, each of the $10^6$ sockets sees a Poisson count with mean $rt$: $10^6\times5\times10^{-8}\times8766 = $ **438.3** failures. (Without replacement the expected count is $10^6(1 - e^{-rt}) = $ **438.2**.)
+(d) With replacement, each of the $10^6$ sockets sees a Poisson count with mean $rt$: \$10^6\times5\times10^{-8}\times8766 = \$ **438.3** failures. (Without replacement the expected count is \$10^6(1 - e^{-rt}) = \$ **438.2**.)
 
 **Units check.** $r$ is per hour and $t$ in hours, so $rt$ is dimensionless ✓. **Sanity check.** $1 - e^{-rt} \approx rt$ for small $rt$, so (a) is close to $5\times10^{-8}\times87{,}660 = 4.383\times10^{-3}$ ✓.
 
@@ -311,7 +311,7 @@ They agree to four digits (Figure 2). A code that corrects one error per packet 
 
 **Solution.** (a) ±100 Ω is ±2σ: $2Q(2) = $ **0.04550**. ±150 Ω is ±3σ: $2Q(3) = $ **0.002700**.
 
-(b) $(0.72 - 0.75)/0.01 = -3$, so $P(V < 0.72) = Q(3) = $ **1.350×10⁻³**. For $10^{-6}$: $Q^{-1}(10^{-6}) = $ **4.753**, so the level is $0.75 - 4.753\times0.01 = $ **0.7025 V**.
+(b) $(0.72 - 0.75)/0.01 = -3$, so \$P(V < 0.72) = Q(3) = \$ **1.350×10⁻³**. For $10^{-6}$: \$Q^{-1}(10^{-6}) = \$ **4.753**, so the level is \$0.75 - 4.753\times0.01 = \$ **0.7025 V**.
 
 **Sanity check.** About 95% within 2σ and 99.7% within 3σ, the familiar rules ✓.
 
@@ -321,7 +321,7 @@ They agree to four digits (Figure 2). A code that corrects one error per packet 
 
 **Solution.** (a) $A/\sigma = 100/15 = $ **6.667**, so $\text{BER} = Q(6.667) = $ **1.308×10⁻¹¹**.
 
-(b) $Q^{-1}(10^{-12}) = 7.034$, so $A = 7.034\times15 = $ **105.5 mV**. In dB, $20\log_{10}7.034 = $ **16.94 dB**, against the present $20\log_{10}6.667 = $ **16.48 dB**. Less than half a decibel separates $1.3\times10^{-11}$ from $10^{-12}$.
+(b) $Q^{-1}(10^{-12}) = 7.034$, so \$A = 7.034\times15 = \$ **105.5 mV**. In dB, \$20\log_{10}7.034 = \$ **16.94 dB**, against the present \$20\log_{10}6.667 = \$ **16.48 dB**. Less than half a decibel separates $1.3\times10^{-11}$ from $10^{-12}$.
 
 **Units check.** $A$ and σ are both in mV, so $A/\sigma$ is dimensionless ✓. **Sanity check.** Raising $A/\sigma$ from 6.667 to 7.034 lowers the BER, as it must ✓.
 

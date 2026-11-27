@@ -239,7 +239,7 @@ satisfies $P(Z_n \le z) \to \Phi(z) = 1 - Q(z)$ for every $z$ as $n \to \infty$,
 
 **Where the CLT fails.** Three failure modes matter in practice.
 
-1. **The far tail.** The CLT is a statement about fixed $z$ as $n$ grows. Its error near the center shrinks like $1/\sqrt n$, but the *relative* error far out can be enormous. The standardized sum of 12 uniforms can never exceed 6 in magnitude, while a Gaussian puts $2Q(6) = $ **1.973×10⁻⁹** beyond ±6 (Figure 1). Example 03-04.7 shows a Gaussian approximation that is wrong by 23 orders of magnitude.
+1. **The far tail.** The CLT is a statement about fixed $z$ as $n$ grows. Its error near the center shrinks like $1/\sqrt n$, but the *relative* error far out can be enormous. The standardized sum of 12 uniforms can never exceed 6 in magnitude, while a Gaussian puts \$2Q(6) = \$ **1.973×10⁻⁹** beyond ±6 (Figure 1). Example 03-04.7 shows a Gaussian approximation that is wrong by 23 orders of magnitude.
 2. **Dependence.** Correlated terms (bursts of errors, a shared process corner) add variance faster than $n$ and can keep a non-Gaussian shape.
 3. **Heavy tails or a dominant term.** With infinite variance there is no CLT. The **Cauchy** density $1/(\pi(1 + x^2))$, the ratio of two independent standard Gaussians or the tangent of a uniformly random angle, has tails so heavy that even its mean does not exist, and the average of $n$ independent Cauchy samples has the same Cauchy distribution for every $n$: averaging does not help at all. With one term much larger than the rest, the sum looks like that term.
 
@@ -316,11 +316,11 @@ Independence is the other fragile assumption. A **decision-feedback equalizer** 
 
 **Setup.** Let $X$ and $Y$ indicate that two neighboring dies are defective (1) or good (0). From wafer maps, $p_{XY}(0, 0) = 0.85$, $p_{XY}(1, 0) = p_{XY}(0, 1) = 0.05$ and $p_{XY}(1, 1) = 0.05$. (a) Find the marginals and test independence. (b) Find $P(Y = 1 \mid X = 1)$. (c) Find $\operatorname{Cov}(X, Y)$, ρ, and the variance of the number of bad dies in the pair. (d) What fraction of pairs are both good, compared with independent dies of the same marginal yield?
 
-**Solution.** (a) $P(X = 1) = 0.05 + 0.05 = $ **0.1**, and likewise $P(Y = 1) = 0.1$. Independence would require $p_{XY}(1, 1) = 0.1\times0.1 = 0.01$; the actual 0.05 is five times larger, so the dies are **dependent**: defects cluster.
+**Solution.** (a) \$P(X = 1) = 0.05 + 0.05 = \$ **0.1**, and likewise $P(Y = 1) = 0.1$. Independence would require $p_{XY}(1, 1) = 0.1\times0.1 = 0.01$; the actual 0.05 is five times larger, so the dies are **dependent**: defects cluster.
 
 (b) $P(Y = 1 \mid X = 1) = 0.05/0.1 = $ **0.5**: five times the unconditional 0.1.
 
-(c) $\mathbb{E}[XY] = p_{XY}(1, 1) = 0.05$, so $\operatorname{Cov}(X, Y) = 0.05 - 0.1^2 = $ **0.04**. Each variance is $0.1\times0.9 = 0.09$, so $\rho = 0.04/0.09 = $ **0.4444**. The number of bad dies has mean 0.2 (linearity) and variance $0.09 + 0.09 + 2(0.04) = $ **0.26**, against 0.18 for independent dies.
+(c) $\mathbb{E}[XY] = p_{XY}(1, 1) = 0.05$, so \$\operatorname{Cov}(X, Y) = 0.05 - 0.1^2 = \$ **0.04**. Each variance is $0.1\times0.9 = 0.09$, so \$\rho = 0.04/0.09 = \$ **0.4444**. The number of bad dies has mean 0.2 (linearity) and variance \$0.09 + 0.09 + 2(0.04) = \$ **0.26**, against 0.18 for independent dies.
 
 (d) $p_{XY}(0, 0) = $ **0.85**, against $0.9^2 = $ **0.81** if independent. Clustering leaves more defect-free pairs.
 
@@ -360,7 +360,7 @@ a triangle of height $1/\Delta$ and base $2\Delta$ (area 1 ✓).
 
 **Setup.** A test system measures a supply voltage with noise σ = 2 mV per sample, independent between samples. (a) How many samples make the standard error of the mean 0.1 mV? (b) With that many samples, what probability does Chebyshev guarantee that the mean is within ±0.3 mV of the truth, and what does the CLT predict? (c) What SNR gain does averaging 64 oscilloscope traces give?
 
-**Solution.** (a) $\sigma/\sqrt n = 0.1$ mV gives $n = (2/0.1)^2 = $ **400** samples.
+**Solution.** (a) $\sigma/\sqrt n = 0.1$ mV gives \$n = (2/0.1)^2 = \$ **400** samples.
 
 (b) ±0.3 mV is ±3 standard errors. Chebyshev guarantees at least $1 - 1/9 = $ **88.89%**; the CLT predicts $1 - 2Q(3) = $ **99.73%**, reliable at 3σ with 400 independent samples; Chebyshev is the fallback if you doubt the model.
 
@@ -406,11 +406,11 @@ So **3.12 GHz** and **60 MHz**.
 
 **Solution.** (a) $p_s = 1 - (1 - 2.4\times10^{-4})^{10} = $ **2.397×10⁻³** and $np_s = $ **1.304** symbols.
 
-(b) Exactly, $\text{UCR} = P(N \ge 16)$ for $N \sim$ binomial(544, $p_s$): **8.152×10⁻¹³**. The Poisson approximation with λ = 1.304 gives **9.839×10⁻¹³**, about 21% high but the right order of magnitude. The Gaussian approximation uses σ = $\sqrt{np_s(1 - p_s)}$ = **1.141**, so 15.5 symbols is $(15.5 - np_s)/\sigma = $ **12.4455** standard deviations out (keep the digits: this far out, $Q$ drops about 5% per 0.004σ), and $Q(12.4455) = $ **7.4×10⁻³⁶**: wrong by about 23 orders of magnitude. The binomial tail decays roughly like $\lambda^k/k!$, far more slowly than a Gaussian's $e^{-z^2/2}$.
+(b) Exactly, $\text{UCR} = P(N \ge 16)$ for $N \sim$ binomial(544, $p_s$): **8.152×10⁻¹³**. The Poisson approximation with λ = 1.304 gives **9.839×10⁻¹³**, about 21% high but the right order of magnitude. The Gaussian approximation uses σ = $\sqrt{np_s(1 - p_s)}$ = **1.141**, so 15.5 symbols is \$(15.5 - np_s)/\sigma = \$ **12.4455** standard deviations out (keep the digits: this far out, $Q$ drops about 5% per 0.004σ), and \$Q(12.4455) = \$ **7.4×10⁻³⁶**: wrong by about 23 orders of magnitude. The binomial tail decays roughly like $\lambda^k/k!$, far more slowly than a Gaussian's $e^{-z^2/2}$.
 
-(c) $\text{BER}_{\text{out}} \approx (16/5440)\times8.152\times10^{-13} = $ **2.398×10⁻¹⁵**, comfortably below the $10^{-13}$ Ethernet target ([R-059](../../../reference/research-log.md#r-059--serial-link-bit-error-rate-targets-pcie-and-ethernet)).
+(c) \$\text{BER}_{\text{out}} \approx (16/5440)\times8.152\times10^{-13} = \$ **2.398×10⁻¹⁵**, comfortably below the $10^{-13}$ Ethernet target ([R-059](../../../reference/research-log.md#r-059--serial-link-bit-error-rate-targets-pcie-and-ethernet)).
 
-(d) At $p = 3.8\times10^{-4}$, $\text{UCR} = $ **6.304×10⁻¹⁰**. Raising the input BER by 58% raises the failure rate 773-fold: the steep "waterfall" of Figure 3, which is why links are run with margin.
+(d) At $p = 3.8\times10^{-4}$, \$\text{UCR} = \$ **6.304×10⁻¹⁰**. Raising the input BER by 58% raises the failure rate 773-fold: the steep "waterfall" of Figure 3, which is why links are run with margin.
 
 **Sanity check.** Poisson works because $n$ is large and $p_s$ small (03-02); the CLT fails 16 errors deep in the tail of a count with mean 1.3 ✓.
 

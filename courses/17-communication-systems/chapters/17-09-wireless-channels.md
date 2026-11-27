@@ -126,7 +126,7 @@ $$
 R_H(\Delta f) = \int_0^\infty\frac{e^{-\tau/\tau_{rms}}}{\tau_{rms}}e^{j2\pi\Delta f\tau}d\tau = \frac{1}{1 - j2\pi\Delta f\tau_{rms}},\qquad |R_H| = \frac{1}{\sqrt{1 + (2\pi\Delta f\tau_{rms})^2}} ,
 $$
 
-which equals 0.5 at $\Delta f = \sqrt3/(2\pi\tau_{rms}) = $ **0.276**$/\tau_{rms}$. The textbook rule $B_c \approx 1/(5\tau_{rms})$ is a conservative version of the same idea.
+which equals 0.5 at \$\Delta f = \sqrt3/(2\pi\tau_{rms}) = \$ **0.276**$/\tau_{rms}$. The textbook rule $B_c \approx 1/(5\tau_{rms})$ is a conservative version of the same idea.
 
 **Flat or frequency-selective.** If the signal bandwidth is well below $B_c$ (equivalently, the symbol time is much longer than $\tau_{rms}$), every frequency in the signal fades together: **flat fading**, one complex gain. If it is wider, different parts of the band fade differently: **frequency-selective fading**, intersymbol interference in the time domain. TR 38.901's median delay spreads ([R-284]) range from about 20 ns indoors to about 270 ns in urban macro NLOS, so a 100 MHz 5G carrier is always frequency-selective, while each 30 kHz OFDM subcarrier sees flat fading. That is OFDM's central idea (17-10).
 

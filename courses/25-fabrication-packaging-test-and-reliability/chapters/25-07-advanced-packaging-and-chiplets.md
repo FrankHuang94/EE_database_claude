@@ -275,8 +275,8 @@ Stacking dies concentrates power: a cache die on a processor, or a 16-high HBM s
 **Solution.**
 
 - (a) $e = 0.2 \times 0.01/(0.8 + 0.002)$ = **0.249**%.
-- (b) $Y_{pkg} = 0.998^{10}(1 - 0.00249)^2(0.995)^8$ = **0.937**. Cost per good package $4200/0.93696$ = **$4.48e3**, of which the scrap overhead is $4200(1/0.93696 - 1)$ = **$283** (using the unrounded yield **0.93696**).
-- (c) $e = 0.2 \times 0.001/(0.8 + 0.0002)$ = **0.0250**%; $Y_{pkg}$ = **0.941** (unrounded **0.94118**); the cost per good package falls by $4200/0.93696 - 4200/0.94118$ = **$20.1**.
+- (b) $Y_{pkg} = 0.998^{10}(1 - 0.00249)^2(0.995)^8$ = **0.937**. Cost per good package $4200/0.93696$ = **\$4.48e3**, of which the scrap overhead is $4200(1/0.93696 - 1)$ = **\$283** (using the unrounded yield **0.93696**).
+- (c) $e = 0.2 \times 0.001/(0.8 + 0.0002)$ = **0.0250**%; $Y_{pkg}$ = **0.941** (unrounded **0.94118**); the cost per good package falls by $4200/0.93696 - 4200/0.94118$ = **\$20.1**.
 
 **Units check.** Yields and escape rates are probabilities; dollars divided by a probability give dollars per good package. ✓
 
@@ -284,13 +284,13 @@ Stacking dies concentrates power: a cache die on a processor, or a 16-high HBM s
 
 ### Example 25-07.9 · Monolithic against four chiplets (tier C)
 
-**Setup.** A design needs 800 mm² of logic. Silicon costs $0.30 per mm² (assumed), $D_0$ = 0.1 cm⁻² (Poisson), each die costs $3 to test, and each attach yields 99% (all assumed). Option M is one 800 mm² die in a $50 package. Option C is four chiplets, each 200 mm² plus 10% for die-to-die interfaces, in a $110 package (the extra $60 for the interposer or bridges). Find (a) each die yield, (b) the cost per good monolithic package, (c) the cost per good chiplet package, (d) their ratio, and (e) the break-even $D_0$.
+**Setup.** A design needs 800 mm² of logic. Silicon costs \$0.30 per mm² (assumed), $D_0$ = 0.1 cm⁻² (Poisson), each die costs \$3 to test, and each attach yields 99% (all assumed). Option M is one 800 mm² die in a \$50 package. Option C is four chiplets, each 200 mm² plus 10% for die-to-die interfaces, in a \$110 package (the extra \$60 for the interposer or bridges). Find (a) each die yield, (b) the cost per good monolithic package, (c) the cost per good chiplet package, (d) their ratio, and (e) the break-even $D_0$.
 
 **Solution.**
 
 - (a) $Y_M = e^{-0.8}$ = **0.449**; $Y_C = e^{-0.22}$ = **0.803** (unrounded **0.8025**, used below).
-- (b) $C_M = [(0.30 \times 800 + 3)/0.449 + 50]/0.99$ = **$597**.
-- (c) $C_C = [4(0.30 \times 220 + 3)/0.803 + 110]/0.99^4$ = **$473**.
+- (b) $C_M = [(0.30 \times 800 + 3)/0.449 + 50]/0.99$ = **\$597**.
+- (c) $C_C = [4(0.30 \times 220 + 3)/0.803 + 110]/0.99^4$ = **\$473**.
 - (d) $473/597$ = **0.792**, a saving of about a fifth.
 - (e) Solving $C_M(D_0) = C_C(D_0)$ numerically gives $D_0$ = **0.058** cm⁻²; below it the monolithic die is cheaper.
 

@@ -78,7 +78,7 @@ These are vendor figures against a vendor baseline; the size of the real saving 
 
 (b) $(2.25 + 2.25)/5.5$ = **82**%.
 
-(c) $1.0 + 2 \times 2.25 + 2 \times 2.25$ = **$10.0 B**.
+(c) $1.0 + 2 \times 2.25 + 2 \times 2.25$ = **\$10.0 B**.
 
 Paying mostly in stock means the sellers share in the acquirer's fortunes, and the share count, not the dollar figure, is fixed.
 

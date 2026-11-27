@@ -189,7 +189,7 @@ $N$ qubits have $2^N$ amplitudes, all evolving together; describing 50 qubits cl
 
 **Setup.** (a) A metal has a work function of 4.5 eV (illustrative). Find its threshold wavelength, and the maximum kinetic energy and stopping voltage under 200 nm light. (b) A silicon photodiode has 80% quantum efficiency at 850 nm. Find its responsivity. (c) Why does it give no signal at 1310 nm?
 
-**Solution.** (a) $\lambda_{\text{th}} = 1239.84/4.5 = $ **275.5 nm**. At 200 nm, $hf = 6.199$ eV, so $K_{\max} = $ **1.699 eV** and the stopping voltage is **1.699 V**.
+**Solution.** (a) \$\lambda_{\text{th}} = 1239.84/4.5 = \$ **275.5 nm**. At 200 nm, $hf = 6.199$ eV, so \$K_{\max} = \$ **1.699 eV** and the stopping voltage is **1.699 V**.
 
 (b) $\mathcal R = \eta\lambda/1239.84\ \text{nm} = 0.8\times850/1239.84$ = **0.5485 A/W**.
 

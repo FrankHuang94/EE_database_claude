@@ -18,7 +18,7 @@ Each photon carries $hc/\lambda = 2.337\times10^{-19}$ J, so the rate is $10^{-5
 
 (a) $eV_s = hf - \varphi$, so $V_s$ against $f$ has slope $h/e$. $f_1 = c/450\ \text{nm} = 6.662\times10^{14}$ Hz, $f_2 = c/365\ \text{nm} = 8.214\times10^{14}$ Hz; slope $= (1.247 - 0.605)/(1.552\times10^{14})$ = **4.138×10⁻¹⁵ V·s**.
 
-(b) $h = $ slope × $e$ = **6.630×10⁻³⁴ J·s**, within 0.06% of the exact value: the rounding of the voltages is the only error.
+(b) \$h = \$ slope × $e$ = **6.630×10⁻³⁴ J·s**, within 0.06% of the exact value: the rounding of the voltages is the only error.
 
 (c) With the exact $h$, $\varphi = hf_1 - eV_1$ = **2.150 eV**. Using the fitted line instead (its intercept, which is what an experimenter has) gives **2.152 eV**; the difference is the rounding of the measured voltages.
 
@@ -46,7 +46,7 @@ $E_1 = h^2/(8\times0.067m_0\times(5\ \text{nm})^2)$ = **224.5 meV**; $E_2 = 4E_1
 
 ### Solution 04-10.8
 
-$E = 13.61\times(1/4 - 1/9) = $ **1.890 eV**; $\lambda = 1239.84/1.8903$ = **655.9 nm** (carry the unrounded energy): the red Hα line that colors glowing hydrogen. The measured line sits at 656.5 nm (in vacuum); the 0.1% difference comes from rounding 13.606 eV to 13.61 eV and from treating the nucleus as infinitely heavy.
+\$E = 13.61\times(1/4 - 1/9) = \$ **1.890 eV**; $\lambda = 1239.84/1.8903$ = **655.9 nm** (carry the unrounded energy): the red Hα line that colors glowing hydrogen. The measured line sits at 656.5 nm (in vacuum); the 0.1% difference comes from rounding 13.606 eV to 13.61 eV and from treating the nucleus as infinitely heavy.
 
 ### Solution 04-10.9
 

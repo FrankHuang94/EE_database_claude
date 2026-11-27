@@ -57,7 +57,7 @@ Suggested approach: do all [A] and [B] problems before looking at any solution. 
 
 ### Problem 25-06.10 [A]
 
-**Concentration.** The 2024 top-five OSATs were ASE ($18.54 B), Amkor ($6.32 B), JCET ($5.00 B), Tongfu ($3.32 B) and Powertech ($2.28 B), of a top-ten total of $41.56 B [R-582]. What share of the top ten do the top five hold?
+**Concentration.** The 2024 top-five OSATs were ASE ($18.54 B), Amkor ($6.32 B), JCET ($5.00 B), Tongfu ($3.32 B) and Powertech (\$2.28 B), of a top-ten total of \$41.56 B [R-582]. What share of the top ten do the top five hold?
 
 ### Problem 25-06.11 [B]
 

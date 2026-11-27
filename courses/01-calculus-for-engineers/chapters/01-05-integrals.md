@@ -265,7 +265,7 @@ Exactly, $\big[x^3/3\big]_0^2 = $ **2.667** (8/3).
 **Solution.**
 
 - **Stored:** $\tfrac{1}{2}CV^2 = \tfrac{1}{2}\times10^{-4}\times25 = $ **1.25 mJ** (§3.5).
-- **Delivered by the source:** the source voltage is constant, so $w_s = \int_0^\infty 5\,i\,dt = 5\,q_{total} = 5\times CV = 5\times5\times10^{-4} = $ **2.50 mJ**, i.e. $CV^2$.
+- **Delivered by the source:** the source voltage is constant, so \$w_s = \int_0^\infty 5\,i\,dt = 5\,q_{total} = 5\times CV = 5\times5\times10^{-4} = \$ **2.50 mJ**, i.e. $CV^2$.
 - **Dissipated in $R$:**
 
 $$
@@ -296,11 +296,11 @@ $R$ cancels: the loss is $\tfrac{1}{2}CV^2$ for any resistance.
 
 **Solution.**
 
-(a) Charge per hour: $\int_0^{60\text{ min}}i\,dt = 5\text{ mA}\times2\text{ min} + 0.5\text{ mA}\times58\text{ min} = 10 + 29 = 39$ mA·min. The average is $39/60 = $ **0.650 mA** (Figure 5).
+(a) Charge per hour: $\int_0^{60\text{ min}}i\,dt = 5\text{ mA}\times2\text{ min} + 0.5\text{ mA}\times58\text{ min} = 10 + 29 = 39$ mA·min. The average is \$39/60 = \$ **0.650 mA** (Figure 5).
 
 (b) Life $= 300\text{ mAh}/0.650\text{ mA} = $ **461.5 h**, about **19.2 days** (ignoring self-discharge, temperature and aging).
 
-(c) An offset adds $10\text{ µA}\times t$ to the integral, against true consumption of $650\text{ µA}\times t$. The relative error is $10/650 = $ **1.54%**, and it never averages out, because integration accumulates it. Over a week of standby the gauge drifts by about 1.7 mAh. That is why gauges recalibrate whenever the battery reaches a known state (full charge, or a rested open-circuit voltage).
+(c) An offset adds $10\text{ µA}\times t$ to the integral, against true consumption of $650\text{ µA}\times t$. The relative error is \$10/650 = \$ **1.54%**, and it never averages out, because integration accumulates it. Over a week of standby the gauge drifts by about 1.7 mAh. That is why gauges recalibrate whenever the battery reaches a known state (full charge, or a rested open-circuit voltage).
 
 ![Current profile and accumulated charge of a wearable](../../../assets/figures/01-05/coulomb-counting.svg)
 

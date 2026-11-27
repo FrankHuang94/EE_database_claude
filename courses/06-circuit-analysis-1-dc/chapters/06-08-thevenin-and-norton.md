@@ -117,7 +117,7 @@ The voltage-source equivalent is named after Léon Charles Thévenin, a French t
 
 **Setup.** A 12 V source feeds a divider of $R_1$ = 6 kΩ (top) and $R_2$ = 3 kΩ (bottom); a series $R_3$ = 1 kΩ leads from the divider's midpoint to terminal a (terminal b is ground). Find the Thévenin and Norton equivalents, and the load voltage for 1 kΩ and for 3 kΩ loads.
 
-**Solution.** $V_{th} = v_{oc}$: with nothing connected, no current flows in $R_3$, so $v_{oc}$ is the divider output, $12\times3/9 = $ **4 V**. $R_{th}$ by Method 2: short the 12 V source; $R_1\parallel R_2 = 2$ kΩ, in series with $R_3$: **3 kΩ**. Norton: $I_N = 4/3 = $ **1.333 mA**. Loads: $4\times1/(3 + 1) = $ **1 V** into 1 kΩ, and $4\times3/6 = $ **2 V** into 3 kΩ.
+**Solution.** $V_{th} = v_{oc}$: with nothing connected, no current flows in $R_3$, so $v_{oc}$ is the divider output, \$12\times3/9 = \$ **4 V**. $R_{th}$ by Method 2: short the 12 V source; $R_1\parallel R_2 = 2$ kΩ, in series with $R_3$: **3 kΩ**. Norton: \$I_N = 4/3 = \$ **1.333 mA**. Loads: \$4\times1/(3 + 1) = \$ **1 V** into 1 kΩ, and \$4\times3/6 = \$ **2 V** into 3 kΩ.
 
 **Check by Method 1.** Shorting the terminals, the 1 kΩ in parallel with the 3 kΩ gives 0.75 kΩ, the 6 kΩ takes $12\times0.75/6.75 = 1.333$ V at the midpoint, and $i_{sc} = 1.333/1 = 1.333$ mA ✓.
 
@@ -129,7 +129,7 @@ The voltage-source equivalent is named after Léon Charles Thévenin, a French t
 
 **Setup.** The bridge of Problem 06-04.6 (5 V excitation; $R_1$ = $R_2$ = $R_3$ = 1 kΩ, $R_4$ = 1.1 kΩ) is read by a galvanometer between A and B. Find the bridge's Thévenin equivalent at A–B and the meter current for a 100 Ω and a 50 Ω meter.
 
-**Solution.** $V_{th}$ = open-circuit $v_B - v_A = 5\times1.1/2.1 - 2.5 = $ **119.0 mV**. $R_{th}$: short the 5 V source; from A and B the bridge is $R_1\parallel R_2$ in series with $R_3\parallel R_4$: $0.5 + 0.5238 = $ **1.024 kΩ**. Meter currents: $119.05/(1023.8 + 100) = $ **0.1059 mA** (as Problem 06-04.6 found with two simultaneous equations) and $119.05/(1023.8 + 50) = $ **0.1109 mA**. Norton: $I_N = 119.05/1023.8 = $ **0.1163 mA**, the current an ideal ammeter would read.
+**Solution.** $V_{th}$ = open-circuit \$v_B - v_A = 5\times1.1/2.1 - 2.5 = \$ **119.0 mV**. $R_{th}$: short the 5 V source; from A and B the bridge is $R_1\parallel R_2$ in series with $R_3\parallel R_4$: \$0.5 + 0.5238 = \$ **1.024 kΩ**. Meter currents: \$119.05/(1023.8 + 100) = \$ **0.1059 mA** (as Problem 06-04.6 found with two simultaneous equations) and \$119.05/(1023.8 + 50) = \$ **0.1109 mA**. Norton: \$I_N = 119.05/1023.8 = \$ **0.1163 mA**, the current an ideal ammeter would read.
 
 **Units check.** mV/kΩ = µA ✓.
 
@@ -139,9 +139,9 @@ The voltage-source equivalent is named after Léon Charles Thévenin, a French t
 
 **Setup.** An amplifier is modeled as a VCVS with output $-10\,v_x$ behind $R_o$ = 2 kΩ, where $v_x$ is its input node. A 1 V source drives the input through $R_s$ = 1 kΩ, and a feedback resistor $R_f$ = 9 kΩ joins the output to the input node. Find the Thévenin equivalent at the output.
 
-**Solution.** *Open circuit.* KCL at $v_x$: $(v_x - 1)/1 + (v_x - v_o)/9 = 0$. KCL at the output, through $R_o$ to the VCVS and through $R_f$: $(v_o + 10v_x)/2 + (v_o - v_x)/9 = 0$. Solving: $v_x = 0.5$ V and $v_o = $ **−4 V** $= V_{th}$.
+**Solution.** *Open circuit.* KCL at $v_x$: $(v_x - 1)/1 + (v_x - v_o)/9 = 0$. KCL at the output, through $R_o$ to the VCVS and through $R_f$: $(v_o + 10v_x)/2 + (v_o - v_x)/9 = 0$. Solving: $v_x = 0.5$ V and \$v_o = \$ **−4 V** $= V_{th}$.
 
-*Test source* (input source shorted, VCVS kept): inject 1 mA into the output. KCL at $v_x$: $v_x/1 + (v_x - v_o)/9 = 0$; at the output: $(v_o + 10v_x)/2 + (v_o - v_x)/9 = 1$. Solving: $v_x = 0.0909$ V and $v_o = 0.9091$ V, so $R_{th} = $ **0.9091 kΩ**. Norton: $I_N = -4/0.9091 = $ **−4.4 mA**.
+*Test source* (input source shorted, VCVS kept): inject 1 mA into the output. KCL at $v_x$: $v_x/1 + (v_x - v_o)/9 = 0$; at the output: $(v_o + 10v_x)/2 + (v_o - v_x)/9 = 1$. Solving: $v_x = 0.0909$ V and $v_o = 0.9091$ V, so \$R_{th} = \$ **0.9091 kΩ**. Norton: \$I_N = -4/0.9091 = \$ **−4.4 mA**.
 
 **Units check.** V/mA = kΩ ✓.
 
@@ -155,7 +155,7 @@ The voltage-source equivalent is named after Léon Charles Thévenin, a French t
 
 *Figure 2. A PoE link as a Thévenin source: the port voltage behind the cable's loop resistance.*
 
-**Solution.** The current is $90/52 = $ **1.731 A**. The cable drops $1.731\times6.25 = 10.82$ V, so the PD sees **41.18 V** and receives $41.18\times1.731 = $ **71.28 W**, which rounds to the standard's 71.3 W. The cable dissipates $1.731^2\times6.25 = $ **18.72 W**, **20.8%** of the source's output.
+**Solution.** The current is \$90/52 = \$ **1.731 A**. The cable drops $1.731\times6.25 = 10.82$ V, so the PD sees **41.18 V** and receives \$41.18\times1.731 = \$ **71.28 W**, which rounds to the standard's 71.3 W. The cable dissipates \$1.731^2\times6.25 = \$ **18.72 W**, **20.8%** of the source's output.
 
 The same model reproduces the class figures of the earlier generations, given each one's minimum PSE voltage and worst-case cable resistance:
 
@@ -180,7 +180,7 @@ The same model reproduces the class figures of the earlier generations, given ea
 
 **Solution.** (a) $300\times10/210 = $ **14.29 mV** in the 10 MΩ mode and $300\times10{,}000/10{,}200 = $ **294.1 mV** in the 10 GΩ mode.
 
-(b) Each reading satisfies $1/v_k = 1/V_{th} + (R_{th}/V_{th})(1/R_k)$. In V and MΩ: $1/0.014286 = 70.0 = a + b/10$ and $1/0.29412 = 3.40 = a + b/10{,}000$, with $a = 1/V_{th}$ and $b = R_{th}/V_{th}$. Subtracting, $b(0.1 - 0.0001) = 66.6$, so $b = 666.7$ and $a = 3.333$: $V_{th} = $ **0.300 V** and $R_{th} = b/a = $ **200 MΩ**.
+(b) Each reading satisfies $1/v_k = 1/V_{th} + (R_{th}/V_{th})(1/R_k)$. In V and MΩ: $1/0.014286 = 70.0 = a + b/10$ and $1/0.29412 = 3.40 = a + b/10{,}000$, with $a = 1/V_{th}$ and $b = R_{th}/V_{th}$. Subtracting, $b(0.1 - 0.0001) = 66.6$, so $b = 666.7$ and $a = 3.333$: \$V_{th} = \$ **0.300 V** and \$R_{th} = b/a = \$ **200 MΩ**.
 
 (c) Taking 294.1 mV as the source voltage is **1.96%** low.
 

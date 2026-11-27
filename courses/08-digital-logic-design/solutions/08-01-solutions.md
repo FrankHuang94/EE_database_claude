@@ -16,7 +16,7 @@ Problems: [08-01 problems](../problems/08-01-problems.md) · Chapter: [08-01](..
 
 ### Solution 08-01.2
 
-(a) $\lceil\log_2 1000\rceil = $ **10** bits ($2^{10}$ = 1024 states).
+(a) \$\lceil\log_2 1000\rceil = \$ **10** bits ($2^{10}$ = 1024 states).
 
 (b) 3.3 V / 0.1 mV = 33 000 steps, so **33 001** levels including 0 V. Since $2^{15}$ = 32 768 is too few and $2^{16}$ = 65 536 is enough, it needs **16** bits.
 
@@ -121,7 +121,7 @@ In (c) the operands have opposite signs, so overflow is impossible, as the sign 
 
 (a) The smallest $r$ with $2^r \ge 32 + r + 1$ is 6 ($2^6$ = 64 ≥ 39), and DED adds 1: **7** check bits, a (39,32) code with rate 32/39 = **0.8205**.
 
-(b) Without ECC, a read fails if any of 32 bits flips: $1 - (1 - 10^{-9})^{32} \approx$ **3.2 × 10⁻⁸**. With SEC-DED, a word fails only if two or more of its 39 bits flip, and that is dominated by $\binom{39}{2}p^2 = 741 \times 10^{-18} = $ **7.41 × 10⁻¹⁶**.
+(b) Without ECC, a read fails if any of 32 bits flips: $1 - (1 - 10^{-9})^{32} \approx$ **3.2 × 10⁻⁸**. With SEC-DED, a word fails only if two or more of its 39 bits flip, and that is dominated by \$\binom{39}{2}p^2 = 741 \times 10^{-18} = \$ **7.41 × 10⁻¹⁶**.
 
 (c) The ratio is about **4.32 × 10⁷**: ECC turns roughly one bad read in 30 million into one in about 10¹⁵.
 

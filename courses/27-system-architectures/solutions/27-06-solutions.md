@@ -49,7 +49,7 @@ SoC: $1 - 3/400$ = **99.25**%. PMIC: $1 - 2/250$ = **99.2**%. Achieved: $400 \ti
 
 ### Solution 27-06.10
 
-$3 \times 8000/20$ = 1200 s = **20** min. Fleet data: $2 \times 10^6 \times 3$ GB = 6 million GB = **6** PB, about **$3.0** million at $0.50/GB.
+$3 \times 8000/20$ = 1200 s = **20** min. Fleet data: $2 \times 10^6 \times 3$ GB = 6 million GB = **6** PB, about **\$3.0** million at \$0.50/GB.
 
 ### Solution 27-06.11
 

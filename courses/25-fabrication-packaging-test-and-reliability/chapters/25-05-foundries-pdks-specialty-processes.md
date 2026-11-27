@@ -119,7 +119,7 @@ Foundries publish such offerings with qualification claims: for example, TSMC re
 
 **Solution.**
 
-- (a) $40.2/0.725$ = **$55.4 B**.
+- (a) $40.2/0.725$ = **\$55.4 B**.
 - (b) $53.49/55.4$ = **96.5**%.
 - (c) $40.2/53.49$ = **75.2**%.
 - (d) $3.26/55.4$ = **5.9**%. ✓

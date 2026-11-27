@@ -44,7 +44,7 @@ $A$ = 750 mm²: $70{,}686/750$ = **94.2** minus $\pi \times 300/\sqrt{1500}$ = *
 
 (b) $69.9 \times 0.512$ = **35.8**.
 
-(c) $30{,}000/35.8$ = **$838**.
+(c) $30{,}000/35.8$ = **\$838**.
 
 ### Solution 25-04.6
 
@@ -56,7 +56,7 @@ $A$ = 750 mm²: $70{,}686/750$ = **94.2** minus $\pi \times 300/\sqrt{1500}$ = *
 
 (d) $30{,}000/(296 \times 0.819)$ = **$124** (unrounded **$123.6**).
 
-(e) Four chiplets cost $4 \times 123.6$ = **$494** of silicon against $838 monolithic, so the chiplet version can absorb up to **$344** of extra packaging, assembly and test cost per product, less any yield loss in assembly. With the lab's exact counts (76 monolithic dies and **306** chiplets), the monolithic die costs **$771** and four chiplets **$479**, so the margin shrinks to **$292**: the formula's pessimism, worse for the larger die, flatters the chiplet case by about $50. Known-good-die testing (25-07) matters: assembling an untested bad chiplet wastes the other three.
+(e) Four chiplets cost $4 \times 123.6$ = **\$494** of silicon against $838 monolithic, so the chiplet version can absorb up to **$344** of extra packaging, assembly and test cost per product, less any yield loss in assembly. With the lab's exact counts (76 monolithic dies and **306** chiplets), the monolithic die costs **$771** and four chiplets **$479**, so the margin shrinks to **\$292**: the formula's pessimism, worse for the larger die, flatters the chiplet case by about \$50. Known-good-die testing (25-07) matters: assembling an untested bad chiplet wastes the other three.
 
 ### Solution 25-04.7
 
@@ -76,7 +76,7 @@ The target density is still 0.232 cm⁻², now reached when $0.42\,e^{-t/3} = 0.
 
 ### Solution 25-04.10
 
-(a) $20 \times 10^9/(5 \times 6.0 \times 10^5)$ = **$6,667**.
+(a) $20 \times 10^9/(5 \times 6.0 \times 10^5)$ = **\$6,667**.
 
 (b) $6{,}667/20{,}000$ = **33**%.
 

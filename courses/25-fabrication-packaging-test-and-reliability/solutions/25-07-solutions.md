@@ -78,9 +78,9 @@ As $c \to 1$ the second term of the denominator vanishes, leaving $e \approx (1 
 
 (a) $Y_{pkg} = 0.998^{14}(1 - 0.00249)^2(0.995)^{12}$ = **0.911** (unrounded **0.91104**, used below).
 
-(b) $5400/0.91104$ = **$5.93e3**.
+(b) $5400/0.91104$ = **\$5.93e3**.
 
-(c) $5400(1/0.91104 - 1)$ = **$527**. Four more stacks add four attaches and four chances of an escape, and each failure scraps a more expensive kit: scrap rises from $283 to $527.
+(c) $5400(1/0.91104 - 1)$ = **\$527**. Four more stacks add four attaches and four chances of an escape, and each failure scraps a more expensive kit: scrap rises from \$283 to \$527.
 
 ### Solution 25-07.10
 

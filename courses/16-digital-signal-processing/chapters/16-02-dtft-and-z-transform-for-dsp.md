@@ -214,7 +214,7 @@ An **equalizer** undoes a channel: a cable, a circuit-board trace, a room's acou
 
 **Setup.** Remove 50 Hz hum from a sensor sampled at $f_s$ = 1 kHz with a second-order notch, pole radius $r$ = 0.98. Give the coefficients (scaled for unit DC gain), the −3 dB notch width, the gain at 10 Hz and at 60 Hz, and the time constant of the notch's transient. Repeat the width and time constant for $r$ = 0.9, and compare with 16-01's 20-point moving average.
 
-**Solution.** $\omega_0 = 2\pi \times 50/1000 = 0.1\pi$, so $2\cos\omega_0$ = **1.9021**. Numerator $1 - 1.9021z^{-1} + z^{-2}$; denominator $1 - 2r\cos\omega_0z^{-1} + r^2z^{-2} = 1 - $ **1.8641** $z^{-1} +$ **0.9604** $z^{-2}$. At DC the unscaled gain is $(2 - 1.9021)/(1 - 1.8641 + 0.9604)$ = **1.0162**, so the numerator is multiplied by $g = 1/1.0162$.
+**Solution.** $\omega_0 = 2\pi \times 50/1000 = 0.1\pi$, so $2\cos\omega_0$ = **1.9021**. Numerator $1 - 1.9021z^{-1} + z^{-2}$; denominator \$1 - 2r\cos\omega_0z^{-1} + r^2z^{-2} = 1 - \$ **1.8641** $z^{-1} +$ **0.9604** $z^{-2}$. At DC the unscaled gain is $(2 - 1.9021)/(1 - 1.8641 + 0.9604)$ = **1.0162**, so the numerator is multiplied by $g = 1/1.0162$.
 
 - Width: $2(1 - r) = 0.04$ rad/sample, or $0.04 \times 1000/2\pi$ = 6.37 Hz by the rule; solving $\lvert H\rvert = 1/\sqrt2$ on both sides of the notch gives **6.38** Hz.
 - Gain at 10 Hz: **0.9995** (the 20-point average gave 0.936). Gain at 60 Hz: **0.956**: a notch for 50 Hz does nothing useful at 60 Hz.

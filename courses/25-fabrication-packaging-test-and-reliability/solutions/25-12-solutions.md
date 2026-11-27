@@ -24,7 +24,7 @@ $m(6)/m(3) = 1 + e^{-3b} = 1.75$, so $e^{-3b} = 0.75$.
 
 ### Solution 25-12.4
 
-Metal ECO: $2 + 10 \times 2 + 0.2 \times (25 + 20 \times 2)$ = **$35 M**. Full respin: $25 + 40$ = **$65 M**. Break-even: $22 + (1 - p) \times 65 = 65$, $p$ = **0.338**. Cheaper delay makes the mask cost a larger share, but the metal ECO still wins easily.
+Metal ECO: $2 + 10 \times 2 + 0.2 \times (25 + 20 \times 2)$ = **\$35 M**. Full respin: $25 + 40$ = **\$65 M**. Break-even: $22 + (1 - p) \times 65 = 65$, $p$ = **0.338**. Cheaper delay makes the mask cost a larger share, but the metal ECO still wins easily.
 
 ### Solution 25-12.5
 

@@ -10,13 +10,13 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 01-09.1
 
-(a) $f_x = 2xy + ye^{xy}$ and $f_y = x^2 + xe^{xy}$. At (1, 2): $f_x = 4 + 2e^2 = $ **18.78** and $f_y = 1 + e^2 = $ **8.389**.
+(a) $f_x = 2xy + ye^{xy}$ and $f_y = x^2 + xe^{xy}$. At (1, 2): \$f_x = 4 + 2e^2 = \$ **18.78** and \$f_y = 1 + e^2 = \$ **8.389**.
 
-(b) $f_{xy} = \partial_y(2xy + ye^{xy}) = 2x + e^{xy} + xye^{xy}$, and $f_{yx} = \partial_x(x^2 + xe^{xy}) = 2x + e^{xy} + xye^{xy}$. They are equal, as Clairaut's theorem promises. At (1, 2): $2 + e^2(1 + 2) = 2 + 3e^2 = $ **24.17**.
+(b) $f_{xy} = \partial_y(2xy + ye^{xy}) = 2x + e^{xy} + xye^{xy}$, and $f_{yx} = \partial_x(x^2 + xe^{xy}) = 2x + e^{xy} + xye^{xy}$. They are equal, as Clairaut's theorem promises. At (1, 2): \$2 + e^2(1 + 2) = 2 + 3e^2 = \$ **24.17**.
 
 ### Solution 01-09.2
 
-$\partial P/\partial V = 2V/R = $ **0.4 W/V** (at fixed $R$) and $\partial P/\partial R = -V^2/R^2 = $ **−0.04 W/Ω** (at fixed $V$). +1 V raises $P$ by about 0.4 W; −1 Ω by about 0.04 W. **The voltage change** has ten times the effect. In relative terms, $P$'s elasticity is +2 to $V$ and −1 to $R$.
+\$\partial P/\partial V = 2V/R = \$ **0.4 W/V** (at fixed $R$) and \$\partial P/\partial R = -V^2/R^2 = \$ **−0.04 W/Ω** (at fixed $V$). +1 V raises $P$ by about 0.4 W; −1 Ω by about 0.04 W. **The voltage change** has ten times the effect. In relative terms, $P$'s elasticity is +2 to $V$ and −1 to $R$.
 
 ### Solution 01-09.3
 
@@ -40,7 +40,7 @@ Check: $z = \cos^2t\sin t$, so $dz/dt = -2\cos t\sin^2t + \cos^3t$, which at π/
 
 (a) $R = 1.72\times10^{-8}\times0.05/(0.2\times10^{-3}\times35\times10^{-6}) = $ **0.1229 Ω**.
 
-(b) $\ln R = \ln\rho + \ln L - \ln w - \ln t$, so each elasticity is ±1. Worst case: $1 + 5 + 10 = $ **16%**. RSS: $\sqrt{1 + 25 + 100} = $ **11.22%**.
+(b) $\ln R = \ln\rho + \ln L - \ln w - \ln t$, so each elasticity is ±1. Worst case: \$1 + 5 + 10 = \$ **16%**. RSS: \$\sqrt{1 + 25 + 100} = \$ **11.22%**.
 
 (c) **Copper thickness**, which contributes 100 of the 126 units of variance. Board vendors specify copper weight (thickness) tolerances for exactly this reason.
 
@@ -56,24 +56,24 @@ Check: $z = \cos^2t\sin t$, so $dz/dt = -2\cos t\sin^2t + \cos^3t$, which at π/
 
 (c) $2I_D/V_{ov} = 2\times207\text{ µA}/0.3\text{ V} = $ **1.380 mS** ✓. A lower Early voltage (shorter channel) gives lower intrinsic gain than in Example 01-09.2.
 
-(d) $\Delta I_D \approx g_m(5\text{ mV}) + g_o(0.2\text{ V}) = 6.90 + 6.00 = $ **12.90 µA**. Exactly, $I_D(0.705, 1.1) - I_D(0.7, 0.9) = $ **13.16 µA**. The linear estimate is 2% low, mostly from the square law's curvature in $V_{GS}$, as in Example 01-09.2.
+(d) \$\Delta I_D \approx g_m(5\text{ mV}) + g_o(0.2\text{ V}) = 6.90 + 6.00 = \$ **12.90 µA**. Exactly, \$I_D(0.705, 1.1) - I_D(0.7, 0.9) = \$ **13.16 µA**. The linear estimate is 2% low, mostly from the square law's curvature in $V_{GS}$, as in Example 01-09.2.
 
 ### Solution 01-09.7
 
-(a) $3kT/q$ at 350 K is 0.09048 V, so $dV/dT = (0.600 - 1.12 - 0.09048)/350 = $ **−1.744 mV/K**. The magnitude depends on both bias and temperature.
+(a) $3kT/q$ at 350 K is 0.09048 V, so \$dV/dT = (0.600 - 1.12 - 0.09048)/350 = \$ **−1.744 mV/K**. The magnitude depends on both bias and temperature.
 
-(b) $3x^2 + 3y^2y' = 0$, so $y' = -x^2/y^2 = -1/4 = $ **−0.25**.
+(b) $3x^2 + 3y^2y' = 0$, so \$y' = -x^2/y^2 = -1/4 = \$ **−0.25**.
 
 ### Solution 01-09.8
 
 $f_x = 3x^2 - 3 = 0$ gives $x = \pm1$; $f_y = 2y - 2 = 0$ gives $y = 1$. The second partials are $f_{xx} = 6x$, $f_{yy} = 2$, $f_{xy} = 0$.
 
-- At (1, 1): $D = 6\times2 = 12 > 0$ with $f_{xx} > 0$, a **local minimum**, $f = 1 - 3 + 1 - 2 = $ **−3**.
-- At (−1, 1): $D = -12 < 0$, a **saddle**, $f = -1 + 3 + 1 - 2 = $ **1**.
+- At (1, 1): $D = 6\times2 = 12 > 0$ with $f_{xx} > 0$, a **local minimum**, \$f = 1 - 3 + 1 - 2 = \$ **−3**.
+- At (−1, 1): $D = -12 < 0$, a **saddle**, \$f = -1 + 3 + 1 - 2 = \$ **1**.
 
 ### Solution 01-09.9
 
-(a) $\bar{x} = 1.5$ and $\bar{y} = 3.5$. Then $\sum(x - \bar{x})(y - \bar{y}) = 3.75 + 0.25 + 0.25 + 3.75 = 8$ and $\sum(x - \bar{x})^2 = 5$. So $b = 8/5 = $ **1.6** and $a = 3.5 - 1.6\times1.5 = $ **1.1**.
+(a) $\bar{x} = 1.5$ and $\bar{y} = 3.5$. Then $\sum(x - \bar{x})(y - \bar{y}) = 3.75 + 0.25 + 0.25 + 3.75 = 8$ and $\sum(x - \bar{x})^2 = 5$. So \$b = 8/5 = \$ **1.6** and \$a = 3.5 - 1.6\times1.5 = \$ **1.1**.
 
 (b) The residuals are −0.1, 0.3, −0.3, 0.1, so $S = $ **0.2**.
 
@@ -89,7 +89,7 @@ $f_x = 3x^2 - 3 = 0$ gives $x = \pm1$; $f_y = 2y - 2 = 0$ gives $y = 1$. The sec
 
 (c) The factors are 0.92 and 0.2. After three steps: $x = 0.92^3 = $ **0.7787**, $y = 0.2^3 = $ **0.008**, and $f = 0.6064 + 0.00064 = $ **0.6070**.
 
-(d) The condition number is $20/2 = $ **10**. The step size is capped by the steep direction ($y$), so the shallow direction ($x$) shrinks by only 8% per step. Convergence time grows in proportion to the condition number. Rescaling the variables (preconditioning) or momentum methods fix this.
+(d) The condition number is \$20/2 = \$ **10**. The step size is capped by the steep direction ($y$), so the shallow direction ($x$) shrinks by only 8% per step. Convergence time grows in proportion to the condition number. Rescaling the variables (preconditioning) or momentum methods fix this.
 
 ### Solution 01-09.11
 
@@ -101,9 +101,9 @@ $f_x = 3x^2 - 3 = 0$ gives $x = \pm1$; $f_y = 2y - 2 = 0$ gives $y = 1$. The sec
 
 (a) $\dfrac{\partial C}{\partial P_i} = \dfrac{1}{\ln2}\cdot\dfrac{1}{N_i + P_i} = \lambda$ for each $i$, so $N_i + P_i = 1/(\lambda\ln2) \equiv \mu$, the same "water level" for both channels.
 
-(b) $P_1 + P_2 = 2\mu - (N_1 + N_2) = 6$ gives $\mu = $ **5 mW**, so $P_1 = $ **4 mW** and $P_2 = $ **2 mW**. Then $C = \log_25 + \log_2(5/3) = $ **3.059 b/s/Hz**. The equal split (3/3) gives $\log_24 + \log_22 = $ **3** b/s/Hz, so water-filling gains about 2%.
+(b) $P_1 + P_2 = 2\mu - (N_1 + N_2) = 6$ gives \$\mu = \$ **5 mW**, so \$P_1 = \$ **4 mW** and \$P_2 = \$ **2 mW**. Then \$C = \log_25 + \log_2(5/3) = \$ **3.059 b/s/Hz**. The equal split (3/3) gives \$\log_24 + \log_22 = \$ **3** b/s/Hz, so water-filling gains about 2%.
 
-(c) For $P = 1$: $\mu = 2.5$, which would make $P_2 = -0.5$: impossible. The constraint $P_2 \ge 0$ binds. Put all the power in the better channel: $P_1 = 1$, $P_2 = 0$, so $C = \log_22 = $ **1 b/s/Hz**. Check that this corner is optimal: the marginal capacity of channel 1 there is proportional to $1/(N_1 + P_1) = 1/2$, larger than that of the unused channel 2, $1/N_2 = 1/3$, so moving any power to channel 2 would lower $C$. At low total power the noisy channel is not worth using, which is why bit-loading systems switch off poor subcarriers.
+(c) For $P = 1$: $\mu = 2.5$, which would make $P_2 = -0.5$: impossible. The constraint $P_2 \ge 0$ binds. Put all the power in the better channel: $P_1 = 1$, $P_2 = 0$, so \$C = \log_22 = \$ **1 b/s/Hz**. Check that this corner is optimal: the marginal capacity of channel 1 there is proportional to $1/(N_1 + P_1) = 1/2$, larger than that of the unused channel 2, $1/N_2 = 1/3$, so moving any power to channel 2 would lower $C$. At low total power the noisy channel is not worth using, which is why bit-loading systems switch off poor subcarriers.
 
 ### Solution 01-09.13
 
@@ -121,9 +121,9 @@ $f_x = 3x^2 - 3 = 0$ gives $x = \pm1$; $f_y = 2y - 2 = 0$ gives $y = 1$. The sec
 
 (a) $dV_T/dT = k/q = $ **0.08617 mV/K**: proportional to absolute temperature (PTAT).
 
-(b) From Example 01-09.3, $dV_{BE}/dT = -1.8092$ mV/K, and $k/q = 0.086173$ mV/K. So $K = 1.8092/0.086173 = 20.995 \approx $ **21.00**.
+(b) From Example 01-09.3, $dV_{BE}/dT = -1.8092$ mV/K, and $k/q = 0.086173$ mV/K. So \$K = 1.8092/0.086173 = 20.995 \approx \$ **21.00**.
 
-(c) $V_{out} = 0.6548 + 21.00\times0.02585 = $ **1.198 V**. In general, $dV_{BE}/dT = (V_{BE} - E_g/q - 3V_T)/T$ and $d(KV_T)/dT = KV_T/T$. Setting the sum to zero gives
+(c) \$V_{out} = 0.6548 + 21.00\times0.02585 = \$ **1.198 V**. In general, $dV_{BE}/dT = (V_{BE} - E_g/q - 3V_T)/T$ and $d(KV_T)/dT = KV_T/T$. Setting the sum to zero gives
 
 $$
 V_{BE} + KV_T = \frac{E_g}{q} + 3\frac{kT}{q} = 1.12 + 0.0776 = 1.198\text{ V},
@@ -133,7 +133,7 @@ whatever the bias current. The output of a zero-tempco reference sits at (nearly
 
 ### Solution 01-09.15
 
-(a) Let $u = V^2$ = 0.36, 0.64, 1.00. Then $P = au + b$ is a straight-line fit in $u$, and the normal equations give $a = $ **1.014 W/V²** and $b = $ **0.04093 W**.
+(a) Let $u = V^2$ = 0.36, 0.64, 1.00. Then $P = au + b$ is a straight-line fit in $u$, and the normal equations give \$a = \$ **1.014 W/V²** and \$b = \$ **0.04093 W**.
 
 (b) The residual sum of squares is **1.62×10^−4 W²**.
 

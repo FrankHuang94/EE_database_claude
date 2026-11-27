@@ -29,19 +29,19 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_26_exa
 
 ## Question 2 (26-01)
 
-**(a)** A missed defect costs, on average, $0.5 \times 10 + 0.5 \times 0.6 \times 100 + 0.5 \times 0.4 \times 1000 = 5 + 30 + 200$ = **235** $k. Total: $C = 50[0.4 \times 1 + 0.6 \times 235]$ = **7070** $k, about $7.1 M; the field term alone is 85% of the downstream cost.
+**(a)** A missed defect costs, on average, $0.5 \times 10 + 0.5 \times 0.6 \times 100 + 0.5 \times 0.4 \times 1000 = 5 + 30 + 200$ = **235** \$k. Total: $C = 50[0.4 \times 1 + 0.6 \times 235]$ = **7070** \$k, about \$7.1 M; the field term alone is 85% of the downstream cost.
 
-**(b)** $\partial C/\partial p_1 = -N(\bar c_{down} - c_1) = -50 \times 234$ = **−11700** $k per unit of probability, so +0.01 saves **117** $k.
+**(b)** $\partial C/\partial p_1 = -N(\bar c_{down} - c_1) = -50 \times 234$ = **−11700** \$k per unit of probability, so +0.01 saves **117** \$k.
 
 **(c)** $w^* = (R_a - R_b)/[(R_a - R_b) - (s_{ac} - s_{bc})] = -1.5/(-1.5 - 4)$ = **0.273**: above about 27% weight on criterion $c$, option $a$ wins.
 
-**(d)** $200 \times 0.08$ = **16** untraced requirements; expected cost $16 \times 0.25 \times 150$ = **600** $k.
+**(d)** $200 \times 0.08$ = **16** untraced requirements; expected cost $16 \times 0.25 \times 150$ = **600** \$k.
 
 ## Question 3 (26-02)
 
 **(a)** $1 - 0.6^3$ = **0.784**.
 
-**(b)** $k \le 1 + \ln[6000/(20000 \times 25 \times 0.4)]/\ln 0.6 = 1 + \ln 0.03/\ln 0.6$ = **7.86**, so **7** reviewers. Check: $C(6)$ = **$59,328**, $C(7)$ = **$55,997**, $C(8)$ = **$56,398**.
+**(b)** $k \le 1 + \ln[6000/(20000 \times 25 \times 0.4)]/\ln 0.6 = 1 + \ln 0.03/\ln 0.6$ = **7.86**, so **7** reviewers. Check: $C(6)$ = **\$59,328**, $C(7)$ = **\$55,997**, $C(8)$ = **\$56,398**.
 
 **(c)** Lincoln–Petersen $18 \times 15/10$ = **27.0**; Chapman $19 \times 16/11 - 1$ = **26.6**. Found $18 + 15 - 10$ = **23**, so about **4.0** remain.
 
@@ -49,9 +49,9 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_26_exa
 
 ## Question 4 (26-03)
 
-**(a)** DPW $= \pi \times 300^2/480 - \pi \times 300/\sqrt{240}$ = **528.2**, so **528**; $Y = e^{-1.2 \times 0.12}$ = **0.8659**; $C_{die} = 15{,}000/(528 \times 0.8659)$ = **$32.81**.
+**(a)** DPW $= \pi \times 300^2/480 - \pi \times 300/\sqrt{240}$ = **528.2**, so **528**; $Y = e^{-1.2 \times 0.12}$ = **0.8659**; $C_{die} = 15{,}000/(528 \times 0.8659)$ = **\$32.81**.
 
-**(b)** After assembly $(32.809 + 5.00)/0.985$ = **$38.38** (carry the unrounded die cost; $32.81 would give $38.39); after test $(38.385 + 1.50)/0.97$ = **$41.12**.
+**(b)** After assembly $(32.809 + 5.00)/0.985$ = **\$38.38** (carry the unrounded die cost; \$32.81 would give \$38.39); after test $(38.385 + 1.50)/0.97$ = **\$41.12**.
 
 **(c)** GM $= (75 - 41.12)/75$ = **45.2**%; markup $33.88/41.12$ = **82.4**%.
 
@@ -59,9 +59,9 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_26_exa
 
 ## Question 5 (26-03)
 
-**(a)** $(P/A, 8\%, 6) = (1 - 1.08^{-6})/0.08$ = **4.6229**; $(A/P, 8\%, 6)$ = **0.21632**; payment $250{,}000 \times 0.216315$ = **$54,079** a year.
+**(a)** $(P/A, 8\%, 6) = (1 - 1.08^{-6})/0.08$ = **4.6229**; $(A/P, 8\%, 6)$ = **0.21632**; payment $250{,}000 \times 0.216315$ = **\$54,079** a year.
 
-**(b)** NPV $= -40 - 40/1.12 + 35[(P/A, 12\%, 5) - (P/A, 12\%, 1)]$ = **$19.2 M**. IRR: NPV(21%) = +$0.426 M and NPV(22%) = −$1.248 M bracket the root; linear interpolation gives $21 + 0.426/(0.426 + 1.248)$ = 21.25%, and NPV(21.25%) = +$0.001 M confirms it: IRR = **21.25**%.
+**(b)** NPV $= -40 - 40/1.12 + 35[(P/A, 12\%, 5) - (P/A, 12\%, 1)]$ = **$19.2 M**. IRR: NPV(21%) = +$0.426 M and NPV(22%) = −\$1.248 M bracket the root; linear interpolation gives $21 + 0.426/(0.426 + 1.248)$ = 21.25%, and NPV(21.25%) = +\$0.001 M confirms it: IRR = **21.25**%.
 
 **(c)** Cumulative cash: −40, −80, −45, −10 after year 3, then +25 after year 4, so payback = $3 + 10/35$ = **3.29** years.
 
@@ -71,17 +71,17 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_26_exa
 
 **(a)** $U = 4/1.1 + 6/1.1^2 + 6/1.1^3 + 4/1.1^4$ = **15.835** million units (carried to 5 figures because the PVs below sit near a rounding boundary).
 
-**(b)** Licence $8 + 1.00 \times 15.835$ = **$23.835 M**; build $30 + 0.2 \times 20$ = **$34.0 M**. License, saving **$10.165 M**.
+**(b)** Licence $8 + 1.00 \times 15.835$ = **\$23.835 M**; build $30 + 0.2 \times 20$ = **$34.0 M**. License, saving **$10.165 M**.
 
 **(c)** $U^* = (34 - 8)/1.00$ = **26.0** million, **1.64** times the plan.
 
-**(d)** Royalties $1.000, 0.900, 0.810, 0.729$ a unit; PV $= 4.000/1.1 + 5.400/1.1^2 + 4.860/1.1^3 + 2.916/1.1^4$ = **$13.74 M**, equivalent to **$0.868** a unit, so the percentage form is cheaper for the licensee by $15.835 - 13.74$ = **$2.09 M** in royalties.
+**(d)** Royalties $1.000, 0.900, 0.810, 0.729$ a unit; PV $= 4.000/1.1 + 5.400/1.1^2 + 4.860/1.1^3 + 2.916/1.1^4$ = **$13.74 M**, equivalent to **$0.868** a unit, so the percentage form is cheaper for the licensee by $15.835 - 13.74$ = **\$2.09 M** in royalties.
 
 ## Question 7 (26-04)
 
 **(a)** $s_{eff} = 1/(0.60/1.6 + 0.25/1.15 + 0.15/1.05)$ = **1.360**; new area $150/1.360$ = **110.3** mm².
 
-**(b)** Old: DPW $\pi \times 300^2/600 - \pi \times 300/\sqrt{300}$ = 416.8, so **416**, $Y = e^{-0.15}$ = **0.8607**, cost **$41.89**. New: DPW $\pi \times 300^2/(4 \times 110.3) - \pi \times 300/\sqrt{2 \times 110.3}$ = 577.5, so **577**, $Y = e^{-1.103 \times 0.12}$ = **0.8760**, cost **$37.59**. Saving **$4.30** ($4.3046 unrounded).
+**(b)** Old: DPW $\pi \times 300^2/600 - \pi \times 300/\sqrt{300}$ = 416.8, so **416**, $Y = e^{-0.15}$ = **0.8607**, cost **\$41.89**. New: DPW $\pi \times 300^2/(4 \times 110.3) - \pi \times 300/\sqrt{2 \times 110.3}$ = 577.5, so **577**, $Y = e^{-1.103 \times 0.12}$ = **0.8760**, cost **$37.59**. Saving **$4.30** (\$4.3046 unrounded).
 
 **(c)** $40/4.3046$ = **9.29** million units.
 
@@ -89,13 +89,13 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_26_exa
 
 ## Question 8 (26-04)
 
-**(a)** Energy: merchant $0.9 \times 1.25 \times 8760 \times 4 \times 0.07$ = **$2,759**; custom $0.6 \times 1.25 \times 8760 \times 4 \times 0.07$ = **$1,840**. TCO: merchant $25{,}000 + 10{,}000 + 2{,}759$ = **$37,759**; custom $8{,}000 + 10{,}000 + 1{,}840$ = **$19,840**.
+**(a)** Energy: merchant $0.9 \times 1.25 \times 8760 \times 4 \times 0.07$ = **\$2,759**; custom $0.6 \times 1.25 \times 8760 \times 4 \times 0.07$ = **\$1,840**. TCO: merchant $25{,}000 + 10{,}000 + 2{,}759$ = **\$37,759**; custom $8{,}000 + 10{,}000 + 1{,}840$ = **\$19,840**.
 
-**(b)** Merchant **$37,759** per equivalent; custom $19{,}840/0.75$ = **$26,453**; saving **$11,307**.
+**(b)** Merchant **\$37,759** per equivalent; custom $19{,}840/0.75$ = **$26,453**; saving **$11,307**.
 
 **(c)** $500 \times 10^6/11{,}307$ = **4.42e4** merchant-equivalents, **5.90e4** custom chips.
 
-**(d)** 150,000 chips are 112,500 equivalents: $P_m^* = 26{,}453 + 500 \times 10^6/112{,}500 - 10{,}000 - 2{,}759$ = **$18,138**.
+**(d)** 150,000 chips are 112,500 equivalents: $P_m^* = 26{,}453 + 500 \times 10^6/112{,}500 - 10{,}000 - 2{,}759$ = **\$18,138**.
 
 ## Question 9 (26-05)
 
@@ -109,11 +109,11 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_26_exa
 
 ## Question 10 (26-05)
 
-**(a)** EMV $= 5.0 + 3.0 + 4.0$ = **$12.0 M**. Net benefits: R1 $0.15 \times 25 - 2.0$ = **$1.75 M**; R2 $0.15 \times 10 - 1.0$ = **$0.50 M**; R3 $0.07 \times 40 - 1.5$ = **$1.30 M**. With $3 M, R1 and R3 ($3.5 M) do not fit, so R1 and R2 ($3.0 M, net **$2.25 M**) beat R2 and R3 ($2.5 M, net $1.80 M).
+**(a)** EMV $= 5.0 + 3.0 + 4.0$ = **\$12.0 M**. Net benefits: R1 $0.15 \times 25 - 2.0$ = **\$1.75 M**; R2 $0.15 \times 10 - 1.0$ = **\$0.50 M**; R3 $0.07 \times 40 - 1.5$ = **\$1.30 M**. With $3 M, R1 and R3 ($3.5 M) do not fit, so R1 and R2 ($3.0 M, net **$2.25 M**) beat R2 and R3 (\$2.5 M, net \$1.80 M).
 
 **(b)** $k = 1.2 \times 3/30$ = **0.12**; iterating $\lambda = ke^{\lambda}$ from $\lambda$ = $k$: 0.12 → 0.1353 → 0.1374 → 0.1377 → 0.1377, so $\lambda^*$ = **0.138**; $t^* = 3\ln(0.3 \times 30/0.138)$ = **12.5** weeks; $P_r = 1 - e^{-0.138}$ = **0.129**.
 
-**(c)** $f(t^*) = 1.2 \times 12.5 + 30 \times 0.129$ = **$18.9 M**; at $t$ = 0, $\lambda$ = 9 and **$30.0 M**.
+**(c)** $f(t^*) = 1.2 \times 12.5 + 30 \times 0.129$ = **\$18.9 M**; at $t$ = 0, $\lambda$ = 9 and **\$30.0 M**.
 
 **(d)** With $\tau$ = 2: $k$ = 0.08, and the same iteration (0.08 → 0.0867 → 0.0872 → 0.0873) gives $\lambda^*$ = 0.0873, so $t^* = 2\ln(9/0.0873)$ = **9.27** weeks, $P_r$ = **0.0836**, $f = 2 + 1.2 \times 9.27 + 30 \times 0.0836$ = **$15.6 M**. Buy it: it saves **$3.27 M** and 3.3 weeks.
 
@@ -125,7 +125,7 @@ Exam: [README.md](README.md). Every number below is recomputed by [verify_26_exa
 
 **(c)** Without hires the team delivers $12 \times 0.78$ = 9.36 FTE. With hires, $e$ = 0.66: **5.94** FTE during the ramp (9 engineers working) and **11.88** after. Setting the finishing times equal: $W/9.36 = 2.5 + (W - 14.85)/11.88$ gives $W$ = **55.2** person-months, **5.89** months at the current rate. With less work left, the hires lengthen the project.
 
-**(d)** $C_e/C_c$ = **0.667**. The load exceeds 12 in 6 of 8 quarters (0.75 > 0.667) but exceeds 18 in only 4 (0.50), so the base is **18**: cost $18 \times 8 \times 80{,}000 + 78 \times 120{,}000$ = **$20.9 M**. A base of 12 costs **$21.4 M** and a base of 30 **$22.8 M**.
+**(d)** $C_e/C_c$ = **0.667**. The load exceeds 12 in 6 of 8 quarters (0.75 > 0.667) but exceeds 18 in only 4 (0.50), so the base is **18**: cost $18 \times 8 \times 80{,}000 + 78 \times 120{,}000$ = **$20.9 M**. A base of 12 costs **$21.4 M** and a base of 30 **\$22.8 M**.
 
 ## Question 12 (26-07)
 

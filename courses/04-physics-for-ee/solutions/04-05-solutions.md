@@ -16,7 +16,7 @@ Problems: [04-05 problems](../problems/04-05-problems.md) · Chapter: [04-05](..
 
 ### Solution 04-05.2
 
-(a) $J = 10/2.5 = $ **4 A/mm²**, which is $4\times10^6$ A/m².
+(a) \$J = 10/2.5 = \$ **4 A/mm²**, which is $4\times10^6$ A/m².
 
 (b) $v_d = J/(ne) = 4\times10^6/(8.491\times10^{28}\times1.602\times10^{-19}) = $ **294.0 µm/s**: about a meter an hour.
 
@@ -24,7 +24,7 @@ Problems: [04-05 problems](../problems/04-05-problems.md) · Chapter: [04-05](..
 
 (a) $R = \rho L/A = 1.68\times10^{-8}\times100/1.5\times10^{-6} = $ **1.12 Ω**.
 
-(b) $A = \pi(0.25\times10^{-3})^2 = 1.963\times10^{-7}$ m², so $R = 1.10\times10^{-6}\times1/1.963\times10^{-7} = $ **5.602 Ω**: nichrome is 65 times more resistive than copper, which is why heaters use it.
+(b) $A = \pi(0.25\times10^{-3})^2 = 1.963\times10^{-7}$ m², so \$R = 1.10\times10^{-6}\times1/1.963\times10^{-7} = \$ **5.602 Ω**: nichrome is 65 times more resistive than copper, which is why heaters use it.
 
 ### Solution 04-05.4
 
@@ -46,7 +46,7 @@ Problems: [04-05 problems](../problems/04-05-problems.md) · Chapter: [04-05](..
 
 ### Solution 04-05.6
 
-(a) $L/W = 50$ squares, so $R = 50\times100 = $ **5000 Ω**.
+(a) $L/W = 50$ squares, so \$R = 50\times100 = \$ **5000 Ω**.
 
 (b) $10\ \text{kΩ}/100\ \Omega$ = 100 squares; at 2 µm width that is **200 µm** long (in practice folded into a meander).
 
@@ -86,15 +86,15 @@ $$
 
 which is **68.38 mΩ**.
 
-(b) At the average width 0.375 mm: $\rho L/(tw) = $ **65.77 mΩ**, 4% low. The narrow end counts for more, because resistance adds as $1/w$.
+(b) At the average width 0.375 mm: \$\rho L/(tw) = \$ **65.77 mΩ**, 4% low. The narrow end counts for more, because resistance adds as $1/w$.
 
 ### Solution 04-05.12
 
-(a) Current crosses cylindrical shells of area $2\pi rL$ in series: $R = \int_a^b\rho\,dr/(2\pi rL) = \rho\ln(b/a)/(2\pi L) = 10^{13}\times\ln3.278/(2\pi\times1.5) = $ **1.260×10¹² Ω**.
+(a) Current crosses cylindrical shells of area $2\pi rL$ in series: \$R = \int_a^b\rho\,dr/(2\pi rL) = \rho\ln(b/a)/(2\pi L) = 10^{13}\times\ln3.278/(2\pi\times1.5) = \$ **1.260×10¹² Ω**.
 
 (b) $C = 2\pi\varepsilon_r\varepsilon_0L/\ln(b/a) = $ **158.2 pF**.
 
-(c) Between two electrodes in one uniform material, the field is the same whether the material conducts or stores charge. With $\pm Q$ on the electrodes, $C = Q/V$ where $Q = \oint\varepsilon\vec E\cdot\hat n\,dA$; the leakage current is $I = \oint\sigma\vec E\cdot\hat n\,dA = (\sigma/\varepsilon)Q$, so $R = V/I = \varepsilon V/(\sigma Q) = \varepsilon/(\sigma C)$, and $RC = \varepsilon/\sigma = \rho\varepsilon$. Here $RC = 10^{13}\times2.25\times8.854\times10^{-12} = $ **199.2 s**, matching (a)×(b). This is the time a charged cable takes to discharge through its own insulation.
+(c) Between two electrodes in one uniform material, the field is the same whether the material conducts or stores charge. With $\pm Q$ on the electrodes, $C = Q/V$ where $Q = \oint\varepsilon\vec E\cdot\hat n\,dA$; the leakage current is $I = \oint\sigma\vec E\cdot\hat n\,dA = (\sigma/\varepsilon)Q$, so $R = V/I = \varepsilon V/(\sigma Q) = \varepsilon/(\sigma C)$, and $RC = \varepsilon/\sigma = \rho\varepsilon$. Here \$RC = 10^{13}\times2.25\times8.854\times10^{-12} = \$ **199.2 s**, matching (a)×(b). This is the time a charged cable takes to discharge through its own insulation.
 
 ### Solution 04-05.13
 
@@ -102,7 +102,7 @@ which is **68.38 mΩ**.
 
 (b) Copper: $6.0\times10^{-8}/562.5\times10^{-18}$ = **106.7 Ω/µm**. Molybdenum: $9.0\times10^{-8}/800\times10^{-18}$ = **112.5 Ω/µm**. Nearly even.
 
-(c) Molybdenum wins when $\rho_{\text{Cu}}/562.5 > 9.0/800$, i.e. $\rho_{\text{Cu}} > 9.0\times562.5/800 = $ **6.328 µΩ·cm**. As lines narrow, copper's barrier tax and its long mean free path (stronger size effect) push it toward this crossover, which is why the industry is evaluating barrierless metals.
+(c) Molybdenum wins when $\rho_{\text{Cu}}/562.5 > 9.0/800$, i.e. \$\rho_{\text{Cu}} > 9.0\times562.5/800 = \$ **6.328 µΩ·cm**. As lines narrow, copper's barrier tax and its long mean free path (stronger size effect) push it toward this crossover, which is why the industry is evaluating barrierless metals.
 
 ### Solution 04-05.14
 
@@ -114,13 +114,13 @@ which is **68.38 mΩ**.
 
 (a) With $E = \text{Re}(\mathbf Ee^{j\omega t})$ and $v = \text{Re}(\mathbf Ve^{j\omega t})$, the ODE gives $j\omega m\mathbf V = -e\mathbf E - m\mathbf V/\tau$, so $\mathbf V = -e\tau\mathbf E/[m(1 + j\omega\tau)]$. Then $\mathbf J = -ne\mathbf V = \sigma_0\mathbf E/(1 + j\omega\tau)$ with $\sigma_0 = ne^2\tau/m$.
 
-(b) The phase lag is $\arctan(\omega\tau)$, 45° at $\omega\tau = 1$: $f = 1/(2\pi\tau) = 1/(2\pi\times24.88\times10^{-15}) = $ **6.398 THz**.
+(b) The phase lag is $\arctan(\omega\tau)$, 45° at $\omega\tau = 1$: \$f = 1/(2\pi\tau) = 1/(2\pi\times24.88\times10^{-15}) = \$ **6.398 THz**.
 
 (c) At 10 GHz, $\omega\tau \approx 0.0016$: copper's conductivity is essentially its DC value. What changes at gigahertz is not σ but *where* current flows: the skin effect confines it near the surface ([04-07](../chapters/04-07-faraday-lenz-and-inductance.md)).
 
 ### Solution 04-05.16
 
-(a) $d/dk\,[k t_b + 0.38RC/k] = t_b - 0.38RC/k^2 = 0$ gives $k = \sqrt{0.38RC/t_b} = \sqrt{0.38\times3702/10} = $ **11.86**.
+(a) $d/dk\,[k t_b + 0.38RC/k] = t_b - 0.38RC/k^2 = 0$ gives \$k = \sqrt{0.38RC/t_b} = \sqrt{0.38\times3702/10} = \$ **11.86**.
 
 (b) With 12: $12\times10 + 0.38\times3702/12 = 120 + 117.2 = $ **237.2 ps**.
 

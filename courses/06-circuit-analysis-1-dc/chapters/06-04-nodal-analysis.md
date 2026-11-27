@@ -164,9 +164,9 @@ $$
 \begin{bmatrix} 4 \\ 1 \end{bmatrix}.
 $$
 
-$\Delta = 1\times0.75 - (-0.5)(-0.5) = 0.5$; $v_1 = (4\times0.75 - (-0.5)\times1)/0.5 = 3.5/0.5 = $ **7 V**; $v_2 = (1\times1 - (-0.5)\times4)/0.5 = 3/0.5 = $ **6 V**.
+$\Delta = 1\times0.75 - (-0.5)(-0.5) = 0.5$; \$v_1 = (4\times0.75 - (-0.5)\times1)/0.5 = 3.5/0.5 = \$ **7 V**; \$v_2 = (1\times1 - (-0.5)\times4)/0.5 = 3/0.5 = \$ **6 V**.
 
-Currents: $R_1$: $7/2 = $ **3.5 A** to ground; $R_2$: $(7 - 6)/2 = $ **0.5 A** from node 1 to node 2; $R_3$: $6/4 = $ **1.5 A** to ground. KCL: node 1, $4 = 3.5 + 0.5$ ✓; node 2, $1 + 0.5 = 1.5$ ✓.
+Currents: $R_1$: \$7/2 = \$ **3.5 A** to ground; $R_2$: \$(7 - 6)/2 = \$ **0.5 A** from node 1 to node 2; $R_3$: \$6/4 = \$ **1.5 A** to ground. KCL: node 1, $4 = 3.5 + 0.5$ ✓; node 2, $1 + 0.5 = 1.5$ ✓.
 
 **Power balance.** Sources deliver $4\times7 + 1\times6 = 34$ W (each current source pushes its current into a node at that node's voltage). Resistors: $3.5^2\times2 + 0.5^2\times2 + 1.5^2\times4 = 24.5 + 0.5 + 9 = 34$ W ✓.
 
@@ -190,7 +190,7 @@ $$
 \begin{bmatrix} 1 \\ 0.5 \end{bmatrix}.
 $$
 
-$\Delta = 0.15833\times0.10333 - 0.03333^2 = 0.015250$; $v_c = (1\times0.10333 + 0.03333\times0.5)/\Delta = $ **7.869 V**; $v_d = (0.15833\times0.5 + 0.03333\times1)/\Delta = $ **7.377 V**. Bridge current $(7.869 - 7.377)/30 = $ **16.39 mA**, and the source current is $(10 - 7.869)/10 + (10 - 7.377)/20 = $ **0.3443 A**, exactly as in 06-03.
+$\Delta = 0.15833\times0.10333 - 0.03333^2 = 0.015250$; \$v_c = (1\times0.10333 + 0.03333\times0.5)/\Delta = \$ **7.869 V**; \$v_d = (0.15833\times0.5 + 0.03333\times1)/\Delta = \$ **7.377 V**. Bridge current \$(7.869 - 7.377)/30 = \$ **16.39 mA**, and the source current is \$(10 - 7.869)/10 + (10 - 7.377)/20 = \$ **0.3443 A**, exactly as in 06-03.
 
 **Units check.** S × V = A on both sides ✓.
 
@@ -210,9 +210,9 @@ $$
 \frac{v_2 - 12}{2} + \frac{v_2}{4} + \frac{v_3}{6} + \frac{v_3 - 12}{3} = 0, \qquad v_2 - v_3 = 5 .
 $$
 
-Substitute $v_2 = v_3 + 5$ and multiply by 12: $6(v_3 - 7) + 3(v_3 + 5) + 2v_3 + 4(v_3 - 12) = 0$, so $15v_3 = 75$: $v_3 = $ **5 V** and $v_2 = $ **10 V**.
+Substitute $v_2 = v_3 + 5$ and multiply by 12: $6(v_3 - 7) + 3(v_3 + 5) + 2v_3 + 4(v_3 - 12) = 0$, so $15v_3 = 75$: \$v_3 = \$ **5 V** and \$v_2 = \$ **10 V**.
 
-The 5 V source's current from KCL at node 2 alone: the resistors carry $(10 - 12)/2 = -1$ A and $10/4 = 2.5$ A away from node 2, a net 1.5 A, which must come from the source: it delivers **1.5 A** out of its + terminal, $5\times1.5 = $ **7.5 W**. The 12 V source feeds $(12 - 10)/2 + (12 - 5)/3 = 1 + 2.333 = $ **3.333 A** into node 1: **40 W**.
+The 5 V source's current from KCL at node 2 alone: the resistors carry $(10 - 12)/2 = -1$ A and $10/4 = 2.5$ A away from node 2, a net 1.5 A, which must come from the source: it delivers **1.5 A** out of its + terminal, \$5\times1.5 = \$ **7.5 W**. The 12 V source feeds \$(12 - 10)/2 + (12 - 5)/3 = 1 + 2.333 = \$ **3.333 A** into node 1: **40 W**.
 
 **Power balance.** Resistors: 2 Ω, $2^2/2 = 2$ W; 3 Ω, $7^2/3 = 16.33$ W; 4 Ω, $10^2/4 = 25$ W; 6 Ω, $5^2/6 = 4.167$ W; total 47.5 W $= 40 + 7.5$ ✓.
 

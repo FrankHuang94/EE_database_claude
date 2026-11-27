@@ -48,7 +48,7 @@ Chapter: [27-02](../chapters/27-02-smartphone-soc.md) · Worked solutions: [27-0
 
 ### Problem 27-02.10 [B]
 
-**Integrate the modem or not?** A 126.2 mm² AP with an integrated modem is built on $18,500 wafers at $D_0$ = 0.10 cm⁻². Removing the modem would cut the AP to 111.2 mm²; a separate 25 mm² modem on an older $12,000 wafer at $D_0$ = 0.08 cm⁻² would add $1.50 of package and link cost (all assumed). Find (a) the integrated AP's cost per good die, (b) the smaller AP's cost, (c) the separate modem's cost and the total. Which is cheaper, and what else would the decision weigh?
+**Integrate the modem or not?** A 126.2 mm² AP with an integrated modem is built on \$18,500 wafers at $D_0$ = 0.10 cm⁻². Removing the modem would cut the AP to 111.2 mm²; a separate 25 mm² modem on an older \$12,000 wafer at $D_0$ = 0.08 cm⁻² would add \$1.50 of package and link cost (all assumed). Find (a) the integrated AP's cost per good die, (b) the smaller AP's cost, (c) the separate modem's cost and the total. Which is cheaper, and what else would the decision weigh?
 
 ### Problem 27-02.11 [C]
 

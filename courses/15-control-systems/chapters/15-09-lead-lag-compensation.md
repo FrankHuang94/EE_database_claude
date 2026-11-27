@@ -140,7 +140,7 @@ A buck converter's response from duty cycle to output is a second-order LC filte
 
 **Setup.** A servo plant $P = 1/[s(s + 1)]$ needs $K_v$ = 10 s⁻¹ and a phase margin of at least 45°. Design a lead compensator.
 
-**Solution.** $K_v = \lim sKP = K$, so $K$ = 10. Uncompensated: $\omega_c$ = **3.08** rad/s and PM = **18.0**°, which gives **60.5**% overshoot and a 2% settling time of **7.32** s. The lead must add $45 - 18.0 + 10 = $ **37.0**°, so $\alpha$ = **4.03**. The uncompensated $\lvert 10P\rvert$ equals $1/\sqrt{4.03}$ at **4.42** rad/s; that becomes $\omega_m$ and the new crossover. Then $T = 1/(\omega_m\sqrt\alpha)$ = 0.1126 s: the zero is at **2.20** rad/s and the pole at **8.88** rad/s.
+**Solution.** $K_v = \lim sKP = K$, so $K$ = 10. Uncompensated: $\omega_c$ = **3.08** rad/s and PM = **18.0**°, which gives **60.5**% overshoot and a 2% settling time of **7.32** s. The lead must add \$45 - 18.0 + 10 = \$ **37.0**°, so $\alpha$ = **4.03**. The uncompensated $\lvert 10P\rvert$ equals $1/\sqrt{4.03}$ at **4.42** rad/s; that becomes $\omega_m$ and the new crossover. Then $T = 1/(\omega_m\sqrt\alpha)$ = 0.1126 s: the zero is at **2.20** rad/s and the pole at **8.88** rad/s.
 
 $$
 C(s) = 10\,\frac{1 + 0.454s}{1 + 0.1126s} .

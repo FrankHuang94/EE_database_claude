@@ -16,7 +16,7 @@ Problems: [06-07 problems](../problems/06-07-problems.md) · Chapter: [06-07](..
 
 ### Solution 06-07.2
 
-(a) *10 V alone* (15 V shorted): node a sees $10\parallel10 = 5$ Ω to ground, so $v_a' = 10\times5/(5 + 5) = $ **5 V**. *15 V alone*: node a sees $5\parallel10 = 3.333$ Ω, so $v_a'' = 15\times3.333/(10 + 3.333) = $ **3.75 V**. Total **8.75 V**.
+(a) *10 V alone* (15 V shorted): node a sees $10\parallel10 = 5$ Ω to ground, so \$v_a' = 10\times5/(5 + 5) = \$ **5 V**. *15 V alone*: node a sees $5\parallel10 = 3.333$ Ω, so \$v_a'' = 15\times3.333/(10 + 3.333) = \$ **3.75 V**. Total **8.75 V**.
 
 (b) Millman: $(10/5 + 15/10 + 0/10)/(1/5 + 1/10 + 1/10) = 3.5/0.4 = 8.75$ V ✓.
 
@@ -26,9 +26,9 @@ Transform 24 V with 6 Ω into **4 A** in parallel with 6 Ω. With the 3 Ω, that
 
 ### Solution 06-07.4
 
-(a) The resistance seen at node a with all sources off is $3\parallel6 = 2$ Ω. *6 V alone*: $6\times6/9 = $ **4 V**. *1 A alone*: $1\times2 = $ **2 V**. *0.5 A drawn out alone*: $-0.5\times2 = $ **−1 V**. Total $v_a = $ **5 V**.
+(a) The resistance seen at node a with all sources off is $3\parallel6 = 2$ Ω. *6 V alone*: \$6\times6/9 = \$ **4 V**. *1 A alone*: \$1\times2 = \$ **2 V**. *0.5 A drawn out alone*: \$-0.5\times2 = \$ **−1 V**. Total \$v_a = \$ **5 V**.
 
-(b) True power: $5^2/6 = $ **4.167 W**. Single-source powers: $(16 + 4 + 1)/6 = $ **3.5 W**. The cross terms ($2\times(4\times2 - 4\times1 - 2\times1)/6 = 0.667$ W) make up the difference.
+(b) True power: \$5^2/6 = \$ **4.167 W**. Single-source powers: \$(16 + 4 + 1)/6 = \$ **3.5 W**. The cross terms ($2\times(4\times2 - 4\times1 - 2\times1)/6 = 0.667$ W) make up the difference.
 
 (c) $(6 - 5)/3 = $ **0.3333 A** out of its + terminal.
 
@@ -36,9 +36,9 @@ Transform 24 V with 6 Ω into **4 A** in parallel with 6 Ω. With the 3 Ω, that
 
 (a) In kΩ, mA, mS. Node 1: $(v_1 - V_s)/2 + (v_1 - v_2)/2 = 0$, so $v_1 - 0.5v_2 = V_s/2$. Node 2: $(v_2 - v_1)/2 + v_2/4 + 0.25v_1 = I_s$, so $-0.25v_1 + 0.75v_2 = I_s$.
 
-*6 V alone* ($I_s = 0$): row 2 gives $v_1 = 3v_2$; row 1, $2.5v_2 = 3$: $v_2' = $ **1.2 V**, $v_1' = $ **3.6 V**.
+*6 V alone* ($I_s = 0$): row 2 gives $v_1 = 3v_2$; row 1, $2.5v_2 = 3$: \$v_2' = \$ **1.2 V**, \$v_1' = \$ **3.6 V**.
 
-*1 mA alone* ($V_s = 0$, VCCS kept): row 1 gives $v_1 = 0.5v_2$; row 2, $0.625v_2 = 1$: $v_2'' = $ **1.6 V**, $v_1'' = $ **0.8 V**.
+*1 mA alone* ($V_s = 0$, VCCS kept): row 1 gives $v_1 = 0.5v_2$; row 2, $0.625v_2 = 1$: \$v_2'' = \$ **1.6 V**, \$v_1'' = \$ **0.8 V**.
 
 Sums: $v_1 = $ **4.4 V**, $v_2 = $ **2.8 V**.
 
@@ -48,7 +48,7 @@ Sums: $v_1 = $ **4.4 V**, $v_2 = $ **2.8 V**.
 
 ### Solution 06-07.6
 
-(a) Assume $v_{out}$ = 1 V. The 6 kΩ carries $1/6$ mA, and so does the 3 kΩ, so the middle node is at $1 + 3/6 = 1.5$ V. The 2 kΩ shunt carries 0.75 mA, the 1 kΩ series resistor $0.1667 + 0.75 = 0.9167$ mA, and $v_{in} = 1.5 + 0.9167 = 2.4167$ V. So $v_{out}/v_{in} = 1/2.4167 = $ **0.4138** (exactly 12/29).
+(a) Assume $v_{out}$ = 1 V. The 6 kΩ carries $1/6$ mA, and so does the 3 kΩ, so the middle node is at $1 + 3/6 = 1.5$ V. The 2 kΩ shunt carries 0.75 mA, the 1 kΩ series resistor $0.1667 + 0.75 = 0.9167$ mA, and $v_{in} = 1.5 + 0.9167 = 2.4167$ V. So \$v_{out}/v_{in} = 1/2.4167 = \$ **0.4138** (exactly 12/29).
 
 (b) $12\times0.4138 = $ **4.966 V**.
 
@@ -62,7 +62,7 @@ $$
 V_{bus} = \frac{12.6/0.05 + 12.4/0.06 + 12.2/0.08}{1/0.05 + 1/0.06 + 1/0.08 + 1/0.5} = \frac{252 + 206.67 + 152.5}{20 + 16.667 + 12.5 + 2} = \mathbf{11.94\ V}.
 $$
 
-Battery currents $(V_k - V_{bus})/R_k$: **13.11 A**, **7.590 A** and **3.192 A**, all discharging, adding to the load's $11.94/0.5 = $ **23.89 A**.
+Battery currents $(V_k - V_{bus})/R_k$: **13.11 A**, **7.590 A** and **3.192 A**, all discharging, adding to the load's \$11.94/0.5 = \$ **23.89 A**.
 
 (b) Without the load, $V_{bus} = 611.17/49.167 = $ **12.43 V**. The 12.6 V battery delivers $(12.6 - 12.43)/0.05 = $ **3.390 A**; the 12.4 V and 12.2 V batteries take **0.5085 A** and **2.881 A**: both are charging, fed by the strongest one, until their voltages equalize.
 
@@ -86,13 +86,13 @@ Battery currents $(V_k - V_{bus})/R_k$: **13.11 A**, **7.590 A** and **3.192 A**
 
 ### Solution 06-07.10
 
-(a) Total conductance $1 + 0.5 + 0.25 + 0.125 + 0.125 = 2$ mS. The LSB contributes $4\times0.125/2 = $ **0.25 V**, and full scale (1111) is $15\times0.25 = $ **3.75 V**.
+(a) Total conductance $1 + 0.5 + 0.25 + 0.125 + 0.125 = 2$ mS. The LSB contributes \$4\times0.125/2 = \$ **0.25 V**, and full scale (1111) is \$15\times0.25 = \$ **3.75 V**.
 
 (b) With 1.005 kΩ, the MSB conductance is 0.99502 mS and the total 1.99502 mS. Code 0111: $4\times0.875/1.99502 = $ **1.7544 V**. Code 1000: $4\times0.99502/1.99502 = $ **1.9950 V**. The step is 0.2406 V, so DNL $= 0.2406/0.25 - 1 = $ **−0.037 LSB**. INL at 1000: $(1.9950 - 2.000)/0.25 = $ **−0.020 LSB**.
 
 ### Solution 06-07.11
 
-(a) $\beta = R_1/(R_1 + R_2) = 1/11$, so the gain is $A/(1 + A\beta) = 10^5/(1 + 9090.9) = $ **10.9988** (06-06).
+(a) $\beta = R_1/(R_1 + R_2) = 1/11$, so the gain is \$A/(1 + A\beta) = 10^5/(1 + 9090.9) = \$ **10.9988** (06-06).
 
 (b) The offset source sits in series with the signal at the + input, so both see the same gain. Signal alone: $10.9988\times50 = $ **549.94 mV**. Offset alone: $10.9988\times2 = $ **22.00 mV**. Total: **571.94 mV**.
 
@@ -100,7 +100,7 @@ Battery currents $(V_k - V_{bus})/R_k$: **13.11 A**, **7.590 A** and **3.192 A**
 
 ### Solution 06-07.12
 
-(a) KCL at node d: $(5 - v_d)/1000 + 0.001 = I_S(e^{v_d/V_T} - 1)$. A bracketing root-finder gives $v_d = $ **0.6979 V** (diode current 5.302 mA).
+(a) KCL at node d: $(5 - v_d)/1000 + 0.001 = I_S(e^{v_d/V_T} - 1)$. A bracketing root-finder gives \$v_d = \$ **0.6979 V** (diode current 5.302 mA).
 
 (b) 5 V alone: **0.6925 V** (Problem 06-04.13). 1 mA alone, with the 5 V source shorted (so the 1 kΩ goes to ground): **0.6291 V**. Their sum, **1.322 V**, is nearly double the true answer.
 

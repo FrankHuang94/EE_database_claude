@@ -201,14 +201,14 @@ All parameters below are illustrative assumptions of realistic size unless a sou
 
 ### Example 27-05.5 · One die or two tiles? (tier C)
 
-**Setup.** Option M is a 240 mm² monolithic die on a 3 nm-class wafer at $18,500 [R-575] with $D_0$ = 0.10 cm⁻². Option T splits it into a 100 mm² compute tile on the same node and a 160 mm² SoC/I/O tile (the split adds 20 mm² of die-to-die interface and duplicated logic, so the tiles total 260 mm²) on a 7 nm-class wafer at $9,346 (a 2020 model price [R-576] **[Industry estimate]**; the 3 nm price is a 2024 press report [R-575], so part of the gap is the prices' different vintages) with $D_0$ = 0.07 cm⁻², assembled in a $6 package with 98% assembly yield (tiles tested before assembly). Use 300 mm wafers and 25-04's dies-per-wafer formula. Find (a) M's dies per wafer, yield and cost per good die, (b) each tile's cost and T's cost per good package, (c) T's cost relative to M, (d) T's cost if both tiles were on the 3 nm-class node at $D_0$ = 0.10 cm⁻², and (e) the power of a 200 GB/s die-to-die link at 0.5 pJ/bit against 0.05 pJ/bit on die.
+**Setup.** Option M is a 240 mm² monolithic die on a 3 nm-class wafer at \$18,500 [R-575] with $D_0$ = 0.10 cm⁻². Option T splits it into a 100 mm² compute tile on the same node and a 160 mm² SoC/I/O tile (the split adds 20 mm² of die-to-die interface and duplicated logic, so the tiles total 260 mm²) on a 7 nm-class wafer at \$9,346 (a 2020 model price [R-576] **[Industry estimate]**; the 3 nm price is a 2024 press report [R-575], so part of the gap is the prices' different vintages) with $D_0$ = 0.07 cm⁻², assembled in a \$6 package with 98% assembly yield (tiles tested before assembly). Use 300 mm wafers and 25-04's dies-per-wafer formula. Find (a) M's dies per wafer, yield and cost per good die, (b) each tile's cost and T's cost per good package, (c) T's cost relative to M, (d) T's cost if both tiles were on the 3 nm-class node at $D_0$ = 0.10 cm⁻², and (e) the power of a 200 GB/s die-to-die link at 0.5 pJ/bit against 0.05 pJ/bit on die.
 
 **Solution.**
 
-- (a) $\lfloor \pi \cdot 300^2/(4 \cdot 240) - \pi \cdot 300/\sqrt{480} \rfloor$ = **251** dies; yield $e^{-2.40 \times 0.10}$ = **0.787**; cost $18\,500/(251 \times 0.787)$ = **$93.70**.
-- (b) Compute tile: **640** dies, yield **0.905**, **$31.95**. SoC tile: **389** dies, yield **0.894**, **$26.87**. Package: $(31.95 + 26.87 + 6)/0.98$ = **$66.14**.
+- (a) $\lfloor \pi \cdot 300^2/(4 \cdot 240) - \pi \cdot 300/\sqrt{480} \rfloor$ = **251** dies; yield $e^{-2.40 \times 0.10}$ = **0.787**; cost $18\,500/(251 \times 0.787)$ = **\$93.70**.
+- (b) Compute tile: **640** dies, yield **0.905**, **$31.95**. SoC tile: **389** dies, yield **0.894**, **$26.87**. Package: $(31.95 + 26.87 + 6)/0.98$ = **\$66.14**.
 - (c) $66.14/93.70$ = **0.706**: 29% cheaper.
-- (d) With the SoC tile on the 3 nm-class wafer at $D_0$ = 0.10 cm⁻²: **$95.67**, slightly more than M, chiefly because of the 20 mm² the split adds.
+- (d) With the SoC tile on the 3 nm-class wafer at $D_0$ = 0.10 cm⁻²: **\$95.67**, slightly more than M, chiefly because of the 20 mm² the split adds.
 - (e) $200 \times 10^9 \times 8 \times 0.5 \times 10^{-12}$ = **0.80** W against **0.08** W on die.
 
 **Units check.** mm² against mm² in the dies formula; $/wafer ÷ good dies = $/die; B/s × bits/B × J/bit = W. ✓

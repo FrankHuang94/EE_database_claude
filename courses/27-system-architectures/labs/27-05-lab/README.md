@@ -21,7 +21,7 @@
 
 **Part 3 · Local models** (notebook). *Predict* the largest 4-bit model that still decodes at 10 tokens/s on a 256 GB/s bus. Then plot tokens/s against model size for 136.5 and 256 GB/s.
 
-**Part 4 · When do tiles pay?** (notebook). *Predict* the smallest total area at which two equal tiles on a 3 nm-class wafer ($18,500, $D_0$ = 0.10 cm⁻²) in a $10 package with 97% assembly yield cost less than one monolithic die. Then plot both costs against area.
+**Part 4 · When do tiles pay?** (notebook). *Predict* the smallest total area at which two equal tiles on a 3 nm-class wafer (\$18,500, $D_0$ = 0.10 cm⁻²) in a \$10 package with 97% assembly yield cost less than one monolithic die. Then plot both costs against area.
 
 ## Expected results
 

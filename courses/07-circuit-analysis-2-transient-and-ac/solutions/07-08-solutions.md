@@ -120,27 +120,27 @@ Solving for an error of 0.01 dB gives GBW ≈ **670 kHz**, about **67** times th
 
 (a) $C = 1/(\omega_0^2L) = 1/[(2\pi\times10^7)^2\times10^{-6}] = $ **253.3 pF**. $Z_0 = \sqrt{L/C} = \omega_0L = $ **62.83 Ω**. The coil's losses look like a parallel resistance $R_p = Q_c\,\omega_0L = $ **6283 Ω** (07-08 §3.4).
 
-(b) The unloaded $Q$ is the coil's: $Q_u = R_p/Z_0 = $ **100**. Loaded, the tank sees $R_p$, the source's 1 kΩ and the load's 2 kΩ in parallel, $1/(1/6283 + 1/1000 + 1/2000) = $ **602.7 Ω**, so $Q_L = 602.7/62.83 = $ **9.593** and the bandwidth is $10\ \text{MHz}/9.593 = $ **1.042 MHz**. Loading cuts $Q$ tenfold: the circuit, not the coil, sets the bandwidth.
+(b) The unloaded $Q$ is the coil's: \$Q_u = R_p/Z_0 = \$ **100**. Loaded, the tank sees $R_p$, the source's 1 kΩ and the load's 2 kΩ in parallel, \$1/(1/6283 + 1/1000 + 1/2000) = \$ **602.7 Ω**, so \$Q_L = 602.7/62.83 = \$ **9.593** and the bandwidth is \$10\ \text{MHz}/9.593 = \$ **1.042 MHz**. Loading cuts $Q$ tenfold: the circuit, not the coil, sets the bandwidth.
 
-(c) At resonance $L$ and $C$ cancel, and the power reaching the tank divides between the coil's $R_p$ and the load in proportion to their conductances (the same voltage drives both): $159.2/(159.2 + 500) = $ **24.15%** is lost in the coil, and **75.85%** reaches the load.
+(c) At resonance $L$ and $C$ cancel, and the power reaching the tank divides between the coil's $R_p$ and the load in proportion to their conductances (the same voltage drives both): \$159.2/(159.2 + 500) = \$ **24.15%** is lost in the coil, and **75.85%** reaches the load.
 
-(d) With the tank, the source sees $R_p\parallel2\ \text{k}\Omega = 1517$ Ω, so the load gets $1517/2517 = 0.6027$ of the source voltage. Without the tank, it gets $2000/3000 = 0.6667$. The insertion loss is $20\lg(0.6667/0.6027) = $ **0.876 dB**. The coil's $Q_u$ of 100 is ten times the $Q_L$ the circuit needs, so the loss is small; §3.9's $-20\lg(1 - Q_L/Q_u)$ gives exactly the same 0.876 dB. The formula holds for unequal terminations too, because the voltage ratio is $(G_s + G_L)/(G_s + G_L + G_p) = 1 - R_{total}/R_p = 1 - Q_L/Q_u$.
+(d) With the tank, the source sees $R_p\parallel2\ \text{k}\Omega = 1517$ Ω, so the load gets $1517/2517 = 0.6027$ of the source voltage. Without the tank, it gets $2000/3000 = 0.6667$. The insertion loss is \$20\lg(0.6667/0.6027) = \$ **0.876 dB**. The coil's $Q_u$ of 100 is ten times the $Q_L$ the circuit needs, so the loss is small; §3.9's $-20\lg(1 - Q_L/Q_u)$ gives exactly the same 0.876 dB. The formula holds for unequal terminations too, because the voltage ratio is $(G_s + G_L)/(G_s + G_L + G_p) = 1 - R_{total}/R_p = 1 - Q_L/Q_u$.
 
 ### Solution 07-08.16
 
-(a) With $R_2 = R_3 = 20$ kΩ and $R_1$ = 10 kΩ, the $Q$ formula of §3.10 gives $Q = 20\text{k}\sqrt{C_1C_2}/[C_2(20\text{k} + 20\text{k} + 40\text{k})] = \tfrac14\sqrt{C_1/C_2}$. Butterworth needs $Q = 1/\sqrt2$, so $C_1/C_2 = 16Q^2 = $ **8**. Then $\omega_0 = 1/(R_2\sqrt{C_1C_2}) = 1/(20\text{k}\times C_2\sqrt8)$ gives $C_2 = $ **281.3 pF** and $C_1 = $ **2.251 nF**. The DC gain is $-R_2/R_1 = -2$.
+(a) With $R_2 = R_3 = 20$ kΩ and $R_1$ = 10 kΩ, the $Q$ formula of §3.10 gives $Q = 20\text{k}\sqrt{C_1C_2}/[C_2(20\text{k} + 20\text{k} + 40\text{k})] = \tfrac14\sqrt{C_1/C_2}$. Butterworth needs $Q = 1/\sqrt2$, so \$C_1/C_2 = 16Q^2 = \$ **8**. Then $\omega_0 = 1/(R_2\sqrt{C_1C_2}) = 1/(20\text{k}\times C_2\sqrt8)$ gives \$C_2 = \$ **281.3 pF** and \$C_1 = \$ **2.251 nF**. The DC gain is $-R_2/R_1 = -2$.
 
-(b) At DC: $20\lg2 = $ **6.021 dB**. At 30 kHz, a Butterworth second-order section is down by $10\lg(1 + 3^4) = 19.14$ dB, so the gain is $6.021 - 19.14 = $ **−13.12 dB**.
+(b) At DC: \$20\lg2 = \$ **6.021 dB**. At 30 kHz, a Butterworth second-order section is down by $10\lg(1 + 3^4) = 19.14$ dB, so the gain is \$6.021 - 19.14 = \$ **−13.12 dB**.
 
 (c) An anti-aliasing filter must keep attenuating far above its corner, up to the converter's sampling rate and beyond. A Sallen–Key low-pass leaks signal at high frequency through its feedback capacitor into the op-amp's rising output impedance (§3.8). The MFB section's capacitor $C_2$ feeds a virtual ground, so it lacks that leakage path. It also provides gain and inversion in the same op-amp, and its sensitivities are low.
 
 ### Solution 07-08.17
 
-(a) From §3.10, $Q = \tfrac12\sqrt{R_2/R_1}$, so Butterworth needs $R_2 = 2R_1$, and then $\omega_0 = 1/(CR_1\sqrt2)$. So $R_1 = 1/(\sqrt2\times2\pi\times200\times47\ \text{nF}) = $ **11.97 kΩ** and $R_2 = $ **23.94 kΩ**.
+(a) From §3.10, $Q = \tfrac12\sqrt{R_2/R_1}$, so Butterworth needs $R_2 = 2R_1$, and then $\omega_0 = 1/(CR_1\sqrt2)$. So \$R_1 = 1/(\sqrt2\times2\pi\times200\times47\ \text{nF}) = \$ **11.97 kΩ** and \$R_2 = \$ **23.94 kΩ**.
 
-(b) The high-pass Butterworth response is $\lvert H\rvert^2 = 1/[1 + (f_c/f)^4]$. At 50 Hz, $f_c/f = 4$, so the attenuation is $10\lg(1 + 4^4) = $ **24.10 dB**.
+(b) The high-pass Butterworth response is $\lvert H\rvert^2 = 1/[1 + (f_c/f)^4]$. At 50 Hz, $f_c/f = 4$, so the attenuation is \$10\lg(1 + 4^4) = \$ **24.10 dB**.
 
-(c) We need $10\lg(1 + 4^{2n}) \ge 40$, so $4^{2n} \ge 9999$ and $n \ge 3.322$. The lowest order is **4**, which gives $10\lg(1 + 4^8) = $ **48.16 dB**. Two cascaded second-order sections with $Q$ = 0.541 and 1.307 realize it (§3.7), not two Butterworth sections.
+(c) We need $10\lg(1 + 4^{2n}) \ge 40$, so $4^{2n} \ge 9999$ and $n \ge 3.322$. The lowest order is **4**, which gives \$10\lg(1 + 4^8) = \$ **48.16 dB**. Two cascaded second-order sections with $Q$ = 0.541 and 1.307 realize it (§3.7), not two Butterworth sections.
 
 ---
 

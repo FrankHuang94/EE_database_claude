@@ -12,9 +12,9 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (a) Full-wave: average $2V_p/\pi = $ **6.366 V**. The square of a rectified sine equals the square of the sine, so RMS $= V_p/\sqrt{2} = $ **7.071 V**.
 
-(b) Half-wave: average $V_p/\pi = $ **3.183 V**. The mean square is half the sine's: $\tfrac{1}{2}\cdot\tfrac{V_p^2}{2} = V_p^2/4$, so RMS $= V_p/2 = $ **5 V**.
+(b) Half-wave: average \$V_p/\pi = \$ **3.183 V**. The mean square is half the sine's: $\tfrac{1}{2}\cdot\tfrac{V_p^2}{2} = V_p^2/4$, so RMS \$= V_p/2 = \$ **5 V**.
 
-(c) Sawtooth $x = 4u$ with $u$ uniform on $[0, 1]$: average $4\times\tfrac{1}{2} = $ **2 V**. Mean square $16\int_0^1u^2\,du = 16/3$, so RMS $= 4/\sqrt{3} = $ **2.309 V**. (A 0 → $A$ ramp has RMS $A/\sqrt{3}$ because $\int_0^1u^2\,du = 1/3$. Its AC part alone, measured about its 2 V average, has RMS $A/(2\sqrt{3}) = 4/(2\sqrt3) = $ **1.155 V**, the $X_p/\sqrt3$ rule applied to its ±2 V swing. Check: $\sqrt{2^2 + 1.155^2} = 2.309$ ✓.)
+(c) Sawtooth $x = 4u$ with $u$ uniform on $[0, 1]$: average \$4\times\tfrac{1}{2} = \$ **2 V**. Mean square $16\int_0^1u^2\,du = 16/3$, so RMS \$= 4/\sqrt{3} = \$ **2.309 V**. (A 0 → $A$ ramp has RMS $A/\sqrt{3}$ because $\int_0^1u^2\,du = 1/3$. Its AC part alone, measured about its 2 V average, has RMS \$A/(2\sqrt{3}) = 4/(2\sqrt3) = \$ **1.155 V**, the $X_p/\sqrt3$ rule applied to its ±2 V swing. Check: $\sqrt{2^2 + 1.155^2} = 2.309$ ✓.)
 
 (d) Crest factors: sine **1.414**, square **1**, triangle **1.732**.
 
@@ -34,7 +34,7 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 01-07.4
 
-(a) The mean is $\int_{-\Delta/2}^{\Delta/2}x\frac{1}{\Delta}dx = 0$ (an odd integrand). The variance is $\int_{-\Delta/2}^{\Delta/2}\frac{x^2}{\Delta}dx = \frac{1}{\Delta}\cdot\frac{2}{3}\left(\frac{\Delta}{2}\right)^3 = \frac{\Delta^2}{12}$. For $\Delta = 1$ mV, the RMS is $1/\sqrt{12} = $ **0.2887 mV**.
+(a) The mean is $\int_{-\Delta/2}^{\Delta/2}x\frac{1}{\Delta}dx = 0$ (an odd integrand). The variance is $\int_{-\Delta/2}^{\Delta/2}\frac{x^2}{\Delta}dx = \frac{1}{\Delta}\cdot\frac{2}{3}\left(\frac{\Delta}{2}\right)^3 = \frac{\Delta^2}{12}$. For $\Delta = 1$ mV, the RMS is \$1/\sqrt{12} = \$ **0.2887 mV**.
 
 (b) $P(T > 8760) = e^{-10^{-6}\times8760} = $ **0.9913**.
 
@@ -44,11 +44,11 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 (b) THD $= \sqrt{3^2 + 1^2}/10 = $ **31.62%**.
 
-(c) With harmonics: $I_{rms}^2R = 55\times0.1 = $ **5.5 W**. Fundamental only: $50\times0.1 = $ **5 W**. The harmonics add 10% to the wiring loss while delivering no average power from a sinusoidal source (orthogonality again: $\overline{v_1\,i_n} = 0$ for $n \ne 1$).
+(c) With harmonics: \$I_{rms}^2R = 55\times0.1 = \$ **5.5 W**. Fundamental only: \$50\times0.1 = \$ **5 W**. The harmonics add 10% to the wiring loss while delivering no average power from a sinusoidal source (orthogonality again: $\overline{v_1\,i_n} = 0$ for $n \ne 1$).
 
 ### Solution 01-07.6
 
-(a) $p = 325\times8\cos\omega t\cos(\omega t - 45^\circ) = 1300\big[\cos45^\circ + \cos(2\omega t - 45^\circ)\big]$. The second term averages to zero, so $P = 1300\cos45^\circ = $ **919.2 W**.
+(a) $p = 325\times8\cos\omega t\cos(\omega t - 45^\circ) = 1300\big[\cos45^\circ + \cos(2\omega t - 45^\circ)\big]$. The second term averages to zero, so \$P = 1300\cos45^\circ = \$ **919.2 W**.
 
 (b) $S = V_{rms}I_{rms} = (325/\sqrt{2})(8/\sqrt{2}) = $ **1300 VA**, and PF $= \cos45^\circ = $ **0.7071**.
 
@@ -64,11 +64,11 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 01-07.8
 
-(a) $W = q\Delta V = 10^{-9}\times5 = $ **5 nJ**. Since 1 eV $= 1.602\times10^{-19}$ J, 1 J $= $ **6.242×10^18 eV**.
+(a) \$W = q\Delta V = 10^{-9}\times5 = \$ **5 nJ**. Since 1 eV $= 1.602\times10^{-19}$ J, 1 J \$= \$ **6.242×10^18 eV**.
 
 (b) $F = \dfrac{Q^2}{2\varepsilon_0A} = \dfrac{(10^{-8})^2}{2\times8.854\times10^{-12}\times10^{-4}} = $ **0.05647 N**. At constant charge the force does not depend on the gap.
 
-(c) $W = \int_{1\text{ mm}}^{2\text{ mm}}F\,dd = F\times10^{-3} = $ **5.647×10^−5 J**. The stored energy is $\dfrac{Q^2}{2C} = \dfrac{Q^2d}{2\varepsilon_0A}$, so it doubles when $d$ doubles: from **5.647×10^−5 J** to **1.129×10^−4 J**. The increase, $5.647\times10^{-5}$ J, equals the work ✓.
+(c) \$W = \int_{1\text{ mm}}^{2\text{ mm}}F\,dd = F\times10^{-3} = \$ **5.647×10^−5 J**. The stored energy is $\dfrac{Q^2}{2C} = \dfrac{Q^2d}{2\varepsilon_0A}$, so it doubles when $d$ doubles: from **5.647×10^−5 J** to **1.129×10^−4 J**. The increase, $5.647\times10^{-5}$ J, equals the work ✓.
 
 ### Solution 01-07.9
 
@@ -102,25 +102,25 @@ $$
 
 (a) $\int_0^\infty2500e^{-2t/\tau}dt = 2500\times\tau/2 = 2500\times0.5\times10^{-3} = $ **1.25 A²s**.
 
-(b) $50^2\times t = 1.25$ gives $t = $ **0.5 ms**: half the time constant, because squaring the exponential halves its time constant.
+(b) $50^2\times t = 1.25$ gives \$t = \$ **0.5 ms**: half the time constant, because squaring the exponential halves its time constant.
 
 (c) The 2 A²s fuse survives (1.25 < 2). The 1 A²s fuse blows (1.25 > 1). Inrush must be limited, for example with an NTC thermistor or a soft-start circuit, or a slower fuse chosen.
 
 ### Solution 01-07.13
 
-(a) With $x = q/Q$, $E = Q\int_0^1(4.2 - 0.6x - 0.3x^2)\,dx = Q(4.2 - 0.3 - 0.1) = 3.0\text{ Ah}\times3.8\text{ V} = $ **11.4 Wh**.
+(a) With $x = q/Q$, \$E = Q\int_0^1(4.2 - 0.6x - 0.3x^2)\,dx = Q(4.2 - 0.3 - 0.1) = 3.0\text{ Ah}\times3.8\text{ V} = \$ **11.4 Wh**.
 
 (b) The charge-weighted average voltage is $E/Q = $ **3.8 V**, against the end-point average of **3.75 V**. The voltage curve bends downward (concave), staying high for most of the discharge and dropping at the end, so the true average sits above the straight-line average. A battery's "nominal voltage" is a designation that approximates this charge-weighted average for a slow discharge.
 
-(c) $V = 3.5$ V at $0.3x^2 + 0.6x - 0.7 = 0$, i.e. $x = 0.8257$. The charge left is $(1 - 0.8257)\times3000 = $ **522.8 mAh**. The energy delivered up to that point is $Q(4.2x - 0.3x^2 - 0.1x^3) = $ **9.622 Wh**, leaving **1.778 Wh** unused. A device that works down to 3.3 V would gain over 15% more energy from the same cell.
+(c) $V = 3.5$ V at $0.3x^2 + 0.6x - 0.7 = 0$, i.e. $x = 0.8257$. The charge left is \$(1 - 0.8257)\times3000 = \$ **522.8 mAh**. The energy delivered up to that point is \$Q(4.2x - 0.3x^2 - 0.1x^3) = \$ **9.622 Wh**, leaving **1.778 Wh** unused. A device that works down to 3.3 V would gain over 15% more energy from the same cell.
 
 ### Solution 01-07.14
 
-(a) Over each linear ramp the ripple is $\Delta\cdot u$ with $u$ uniform on $[-\tfrac{1}{2}, \tfrac{1}{2}]$, so its mean square is $\Delta^2\int_{-1/2}^{1/2}u^2\,du = \Delta^2/12$. The ripple averages to zero, so it is orthogonal to the DC level: $I_{rms} = \sqrt{I_0^2 + \Delta^2/12} = \sqrt{4 + 0.03} = $ **2.007 A**.
+(a) Over each linear ramp the ripple is $\Delta\cdot u$ with $u$ uniform on $[-\tfrac{1}{2}, \tfrac{1}{2}]$, so its mean square is $\Delta^2\int_{-1/2}^{1/2}u^2\,du = \Delta^2/12$. The ripple averages to zero, so it is orthogonal to the DC level: \$I_{rms} = \sqrt{I_0^2 + \Delta^2/12} = \sqrt{4 + 0.03} = \$ **2.007 A**.
 
 (b) $I_{rms}^2R = 4.03\times0.02 = $ **80.6 mW**. The ripple adds only 0.75%.
 
-(c) The switch carries the same current shape, but only for a fraction $D$ of the time: $I_{rms,sw} = \sqrt{D(I_0^2 + \Delta^2/12)} = \sqrt{0.3\times4.03} = $ **1.100 A**.
+(c) The switch carries the same current shape, but only for a fraction $D$ of the time: \$I_{rms,sw} = \sqrt{D(I_0^2 + \Delta^2/12)} = \sqrt{0.3\times4.03} = \$ **1.100 A**.
 
 ### Solution 01-07.15
 
@@ -132,21 +132,21 @@ $$
 
 ### Solution 01-07.16
 
-(a) At fixed voltage, $Q = CV = \varepsilon_0AV/x$. The force on one plate depends only on the charge, $F = Q^2/(2\varepsilon_0A)$ (chapter §3.4), so $F = \varepsilon_0AV^2/(2x^2)$. With $\varepsilon_0AV^2/2 = 8.854\times10^{-12}\times10^{-6}\times25/2 = 1.107\times10^{-16}$ J·m, at $x_1 = 2$ µm: $F = 1.107\times10^{-16}/(2\times10^{-6})^2 = $ **27.67 µN**.
+(a) At fixed voltage, $Q = CV = \varepsilon_0AV/x$. The force on one plate depends only on the charge, $F = Q^2/(2\varepsilon_0A)$ (chapter §3.4), so $F = \varepsilon_0AV^2/(2x^2)$. With $\varepsilon_0AV^2/2 = 8.854\times10^{-12}\times10^{-6}\times25/2 = 1.107\times10^{-16}$ J·m, at $x_1 = 2$ µm: \$F = 1.107\times10^{-16}/(2\times10^{-6})^2 = \$ **27.67 µN**.
 
 (b) $W = \dfrac{\varepsilon_0AV^2}{2}\left(\dfrac{1}{x_1} - \dfrac{1}{x_2}\right) = 1.107\times10^{-16}\times(5\times10^5 - 2.5\times10^5) = $ **27.67 pJ**.
 
 (c) $\tfrac12CV^2 = \varepsilon_0AV^2/(2x)$: **55.34 pJ** at 2 µm and **27.67 pJ** at 4 µm. It *fell*, by 27.67 pJ, exactly $W$.
 
-(d) $C$ fell from 4.427 pF to 2.214 pF, so charge $V\lvert\Delta C\rvert = 5\times2.214\text{ pF} = $ **11.07 pC** flowed back into the source, which absorbed $V\lvert\Delta Q\rvert = $ **55.34 pJ** $= 2W$. Energy balance: work done by you (27.67 pJ) + stored energy released (27.67 pJ) = energy absorbed by the source (55.34 pJ) ✓. At fixed *charge*, by contrast, the stored energy rises by exactly the work done (Problem 01-07.8). The source makes the difference.
+(d) $C$ fell from 4.427 pF to 2.214 pF, so charge \$V\lvert\Delta C\rvert = 5\times2.214\text{ pF} = \$ **11.07 pC** flowed back into the source, which absorbed \$V\lvert\Delta Q\rvert = \$ **55.34 pJ** $= 2W$. Energy balance: work done by you (27.67 pJ) + stored energy released (27.67 pJ) = energy absorbed by the source (55.34 pJ) ✓. At fixed *charge*, by contrast, the stored energy rises by exactly the work done (Problem 01-07.8). The source makes the difference.
 
 ### Solution 01-07.17
 
-(a) On $(0, 1)$, $\sqrt{x} > x^2$ (for example $\sqrt{0.25} = 0.5 > 0.0625$), so $\sqrt{x}$ is on top. The area is $\int_0^1(\sqrt{x} - x^2)\,dx = \tfrac23 - \tfrac13 = \tfrac13 = $ **0.3333**.
+(a) On $(0, 1)$, $\sqrt{x} > x^2$ (for example $\sqrt{0.25} = 0.5 > 0.0625$), so $\sqrt{x}$ is on top. The area is \$\int_0^1(\sqrt{x} - x^2)\,dx = \tfrac23 - \tfrac13 = \tfrac13 = \$ **0.3333**.
 
-(b) First moment: $\int_0^1x(\sqrt{x} - x^2)\,dx = \tfrac25 - \tfrac14 = \tfrac{3}{20}$. So $\bar x = (3/20)/(1/3) = 9/20 = $ **0.45**.
+(b) First moment: $\int_0^1x(\sqrt{x} - x^2)\,dx = \tfrac25 - \tfrac14 = \tfrac{3}{20}$. So \$\bar x = (3/20)/(1/3) = 9/20 = \$ **0.45**.
 
-(c) The curves are inverse functions of each other, so the region is its own mirror image in the line $y = x$, and the centroid must lie on that line: $\bar y = \bar x = $ **0.45**.
+(c) The curves are inverse functions of each other, so the region is its own mirror image in the line $y = x$, and the centroid must lie on that line: \$\bar y = \bar x = \$ **0.45**.
 
 ### Solution 01-07.18
 

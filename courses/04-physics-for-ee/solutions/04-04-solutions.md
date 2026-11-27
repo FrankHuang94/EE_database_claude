@@ -8,7 +8,7 @@ Problems: [04-04 problems](../problems/04-04-problems.md) · Chapter: [04-04](..
 
 ### Solution 04-04.1
 
-(a) $V = k_eq/r$: at 10 cm, $8.988\times10^9\times5\times10^{-9}/0.1 = $ **449.4 V**; at 30 cm, **149.8 V**.
+(a) $V = k_eq/r$: at 10 cm, \$8.988\times10^9\times5\times10^{-9}/0.1 = \$ **449.4 V**; at 30 cm, **149.8 V**.
 
 (b) You must raise the 1 nC charge's potential energy by $q\Delta V = 10^{-9}\times(449.4 - 149.8) = $ **2.996×10⁻⁷ J**, pushing it toward the like charge against the repulsion.
 
@@ -22,11 +22,11 @@ Problems: [04-04 problems](../problems/04-04-problems.md) · Chapter: [04-04](..
 
 ### Solution 04-04.3
 
-$V(4\ \text{cm}, 0) - V(0, 0) = -\int_0^{0.04}E\,dx = -500\times0.04 = $ **−20 V**: the potential falls along the field. Moving along $y$, perpendicular to the field, does no work: **0 V**. The equipotentials are planes of constant $x$, perpendicular to the field.
+\$V(4\ \text{cm}, 0) - V(0, 0) = -\int_0^{0.04}E\,dx = -500\times0.04 = \$ **−20 V**: the potential falls along the field. Moving along $y$, perpendicular to the field, does no work: **0 V**. The equipotentials are planes of constant $x$, perpendicular to the field.
 
 ### Solution 04-04.4
 
-(a) $V(z) = \dfrac{\sigma}{2\varepsilon_0}\big(\sqrt{z^2 + R^2} - z\big)$ with $\sigma/(2\varepsilon_0) = 5.647\times10^4$ V/m. At $z$ = 1 mm: $5.647\times10^4\times(0.010050 - 0.001) = $ **511.1 V**. At the center: $5.647\times10^4\times0.01 = $ **564.7 V**.
+(a) $V(z) = \dfrac{\sigma}{2\varepsilon_0}\big(\sqrt{z^2 + R^2} - z\big)$ with $\sigma/(2\varepsilon_0) = 5.647\times10^4$ V/m. At $z$ = 1 mm: \$5.647\times10^4\times(0.010050 - 0.001) = \$ **511.1 V**. At the center: \$5.647\times10^4\times0.01 = \$ **564.7 V**.
 
 (b) $E_z = -\dfrac{dV}{dz} = \dfrac{\sigma}{2\varepsilon_0}\Big(1 - \dfrac{z}{\sqrt{z^2 + R^2}}\Big) = $ **5.085×10⁴ V/m**, the same as the disk field integrated in Example 04-02.5.
 
@@ -40,7 +40,7 @@ $V(4\ \text{cm}, 0) - V(0, 0) = -\int_0^{0.04}E\,dx = -500\times0.04 = $ **−20
 
 ### Solution 04-04.6
 
-(a) Far apart, each sphere's potential is $k_eQ_i/R_i$, and the wire makes them equal, so $Q_i\propto R_i$: $Q_1 = 22\times1/11 = $ **2 nC**, $Q_2 = $ **20 nC**.
+(a) Far apart, each sphere's potential is $k_eQ_i/R_i$, and the wire makes them equal, so $Q_i\propto R_i$: \$Q_1 = 22\times1/11 = \$ **2 nC**, \$Q_2 = \$ **20 nC**.
 
 (b) $V = k_eQ_1/R_1 = 8.988\times10^9\times2\times10^{-9}/0.01 = $ **1798 V**.
 
@@ -66,19 +66,19 @@ $$
 C = \frac{\varepsilon_0A}{d_{\text{air}} + d_{\text{slab}}/\varepsilon_r} = \frac{8.854\times10^{-12}\times0.01}{10^{-3} + 0.25\times10^{-3}} ,
 $$
 
-which is **70.83 pF**. With 100 V, $D = CV/A = 7.083\times10^{-7}$ C/m². In the air, $E = D/\varepsilon_0 = $ **8×10⁴ V/m** (80 V across 1 mm); in the slab, $E = D/(4\varepsilon_0) = $ **2×10⁴ V/m** (20 V across 1 mm).
+which is **70.83 pF**. With 100 V, $D = CV/A = 7.083\times10^{-7}$ C/m². In the air, \$E = D/\varepsilon_0 = \$ **8×10⁴ V/m** (80 V across 1 mm); in the slab, \$E = D/(4\varepsilon_0) = \$ **2×10⁴ V/m** (20 V across 1 mm).
 
 (b) Side by side, the two halves share the voltage and are in parallel: $C = \varepsilon_0(A/2)/d + 4\varepsilon_0(A/2)/d = 2.5\,\varepsilon_0A/d = $ **110.7 pF**.
 
 ### Solution 04-04.9
 
-$C/\ell = 2\pi\varepsilon_r\varepsilon_0/\ln(b/a)$ with $b/a = 2.95/0.9 = 3.278$ (diameters give the same ratio as radii): $2\pi\times2.25\times8.854\times10^{-12}/1.1872 = $ **105.4 pF/m**. A 1.5 m length is **158.2 pF**.
+$C/\ell = 2\pi\varepsilon_r\varepsilon_0/\ln(b/a)$ with $b/a = 2.95/0.9 = 3.278$ (diameters give the same ratio as radii): \$2\pi\times2.25\times8.854\times10^{-12}/1.1872 = \$ **105.4 pF/m**. A 1.5 m length is **158.2 pF**.
 
 ### Solution 04-04.10
 
 (a) $u = \tfrac12\varepsilon_0E^2 = 0.5\times8.854\times10^{-12}\times(3\times10^6)^2 = $ **39.84 J/m³**.
 
-(b) $C = 4\pi\varepsilon_0R = 11.13$ pF, so $U = \tfrac12CV^2 = 0.5\times11.13\times10^{-12}\times10^{10} = $ **0.05563 J**. By field energy: outside, $E = VR/r^2$, and a shell of radius $r$ and thickness $dr$ has volume $4\pi r^2dr$:
+(b) $C = 4\pi\varepsilon_0R = 11.13$ pF, so \$U = \tfrac12CV^2 = 0.5\times11.13\times10^{-12}\times10^{10} = \$ **0.05563 J**. By field energy: outside, $E = VR/r^2$, and a shell of radius $r$ and thickness $dr$ has volume $4\pi r^2dr$:
 
 $$
 U = \int_R^\infty\frac12\varepsilon_0\frac{V^2R^2}{r^4}4\pi r^2\,dr = 2\pi\varepsilon_0V^2R^2\int_R^\infty\frac{dr}{r^2} = 2\pi\varepsilon_0V^2R ,
@@ -100,7 +100,7 @@ The capacitor supplies $\Delta Q = I\Delta t = 2\times0.5\times10^{-6} = 1$ µC,
 
 ### Solution 04-04.13
 
-(a) $\text{EOT} = t_{\text{SiO}_2} + t_{\text{HfO}_2}\times3.9/25$, so $t_{\text{HfO}_2} = (0.9 - 0.4)\times25/3.9 = $ **3.205 nm**.
+(a) $\text{EOT} = t_{\text{SiO}_2} + t_{\text{HfO}_2}\times3.9/25$, so \$t_{\text{HfO}_2} = (0.9 - 0.4)\times25/3.9 = \$ **3.205 nm**.
 
 (b) $0.4 + 3.205 = $ **3.605 nm**, four times the EOT.
 
@@ -110,7 +110,7 @@ The capacitor supplies $\Delta Q = I\Delta t = 2\times0.5\times10^{-6} = 1$ µC,
 
 (a) $\Delta V = (V_{\text{cell}} - V_{\text{BL}})\,C_s/(C_s + C_{\text{BL}}) = 0.55\times8/88 = $ **50 mV**.
 
-(b) Need $(V_{\text{cell}} - 0.55)\times8/88 \ge 0.040$, so $V_{\text{cell}} \ge 0.55 + 0.44 = $ **0.99 V**.
+(b) Need $(V_{\text{cell}} - 0.55)\times8/88 \ge 0.040$, so \$V_{\text{cell}} \ge 0.55 + 0.44 = \$ **0.99 V**.
 
 (c) The cell may lose **0.11 V**, which is $Q = C_s\Delta V = 8\ \text{fF}\times0.11 = $ **0.88 fC**, or $0.88\times10^{-15}/1.602\times10^{-19} = $ **5493 electrons**. Spread over a refresh interval of tens of milliseconds ([23](../../23-memory-and-storage-technology/README.md)), that budget allows an average leakage of only about ten femtoamperes (0.88 fC over 64 ms is 14 fA).
 
@@ -132,7 +132,7 @@ $$
 
 which is $8.988\times10^9\times10^{-16}/0.1 = $ **8.988×10⁻⁶ J**.
 
-(b) $C = Q^2/(2U) = 10^{-16}/(1.798\times10^{-5}) = $ **5.563 pF**, exactly $4\pi\varepsilon_0R$ ✓.
+(b) \$C = Q^2/(2U) = 10^{-16}/(1.798\times10^{-5}) = \$ **5.563 pF**, exactly $4\pi\varepsilon_0R$ ✓.
 
 (c) The integral from $R$ to $2R$ gives $\frac{k_eQ^2}{2}\big(\frac1R - \frac{1}{2R}\big) = \frac12\cdot\frac{k_eQ^2}{2R}$: **half** the energy lies within one radius of the surface, where the field is strongest.
 

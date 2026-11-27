@@ -133,7 +133,7 @@ The slowest sum bit is reached after $3 + 2(n - 2) + 1 = 2n$ = **32** units, and
 (b) **`w1` = −6**, **`w2` = 19**, **`w3` = −3**.
 
 - `s` = 1010₂ is −6, and assigning it to a wider signed variable sign-extends it to 1111 1010₂, still −6.
-- In `s + a`, `a` is unsigned. If any operand is unsigned, the **whole expression is unsigned**, so `s` is zero-extended to 0000 1010₂ = 10, and $10 + 9 = 19$. This is the classic signedness trap: the sum one probably meant, $-6 + 9 = 3$, needs `$signed({1'b0, a})` (08-05 §3.5).
+- In `s + a`, `a` is unsigned. If any operand is unsigned, the **whole expression is unsigned**, so `s` is zero-extended to 0000 1010₂ = 10, and $10 + 9 = 19$. This is the classic signedness trap: the sum one probably meant, $-6 + 9 = 3$, needs `\$signed({1'b0, a})` (08-05 §3.5).
 - `s >>> 1` is a signed expression: `s` is sign-extended to 8 bits and shifted right arithmetically, giving 1111 1101₂ = −3.
 
 (c) Nonblocking assignments (`<=`) all read their right-hand sides before any update, so the first block **swaps**: after one edge `x` = 0 and `y` = 1, and after two edges `x` = 1 and `y` = 0.

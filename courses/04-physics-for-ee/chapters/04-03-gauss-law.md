@@ -232,7 +232,7 @@ Thick overlays weaken the signal in proportion; higher-permittivity materials st
 
 **Solution.** (a) $\Phi = EA\cos\theta = 2000\times(0.1\times0.2)\times\cos30° = $ **34.64 V·m**.
 
-(b) On the face where the field enters, the outward normal points along $-x$, so $\Phi = -EA = -2000\times0.01 = $ **−20 V·m**. On the opposite face it is **+20 V·m**. The other four faces are parallel to the field and carry none. The net flux is **0**, as it must be: the cube encloses no charge.
+(b) On the face where the field enters, the outward normal points along $-x$, so \$\Phi = -EA = -2000\times0.01 = \$ **−20 V·m**. On the opposite face it is **+20 V·m**. The other four faces are parallel to the field and carry none. The net flux is **0**, as it must be: the cube encloses no charge.
 
 **Units check.** (V/m)(m²) = V·m ✓.
 
@@ -244,7 +244,7 @@ Thick overlays weaken the signal in proportion; higher-permittivity materials st
 
 (b) By symmetry the six faces share it equally: **18.82 V·m** each, with no surface integral needed.
 
-(c) $E = k_eq/r^2 = 8.988\times10^9\times10^{-9}/10^{-4} = $ **8.988×10⁴ V/m**. Times the sphere's area $4\pi(0.01)^2 = 1.2566\times10^{-3}$ m² it gives 112.9 V·m ✓.
+(c) \$E = k_eq/r^2 = 8.988\times10^9\times10^{-9}/10^{-4} = \$ **8.988×10⁴ V/m**. Times the sphere's area $4\pi(0.01)^2 = 1.2566\times10^{-3}$ m² it gives 112.9 V·m ✓.
 
 ### Example 04-03.3 — A uniformly charged sphere and a shell (tier B)
 
@@ -264,7 +264,7 @@ Thick overlays weaken the signal in proportion; higher-permittivity materials st
 
 (b) At $r$ = 2 mm the field is four times weaker: **1.798×10⁴ V/m**.
 
-(c) The inner conductor's charge sits on its surface: $\sigma = \lambda/(2\pi a) = $ **6.366×10⁻⁷ C/m²**. The outer conductor's −λ sits on its *inner* surface (a Gaussian cylinder inside its metal must enclose zero charge): $\sigma = -\lambda/(2\pi b) = $ **−1.592×10⁻⁷ C/m²**. Check property 3: $\sigma/\varepsilon_0$ reproduces (a) and (b) ✓.
+(c) The inner conductor's charge sits on its surface: \$\sigma = \lambda/(2\pi a) = \$ **6.366×10⁻⁷ C/m²**. The outer conductor's −λ sits on its *inner* surface (a Gaussian cylinder inside its metal must enclose zero charge): \$\sigma = -\lambda/(2\pi b) = \$ **−1.592×10⁻⁷ C/m²**. Check property 3: $\sigma/\varepsilon_0$ reproduces (a) and (b) ✓.
 
 (d) A Gaussian cylinder outside encloses $+\lambda - \lambda = 0$: **0 V/m**.
 
@@ -282,7 +282,7 @@ Thick overlays weaken the signal in proportion; higher-permittivity materials st
 
 (c) A Gaussian sphere inside the metal encloses zero charge, so the inner wall carries −2 nC, spread uniformly by symmetry: $\sigma_{\text{in}} = -2\times10^{-9}/(4\pi\times0.03^2) = $ **−1.768×10⁻⁷ C/m²**. The shell is neutral, so +2 nC sits on the outer surface: $\sigma_{\text{out}} = 2\times10^{-9}/(4\pi\times0.04^2) = $ **9.947×10⁻⁸ C/m²**.
 
-(d) Just outside, $E = \sigma_{\text{out}}/\varepsilon_0 = $ **1.123×10⁴ V/m**, the same as $k_eq/(0.04)^2$. At 10 cm, $k_eq/r^2 = $ **1798 V/m**: outside, the shell hides nothing.
+(d) Just outside, \$E = \sigma_{\text{out}}/\varepsilon_0 = \$ **1.123×10⁴ V/m**, the same as $k_eq/(0.04)^2$. At 10 cm, \$k_eq/r^2 = \$ **1798 V/m**: outside, the shell hides nothing.
 
 (e) Grounding drains the outer +2 nC. The field outside becomes **0**, while the cavity field and the inner −2 nC are unchanged (Figure 3).
 
@@ -308,7 +308,7 @@ Thick overlays weaken the signal in proportion; higher-permittivity materials st
 
 **Setup.** Model a fingertip pressed on a touch sensor's overlay as a conducting disk of diameter 9 mm, parallel to the pad, through a 2 mm overlay with $\varepsilon_r = 3$ (a typical plastic; take it as given). (a) Find the contact area and $C_F$. (b) The pad's parasitic capacitance is 33 pF. By what percentage does a touch raise the total? (c) What is $C_F$ through a 4 mm overlay of the same material?
 
-**Solution.** (a) $A = \pi(4.5\times10^{-3})^2 = 6.362\times10^{-5}$ m², which is **63.62 mm²**. Then $C_F = \varepsilon_r\varepsilon_0A/d = 3\times8.854\times10^{-12}\times6.362\times10^{-5}/2\times10^{-3} = $ **0.8449 pF**.
+**Solution.** (a) $A = \pi(4.5\times10^{-3})^2 = 6.362\times10^{-5}$ m², which is **63.62 mm²**. Then \$C_F = \varepsilon_r\varepsilon_0A/d = 3\times8.854\times10^{-12}\times6.362\times10^{-5}/2\times10^{-3} = \$ **0.8449 pF**.
 
 (b) $0.8449/33 = $ **2.560%**.
 

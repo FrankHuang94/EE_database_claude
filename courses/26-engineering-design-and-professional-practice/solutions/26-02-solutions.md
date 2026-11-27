@@ -27,7 +27,7 @@ A model answer:
 
 (a) The ratio is $C_r/(C_eNp) = 8{,}000/(5{,}000 \times 30 \times 0.50)$ = **0.1067**, so $k \le 1 + \ln 0.1067/\ln 0.5$ = **4.23**: the optimum is **4** reviewers.
 
-(b) $1 - 0.5^4$ = **93.75**% found, **1.875** expected escapes, and a total of $4 \times 8{,}000 + 5{,}000 \times 1.875$ = **$41,375**.
+(b) $1 - 0.5^4$ = **93.75**% found, **1.875** expected escapes, and a total of $4 \times 8{,}000 + 5{,}000 \times 1.875$ = **\$41,375**.
 
 (c) $C(k)$ for $k$ = 1 to 6: **$83,000**, **$53,500**, **$42,750**, **$41,375**, **$44,688** and **$50,344**. Three, four or five reviewers are all within **8.0**% of the optimum, so the choice among them can rest on who is available and how independent they are.
 
@@ -81,9 +81,9 @@ With $P(k) = 0.60[1 - 0.4^k] + 0.25[1 - 0.8^k] + 0.15 \times 0$:
 
 ### Solution 26-02.9
 
-(a) $40 \times 0.0025 \times 1{,}000$ = **$100** per laptop, **16.7** times the chip's price.
+(a) $40 \times 0.0025 \times 1{,}000$ = **\$100** per laptop, **16.7** times the chip's price.
 
-(b) $0.10 \times 6$ = **$0.60** per chip.
+(b) $0.10 \times 6$ = **\$0.60** per chip.
 
 (c) $0.03 \times 1{,}000 \times 0.05$ = **$1.50** per laptop, out of an aggregate of **$30**.
 
@@ -99,7 +99,7 @@ With $P(k) = 0.60[1 - 0.4^k] + 0.25[1 - 0.8^k] + 0.15 \times 0$:
 
 ### Solution 26-02.11
 
-(a) Gain $4 \times 3$ = **$12 M**; expected penalty $0.3 \times (2 + 1 \times 3)$ = **$1.5 M**; net **$10.5 M**.
+(a) Gain $4 \times 3$ = **\$12 M**; expected penalty $0.3 \times (2 + 1 \times 3)$ = **$1.5 M**; net **$10.5 M**.
 
 (b) Expected penalty $0.3 \times (20 + 5 \times 3)$ = **$10.5 M**; net **$1.5 M**, barely positive.
 

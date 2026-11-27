@@ -56,17 +56,17 @@ Span 7: **215**, **31**, **5**, **1**: four layers, **252** managers ($N/6$ = **
 
 (a) $C_e/C_c$ = **0.8**. A base of 20 is exceeded in 6 of 8 quarters (**0.75**), below 0.8, so the base is **20**.
 
-(b) $20 \times 8 \times 80{,}000 + 160 \times 100{,}000$ = **$28.8 M**, with **160** engineer-quarters contracted.
+(b) $20 \times 8 \times 80{,}000 + 160 \times 100{,}000$ = **\$28.8 M**, with **160** engineer-quarters contracted.
 
-(c) $30 \times 8 \times 80{,}000 + 100 \times 100{,}000 = 19.2 + 10.0$ = **$29.2 M** (**100** engineer-quarters contracted).
+(c) $30 \times 8 \times 80{,}000 + 100 \times 100{,}000 = 19.2 + 10.0$ = **\$29.2 M** (**100** engineer-quarters contracted).
 
-(d) $60 \times 8 \times 80{,}000$ = **$38.4 M**.
+(d) $60 \times 8 \times 80{,}000$ = **\$38.4 M**.
 
-(e) $320 \times 100{,}000$ = **$32.0 M**.
+(e) $320 \times 100{,}000$ = **\$32.0 M**.
 
 ### Solution 26-06.8
 
-(a) In-house $18 \times 150{,}000$ = **$2.70 M**; outsourced $14 \times 200{,}000$ = **$2.80 M**: in-house is slightly cheaper.
+(a) In-house $18 \times 150{,}000$ = **\$2.70 M**; outsourced $14 \times 200{,}000$ = **\$2.80 M**: in-house is slightly cheaper.
 
 (b) Break-even utilization $150/200$ = **0.75**, that is **13.5** work-months of 18. Below that, outsource; the decision also depends on whether the DFT team would be needed for the next program (a reason to keep it) and on the oversight effort outsourcing needs.
 

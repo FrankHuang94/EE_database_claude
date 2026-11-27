@@ -168,7 +168,7 @@ below which the part behaves as a capacitor and above which it behaves as an ind
 
 **Setup.** The voltage across a 10 µF capacitor rises linearly from 0 to 5 V in 1 ms, stays at 5 V for 1 ms, then falls linearly to 0 in 0.5 ms. Find the current in each interval, the peak stored energy, and the largest power the capacitor absorbs.
 
-**Solution.** $i = C\,dv/dt$: rising, $10\ \text{µF}\times5\ \text{V}/1\ \text{ms} = $ **50 mA**; flat, **0**; falling, $10\ \text{µF}\times(-5\ \text{V})/0.5\ \text{ms} = $ **−100 mA** (current flows out of the + terminal). Peak energy, at 5 V: $\tfrac12\times10\ \text{µF}\times25 = $ **125 µJ**. During the rise the power $p = vi$ grows with $v$ and peaks at the end: $5\ \text{V}\times50\ \text{mA} = $ **250 mW**.
+**Solution.** $i = C\,dv/dt$: rising, \$10\ \text{µF}\times5\ \text{V}/1\ \text{ms} = \$ **50 mA**; flat, **0**; falling, \$10\ \text{µF}\times(-5\ \text{V})/0.5\ \text{ms} = \$ **−100 mA** (current flows out of the + terminal). Peak energy, at 5 V: \$\tfrac12\times10\ \text{µF}\times25 = \$ **125 µJ**. During the rise the power $p = vi$ grows with $v$ and peaks at the end: \$5\ \text{V}\times50\ \text{mA} = \$ **250 mW**.
 
 **Units check.** F × V/s = A; F × V² = J ✓.
 
@@ -178,7 +178,7 @@ below which the part behaves as a capacitor and above which it behaves as an ind
 
 **Setup.** In a switching regulator, the current in a 4.7 µH inductor rises from 1 A to 3 A in 2 µs, then falls back to 1 A in 3 µs, repeating. Find the inductor voltage in each phase, the stored energy at 1 A and 3 A, and check the volt-second balance.
 
-**Solution.** $v = L\,di/dt$: rising, $4.7\ \text{µH}\times2\ \text{A}/2\ \text{µs} = $ **4.7 V**; falling, $4.7\ \text{µH}\times(-2\ \text{A})/3\ \text{µs} = $ **−3.133 V**. Energy: $\tfrac12\times4.7\ \text{µH}\times9 = $ **21.15 µJ** at 3 A and **2.35 µJ** at 1 A, so **18.8 µJ** moves in and out each cycle. Volt-seconds: $4.7\times2 = 9.4$ V·µs in, $3.133\times3 = 9.4$ V·µs out ✓, as a periodic steady state requires.
+**Solution.** $v = L\,di/dt$: rising, \$4.7\ \text{µH}\times2\ \text{A}/2\ \text{µs} = \$ **4.7 V**; falling, \$4.7\ \text{µH}\times(-2\ \text{A})/3\ \text{µs} = \$ **−3.133 V**. Energy: \$\tfrac12\times4.7\ \text{µH}\times9 = \$ **21.15 µJ** at 3 A and **2.35 µJ** at 1 A, so **18.8 µJ** moves in and out each cycle. Volt-seconds: $4.7\times2 = 9.4$ V·µs in, $3.133\times3 = 9.4$ V·µs out ✓, as a periodic steady state requires.
 
 **Units check.** H × A/s = V·s/A × A/s = V ✓.
 
@@ -188,7 +188,7 @@ below which the part behaves as a capacitor and above which it behaves as an ind
 
 **Setup.** A 4 µF capacitor is in series with the parallel pair 2 µF ∥ 6 µF. All start uncharged, and 12 V is applied across the combination. Find the equivalent capacitance, the charge, each capacitor's voltage and charge, and the stored energy, and check the energy split.
 
-**Solution.** The pair is $2 + 6 = 8$ µF; in series with 4 µF, $C_{eq} = 4\times8/(4 + 8) = $ **2.667 µF**. Charge $q = 2.667\times12 = $ **32 µC**, the same on the 4 µF and on the pair. Voltages: $32/4 = $ **8 V** across the 4 µF and $32/8 = $ **4 V** across the pair, so the 2 µF holds **8 µC** and the 6 µF **24 µC**. Energy $\tfrac12\times2.667\times144 = $ **192 µJ**.
+**Solution.** The pair is $2 + 6 = 8$ µF; in series with 4 µF, \$C_{eq} = 4\times8/(4 + 8) = \$ **2.667 µF**. Charge \$q = 2.667\times12 = \$ **32 µC**, the same on the 4 µF and on the pair. Voltages: \$32/4 = \$ **8 V** across the 4 µF and \$32/8 = \$ **4 V** across the pair, so the 2 µF holds **8 µC** and the 6 µF **24 µC**. Energy \$\tfrac12\times2.667\times144 = \$ **192 µJ**.
 
 **Units check.** µF × V = µC; µF × V² = µJ ✓.
 
@@ -202,7 +202,7 @@ below which the part behaves as a capacitor and above which it behaves as an ind
 
 (b) $\tfrac12Li^2 = \tfrac12\times0.1\times0.05^2 = $ **125 µJ**, dissipated wherever the current flows.
 
-(c) The diode gives the current a loop through the coil itself; the coil's voltage reverses to about one diode drop, so the transistor sees only the supply plus that drop, about **12.7 V**. The coil's resistance is $12/0.05 = $ **240 Ω**, and the 125 µJ is dissipated in it and the diode as the current decays (07-02 computes the decay, with time constant $L/R$).
+(c) The diode gives the current a loop through the coil itself; the coil's voltage reverses to about one diode drop, so the transistor sees only the supply plus that drop, about **12.7 V**. The coil's resistance is \$12/0.05 = \$ **240 Ω**, and the 125 µJ is dissipated in it and the diode as the current decays (07-02 computes the decay, with time constant $L/R$).
 
 **Units check.** H × A/s = V; H × A² = J ✓.
 
@@ -214,9 +214,9 @@ below which the part behaves as a capacitor and above which it behaves as an ind
 
 **Solution.** (a) $C \ge \Delta I\,\Delta t/\Delta v = 1\ \text{A}\times10\ \text{ns}/50\ \text{mV} = $ **0.2 µF**. One derated capacitor offers $0.4\times10 = $ **4 µF**, twenty times more: charge is not the problem.
 
-(b) One capacitor: $L\,di/dt = 0.5\ \text{nH}\times1\ \text{A}/1\ \text{ns} = $ **0.5 V**, twenty times the limit. Paralleling $N$ identical capacitors divides the ESL by $N$, so $N \ge 0.5/0.025 = $ **20** capacitors (25 pH in total), placed with low-inductance connections (whose own inductance must also be counted).
+(b) One capacitor: \$L\,di/dt = 0.5\ \text{nH}\times1\ \text{A}/1\ \text{ns} = \$ **0.5 V**, twenty times the limit. Paralleling $N$ identical capacitors divides the ESL by $N$, so \$N \ge 0.5/0.025 = \$ **20** capacitors (25 pH in total), placed with low-inductance connections (whose own inductance must also be counted).
 
-(c) $f_{SR} = 1/(2\pi\sqrt{0.5\ \text{nH}\times10\ \text{µF}}) = $ **2.251 MHz**. At 100 kHz the part is capacitive, $|Z| \approx 1/(2\pi fC) = $ **0.159 Ω**; at 100 MHz it is inductive, $|Z| \approx 2\pi fL = $ **0.314 Ω**, and adding capacitance would not help there; only lower inductance does. These use the nominal 10 µF, as datasheet impedance curves usually do. At the working voltage the part has only the derated 4 µF, which raises $f_{SR}$ to **3.559 MHz** and the impedance at 100 kHz to **0.398 Ω**: DC-bias derating costs low-frequency impedance as well as charge.
+(c) \$f_{SR} = 1/(2\pi\sqrt{0.5\ \text{nH}\times10\ \text{µF}}) = \$ **2.251 MHz**. At 100 kHz the part is capacitive, \$|Z| \approx 1/(2\pi fC) = \$ **0.159 Ω**; at 100 MHz it is inductive, \$|Z| \approx 2\pi fL = \$ **0.314 Ω**, and adding capacitance would not help there; only lower inductance does. These use the nominal 10 µF, as datasheet impedance curves usually do. At the working voltage the part has only the derated 4 µF, which raises $f_{SR}$ to **3.559 MHz** and the impedance at 100 kHz to **0.398 Ω**: DC-bias derating costs low-frequency impedance as well as charge.
 
 **Units check.** A·s/V = F; H × A/s = V; 1/√(H·F) = 1/s ✓.
 

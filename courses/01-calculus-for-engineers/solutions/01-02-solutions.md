@@ -10,11 +10,11 @@ Every numerical answer below is listed in the answer key at the end and is recom
 
 ### Solution 01-02.1
 
-(a) $(e^{0.1} - 1)/0.1 = $ **1.0517** and $(e^{0.01} - 1)/0.01 = $ **1.0050**. From the left, $(e^{-0.1} - 1)/(-0.1) = 0.9516$ and $(e^{-0.01} - 1)/(-0.01) = 0.9950$. The values close in on 1 from both sides: **limit 1**. This is the defining property of $e$ (chapter §3.3).
+(a) \$(e^{0.1} - 1)/0.1 = \$ **1.0517** and \$(e^{0.01} - 1)/0.01 = \$ **1.0050**. From the left, $(e^{-0.1} - 1)/(-0.1) = 0.9516$ and $(e^{-0.01} - 1)/(-0.01) = 0.9950$. The values close in on 1 from both sides: **limit 1**. This is the defining property of $e$ (chapter §3.3).
 
-(b) $\sin(0.3)/0.1 = $ **2.9552** and $\sin(0.03)/0.01 = $ **2.9996**. The function is even, so the negative side gives the same values. **Limit 3.** (Write $\sin 3x/x = 3\cdot\sin 3x/(3x)$, and the second factor tends to 1.)
+(b) \$\sin(0.3)/0.1 = \$ **2.9552** and \$\sin(0.03)/0.01 = \$ **2.9996**. The function is even, so the negative side gives the same values. **Limit 3.** (Write $\sin 3x/x = 3\cdot\sin 3x/(3x)$, and the second factor tends to 1.)
 
-(c) $(1.1^3 - 1)/0.1 = 0.331/0.1 = $ **3.3100** and $(1.01^3 - 1)/0.01 = $ **3.0301**. On the left, $x = 0.9$ gives 2.71 and $x = 0.99$ gives 2.9701. **Limit 3.** Algebraically, $x^3 - 1 = (x - 1)(x^2 + x + 1)$, so the quotient is $x^2 + x + 1 \to 3$.
+(c) \$(1.1^3 - 1)/0.1 = 0.331/0.1 = \$ **3.3100** and \$(1.01^3 - 1)/0.01 = \$ **3.0301**. On the left, $x = 0.9$ gives 2.71 and $x = 0.99$ gives 2.9701. **Limit 3.** Algebraically, $x^3 - 1 = (x - 1)(x^2 + x + 1)$, so the quotient is $x^2 + x + 1 \to 3$.
 
 ### Solution 01-02.2
 
@@ -28,7 +28,7 @@ $$
 
 Check: at $x = 0.01$ the original expression is 0.24984 ✓.
 
-(c) Factor: $x^2 + 3x + 2 = (x + 1)(x + 2)$, so the quotient is $x + 2 \to -1 + 2 = $ **1**.
+(c) Factor: $x^2 + 3x + 2 = (x + 1)(x + 2)$, so the quotient is \$x + 2 \to -1 + 2 = \$ **1**.
 
 (d) Expand: $(1 + h)^3 - 1 = 3h + 3h^2 + h^3$, so the quotient is $3 + 3h + h^2 \to$ **3**. This is the slope of $x^3$ at $x = 1$, a preview of the rule $(x^3)' = 3x^2$.
 
@@ -38,25 +38,25 @@ Check: at $x = 0.01$ the original expression is 0.24984 ✓.
 
 (b) $\dfrac{\tan x}{x} = \dfrac{\sin x}{x}\cdot\dfrac{1}{\cos x} \to 1 \cdot 1 = $ **1**.
 
-(c) Multiply top and bottom by $1 + \cos x$: $\dfrac{1 - \cos^2 x}{x^2(1 + \cos x)} = \left(\dfrac{\sin x}{x}\right)^2\dfrac{1}{1 + \cos x} \to \dfrac{1}{2} = $ **0.5**.
+(c) Multiply top and bottom by $1 + \cos x$: \$\dfrac{1 - \cos^2 x}{x^2(1 + \cos x)} = \left(\dfrac{\sin x}{x}\right)^2\dfrac{1}{1 + \cos x} \to \dfrac{1}{2} = \$ **0.5**.
 
 (d) $\dfrac{x}{\sin\pi x} = \dfrac{1}{\pi}\cdot\dfrac{\pi x}{\sin\pi x} \to \dfrac{1}{\pi} = $ **0.3183**.
 
 ### Solution 01-02.4
 
-(a) The left limit at 1 is $1^2 = 1$; the right limit (and value) is $2 + c$. Continuity requires $2 + c = 1$, so $c = $ **−1**.
+(a) The left limit at 1 is $1^2 = 1$; the right limit (and value) is $2 + c$. Continuity requires $2 + c = 1$, so \$c = \$ **−1**.
 
-(b) With $c = 0$: left limit **1**, right limit $2(1) = $ **2**. The jump is **1**.
+(b) With $c = 0$: left limit **1**, right limit \$2(1) = \$ **2**. The jump is **1**.
 
 (c) For $x < 0$, $\lvert x\rvert = -x$, so $\lvert x\rvert/x = -1$; for $x > 0$ it is $+1$. The one-sided limits are **−1** and **+1**. They differ, so no two-sided limit exists: a jump discontinuity (this is the sign function).
 
-(d) $g(x) = (x - 3)(x + 3)/(x + 3) = x - 3$ for $x \ne -3$, so the limit is $-6$. Defining $g(-3) = $ **−6** removes the discontinuity.
+(d) $g(x) = (x - 3)(x + 3)/(x + 3) = x - 3$ for $x \ne -3$, so the limit is $-6$. Defining \$g(-3) = \$ **−6** removes the discontinuity.
 
 ### Solution 01-02.5
 
-(a) Divide by $x^2$: $\dfrac{3 + 5/x^2}{2 - 1/x} \to \dfrac{3}{2} = $ **1.5**.
+(a) Divide by $x^2$: \$\dfrac{3 + 5/x^2}{2 - 1/x} \to \dfrac{3}{2} = \$ **1.5**.
 
-(b) Divide by $x^2$: $\dfrac{5/x + 1/x^2}{1 + 2/x^2} \to \dfrac{0}{1} = $ **0**. (The numerator's degree is lower.)
+(b) Divide by $x^2$: \$\dfrac{5/x + 1/x^2}{1 + 2/x^2} \to \dfrac{0}{1} = \$ **0**. (The numerator's degree is lower.)
 
 (c) This is an $\infty - \infty$ form. Multiply by the conjugate:
 
@@ -84,13 +84,13 @@ Check: at $x = 10^4$ the original expression is 1.9998 ✓.
 
 ### Solution 01-02.7
 
-(a) $\tau = L/R = 0.030/6 = 5\times10^{-3}$ s $= $ **5.000 ms**.
+(a) $\tau = L/R = 0.030/6 = 5\times10^{-3}$ s \$= \$ **5.000 ms**.
 
-(b) Before the switch closes nothing flows: $i(0^-) = 0$ and $v_L(0^-) = 0$. Just after closing, $i(0^+) = 2(1 - e^{0}) = $ **0**, and $v_L(0^+) = 12e^{0} = $ **12 V**. The current is continuous; the inductor voltage jumps from 0 to 12 V. The current *must* be continuous because $v_L = L\,di/dt$: a jump in $i$ would need an infinite voltage, and equivalently the stored energy $\tfrac{1}{2}Li^2$ cannot change instantly. At $0^+$ the inductor carries no current, so no voltage drops across $R$, and the entire 12 V appears across $L$.
+(b) Before the switch closes nothing flows: $i(0^-) = 0$ and $v_L(0^-) = 0$. Just after closing, \$i(0^+) = 2(1 - e^{0}) = \$ **0**, and \$v_L(0^+) = 12e^{0} = \$ **12 V**. The current is continuous; the inductor voltage jumps from 0 to 12 V. The current *must* be continuous because $v_L = L\,di/dt$: a jump in $i$ would need an infinite voltage, and equivalently the stored energy $\tfrac{1}{2}Li^2$ cannot change instantly. At $0^+$ the inductor carries no current, so no voltage drops across $R$, and the entire 12 V appears across $L$.
 
-(c) As $t \to \infty$, $e^{-t/\tau} \to 0$, so $i \to 12/6 = $ **2 A** and $v_L \to 0$. The inductor ends up as a short circuit at DC.
+(c) As $t \to \infty$, $e^{-t/\tau} \to 0$, so \$i \to 12/6 = \$ **2 A** and $v_L \to 0$. The inductor ends up as a short circuit at DC.
 
-(d) $t/\tau = 2$: $i = 2(1 - e^{-2}) = $ **1.729 A** and $v_L = 12e^{-2} = $ **1.624 V**. Check by KVL: $Ri + v_L = 6(1.729) + 1.624 = 12.0$ V ✓.
+(d) $t/\tau = 2$: \$i = 2(1 - e^{-2}) = \$ **1.729 A** and \$v_L = 12e^{-2} = \$ **1.624 V**. Check by KVL: $Ri + v_L = 6(1.729) + 1.624 = 12.0$ V ✓.
 
 ### Solution 01-02.8
 
@@ -139,7 +139,7 @@ The net change is about $-72 + 59.5 \approx -13$ mV. The direct difference, from
 
 ### Solution 01-02.10
 
-(a) Divide top and bottom by $f/f_c$: $\lvert H\rvert = 1/\sqrt{(f_c/f)^2 + 1} \to $ **1** as $f \to \infty$ (0 dB, the passband). As $f \to 0$, the numerator tends to 0 and the denominator to 1, so $\lvert H\rvert \to$ **0** (DC is blocked, as a coupling capacitor should).
+(a) Divide top and bottom by $f/f_c$: \$\lvert H\rvert = 1/\sqrt{(f_c/f)^2 + 1} \to \$ **1** as $f \to \infty$ (0 dB, the passband). As $f \to 0$, the numerator tends to 0 and the denominator to 1, so $\lvert H\rvert \to$ **0** (DC is blocked, as a coupling capacitor should).
 
 (b) For $f \ll f_c$, $\sqrt{1 + (f/f_c)^2} \to 1$, so $\lvert H\rvert \sim f/f_c$. In dB that is $20\log_{10}(f/f_c)$, rising **+20 dB per decade** toward the corner.
 
@@ -155,7 +155,7 @@ The high-pass is the mirror image of the low-pass in chapter Example 01-02.5.
 
 (a) Since $-1 \le \sin(1/x) \le 1$ and $x^2 \ge 0$, we have $-x^2 \le x^2\sin(1/x) \le x^2$. Both bounds tend to 0, so the squeeze gives a limit of **0**. The wild oscillation is crushed by the shrinking envelope.
 
-(b) $-e^{-t} \le e^{-t}\cos 10t \le e^{-t}$, and $e^{-t} \to 0$, so $y \to 0$. The envelope falls below 0.01 when $e^{-t} < 0.01$, i.e. $t > \ln 100 = $ **4.605 s**. After that, $\lvert y\rvert \le e^{-t} < 0.01$ for all later times. (The bound is guaranteed; $\lvert y\rvert$ may dip below 0.01 earlier at zero crossings, but it does not *stay* there.)
+(b) $-e^{-t} \le e^{-t}\cos 10t \le e^{-t}$, and $e^{-t} \to 0$, so $y \to 0$. The envelope falls below 0.01 when $e^{-t} < 0.01$, i.e. \$t > \ln 100 = \$ **4.605 s**. After that, $\lvert y\rvert \le e^{-t} < 0.01$ for all later times. (The bound is guaranteed; $\lvert y\rvert$ may dip below 0.01 earlier at zero crossings, but it does not *stay* there.)
 
 (c) For $x > 0$: $-1/x \le \sin x/x \le 1/x$, and both bounds tend to 0. **Limit 0.** The sinc function's ripples die out as $1/x$.
 
@@ -209,19 +209,19 @@ $$
 
 The minimum error is $E(h^\ast) = h^\ast/2 + h^\ast/2 = h^\ast = $ **2.1×10^−8**. So the best a forward difference can do in double precision is about 8 correct digits, half of the 16 available.
 
-(c) The estimate predicts a rounding error of about $2.22\times10^{-16}/10^{-12} = $ **2.2×10^−4**. Python gives $D(10^{-12}) = 1.000089$, an error of $8.9\times10^{-5}$: the same order of magnitude, as an estimate should be. Shrinking $h$ from $10^{-5}$ to $10^{-12}$ made the answer about 18 times *worse*.
+(c) The estimate predicts a rounding error of about \$2.22\times10^{-16}/10^{-12} = \$ **2.2×10^−4**. Python gives $D(10^{-12}) = 1.000089$, an error of $8.9\times10^{-5}$: the same order of magnitude, as an estimate should be. Shrinking $h$ from $10^{-5}$ to $10^{-12}$ made the answer about 18 times *worse*.
 
 (d) `expm1` evaluates $e^h - 1$ directly, for example from its series $h + h^2/2 + \cdots$, without first forming the number $e^h \approx 1$ and then subtracting 1. No nearly equal numbers are subtracted, so no catastrophic cancellation occurs. `math.expm1(1e-12)/1e-12` returns 1.0000000000005, correct to full precision.
 
 ### Solution 01-02.14
 
-(a) Charge is conserved: $Q = C_1V_0 = 10\times10^{-6}\times5 = 50$ µC, shared over $C_1 + C_2 = 20$ µF. The final voltage is $50/20 = $ **2.5 V**.
+(a) Charge is conserved: $Q = C_1V_0 = 10\times10^{-6}\times5 = 50$ µC, shared over $C_1 + C_2 = 20$ µF. The final voltage is \$50/20 = \$ **2.5 V**.
 
 (b) Before: $\tfrac{1}{2}C_1V_0^2 = \tfrac{1}{2}(10^{-5})(25) = $ **125 µJ**. After: $\tfrac{1}{2}(20\times10^{-6})(2.5)^2 = $ **62.5 µJ**. Lost: **62.5 µJ**, exactly half.
 
 (c) $C_s = (10 \times 10)/(10 + 10) = 5$ µF.
 
-- $R = 1\ \Omega$: $\tau = 5$ µs and peak current $5/1 = $ **5 A**.
+- $R = 1\ \Omega$: $\tau = 5$ µs and peak current \$5/1 = \$ **5 A**.
 - $R = 0.01\ \Omega$: $\tau = 50$ ns and peak current **500 A**.
 
 (The full 5 V difference appears across $R$ at $t = 0^+$, because both capacitor voltages are continuous.)
@@ -232,8 +232,8 @@ The minimum error is $E(h^\ast) = h^\ast/2 + h^\ast/2 = h^\ast = $ **2.1×10^−
 
 (a) The ratio is $N^2/(N\log_2 N) = N/\log_2 N$.
 
-- At $N = 1024 = 2^{10}$: $1024/10 = $ **102.4**.
-- At $N = 2^{20}$: $2^{20}/20 = $ **5.243×10^4**.
+- At $N = 1024 = 2^{10}$: \$1024/10 = \$ **102.4**.
+- At $N = 2^{20}$: \$2^{20}/20 = \$ **5.243×10^4**.
 
 For the limit, $\dfrac{N\log_2 N}{N^2} = \dfrac{\log_2 N}{N} = \dfrac{1}{\ln 2}\cdot\dfrac{\ln N}{N} \to 0$, by the growth hierarchy.
 

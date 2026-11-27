@@ -8,11 +8,11 @@ Problems: [06-10 problems](../problems/06-10-problems.md) · Chapter: [06-10](..
 
 ### Solution 06-10.1
 
-Gain $-100/4.7 = $ **−21.28**; output for 0.1 V: **−2.128 V**; input resistance **4.7 kΩ** (the source sees $R_1$ to a virtual ground).
+Gain \$-100/4.7 = \$ **−21.28**; output for 0.1 V: **−2.128 V**; input resistance **4.7 kΩ** (the source sees $R_1$ to a virtual ground).
 
 ### Solution 06-10.2
 
-$1 + R_2/R_1 = 25$ gives $R_2$ = **24 kΩ**. Output $25\times0.2 = $ **5 V**; input resistance infinite (rule 1).
+$1 + R_2/R_1 = 25$ gives $R_2$ = **24 kΩ**. Output \$25\times0.2 = \$ **5 V**; input resistance infinite (rule 1).
 
 ### Solution 06-10.3
 
@@ -20,17 +20,17 @@ $v_{out} = -20\,(1/10 - 0.5/20 + 2/40) = -20\times0.125 = $ **−2.5 V** (each t
 
 ### Solution 06-10.4
 
-(a) Matched: $G = 10$, so $10\times(2.05 - 2.00) = $ **0.5 V**.
+(a) Matched: $G = 10$, so \$10\times(2.05 - 2.00) = \$ **0.5 V**.
 
-(b) With $R_4$ = 101 kΩ: $v_+ = 2.05\times101/111 = 1.8653$ V, so $v_{out} = 1.8653\times11 - 2.00\times10 = $ **0.5185 V**, an error of **18.47 mV** (3.7%). With both inputs at 2.00 V the output is **18.02 mV** instead of zero.
+(b) With $R_4$ = 101 kΩ: $v_+ = 2.05\times101/111 = 1.8653$ V, so \$v_{out} = 1.8653\times11 - 2.00\times10 = \$ **0.5185 V**, an error of **18.47 mV** (3.7%). With both inputs at 2.00 V the output is **18.02 mV** instead of zero.
 
-(c) A 2 V common-mode input produces $2/111$ V = 18.02 mV: a common-mode gain of $1/111 = $ **0.009009** and a CMRR of $10\times111 = $ **1110** (**60.9 dB**). The approximation for a single mismatched resistor, $(1 + G)/t = 11/0.01 = $ **1100**, is close; four resistors each up to $t$ off give the $4t$ of the chapter's formula. One resistor 1% off is enough to make the common-mode term a large part of a small differential signal.
+(c) A 2 V common-mode input produces $2/111$ V = 18.02 mV: a common-mode gain of \$1/111 = \$ **0.009009** and a CMRR of \$10\times111 = \$ **1110** (**60.9 dB**). The approximation for a single mismatched resistor, \$(1 + G)/t = 11/0.01 = \$ **1100**, is close; four resistors each up to $t$ off give the $4t$ of the chapter's formula. One resistor 1% off is enough to make the common-mode term a large part of a small differential signal.
 
 ### Solution 06-10.5
 
 (a) $v_{out} = -R_f\,i$: **0 to −2.5 V**.
 
-(b) The bias current also flows through $R_f$, adding $I_BR_f$ at the output. LM358: $250\ \text{nA}\times500\ \text{kΩ} = $ **125 mV** (5% of full scale). OPA187: $350\ \text{pA}\times500\ \text{kΩ} = $ **175 µV** (0.007%). Only the OPA187 is usable for a precise measurement; transimpedance amplifiers with large $R_f$ need picoamp bias currents.
+(b) The bias current also flows through $R_f$, adding $I_BR_f$ at the output. LM358: \$250\ \text{nA}\times500\ \text{kΩ} = \$ **125 mV** (5% of full scale). OPA187: \$350\ \text{pA}\times500\ \text{kΩ} = \$ **175 µV** (0.007%). Only the OPA187 is usable for a precise measurement; transimpedance amplifiers with large $R_f$ need picoamp bias currents.
 
 ### Solution 06-10.6
 
@@ -38,7 +38,7 @@ $v_{out} = -20\,(1/10 - 0.5/20 + 2/40) = -20\times0.125 = $ **−2.5 V** (each t
 
 (b) The follower draws no current, so its input sits at 1 V and its output delivers **1 V** to the ADC from zero output resistance.
 
-(c) $A/(1 + A) = 10^5/(1 + 10^5) = $ **0.99999**: the follower's gain error is $1/A$.
+(c) \$A/(1 + A) = 10^5/(1 + 10^5) = \$ **0.99999**: the follower's gain error is $1/A$.
 
 ### Solution 06-10.7
 
@@ -46,15 +46,15 @@ $v_{out} = -20\,(1/10 - 0.5/20 + 2/40) = -20\times0.125 = $ **−2.5 V** (each t
 
 ### Solution 06-10.8
 
-(a) With the + input grounded, the − input is a virtual ground and the bias current into it must come through $R_2$: an output error of $I_BR_2 = 100\ \text{nA}\times100\ \text{kΩ} = $ **10 mV**.
+(a) With the + input grounded, the − input is a virtual ground and the bias current into it must come through $R_2$: an output error of \$I_BR_2 = 100\ \text{nA}\times100\ \text{kΩ} = \$ **10 mV**.
 
-(b) Put $R_3 = R_1\parallel R_2 = $ **9.091 kΩ** in series with the + input. The + bias current through $R_3$ shifts both inputs by $I_{B+}R_3$, and the errors cancel except for the difference of the currents: $I_{OS}R_2 = 10\ \text{nA}\times100\ \text{kΩ} = $ **1 mV**.
+(b) Put \$R_3 = R_1\parallel R_2 = \$ **9.091 kΩ** in series with the + input. The + bias current through $R_3$ shifts both inputs by $I_{B+}R_3$, and the errors cancel except for the difference of the currents: \$I_{OS}R_2 = 10\ \text{nA}\times100\ \text{kΩ} = \$ **1 mV**.
 
 ### Solution 06-10.9
 
-(a) $|v_{out}| \le 12$ V requires $|v_{in}| \le 12/4.7 = $ **2.553 V**.
+(a) $|v_{out}| \le 12$ V requires \$|v_{in}| \le 12/4.7 = \$ **2.553 V**.
 
-(b) For 3 V the output would need −14.1 V, so it sits at **−12 V**. The − input is then set by the divider between the input and the stuck output: $v_- = (3\times47 + (-12)\times10)/57 = $ **0.3684 V**, while $v_+$ = 0. The virtual short needs the output to be free to move; once it saturates, there is no feedback and the inputs separate.
+(b) For 3 V the output would need −14.1 V, so it sits at **−12 V**. The − input is then set by the divider between the input and the stuck output: \$v_- = (3\times47 + (-12)\times10)/57 = \$ **0.3684 V**, while $v_+$ = 0. The virtual short needs the output to be free to move; once it saturates, there is no feedback and the inputs separate.
 
 ### Solution 06-10.10
 
@@ -78,7 +78,7 @@ $$
 \frac{R_2}{R_1}v_{in} = -v_{out}\Bigl(1 + \frac{1 + R_2/R_1}{A}\Bigr),
 $$
 
-so $v_{out}/v_{in} = -(R_2/R_1)/\bigl(1 + (1 + R_2/R_1)/A\bigr)$, as stated. As $A \to \infty$ it tends to the ideal $-R_2/R_1$. Numerically, $-100/(1 + 101/10^4) = -100/1.0101 = $ **−99.00**.
+so $v_{out}/v_{in} = -(R_2/R_1)/\bigl(1 + (1 + R_2/R_1)/A\bigr)$, as stated. As $A \to \infty$ it tends to the ideal $-R_2/R_1$. Numerically, \$-100/(1 + 101/10^4) = -100/1.0101 = \$ **−99.00**.
 
 (b) **1.0%**, set by the noise gain $1 + R_2/R_1 = 101$ divided by $A$, not by the signal gain.
 

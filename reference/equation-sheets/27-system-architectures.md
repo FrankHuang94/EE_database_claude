@@ -89,7 +89,7 @@ Conventions:
 | $M = m/N$; $\tau^* = \sqrt{2\delta M}$; $f = \sqrt{2\delta/M} + R/M$ | Job MTBF, Young's interval, lost fraction; $\delta \ll \tau \ll M$, $R$ = restart time | [27-07](../../courses/27-system-architectures/chapters/27-07-ai-datacenter-server-and-rack.md) |
 | $t_{step} = \max\left(\frac{W + BK}{\eta B_{mem}}, \frac{2N_{act}B}{F}\right)$ | Decode step; here $B$ = batch, $W$ weight bytes, $K$ KV bytes per sequence | [27-07](../../courses/27-system-architectures/chapters/27-07-ai-datacenter-server-and-rack.md) |
 | $\Theta = B/t_{step}$; $s = 1/t_{step}$; $\Theta = \eta B_{mem}/K - (W/K)s$; $B_{max} = \lfloor(C - W)/K\rfloor$ | Throughput, per-user speed, the memory-bound frontier, HBM capacity limit; energy per token $P_{rack}/\Theta$ | [27-07](../../courses/27-system-architectures/chapters/27-07-ai-datacenter-server-and-rack.md) |
-| cost/$10^6$ tokens $= \frac{K_{cap}/L + P\,\text{PUE}\cdot 8760\,c_e}{\Theta U \cdot 3.1536\times 10^7/10^6}$ | Token economics: $P$ in kW, $c_e$ in $/kWh, $U$ utilization, $3.1536 \times 10^7$ s per year | [27-07](../../courses/27-system-architectures/chapters/27-07-ai-datacenter-server-and-rack.md) |
+| cost/$10^6$ tokens $= \frac{K_{cap}/L + P\,\text{PUE}\cdot 8760\,c_e}{\Theta U \cdot 3.1536\times 10^7/10^6}$ | Token economics: $P$ in kW, $c_e$ in \$/kWh, $U$ utilization, $3.1536 \times 10^7$ s per year | [27-07](../../courses/27-system-architectures/chapters/27-07-ai-datacenter-server-and-rack.md) |
 
 ## Edge AI and IoT (27-08)
 

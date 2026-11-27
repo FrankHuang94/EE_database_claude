@@ -273,13 +273,13 @@ and the amplitude falls by a factor $e$ in $Q/\pi$ cycles. For the series RLC, $
 
 **Setup.** A series RLC has $L = 10$ µH and $C = 1$ µF. Find $\omega_0$ and $f_0$, the resistance for critical damping, and ζ for $R$ = 1 Ω, the critical value and 20 Ω. For 20 Ω, find the two roots and the slow time constant.
 
-**Solution.** $\omega_0 = 1/\sqrt{10^{-5}\times10^{-6}} = 1/\sqrt{10^{-11}} = $ **316.2 krad/s**, so $f_0 = \omega_0/2\pi = $ **50.33 kHz**. Critical damping needs ζ = 1, so $R = 2\sqrt{L/C} = 2\sqrt{10} = $ **6.325 Ω**. Then $\zeta = \frac{R}{2}\sqrt{C/L} = R/6.325$:
+**Solution.** \$\omega_0 = 1/\sqrt{10^{-5}\times10^{-6}} = 1/\sqrt{10^{-11}} = \$ **316.2 krad/s**, so \$f_0 = \omega_0/2\pi = \$ **50.33 kHz**. Critical damping needs ζ = 1, so \$R = 2\sqrt{L/C} = 2\sqrt{10} = \$ **6.325 Ω**. Then $\zeta = \frac{R}{2}\sqrt{C/L} = R/6.325$:
 
 - 1 Ω: ζ = **0.1581**, underdamped;
 - 6.325 Ω: ζ = **1**, critically damped;
 - 20 Ω: ζ = **3.162**, overdamped.
 
-For 20 Ω, α = $R/2L = 10^6$ s⁻¹ and $s_{1,2} = -10^6 \pm\sqrt{10^{12} - 10^{11}}$, giving $s_1 = $ **−51.32 krad/s** and $s_2 = $ **−1949 krad/s**. The slow time constant is $-1/s_1 = $ **19.49 µs**.
+For 20 Ω, α = $R/2L = 10^6$ s⁻¹ and $s_{1,2} = -10^6 \pm\sqrt{10^{12} - 10^{11}}$, giving \$s_1 = \$ **−51.32 krad/s** and \$s_2 = \$ **−1949 krad/s**. The slow time constant is \$-1/s_1 = \$ **19.49 µs**.
 
 **Units check.** $\sqrt{\text{H/F}} = \sqrt{\Omega^2} = \Omega$ ✓. **Sanity check.** $s_1s_2 = \omega_0^2 = 10^{11}$ and $s_1 + s_2 = -2\alpha = -2\times10^6$ (the product and sum of the roots of a quadratic) ✓. Compare $s_1 \approx -\omega_0/(2\zeta) = -50.0$ krad/s, close to the exact −51.32.
 
@@ -287,23 +287,23 @@ For 20 Ω, α = $R/2L = 10^6$ s⁻¹ and $s_{1,2} = -10^6 \pm\sqrt{10^{12} - 10^
 
 **Setup.** The same circuit with $R = 1$ Ω starts with $v_C(0) = 5$ V and $i(0) = 0$. Find $v_C(t)$, its first negative peak, the quality factor, and how long the envelope takes to fall to 1%.
 
-**Solution.** α = $R/2L = $ **5.000×10⁴ s⁻¹** and $\omega_d = \sqrt{\omega_0^2 - \alpha^2} = \sqrt{10^{11} - 2.5\times10^9} = $ **312.2 krad/s** ($f_d = $ **49.70 kHz**, just below $f_0$). The initial conditions are $v_C(0) = 5$ V and $v_C'(0) = i(0)/C = 0$. By §3.7, $A = 5$ V and $B = \alpha A/\omega_d = $ **0.8006 V**:
+**Solution.** α = \$R/2L = \$ **5.000×10⁴ s⁻¹** and \$\omega_d = \sqrt{\omega_0^2 - \alpha^2} = \sqrt{10^{11} - 2.5\times10^9} = \$ **312.2 krad/s** (\$f_d = \$ **49.70 kHz**, just below $f_0$). The initial conditions are $v_C(0) = 5$ V and $v_C'(0) = i(0)/C = 0$. By §3.7, $A = 5$ V and \$B = \alpha A/\omega_d = \$ **0.8006 V**:
 
 $$
 v_C(t) = e^{-\alpha t}\big(5\cos\omega_dt + 0.8006\sin\omega_dt\big)\text{ V}.
 $$
 
-At $t = \pi/\omega_d = $ **10.06 µs**, $v_C = -5e^{-\alpha\pi/\omega_d} = $ **−3.023 V**: the charge has swung to the other plate, having lost $1 - (3.023/5)^2 = 63\%$ of its energy in half a cycle. $Q = 1/(2\zeta) = $ **3.162**. The envelope reaches 1% after $\ln100/\alpha = $ **92.10 µs**, about **4.58** cycles.
+At \$t = \pi/\omega_d = \$ **10.06 µs**, \$v_C = -5e^{-\alpha\pi/\omega_d} = \$ **−3.023 V**: the charge has swung to the other plate, having lost $1 - (3.023/5)^2 = 63\%$ of its energy in half a cycle. \$Q = 1/(2\zeta) = \$ **3.162**. The envelope reaches 1% after \$\ln100/\alpha = \$ **92.10 µs**, about **4.58** cycles.
 
-**Units check.** $\alpha/\omega_d$ is dimensionless, so $B$ is in volts ✓. **Sanity check.** Each full cycle keeps $e^{-2\alpha(2\pi/\omega_d)} = $ **13.37%** of the energy, and the amplitude falls by $e$ in $Q/\pi \approx 1$ cycle, consistent with a low-$Q$ tank ✓.
+**Units check.** $\alpha/\omega_d$ is dimensionless, so $B$ is in volts ✓. **Sanity check.** Each full cycle keeps \$e^{-2\alpha(2\pi/\omega_d)} = \$ **13.37%** of the energy, and the amplitude falls by $e$ in $Q/\pi \approx 1$ cycle, consistent with a low-$Q$ tank ✓.
 
 ### Example 02-03.3 — Is critical damping the fastest? (tier B)
 
 **Setup.** A designer wants a step response to settle within ±2% of its final value as fast as possible. Compare the 2% settling time of the critically damped response with that of the ζ for which the overshoot is exactly 2%.
 
-**Solution.** *Critical damping.* $y = 1 - (1 + x)e^{-x}$ with $x = \omega_0t$ rises monotonically, so it settles when $(1 + x)e^{-x} = 0.02$. Solving numerically (bisection or Newton) gives $x = $ **5.834**: $t_s = 5.834/\omega_0$.
+**Solution.** *Critical damping.* $y = 1 - (1 + x)e^{-x}$ with $x = \omega_0t$ rises monotonically, so it settles when $(1 + x)e^{-x} = 0.02$. Solving numerically (bisection or Newton) gives \$x = \$ **5.834**: $t_s = 5.834/\omega_0$.
 
-*Slightly underdamped.* Set the overshoot to 2%: $\pi\zeta/\sqrt{1 - \zeta^2} = \ln50 = 3.912$. Squaring, $\pi^2\zeta^2 = 15.30(1 - \zeta^2)$, so $\zeta^2 = 15.30/(\pi^2 + 15.30) = 0.6079$ and ζ = **0.7797**. The peak then just touches the top of the band, so the response settles the first time it rises through 98%. Solving $y(t) = 0.98$ numerically gives $\omega_0t_s = $ **3.602**.
+*Slightly underdamped.* Set the overshoot to 2%: $\pi\zeta/\sqrt{1 - \zeta^2} = \ln50 = 3.912$. Squaring, $\pi^2\zeta^2 = 15.30(1 - \zeta^2)$, so $\zeta^2 = 15.30/(\pi^2 + 15.30) = 0.6079$ and ζ = **0.7797**. The peak then just touches the top of the band, so the response settles the first time it rises through 98%. Solving $y(t) = 0.98$ numerically gives \$\omega_0t_s = \$ **3.602**.
 
 The slightly underdamped design settles **1.62×** faster than the critically damped one (Figure 2).
 
@@ -331,7 +331,7 @@ The peak time gives $\omega_d = \pi/t_p = \pi/(2\text{ µs}) = $ **1.571 Mrad/s*
 
 **Setup.** A processor's 0.75 V rail is fed through package and board inductance $L = 25$ pH and resistance $R = 1$ mΩ, with $C = 100$ nF of on-die decoupling capacitance at the die (illustrative values). At $t = 0$ the load current steps from 0 to $\Delta I = 10$ A. (a) Find $f_0$, the characteristic impedance $Z_0 = \sqrt{L/C}$, ζ and $Q$. (b) Find the die voltage $v(t)$ and its worst droop. (c) The design allows ±3% ripple. Find the *target impedance* $Z_t = 0.03\,V_{DD}/\Delta I$ and the capacitance that would make $Z_0 = Z_t$.
 
-**Solution.** (a) $\omega_0 = 1/\sqrt{25\times10^{-12}\times10^{-7}} = 6.325\times10^8$ rad/s, so $f_0 = $ **100.7 MHz**. $Z_0 = \sqrt{25\times10^{-12}/10^{-7}} = $ **15.81 mΩ**. $\zeta = \frac{R}{2}\sqrt{C/L} = R/(2Z_0) = $ **0.03162**, and $Q = $ **15.81**: a very lightly damped tank.
+**Solution.** (a) $\omega_0 = 1/\sqrt{25\times10^{-12}\times10^{-7}} = 6.325\times10^8$ rad/s, so \$f_0 = \$ **100.7 MHz**. \$Z_0 = \sqrt{25\times10^{-12}/10^{-7}} = \$ **15.81 mΩ**. \$\zeta = \frac{R}{2}\sqrt{C/L} = R/(2Z_0) = \$ **0.03162**, and \$Q = \$ **15.81**: a very lightly damped tank.
 
 (b) KCL at the die: the inductor carries $i_L$, the capacitor $Cv'$ and the load $\Delta I$, so $i_L = Cv' + \Delta I$. KVL along the supply path: $L\,i_L' + Ri_L + v = V_{DD}$. Substituting the first into the second, for $t > 0$:
 
@@ -345,9 +345,9 @@ $$
 v(t) = 0.74 + e^{-\alpha t}\big(A\cos\omega_dt + B\sin\omega_dt\big)\text{ V}.
 $$
 
-Minimizing numerically, the worst droop is **160.3 mV** at **2.535 ns**, which is **21.37%** of the rail (Figure 6). For light damping the droop is close to $\Delta I\,Z_0 = $ **158.1 mV**: the capacitor, starved of charge while the inductor's current ramps up, sags by about $\Delta I/(C\omega_0) = \Delta I\sqrt{L/C}$.
+Minimizing numerically, the worst droop is **160.3 mV** at **2.535 ns**, which is **21.37%** of the rail (Figure 6). For light damping the droop is close to \$\Delta I\,Z_0 = \$ **158.1 mV**: the capacitor, starved of charge while the inductor's current ramps up, sags by about $\Delta I/(C\omega_0) = \Delta I\sqrt{L/C}$.
 
-(c) $Z_t = 0.03\times0.75/10 = $ **2.25 mΩ**. Making $Z_0 = Z_t$ at the same inductance needs $C = L/Z_t^2 = $ **4.938 µF**, about **49.4×** more capacitance. With it, the worst droop falls to **24.95 mV** (Figure 6), still slightly beyond the 22.5 mV budget because the 10 mV resistive drop adds to it. Matching $Z_0$ to the target meets the *first-droop* budget only to first order. The target-impedance method (§9) asks that the impedance the load sees, $Z(j\omega) = (R + j\omega L)\parallel\big(1/(j\omega C)\big)$, stay below $Z_t$ at *every* frequency. A lightly damped tank peaks near resonance at roughly $QZ_0$: here $Q = Z_0/R = 2.25$, and the computed peak is **5.544 mΩ** at **14.21 MHz**, **2.464×** the target. A load that pulses near that frequency would ring the rail far beyond budget. A flat profile needs damping: resistance $R_L = Z_0$ in series with the inductor and $R_C = Z_0$ in series with the capacitor make $Z(j\omega) = Z_0$ exactly, at every frequency (Problem 02-03.14(d)). Real designs therefore lower $L$ (more power bumps, capacitors closer to the die) and choose capacitors whose own series resistance supplies the damping.
+(c) \$Z_t = 0.03\times0.75/10 = \$ **2.25 mΩ**. Making $Z_0 = Z_t$ at the same inductance needs \$C = L/Z_t^2 = \$ **4.938 µF**, about **49.4×** more capacitance. With it, the worst droop falls to **24.95 mV** (Figure 6), still slightly beyond the 22.5 mV budget because the 10 mV resistive drop adds to it. Matching $Z_0$ to the target meets the *first-droop* budget only to first order. The target-impedance method (§9) asks that the impedance the load sees, $Z(j\omega) = (R + j\omega L)\parallel\big(1/(j\omega C)\big)$, stay below $Z_t$ at *every* frequency. A lightly damped tank peaks near resonance at roughly $QZ_0$: here $Q = Z_0/R = 2.25$, and the computed peak is **5.544 mΩ** at **14.21 MHz**, **2.464×** the target. A load that pulses near that frequency would ring the rail far beyond budget. A flat profile needs damping: resistance $R_L = Z_0$ in series with the inductor and $R_C = Z_0$ in series with the capacitor make $Z(j\omega) = Z_0$ exactly, at every frequency (Problem 02-03.14(d)). Real designs therefore lower $L$ (more power bumps, capacitors closer to the die) and choose capacitors whose own series resistance supplies the damping.
 
 ![Supply droop after a 10 A load step for two decoupling capacitances](../../../assets/figures/02-03/pdn-droop.svg)
 
