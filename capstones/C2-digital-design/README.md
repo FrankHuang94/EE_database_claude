@@ -58,7 +58,7 @@ The delay line advances only on accepted samples, so gaps in `in_valid` must not
 | M3 | **First RTL.** The straightforward (direct-form) architecture, passing the testbench and lint | RTL, testbench | 12 |
 | M4 | **Synthesis and timing.** Synthesize; find the critical path; compare area and clock with the targets | Reports | 8 |
 | M5 | **Architecture iterations.** Change the architecture (not the testbench) until both targets are met; keep every version passing | RTL versions, a comparison table | 12 |
-| M6 | **Report.** Decisions, results, the critical path of the final design, and what you would do next | Report of 8 to 12 pages | 8 |
+| M6 | **Report.** Decisions, results, the critical path of the final design, and what you would do next. The reference report is condensed, shorter than this target; write yours in full | Report of 8 to 12 pages | 8 |
 
 ## Rubric (100 points)
 

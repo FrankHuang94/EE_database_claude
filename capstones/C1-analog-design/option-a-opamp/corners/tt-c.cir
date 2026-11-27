@@ -8,6 +8,8 @@
 * EXPECT outhi key:../results.md#A.TT-C.outhi scale=1 rtol=1.0e-03
 * EXPECT outlo key:../results.md#A.TT-C.outlo scale=1 rtol=1.0e-03
 * EXPECT m5mar key:../results.md#A.TT-C.m5mar scale=0.001 rtol=4.4e-03
+* EXPECT gm1 key:../results.md#A.TT-C.gm1 scale=1e-06 rtol=1.2e-03
+* EXPECT gm6 key:../results.md#A.TT-C.gm6 scale=0.001 rtol=2.9e-03
 .lib '../../models/c1_process.lib' tt
 .include ../opamp.sub
 .temp -40
@@ -42,7 +44,9 @@ CLC oc 0 2p
 op
 let pwr = -i(vdda) * 1.98
 let m5mar = @m.xa.m5[vds] - @m.xa.m5[vdsat]
-print pwr m5mar
+let gm1 = @m.xa.m1[gm]
+let gm6 = @m.xa.m6[gm]
+print pwr m5mar gm1 gm6
 ac dec 50 1 10G
 meas ac a0 find vdb(oa) at=10
 meas ac ugf when vdb(oa)=0

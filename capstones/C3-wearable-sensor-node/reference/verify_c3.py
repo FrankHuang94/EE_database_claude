@@ -111,6 +111,21 @@ v.check("B.allow", allow * 1e6)
 v.check("B.afecell", afe * 1e6)
 v.assert_true("the AFE receiver and interface alone exceed the 7-day allowance", afe > allow)
 v.check("Z.base", b.scenario())
+z_boost = b.scenario(TX_BOOST=(3.5, 0.85))
+v.check("Z.boost", z_boost)
+v.check("Z.boostloss", b.scenario() - z_boost)
+b.TX_BOOST = (3.5, 0.85)
+items_boost = b.battery_items()
+b.TX_BOOST = None
+v.check("B.ledboost", (items_boost["PPG LED pulses (TX_SUP)"] + items_boost["PPG LED driver quiescent (TX_SUP)"]) * 1e6)
+v.assert_true("the boost scenario leaves the module unchanged", b.TX_BOOST is None and abs(b.scenario() - z_boost) > 0.05)
+rail = b.soc_rail_items()
+v.check("S.socnr", sum(rail[k] for k in ("SoC standby (32 kHz crystal)", "CPU: heart rate, steps, packing",
+                                          "CPU: wake and interrupt per PPG sample",
+                                          "I2C read per PPG sample (CPU idle, DMA)")) * 1e6)
+v.check("B.s", b.SCA_PPM * 1e-6 * b.T_CI * 1e6)
+v.assert_true("window widening equals I_rx times s over the interval",
+              abs(rail["BLE window widening"] - b.SOC_RX * b.SCA_PPM * 1e-6 * b.T_CI / b.T_CI) < 1e-15)
 v.check("Z.afeon", b.scenario(AFE_RX=b.AFE_RX_ON))
 v.check("Z.afe200", b.scenario(AFE_RX=200e-6))
 i_pd = (b.AFE_RX - 0.1 * b.AFE_RX_ON) / 0.9

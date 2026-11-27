@@ -150,6 +150,13 @@ v.check("A.mult", mul_shared)
 v.check("A.muld", 2 * mul_shared)
 v.check("A.totd", 2 * mul_shared + 8)
 v.check("A.tott", mul_shared + 8)
+pre = 8 // 2                                           # one pre-adder per symmetric pair
+v.check("A.pre", pre)
+v.check("A.totf", pre + mul_shared + (pre + 1 - 1))    # four products plus the rounding constant: five terms
+v.assert_true("folded direct form: pairing symmetric taps reproduces the FIR exactly",
+              all(sum(hk * (xa + xb) for hk, xa, xb in zip(H[:4], win[:4], win[::-1][:4]))
+                  == sum(hk * xk for hk, xk in zip(H, win))
+                  for win in ([1, 2, 3, 4, 5, 6, 7, 8], [-32768, 32767, 5, -9, 0, 12, -1, 3])))
 v.check("A.ratio", (mul_shared + 8) / (2 * mul_shared + 8))
 
 # ----------------------------------------------------------------- synthesis summaries

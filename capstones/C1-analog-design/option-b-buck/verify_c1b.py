@@ -172,6 +172,40 @@ v.check("C1B.fcn", nom[0] / 1e3)
 v.check("C1B.pmn", nom[1])
 v.check("C1B.gmn", nom[2])
 v.check("C1B.gm1st", min(margins(*c, first)[2] for c in corners))
+# all 72 combinations the brief allows: the 30 simulated corners bound them
+full = [(vin, lf, cf, il, rf) for vin in (3.0, 3.6, 4.2) for lf in (0.8, 1.0, 1.2) for cf in (0.8, 1.0)
+        for il in (0.1, 1.0) for rf in (1.0, 1.4)]
+res72 = [margins(*c, final) for c in full]
+v.assert_true("72 combinations in the brief's corner set", len(full) == 72)
+v.check("C1B.gm72", min(r[2] for r in res72))
+v.check("C1B.pm72", min(r[1] for r in res72))
+v.assert_true("no omitted combination is worse than the 30 analysed corners",
+              min(r[2] for r in res72) >= min(r[2] for r in res) - 1e-9 and min(r[1] for r in res72) >= min(r[1] for r in res) - 1e-9)
+
+
+def phase_cross(vin, lf, cf, il, rf, parts):
+    g = gc_ideal(*parts)
+    a = 1e4 / (1 + s / (2 * np.pi * 1e3))
+    tl = plant(vin, lf, cf, il, rf) * g / (1 + (1 + g) / a)
+    mag, ph = np.abs(tl), np.unwrap(np.angle(tl)) * 180 / np.pi
+    k = np.where(np.diff(np.sign(mag - 1)))[0][-1]
+    j = [q for q in np.where(np.diff(np.sign(ph + 180)) != 0)[0] if f[q] > f[k]]
+    return f[j[0]]
+
+
+fpc = [phase_cross(*c, final) for c in corners]
+v.check("C1B.fpclo", min(fpc) / 1e6)
+v.check("C1B.fpchi", max(fpc) / 1e6)
+v.check("C1B.eapc", 20 * math.log10(1e4 / math.hypot(1, min(fpc) / 1e3)))
+v.assert_true("at the phase crossover the amplifier's open-loop gain is below the network's high-frequency gain",
+              20 * math.log10(1e4 / math.hypot(1, min(fpc) / 1e3)) < 20 * math.log10(hfg))
+v.check("C1B.fix", 1 / (2 * math.pi * R1 * (c1x + c2x)) / 1e3)
+v.check("C1B.tauc", 1 / (2 * math.pi * FC_TARGET) * 1e6)
+v.check("C1B.tauz", 1 / (2 * math.pi * 0.7 * f0) * 1e6)
+v.check("C1B.qfrac", 1 / (2 * math.pi))
+dd = [(1 + 2 * VF / vin) * TD * FSW * 100 for vin in (3.0, 3.6, 4.2)]
+v.check("C1B.ddlo", min(dd))
+v.check("C1B.ddhi", max(dd))
 v.check("C1B.gm1sti", min(margins(*c, first, ea=False)[2] for c in corners))
 
 
@@ -192,6 +226,7 @@ for code, iload in (("01", 0.1), ("05", 0.5), ("10", 1.0)):
     v.check(f"C1B.pd{code}", pd * 1e3)
     v.check(f"C1B.eta{code}", eta)
 v.check("C1B.pg", budget(0.5)[2] * 1e3)
+v.check("C1B.pesr", (VO * (1 - VO / 3.6) / (L0 * FSW)) ** 2 / 12 * ESR * 1e3)
 
 # ----------------------------------------------------------------- simulated values, from results.md
 r = {k: pub.parts[0].value for k, (pub, _, _) in load_answer_key(HERE / "results.md").items()}

@@ -52,6 +52,8 @@ The charge column applies the same event model (§3.1) to each part, with the sa
 
 Two caveats apply to the other parts. The FG22 is Silicon Labs' proprietary-protocol variant; a Bluetooth product would use the EFR32BG22 sibling, whose values were not logged. The EFR32FG22's measurement voltage was not logged either.
 
+**This comparison is incomplete.** The quantities that matter most here, standby current, CPU current per megahertz and the idle current while DMA runs, are logged only for the CC2340R5. Together the SoC's non-radio rows cost **21.7** µA on the 3.0 V rail (§3.2), about 30 times the radio difference above, so they are what an alternative would have to beat. A complete M2 would log those three quantities, at a stated supply, for at least two Bluetooth LE alternatives (for example the EFR32BG22 and an nRF52 or nRF54 part) and rank the parts on them. The choice below rests on the CC2340R5's complete, single-condition data, not on a measured advantage over the others.
+
 The **CC2340R5** is chosen for three reasons:
 
 1. Its data sheet gives every current used here under one stated condition: VDDS = 3.0 V with the internal DC/DC on.
@@ -62,7 +64,7 @@ That stated condition sets the power tree. The SoC gets a 3.0 V rail, so the dat
 
 **Sensors.**
 
-- **PPG front end: TI AFE4404.** It has a programmable LED driver up to 50 mA and ambient subtraction [R-311]. It needs RX_SUP between 2.0 and 3.6 V, so it cannot share a 1.8 V rail; it goes on the 3.0 V rail, which is also the voltage its currents are specified at. Its LED supply, TX_SUP, must be at least 3.0 V, or 0.5 V above the LED's drop, whichever is greater [R-702]. TX_SUP is therefore taken straight from the cell, at 3.0 to 4.2 V.
+- **PPG front end: TI AFE4404.** It has a programmable LED driver up to 50 mA and ambient subtraction [R-311]. It needs RX_SUP between 2.0 and 3.6 V, so it cannot share a 1.8 V rail; it goes on the 3.0 V rail, which is also the voltage its currents are specified at. Its LED supply, TX_SUP, must be at least 3.0 V, or 0.5 V above the LED's drop, whichever is greater [R-702]. TX_SUP is therefore taken straight from the cell, at 3.0 to 4.2 V. That works only while the cell stays at least 0.5 V above the LED's drop. Risk 2 (§7) shows that a green LED with a 3.0 V drop loses regulation for the last 27% of the usable charge. A boost converter on TX_SUP would fix it at a cost the budget below does not include: at 3.5 V and 85% efficiency (both assumptions), the LED terms rise from 55.0 to **61.2** µA and the life falls to **5.22** days (§3.4).
 - **Accelerometer: Bosch BMI270.** In accelerometer-only low-power mode at 25 Hz it draws 10 µA at 1.8 V, and it has a 2 KB FIFO [R-311].
 
 **PMIC: Nordic nPM1300** [R-435]. It has two 200 mA bucks, which supply the 3.0 V and 1.8 V rails. Its charger is set between 32 and 800 mA, so a 1C charge of **60** mA fits. Ship mode draws 370 nA, and both bucks in auto mode draw 1.1 µA of quiescent current.
@@ -91,7 +93,7 @@ $$
 Q_{ev} = 3\ \text{mA} \times 300\ \mu\text{s} + 5.3\ \text{mA} \times (80 + 150)\ \mu\text{s} + 10.7\ \text{mA} \times 328\ \mu\text{s} = 5.63\ \mu\text{C}.
 $$
 
-**Average current.** At one event per second this is **5.63** µA. Window widening adds $I_{rx}s$ = **0.53** µA, with 100 ppm of combined sleep-clock error from crystals at both ends.
+**Average current.** At one event per second this is **5.63** µA. Window widening adds $I_{rx}s/T_{CI}$ = **0.53** µA. Here $s$ is the extra listening time per event: 100 ppm of combined sleep-clock error, from crystals at both ends, times the 1 s since the last anchor, so $s$ = **100** µs.
 
 ### 3.2 The budget
 
@@ -102,13 +104,13 @@ $$
 | SoC standby, 32 kHz crystal | Data sheet [R-702] | 0.74 |
 | BLE connection events | §3.1 | **5.63** |
 | BLE window widening | §3.1 | **0.53** |
-| CPU: heart rate, steps, IMU FIFO read, packing | 200 000 cycles/s at 48 MHz, 2.6 mA active | **10.83** |
-| CPU: wake and interrupt per PPG sample | 25/s × (43 + 30) µs at 2.6 mA | **4.745** |
+| CPU: heart rate, steps, IMU FIFO read, packing | 200 000 cycles/s (assumption) at 48 MHz, 2.6 mA active | **10.83** |
+| CPU: wake and interrupt per PPG sample | 25/s × (43 µs wake + 30 µs interrupt, an assumption) at 2.6 mA, the CoreMark current, assumed for the wake too | **4.745** |
 | I²C read per PPG sample | 25/s × **270** µs at 0.8 mA (CPU idle, DMA) | **5.40** |
 | PPG receiver, AFE4404 RX_SUP | Data sheet, dynamic power-down [R-702] | 300 |
 | PPG interface, AFE4404 IO_SUP | Data sheet [R-702] | 20 |
 
-**The I²C read.** Each sample reads two 24-bit values, the green-LED phase and the ambient phase. Each value costs 6 bytes of 9 clocks at 400 kHz, so a sample takes 270 µs on the bus.
+**The I²C read.** Each sample reads two 24-bit values, the green-LED phase and the ambient phase. Each value costs 6 bytes (the address with write, the register, the address with read, and three data bytes) of 9 clocks at 400 kHz, so a sample takes 270 µs on the bus.
 
 **Current from the cell.** A buck at efficiency $\eta$ draws $I_{cell} = I_{rail} V_{rail}/(\eta V_{bat})$. With $\eta$ = 0.90 and $V_{bat}$ = 3.7 V, both assumptions, the 3.0 V rail costs **0.901** A per ampere and the 1.8 V rail **0.541**.
 
@@ -116,21 +118,21 @@ $$
 |---|---|---|
 | 3.0 V rail through its buck | **313.4** | |
 | 1.8 V rail (IMU) through its buck | **5.41** | |
-| PPG LED pulses: 20 mA × 100 µs × 25/s (TX_SUP) | **50.0** | |
+| PPG LED pulses: 20 mA × 100 µs × 25/s (TX_SUP; the drive is an assumption) | **50.0** | |
 | PPG LED driver quiescent (TX_SUP) [R-702] | 5 | |
 | PMIC quiescent [R-435] | 1.1 | |
 | Board leakage (assumption) | 2 | |
 | **Total** | **376.9** | |
 | of which the PPG chain (receiver, interface, LED, driver) | | **91.1**% |
 | of which the AFE4404 receiver and interface alone | | **76.5**% |
-| of which the CPU | | **5.0**% |
+| of which the CPU (including the I²C reads by DMA) | | **5.0**% |
 | of which the radio (events and widening) | | **1.5**% |
 
 **Battery life.** The usable charge is 0.8 × 60 mAh = 48 mAh. Dividing by the total gives **127.4** h, or **5.31** days.
 
 ### 3.3 Checking the budget two other ways
 
-**Event-level simulation.** [energy_sim.py](energy_sim.py) adds up the charge of every sample, connection event and processing run in an hour, rail by rail. With no packet loss it gives **376.9** µA, the same as the budget to floating-point precision. With 10% packet loss, each lost notification is resent at the next event. The hour then has **355** retransmissions and the current rises by only **0.42** µA. Radio retries do not threaten the life.
+**Event-level simulation.** [energy_sim.py](energy_sim.py) adds up the charge of every sample, connection event and processing run in an hour, rail by rail. With no packet loss it gives **376.9** µA, the same as the budget to floating-point precision. It imports [budget.py](budget.py)'s constants and charge functions, so it checks the arithmetic and the event bookkeeping, not the inputs. With 10% packet loss, each lost notification is resent at the next event. The hour then has **355** retransmissions and the current rises by only **0.42** µA. Radio retries do not threaten the life.
 
 **Discharge with a falling cell voltage.** A simple model lets the open-circuit voltage fall linearly from 4.2 V to 3.0 V. The bucks deliver constant power, so they draw more current as the cell empties. The life comes out at **127.8** h. The 3.7 V nominal is close to this model's average over the usable 80%, **3.72** V, so the simple estimate stands.
 
@@ -155,6 +157,7 @@ Each row below changes one input:
 | Transmit at 0 dBm, not +8 dBm | **5.33** |
 | 80 mAh cell | **7.08** |
 | 100 mAh cell | **8.84** |
+| TX_SUP from a boost at 3.5 V, 85% efficient (assumptions; risk 2) | **5.22** |
 
 **The estimate at 25 Hz.** The data sheet's 300 µA is measured at a 100 Hz pulse repetition frequency, with the receiver active for 10% of the period. A slower rate should help. The data sheet's two receiver rows allow an estimate. If the receiver draws $I_{pd}$ when powered down and 620 µA when active, then $0.9I_{pd} + 0.1 \times 620$ = 300 µA gives $I_{pd}$ = **264.4** µA. Keeping the same **1** ms active window at 25 Hz leaves the receiver active **2.5**% of the time, which gives **273.3** µA.
 
@@ -271,7 +274,7 @@ Each run drains about 25 samples, so the ring survives one missed run (**50** sa
 These are ranked by consequence times likelihood.
 
 1. **The PPG receiver current.** It decides R3 by itself (§3.4). *Mitigation:* bench-measure it at 25 Hz before committing the cell or the enclosure. *Test:* current at RX_SUP with the production timing.
-2. **LED headroom at a low cell voltage.** TX_SUP must exceed the LED's drop by 0.5 V [R-702]. A green LED drops at least **2.34** V from its photon energy alone ($1239.8\ \text{eV·nm}/530\ \text{nm}$), and more in practice. Suppose the chosen LED drops 3.0 V at 20 mA; that figure is an assumption to check in its data sheet. TX_SUP would then need **3.5** V, which the linear cell model reaches at **41.7**% state of charge. The LED current would then fall out of regulation for the last **27**% of the usable charge. *Mitigation:* a small boost or charge pump for TX_SUP, or a LED with a lower drop. *Test:* PPG amplitude as the cell sweeps from 4.2 V down to 3.24 V.
+2. **LED headroom at a low cell voltage.** TX_SUP must exceed the LED's drop by 0.5 V [R-702]. A green LED drops at least **2.34** V from its photon energy alone ($1239.8\ \text{eV·nm}/530\ \text{nm}$), and more in practice. Suppose the chosen LED drops 3.0 V at 20 mA; that figure is an assumption to check in its data sheet. TX_SUP would then need **3.5** V, which the linear cell model reaches at **41.7**% state of charge. The LED current would then fall out of regulation for the last **27**% of the usable charge. *Mitigation:* a small boost or charge pump for TX_SUP, which costs about 0.09 days at 85% efficiency (§3.4), or a LED with a lower drop. *Test:* PPG amplitude as the cell sweeps from 4.2 V down to 3.24 V.
 3. **The link in real conditions.** Against a specification-minimum phone, the margin at 5 m is only 3.8 dB (§4). *Mitigation:* measure body loss and antenna gain on a worn prototype. *Test:* packet error rate against distance and posture with several phones.
 4. **The end of the usable charge.** The linear model puts the cell at **3.24** V at the 80% point, close to where a buck making 3.0 V runs out of headroom. *Mitigation:* fix the cut-off with the PMIC's dropout data, and let the fuel gauge, not a fixed percentage, end operation. *Test:* rail voltage and current during a discharge to cut-off.
 5. **Unbudgeted states.** Advertising while disconnected, charging, and over-the-air updates are not in the budget. *Mitigation:* budget each state and cap how long the device may spend in it. *Test:* a week-long log of time in each state from beta users.
@@ -301,6 +304,11 @@ These are ranked by consequence times likelihood.
 | S.qefr | charge per event at 0 dBm, EFR32FG22 | 3.07 | µC |
 | S.dq | event-charge difference | 0.72 | µC |
 | S.dqpct | difference as a share of the 3.0 V rail | 0.21 | % |
+| S.socnr | SoC non-radio rows on the 3.0 V rail | 21.7 | µA |
+| B.s | extra listening time per event from clock error | 100 | µs |
+| B.ledboost | LED terms from the cell through a TX_SUP boost | 61.2 | µA |
+| Z.boost | life with a TX_SUP boost | 5.22 | days |
+| Z.boostloss | life lost to the TX_SUP boost | 0.09 | days |
 | P.chg | 1C charge current | 60 | mA |
 | P.pmic2 | extra quiescent current of the second buck | 0.30 | µA |
 | P.imu3 | IMU cell current if on the 3.0 V rail | 9.01 | µA |

@@ -47,7 +47,7 @@ Conditions: the C1 process ([models/c1_process.lib](../models/c1_process.lib)); 
 
 *Figure 1. The reference op-amp. M8 mirrors the 20 µA reference into the tail source M5 (40 µA) and the output sink M7 (160 µA). The node $x$ is the mirror's diode side; $n_1$ is the first stage's output.*
 
-**Why not a folded cascode?** A single-stage folded cascode would meet the gain only with cascodes. Each cascode costs about $2V_{ov}$ of headroom at a 1.62 V supply, which squeezes the swing, and the specification asks for a wide output range into a 2 pF load. The two-stage design buys swing and gain cheaply. Its cost is the compensation capacitor, which limits the slew rate and must be designed carefully (§4.4).
+**Why not a folded cascode?** A single stage reaches 65 dB in this process only with cascoded devices on both sides of its output, and each cascoded side costs about $2V_{ov}$ of headroom at a 1.62 V supply. That squeezes the swing, and the specification asks for a wide output range into a 2 pF load. The two-stage design buys swing and gain cheaply. Its cost is the compensation capacitor, which limits the slew rate and must be designed carefully (§4.4).
 
 **Why an NMOS input pair?** A common mode of 0.9 V is half the nominal supply. NMOS inputs give more transconductance for a given width and overdrive in this process ($KP_n/KP_p$ = **3.86**), and §5 shows the common-mode range comfortably contains 0.9 V. A PMOS pair would have suited a common mode near ground.
 
@@ -55,13 +55,20 @@ Conditions: the C1 process ([models/c1_process.lib](../models/c1_process.lib)); 
 
 ## 3. Strategy for corners
 
-The corners move three things: $KP$ (±15% for process, and $(T/T_{nom})^{-1.5}$ for temperature), the threshold (±50 mV for process, and about −1 mV/K with temperature in these models), and the supply. With a fixed bias current, every transconductance scales as $\sqrt{KP}$. The worst case for speed is SS at 125 °C, where
+The corners move three things: $KP$ (±15% for process, and $(T/T_{nom})^{-1.5}$ for temperature), the threshold (±50 mV for process; with temperature, level-1's built-in scaling gives about **−1.06** mV/K for NMOS and **−1.41** mV/K for PMOS, taking the TT thresholds from 0.45 V at 27 °C to **0.346** V and **0.312** V at 125 °C, [results.md](results.md)), and the supply. With a fixed bias current, every transconductance scales as $\sqrt{KP}$. The worst case for speed is SS at 125 °C, where
 
 $$
 \frac{KP}{KP_{TT,27}} = 0.85 \times \left(\frac{398.15}{300.15}\right)^{-1.5} = 0.556, \qquad \frac{g_m}{g_{m,TT,27}} = \sqrt{0.556} = 0.746.
 $$
 
-So the design targets about 42 MHz at TT to leave $42.4 \times 0.746 = 31.7$ MHz at SS-hot, with margin over the 25 MHz requirement for the effects the hand analysis leaves out. Slew rate depends only on currents and $C_c$, so it barely moves with corners. Phase margin improves at slow corners and degrades at fast ones, because $g_{m1}$ and $g_{m6}$ move together but the crossover moves with $g_{m1}$ alone.
+So the design targets about 42 MHz at TT to leave $42.4 \times 0.746 = 31.7$ MHz at SS-hot, with margin over the 25 MHz requirement for the effects the hand analysis leaves out. Slew rate depends only on currents and $C_c$, so it barely moves with corners.
+
+**Phase margin across corners.** If $g_{m1}$ and $g_{m6}$ moved together, $p_2/\omega_u$ and the margin would stay fixed. What moves the margin is the fixed nulling resistor (§4.4) against a moving $1/g_{m6}$. With $R_z$ in place the zero sits at $1/[C_c(1/g_{m6} - R_z)]$:
+
+- **Hot and slow (SS-H):** simulated $g_{m6}$ = **1.26** mS, so $1/g_{m6}$ = **794** Ω exceeds $R_z$ = 625 Ω. The zero returns to the right half-plane at about **629** MHz and costs about **2.6**° at the 28.7 MHz crossover.
+- **Cold and fast (FF-C):** $g_{m6}$ = **2.23** mS, so $1/g_{m6}$ = **448** Ω. The zero moves into the left half-plane at about **601** MHz and adds about **5.0**° at 52.1 MHz.
+
+That spread of about **7.6**° matches the simulated range, **65.2**° at SS-H to **71.9**° at FF-C (**6.7**°). So the margin is lowest hot and highest cold, and at 27 °C it rises slightly from SS to FF (67.3°, 68.2°, 69.0°). The mixed FS corner is lower still (§7).
 
 ## 4. Hand sizing
 
@@ -86,7 +93,7 @@ For a second pole at least 2.2 times the crossover ($p_2 \approx g_{m6}/C_L$ whe
 
 - **Mirror M3, M4.** To make the systematic offset zero, the mirror's $V_{SG}$ must equal the one M6 needs, so M3 runs at M6's current density: $(W/L)_3 = (W/L)_6 \times I_{D1}/I_6$ = **14.29**, $W_3$ = **7.14** µm, drawn 7.1 µm.
 - **Current sources.** At $V_{ov}$ = 0.15 V, $(W/L)_5 = 2I_5/(KP_nV_{ov5}^2)$ = **13.17**, so $W_5$ = **6.58** µm (drawn 6.6). M8 carries 20 µA at the same density, $W_8$ = **3.29** µm (drawn 3.3). M7 carries 160 µA, $W_7$ = **26.3** µm (drawn 26.4, so that $W_7/W_5$ = 4 exactly).
-- **Nulling resistor.** Without it, the feedforward path through $C_c$ makes a right-half-plane zero at $g_{m6}/(2\pi C_c)$ = **169.8** MHz, only four times the crossover. That would cost several degrees of phase. $R_z = 1/g_{m6}$ = **625** Ω moves the zero to infinity ([20-02 §3.4](../../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md)). A larger $R_z$ could cancel $p_2$, but $g_{m6}$ moves with corners while a resistor does not, so the exact cancellation would not survive PVT.
+- **Nulling resistor.** Without it, the feedforward path through $C_c$ makes a right-half-plane zero at $g_{m6}/(2\pi C_c)$ = **169.8** MHz, only four times the crossover. At the two-pole crossover of 39.7 MHz (§5) it would cost $\arctan(f_u/f_z)$ = **13.1**°, taking the margin to about **56**°, below the 60° specification: that is why $R_z$ is needed. $R_z = 1/g_{m6}$ = **625** Ω moves the zero to infinity ([20-02 §3.4](../../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md)), but only where $g_{m6}$ equals its design value. A resistor does not track $g_{m6}$ across corners. The same PVT objection rules out a larger $R_z$ that would cancel $p_2$ exactly, and §3 shows the residual effect of the fixed $R_z$.
 
 ## 5. Predicted performance
 
@@ -100,13 +107,21 @@ $$
 
 **2.45** times $\omega_u$. The first-order estimate of phase margin is $90° - \arctan(\omega_u/p_2)$ = **67.8**°. A two-pole model refines it: the crossover is where $(f_{GBW}/f)/\sqrt{1 + (f/f_{p2})^2} = 1$, which gives $f_u$ = **39.7** MHz and PM = **69.1**°. The second pole pulls the crossover below $g_{m1}/(2\pi C_c)$.
 
-**Common-mode range.** At the low end the tail source sits at the edge of saturation: $V_{CM,min} = V_{GS1} + V_{ov5}$. The pair's threshold rises with its source voltage, $\Delta V_{TH} = \gamma(\sqrt{2\phi_F + V_{SB}} - \sqrt{2\phi_F})$, which is **32.1** mV at $V_{SB}$ = 0.15 V. So $V_{CM,min}$ = **0.732** V. At the high end M1 leaves saturation when its gate exceeds $V_{DD} - V_{SG3} + V_{TH1}$, giving $V_{CM,max}$ = **1.79** V. At $V_{CM}$ = 0.9 V, iterating the body effect puts the tail node at **0.290** V, a margin of **140** mV over $V_{ov5}$.
+**Common-mode range.** At the low end the tail source sits at the edge of saturation: $V_{CM,min} = V_{GS1} + V_{ov5}$. The pair's threshold rises with its source voltage, $\Delta V_{TH} = \gamma(\sqrt{2\phi_F + V_{SB}} - \sqrt{2\phi_F})$, which is **32.1** mV at $V_{SB}$ = 0.15 V. So $V_{CM,min}$ = **0.732** V. At the high end M1 leaves saturation when its gate exceeds $V_{DD} - V_{SG3} + V_{TH1}$. There the pair's source sits at about **1.05** V, so the body effect raises $V_{TH1}$ to **0.636** V, giving $V_{CM,max}$ = **1.79** V. (With $V_{TH1}$ = 0.45 V, ignoring the body effect, the estimate would be **1.60** V.) At $V_{CM}$ = 0.9 V, iterating the body effect puts the tail node at **0.290** V, a margin of **140** mV over $V_{ov5}$.
 
 **Output range.** The square-law edges are $V_{ov7}$ = 0.15 V and $V_{DD} - V_{ov6}$ = 1.60 V.
 
 **Noise.** The thermal noise of the pair and the mirror, referred to the input, is $\bar v_n^2 = \frac{16kT}{3g_{m1}}(1 + g_{m3}/g_{m1})$ ([20-02 §3.9](../../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-02-two-stage-op-amp-design.md)), with $g_{m3} = 2I_{D1}/V_{ov3}$ = 200 µS. That gives **9.10** nV/√Hz.
 
 **Power.** $(20 + 40 + 160)$ µA × 1.8 V = **396** µW.
+
+**CMRR.** A common-mode input moves the tail node, and the tail source's output resistance $r_{o5} = 1/(\lambda_nI_5)$ = **250** kΩ turns that into a current change split equally between the two sides. The mirror cancels it except for the part its diode side, of transconductance $g_{m3}$, does not track, so the first stage's common-mode gain is about $1/(2g_{m3}r_{o5})$. The second stage amplifies differential and common-mode signals alike, so
+
+$$
+\text{CMRR} \approx A_1 \cdot 2g_{m3}r_{o5} = 90.9 \times 2 \times 200\ \mu\text{S} \times 250\ \text{k}\Omega = 9091 \;\Rightarrow\; \textbf{79.2}\ \text{dB}.
+$$
+
+**PSRR+.** The mirror's diode node and $n_1$ both sit one $V_{SG}$ below $V_{DD}$, so a supply change leaves M6's $V_{SG}$, and its current, unchanged. The supply then reaches the output only through M6's output conductance, divided against M7's: open loop, $v_{out}/v_{dd} \approx \lambda_p/(\lambda_p + \lambda_n)$ = **0.545**. Against the differential gain of 4132 that is $\text{PSRR}^+ \approx 4132/0.545$, or **77.6** dB.
 
 **At SS, 125 °C.** $KP$ falls to **0.556** of its TT value, $g_m$ to **0.746**, so $g_{m1}/(2\pi C_c)$ falls to **31.7** MHz.
 
@@ -124,7 +139,7 @@ Nominal corner TT, 27 °C, 1.8 V, from [corners/tt-n.cir](corners/tt-n.cir) and 
 | Tail margin at 0.9 V | 140 mV | **149** mV | |
 | Noise at 1 MHz | 9.10 nV/√Hz | **8.98** nV/√Hz | |
 | Power | 396 µW | **402** µW | Mirror ratios include $1 + \lambda V_{DS}$ terms. |
-| CMRR, PSRR+ | — | **83.0** dB, **79.7** dB | Matched devices only. Mismatch, which level-1 does not model, would set CMRR in silicon. |
+| CMRR, PSRR+ | 79.2 dB, 77.6 dB | **83.0** dB, **79.7** dB | The same $r_o$ difference as the gain. Matched devices only: mismatch, which level-1 does not model, would set CMRR in silicon. |
 
 The hand design predicted the speed, slew, noise, power and bias quantities within about 10%; the gain differs by 2.3 dB because of the $\lambda$ model, and the two-pole model brought the crossover and margin within about 1%. That is the purpose of hand analysis: the simulator confirms the design and catches what the model leaves out, but it does not choose the widths.
 
@@ -143,11 +158,23 @@ The full table is in [results.md](results.md). Worst cases against the specifica
 | Output high | SS-H | **1.405** V | ≥ 1.37 V | 35 mV |
 | Output low | SS-H | **0.143** V | ≤ 0.25 V | 107 mV |
 
+**How each quantity is measured** ([gen_corners.py](gen_corners.py)):
+
+- **$A_0$, unity-gain frequency and phase margin:** from the open-loop AC response, with the DC loop closed through a 1 GH inductor and the inverting input AC-grounded through 1 F; $A_0$ at 10 Hz.
+- **Slew rate:** 20% to 80% of a 0.6 V to 1.2 V step in a unity-gain follower, rising and falling.
+- **Output range:** the span over which an inverting gain-of-−1 circuit about 0.9 V keeps its incremental gain $-dV_{out}/dV_{in}$ at 0.99 or more, from a DC sweep.
+- **Tail margin:** $V_{DS} - V_{DSAT}$ of M5 at $V_{CM}$ = 0.9 V. Power is the supply current times $V_{DD}$, with the 20 µA reference included.
+- **CMRR and PSRR+:** differential gain minus common-mode or supply gain at 10 Hz. Noise is input-referred at 1 MHz.
+
 All requirements are met at all eleven corners. Three observations a reviewer should make:
 
 1. **The worst corners differ by specification.** Speed and gain are worst at SS-hot, phase margin at FS, power at FF-cold-high and tail margin at SS-cold. Checking only "worst case" (SS-hot) would have missed the last three.
 2. **FS sets the phase margin.** At FS, fast NMOS raise $g_{m1}$ and the crossover, while slow PMOS lower $g_{m6}$ and $p_2$. The margin falls to 64.4°, the tightest phase margin in the table. This is the mixed corner a design review should ask for.
-3. **The hand prediction for SS-hot was optimistic.** It gave 31.7 MHz for $g_{m1}/(2\pi C_c)$. The simulation shows 28.7 MHz, about 9% lower: the two-pole crossover reduction plus the higher threshold eating into overdrive. The 42 MHz target at TT left enough room; a design aimed at exactly 25 MHz over 0.746 would have failed.
+3. **The hand prediction for SS-hot was optimistic.** It gave 31.7 MHz for $g_{m1}/(2\pi C_c)$; the simulation shows 28.7 MHz, about 9% lower. The cause is not $g_{m1}$. At a fixed bias current the square-law $g_m = \sqrt{2KP(W/L)I_D}$ does not depend on the threshold (which is in any case about 50 mV lower at SS-hot than at TT-27, §3), and the simulated $g_{m1}$ is **304** µS, **0.740** of TT's 411 µS, against the predicted $\sqrt{KP}$ ratio of 0.746. The shortfall comes from what the one-pole estimate leaves out:
+   - **the two-pole crossover reduction,** already **0.90** of $g_{m1}/(2\pi C_c)$ at TT and **0.89** at SS-H, with junction capacitances the hand model omits lowering $p_2$;
+   - **the nulling zero,** back in the right half-plane at SS-H (§3).
+
+   The 42 MHz target at TT left enough room; a design aimed at exactly 25 MHz over 0.746 would have failed.
 
 ## 8. Tradeoffs and alternatives
 
@@ -245,3 +272,37 @@ All requirements are met at all eleven corners. Three observations a reviewer sh
 | S.gain.diff | simulated minus hand DC gain at TT-N | 2.3 | dB |
 | S.err.ssh | SS-H UGF below the hand estimate | 9 | % |
 | C1A.kpratio | KP_n/KP_p | 3.86 | — |
+| C1A.zphase | phase cost of the zero without R_z at 39.7 MHz | 13.1 | ° |
+| C1A.pmnorz | two-pole phase margin without R_z | 56 | ° |
+| C1A.vsmax | pair source voltage at the top of the common-mode range | 1.05 | V |
+| C1A.vth1max | M1 threshold there, with body effect | 0.636 | V |
+| C1A.vcmmax0 | highest common mode ignoring the body effect | 1.60 | V |
+| C1A.ro5 | tail-source output resistance | 250 | kΩ |
+| C1A.cmrrlin | CMRR, hand estimate, as a ratio | 9091 | — |
+| C1A.cmrr | CMRR, hand estimate | 79.2 | dB |
+| C1A.add | supply-to-output gain, open loop | 0.545 | — |
+| C1A.psrr | PSRR+, hand estimate | 77.6 | dB |
+| S.vtn125 | simulated NMOS threshold at 125 °C, TT | 0.346 | V |
+| S.vtp125 | simulated PMOS threshold magnitude at 125 °C, TT | 0.312 | V |
+| S.dvtn | NMOS threshold temperature coefficient | -1.06 | mV/K |
+| S.dvtp | PMOS threshold-magnitude temperature coefficient | -1.41 | mV/K |
+| S.gm6ssh | simulated g_m6, SS-H | 1.26 | mS |
+| S.gm6ffc | simulated g_m6, FF-C | 2.23 | mS |
+| S.rssh | 1/g_m6 at SS-H | 794 | Ω |
+| S.rffc | 1/g_m6 at FF-C | 448 | Ω |
+| S.fzssh | right-half-plane zero at SS-H | 629 | MHz |
+| S.fzffc | left-half-plane zero at FF-C | 601 | MHz |
+| S.phssh | phase cost of the zero at SS-H | 2.6 | ° |
+| S.phffc | phase gain of the zero at FF-C | 5.0 | ° |
+| S.phspread | predicted margin spread, FF-C over SS-H | 7.6 | ° |
+| S.pmssh | simulated phase margin, SS-H | 65.2 | ° |
+| S.pmffc | simulated phase margin, FF-C | 71.9 | ° |
+| S.pmspread | simulated margin spread | 6.7 | ° |
+| S.gm1ssh | simulated g_m1, SS-H | 304 | µS |
+| S.gm1tt | simulated g_m1, TT-N | 411 | µS |
+| S.pmssn | simulated phase margin, SS-N | 67.3 | ° |
+| S.pmffn | simulated phase margin, FF-N | 69.0 | ° |
+| S.ugfffc | simulated UGF, FF-C | 52.1 | MHz |
+| S.gm1ratio | g_m1 at SS-H over TT-N, simulated | 0.740 | — |
+| S.cr.tt | simulated UGF over g_m1/(2πC_c), TT-N | 0.90 | — |
+| S.cr.ssh | simulated UGF over g_m1/(2πC_c), SS-H | 0.89 | — |

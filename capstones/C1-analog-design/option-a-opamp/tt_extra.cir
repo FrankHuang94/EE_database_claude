@@ -2,6 +2,8 @@
 * EXPECT cmrr key:results.md#A.TT-N.cmrr rtol=1.0e-03
 * EXPECT psrr key:results.md#A.TT-N.psrr rtol=1.0e-03
 * EXPECT vn1m key:results.md#A.TT-N.vn1m scale=1e-9 rtol=1.0e-03
+* EXPECT vtn125 key:results.md#A.TT-N.vtn125 rtol=1.7e-03
+* EXPECT vtp125 key:results.md#A.TT-N.vtp125 rtol=1.9e-03
 .lib '../models/c1_process.lib' tt
 .include opamp.sub
 
@@ -29,6 +31,13 @@ X3 p3 n3 o3 vdd3 0 ib3 opamp
 L3 o3 n3 1G
 C3 n3 0 1
 CL3 o3 0 2p
+* threshold against temperature: one NMOS and one PMOS with V_SB = 0
+VDT dt 0 1.0
+VGT gt 0 0.8
+MTN dt gt 0 0 nch W=10u L=0.5u
+VDTP dtp 0 -1.0
+VGTP gtp 0 -0.8
+MTP dtp gtp 0 0 pch W=10u L=0.5u
 
 .control
 ac dec 20 1 1G
@@ -42,5 +51,10 @@ noise v(o1) vi1 dec 20 1k 100meg
 setplot noise1
 let vn1m = inoise_spectrum[60]
 print vn1m
+option temp=125
+op
+let vtn125 = @mtn[von]
+let vtp125 = -@mtp[von]
+print vtn125 vtp125
 .endc
 .end

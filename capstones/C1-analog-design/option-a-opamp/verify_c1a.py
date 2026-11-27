@@ -224,6 +224,67 @@ v.check("S.mar.outlo", 1e3 * lo_margin[c_lo])
 v.check("S.err.ssh", 100 * (1 - w_ugf / (gbw * math.sqrt(kp_ss_hot) / 1e6)))
 v.check("S.gain.diff", res["A.TT-N.a0"] - 20 * math.log10(a1 * a2))
 
+# ----------------------------------------------------------------- Phase 4 audit additions
+# the zero without R_z, at the two-pole crossover
+zphase = math.degrees(math.atan(fu / (gm6 / (2 * math.pi * Cc))))
+v.check("C1A.zphase", zphase)
+v.check("C1A.pmnorz", 90 - math.degrees(math.atan(fu / fp2)) - zphase)
+v.assert_true("without R_z the two-pole margin would miss 60 degrees", 90 - math.degrees(math.atan(fu / fp2)) - zphase < 60)
+# top of the common-mode range, with and without the body effect
+v.check("C1A.vsmax", vs_max)
+v.check("C1A.vth1max", VTn + dvt(vs_max))
+v.check("C1A.vcmmax0", VDD - vsg3 + VTn)
+# CMRR and PSRR+ hand estimates
+ro5 = 1 / (lamn * I5)
+v.check("C1A.ro5", ro5 / 1e3)
+cmrr_lin = a1 * 2 * gm3 * ro5
+v.check("C1A.cmrrlin", cmrr_lin)
+v.check("C1A.cmrr", 20 * math.log10(cmrr_lin))
+add = lamp / (lamp + lamn)
+v.check("C1A.add", add)
+v.check("C1A.psrr", 20 * math.log10(a1 * a2 / add))
+v.assert_true("hand CMRR and PSRR+ both meet 60 dB, and fall below the simulation by the r_o-model offset (< 5 dB)",
+              all(60 < h_ < s_ < h_ + 5 for h_, s_ in ((20 * math.log10(cmrr_lin), res["A.TT-N.cmrr"]),
+                                                       (20 * math.log10(a1 * a2 / add), res["A.TT-N.psrr"]))))
+# thresholds against temperature (simulated)
+v.check("S.vtn125", res["A.TT-N.vtn125"])
+v.check("S.vtp125", res["A.TT-N.vtp125"])
+v.check("S.dvtn", (res["A.TT-N.vtn125"] - VTn) / 98 * 1e3)
+v.check("S.dvtp", (res["A.TT-N.vtp125"] - abs(P["vto"])) / 98 * 1e3)
+# the fixed R_z against a moving 1/g_m6
+Rz = 625.0
+for c_, key in (("SS-H", "ssh"), ("FF-C", "ffc")):
+    g6 = res[f"A.{c_}.gm6"] * 1e-3
+    v.check(f"S.gm6{key}", g6 * 1e3)
+    v.check(f"S.r{key}", 1 / g6)
+    fz = 1 / (2 * math.pi * Cc * abs(1 / g6 - Rz))
+    v.check(f"S.fz{key}", fz / 1e6)
+    v.check(f"S.ph{key}", math.degrees(math.atan(res[f"A.{c_}.ugf"] * 1e6 / fz)))
+v.assert_true("the zero is in the right half-plane at SS-H and the left at FF-C",
+              1 / (res["A.SS-H.gm6"] * 1e-3) > Rz > 1 / (res["A.FF-C.gm6"] * 1e-3))
+spread = sum(math.degrees(math.atan(res[f"A.{c_}.ugf"] * 1e6 * 2 * math.pi * Cc * abs(1 / (res[f"A.{c_}.gm6"] * 1e-3) - Rz)))
+             for c_ in ("SS-H", "FF-C"))
+v.check("S.phspread", spread)
+v.check("S.pmssh", res["A.SS-H.pm"])
+v.check("S.pmffc", res["A.FF-C.pm"])
+v.check("S.pmspread", res["A.FF-C.pm"] - res["A.SS-H.pm"])
+v.check("S.pmssn", res["A.SS-N.pm"])
+v.check("S.pmffn", res["A.FF-N.pm"])
+v.check("S.ugfffc", res["A.FF-C.ugf"])
+v.assert_true("phase margin is lowest at SS-H and highest at FF-C among the nine PVT corners",
+              min((res[f"A.{p_}-{t_}.pm"], f"{p_}-{t_}") for p_ in ("SS", "TT", "FF") for t_ in "CNH")[1] == "SS-H"
+              and max((res[f"A.{p_}-{t_}.pm"], f"{p_}-{t_}") for p_ in ("SS", "TT", "FF") for t_ in "CNH")[1] == "FF-C")
+v.assert_true("at 27 degC the margin rises from SS to FF",
+              res["A.SS-N.pm"] < res["A.TT-N.pm"] < res["A.FF-N.pm"])
+# SS-hot shortfall: g_m1 tracks sqrt(KP); the crossover sits ~10% below g_m1/(2 pi Cc) at both corners
+v.check("S.gm1ssh", res["A.SS-H.gm1"])
+v.check("S.gm1tt", res["A.TT-N.gm1"])
+v.check("S.gm1ratio", res["A.SS-H.gm1"] / res["A.TT-N.gm1"])
+v.assert_true("simulated g_m1 ratio is within 1% of sqrt(KP) = 0.746",
+              abs(res["A.SS-H.gm1"] / res["A.TT-N.gm1"] / math.sqrt(kp_ss_hot) - 1) < 0.01)
+for c_, key in (("TT-N", "tt"), ("SS-H", "ssh")):
+    v.check(f"S.cr.{key}", res[f"A.{c_}.ugf"] * 1e6 / (res[f"A.{c_}.gm1"] * 1e-6 / (2 * math.pi * Cc)))
+
 # every requirement at every corner
 for c in corners:
     ok = (res[f"A.{c}.a0"] >= 65 and res[f"A.{c}.ugf"] >= 25 and res[f"A.{c}.pm"] >= 60 and srmin[c] >= 20

@@ -8,7 +8,17 @@ This is the reference solution to [Capstone C1, option B](../README.md): a 2 MHz
 
 ## 1. Specification and models
 
-The brief's requirements: output 1.2 V within ±1%; ripple ≤ 10 mV peak-to-peak at 4.2 V, 1 A; a 0.1 → 0.6 A load step in 100 ns deviating ≤ 36 mV and recovering to within 1% in ≤ 30 µs at every input voltage; crossover from 50 kHz to $f_{sw}/10$ = 200 kHz, phase margin ≥ 45° and gain margin ≥ 10 dB at every corner; efficiency ≥ 85% at 0.5 A, 3.6 V; peak inductor current ≤ 1.5 A.
+The brief's requirements, each with the conditions it is tested at here:
+
+| Requirement | Limit | Test conditions (model) |
+|---|---|---|
+| Output voltage | 1.2 V ± 1% | Steady state at all corners, 0.1 A and 1 A (averaged); 3.6 V at 0.1, 0.5 and 1 A (switching) |
+| Ripple, peak-to-peak | ≤ 10 mV | 4.2 V, 1 A, $L$ and $C$ −20% (switching) |
+| Load step 0.1 → 0.6 A in 100 ns | Deviation ≤ 36 mV; back within 1% in ≤ 30 µs | Each input voltage, nominal parts, plus $L$ +20% with $C$ −20% (averaged and switching) |
+| Loop crossover | 50 kHz to $f_{sw}/10$ = 200 kHz | 30 corners (§3.2), loop gain by series injection (averaged) |
+| Phase and gain margin | ≥ 45° and ≥ 10 dB | The same 30 corners |
+| Efficiency | ≥ 85% | 0.5 A, 3.6 V, 27 °C, nominal parts (switching) |
+| Peak inductor current | ≤ 1.5 A | 1 A at 4.2 V with $L$ −20% (switching) |
 
 Two models carry the verification, and they answer different questions:
 
@@ -21,7 +31,7 @@ Two models carry the verification, and they answer different questions:
 
 **Inductor.** The ripple $\Delta I = V_o(1 - D)/(Lf_{sw})$ is largest at the highest input. A ripple of 40% of the 1 A full load at 4.2 V needs $L = V_o(1 - D)/(0.4 \times 1\ \text{A} \times f_{sw})$ = **1.07** µH, so the design uses a standard 1.0 µH. The ripple is then **0.360**, **0.400** and **0.429** A at the three inputs. The worst case for the peak current is 4.2 V with $L$ −20%: $\Delta I$ = **0.536** A, so the inductor current swings from **0.732** to **1.27** A, inside the 1.5 A saturation rating.
 
-**Output capacitor: sized by the load step, not the ripple.** A loop that crosses over at $f_c$ lets the capacitor carry a load step for about a quarter of a loop period. A first-order estimate of the dip is $\Delta V \approx \Delta I_{step}/(2\pi f_cC)$. With a 0.5 A step, an 85 kHz crossover (§3) and a 25 mV target (leaving room for corners), $C \ge 0.5/(2\pi \times 85\ \text{kHz} \times 25\ \text{mV})$ = **37.4** µF. Two 22 µF ceramics give 44 µF, with 1.5 mΩ combined ESR, and an estimated dip of **21.3** mV.
+**Output capacitor: sized by the load step, not the ripple.** A loop that crosses over at $f_c$ lets the capacitor carry a load step for about one loop time constant, $1/(2\pi f_c)$, which is $1/(2\pi)$ = **0.16** of a loop period. A first-order estimate of the dip is $\Delta V \approx \Delta I_{step}/(2\pi f_cC)$. With a 0.5 A step, an 85 kHz crossover (§3) and a 25 mV target (leaving room for corners), $C \ge 0.5/(2\pi \times 85\ \text{kHz} \times 25\ \text{mV})$ = **37.4** µF. Two 22 µF ceramics give 44 µF, with 1.5 mΩ combined ESR, and an estimated dip of **21.3** mV.
 
 The ripple is then tiny. At the worst corner (4.2 V, $L$ and $C$ both −20%), the capacitive term $\Delta I/(8f_{sw}C)$ is **0.951** mV and the ESR term $\Delta I \cdot \text{ESR}$ is **0.804** mV. Their sum, **1.75** mV, is an upper bound, because the two are 90° apart. Against a 10 mV limit, ripple does not constrain the design.
 
@@ -39,7 +49,18 @@ $$
 
 with $\omega_i = 1/[R_1(C_1 + C_2)]$. The modulator gain is $V_{in}/V_{ramp}$, so the loop gain scales with the input voltage.
 
-**Placement.** The two zeros go at 0.7 $f_0$ = **16.8** kHz, a little below the resonance, so that their phase lead is already working when the LC pair's −180° arrives. The two poles go at 1 MHz, half the switching frequency, to roll the gain off before the switching ripple reaches the modulator. The integrator gain is then set so that the loop crosses over at 85 kHz at 3.6 V and 0.1 A (§3.1 explains the choice). With $R_1$ = 10 kΩ (and a 10 kΩ bottom resistor for $V_{ref}$ = 0.6 V), the exact values are $R_2$ = **6291** Ω, $C_1$ = **1506** pF, $C_2$ = **25.7** pF, $R_3$ = **171** Ω and $C_3$ = **932** pF.
+**Placement.** The two zeros go at 0.7 $f_0$ = **16.8** kHz, a little below the resonance, so that their phase lead is already working when the LC pair's −180° arrives. The two poles go at 1 MHz, half the switching frequency, to roll the gain off before the switching ripple reaches the modulator. The integrator gain is then set so that the loop crosses over at 85 kHz at 3.6 V and 0.1 A (§3.1 explains the choice).
+
+**From placement to parts.** Fix $R_1$ = 10 kΩ (with a 10 kΩ bottom resistor for $V_{ref}$ = 0.6 V). With both zeros at $\omega_z$ and both poles at $\omega_p$, invert the definitions above:
+
+$$
+\begin{aligned}
+C_1 + C_2 &= \frac{1}{R_1\omega_i}, & C_2 &= (C_1 + C_2)\frac{\omega_z}{\omega_p}, & R_2 &= \frac{1}{\omega_zC_1},\\
+R_3 &= \frac{R_1}{\omega_p/\omega_z - 1}, & C_3 &= \frac{1}{\omega_pR_3}.
+\end{aligned}
+$$
+
+The second follows from $\omega_{p2} = (C_1 + C_2)/(R_2C_1C_2)$ with $R_2C_1 = 1/\omega_z$; the fourth from $\omega_{p1}/\omega_{z2} = (R_1 + R_3)/R_3$. Every part now depends on one unknown, $\omega_i$. It is fixed by the crossover condition $\lvert T(j2\pi \times 85\ \text{kHz})\rvert = 1$ at 3.6 V and 0.1 A with an ideal amplifier, one equation in one unknown, solved numerically in [verify_c1b.py](verify_c1b.py): $f_i = \omega_i/2\pi$ = **10.39** kHz. The exact values are $R_2$ = **6291** Ω, $C_1$ = **1506** pF, $C_2$ = **25.7** pF, $R_3$ = **171** Ω and $C_3$ = **932** pF.
 
 **Standard values.** The design rounds them to $R_2$ = 6.34 kΩ, $C_1$ = 1.5 nF, $C_2$ = 27 pF, $R_3$ = 169 Ω, $C_3$ = 910 pF. That moves the zeros to **16.74** and **17.20** kHz, the poles to **1.035** and **0.946** MHz, and the integrator to $f_i$ = **10.42** kHz. Every later number uses the rounded values.
 
@@ -47,7 +68,7 @@ with $\omega_i = 1/[R_1(C_1 + C_2)]$. The modulator gain is $V_{in}/V_{ramp}$, s
 
 The first design aimed at a 100 kHz crossover ($R_2$ = 7.68 kΩ, $C_1$ = 1.2 nF, $C_2$ = 22 pF). It met phase margin everywhere but not gain margin: the analytic model below gives a worst case of **8.4** dB, and the simulation agreed. An ideal error amplifier would have given **30.4** dB.
 
-The cause is the error amplifier, not the power stage. A Type III network needs high-frequency gain $R_2(R_1 + R_3)/(R_1R_3)$, which is **38.1** (**31.6** dB) in the final design and more in the first one. The specified amplifier has 80 dB and 10 MHz of gain-bandwidth, so it has only about 20 dB of open-loop gain at 1 MHz. Near the phase-crossover frequency it cannot realize the network's transfer function, and its own pole adds lag exactly where the gain margin is measured.
+The cause is the error amplifier, not the power stage. A Type III network needs high-frequency gain $R_2(R_1 + R_3)/(R_1R_3)$, which is **38.1** (**31.6** dB) in the final design and more in the first one. The specified amplifier has 80 dB and 10 MHz of gain-bandwidth, so it has only about 20 dB of open-loop gain at 1 MHz. The loop's phase crossover, where the gain margin is measured, is at **0.48** to **0.50** MHz across the corners. There the amplifier has only **26.4** dB of open-loop gain, less than the network's 31.6 dB. So it cannot realize the network's transfer function there, and its own pole adds lag at exactly that frequency.
 
 Two other fixes were tried analytically and rejected:
 
@@ -58,7 +79,14 @@ The second iteration lowered the target crossover to 80 kHz. That restored the g
 
 ### 3.2 Predicted loop
 
-An analytic model has the averaged plant (with DCR, switch resistance, ESR and load) and the rounded compensator around a single-pole error amplifier (80 dB, 1 kHz pole). It predicts the following over all 30 corners (three inputs, five $L$–$C$ combinations, light-and-cold and full-and-hot):
+An analytic model has the averaged plant (with DCR, switch resistance, ESR and load) and the rounded compensator around a single-pole error amplifier (80 dB, 1 kHz pole). **Which corners.** The brief's corner set allows 72 combinations: three inputs, $L$ at −20%, nominal and +20%, $C$ at −20% and nominal, 0.1 A and 1 A, and on-resistance at 27 °C and 125 °C. The simulations run 30 of them, for two reasons:
+
+- **Load and temperature are paired.** Light load with cold switches has the least damping, so the lowest phase margin. Full load with hot switches has the most loss.
+- **One $L$–$C$ pair is omitted.** Nominal $L$ with $C$ −20% lies between the two −20% $C$ cases that are kept.
+
+The analytic model checks the reduction: over all 72 combinations, its worst gain margin is **11.4** dB and its worst phase margin **61.6**°, the same as over the 30, so no omitted combination is worse.
+
+The analytic model predicts the following over the 30 simulated corners (three inputs, five $L$–$C$ combinations, light-and-cold and full-and-hot):
 
 - crossover from **62.9** to **151.0** kHz;
 - worst phase margin **61.6**°;
@@ -75,6 +103,7 @@ At 3.6 V and 27 °C, with $D$ = 1/3 and $I_{rms}^2 = I^2 + \Delta I^2/12$:
 | Conduction: $(DR_{HS} + (1 - D)R_{LS} + \text{DCR})I_{rms}^2$ | **1.32** mW | **14.9** mW | **57.4** mW |
 | Dead-time diodes: $V_Ft_{dead}f_{sw}(\lvert I_{pk}\rvert + \lvert I_{v}\rvert)$ | **5.60** mW | **14.0** mW | **28.0** mW |
 | Gate drive and controller: $(Q_g \cdot 2f_{sw} + I_q)V_{in}$ | **32.4** mW | **32.4** mW | **32.4** mW |
+| Output-capacitor ESR: $\text{ESR}\,\Delta I^2/12$ | **0.0200** mW | **0.0200** mW | **0.0200** mW |
 | Efficiency | **75.3**% | **90.7**% | **91.1**% |
 
 The switching model gives **75.5**%, **90.6**% and **91.0**% (§5). The fixed gate-drive and controller losses dominate at light load; a real design would add pulse skipping or discontinuous mode below about 0.2 A. The ideal switches have no voltage–current overlap loss, which the brief excludes. At 2 MHz a real converter would lose several more percent to it ([22-06](../../../courses/22-power-electronics-and-energy-conversion/chapters/22-06-converter-losses-and-wide-bandgap.md)).
@@ -109,16 +138,19 @@ Full tables are in [results.md](results.md). The worst case of each requirement:
 | Ripple | ≤ 1.75 mV (bound) | 1.23 mV |
 | Efficiency, 0.5 A | 90.7% | 90.6% |
 | Load-step dip, 3.6 V | 21.3 mV (first-order) | 24.7 mV (averaged), 29.3 mV (switching) |
+| Recovery to within 1% | No first-order estimate; tail time constant about 9.48 µs | 21.8 µs (3.0 V, switching) |
 
 The loop and loss predictions are within about 1%. The load-step estimate is about 14% optimistic against the averaged model. The $\Delta I/(2\pi f_cC)$ rule assumes a single-pole closed loop, and the real loop's phase margin of about 65° gives a slower, partly underdamped recovery.
 
+**Why recovery has no first-order estimate.** The fast part of the recovery takes about one loop time constant, $1/(2\pi f_c)$ = **1.87** µs at 85 kHz, which alone would recover in a few microseconds. What remains is a slow tail from the closed-loop pole that the compensator's zero pair leaves near 16.8 kHz, with a time constant of about $1/(2\pi \times 16.8\ \text{kHz})$ = **9.48** µs. The tail, not the crossover, sets the 21.8 µs. Predicting its size needs the closed-loop pole–zero doublet, which the averaged model supplies.
+
 ## 6. Two lessons from the simulations
 
-**Dead time depends on the sign of the current.** At 0.1 A the ripple (0.4 A peak-to-peak) takes the inductor current negative at the valley. In the dead time before the high side turns on, the *high-side* body diode then conducts and lifts the switch node to $V_{in} + V_F$, instead of the low-side diode holding it at $-V_F$. A load step that lifts the valley above zero removes that boost, which acts as a sudden duty-cycle disturbance of about 2–3%.
+**Dead time depends on the sign of the current.** At 0.1 A the ripple (0.4 A peak-to-peak) takes the inductor current negative at the valley. In the dead time before the high side turns on, the *high-side* body diode then conducts and lifts the switch node to $V_{in} + V_F$, instead of the low-side diode holding it at $-V_F$. A load step that lifts the valley above zero removes that boost. The switch node then swings by $V_{in} + 2V_F$ less during one 10 ns dead time per 500 ns period, a sudden duty-cycle disturbance of $(1 + 2V_F/V_{in})t_{dead}f_{sw}$, **2.7** to **2.9**% across the inputs.
 
-The first averaged model, which always assumed the low-side diode, underestimated the switching model's dip by more than a third. Modeling the diode choice from the current at each edge (in [buck_avg.sub](buck_avg.sub)) closed most of the gap. The switching model is still about 19% larger at 3.6 V (29.3 against 24.7 mV), from the PWM's sampling delay and the switching ripple on the error-amplifier output.
+The first averaged model, which always assumed the low-side diode, underestimated the switching model's dip substantially. Modeling the diode choice from the current at each edge (in [buck_avg.sub](buck_avg.sub)) closed most of the gap. The switching model is still about 19% larger at 3.6 V (29.3 against 24.7 mV), from the PWM's sampling delay and the switching ripple on the error-amplifier output.
 
-**Start-up needs a soft-start.** Started from 0 V with a full reference, the error amplifier saturates, its integrator winds up, and the output overshoots to more than 2 V; the loop then falls into a large-signal limit cycle instead of settling. A 100 µs reference ramp (in [buck_sw.sub](buck_sw.sub)) prevents it. Production controllers add amplifier output clamps with anti-windup and cycle-by-cycle current limiting for the same reason.
+**Start-up needs a soft-start.** Started from 0 V with a full reference, the error amplifier saturates, its integrator winds up, and the output overshoots far above 1.2 V; the loop then falls into a large-signal limit cycle instead of settling. A 100 µs reference ramp (in [buck_sw.sub](buck_sw.sub)) prevents it. Production controllers add amplifier output clamps with anti-windup and cycle-by-cycle current limiting for the same reason.
 
 ## 7. Tradeoffs
 
@@ -218,3 +250,15 @@ The first averaged model, which always assumed the low-side diode, underestimate
 | SB.dev36s | load-step dip, 3.6 V, switching | 29.3 | mV |
 | SB.devratio | switching over averaged dip, 3.6 V | 19 | % |
 | SB.devhand | first-order estimate below the averaged dip | 14 | % |
+| C1B.gm72 | worst gain margin, all 72 corner combinations (analytic) | 11.4 | dB |
+| C1B.pm72 | worst phase margin, all 72 corner combinations (analytic) | 61.6 | ° |
+| C1B.fpclo | phase-crossover frequency, lowest | 0.48 | MHz |
+| C1B.fpchi | phase-crossover frequency, highest | 0.50 | MHz |
+| C1B.eapc | error-amplifier open-loop gain at the phase crossover | 26.4 | dB |
+| C1B.fix | integrator frequency, exact design | 10.39 | kHz |
+| C1B.tauc | loop time constant at 85 kHz | 1.87 | µs |
+| C1B.tauz | time constant of the compensator zeros | 9.48 | µs |
+| C1B.qfrac | loop time constant as a fraction of a loop period | 0.16 | — |
+| C1B.ddlo | dead-time duty disturbance, lowest | 2.7 | % |
+| C1B.ddhi | dead-time duty disturbance, highest | 2.9 | % |
+| C1B.pesr | output-capacitor ESR loss, 3.6 V | 0.0200 | mW |

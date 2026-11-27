@@ -47,6 +47,7 @@ VALUES = 2                                   # 24-bit values read per sample: gr
 I2C_BYTES = 6                                # per value: address+W, register, address+R, three data bytes
 LED_I, LED_T = 20e-3, 100e-6                 # PPG LED pulse current and width (TX_SUP, from the cell)
 LEAK = 2e-6                                  # A, board leakage and pull-ups (from the cell)
+TX_BOOST = None                              # (V_out, efficiency) of a boost feeding TX_SUP; None = straight from the cell
 PRE_I, PRE_T = 3e-3, 300e-6                  # connection-event wake: crystal, radio ramp, link layer
 SCA_PPM = 100.0                              # combined sleep-clock accuracy, ppm (32 kHz crystals, both ends)
 T_CI = 1.0                                   # connection interval, s
@@ -93,11 +94,12 @@ def soc_rail_items(tx_current=None):
 def battery_items(tx_current=None):
     """Average currents drawn from the cell, in amperes: each rail through its buck, plus the direct loads."""
     soc = sum(soc_rail_items(tx_current).values())
+    led = 1.0 if TX_BOOST is None else TX_BOOST[0] / (TX_BOOST[1] * V_BAT)   # cell amperes per TX_SUP ampere
     return {
         "3.0 V rail through its buck": soc * V_SOC / (ETA * V_BAT),
         "1.8 V rail (IMU) through its buck": IMU_LP25 * V_IMU / (ETA * V_BAT),
-        "PPG LED pulses (TX_SUP)": LED_I * LED_T * FS,
-        "PPG LED driver quiescent (TX_SUP)": AFE_TXQ,
+        "PPG LED pulses (TX_SUP)": LED_I * LED_T * FS * led,
+        "PPG LED driver quiescent (TX_SUP)": AFE_TXQ * led,
         "PMIC quiescent": PMIC_IQ,
         "Leakage": LEAK,
     }

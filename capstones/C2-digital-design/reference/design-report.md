@@ -40,7 +40,7 @@ A third bug was in the RTL: the transposed versions reset only the last partial 
 
 | Version | Structure | Latency (edges) | Distinct multipliers |
 |---|---|---|---|
-| [fir_direct.v](fir_direct.v) | Delay line, eight products, one adder tree | 2 | 8 |
+| [fir_direct.v](fir_direct.v) | Delay line, eight products, one adder tree (the unfolded direct form) | 2 | 8 |
 | [fir_transposed.v](fir_transposed.v) | Each register holds a partial sum; one multiplier and one adder per path | 1 | 4 (symmetry shares them) |
 | [fir_pipelined.v](fir_pipelined.v) | Transposed, plus a registered input and registered products | 3 | 4 |
 
@@ -48,6 +48,9 @@ A third bug was in the RTL: the transposed versions reset only the last partial 
 
 - **Direct form:** two copies of each multiplier (**32** adders) plus eight to sum nine terms, **40** adders in all.
 - **Transposed form:** one copy of each multiplier (**16** adders) plus eight in the chain, **24** adders.
+- **Folded direct form (not built here):** add each symmetric pair first, $h_k(x[n-k] + x[n-7+k])$, with **4** pre-adders one bit wider than the input. Then four multipliers (**16** adders) and four adders to sum the four products and the rounding constant give **24** adders, the same count as the transposed form. It is the standard structure for a symmetric FIR, and the reason DSP slices include a pre-adder. Its critical path still runs through a pre-adder, a multiplier and the whole adder tree.
+
+"Direct form" below means the unfolded version.
 
 The hand estimate is therefore a logic area ratio of **0.60**. Synthesis gives **0.635** (§4). Yosys does not use exactly CSD recoding, and the adders differ in width, so this is good agreement for a count of adders.
 
@@ -63,11 +66,13 @@ From [results.md](results.md):
 
 **Reading the table.**
 
-- **Direct form** has the fewest registers (**146**: the delay line and the outputs) but the most logic. Its critical path is a multiplier followed by the whole adder tree (line 21, the sum), **70** gates deep.
-- **Transposing** removes the adder tree from the path and halves the multipliers. Logic area falls by **36**%, at the price of wider registers: partial sums are 36 bits, not 16. But a multiplier still feeds an adder in one cycle, which limits it to **584** MHz.
+- **Direct form** has the fewest registers (**146**: the delay line and the outputs) but the most logic. Its critical path is a multiplier, the whole adder tree (lines 17–18) and the saturation (line 21), **70** gates deep. The source-line column in results.md is partial: Yosys maps multipliers and adders from its own techmap library, and those cells keep the library's line numbers, not the RTL's.
+- **Transposing** removes the adder tree from the path and, because one input feeds every tap, shares the symmetric multipliers without pre-adders. Logic area falls by **36**%, at the price of wider registers: partial sums are 36 bits, not 16. But a multiplier still feeds an adder in one cycle, which limits it to **584** MHz.
 - **Pipelining** puts a register between every multiplier and every adder. The registers cost **633** µm², which brings the total to **5508.6** µm², still inside the budget, and the clock rises to **1025** MHz, meeting the 800 MHz target with **28**% margin.
 
 The final critical path (lines 20 and 23) is the output adder, $p_0 + s_1$, followed by the saturation comparators. No multiplier is on it.
+
+**Timing assumption.** The analysis launches every primary input at the clock-to-Q delay, as if a register drove it with no input delay (in [synth.py](synth.py)). A real block would budget an input delay. That matters most for the transposed form's 584 MHz, because its input fans out to every multiplier in the same cycle; the pipelined version registers its input first.
 
 **Latency.** The pipelined version takes **3** edges, inside the 4-edge limit: **3.75** ns at 800 MHz.
 
@@ -88,7 +93,7 @@ The final critical path (lines 20 and 23) is the output adder, $p_0 + s_1$, foll
 |---|---|---|
 | Transposed form | Removes the adder tree from the critical path; shares the symmetric products | Wider registers (partial sums) |
 | Pipelining products | Clock: the multiplier and adder no longer share a cycle | Registers (+**633** µm² here) and two edges of latency |
-| Sharing symmetric products | Halves the multipliers | Only in forms where one input feeds all taps (the transposed form) |
+| Sharing symmetric products | Halves the multipliers | Free in the transposed form, where one input feeds every tap; the direct form needs four pre-adders (folded form), one bit wider, on its critical path |
 | 32-bit accumulator | About 4/36 of the partial-sum adders and registers | A tighter overflow argument that must be re-proved if the coefficients change |
 
 **Next steps:**
@@ -133,6 +138,8 @@ The final critical path (lines 20 and 23) is the output adder, $p_0 + s_1$, foll
 | A.totd | adders, direct form | 40 | — |
 | A.mult | multiplier adders, transposed form | 16 | — |
 | A.tott | adders, transposed form | 24 | — |
+| A.pre | pre-adders, folded direct form | 4 | — |
+| A.totf | adders, folded direct form | 24 | — |
 | A.ratio | predicted logic-area ratio | 0.60 | — |
 | S.ratio | synthesized logic-area ratio | 0.635 | — |
 | S.logicsave | logic-area saving of the transposed form | 36 | % |

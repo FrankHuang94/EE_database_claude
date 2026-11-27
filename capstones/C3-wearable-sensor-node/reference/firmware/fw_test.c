@@ -46,7 +46,7 @@ static void test_ring(void)
     CHECK(ring_count(&r) == 0 && ring_pop(&r, &v) == -1);
     for (int32_t i = 0; i < (int32_t)RING_CAP - 1; i++) CHECK(ring_push(&r, i * 3 - 50) == 0);
     CHECK(ring_count(&r) == RING_CAP - 1);
-    CHECK(ring_push(&r, 999) == -1 && r.dropped == 1);       /* full: newest sample dropped and counted */
+    CHECK(ring_push(&r, 999) == -1 && ring_dropped(&r) == 1);       /* full: newest sample dropped and counted */
     for (int32_t i = 0; i < 10; i++) CHECK(ring_pop(&r, &v) == 0 && v == i * 3 - 50);
     for (int32_t i = 0; i < 10; i++) CHECK(ring_push(&r, 1000 + i) == 0);   /* wrap around the end */
     CHECK(ring_count(&r) == RING_CAP - 1);
@@ -59,11 +59,14 @@ static void test_ring(void)
         for (int k = 0; k < 25; k++) CHECK(ring_push(&r, k) == 0);
         while (ring_pop(&r, &v) == 0) { }
     }
-    CHECK(r.dropped == 0);
+    CHECK(ring_dropped(&r) == 0);
     /* a consumer stalled for 3 s loses exactly the samples beyond the capacity */
     ring_init(&r);
     for (int k = 0; k < 75; k++) (void)ring_push(&r, k);
-    CHECK(r.dropped == 75 - (RING_CAP - 1));
+    CHECK(ring_dropped(&r) == 75 - (RING_CAP - 1));
+    /* the 16-bit notification field saturates instead of wrapping */
+    CHECK(notify_sat16(7u) == 7u && notify_sat16(0xFFFFu) == 0xFFFFu && notify_sat16(0x10000u) == 0xFFFFu
+          && notify_sat16(0xFFFFFFFFu) == 0xFFFFu);
 }
 
 int main(void)

@@ -2,7 +2,8 @@
 """Verify the C4 diligence memo: recompute every derived number from the logged inputs in claims.py.
 
 The serving model is checked two ways: through claims.serve() and by a brute-force search over the batch size
-that confirms the closed-form batch is the largest feasible one. The scorecard is recomputed from its table,
+that confirms the closed-form batch is the largest feasible one. The prefill-aware throughput is recomputed by
+balancing a prefill pool against a decode pool (requests in = requests out), independently of claims.combined(). The scorecard is recomputed from its table,
 which is parsed from the memo itself so that the table and the totals cannot drift apart.
 """
 from __future__ import annotations
@@ -90,16 +91,82 @@ v.check("M.bA", hA[0])
 v.check("M.gA", gA[2])
 v.check("M.gbA", gA[0])
 v.check("M.rA", gA[2] / hA[2])
-v.check("C.serveA", gA[2] / hA[2])
 v.check("M.hB", hB[2])
 v.check("M.gB", gB[2])
 v.check("M.rB", gB[2] / hB[2])
-v.check("C.serveB", gB[2] / hB[2])
-v.assert_true("the ratio grows once the model leaves the 8-GPU server", gB[2] / hB[2] > 3 * gA[2] / hA[2])
-port = c.NVLINK5_TBS * 1e3 / c.PORT_GBS
+v.assert_true("the decode-only ratio grows once the model leaves the 8-GPU server", gB[2] / hB[2] > 3 * gA[2] / hA[2])
+v.check("M.step", gA[1] * 1e3)
+v.check("M.steph", hA[1] * 1e3)
+v.assert_true("every decode step meets the 50 ms deadline (the deadline does not bind)",
+              all(r[1] < c.TTL_S for r in (hA, gA, hB, gB)))
+gemm = gA[0] * 2 * 140e9 / (R["gpus"] * c.B200["nvfp4_dense_pf"] * 1e15)
+v.check("M.gemm", gemm * 1e3)
+v.assert_true("decode is memory-bound: weight multiplications take under a quarter of the step", gemm < 0.25 * gA[1])
+bph, bpg = (140 + hA[0]) / hA[0], (70 + gA[0]) / gA[0]   # GB read per generated token
+v.check("M.bph", bph)
+v.check("M.bpg", bpg)
+v.check("M.bpr", bph / bpg)
+v.assert_true("bandwidth ratio times bytes-per-token ratio reproduces the decode ratio", abs(bw * bph / bpg - gA[2] / hA[2]) < 1e-9)
+
+
+def pooled(decode_per_gpu, dense_pf, params, gpus=1000.0):
+    """Split a fleet into prefill and decode pools so that requests in equal requests out; return tokens/s per GPU."""
+    req_flop = 2 * params * c.IN_TOK                     # prefill FLOPs per request
+    def imbalance(f):
+        prefill_req = f * gpus * dense_pf * 1e15 / req_flop
+        decode_req = (1 - f) * gpus * decode_per_gpu / c.OUT_TOK
+        return prefill_req - decode_req
+    lo, hi = 0.0, 1.0
+    for _ in range(200):                                 # bisection on the prefill fraction
+        mid = (lo + hi) / 2
+        lo, hi = (lo, mid) if imbalance(mid) > 0 else (mid, hi)
+    f = (lo + hi) / 2
+    return (1 - f) * decode_per_gpu, f
+
+
+res = {}
+for name, h_dec, g_dec in (("A", hA, gA), ("B", hB, gB)):
+    P = c.MODELS[name]["params"]
+    h_tok, h_f = pooled(h_dec[2], H["fp8_dense_pf"], P)
+    g_tok, g_f = pooled(g_dec[2], c.B200["nvfp4_dense_pf"], P)
+    cmp_ = c.compare(name)
+    v.assert_true(f"model {name}: pool balancing agrees with claims.combined()",
+                  abs(h_tok - cmp_["h"]) < 1e-6 * h_tok and abs(g_tok - cmp_["g"]) < 1e-6 * g_tok)
+    res[name] = (h_tok, g_tok, h_f, g_f, cmp_["h_pre"], cmp_["g_pre"])
+v.check("M.hpA", res["A"][4])
+v.check("M.gpA", res["A"][5])
+v.check("M.hcA", res["A"][0])
+v.check("M.gcA", res["A"][1])
+v.check("M.hpB", res["B"][4])
+v.check("M.gpB", res["B"][5])
+v.check("M.hcB", res["B"][0])
+v.check("M.gcB", res["B"][1])
+v.check("M.preh", 100 * res["A"][2])
+v.check("M.preg", 100 * res["A"][3])
+rA, rB = res["A"][1] / res["A"][0], res["B"][1] / res["B"][0]
+for key in ("M.rcA", "C.serveA"):
+    v.check(key, rA)
+for key in ("M.rcB", "C.serveB"):
+    v.check(key, rB)
+v.check("M.res", c.CLAIM_INFER / rA)
+v.check("C.resid", c.CLAIM_INFER / rA)
+v.assert_true("with prefill, both ratios sit near the dense-compute ratio (within 5% of 5.0x)",
+              all(abs(r_ / (c.B200["nvfp4_dense_pf"] / H["fp8_dense_pf"]) - 1) < 0.05 for r_ in (rA, rB)))
+g8 = c.serve(72, pg["bw_tbs"], pg["hbm_gb"], 140, 1.0)
+eq_tok, _ = pooled(g8[2], c.B200["fp8_dense_pf"], 140e9)
+v.check("M.eq", eq_tok)
+v.check("M.eqr", eq_tok / res["A"][0])
+for key, gpus, pf, P in (("M.ttA", 8, H["fp8_dense_pf"], 140e9), ("M.ttB", 16, H["fp8_dense_pf"], 1e12),
+                         ("M.tgA", 72, c.B200["nvfp4_dense_pf"], 140e9), ("M.tgB", 72, c.B200["nvfp4_dense_pf"], 1e12)):
+    v.check(key, 2 * P * c.IN_TOK / (gpus * pf * 1e15))
+    v.assert_true(f"{key}: first-token prefill fits the 5 s limit at the dense peak", c.ttft(gpus, pf, P) < c.TTFT_S)
+v.check("M.mfu", 100 * c.ttft(16, H["fp8_dense_pf"], 1e12) / c.TTFT_S)
+
+each_way = 18 * 2 * 200e9 / 8 / 1e9                      # 18 links x 2 lanes x 200 Gb/s, one direction [R-521]
+v.assert_true("NVLink 5 is 900 GB/s each way (half the 1.8 TB/s two-way figure)", each_way == c.NVLINK5_EACH_WAY_GBS == 900.0)
+v.assert_true("a 400 Gb/s port is 50 GB/s each way", abs(400e9 / 8 / 1e9 - c.PORT_GBS) < 1e-12)
 for key in ("M.port", "C.port"):
-    v.check(key, port)
-v.assert_true("a 400 Gb/s port is 50 GB/s", abs(400e9 / 8 / 1e9 - c.PORT_GBS) < 1e-12)
+    v.check(key, each_way / c.PORT_GBS)
 
 # ----------------------------------------------------------------- energy and training claims
 v.check("E.pw", c.CLAIM_INFER / c.CLAIM_ENERGY)
@@ -134,13 +201,19 @@ v.check("F.mwh", c.RACK_KW["hpe_nominal"] * 8760 / 1e3)
 # ----------------------------------------------------------------- reliability
 L = c.LLAMA
 gpu_int = L["gpu_share"] * L["unexpected"]
+gpu_hi = sum(L["gpu_table"])
 v.check("R.gpu", gpu_int)
-rate = gpu_int / (L["days"] * L["gpus"]) * 365.25
-v.check("R.rate", rate)
-rack = rate * R["gpus"]
-for key in ("R.rack", "C.rackyr"):
-    v.check(key, rack)
-v.check("R.days", 365.25 / rack)
+v.check("R.gpuhi", gpu_hi)
+v.check("R.pcthi", 100 * gpu_hi / L["unexpected"])
+v.assert_true("the text's 58.7% matches the table only with 126 faulty GPUs, not 148",
+              abs((gpu_hi - 148 + 126) / L["unexpected"] - L["gpu_share"]) < 5e-4)
+for n_int, kr, kk, kd in ((gpu_int, "R.rate", ("R.rack", "C.rackyr"), "R.days"),
+                          (gpu_hi, "R.ratehi", ("R.rackhi", "C.rackhi"), "R.dayshi")):
+    rate = n_int / (L["days"] * L["gpus"]) * 365.25
+    v.check(kr, rate)
+    for key in kk:
+        v.check(key, rate * R["gpus"])
+    v.check(kd, 365.25 / (rate * R["gpus"]))
 
 # ----------------------------------------------------------------- export controls
 mac = c.B200["nvfp4_dense_pf"] * 1e3 / 2                      # TFLOPS -> TOPS -> MacTOPS
@@ -179,9 +252,13 @@ for key in ("S.G", "C.G"):
 v.assert_true("geometric score does not exceed the arithmetic (AM-GM)", G <= S)
 v.check("S.sd", math.sqrt(sum(var)))
 names = [r[0] for r in rows]
+v.check("S.sw", 100 * var[names.index("Ecosystem and software")] / sum(var))
 v.check("S.sup", 100 * var[names.index("Manufacturing and supply")] / sum(var))
 v.check("S.road", 100 * var[names.index("Roadmap")] / sum(var))
-v.assert_true("manufacturing and supply is the largest variance contribution",
-              max(range(7), key=lambda k: var[k]) == names.index("Manufacturing and supply"))
+iw, isup = names.index("Ecosystem and software"), names.index("Manufacturing and supply")
+v.assert_true("software is the largest variance contribution and supply the second",
+              sorted(range(7), key=lambda k: -var[k])[:2] == [iw, isup])
+v.assert_true("software and supply carry two-thirds of the variance", abs((var[iw] + var[isup]) / sum(var) - 2 / 3) < 0.02)
+v.assert_true("software is scored with the widest sigma, as the text says", sd[iw] == max(sd))
 
 sys.exit(v.finish())

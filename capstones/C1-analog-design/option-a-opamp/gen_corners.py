@@ -3,7 +3,8 @@
 
 Each corner netlist holds three copies of the op-amp, each on its own supply so its power can be read:
   A  open-loop AC response (DC loop closed through 1 GH, inverting input AC-grounded through 1 F): A0, UGF, PM,
-     supply power, and the tail transistor's saturation margin V_DS - V_DSAT at V_CM = 0.9 V;
+     supply power, the tail transistor's saturation margin V_DS - V_DSAT at V_CM = 0.9 V, and the operating-point
+     transconductances of M1 and M6;
   B  unity-gain follower driven by a 0.6 -> 1.2 V step: slew rate on both edges, measured from 20% to 80%;
   C  inverting gain of -1 (100 kOhm / 100 kOhm about 0.9 V): the output range over which the closed-loop gain stays
      within 1% of -1.
@@ -39,6 +40,8 @@ MEAS = [  # (name, quantity, unit, scale from SPICE units to published units, si
     ("outhi", "output high (1% gain error)", "V", 1, 4),
     ("outlo", "output low (1% gain error)", "V", 1, 3),
     ("m5mar", "tail V_DS - V_DSAT at V_CM = 0.9 V", "mV", 1e3, 3),
+    ("gm1", "input-pair transconductance", "µS", 1e6, 3),
+    ("gm6", "second-stage transconductance", "mS", 1e3, 3),
 ]
 
 
@@ -81,7 +84,9 @@ CLC oc 0 2p
 op
 let pwr = -i(vdda) * {vdd}
 let m5mar = @m.xa.m5[vds] - @m.xa.m5[vdsat]
-print pwr m5mar
+let gm1 = @m.xa.m1[gm]
+let gm6 = @m.xa.m6[gm]
+print pwr m5mar gm1 gm6
 ac dec 50 1 10G
 meas ac a0 find vdb(oa) at=10
 meas ac ugf when vdb(oa)=0
@@ -112,6 +117,8 @@ TT_EXTRA = """* C1 option A at TT, 27 degC, 1.8 V: CMRR, PSRR+ and input-referre
 * EXPECT cmrr key:results.md#A.TT-N.cmrr rtol={rtol_cmrr}
 * EXPECT psrr key:results.md#A.TT-N.psrr rtol={rtol_psrr}
 * EXPECT vn1m key:results.md#A.TT-N.vn1m scale=1e-9 rtol={rtol_vn1m}
+* EXPECT vtn125 key:results.md#A.TT-N.vtn125 rtol={rtol_vtn125}
+* EXPECT vtp125 key:results.md#A.TT-N.vtp125 rtol={rtol_vtp125}
 .lib '../models/c1_process.lib' tt
 .include opamp.sub
 
@@ -139,6 +146,13 @@ X3 p3 n3 o3 vdd3 0 ib3 opamp
 L3 o3 n3 1G
 C3 n3 0 1
 CL3 o3 0 2p
+* threshold against temperature: one NMOS and one PMOS with V_SB = 0
+VDT dt 0 1.0
+VGT gt 0 0.8
+MTN dt gt 0 0 nch W=10u L=0.5u
+VDTP dtp 0 -1.0
+VGTP gtp 0 -0.8
+MTP dtp gtp 0 0 pch W=10u L=0.5u
 
 .control
 ac dec 20 1 1G
@@ -152,11 +166,18 @@ noise v(o1) vi1 dec 20 1k 100meg
 setplot noise1
 let vn1m = inoise_spectrum[60]
 print vn1m
+option temp=125
+op
+let vtn125 = @mtn[von]
+let vtp125 = -@mtp[von]
+print vtn125 vtp125
 .endc
 .end
 """
 EXTRA = [("cmrr", "CMRR at 10 Hz", "dB", 1, 3), ("psrr", "PSRR+ at 10 Hz", "dB", 1, 3),
-         ("vn1m", "input-referred noise at 1 MHz", "nV/√Hz", 1e9, 3)]
+         ("vn1m", "input-referred noise at 1 MHz", "nV/√Hz", 1e9, 3),
+         ("vtn125", "NMOS threshold at 125 °C (TT, V_SB = 0)", "V", 1, 3),
+         ("vtp125", "PMOS threshold magnitude at 125 °C (TT, V_SB = 0)", "V", 1, 3)]
 
 
 def fmt(x, sig):
@@ -225,11 +246,13 @@ def write_results(rows, extra):
              "Corners: process SS, TT, FF with (temperature, supply) cold-high (−40 °C, 1.98 V), nominal (27 °C, 1.80 V) "
              "and hot-low (125 °C, 1.62 V); SF and FS at nominal. Load 2 pF; input common mode 0.9 V; 20 µA reference.",
              "", "| Corner | A0 (dB) | UGF (MHz) | PM (°) | SR+ (V/µs) | SR− (V/µs) | Power (µW) | Out high (V) "
-             "| Out low (V) | Tail margin (mV) |", "|---|---|---|---|---|---|---|---|---|---|"]
+             "| Out low (V) | Tail margin (mV) | gm1 (µS) | gm6 (mS) |", "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for cid, proc, temp, vdd, t in rows:
         lines.append(f"| {cid} ({proc.upper()}, {temp} °C, {vdd:.2f} V) | " + " | ".join(t[n] for n, *_ in MEAS) + " |")
     lines += ["", f"At TT, 27 °C, 1.8 V: CMRR {extra['cmrr']} dB and PSRR+ {extra['psrr']} dB at 10 Hz; input-referred "
-              f"noise {extra['vn1m']} nV/√Hz at 1 MHz (thermal only: the C1 models have no flicker noise).", "",
+              f"noise {extra['vn1m']} nV/√Hz at 1 MHz (thermal only: the C1 models have no flicker noise). Level-1's built-in "
+              f"temperature scaling moves the TT thresholds from 0.45 V at 27 °C to {extra['vtn125']} V (NMOS) and "
+              f"{extra['vtp125']} V (PMOS magnitude) at 125 °C.", "",
               "<!-- answer-key -->", "", "| ID | Quantity | Value | Unit |", "|---|---|---|---|"]
     for cid, proc, temp, vdd, t in rows:
         for n, q, u, _, _ in MEAS:

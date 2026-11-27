@@ -25,8 +25,11 @@ typedef struct {
     uint16_t cell_mv;
     int16_t skin_centi_c;
     uint16_t activity;
-    uint16_t dropped;
+    uint16_t dropped;       /* set with notify_sat16(ring_dropped(...)) */
 } notify_t;
+
+/* Saturates a 32-bit count into the 16-bit "PPG samples dropped" field. */
+static inline uint16_t notify_sat16(uint32_t v) { return v > 0xFFFFu ? (uint16_t)0xFFFFu : (uint16_t)v; }
 
 /* Writes NOTIFY_LEN octets; returns the number written (0 if out is NULL or too small). */
 size_t notify_pack(const notify_t *n, uint8_t *out, size_t out_len);

@@ -67,7 +67,7 @@ Each milestone ends with something a reviewer can check. Spend about the hours s
 | M2 | **Hand design.** Size every component from the specification, with each step derived; predict every specified quantity | Calculation sheet or script | 10 |
 | M3 | **Nominal simulation.** Build testbenches that measure each specification automatically (`.meas` with pass/fail); compare with M2 and explain each difference above 10% | Netlists and a comparison table | 10 |
 | M4 | **Corners.** Run every corner; find the worst corner for each specification; fix failures by redesign, not by tuning one corner | Corner table, design changes | 10 |
-| M5 | **Report.** Write up M1 to M4, with tradeoffs and limitations, at design-review quality | Report of 8 to 15 pages | 7 |
+| M5 | **Report.** Write up M1 to M4, with tradeoffs and limitations, at design-review quality. The reference reports are condensed, about half this length, and leave out the narrative a reviewer expects; write yours in full | Report of 8 to 15 pages | 7 |
 
 ## Rubric (100 points)
 
