@@ -11,11 +11,11 @@
 
 **NVIDIA's choice: a small, fast, all-to-all domain.**
 
-- 72 GPUs in one rack, each with "1.8 TB/s of GPU-to-GPU interconnect", in an NVLink domain "that acts as a single, massive GPU" [R-690].
+- 72 GPUs in one rack, each with "1.8 TB/s of GPU-to-GPU interconnect", in an NVLink domain "that acts as a single, massive GPU" [R-690] (NVIDIA's marketing description).
 - Each GPU's bandwidth comes from 18 NVLinks of 100 GB/s each [R-521].
-- The domain is built from copper inside one liquid-cooled rack [R-690].
+- The domain sits inside one liquid-cooled rack [R-690].
 
-**Google's choice: a much larger torus-style domain at lower per-chip bandwidth.**
+**Google's choice: a much larger domain at lower per-chip bandwidth.** (The logged source does not describe the ICI topology.)
 
 - Ironwood scales "up to 9,216 liquid cooled chips linked with breakthrough Inter-Chip Interconnect (ICI) networking", at "1.2 TBps bidirectional" per chip [R-693].
 - The pod spans "nearly 10 MW" [R-693].
@@ -25,7 +25,7 @@
 ## The engineering behind it
 
 - **Inside the domain:** traffic for tensor and expert parallelism runs at memory-like bandwidth.
-- **Outside it:** traffic crosses network ports roughly an order of magnitude slower per device. The C4 memo puts the ratio at 36× for NVLink against a 400 Gb/s port ([C4 §3.3](../../capstones/C4-diligence-memo/reference/memo.md)).
+- **Outside it:** traffic crosses network ports roughly an order of magnitude slower per device. Like for like, NVLink's 900 GB/s each way is **18×** a 400 Gb/s port's 50 GB/s ([C4 §3.3](../../capstones/C4-diligence-memo/reference/memo.md)).
 - **A bigger domain** lets a larger model run, or a larger batch run at a tight latency target, without the slow link.
 - **The cost of size.** Copper reaches only so far at these rates. A domain beyond one rack needs optics or a topology that trades per-chip bandwidth or hop count for reach ([24-06](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-06-d2d-memory-phys-scale-up.md), [24-09](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-09-lpo-and-cpo.md)).
 - **Collectives favour large per-device bandwidth.** All-reduce time is governed by per-device link bandwidth and the number of hops ([27-07 §3.5](../../courses/27-system-architectures/chapters/27-07-ai-datacenter-server-and-rack.md#35-collectives-the-all-reduce)).

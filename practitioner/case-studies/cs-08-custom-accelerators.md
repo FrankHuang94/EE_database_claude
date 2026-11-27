@@ -12,19 +12,20 @@
 The operators' announcements, as of Nov 2026 [R-644] **[Established: vendor statements; performance figures are vendor claims]**:
 
 - **AWS Trainium3** (December 2025) is "our first 3nm AWS AI chip", with "2.52 petaflops (PFLOPs) of FP8 compute … 144 GB of HBM3e memory, and 4.9 TB/s of memory bandwidth".
-- **Microsoft Maia 200** (January 2026) has "216GB HBM3e at 7 TB/s", "over 10 petaFLOPS in 4-bit precision", and "30% better performance per dollar than the latest generation hardware in our fleet today", "all within a 750W SoC TDP envelope".
+- **Microsoft Maia 200** (January 2026) has "216GB HBM3e at 7 TB/s" and "over 10 petaFLOPS in 4-bit precision (FP4) and over 5 petaFLOPS of 8-bit (FP8) performance, all within a 750W SoC TDP envelope". Microsoft also claims "30% better performance per dollar than the latest generation hardware in our fleet today".
 - **Meta** deploys "hundreds of thousands of MTIA chips for inference workloads". It announced with Broadcom a plan to "co-develop multiple generations" under a commitment "that exceeds 1GW".
 - **Google's** TPU line continued with TPU 8t and 8i in April 2026.
 
-The partners' results show the business [R-642, R-643] **[Established: company results]**:
+The partners' results show the business [R-642, R-643] **[Established: company results; the fiscal-year and custom figures are management statements on earnings calls]**:
 
-- Broadcom reported fiscal 2025 AI revenue of USD 20 billion, up 65%, and USD 16.7 billion of AI semiconductor revenue in its third quarter of fiscal 2026.
+- Broadcom reported fiscal 2025 AI revenue of USD 20 billion, up 65%, and USD 16.7 billion of AI semiconductor revenue in its third quarter of fiscal 2026. The logged sources do not split this figure between custom accelerators and Broadcom's other AI products, such as networking chips, so it is an upper bound on custom-accelerator revenue.
 - Marvell said its custom business "scaled from zero revenue to \$1.5 billion in fiscal 2026".
 
 ## The engineering behind it
 
 - **A custom chip serves one owner's workloads.** It drops the generality a merchant GPU carries, and spends the area and power on the precisions, memory and interconnect those workloads need ([14-14](../../courses/14-computer-organization-and-architecture/chapters/14-14-ai-accelerators.md)).
 - **The partner brings what is hard to build in-house:** SerDes and die-to-die IP, packaging, HBM integration and foundry access ([24-06](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-06-d2d-memory-phys-scale-up.md), [25-07](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md)). The operator brings the architecture, the software and the guaranteed volume that amortizes the design cost ([26-03](../../courses/26-engineering-design-and-professional-practice/chapters/26-03-engineering-economics-1.md)).
+- **The build-or-buy arithmetic.** A custom program pays a large fixed design and mask cost to save a margin on every unit bought, so it pays only above a break-even volume, and the operator carries the schedule risk ([26-04](../../courses/26-engineering-design-and-professional-practice/chapters/26-04-engineering-economics-2.md)).
 - **"Performance per dollar against our fleet" is an internal comparison.** It compares against the operator's own installed base, at the operator's own prices, on the operator's own workloads. It cannot be checked from outside ([28-02](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-02-validating-claims.md)).
 
 ## What a diligence team should ask

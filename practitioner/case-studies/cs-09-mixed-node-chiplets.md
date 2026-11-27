@@ -27,7 +27,7 @@ AMD lists the MI355X's lithography as "TSMC 3nm | 6nm FinFET". The part has "Tra
 - Assembly yield multiplies across the dies.
 - Thermal design is harder, because the dies have different power densities ([25-07](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md), [25-08](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-08-thermal-engineering.md)).
 
-**When the split wins.** It wins when the leading-node area saved, at the leading node's cost per good mm², exceeds the die-to-die overhead plus the assembly yield loss. The translation table gives the comparison ([chiplet against monolithic](../translation-table.md#cost-and-margin)).
+**When the split wins.** Moving area $A_m$ of I/O and analog off the 3 nm die does not make it free: it still costs 6 nm area. The split wins when the saving on that area, $A_m(c_3/Y_3 - c_6/Y_6)$, exceeds the die-to-die interface area and energy, the extra test and the assembly yield loss. Here $c$ is the silicon cost per mm² and $Y$ the yield at each node, so $c/Y$ is the cost per good mm². The full comparison is the chiplet cost model of [25-07 §3.7](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md#37-chiplet-economics-when-does-splitting-pay), summarized in the [translation table](../translation-table.md#cost-and-margin); the design and mask cost of a second die is in [26-04](../../courses/26-engineering-design-and-professional-practice/chapters/26-04-engineering-economics-2.md).
 
 ## What a diligence team should ask
 

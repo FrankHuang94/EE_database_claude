@@ -11,6 +11,8 @@
 
 **"Our addressable market is \$X billion."** Total addressable market (TAM) figures often add up whole industry segments that a single product could never serve. **Sanity check:** rebuild the number bottom-up: units × attach rate × realistic price, for the segments the product's specifications actually qualify for. Compare it with the WSTS segment size: a TAM larger than the whole segment is a red flag.
 
+**"Ten times more efficient."** Ask "at what?" Efficiency is energy per *specified* operation (per inference, per bit, per conversion) under stated conditions. Without the operation, the workload and the comparison baseline, the multiplier is meaningless.
+
 **Questions for engineering leaders.**
 
 1. **"Which engineering disciplines are core to your differentiation, and which do you buy or license?"**
@@ -25,6 +27,8 @@
 **Marketing vs Reality.**
 
 **"Our design is portable to any process node."** RTL is portable in the sense that it can be re-synthesized. But timing, power, analog blocks, memories and I/O are tied to a specific process's physics. Porting analog and mixed-signal IP is a redesign, not a recompile ([20-12](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-12-why-analog-does-not-scale.md)). **Sanity check:** ask which blocks are hard-coded to the current process and what fraction of the die they occupy.
+
+**"Chiplets let you mix and match the best die from any vendor."** Only if both sides implement the same interface, verified together, with compatible packaging, test and thermal assumptions. Each one is an abstraction that can leak. **Sanity check:** ask which partner chiplets have actually been integrated *in silicon*, not just announced.
 
 **Questions for engineering leaders.**
 
@@ -43,6 +47,8 @@
 
 **"Learn electrical engineering in 30 days."** Compare it with the arithmetic in [STUDY_PLAN.md](../../STUDY_PLAN.md): ABET requires at least 75 semester credit hours of math, science and engineering topics, thousands of hours of work. A 30-day course can give you vocabulary, not the ability to solve problems. **Sanity check:** ask what the learner can *do* at the end (solve which problems, unaided, timed), not what they have *seen*.
 
+**"I understand this; I've read it twice."** Rereading produces recognition, not recall. **Sanity check:** close the book and solve a problem.
+
 **Questions for engineering leaders.**
 
 1. **"How do you know you've learned it?"**
@@ -57,6 +63,8 @@
 **Marketing vs Reality.**
 
 **"Fully verified in simulation."** Verified against what, and at which corners? A simulation proves only what its testbench checks, under the models and conditions it ran. **Sanity check:** ask for coverage metrics, the list of corners and Monte Carlo runs, and how model-to-silicon correlation was established for the process.
+
+**"Silicon-proven IP."** It has worked in *some* silicon. Ask in *which* process, at *what* conditions, at what volume, and whether the IP was modified since.
 
 **Questions for engineering leaders.**
 
@@ -74,6 +82,10 @@
 **Marketing vs Reality.**
 
 **"Tapeout next quarter, production by year-end."** Add the fab cycle (3–5 months), packaging and test, validation, qualification and a realistic respin probability. **Sanity check:** "production by year-end" from a tapeout next quarter implies first-silicon success. Given the industry statistics, ask what happens if A0 needs a fix.
+
+**"Silicon-proven" / "first-pass silicon success."** Ask: proven at *which* stepping, at what conditions and volume, and was "success" defined as functional samples or as production-qualified parts?
+
+**"A small, elite team will tape out a leading-edge SoC."** Run the Example 00-05.3 Fermi estimate with their numbers. If the claimed team is several times smaller than the estimate, ask what they are buying (IP, design services) and how much reuse they assume.
 
 **Questions for engineering leaders.**
 
@@ -96,6 +108,10 @@
 
 **"10× better" on a log-scale chart.** On log axes, equal distances are equal *ratios*. A bar that looks "a bit taller" may be 10× larger, and a "dramatic" gap may be 20%. **Sanity check:** read the axis labels and convert to linear ratios before comparing.
 
+**"+3 dB improvement."** That is a factor of 2 in power but only 1.41 in amplitude and range-related quantities: free-space range scales as the square root of power, so range rises only about 41%. **Sanity check:** ask "3 dB of *what*", and what that does to the metric you care about.
+
+**"Up to X dBm output."** Ask at what supply voltage, temperature, frequency and distortion level. Limits in dB are meaningless without the measurement conditions.
+
 **Questions for engineering leaders.**
 
 1. **"At what supply voltage and temperature were these power and performance numbers measured, and how do they scale with voltage?"**
@@ -110,6 +126,10 @@
 **Marketing vs Reality.**
 
 **"Performance scales linearly."** Ask for measured speedup at several scales and fit Amdahl's law to it. A fitted $p$ of 0.99 caps speedup at 100× no matter how much hardware is bought.
+
+**"Asymptotically better."** An $O(N\log N)$ algorithm beats an $O(N^2)$ one only beyond some size, and the constant factors decide where. Ask: at *our* problem size, measured, how much better?
+
+**"Approaches the theoretical limit."** Ask which limit (Shannon? a regulatory cap? a physical one?), how close in dB or percent, and under which conditions.
 
 **Questions for engineering leaders.**
 
@@ -128,6 +148,10 @@
 
 **"Bandwidth 0.7 MHz."** That is a small-signal figure. With large signals, slew rate limits the response far sooner (4.8 kHz at 10 V peak above). **Sanity check:** compute $SR/(2\pi V_p)$ at the actual signal swing.
 
+**"Peak power 1,000 W."** A power rating, peak or average, says little about how fast the load changes. **Sanity check:** ask for the worst-case load step, its rise time, and the supply droop budget.
+
+**"Ultra-fast switching."** Fast edges cut switching loss but raise dv/dt and di/dt stress, EMI and ringing. **Sanity check:** ask what the edges do to the rest of the system: EMI compliance margin, required snubbers, gate-driver complexity.
+
 **Questions for engineering leaders.**
 
 1. **"What is the worst-case load-step di/dt your power delivery must handle, and what droop does it cause?"**
@@ -144,6 +168,10 @@
 **Marketing vs Reality.**
 
 **"Optimized for efficiency."** Ask: efficiency at which operating point, and at what speed? Energy per operation is minimized at low voltage, but so is throughput. Claims that mix a best-case energy figure with a best-case speed figure are describing two different operating points.
+
+**"Maximum power transfer" in power products.** Matching is the wrong goal when the source's own loss costs money (mains or battery power delivery), and the right one when the source's power is free and limited (solar MPPT, energy harvesting, RF). Ask which case a pitch is in. One that confuses them signals a weak grasp of fundamentals.
+
+**"Our solver always converges."** Newton converges only near a solution. Ask how the tool or firmware handles non-convergence, and how often it falls back.
 
 **Questions for engineering leaders.**
 
@@ -162,6 +190,10 @@
 
 **"Up to X days of battery life."** The claim integrates an assumed usage profile. **Sanity check:** ask for the profile, meaning the duty cycle of each mode, and recompute: life = capacity / average current.
 
+**"Average power only Y mW."** Averaged over what window, and with what peaks? Peaks set battery chemistry stress, regulator sizing and thermal design.
+
+**"Our gauge is 1% accurate."** At what point of the discharge curve, after how long without recalibration, and across which temperatures?
+
 **Questions for engineering leaders.**
 
 1. **"What is your device's current profile over a typical day, and which mode dominates the integral?"**
@@ -176,6 +208,10 @@
 **Marketing vs Reality.**
 
 **"Noise 5 nV/√Hz."** Density alone is not noise. Ask: integrated over what bandwidth, with what filter, and does it include 1/f noise below the corner frequency?
+
+**"Bandwidth 10 kHz" in a noise calculation.** The −3 dB bandwidth understates a one-pole filter's noise by 57% in power. Ask for the ENBW.
+
+**"THD below 0.01%."** At what amplitude, frequency and load, and over how many harmonics? THD typically worsens near full scale and at high frequency.
 
 **Questions for engineering leaders.**
 
@@ -192,6 +228,10 @@
 
 **"MTBF of 1,000,000 hours."** That is a failure *rate* of $10^{-6}$ per hour during the useful-life period, not a promise that a unit lasts 114 years. Across 10,000 deployed units it means about 10 failures every 1,000 hours, roughly one every four days. It also says nothing about wear-out, which ends the useful life much sooner. **Sanity check:** multiply the fleet size by $1/\text{MTBF}$ to get the failure rate you will actually see, and ask for the wear-out data separately.
 
+**"16-bit ADC."** Resolution is not performance. Ask for the ENOB at the input frequency and amplitude you care about.
+
+**"Power 500 W."** Real or apparent? At what power factor? The facility must be sized for the apparent power and the RMS current.
+
 **Questions for engineering leaders.**
 
 1. **"What is the RMS current in your key conduction paths, and what share of the loss comes from ripple and harmonics?"**
@@ -206,6 +246,10 @@
 **Marketing vs Reality.**
 
 **"Distortion −80 dB."** At what amplitude? HD3 worsens by 40 dB per decade of amplitude, so a figure measured 10 dB below full scale can hide a 20 dB worse number at full scale. **Sanity check:** ask for distortion against amplitude, not a single point.
+
+**"Gain accuracy 0.01%."** At DC? Loop gain falls with frequency, and the error $1/(A\beta)$ rises with it. Ask for accuracy at the operating frequency.
+
+**"Converges in a few iterations."** Series and iterative methods converge fast only inside their region of validity. Ask how the method behaves at the edge of its operating range.
 
 **Questions for engineering leaders.**
 
@@ -222,6 +266,10 @@
 
 **"Our core is X% more efficient."** At which point on the voltage–frequency curve? Efficiency comparisons between cores depend on where each operates. A slower core can look "more efficient" simply by running at a lower voltage. Ask for energy per operation against performance, not single points.
 
+**"Trained to convergence."** Gradient descent converges to *a* critical point, not necessarily the best one, and its speed depends on conditioning and step size. Ask how sensitive the result is to those choices.
+
+**"Temperature-stable."** Over what range, and with how much trimming? The first-order tempco can be cancelled at one temperature, but second-order curvature remains.
+
 **Questions for engineering leaders.**
 
 1. **"What are the sensitivities of your key metric to each design knob, and where is the marginal return highest?"**
@@ -236,6 +284,10 @@
 **Marketing vs Reality.**
 
 **"Same die area, so same cost."** Not if one design needs a larger contiguous die: edge loss and yield both worsen with area. Ask for the die size and the assumed defect density behind any cost-per-chip claim.
+
+**"Average power density X W/cm²."** Cooling must handle the peak, not the average. Ask for the hot-spot factor.
+
+**"Ground is ground."** Two "ground" points can differ in voltage when time-varying flux threads the loop between them, by Faraday's law. Ask how return paths are designed.
 
 **Questions for engineering leaders.**
 
@@ -253,6 +305,16 @@
 **Marketing vs Reality.**
 
 **Claim pattern 1: "4096-QAM delivers 20% faster Wi-Fi."** The arithmetic is right: 4096-QAM carries $\log_2 4096 = 12$ bits per symbol versus 10 for 1024-QAM, a 20% peak gain. But the constellation is a 64 × 64 grid instead of 32 × 32 within a similar average power. Adjacent points are therefore about half as far apart, so the receiver needs about $10\log_{10}(4095/1023) = 6.02$ dB more signal-to-noise ratio to tell them apart. The transmitter must also hold its EVM to −38 dB instead of −35 dB ([R-002](../../reference/research-log.md#r-002--ieee-80211-evm-requirements)). Under realistic conditions the radio falls back to lower orders. **Sanity check:** ask at what distance, signal strength and channel width a throughput number was measured, and whether it is a PHY rate or measured application throughput.
+
+**Claim pattern 2: "Our FFT/beamforming accelerator delivers N GMAC/s."** Ask whether a *complex* multiply-accumulate is counted as one operation or as the four real multiplies inside it. The same silicon can be described with numbers 4× apart, or 8× apart in "ops" figures that also count each multiply-accumulate as two operations (a multiply and an add), as TOPS ratings conventionally do. The same inflation reappears in TOPS claims for AI accelerators ([28-02](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-02-validating-claims.md)).
+
+<!-- answer-key -->
+| ID | Quantity | Value | Unit |
+|---|---|---|---|
+| PL 02-01.a | bits per symbol, 4096-QAM | 12 | bits |
+| PL 02-01.b | peak-rate gain vs 1024-QAM | 20 | % |
+| PL 02-01.c | extra SNR needed, 4096- vs 1024-QAM | 6.02 | dB |
+| PL 02-01.d | −35 dB as an RMS ratio | 1.78 | % |
 
 **Questions for engineering leaders.**
 
@@ -1092,6 +1154,10 @@
 **Marketing vs Reality.**
 
 **"Our ADC delivers 16-bit performance at 1 MSPS."** The datasheet figure assumes an ideal, carefully designed driver. Using this chapter: 16-bit settling needs 11.8τ inside the acquisition window. If the window is 300 ns, the driver-plus-switch time constant must be under about 25 ns. That is a sampling-network bandwidth of at least $1/(2\pi \cdot 25\text{ ns}) \approx 6.3$ MHz, more than six times the sample rate of a 1 MSPS converter, and the driver amplifier must itself settle just as fast. **Sanity check:** ask what driver and RC filter the measurement used, and whether the system design reproduces them.
+
+**"The new node is 15% faster."** That figure usually describes a transistor-dominated ring oscillator or a standard benchmark circuit. A design whose critical paths are long wires may see much less. **Sanity check:** ask for the speedup *of this design's critical paths* after place-and-route, not of the process.
+
+**"Ultra-low-power: 1 µW."** Power depends on $\alpha CV^2f$ and leakage under a specific workload. **Sanity check:** ask for the activity factor, clock frequency, supply voltage and temperature behind the number, and what the device draws in the mode it actually spends most of its time in.
 
 **Questions for engineering leaders.**
 

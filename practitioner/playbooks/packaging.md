@@ -79,6 +79,6 @@ From weakest to strongest:
 ## Go deeper
 
 - The [C4 memo](../../capstones/C4-diligence-memo/reference/memo.md) §5.3: packaging and a yield respin at the reticle limit.
-- [28-10](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-10-conversation-scenarios.md): Example 28-10.9 (a package-yield figure) and Example 28-10.21 (an automotive FIT claim).
+- [28-10](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-10-conversation-scenarios.md): Example 28-10.9 (a package-yield figure), Example 28-10.16 (when to migrate) and Example 28-10.21 (an automotive FIT claim).
 
 > **Deeper:** see companion repo *Semiconductor Capital Equipment*.

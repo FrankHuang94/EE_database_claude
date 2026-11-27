@@ -9,10 +9,12 @@
 ## What decides it
 
 1. **Cost per bit at volume.** Memory is a cost-per-bit business, decided by die size, layer count, yield and wafer cost. A cell that is better in every other way but costs more per bit rarely wins outside a niche ([23-06](../../courses/23-memory-and-storage-technology/chapters/23-06-nand-flash-and-3d-nand.md), [25-04](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-04-yield-and-die-cost.md)).
-2. **Qualification at the customer's pin rate, stack height and temperature.** HBM generations are won by whoever qualifies first ([23-05](../../courses/23-memory-and-storage-technology/chapters/23-05-hbm-in-depth.md)).
+2. **Qualification at the customer's pin rate, stack height and temperature.** In HBM, the supplier that qualifies first at a customer tends to take the early volume **[Industry estimate]** ([23-05](../../courses/23-memory-and-storage-technology/chapters/23-05-hbm-in-depth.md)).
 3. **Endurance and retention over temperature.** An emerging memory's endurance and retention must be measured on arrays, not single cells, at the product's temperature ([23-08](../../courses/23-memory-and-storage-technology/chapters/23-08-emerging-memories.md)).
 4. **For SSD controllers: the full system.** Write amplification, the error-correction margin as the NAND ages, firmware maturity and tail latency ([23-07](../../courses/23-memory-and-storage-technology/chapters/23-07-ssd-controllers.md)).
-5. **For compute-in-memory: accuracy and the analog-to-digital overhead.** The converters at the array edge often dominate the energy, and accuracy must be shown on real models ([23-09](../../courses/23-memory-and-storage-technology/chapters/23-09-compute-in-memory.md)).
+5. **For HBM: the stack's yield, and who makes the base die.** A stack is good only if every die and every bond is, so its yield is roughly the product of the die and bonding yields, and known-good-die testing decides it ([25-07 §3.6](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-07-advanced-packaging-and-chiplets.md#36-known-good-die-test-escapes-and-package-yield)). Base dies are moving to logic processes, in-house or at a logic foundry (Micron's HBM4E base die at TSMC, targeted for 2027 [R-494] **[Established as reported]**).
+6. **Where in the cycle are we?** Memory prices and margins swing with supply additions. Ask for results across a full cycle, not the peak year.
+7. **For compute-in-memory: accuracy and the analog-to-digital overhead.** The converters at the array edge often dominate the energy, and accuracy must be shown on real models ([23-09](../../courses/23-memory-and-storage-technology/chapters/23-09-compute-in-memory.md)).
 
 ## First-principles checks
 
@@ -21,7 +23,7 @@
 | "x TB/s per stack" | Bandwidth = interface width × pin rate ÷ 8; at which pin rate is it qualified? | [23-05](../../courses/23-memory-and-storage-technology/chapters/23-05-hbm-in-depth.md) |
 | "Lower power memory" | Energy per bit at the interface and in the array; refresh power at temperature | [23-03](../../courses/23-memory-and-storage-technology/chapters/23-03-dram-cells-arrays-refresh.md), [23-04](../../courses/23-memory-and-storage-technology/chapters/23-04-dram-interfaces.md) |
 | "Denser NAND" | Bits per mm² from layers × bits per cell ÷ cell footprint; the cost of the extra layers and their yield | [23-06](../../courses/23-memory-and-storage-technology/chapters/23-06-nand-flash-and-3d-nand.md) |
-| "SSD endurance N drive-writes per day" | Raw program/erase cycles ÷ write amplification, over the warranty period, with the ECC margin at end of life | [23-07](../../courses/23-memory-and-storage-technology/chapters/23-07-ssd-controllers.md) |
+| "SSD endurance N drive-writes per day" | $\text{DWPD} = N_{PE}(C_{raw}/C_{user})/(A \times D_w)$: rated program/erase cycles times the raw-to-user capacity ratio, divided by the write amplification $A$ and the warranty in days $D_w$, with the ECC margin at end of life | [23-07](../../courses/23-memory-and-storage-technology/chapters/23-07-ssd-controllers.md) |
 | "Universal memory" | Compare speed, endurance, retention, density and cost against SRAM, DRAM and NAND together. No technology wins all five | [23-08](../../courses/23-memory-and-storage-technology/chapters/23-08-emerging-memories.md) |
 | "In-memory compute, 100× TOPS/W" | Is the converter and digital periphery energy included? At which precision, and what is the accuracy on a full model? | [23-09](../../courses/23-memory-and-storage-technology/chapters/23-09-compute-in-memory.md) |
 

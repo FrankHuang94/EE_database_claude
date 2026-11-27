@@ -30,4 +30,4 @@ An industry analysis of 2026 adds that foundries "VIS and … PSMC are absorbing
 ## Lessons that transfer
 
 - **"We have a partnership with the foundry" is weak evidence** ([28-01 §3.1](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-01-technology-evaluation-framework.md#31-the-seven-dimensions-and-their-evidence)). For a specialty process, single-foundry dependence belongs in the supply dimension's gate, not in a footnote.
-- **Foundry strategy follows the foundry's own economics.** A specialty line that is small against the foundry's main business is the one most likely to close.
+- **Foundry strategy follows the foundry's own economics.** A specialty line that is small against the foundry's main business is the one most likely to close **[our inference from this case, not a statement by TSMC]**.

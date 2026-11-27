@@ -4,15 +4,16 @@
 
 **Core chapters:** [22-01](../../courses/22-power-electronics-and-energy-conversion/chapters/22-01-power-conversion-principles.md) to [22-10](../../courses/22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md).
 
-**Question bank:** [power](../question-banks/power.md).
+**Method:** [28-05 §3.3](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md#33-power-conversion). **Question bank:** [power](../question-banks/power.md).
 
 ## What decides it
 
 1. **What is the efficiency at the load points the customer actually runs?** Light-load and full-load efficiency diverge, and the standard's weighting may differ from the customer's profile.
 2. **Where is the box around the power-density figure?** What is inside it: hold-up capacitance, fans, connectors, heat sinks ([22-01](../../courses/22-power-electronics-and-energy-conversion/chapters/22-01-power-conversion-principles.md)).
-3. **Is the device technology qualified and second-sourced?** GaN and SiC supply has shifted fast, with foundries entering and exiting ([22-06](../../courses/22-power-electronics-and-energy-conversion/chapters/22-06-converter-losses-and-wide-bandgap.md); R-432).
-4. **Is the control loop robust across components and conditions?** That means capacitor derating, inductor tolerance and input range; the [C1 buck](../../capstones/C1-analog-design/README.md) failed its first compensator exactly here.
-5. **For datacenter power: does the design follow the rack's architecture change?** Busbar voltage, shelf power and energy storage are all moving ([22-10](../../courses/22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md)).
+3. **Is the device technology qualified and second-sourced?** GaN and SiC supply has shifted fast, with foundries entering and exiting (as of Nov 2026) ([22-06](../../courses/22-power-electronics-and-energy-conversion/chapters/22-06-converter-losses-and-wide-bandgap.md); R-432).
+4. **Is the control loop robust across components and conditions?** That means capacitor derating, inductor tolerance and input range. In the [C1 buck](../../capstones/C1-analog-design/README.md), the first compensator failed its gain margin because the error amplifier's bandwidth is part of the plant; the second missed its load-step margin at the high-inductance, low-capacitance corner.
+5. **For datacenter power: does the design follow the rack's architecture change?** Busbar voltage, shelf power and energy storage are all moving ([22-10](../../courses/22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md); [CS-06](../case-studies/cs-06-rack-voltage.md)).
+6. **For SiC: what does overcapacity do to price and to the target's position?** An analyst estimate put upstream SiC utilization near 50% and device lines near 70% in late 2025, with the downturn expected to last until 2027–2028, and Chinese companies holding about 40% of wafer and epiwafer capacity [R-432] **[Industry estimate, as of Dec 2025]**. Ask how the target's cost per good die and its customer contracts hold up through the downturn.
 
 ## First-principles checks
 
@@ -32,7 +33,7 @@ From weakest to strongest:
 1. a reference-design press release;
 2. an evaluation board measured by the vendor;
 3. independent measurements with stated conditions;
-4. qualification data, including dynamic $R_{on}$ and HTRB/HTGB life tests;
+4. qualification data, including dynamic $R_{on}$ and high-temperature reverse-bias and gate-bias (HTRB and HTGB) life tests;
 5. field return rates at volume.
 
 ## Red flags and green flags

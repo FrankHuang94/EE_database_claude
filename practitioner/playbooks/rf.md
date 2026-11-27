@@ -4,7 +4,7 @@
 
 **Core chapters:** [17-06](../../courses/17-communication-systems/chapters/17-06-bandpass-digital-modulation.md) and [17-09](../../courses/17-communication-systems/chapters/17-09-wireless-channels.md), [21-01](../../courses/21-rf-and-microwave-engineering/chapters/21-01-s-parameters.md) to [21-12](../../courses/21-rf-and-microwave-engineering/chapters/21-12-modem-baseband-and-standards.md).
 
-**Question bank:** [electromagnetics, communications and RF](../question-banks/rf-and-wireless.md).
+**Method:** [28-05 §3.2](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md#32-rf-transmitters-receivers-and-their-efficiency). **Question bank:** [electromagnetics, communications and RF](../question-banks/rf-and-wireless.md).
 
 ## What decides it
 
@@ -13,6 +13,7 @@
 3. **Does it pass the standard's tests and the regulator's limits with margin?** Error vector magnitude, spectral mask, spurious emissions, coexistence with the other radios in the same device.
 4. **How much of the value is in the front end, and who supplies the filters and switches?** Front-end modules are often the binding supply and IP constraint ([21-09](../../courses/21-rf-and-microwave-engineering/chapters/21-09-rf-front-end.md)).
 5. **Is the software stack qualified?** Bluetooth and Wi-Fi qualification, cellular carrier certification, and the cost of maintaining them.
+6. **Will the largest customer build it in-house, and what licences remain if it does?** A large handset maker can replace a merchant modem with its own over a few product generations ([CS-07](../case-studies/cs-07-modem-build-vs-buy.md)), and cellular products carry standard-essential patent licences whoever designs the chip.
 
 ## First-principles checks
 

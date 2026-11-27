@@ -14,5 +14,5 @@ Every chapter ends its Practitioner lens with a **Marketing vs Reality** box and
 | [Power Electronics and Energy Conversion](power.md) | 22 | 12 | 62 |
 | [Memory and Storage](memory.md) | 23 | 9 | 46 |
 | [High-Speed I/O, Signal Integrity and Photonics](interconnect-and-photonics.md) | 24 | 9 | 44 |
-| [Design Practice, System Architectures and Diligence](systems-and-business.md) | 26, 27, 28 | 25 | 111 |
-| **Total** | | **307** | **1331** |
+| [Design Practice, System Architectures and Diligence](systems-and-business.md) | 26, 27, 28 | 25 | 122 |
+| **Total** | | **307** | **1342** |

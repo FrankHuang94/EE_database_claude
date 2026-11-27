@@ -34,7 +34,7 @@ Typical real-world values an electrical engineer carries in their head. Each cha
 
 ## By chapter
 
-Each chapter's own *Numbers to know* table, in course order. Perishable values carry the chapter's as-of date and research-log ID; check the date before reusing a number.
+Each chapter's own *Numbers to know* table, in course order. Perishable values carry the chapter's as-of date and research-log ID; check the date before reusing a number. A bare number in brackets, such as [3], cites the Sources list of the chapter the row comes from.
 
 ## [00 · Orientation](../courses/00-orientation/README.md)
 

@@ -8,11 +8,12 @@
 
 ## What decides it
 
-1. **Where does the part sit against the published frontier?** Compare it on the figure of merit for its class, at its own speed. Schreier for high resolution, Walden for high speed ([20-06](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-06-data-converter-fundamentals.md); [28-05 §3.1](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md)).
+1. **Where does the part sit against the published frontier?** Compare it on the figure of merit for its class, at its own speed. Schreier for high resolution, Walden for low resolution at high speed ([20-06](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-06-data-converter-fundamentals.md); [28-05 §3.1](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md)).
 2. **Are the numbers guaranteed or typical?** Ask for the limits over temperature, supply and process, and the production test that enforces them.
 3. **What did calibration buy, and what does it cost?** Calibration gives back accuracy, but costs power, area, start-up time and test time. It can also fail in the field.
 4. **Can the block move to the next node?** Analog does not shrink like logic ([20-12](../../courses/20-analog-and-mixed-signal-ic-design/chapters/20-12-why-analog-does-not-scale.md)). A roadmap that assumes it does is a red flag.
 5. **How many good analog designers are there, and who are they?** Analog teams are small, slow to hire and hard to replace ([28-07](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-07-evaluating-engineering-teams.md)).
+6. **Who owns the process, and how long must the parts be supplied?** Catalogue analog companies often run their own specialty fabs and sell thousands of parts for decades; a fabless entrant depends on a foundry's specialty process staying open ([25-05](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-05-foundries-pdks-specialty-processes.md); [CS-03](../case-studies/cs-03-foundry-exit.md)). Ask for the catalogue's breadth, the revenue tail from old parts and the plan for end-of-life notices.
 
 ## First-principles checks
 

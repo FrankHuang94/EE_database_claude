@@ -105,11 +105,49 @@ def looks_like(acr, exp):
     return i == len(letters)
 
 
+# Acronyms whose letters come from inside words or from a symbol, so the letter-order test rejects them, but whose
+# glossary term really is their expansion: equivalent series inductance (L), near-/far-end crosstalk (X),
+# discontinuous reception (X), second- and third-order intercept points (IP2, IP3).
+ACR_EXTRA = {"ESL", "NEXT", "FEXT", "DRX", "IP2", "IP3"}
+BARE = re.compile(r"^[A-Z][A-Za-z0-9/&-]{1,9}$")
+
+
+def norm(exp):
+    """A comparison key for an expansion: lower case, hyphens as spaces, no parenthetical, no plural s."""
+    e = re.sub(r"\s*\([^)]*\)", "", exp).lower().replace("-", " ").replace("–", " ")
+    e = re.sub(r"[^a-z0-9 ]", "", e)
+    e = re.sub(r"\s+", " ", e).strip()
+    return e[:-1] if e.endswith("s") else e
+
+
+def definition_expansion(acr, definition):
+    """The expansion a bare-acronym entry's definition opens with, if its letters spell the acronym."""
+    d = definition.strip()
+    d = d[1:] if d.startswith("(") else d
+    d = re.sub(r"^(?:The|A|An)\s+", "", d)
+    head = re.split(r"[,:;.(]| \u2014 | - ", d, maxsplit=1)[0].strip()
+    return head if 2 <= len(head) <= 80 and looks_like(acr, head) else None
+
+
 def glossary_acronyms():
+    """{acronym: {expansion key: (expansion, first chapter)}}: one entry per distinct meaning."""
     entries = yaml.safe_load((REF / "glossary.yml").read_text(encoding="utf-8"))
     found = {}
+
+    def add(acr, exp, ch):
+        exp = exp[:1].upper() + exp[1:]
+        meanings = found.setdefault(acr, {})
+        k = norm(exp)
+        if k not in meanings or ch < meanings[k][1]:
+            meanings[k] = (exp, ch)
+
     for e in entries:
         term, ch = str(e.get("term", "")).strip(), str(e.get("chapter", "")).strip()
+        if BARE.match(term) and sum(c.isupper() for c in term) >= 2:
+            exp = definition_expansion(term, str(e.get("definition", "")))
+            if exp:
+                add(term, exp, ch)
+            continue
         for rx, swap in ((ACR_A, False), (ACR_B, True)):
             m = rx.match(term)
             if not m:
@@ -117,12 +155,25 @@ def glossary_acronyms():
             acr, exp = m.group("acr"), m.group("exp").strip()
             if swap and not exp[:1].islower() and not re.search(r"\s", exp):
                 continue
-            if looks_like(acr, exp):
-                exp = exp[:1].upper() + exp[1:]
-                if acr not in found or ch < found[acr][1]:
-                    found[acr] = (exp, ch)
+            if looks_like(acr, exp) or (not swap and acr in ACR_EXTRA):
+                add(acr, exp, ch)
                 break
     return found
+
+
+def first_defined(acr, exp, texts):
+    """The first chapter (in course order) that uses acr and also spells out its expansion, else the first use."""
+    words = [re.escape(w) for w in re.split(r"[\s/-]+", re.sub(r"\s*\([^)]*\)", "", exp)) if w]
+    used = re.compile(r"(?<![A-Za-z0-9])" + re.escape(acr) + r"(?![A-Za-z0-9])")
+    for n in range(len(words), min(2, len(words)) - 1, -1):     # the whole expansion, then its leading words
+        spelled = re.compile(r"[\s\-–/]+".join(words[:n]), re.I)
+        for ch, text in texts:
+            if used.search(text) and spelled.search(text):
+                return ch
+    for ch, text in texts:
+        if used.search(text):
+            return ch
+    return None
 
 
 def chapter_paths():
@@ -133,21 +184,34 @@ def chapter_paths():
 
 
 def acronyms_block(handwritten_rows):
-    """Acronyms from the glossary that the hand-written table above the block does not already list."""
+    """Acronyms from the glossary, one row per meaning, except meanings the hand-written table already lists."""
     found = glossary_acronyms()
     paths = chapter_paths()
-    hand = {acr for acr, _, _ in handwritten_rows}
+    hand = {(acr, norm(exp)) for acr, exp, _ in handwritten_rows}
     lines = ["## From the glossary", "",
-             "Acronyms that appear in the glossary's term names, with the chapter whose entry defines them first. "
-             "The table above lists the ones curated by hand.", "",
+             "Acronyms that appear in the glossary, as a term's name or as the term itself, with the chapter whose entry "
+             "defines them first. An acronym with two meanings has a row for each. The table above lists the ones "
+             "curated by hand.", "",
              "| Acronym | Expansion | First defined in |", "|---|---|---|"]
     for acr in sorted(found, key=lambda a: (a.lower(), a)):
-        exp, ch = found[acr]
-        if acr in hand or ch not in paths:
-            continue
-        rel = os.path.relpath(paths[ch], REF).replace(os.sep, "/")
-        lines.append(f"| {acr} | {exp} | [{ch}]({rel}) |")
+        for k, (exp, ch) in sorted(found[acr].items(), key=lambda kv: kv[1][1]):
+            if (acr, k) in hand or ch not in paths:
+                continue
+            rel = os.path.relpath(paths[ch], REF).replace(os.sep, "/")
+            lines.append(f"| {acr} | {exp} | [{ch}]({rel}) |")
     return "\n".join(lines)
+
+
+def hand_table(head, rows):
+    """The curated table with each 'First defined in' link recomputed from the chapters."""
+    paths = chapter_paths()
+    texts = [(ch, paths[ch].read_text(encoding="utf-8")) for ch in sorted(paths)]
+    for acr, exp, link in rows:
+        ch = first_defined(acr, exp, texts)
+        if ch:
+            rel = os.path.relpath(paths[ch], REF).replace(os.sep, "/")
+            head = head.replace(f"| {acr} | {exp} | {link} |", f"| {acr} | {exp} | [{ch}]({rel}) |")
+    return head
 
 
 def split(path):
@@ -163,7 +227,8 @@ def render():
     p = REF / "numbers-to-know.md"
     head, _ = split(p)
     out[p] = collected(7, "## By chapter\n\nEach chapter's own *Numbers to know* table, in course order. Perishable values carry "
-                          "the chapter's as-of date and research-log ID; check the date before reusing a number.")
+                          "the chapter's as-of date and research-log ID; check the date before reusing a number. A bare number in "
+                          "brackets, such as [3], cites the Sources list of the chapter the row comes from.")
     p = REF / "reading-list.md"
     out[p] = collected(13, "## By chapter\n\nEach chapter's *Further study* list: textbook sections, free courses, lecture "
                            "videos and landmark papers, in course order.")
@@ -174,12 +239,14 @@ def render():
     for m in re.finditer(r"^\| ([^|]+?) \| ([^|]+?) \| (\[[^\]]+\]\([^)]+\)) \|$", hand_text, re.M):
         if m.group(1) not in ("Acronym",):
             hand.append((m.group(1).strip(), m.group(2).strip(), m.group(3).strip()))
-    out[p] = acronyms_block(hand)
+    out[p] = (hand_table(head, hand), acronyms_block(hand))
     return out
 
 
 def assemble(path, block):
     head, _ = split(path)
+    if isinstance(block, tuple):
+        head, block = block
     return f"{head}\n\n{BEGIN}\n\n{block}\n\n{END}\n"
 
 

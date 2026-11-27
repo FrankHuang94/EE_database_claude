@@ -17,14 +17,14 @@
 
 ## What happened in the design
 
-- **The first budget.** The reference design's first budget put the front end on a 1.8 V rail and the SoC currents on the same rail. It gave more than eight days on a 60 mAh cell.
+- **The first budget.** The reference design's first budget put the front end on a 1.8 V rail and the SoC currents on the same rail. It appeared to meet the 7-day target on a 60 mAh cell.
 - **Reading the conditions.** The front end cannot run at 1.8 V, and the SoC's currents apply at 3.0 V.
 - **The corrected budget.** With both corrected, the life fell to 5.31 days against a 7-day requirement. The front end's receiver and interface alone exceed the 7-day current allowance ([C3 §3.4](../../capstones/C3-wearable-sensor-node/reference/design-report.md)).
 - **The headline doesn't save it either.** At the feature list's 200 µA, the design still reaches only 6.97 days.
 
 ## The engineering behind it
 
-- **A current means nothing without its voltage.** A load's draw from the battery depends on the power it takes, at the voltage it is specified at, divided by the regulator efficiency ([22-01](../../courses/22-power-electronics-and-energy-conversion/chapters/22-01-power-conversion-principles.md)). Moving a load to a lower rail helps only if the part works there and its current does not rise.
+- **A current means nothing without its voltage.** Through a switching (buck) regulator, a load's draw from the battery depends on the power it takes, at the voltage it is specified at, divided by the regulator efficiency; through a linear regulator, the battery supplies the load current itself, whatever the rail voltage ([22-01](../../courses/22-power-electronics-and-energy-conversion/chapters/22-01-power-conversion-principles.md)). Moving a load to a lower rail helps only if the part works there and its current does not rise.
 - **Dynamic power-down helps less than its name suggests.** The receiver's "power-down" current is a large fraction of its always-on current. Fitting a straight line between the table's two rows suggests a high floor (an inference shown in C3 §3.4). Lowering the pulse rate therefore helps less than intuition suggests.
 - **In an optical wearable, the optics dominate.** The radio was about 1.5% of the budget and the optical chain about 91% (C3 §3.2).
 

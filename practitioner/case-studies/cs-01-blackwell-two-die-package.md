@@ -20,7 +20,7 @@ The B200 GPU is "manufactured using a custom-built 4NP TSMC process with two-ret
 
 ## What happened
 
-On the August 2024 earnings call, NVIDIA's CFO said: "We executed a change to the Blackwell GPU [mask] to improve production yields." Gross margin was affected by "inventory provisions for low-yielding Blackwell material". The CEO said: "The change to the mask is complete. There were no functional changes necessary" [R-646] **[Established: management statements, secondary transcript]**. The production ramp was scheduled for the fourth quarter.
+On the Q2 FY2025 earnings call (28 Aug 2024), NVIDIA's CFO said, as transcribed: "We executed a change to the Blackwell GPU mass [mask] to improve production yields." Gross margin was affected by "inventory provisions for low-yielding Blackwell material". The CEO said: "The change to the mask is complete. There were no functional changes necessary" [R-646] **[Established: management statements, secondary transcript]**. The production ramp was scheduled to begin in the fourth quarter of fiscal 2025 (November 2024 to January 2025).
 
 ## What a diligence team should have asked
 

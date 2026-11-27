@@ -13,14 +13,14 @@
 
 **The failures.** In a 54-day snapshot it saw "466 job interruptions. Of these, 47 were planned … The remaining 419 were unexpected". About 78% of the unexpected ones were attributed to confirmed or suspected hardware issues, and "GPU issues are the largest category, accounting for 58.7%". Even so, it achieved "higher than 90% effective training time", and "significant manual intervention was required only three times" [R-694] **[Established as Meta's reported figures]**.
 
-**A data problem.** The failure table does not add up. Its counts sum to 419, but 148 faulty-GPU events are 35.3% of 419, not the printed 30.1% [R-694] **[Contested: one printed figure is wrong]**.
+**A data problem.** The failure table's percentages are inconsistent with its counts. The counts sum to 419, but 148 faulty-GPU events are 35.3% of 419, not the printed 30.1% [R-694] **[Contested: one printed figure is wrong]**.
 
 ## The engineering behind it
 
 - **Rates add across components.** At this scale even small per-part failure rates add up ([25-09](../../courses/25-fabrication-packaging-test-and-reliability/chapters/25-09-reliability-physics.md)). The interval between interruptions falls as the cluster grows.
 - **Checkpoint interval is an optimization.** Checkpointing too often wastes time writing state; too rarely loses work at each failure. The optimum depends on the checkpoint cost and the failure rate ([27-07 §3.6](../../courses/27-system-architectures/chapters/27-07-ai-datacenter-server-and-rack.md#36-reliability-at-scale-and-checkpointing)).
 - **Utilization below peak** reflects communication, pipeline bubbles and memory traffic as much as failures ([27-07](../../courses/27-system-architectures/chapters/27-07-ai-datacenter-server-and-rack.md)).
-- **Environment and grid effects.** Meta also reports a diurnal 1–2% throughput variation from temperature acting on GPU voltage and frequency scaling. It reports synchronized power swings "on the order of tens of megawatts, stretching the limits of the power grid" [R-694]. Both are reasons for rack-level energy storage ([22-10](../../courses/22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md)).
+- **Environment and grid effects.** Meta also reports a diurnal 1–2% throughput variation from temperature acting on GPU voltage and frequency scaling. It reports synchronized power swings "on the order of tens of megawatts, stretching the limits of the power grid" [R-694]. The diurnal effect is a thermal and cooling question; the megawatt swings are the reason for rack-level energy storage ([22-10](../../courses/22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md)).
 
 ## What a diligence team should ask a cluster operator or accelerator vendor
 

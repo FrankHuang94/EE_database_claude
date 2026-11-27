@@ -40,9 +40,15 @@ DOMAINS = [
 
 STATUS_RE = re.compile(r"<!--\s*status:\s*([a-z-]+)\s*-->")
 TITLE_RE = re.compile(r"^# (\d\d-\d\d) · (.+)$", re.M)
-Q_HEAD = re.compile(r"^(?:#{3,4} Questions (?:for|to ask)[^\n]*|\*\*Questions (?:for|to ask) engineering leaders\.?\*\*)\s*$",
-                    re.M)
-M_HEAD = re.compile(r"^(?:#{3,4} Marketing vs\.? Reality[^\n]*|\*\*Marketing vs\.? Reality\.?\*\*)\s*$", re.M)
+# A block starts at its label: a heading, or a bold label at column 0 that may run on into text on the same line
+# ("**Questions for engineering leaders.** The banks in ..."). Group 1 is that run-on text.
+Q_HEAD = re.compile(r"^(?:#{3,4} Questions (?:for|to ask)[^\n]*|\*\*Questions (?:for|to ask) engineering leaders\.?\*\*)"
+                    r"[ \t]*([^\n]*)$", re.M)
+M_HEAD = re.compile(r"^(?:#{3,4} Marketing vs\.? Reality[^\n]*|\*\*Marketing vs\.? Reality\.?\*\*)[ \t]*([^\n]*)$", re.M)
+# A block ends at the next heading or at the next section-9 label; other bold paragraphs (claims) belong to it.
+STOP_RE = re.compile(r"^(?:#{2,4} |\*\*(?:Marketing vs\.? Reality|Questions (?:for|to ask)|State of the art|State of play|"
+                     r"Why it matters commercially|Commercial relevance))")
+CLAIM_RE = re.compile(r'^\*\*["“]')
 LINK_RE = re.compile(r"(!?\[[^\]]*\])\(([^)\s]+)\)")
 
 
@@ -52,16 +58,30 @@ def section9(text):
 
 
 def block_after(sec, head_re):
-    """The text after a block header, up to the next ### heading or the next bold label at column 0."""
+    """The block a label starts: its run-on text, then every line up to the next heading or section-9 label."""
     m = head_re.search(sec)
     if not m:
         return ""
-    lines, out = sec[m.end():].split("\n"), []
-    for line in lines[1:] if lines and lines[0].strip() == "" else lines:
-        if re.match(r"^#{2,4} ", line) or (re.match(r"^\*\*[^*\n]", line) and out):
+    out = [m.group(1)] if m.group(1).strip() else []
+    for line in sec[m.end():].split("\n")[1:]:
+        if STOP_RE.match(line):
             break
         out.append(line)
     return "\n".join(out).strip("\n")
+
+
+def lost_claims(chapters):
+    """Quoted claims (bold, starting with a quotation mark) in a section 9 that its extracted blocks do not contain."""
+    lost = []
+    for key, (f, _, mvr, qs) in chapters.items():
+        sec = section9(f.read_text(encoding="utf-8"))
+        for line in sec.split("\n"):
+            if CLAIM_RE.match(line) and line.strip() not in mvr and line.strip() not in qs:
+                lost.append(f"{key}: {line[:70]}")
+    return lost
+
+
+KEY_PTR = re.compile(r" \((?:Txt|Ex) [0-9a-z.-]{1,12}\)")   # in-text pointers to a chapter's answer-key IDs
 
 
 def rewrite_links(md, chapter: Path, out_dir: Path):
@@ -73,7 +93,7 @@ def rewrite_links(md, chapter: Path, out_dir: Path):
         src = chapter if path == "" else (chapter.parent / path).resolve()
         rel = os.path.relpath(src, out_dir).replace(os.sep, "/")
         return f"{label}({rel}{'#' + anchor if anchor else ''})"
-    return LINK_RE.sub(fix, md)
+    return KEY_PTR.sub("", LINK_RE.sub(fix, md))
 
 
 def collect():
@@ -124,8 +144,8 @@ def render(chapters, titles):
                     body += ["**Questions for engineering leaders.**", "", rewrite_links(qs, f, OUT), ""]
                     nq += count_questions(qs)
                 if not mvr and not qs:
-                    body += ["*This chapter is practitioner material throughout (question banks or conversation "
-                             "scenarios); read it directly.*", ""]
+                    body += ["*This chapter's Practitioner lens has no Marketing vs Reality block or question list; "
+                             "read the chapter directly.*", ""]
                 nc += 1
         head = [HEADER, f"# Question Bank · {title}", "",
                 f"{nc} chapters and {nq} questions, collected from each chapter's Practitioner lens (section 9). "
@@ -155,7 +175,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
     args = ap.parse_args()
-    files = render(collect(), course_titles())
+    chapters = collect()
+    lost = lost_claims(chapters)
+    if lost:
+        print("build_practitioner: claims missing from the extracted blocks:\n  " + "\n  ".join(lost))
+        return 1
+    files = render(chapters, course_titles())
     stale = []
     for path, text in files.items():
         old = path.read_text(encoding="utf-8") if path.exists() else None

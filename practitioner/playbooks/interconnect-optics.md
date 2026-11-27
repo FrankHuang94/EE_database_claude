@@ -13,8 +13,9 @@
 1. **What is the energy per bit, all-in?** Include the PHY, the DSP or equalization, FEC, the retimer and the optics, at the reach the customer uses ([24-04](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-04-dsp-serdes-and-fec.md)).
 2. **What bit error rate and link-flap rate does the link achieve at the channel loss that matters, over temperature and many units?** Per-link reliability multiplies across thousands of links ([24-02](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-02-eye-diagrams-jitter-ber.md)).
 3. **Is it compliant and interoperable?** Standards compliance, plugfest results and interoperability with the major switch and NIC vendors ([24-05](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-05-pcie-cxl-ethernet.md)).
-4. **For optics: what is the laser's reliability, and how serviceable is the design?** Co-packaged optics trades serviceability for power ([24-09](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-09-lpo-and-cpo.md)).
-5. **Who owns the standard's direction?** Interconnect value accrues to those inside the standards process and the dominant ecosystems.
+4. **For optics: what is the laser's reliability, and how serviceable is the design?** Co-packaged optics trades serviceability for power ([24-09](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-09-lpo-and-cpo.md)). Who supplies the lasers, and is there a second source?
+5. **Is the IP silicon-proven on the customer's node?** A SerDes or die-to-die PHY proven on one process is a new design on the next; ask for test-chip data on the node the customer will use ([24-06](../../courses/24-high-speed-io-signal-integrity-and-photonics/chapters/24-06-d2d-memory-phys-scale-up.md)).
+6. **Who owns the standard's direction?** Interconnect value accrues to those inside the standards process and the dominant ecosystems.
 
 ## First-principles checks
 

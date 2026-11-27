@@ -11,7 +11,7 @@
 
 - **"Industry-leading X W/in³."** The box decides the number. Published figures span an open-frame PFC stage alone (120 W/in³), a bus converter "without connector" (1300 W/in³), a full server supply with stated dimensions (48–100 W/in³) and a charger whose box is unstated (around 18–25 W/in³). Ask for the dimensions and recompute, as in Example 22-01.6.
 - **"97.5% efficient."** Is that peak, full load or a regulated weighted average, at which input voltage, and measured on which unit? The same 8 kW design was reported at both 97.5% and 98% [8].
-- **"99% efficiency."** Often true of one stage (a PFC stage alone [7]), not of the supply: 99% PFC times 98% DC-DC is **97.0** % (Txt l).
+- **"99% efficiency."** Often true of one stage (a PFC stage alone [7]), not of the supply: 99% PFC times 98% DC-DC is **97.0** %.
 - **"Silicon's switching frequency cannot significantly go beyond 150 kHz."** One GaN vendor's framing [10] [Contested]. Silicon superjunction devices run in resonant converters above that, and the best designs keep silicon where its switching loss is small [8]. Chapter 22-06 compares the devices properly.
 
 **Questions for engineering leaders.**

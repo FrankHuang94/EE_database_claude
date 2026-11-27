@@ -11,7 +11,7 @@
 ## What decides it
 
 1. **What is the battery life on the customer's duty cycle, with every load counted?** That includes the sensors' own currents, which often dominate the microcontroller's. The C3 budget found the optical front end at about 91% and the radio at about 1.5%.
-2. **Are the data-sheet currents at the voltage and conditions the product uses?** A current quoted at 3.0 V costs less from a 1.8 V rail only if the part can run there (C3 §2).
+2. **Are the data-sheet currents at the voltage and conditions the product uses?** A current quoted at 3.0 V costs less from a 1.8 V rail only if the part can run there, and only through a switching (buck) regulator: through a linear regulator the cell supplies the load current itself, whatever the rail voltage (C3 §2).
 3. **Is the software ecosystem good enough for customers to ship?** That means SDK quality, RTOS support, radio stack qualification, and long-term support.
 4. **Is security built in and certified?** Secure boot, key storage, update signing, and the certifications the market asks for ([18-11](../../courses/18-embedded-systems-and-microcontrollers/chapters/18-11-hardware-security.md)).
 5. **Is the part available for the product's life?** Longevity commitments, second sources and package options.
@@ -23,7 +23,7 @@
 | "x µA/MHz" | At which voltage, from flash or RAM, running which code? Active current × time, plus every wake-up's cost | [18-09](../../courses/18-embedded-systems-and-microcontrollers/chapters/18-09-ultra-low-power-design.md) |
 | "y nA sleep" | With RTC, RAM retention and the 32 kHz oscillator? At what temperature (leakage rises steeply with it)? | [18-09](../../courses/18-embedded-systems-and-microcontrollers/chapters/18-09-ultra-low-power-design.md) |
 | "Battery lasts N days" | Usable capacity ÷ average current from the cell, through each regulator's efficiency, with every duty cycle and a reserve | [22-09](../../courses/22-power-electronics-and-energy-conversion/chapters/22-09-batteries-charging-fuel-gauging.md), C3 §3 |
-| "Low-power radio" | Charge per connection event: $Q_{ev} = I_{pre}t_{pre} + I_{rx}(t_{rx} + T_{IFS}) + I_{tx}t_{tx}$, plus window widening $I_{rx}s$ | [27-03](../../courses/27-system-architectures/chapters/27-03-wearables-smartwatch.md), C3 §3.1 |
+| "Low-power radio" | Charge per connection event: $Q_{ev} = I_{pre}t_{pre} + I_{rx}(t_{rx} + T_{IFS}) + I_{tx}t_{tx}$, and the average current $I_{avg} = I_{sl} + (Q_{ev} + I_{rx}s)/T$ for sleep current $I_{sl}$, connection interval $T$ and window widening $s$ | [27-03](../../courses/27-system-architectures/chapters/27-03-wearables-smartwatch.md), C3 §3.1 |
 | "On-device AI at z mW" | Operations per inference × energy per operation, plus memory traffic; MLPerf Tiny-style conditions | [27-08](../../courses/27-system-architectures/chapters/27-08-edge-ai-and-iot.md) |
 | "No samples lost" | Buffer depth against worst-case service latency; interrupt priorities; DMA | [18-03](../../courses/18-embedded-systems-and-microcontrollers/chapters/18-03-interrupts-exceptions-timers.md), [18-04](../../courses/18-embedded-systems-and-microcontrollers/chapters/18-04-dma-and-data-movement.md), C3 §5 |
 

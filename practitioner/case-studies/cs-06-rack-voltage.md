@@ -11,13 +11,15 @@
 
 **Today's rack.** The GB200 rack's power shelves "convert AC power into nominal 50V-51V DC output and distribute it through the bus bar to the rack components". Rack consumption is about 120 kW [R-444]. Other vendors quote 132 kW nominal and about 192 kW provisioned [R-098] **[Contested by definition]**.
 
+**Two higher-voltage routes.** Google described **±400 VDC** distribution, "which will enable IT racks to scale from 100 kilowatts up to 1 megawatt", with an AC-to-DC sidecar [R-444] **[Industry estimate for its efficiency figure]**. OCP's *Mt. Diablo Disaggregated Power Rack Specification* v1.0.0 (effective 8 Oct 2026) defines both a ±400 VDC and an 800 VDC output, for racks "from 800kW to 1MW+" [R-444] **[Established]**.
+
 **The announcement.** NVIDIA wrote that "Traditional 54 V in-rack power distribution, designed for kilowatt (KW)-scale racks, isn't designed to support the megawatt (MW)-scale racks coming soon". It is "leading the transition to 800 VDC data center power infrastructure to support 1 MW IT racks and beyond, starting in 2027". With 54 VDC, "power shelves would consume up to 64 U of rack space" at megawatt scale [R-691] **[Established as NVIDIA's statements]**.
 
 ## The engineering behind it
 
 - **Current sets the copper and the loss.** For a given power, current is $I = P/V$ and conduction loss is $I^2R$. Raising the voltage by a factor $k$ cuts the current by $k$ and the loss in a given conductor by $k^2$; from 54 V to 800 V, $k$ is about 15. You can keep the loss and shrink the copper instead ([22-10](../../courses/22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md)).
 - **The vendor's own comparison depends on assumptions.** NVIDIA's "85% more power transmission through the same conductor size" against 415 VAC depends on the conductor count and power factor assumed; 22-10 §3.2 shows how [R-691].
-- **The conversion chain must be redesigned.** Higher-voltage DC means new isolated converters in the rack and new protection: arc-fault and DC breaking are harder than AC ([22-04](../../courses/22-power-electronics-and-energy-conversion/chapters/22-04-isolated-converters.md), [22-12](../../courses/22-power-electronics-and-energy-conversion/chapters/22-12-power-systems-fundamentals.md)).
+- **The conversion chain must be redesigned.** Higher-voltage DC means new isolated converters in the rack and new protection: arc-fault and DC breaking are harder than AC, because a DC current never passes through zero, where an AC breaker's arc goes out by itself; a DC breaker must force the current down ([22-10 §9](../../courses/22-power-electronics-and-energy-conversion/chapters/22-10-datacenter-power-delivery.md), [22-04](../../courses/22-power-electronics-and-energy-conversion/chapters/22-04-isolated-converters.md)).
 - **The upstream transformer is open.** NVIDIA and partners "are actively studying the CapEx and, OpEx, and safety implications of both traditional transformer-based and solid-state transformer (SST) approaches" [R-691].
 
 ## What a diligence team should ask
@@ -30,8 +32,8 @@
 
 **A datacenter operator:**
 
-1. What does a site built today need to change in 2027?
-2. Who pays for it?
+1. Which distribution will the site adopt: NVIDIA's 800 VDC, the ±400 VDC of Google's design and OCP's Mt. Diablo specification, or both?
+2. What does a site built today need to change for it in 2027, and who pays?
 
 **A rack vendor:**
 

@@ -1,13 +1,15 @@
 # Playbook · Digital Logic and CPUs
 
-**Use it for:** CPU cores and SoC IP, custom silicon programs, RISC-V companies, and any claim of "x% faster at the same power". **Core chapters:** [14-01](../../courses/14-computer-organization-and-architecture/chapters/14-01-performance-power-iron-law.md) to [14-12](../../courses/14-computer-organization-and-architecture/chapters/14-12-multicore-coherence-consistency.md), [19-06](../../courses/19-digital-vlsi-design/chapters/19-06-power-and-low-power-design.md), [19-10](../../courses/19-digital-vlsi-design/chapters/19-10-synthesis-and-sta.md) to [19-13](../../courses/19-digital-vlsi-design/chapters/19-13-verification-methods.md). **Question bank:** [digital and computing](../question-banks/digital-and-computing.md).
+**Use it for:** CPU cores and SoC IP, custom silicon programs, RISC-V companies, and any claim of "x% faster at the same power". **Core chapters:** [14-01](../../courses/14-computer-organization-and-architecture/chapters/14-01-performance-power-iron-law.md) to [14-12](../../courses/14-computer-organization-and-architecture/chapters/14-12-multicore-coherence-consistency.md), [19-06](../../courses/19-digital-vlsi-design/chapters/19-06-power-and-low-power-design.md), [19-10](../../courses/19-digital-vlsi-design/chapters/19-10-synthesis-and-sta.md) to [19-13](../../courses/19-digital-vlsi-design/chapters/19-13-verification-methods.md).
+
+**Method:** [28-04 §3.1](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-04-question-banks-digital-ai-memory-interconnect.md#31-digital-logic-and-cpus). **Question bank:** [digital and computing](../question-banks/digital-and-computing.md).
 
 ## What decides it
 
 1. **Is the performance claim measured on silicon, at a stated clock, voltage and workload?** Simulated or projected performance on a benchmark the company chose is the weakest evidence in the domain.
 2. **What is the power at that performance point?** Performance without the matching power is half a claim, because the dynamic power $\alpha CV^2f$ rises steeply with voltage.
 3. **Can the team close timing and verification at the next node, on schedule?** Respins are the dominant schedule and cost risk ([26-05](../../courses/26-engineering-design-and-professional-practice/chapters/26-05-schedule-and-respin-risk.md)).
-4. **Who owns the instruction set and the IP, and what changes on a change of control?** Arm licenses, x86 rights, RISC-V extensions, and third-party SerDes and memory PHYs all carry terms ([26-04](../../courses/26-engineering-design-and-professional-practice/chapters/26-04-engineering-economics-2.md)).
+4. **Who owns the instruction set and the IP, and what changes on a change of control?** Arm licenses, x86 rights, RISC-V extensions, and third-party SerDes and memory PHYs all carry terms ([14-02](../../courses/14-computer-organization-and-architecture/chapters/14-02-isa-risc-v-arm-x86.md); [26-04](../../courses/26-engineering-design-and-professional-practice/chapters/26-04-engineering-economics-2.md); [28-08](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-08-integration-risk.md)).
 5. **Does real software run?** Upstream compilers, the ABI, and customers' code running unchanged ([14-03](../../courses/14-computer-organization-and-architecture/chapters/14-03-assembly-and-the-compilation-stack.md)).
 
 ## First-principles checks
@@ -72,3 +74,4 @@ From weakest to strongest:
 - The [C2 capstone](../../capstones/C2-digital-design/README.md): RTL to synthesis and timing.
 - [28-02](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-02-validating-claims.md): validating benchmark claims.
 - [28-07](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-07-evaluating-engineering-teams.md): evaluating the team.
+- [28-10](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-10-conversation-scenarios.md): Example 28-10.2 ("20% faster at the same power") and Example 28-10.25 (can they verify in time?).

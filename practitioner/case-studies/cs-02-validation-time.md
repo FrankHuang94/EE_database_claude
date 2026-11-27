@@ -13,7 +13,7 @@
 
 **June 2022.** Intel said it was "building in more platform and product validation time", so the ramp would come later in the year than first forecast [R-647] **[Established for the statements as reported]**.
 
-The later production steppings carry letter-number names in Intel's specification update (for example E-5 for the largest die) [R-647]. A press report of hundreds of bugs and a dozen steppings was not confirmed by Intel and is not used here.
+The later production steppings carry letter-number names in Intel's specification update (for example XCC E-5, MCC S-3 and HBM B-3 for its three die configurations) [R-647]. A press report of hundreds of bugs and a dozen steppings was not confirmed by Intel and is not used here.
 
 ## The engineering behind it
 

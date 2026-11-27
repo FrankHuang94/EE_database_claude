@@ -25,6 +25,6 @@ The [C4 capstone memo](../../capstones/C4-diligence-memo/reference/memo.md) show
 ## Rules that apply to every domain
 
 - **Every headline number has an operating point.** Ask for the conditions before judging the number: voltage, temperature, load, precision, sparsity, batch, distance, corner.
-- **Typical is not guaranteed.** A data sheet's typical column describes one unit at 25 °C. Designs are built on the limits ([28-05 §3.6](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md)).
+- **Typical is not guaranteed.** A data sheet's typical value is usually the mean of the characterization parts at nominal conditions; only the limits are met by every shipped part. Designs are built on the limits ([28-05 §3.6](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-05-question-banks-analog-rf-power-packaging-embedded.md)).
 - **Strong evidence is measured on artefacts** (silicon, code, contracts, people); weak evidence is a statement about them ([28-01 §3.1](../../courses/28-technical-diligence-and-leadership-fluency/chapters/28-01-technology-evaluation-framework.md#31-the-seven-dimensions-and-their-evidence)).
 - **Perishable facts expire.** Every number in a memo carries its date and source; check the chapter's "Numbers to know" date before reusing one.
