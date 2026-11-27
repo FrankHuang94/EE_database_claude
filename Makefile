@@ -13,6 +13,7 @@ generated:
 	$(PY) tools/build_glossary.py --check
 	$(PY) tools/progress_stats.py --check
 	$(PY) tools/build_practitioner.py --check
+	$(PY) tools/build_reference.py --check
 
 docs:
 	$(PY) tools/check_links.py
@@ -47,6 +48,7 @@ regen:
 	$(PY) tools/build_glossary.py
 	$(PY) tools/progress_stats.py
 	$(PY) tools/build_practitioner.py
+	$(PY) tools/build_reference.py
 
 site:
 	mkdocs serve

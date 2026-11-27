@@ -30,6 +30,7 @@ jobs:
           python tools/build_glossary.py --check
           python tools/progress_stats.py --check
           python tools/build_practitioner.py --check
+          python tools/build_reference.py --check
       - name: Internal links and anchors
         run: python tools/check_links.py
       - name: Chapter template structure
