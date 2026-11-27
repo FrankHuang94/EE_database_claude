@@ -79,6 +79,11 @@ jobs:
       - run: sudo apt-get -o Acquire::Retries=5 update && sudo apt-get -o Acquire::Retries=5 install -y iverilog verilator
       - name: Self-checking testbenches
         run: python tools/run_hdl.py
+      - name: Capstone C2 under Verilator, and its synthesis results (WebAssembly Yosys, pinned)
+        run: |
+          pip install yowasp-yosys==0.71.0.0.post1285
+          python capstones/C2-digital-design/reference/sim_verilator.py
+          python capstones/C2-digital-design/reference/synth.py --check
 
   c:
     runs-on: ubuntu-24.04

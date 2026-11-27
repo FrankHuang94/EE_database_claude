@@ -27,6 +27,8 @@ spice:
 
 hdl:
 	$(PY) tools/run_hdl.py
+	$(PY) capstones/C2-digital-design/reference/sim_verilator.py
+	$(PY) capstones/C2-digital-design/reference/synth.py --check
 
 c:
 	$(PY) tools/run_c.py
