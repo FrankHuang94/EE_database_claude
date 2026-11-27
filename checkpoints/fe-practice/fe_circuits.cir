@@ -1,0 +1,165 @@
+* Full-length FE practice exam -- the circuit answers, simulated.
+* Each block is an independent circuit with its own node names; see the questions in README.md.
+* DC: loaded divider (Q41), two-node nodal (Q33), Thevenin resistance by a 1 A test source (Q36),
+*     VCCS node (Q37), maximum power (Q35), strain-gauge bridge (Q63), NMOS drain current (Q56).
+* AC: NMOS common-source gain (Q57), 30 ohm + 0.1 H at 60 Hz (Q31, Q40), reactive power of a 0.8 pf load and its
+*     correction to unity with the published 83.0 uF (Q34, Q39), the two-mesh phasor circuit (Q38),
+*     series-RLC half-power bandwidth and Q (Q48), quarter-wave transformer (Q77).
+* TRAN: RC step (Q44), RL step (Q46).
+*
+* EXPECT vdiv   key:solutions.md#FE.041 rtol=3e-3
+* EXPECT vn2    key:solutions.md#FE.033 rtol=3e-3
+* EXPECT vn1    key:solutions.md#FE.033.V1 rtol=3e-3
+* EXPECT rth    key:solutions.md#FE.036 rtol=3e-3
+* EXPECT vdep   key:solutions.md#FE.037 rtol=3e-3
+* EXPECT pmax   key:solutions.md#FE.035 rtol=3e-3
+* EXPECT vbr    key:solutions.md#FE.063 scale=1e-3 rtol=3e-3
+* EXPECT idq    key:solutions.md#FE.056 scale=1e-3 rtol=3e-3
+* EXPECT avcs   key:solutions.md#FE.057 rtol=3e-3
+* EXPECT zmag   key:solutions.md#FE.031 rtol=3e-3
+* EXPECT iph    key:solutions.md#FE.040 rtol=3e-3
+* EXPECT qvar   key:solutions.md#FE.034 scale=1e3 rtol=3e-3
+* EXPECT pfcor  1 rtol=1e-5
+* EXPECT i2m    key:solutions.md#FE.038 rtol=3e-3
+* EXPECT i1m    key:solutions.md#FE.038.I1 rtol=3e-3
+* EXPECT qres   key:solutions.md#FE.048 rtol=3e-3
+* EXPECT f0res  key:solutions.md#FE.048.f0 scale=1e3 rtol=3e-3
+* EXPECT bwres  key:solutions.md#FE.048.BW rtol=3e-3
+* EXPECT zqw    key:solutions.md#FE.077 rtol=3e-3
+* EXPECT vrc    key:solutions.md#FE.044 rtol=3e-3
+* EXPECT irl    key:solutions.md#FE.046 scale=1e-3 rtol=3e-3
+
+* ---------------------------------------------------------------- DC
+* Q41: 12 V, 10 k over 10 k, 10 k load across the lower resistor
+V41  d41 0 DC 12
+R41a d41 o41 10k
+R41b o41 0 10k
+R41L o41 0 10k
+* Q33: 2 A into node 1; 4 ohm n1-0, 2 ohm n1-n2, 6 ohm n2-0
+I33  0 n1 DC 2
+R33a n1 0 4
+R33b n1 n2 2
+R33c n2 0 6
+* Q36: 1 A test source into terminal a; 2 ohm a-x; 6 ohm and 3 ohm x-0
+I36  0 a36 DC 1
+R36a a36 x36 2
+R36b x36 0 6
+R36c x36 0 3
+* Q37: 12 V through 2 ohm to node a; 4 ohm and a VCCS drawing 0.25*v(a) from a to ground
+V37  s37 0 DC 12
+R37a s37 a37 2
+R37b a37 0 4
+G37  a37 0 a37 0 0.25
+* Q35: 10 V, 50 ohm source into a matched 50 ohm load
+V35  s35 0 DC 10
+R35s s35 l35 50
+R35L l35 0 50
+* Q63: quarter bridge, 5 V; gauge 120 ohm * (1 + 2.0 * 500e-6)
+V63  e63 0 DC 5
+R63g e63 p63 120.12
+R63a p63 0 120
+R63b e63 m63 120
+R63c m63 0 120
+* Q56/Q57: NMOS, k'(W/L) = 2 mA/V^2 (KP with W = L), VTH = 0.5 V, no channel-length modulation; RD = 5 k to 5 V
+.model nfe NMOS (LEVEL=1 KP=2e-3 VTO=0.5 LAMBDA=0)
+VDD57 dd57 0 DC 5
+VG57  g57 0 DC 1.3 AC 1
+RD57  dd57 d57 5k
+M57   d57 g57 0 0 nfe W=1u L=1u
+
+* ---------------------------------------------------------------- AC (single-frequency analyses below)
+* Q31/Q40: 1 V at 60 Hz across 30 ohm + 0.1 H; VS31 senses the current
+V31  a31 0 DC 0 AC 1
+VS31 a31 b31 DC 0
+R31  b31 c31 30
+L31  c31 0 0.1
+* Q34/Q39: 230 V rms phasor at 50 Hz; load Z = 23 ohm at 36.87 deg (18.4 + j13.8 ohm); corrected copy with 83.0 uF
+V34  a34 0 DC 0 AC 230
+VS34 a34 b34 DC 0
+R34  b34 c34 18.4
+L34  c34 0 {13.8/(2*3.14159265358979*50)}
+V39  a39 0 DC 0 AC 230
+VS39 a39 b39 DC 0
+R39  b39 c39 18.4
+L39  c39 0 {13.8/(2*3.14159265358979*50)}
+C39  b39 0 83.0u
+* Q38: 10 V phasor at 1000 rad/s; 4 ohm to node a; 4 mH from a to ground; 2 ohm + 500 uF from a to ground
+V38  s38 0 DC 0 AC 10
+VS38 s38 t38 DC 0
+R38a t38 a38 4
+L38  a38 0 4m
+VB38 a38 u38 DC 0
+R38b u38 w38 2
+C38  w38 0 500u
+* Q48: series 10 ohm, 2 mH, 50 nF driven by 1 V
+V48  a48 0 DC 0 AC 1
+VS48 a48 b48 DC 0
+R48  b48 c48 10
+L48  c48 e48 2m
+C48  e48 0 50n
+* Q77: lossless 50 ohm line, a quarter wave at 1 MHz (TD = 250 ns), terminated in 100 ohm, driven by 1 A
+I77  0 in77 DC 0 AC 1
+T77  in77 0 out77 0 Z0=50 TD=250n
+R77  out77 0 100
+
+* ---------------------------------------------------------------- TRAN
+* Q44: 5 V step through 10 k into 100 nF
+V44  s44 0 PWL(0 0 1n 5)
+R44  s44 c44 10k
+C44  c44 0 100n IC=0
+* Q46: 10 V step onto 100 ohm + 10 mH; VS46 senses the current
+V46  s46 0 PWL(0 0 1n 10)
+VS46 s46 t46 DC 0
+R46  t46 l46 100
+L46  l46 0 10m IC=0
+
+.control
+op
+let vdiv = v(o41)
+let vn2 = v(n2)
+let vn1 = v(n1)
+let rth = v(a36)
+let vdep = v(a37)
+let pmax = v(l35)^2/50
+let vbr = v(m63) - v(p63)
+let idq = -i(VDD57)
+print vdiv vn2 vn1 rth vdep pmax vbr idq
+
+ac lin 1 1k 1k
+let avcs = real(v(d57))
+print avcs
+
+ac lin 1 60 60
+let zmag = 1/mag(i(VS31))
+let iph = 180/pi*ph(i(VS31))
+print zmag iph
+
+ac lin 1 50 50
+let qvar = 230*mag(i(VS34))*sin(-ph(i(VS34)))
+let pfcor = cos(ph(i(VS39)))
+print qvar pfcor
+
+ac lin 1 159.15494309 159.15494309
+let i2m = mag(i(VB38))
+let i1m = mag(i(VS38))
+print i2m i1m
+
+ac lin 200001 14k 18k
+let im48 = mag(i(VS48))
+meas ac f1 when im48=0.070710678 rise=1
+meas ac f2 when im48=0.070710678 fall=1
+let f0res = sqrt(f1*f2)
+let bwres = f2 - f1
+let qres = f0res/bwres
+print f0res bwres qres
+
+ac lin 1 1meg 1meg
+let zqw = mag(v(in77))
+print zqw
+
+tran 1u 3m 0 1u uic
+meas tran vrc find v(c44) at=2m
+meas tran irl find i(VS46) at=0.2m
+quit
+.endc
+.end

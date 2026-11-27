@@ -237,10 +237,10 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | 23 | 9 | 9 | 9 | 9 | 73,016 | 123 | 1567 | 9 | 9 / 8 / 0 |
 | 24 | 9 | 9 | 9 | 9 | 64,285 | 132 | 1522 | 9 | 9 / 7 / 0 |
 | 25 | 12 | 12 | 12 | 12 | 75,761 | 167 | 1321 | 12 | 12 / 2 / 0 |
-| 26 | 7 | 7 | 7 | 7 | 49,840 | 100 | 1275 | 7 | 7 / 0 / 0 |
+| 26 | 7 | 7 | 7 | 7 | 49,994 | 100 | 1275 | 7 | 7 / 0 / 0 |
 | 27 | 8 | 8 | 8 | 8 | 61,565 | 112 | 1396 | 8 | 8 / 0 / 0 |
 | 28 | 10 | 10 | 10 | 10 | 65,236 | 131 | 1112 | 10 | 10 / 0 / 0 |
-| **Total** | **307** | **307** | **307** | **307** | **2,168,405** | **4373** | **38496** | **307** | **303 / 271 / 27** |
+| **Total** | **307** | **307** | **307** | **307** | **2,168,559** | **4373** | **38496** | **307** | **303 / 271 / 27** |
 
 Glossary terms: **3085** · Flashcards: **2871**
 
@@ -747,3 +747,4 @@ Changes relative to the original build brief's chapter plan.
 | 2026-11-27 | Phase 3. **Full-length FE practice exam done.** 110 original questions across all seventeen FE areas (counts inside the NCEES ranges), two timed parts, explained solutions with distractor analysis, `verify_fe.py` (175 checks, 101 keyed values, independent second routes); checkpoints index updated; issue 83 resolved. |
 | 2026-11-27 | Phase 3 complete. **Final STUDY_PLAN.** `full_length_exam` added to `tools/data/curriculum.yml` and scheduled by `build_curriculum.py` after the Term 7 checkpoint and in the FE preparation path; a hand-written section on using the capstones, practitioner layer and reference files; FE readiness rule (70% in every area on the full-length exam). Next: Phase 4. |
 | 2026-11-27 | Phase 4. **Currency escaping (issue 82) and objective audit.** 1,511 lines escaped repo-wide with rendering unchanged; `tools/check_currency.py` (masks inline code spans) added to CI. Objective audit: all 1,668 learning objectives in the 307 chapters are covered by their problem sets' coverage tables. Three fresh reviewers auditing the Phase 3 material (capstones; full-length FE exam; practitioner layer and reference files). |
+| 2026-11-27 | Phase 4. **FE practice exam rebuilt after its fresh-reviewer audit (30 findings, all fixed).** Rebuilt from a structured item list: area labels corrected (RC/RL, resonance and convolution moved to Linear systems and Signal processing, op-amps to Electronics); new items for an rms waveform, a dependent source, a two-mesh phasor circuit, a Fourier coefficient, a zero-failure FIT bound, a strain-gauge bridge, a buck duty cycle, a quarter-wave transformer, block-diagram reduction, 16-QAM, a MAC, a 4-variable K-map with don't-cares and a Moore FSM; every wrong option now names its mistake and is recomputed by `verify_fe.py`; seeded option shuffles with balanced letters (no runs or short periods) and no long type alternation; 64 multiple-choice and 46 numeric items; NSPE rules II.2.b, II.4.c and III.5.a quoted in 26-07 and R-654 for the ethics items; README caveat (no figures, mostly one or two steps). `verify_fe.py`: 333 checks over 118 keyed values, questions located by stem, area counts read from `tools/data/fe_spec.yml`; `fe_circuits.cir`: 21 ngspice expectations. Full local run: 349/349 verify scripts pass. |

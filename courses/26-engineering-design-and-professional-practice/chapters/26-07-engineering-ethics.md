@@ -148,6 +148,11 @@ aggregated over all processing units on the chip. Since a multiply-accumulate co
 
 Engineers and those who evaluate them (the reader included) receive confidential information: a supplier's roadmap under a nondisclosure agreement, a target's design data in a data room, a customer's product plans. Using it outside the purpose for which it was shared, or trading on it, breaches canon 4 and, often, the law. A conflict of interest arises when a personal interest (a shareholding in a supplier, a job offer from a competitor) could bias a professional judgment; the standard remedy is disclosure and, where needed, stepping back from the decision.
 
+Two cases are not cured by disclosure, because the Code forbids them outright [R-654]:
+
+- **Gifts and inducements from suppliers.** Rule II.4.c: "Engineers shall not solicit or accept financial or other valuable consideration, directly or indirectly, from outside agents in connection with the work for which they are responsible." Rule III.5.a adds that engineers "shall not accept financial or other considerations, including free engineering designs, from material or equipment suppliers for specifying their product." An engineer choosing between two vendors' parts declines the gift; disclosing it after the award does not make it acceptable.
+- **Sealing others' work.** Rule II.2.b: "Engineers shall not affix their signatures to any plans or documents dealing with subject matter in which they lack competence, nor to any plan or document not prepared under their direction and control." A quick review of someone else's drawings does not put them under the engineer's direction and control.
+
 ## 4. Worked examples
 
 Probabilities, fleet sizes and chip parameters are **assumed** for teaching unless a source is cited. Classification examples apply the 2023 3A090 criteria as published [R-659] and are not compliance advice.

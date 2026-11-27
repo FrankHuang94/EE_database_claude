@@ -21,4 +21,4 @@ At the end of each term there is an FE-style checkpoint exam: 40–60 multiple-c
 
 | **Full length** | All seventeen FE areas, in the NCEES proportions | [ready](fe-practice/README.md): 110 questions in two parts of 2 h 40 min, [solutions](fe-practice/solutions.md) |
 
-**The full-length exam.** Take it after the seven checkpoints, in one sitting with a 25-minute break between the parts, as a rehearsal for the real exam's pacing and fatigue. Its questions are new, not drawn from the checkpoints, and every answer is recomputed by [verify_fe.py](fe-practice/verify_fe.py). Score it by area; areas below 70% point back to the chapters named in the solutions.
+**The full-length exam.** Take it after the seven checkpoints, in one sitting with a short break between the parts, as a rehearsal for the real exam's pacing and fatigue. Its questions are new, not drawn from the checkpoints. [verify_fe.py](fe-practice/verify_fe.py) recomputes every answer and every wrong option, and [fe_circuits.cir](fe-practice/fe_circuits.cir) simulates the circuit answers in ngspice. Score it by area; areas below 70% point back to the chapters named in the solutions.
