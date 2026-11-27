@@ -1243,6 +1243,9 @@ capstones:
   - {id: C4, slug: diligence-memo, title: "Practitioner: technical diligence memo on a public chip product", hours: 35, prerequisites: ["28"]}
 
 checkpoint_hours: 8
+# The full-length FE practice exam, taken after the Term 7 checkpoint and on the FE preparation path
+# (5 h 20 min of exam time plus review of the misses).
+full_length_exam: {title: "Full-length FE practice exam", hours: 10, path: "checkpoints/fe-practice/README.md"}
 weekly_hours: 11
 study_weeks_per_year: 46
 

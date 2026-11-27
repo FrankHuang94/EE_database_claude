@@ -4,7 +4,7 @@ This is how to get through the Self-Taught BSEE at about **10–12 hours per wee
 
 ## An honest calendar
 
-ABET requires an accredited engineering program to include at least 30 semester credit hours of mathematics and basic science and at least 45 of engineering topics ([R-013](reference/research-log.md#r-013--abet-curriculum-minimums-and-semester-credit-workload)). A semester credit traditionally represents about 45 hours of student work (one class hour plus two hours of outside work per week for about 15 weeks), so the technical core of a BSEE is at least ≈ 3,400 hours, delivered over four full-time years alongside general-education courses. This curriculum's ≈ 2,700 hours is leaner, because self-study drops lectures, commuting and logistics, but it covers more electives than any single student would take. At 11 hours per week, that is a **multi-year** program, about five and a half calendar years for the full path at 46 study weeks per year. Three things shorten it:
+ABET requires an accredited engineering program to include at least 30 semester credit hours of mathematics and basic science and at least 45 of engineering topics ([R-013](reference/research-log.md#r-013--abet-curriculum-minimums-and-semester-credit-workload)). A semester credit traditionally represents about 45 hours of student work (one class hour plus two hours of outside work per week for about 15 weeks), so the technical core of a BSEE is at least ≈ 3,400 hours, delivered over four full-time years alongside general-education courses. This curriculum's total, about 2,800 hours (the exact figure is under Totals below), is leaner, because self-study drops lectures, commuting and logistics, but it covers more electives than any single student would take. At 11 hours per week, that is a **multi-year** program, about five and a half calendar years for the full path at 46 study weeks per year. Three things shorten it:
 
 - **Use the practitioner fast track first.** It reaches conversation fluency in about a fifth of the time. Then back-fill chapters at full depth as your coverage areas demand. Nothing on the fast track has to be re-done later.
 - **Raise the weekly hours during lighter work periods.** At 15 h/week the full path takes about four years.
@@ -40,7 +40,7 @@ Keep an **error log**: every problem you got wrong, why, and the fix. Before eac
 | Term 4 | Electronics, Electromagnetics, Computer Systems | Term 4 |
 | Term 5 | Control Systems, Signal Processing, Communications, Computer Networks, Computer Systems, Software Engineering | Term 5 |
 | Term 6 | Power Systems, Electronics, Materials, Digital Systems | Term 6 |
-| Term 7 | Ethics & Professional Practice, Engineering Economics, plus a full-length mixed FE practice exam | Term 7 |
+| Term 7 | Ethics & Professional Practice, Engineering Economics, then the [full-length FE practice exam](checkpoints/fe-practice/README.md) (110 questions, 5 h 20 min) | Term 7 |
 
 The program-week number for each checkpoint is in the schedule below.
 
@@ -483,7 +483,7 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 
 ### Term 7 — Design Practice, Systems and Practitioner Layer
 
-≈ 336 hours · ≈ 31 weeks · ends around program week 252 (≈ 5.5 years in, at 46 study weeks/year)
+≈ 346 hours · ≈ 31 weeks · ends around program week 253 (≈ 5.5 years in, at 46 study weeks/year)
 
 | Weeks | Course | Hours |
 |---|---|---|
@@ -495,6 +495,7 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 242–248 | [28 · Technical Diligence and Engineering Leadership Fluency](courses/28-technical-diligence-and-leadership-fluency/README.md) | 63 |
 | 248–251 | Capstone C4: Practitioner: technical diligence memo on a public chip product | 35 |
 | 251–252 | **Term 7 checkpoint** (FE-style exam + error log review) | 8 |
+| 252–253 | **[Full-length FE practice exam](checkpoints/fe-practice/README.md)** (110 questions, 5 h 20 min, then review) | 10 |
 
 <details><summary>Chapter-level weeks</summary>
 
@@ -533,12 +534,13 @@ Computed at **11 hours per week**, in the recommended order. "Week" is the progr
 | 248 | 28 review + final exam | 2 |
 | 248–251 | Capstone C4 | 35 |
 | 251–252 | Term 7 checkpoint | 8 |
+| 252–253 | Full-length FE practice exam | 10 |
 
 </details>
 
 ### Totals
 
-- **Total:** ≈ 2760 hours ≈ 251 study weeks.
+- **Total:** ≈ 2770 hours ≈ 252 study weeks.
 - **Calendar time:** at 46 study weeks per year (6 weeks of breaks), ≈ **5.5 years** at 11 h/week.
 - **Faster pace:** at 15 h/week it is ≈ 4.0 years.
 
@@ -578,9 +580,30 @@ At 11 h/week that is ≈ 43 weeks (≈ 0.9 years). Chapters skipped on the fast 
 
 ## FE preparation path
 
-All courses in Terms 1, 2, 3, 4, 5, plus the chapters [09-01](courses/09-semiconductor-devices/chapters/09-01-crystals-and-energy-bands.md), [22-01](courses/22-power-electronics-and-energy-conversion/chapters/22-01-power-conversion-principles.md), [22-11](courses/22-power-electronics-and-energy-conversion/chapters/22-11-electric-machines.md), [22-12](courses/22-power-electronics-and-energy-conversion/chapters/22-12-power-systems-fundamentals.md), [25-09](courses/25-fabrication-packaging-test-and-reliability/chapters/25-09-reliability-physics.md), [26-03](courses/26-engineering-design-and-professional-practice/chapters/26-03-engineering-economics-1.md), [26-07](courses/26-engineering-design-and-professional-practice/chapters/26-07-engineering-ethics.md) (power systems, materials, economics and ethics), plus checkpoints 1, 2, 3, 4, 5. Total ≈ **1870 hours**, then a full-length practice exam under exam conditions.
+All courses in Terms 1, 2, 3, 4, 5, plus the chapters [09-01](courses/09-semiconductor-devices/chapters/09-01-crystals-and-energy-bands.md), [22-01](courses/22-power-electronics-and-energy-conversion/chapters/22-01-power-conversion-principles.md), [22-11](courses/22-power-electronics-and-energy-conversion/chapters/22-11-electric-machines.md), [22-12](courses/22-power-electronics-and-energy-conversion/chapters/22-12-power-systems-fundamentals.md), [25-09](courses/25-fabrication-packaging-test-and-reliability/chapters/25-09-reliability-physics.md), [26-03](courses/26-engineering-design-and-professional-practice/chapters/26-03-engineering-economics-1.md), [26-07](courses/26-engineering-design-and-professional-practice/chapters/26-07-engineering-ethics.md) (power systems, materials, economics and ethics), plus checkpoints 1, 2, 3, 4, 5. Total ≈ **1880 hours**, ending with the [full-length fe practice exam](checkpoints/fe-practice/README.md) under exam conditions.
 
 <!-- END GENERATED -->
+
+## Capstones, the practitioner layer and the reference files
+
+**Capstones (Term 7).** Each [capstone](capstones/README.md) has a brief, milestones with hours, a rubric and a verified reference solution. Work to the brief and grade yourself against the rubric. Open the reference only when your own design is complete or a milestone has you stuck.
+
+**The practitioner layer, alongside the courses.**
+
+- **Before any technical meeting:** prepare with the matching [playbook](practitioner/playbooks/README.md), and draw extra questions from the [question banks](practitioner/question-banks/README.md). This applies at work from Course 28 onward, and earlier for your own coverage areas.
+- **During Terms 6 and 7:** read one [case study](practitioner/case-studies/README.md) a month. Stop after the decision, write down what you would have asked, then read on.
+- **During Course 28:** rehearse with the [scenario index](practitioner/scenarios/README.md).
+- **When turning findings into money or schedule:** use the [translation table](practitioner/translation-table.md).
+
+**The reference files.**
+
+- **Before each course exam:** review the course's [equation sheet](reference/equation-sheets/README.md).
+- **When a value matters:** check [numbers-to-know](reference/numbers-to-know.md) and its as-of dates before quoting it.
+- **For an unfamiliar term:** the [glossary](reference/glossary.md) and [acronyms](reference/acronyms.md) point to the defining chapter.
+- **For the next read:** the [reading list](reference/reading-list.md) collects every chapter's further study.
+- **For any perishable fact:** the [research log](reference/research-log.md) holds its source and date.
+
+**FE readiness.** Take the [full-length practice exam](checkpoints/fe-practice/README.md) under exam conditions: one sitting, two timed parts, only the handbook. On the FE preparation path, take it after Term 5 and the listed later chapters; on the full path, after the Term 7 checkpoint. Score it by area. When every area is at 70% or above, book the real exam. Before that, re-study the areas below 70% from the chapters the solutions name, and retake the exam a month later.
 
 ## Adapting the plan
 

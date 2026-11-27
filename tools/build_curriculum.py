@@ -414,6 +414,12 @@ def build_study_block(cur) -> str:
         rows.append(f"| {weeks(cum, cum + ck)} | **Term {t['id']} checkpoint** (FE-style exam + error log review) | {ck} |")
         detail.append(f"| {weeks(cum, cum + ck)} | Term {t['id']} checkpoint | {ck} |")
         cum += ck
+        fx = cur.get("full_length_exam")
+        if fx and t is cur["terms"][-1]:
+            rows.append(f"| {weeks(cum, cum + fx['hours'])} | **[{fx['title']}]({fx['path']})** "
+                        f"(110 questions, 5 h 20 min, then review) | {fx['hours']} |")
+            detail.append(f"| {weeks(cum, cum + fx['hours'])} | {fx['title']} | {fx['hours']} |")
+            cum += fx["hours"]
         n_weeks = (cum - t0) / wk
         out += [f"### Term {t['id']} — {t['title']}", "",
                 f"≈ {fmt_h(round(cum - t0))} hours · ≈ {round(n_weeks)} weeks · ends around program week "
@@ -462,12 +468,16 @@ def build_study_block(cur) -> str:
     fe_h = sum(course_hours(c) for c in cur["courses"] if c["term"] in fp["terms"])
     fe_h += sum(chap_index[x][1]["hours"] for x in fp["chapters"])
     fe_h += cur["checkpoint_hours"] * len(fp["checkpoints"])
+    fx = cur.get("full_length_exam")
+    fe_h += fx["hours"] if fx else 0
     out += ["## FE preparation path", "",
             "All courses in Terms " + ", ".join(map(str, fp["terms"])) + ", plus the chapters "
             + ", ".join(f"[{x}]({chapter_path(*chap_index[x])})" for x in fp["chapters"])
             + " (power systems, materials, economics and ethics), plus checkpoints "
             + ", ".join(map(str, fp["checkpoints"])) + ". "
-            f"Total ≈ **{fmt_h(round(fe_h, -1))} hours**, then a full-length practice exam under exam conditions.", "",
+            f"Total ≈ **{fmt_h(round(fe_h, -1))} hours**, ending with the "
+            + (f"[{fx['title'].lower()}]({fx['path']})" if fx else "full-length practice exam")
+            + " under exam conditions.", "",
             GEN_END]
     return "\n".join(out)
 
