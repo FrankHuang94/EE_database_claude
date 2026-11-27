@@ -4,6 +4,8 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 
 ## Next step
 
+> **The build is complete (Phase 4 done, 27 Nov 2026).** All 307 chapters, 29 courses, seven term checkpoints, the full-length FE exam, four capstones, the practitioner layer and the reference files are written, verified and audited; the final report is below. What remains is the learner's: (1) pilot feedback (open issue 7), to be applied retroactively if it changes rigor, pacing or format; (2) the companion-repo URLs (issue 1); (3) the yearly refresh of perishable facts described under "How to continue". A future session should start from the open issues that are still actionable (issues 77, 80, 81, 84 to 86 name the specific data gaps) and from any learner feedback, not from new content.
+>
 > **Phase 2 is under way** (the learner asked on 2026-11-12 to continue Phase 2 while pilot feedback is pending).
 >
 > - Course 00 is complete and audited (🏁).
@@ -193,6 +195,66 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 >
 > When pilot feedback arrives, apply it to the pilots and to every chapter written since, before continuing.
 
+## Final report (Phase 4, 27 Nov 2026)
+
+**What exists.** A complete self-study BSEE in 29 courses and 7 terms, built to the rules in [CLAUDE.md](CLAUDE.md):
+
+| Component | Count | Where |
+|---|---|---|
+| Chapters, each audited by fresh reviewers (🏁 reviewed) | 307 | [courses/](courses/) |
+| Problem sets with fully worked solutions | 307 sets, 4,373 problems | each course's `problems/` and `solutions/` |
+| Labs (handout plus notebook, netlist or testbench) | 307 | each course's `labs/` |
+| Course final exams with solutions | 29 | each course's `exam/` |
+| Term checkpoints (FE-style, 50 questions each) | 7 | [checkpoints/](checkpoints/README.md) |
+| Full-length FE practice exam | 110 questions (64 multiple choice, 46 numeric) | [checkpoints/fe-practice](checkpoints/fe-practice/README.md) |
+| Capstones with verified reference solutions | 4 (C1 has two options) | [capstones/](capstones/README.md) |
+| Practitioner layer | 9 playbooks; 10 generated question banks (1,342 questions); 11 case studies; scenario index; translation table | [practitioner/](practitioner/README.md) |
+| Reference | notation, 3,085 glossary terms, acronyms, 29 equation sheets, numbers-to-know, reading list, history timeline, 702 research-log entries | [reference/](reference/README.md) |
+| Flashcards | 2,871 | [flashcards/](flashcards/README.md) |
+| Figures | 663 SVG | [assets/figures/](assets/figures/) |
+| Study plan | week by week at 11 h/week; fast track; FE path | [STUDY_PLAN.md](STUDY_PLAN.md) |
+
+**Verification coverage.** Every published number in examples, solutions, exams, checkpoints and capstone reports sits in an answer key that a script recomputes independently:
+
+- **Verify scripts:** 349, covering 38,496 keyed chapter numbers plus the checkpoints, exams and capstones. The last full local run passed 349 of 349.
+- **ngspice netlists:** 306 with EXPECT lines (1,623 expectations).
+- **Self-checking Verilog testbenches:** 33.
+- **Sanitized C host tests:** 11.
+- **Notebooks:** 303, each executing clean.
+- **Generated-file and lint checks:** links and anchors, chapter structure, markdownlint, staleness of every generated file (curriculum, glossary, stats, question banks, reference blocks), and currency signs next to math.
+
+All of it runs in CI on every push and locally with `make check`.
+
+**Phase 4 audits.** Three fresh reviewers, with no drafting context, audited the Phase 3 material; all 101 findings were fixed (log rows of 27 Nov):
+
+- **Full-length FE exam (30).** Rebuilt from a structured item list. Area labels were corrected and weak or mislabelled items replaced. Every wrong option now names its mistake and is recomputed. Answer letters are balanced with no runs or short periods. The verify grew to 333 checks, and 21 ngspice expectations were added.
+- **Capstones (33).** Two C4 numbers were wrong: the NVLink-to-port ratio is 18×, not 36×, and the serving model omitted prefill, which at the claim's 32k:1k point brings the per-GPU ratio down to about 5×. Two C1A physical explanations were corrected, as was C2's architecture claim. C1B's compensator derivation and corner reduction were added, and C3's firmware ordering and assumptions fixed.
+- **Practitioner layer and reference files (38).** The question-bank generator had been dropping multi-claim blocks in 17 chapters and three run-on question lists. The acronym generator kept only one meaning per acronym. Several case-study and playbook statements were corrected, and new decisive questions were added.
+
+**Success criteria.**
+
+1. **Final-exam-level problems:** 29 course exams, with [A]/[B]/[C] problem tiers in every chapter.
+2. **FE practice:** seven term checkpoints, then the full-length exam scored by NCEES area.
+3. **Derivations from first principles:** in every chapter's theory section, with Going-deeper blocks beyond BSEE level.
+4. **Capstones:** four briefs with rubrics and verified references.
+5. **A fluent, skeptical conversation:** Course 28, the practitioner layer and the C4 memo.
+
+**Known limitations.** The open issues below list them all. The material ones:
+
+- **Pilot feedback** is still pending (issue 7).
+- **Companion-repo URLs** are unknown (issue 1).
+- **Unread primary sources.** Some could not be reached from the build environment; each case is logged per chapter, and the affected facts are tagged and dated.
+- **Route 2 of C2** (OpenLane/Sky130) is described, not run (issue 4).
+- **A handful of specification and data-sheet gaps** remain (issues 77, 80, 81, 84 to 86).
+- **Some chapters exceed the length guideline** (issues 10, 68, 79).
+- **The FE practice exam is not a replica.** It has no figures and mostly one- or two-step items, and says so.
+
+**How to continue.**
+
+- **Re-check perishable facts yearly.** Every fact carries an "as of" date. Re-check market, product and standard facts, starting with the research-log entries that the practitioner layer and C4 cite.
+- **Regenerate after edits.** Run `make regen` after editing chapters (question banks, reference blocks, course READMEs, glossary, stats), and `make check` before pushing.
+- **Extend the capstones.** The natural extensions are C2's Route 2 once an open-source flow is set up, a bench measurement for C3's PPG receiver, and an attention-aware serving model with measured utilization for C4.
+
 ## Phase status
 
 | Phase | Scope | Status |
@@ -201,7 +263,7 @@ Build tracker for the Self-Taught BSEE. **Every session starts by reading [CLAUD
 | 1 · Pilot | 02-01 and 07-02, complete with problems, solutions, labs, verification; then stop for feedback | ✅ complete — feedback still pending; learner asked to continue meanwhile |
 | 2 · Courses | Terms 1 → 7 in prerequisite order; per-course audit; term checkpoints | ✅ complete: Courses 00–28 🏁 and all seven term checkpoints |
 | 3 · Capstones and practitioner layer | Capstones C1–C4, practitioner playbooks and case studies, reference files, full-length FE exam, final STUDY_PLAN | ✅ complete (2026-11-27) |
-| 4 · Final QA | Full CI pass, glossary/objective/cross-link audits, final report | ⬜ next |
+| 4 · Final QA | Full CI pass, glossary/objective/cross-link audits, fresh-reviewer audits of Phase 3, final report | ✅ complete (2026-11-27) |
 
 ## Build statistics
 
@@ -371,6 +433,8 @@ Course status values: ⬜ planned · 🔄 in progress · ✅ complete (all chapt
 | 82 | ~~Currency `$` unescaped on math lines in earlier courses.~~ **Resolved 2026-11-27:** 1,503 lines in Courses 00–27 escaped (rendered math spans checked unchanged under arithmatex), plus 8 lines elsewhere (research-log quotes whose dollar amounts paired as math, two PROGRESS lines, a Term 6 question, the Course 27 equation sheet); `tools/check_currency.py` now runs in CI, the Makefile and precommit. | 2026-11-26 (Course 28 audit) | — |
 | 83 | ~~Full-length mixed exam not yet built.~~ **Resolved 2026-11-27:** [checkpoints/fe-practice](checkpoints/fe-practice/README.md), 110 questions with `verify_fe.py`. | 2026-11-26 | — |
 | 84 | **C3 data gaps.** (a) The AFE4404 data sheet plots receiver current against PRF in dynamic power-down, but the plot was not read numerically, so C3 uses the 100 Hz table value (300 µA) and a two-point inference (273.3 µA at 25 Hz), labelled as such. (b) The BMI270's interface-supply range (for 3.0 V I/O with a 1.8 V core supply) was not logged. (c) EFR32BG22 (the Bluetooth sibling of the logged EFR32FG22) values and the FG22's measurement voltage were not logged. | 2026-11-27 (C3) | Read the AFE4404 figure or measure; log the BMI270 VDDIO range and BG22 currents when search is available. |
+| 85 | **C3 SoC comparison incomplete.** Standby current, CPU current per megahertz and DMA-idle current are logged only for the CC2340R5; for the EFR32BG22 and nRF52/nRF54 alternatives they were not logged, so C3 §2 states the choice rests on complete single-condition data rather than a measured advantage. | 2026-11-27 (Phase 4 audit) | Log the three quantities for two Bluetooth LE alternatives and re-rank. |
+| 86 | **Ironwood ICI topology and availability not logged.** C4 §4 and CS-04 compare scale-up domains on size and per-chip bandwidth only; the logged Google source describes neither the ICI topology nor whether capacity is offered outside Google Cloud, and R-692 does not say whether the MI355X's 144 GB/s per link counts one direction or both. | 2026-11-27 (Phase 4 audit) | Read Google's and AMD's architecture documents and update R-692/R-693. |
 
 ## Change log
 
@@ -750,3 +814,4 @@ Changes relative to the original build brief's chapter plan.
 | 2026-11-27 | Phase 4. **FE practice exam rebuilt after its fresh-reviewer audit (30 findings, all fixed).** Rebuilt from a structured item list: area labels corrected (RC/RL, resonance and convolution moved to Linear systems and Signal processing, op-amps to Electronics); new items for an rms waveform, a dependent source, a two-mesh phasor circuit, a Fourier coefficient, a zero-failure FIT bound, a strain-gauge bridge, a buck duty cycle, a quarter-wave transformer, block-diagram reduction, 16-QAM, a MAC, a 4-variable K-map with don't-cares and a Moore FSM; every wrong option now names its mistake and is recomputed by `verify_fe.py`; seeded option shuffles with balanced letters (no runs or short periods) and no long type alternation; 64 multiple-choice and 46 numeric items; NSPE rules II.2.b, II.4.c and III.5.a quoted in 26-07 and R-654 for the ethics items; README caveat (no figures, mostly one or two steps). `verify_fe.py`: 333 checks over 118 keyed values, questions located by stem, area counts read from `tools/data/fe_spec.yml`; `fe_circuits.cir`: 21 ngspice expectations. Full local run: 349/349 verify scripts pass. |
 | 2026-11-27 | Phase 4. **Capstones C1–C4 fixed after their fresh-reviewer audit (5 errors, 10 important, 18 minor; all addressed).** C4: NVLink against a 400 Gb/s port is 18× like-for-like (900 against 50 GB/s each way), not 36×; the serving model now counts prefill at the footnote's 32k:1k point (prefill caps, disaggregated pools, first-token times), so the per-GPU ratio is 4.76× (5.11× when the model needs two H100 servers), near the 5.0× dense-compute ratio, and the remaining ~6× is attributed to the H100 baseline's unmeasured utilization; reliability shown as the source's contested range (7.3–8.0 per rack-year); software σ raised to 1.0 (software 41.8% and supply 23.5% of the variance); moat claim softened against Ironwood; GB200 rack-power range corrected; teardown and SK hynix claims scoped. C1A: phase-margin trend explained by the fixed R_z against a moving 1/g_m6 (simulated g_m1 and g_m6 now in results.md at every corner; thresholds against temperature simulated), SS-hot shortfall re-attributed, R_z necessity quantified (13.1° without it), CMRR and PSRR+ hand estimates, measurement definitions. C1B: compensator placement equations, the 30-of-72 corner reduction justified (analytic check over all 72), phase-crossover frequency and amplifier gain there, recovery-time discussion, ESR loss row, specification table with test conditions. C2: the folded direct form also halves the multipliers (24 adders), timing input assumption and source-line caveat stated. C3: ring buffer rewritten with C11 acquire/release atomics and a saturating 16-bit drop count; LED-supply constraint and a TX_SUP boost scenario (5.22 days); assumptions marked; SoC comparison stated as incomplete. |
 | 2026-11-27 | Phase 4. **Practitioner layer and reference files fixed after their fresh-reviewer audit (38 findings).** `build_practitioner.py`: blocks now run to the next heading or section-9 label, so multi-claim Marketing-vs-Reality boxes (17 chapters) and run-on question labels (28-04, 28-05, 28-10) are captured, with a check that fails if any quoted claim is dropped (1,342 questions); answer-key pointers stripped. `build_reference.py`: one acronym row per meaning, acronyms parsed from bare glossary terms, the curated table's chapters recomputed (first chapter that uses and spells out each). Content: NVLink against a port 18× like-for-like (CS-04, playbook); decode reads weights once per step for the batch, prefill counted; all-reduce on per-direction bandwidth; CS-05 cooling against storage; C1 failure attribution; translation table symbols and the 25-07 chiplet model; CS-09 moved-area economics; CS-08 revenue scope and tags; typical defined as the characterization mean; DWPD and I_avg formulas; new questions on SiC overcapacity, customer in-sourcing and SEP licences, analog process ownership, HBM stack yield and base dies, the memory cycle, customer concentration, silicon-proven IP and laser supply; ±400 VDC and Mt. Diablo in CS-06; C2 in CS-07; method lines, tags and links; Nyquist 1928 in the timeline (the Smith chart's date is not stated in any chapter, so it is not added). |
+| 2026-11-27 | Phase 4 complete. **Final report written** (above, after Next step): component counts, verification coverage (349 verify scripts, 306 netlists with 1,623 expectations, 33 testbenches, 11 C tests, 303 notebooks), the 101 Phase 4 audit findings and their fixes, success criteria, known limitations and how to continue. Open issues 85 and 86 added for the data gaps the audits left. |
